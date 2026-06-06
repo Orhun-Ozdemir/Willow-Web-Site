@@ -1670,7 +1670,7 @@
     {
       "id": "mobile",
       "title": "Mobile App Development",
-      "summary": "iOS / Android apps for field operations, sensor monitoring and notifications.",
+      "summary": "Native iOS (Swift), native Android (Kotlin) and Flutter cross-platform mobile apps for field operations, sensor monitoring, push alerts, offline-first workflows and store certification.",
       "deliverables": [
         "Mobile app",
         "Notifications",
