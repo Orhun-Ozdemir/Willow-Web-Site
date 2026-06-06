@@ -41,6 +41,31 @@
     document.head.appendChild(script);
   }
 
+  function setMeta(selector, attribute, value) {
+    let node = document.head.querySelector(selector);
+    if (!node) {
+      node = document.createElement(selector.startsWith("link") ? "link" : "meta");
+      const parts = selector.match(/\[([^=]+)="([^"]+)"\]/);
+      if (parts) node.setAttribute(parts[1], parts[2]);
+      document.head.appendChild(node);
+    }
+    node.setAttribute(attribute, value);
+  }
+
+  function injectMeta(opts) {
+    setMeta('link[rel="canonical"]', "href", opts.canonical);
+    setMeta('meta[property="og:type"]', "content", opts.type || "article");
+    setMeta('meta[property="og:url"]', "content", opts.canonical);
+    setMeta('meta[property="og:title"]', "content", opts.title);
+    setMeta('meta[property="og:description"]', "content", opts.description || "");
+    if (opts.image) setMeta('meta[property="og:image"]', "content", opts.image);
+    setMeta('meta[property="og:site_name"]', "content", "WillowSoft");
+    setMeta('meta[name="twitter:card"]', "content", "summary_large_image");
+    setMeta('meta[name="twitter:title"]', "content", opts.title);
+    setMeta('meta[name="twitter:description"]', "content", opts.description || "");
+    if (opts.image) setMeta('meta[name="twitter:image"]', "content", opts.image);
+  }
+
   function productSchema(product) {
     return {
       "@type": "Product",
@@ -154,6 +179,15 @@
 
     // Schema.org JSON-LD — AI search engines and Google Rich Results
     injectSchema([productBreadcrumb(product), productSchema(product)]);
+
+    // Canonical + Open Graph + Twitter meta for this specific product
+    injectMeta({
+      canonical: `${SITE}/en/products/${product.slug || product.id}`,
+      title: `${product.title} | WillowSoft`,
+      description: product.shortDescription || "",
+      image: product.image ? abs(product.image) : `${SITE}/assets/hero-industrial-iot.png`,
+      type: "product",
+    });
   }
 
   function renderNews(item) {
@@ -174,6 +208,15 @@
 
     // Schema.org JSON-LD — NewsArticle + breadcrumb for AI and Google
     injectSchema([newsBreadcrumb(item), newsSchema(item)]);
+
+    // Canonical + Open Graph + Twitter meta for this specific news item
+    injectMeta({
+      canonical: `${SITE}/en/news/${item.slug || item.id}`,
+      title: `${item.title} | WillowSoft`,
+      description: item.excerpt || "",
+      image: item.image ? abs(item.image) : `${SITE}/assets/hero-industrial-iot.png`,
+      type: "article",
+    });
   }
 
   async function init() {
