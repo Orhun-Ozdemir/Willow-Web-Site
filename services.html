@@ -58,90 +58,206 @@
       </nav>
     </header>
 
-    <main>
-      <section class="hero compact">
+    <main class="services-premium">
+      <!-- HERO: confident headline + accent metric strip -->
+      <section class="hero compact hero-services">
         <div class="hero-media"><img src="pdf-assets/p05_01_X11.jpg" alt="Electronics production line" loading="lazy" decoding="async"/></div>
-        <canvas class="signal-canvas" data-density="36"></canvas>
+        <canvas class="signal-canvas" data-density="38" data-color="215, 154, 43"></canvas>
         <div class="hero-inner">
-          <p class="eyebrow reveal">Services</p>
-          <h1 class="reveal delay-1">From embedded hardware to the digital interface.</h1>
-          <p class="reveal delay-2">We build the technical layers that make connected products work: hardware, firmware, backend APIs, PostgreSQL, mobile apps, web platforms, admin panels, websites, and VR simulations.</p>
-        </div>
-      </section>
-
-      <section class="section">
-        <div class="section-inner">
-          <div class="service-rail reveal">
-            <article><span class="service-number">01</span><h3>Embedded</h3><p>PCB, firmware, RF, LoRaWAN and production readiness.</p></article>
-            <article><span class="service-number">02</span><h3>Backend</h3><p>APIs, PostgreSQL, auth, device data and reporting.</p></article>
-            <article><span class="service-number">03</span><h3>Experience</h3><p>Mobile apps, web platforms, admin panels and websites.</p></article>
-            <article><span class="service-number">04</span><h3>Simulation</h3><p>VR training, product demos and digital twin visualization.</p></article>
+          <p class="eyebrow reveal">Services • Eight capabilities, one team</p>
+          <h1 class="reveal delay-1">From embedded hardware to the <span class="serif-accent">digital interface</span>.</h1>
+          <p class="reveal delay-2">WillowSoft owns every layer of your connected product — hardware, firmware, backend, mobile, web and immersive — delivered as one reliable, production-ready system.</p>
+          <div class="services-hero-meta reveal delay-3" role="list" aria-label="Service capacity">
+            <span class="hero-meta-item" role="listitem"><strong>8</strong><span>capabilities</span></span>
+            <span class="hero-meta-divider" aria-hidden="true"></span>
+            <span class="hero-meta-item" role="listitem"><strong>50+</strong><span>partner brands</span></span>
+            <span class="hero-meta-divider" aria-hidden="true"></span>
+            <span class="hero-meta-item" role="listitem"><strong>80+</strong><span>projects shipped</span></span>
+            <span class="hero-meta-divider" aria-hidden="true"></span>
+            <span class="hero-meta-item" role="listitem"><strong>15+</strong><span>countries</span></span>
           </div>
         </div>
       </section>
 
+      <!-- CAPABILITY MATRIX: the marquee block -->
+      <section class="section tight">
+        <div class="section-inner">
+          <div class="section-head reveal">
+            <p class="eyebrow">Capability matrix</p>
+            <h2 class="page-title">Four columns. One integrated stack.</h2>
+            <p class="section-lead">These capabilities are not separate departments. They are one team that ships the entire connected product — no hand-off losses between layers.</p>
+          </div>
+          <div class="capability-matrix reveal delay-1">
+            <article class="capability-row">
+              <div class="capability-number">01</div>
+              <div class="capability-title">
+                <h3>Embedded</h3>
+                <p>The physical layer — custom PCB design, RF tuning, firmware, low-power architecture, production readiness and certification support.</p>
+              </div>
+              <div class="capability-tags">
+                <span class="chip">STM32WL</span><span class="chip">LoRaWAN</span><span class="chip">RTOS</span><span class="chip">OTA</span><span class="chip">RF tuning</span>
+              </div>
+            </article>
+            <article class="capability-row">
+              <div class="capability-number">02</div>
+              <div class="capability-title">
+                <h3>Platform</h3>
+                <p>The cloud layer — REST and WebSocket APIs, PostgreSQL schema design, device ingestion, reporting, authentication and enterprise integrations.</p>
+              </div>
+              <div class="capability-tags">
+                <span class="chip">REST</span><span class="chip">WebSocket</span><span class="chip">PostgreSQL</span><span class="chip">Auth</span><span class="chip">Reporting</span>
+              </div>
+            </article>
+            <article class="capability-row">
+              <div class="capability-number">03</div>
+              <div class="capability-title">
+                <h3>Interfaces</h3>
+                <p>The human layer — Flutter native mobile apps, web platforms, customer portals, role-based admin panels and IoT dashboards.</p>
+              </div>
+              <div class="capability-tags">
+                <span class="chip">Flutter</span><span class="chip">Web</span><span class="chip">Admin Panel</span><span class="chip">Dashboard</span><span class="chip">Portal</span>
+              </div>
+            </article>
+            <article class="capability-row">
+              <div class="capability-number">04</div>
+              <div class="capability-title">
+                <h3>Simulation</h3>
+                <p>The immersive layer — Unity VR training, 3D product demonstrations, digital twin visualization and maintenance simulations for industrial environments.</p>
+              </div>
+              <div class="capability-tags">
+                <span class="chip">Unity</span><span class="chip">WebGL</span><span class="chip">Digital Twin</span><span class="chip">VR Training</span>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- PROCESS TIMELINE PREMIUM -->
       <section class="section soft">
         <div class="section-inner">
           <div class="section-head reveal">
-            <p class="eyebrow">Concept to Production</p>
+            <p class="eyebrow">Concept to production</p>
             <h2>A cleaner path from idea to deployed system.</h2>
           </div>
-          <div class="process">
-            <div class="process-step reveal"><div class="step-dot">1</div><article class="card"><h3>Analyze</h3><p>Requirements, constraints, operating environment, integration needs, ROI targets, and technical feasibility.</p></article></div>
-            <div class="process-step reveal"><div class="step-dot">2</div><article class="card"><h3>Architect</h3><p>System blueprint across hardware, firmware, RF, backend, database, mobile, web, and operational workflows.</p></article></div>
-            <div class="process-step reveal"><div class="step-dot">3</div><article class="card"><h3>Develop</h3><p>Concurrent PCB, firmware, API, PostgreSQL, dashboard, app, and admin panel development.</p></article></div>
-            <div class="process-step reveal"><div class="step-dot">4</div><article class="card"><h3>Validate</h3><p>RF tuning, device stability, API reliability, database performance, UX testing, security checks, and field readiness.</p></article></div>
-            <div class="process-step reveal"><div class="step-dot">5</div><article class="card"><h3>Launch & Scale</h3><p>Certification support, production handoff, deployment, monitoring, documentation, and ongoing improvements.</p></article></div>
+          <div class="process process-premium">
+            <div class="process-step reveal"><div class="step-dot">1</div><article class="card process-card"><h3>Analyze</h3><p>Requirements, constraints, operating environment, integration needs, ROI targets and technical feasibility — captured before any code or hardware decision.</p></article></div>
+            <div class="process-step reveal delay-1"><div class="step-dot">2</div><article class="card process-card"><h3>Architect</h3><p>System blueprint across hardware, firmware, RF, backend, database, mobile, web and operational workflows — every layer drawn together.</p></article></div>
+            <div class="process-step reveal delay-2"><div class="step-dot">3</div><article class="card process-card"><h3>Develop</h3><p>Concurrent PCB, firmware, API, PostgreSQL, dashboard, app and admin panel development — coordinated by one team, not handed off between vendors.</p></article></div>
+            <div class="process-step reveal delay-3"><div class="step-dot">4</div><article class="card process-card"><h3>Validate</h3><p>RF tuning, device stability, API reliability, database performance, UX testing, security checks and field readiness — verified end-to-end.</p></article></div>
+            <div class="process-step reveal delay-4"><div class="step-dot">5</div><article class="card process-card"><h3>Launch &amp; Scale</h3><p>Certification support, production handoff, deployment, monitoring, documentation and ongoing improvements — long after the demo is over.</p></article></div>
           </div>
         </div>
       </section>
 
-      <section class="section dark">
-        <canvas class="signal-canvas" data-density="42" data-color="91, 166, 91"></canvas>
+      <!-- TECHNOLOGY STACK (dark, animated, labeled cards) -->
+      <section class="section dark services-stack-section">
+        <canvas class="signal-canvas" data-density="42" data-color="215, 154, 43"></canvas>
         <div class="section-inner">
           <div class="section-head center reveal">
-            <p class="eyebrow">Technology Stack Animation</p>
-            <h2>The background moves like the system itself.</h2>
-            <p class="section-lead">Behind the technology cards, animated nodes and pulses represent sensor data traveling from device to gateway, backend, database, dashboard, mobile app, and VR layer.</p>
+            <p class="eyebrow">Technology stack</p>
+            <h2>One team. Every layer. <span class="serif-accent">Real production.</span></h2>
+            <p class="section-lead">Behind the cards, animated nodes represent sensor data flowing through device, gateway, backend, database, dashboard, mobile and immersive layers — the same path our customers' products travel in the field.</p>
           </div>
           <div class="grid grid-3">
-            <article class="card reveal"><h3>IoT & Embedded Engineering</h3><ul><li>Custom PCB and hardware design</li><li>Embedded software and firmware</li><li>LoRaWAN, BLE, Wi-Fi and RF optimization</li><li>Testing, certification, and production support</li></ul></article>
-            <article class="card reveal delay-1"><h3>Digital Product Engineering</h3><ul><li>Backend API development</li><li>PostgreSQL database architecture</li><li>Admin panel and dashboard development</li><li>Flutter mobile apps and web platforms</li></ul></article>
-            <article class="card reveal delay-2"><h3>Immersive & Simulation</h3><ul><li>Industrial VR training</li><li>3D product demonstrations</li><li>Digital twin visualization</li><li>Maintenance and safety simulations</li></ul></article>
+            <article class="card stack-card reveal">
+              <p class="stack-card-label">Device layer</p>
+              <h3>Hardware &amp; Embedded</h3>
+              <ul class="stack-list">
+                <li>Custom PCB and hardware design</li>
+                <li>Embedded software and firmware</li>
+                <li>LoRaWAN, BLE, Wi-Fi and RF optimization</li>
+                <li>Testing, certification and production support</li>
+              </ul>
+            </article>
+            <article class="card stack-card reveal delay-1">
+              <p class="stack-card-label">Cloud layer</p>
+              <h3>Digital Product Engineering</h3>
+              <ul class="stack-list">
+                <li>Backend API development</li>
+                <li>PostgreSQL database architecture</li>
+                <li>Admin panel and dashboard development</li>
+                <li>Flutter mobile apps and web platforms</li>
+              </ul>
+            </article>
+            <article class="card stack-card reveal delay-2">
+              <p class="stack-card-label">Reality layer</p>
+              <h3>Immersive &amp; Simulation</h3>
+              <ul class="stack-list">
+                <li>Industrial VR training</li>
+                <li>3D product demonstrations</li>
+                <li>Digital twin visualization</li>
+                <li>Maintenance and safety simulations</li>
+              </ul>
+            </article>
           </div>
         </div>
       </section>
 
+      <!-- DIGITAL SERVICES DETAIL: corner-numbered premium cards -->
       <section class="section soft">
         <div class="section-inner">
           <div class="section-head reveal">
-            <p class="eyebrow">Digital Services</p>
+            <p class="eyebrow">Digital services in detail</p>
             <h2>Software services that complete the connected product.</h2>
           </div>
-          <div class="grid grid-4">
-            <article class="card reveal"><h3>Backend API</h3><p>REST APIs, WebSocket flows, auth, device ingestion, alerts, reporting, and enterprise integrations.</p></article>
-            <article class="card reveal delay-1"><h3>PostgreSQL</h3><p>Schema design, migrations, indexes, backup strategy, monitoring, security, and performance tuning.</p></article>
-            <article class="card reveal delay-2"><h3>Admin Panel</h3><p>User roles, device management, operational dashboards, reports, logs, and workflow control.</p></article>
-            <article class="card reveal delay-3"><h3>Mobile & Web</h3><p>Flutter apps, customer portals, IoT dashboards, corporate websites, landing pages, and CMS integration.</p></article>
+          <div class="services-grid reveal delay-1">
+            <article class="service-detail-card">
+              <span class="service-detail-number" aria-hidden="true">01</span>
+              <h3>Backend API</h3>
+              <p>REST APIs, WebSocket flows, authentication, device ingestion, alerts, reporting and enterprise integrations.</p>
+            </article>
+            <article class="service-detail-card">
+              <span class="service-detail-number" aria-hidden="true">02</span>
+              <h3>PostgreSQL</h3>
+              <p>Schema design, migrations, indexes, backup strategy, monitoring, security and performance tuning.</p>
+            </article>
+            <article class="service-detail-card">
+              <span class="service-detail-number" aria-hidden="true">03</span>
+              <h3>Admin Panel</h3>
+              <p>User roles, device management, operational dashboards, reports, logs and workflow control.</p>
+            </article>
+            <article class="service-detail-card">
+              <span class="service-detail-number" aria-hidden="true">04</span>
+              <h3>Mobile &amp; Web</h3>
+              <p>Flutter native apps, customer portals, IoT dashboards, corporate websites, landing pages and CMS integration.</p>
+            </article>
           </div>
         </div>
       </section>
 
+      <!-- VR & SIMULATION: structured "use it for" list -->
       <section class="section">
         <div class="section-inner split">
           <div class="reveal">
-            <p class="eyebrow">VR Without Losing Focus</p>
-            <h2 class="page-title">Immersive experiences for industrial value.</h2>
-            <p class="section-lead">VR is positioned as engineering support, not entertainment: training operators, demonstrating products, simulating maintenance, and visualizing digital twins.</p>
+            <p class="eyebrow">VR &amp; Simulation</p>
+            <h2 class="page-title">Immersive experiences engineered for industrial value.</h2>
+            <p class="section-lead">VR is positioned as engineering support, not entertainment — training, demonstration, simulation and digital twins that solve operational problems.</p>
           </div>
-          <div class="card reveal delay-1">
+          <article class="card vr-card reveal delay-1">
             <h3>Use VR when it solves a business problem.</h3>
-            <ul>
-              <li>Factory safety and maintenance training</li>
-              <li>Product demonstration before physical deployment</li>
-              <li>Remote onboarding for technical teams</li>
-              <li>3D visualization for connected devices and sites</li>
+            <ul class="vr-uses">
+              <li><strong>Training</strong><span>Factory safety and maintenance procedures in immersive scenarios.</span></li>
+              <li><strong>Demonstration</strong><span>Product walkthroughs before the physical prototype is built.</span></li>
+              <li><strong>Onboarding</strong><span>Remote technical-team onboarding into complex equipment.</span></li>
+              <li><strong>Digital twin</strong><span>3D visualization of connected devices, sites and processes.</span></li>
             </ul>
+          </article>
+        </div>
+      </section>
+
+      <!-- FINAL PREMIUM CTA -->
+      <section class="section soft services-cta-section">
+        <div class="section-inner">
+          <div class="services-cta-block reveal">
+            <div class="services-cta-content">
+              <p class="eyebrow">Start with engineering</p>
+              <h2 class="page-title">Ready to ship a connected product that actually works in the field?</h2>
+              <p class="section-lead">Tell us which layer you need first — hardware, firmware, backend, mobile, web or immersive — and WillowSoft engineering will respond with a discovery plan and a realistic timeline.</p>
+            </div>
+            <div class="services-cta-actions">
+              <a class="btn btn-primary" href="contact.html">Talk to Engineering</a>
+              <a class="btn btn-secondary" href="start-project.html">Start Your Project</a>
+            </div>
           </div>
         </div>
       </section>
