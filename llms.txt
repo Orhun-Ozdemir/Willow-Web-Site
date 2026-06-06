@@ -1,0 +1,14 @@
+# WillowSoft
+
+WillowSoft is an industrial technology company building embedded hardware, firmware, LoRaWAN connectivity, backend APIs, PostgreSQL data architecture, web/admin platforms, mobile apps, VR/simulation and telemetry systems.
+
+## Important URLs
+- Full AI-readable site summary: https://willowsoft.co/llms-full.txt
+- Sitemap: https://willowsoft.co/sitemap.xml
+- Products: https://willowsoft.co/en/products
+- Services: https://willowsoft.co/en/services
+- News: https://willowsoft.co/en/news
+- Contact: https://willowsoft.co/en/contact
+
+## Supported Locales
+English, Turkish, German, French, Spanish, Italian, Arabic and Japanese.

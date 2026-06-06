@@ -1,0 +1,113 @@
+# WillowSoft robots.txt
+# AI cevap motorlarında varlığımız önemli — explicit allow tüm major LLM crawler'lara.
+
+# ---------- OpenAI ----------
+User-agent: GPTBot
+Allow: /
+Disallow: /admin
+Disallow: /api/
+
+User-agent: ChatGPT-User
+Allow: /
+Disallow: /admin
+Disallow: /api/
+
+User-agent: OAI-SearchBot
+Allow: /
+Disallow: /admin
+Disallow: /api/
+
+# ---------- Anthropic ----------
+User-agent: ClaudeBot
+Allow: /
+Disallow: /admin
+Disallow: /api/
+
+User-agent: anthropic-ai
+Allow: /
+Disallow: /admin
+Disallow: /api/
+
+User-agent: Claude-Web
+Allow: /
+Disallow: /admin
+Disallow: /api/
+
+# ---------- Perplexity ----------
+User-agent: PerplexityBot
+Allow: /
+Disallow: /admin
+Disallow: /api/
+
+User-agent: Perplexity-User
+Allow: /
+Disallow: /admin
+Disallow: /api/
+
+# ---------- Google (Gemini / AI Overviews) ----------
+User-agent: Google-Extended
+Allow: /
+Disallow: /admin
+Disallow: /api/
+
+# ---------- Apple Intelligence ----------
+User-agent: Applebot-Extended
+Allow: /
+Disallow: /admin
+Disallow: /api/
+
+# ---------- Common Crawl (training data for many LLMs) ----------
+User-agent: CCBot
+Allow: /
+Disallow: /admin
+Disallow: /api/
+
+# ---------- ByteDance / Doubao ----------
+User-agent: Bytespider
+Allow: /
+Disallow: /admin
+Disallow: /api/
+
+# ---------- Meta AI / Llama ----------
+User-agent: Meta-ExternalAgent
+Allow: /
+Disallow: /admin
+Disallow: /api/
+
+# ---------- You.com ----------
+User-agent: YouBot
+Allow: /
+Disallow: /admin
+Disallow: /api/
+
+# ---------- DuckDuckGo Assistant ----------
+User-agent: DuckAssistBot
+Allow: /
+Disallow: /admin
+Disallow: /api/
+
+# ---------- Amazon / Alexa+ ----------
+User-agent: Amazonbot
+Allow: /
+Disallow: /admin
+Disallow: /api/
+
+# ---------- Cohere ----------
+User-agent: cohere-ai
+Allow: /
+Disallow: /admin
+Disallow: /api/
+
+# ---------- Mistral ----------
+User-agent: MistralAI-User
+Allow: /
+Disallow: /admin
+Disallow: /api/
+
+# ---------- Default ----------
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /api/
+
+Sitemap: https://willowsoft.co/sitemap.xml
