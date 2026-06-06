@@ -27,7 +27,8 @@ const pageRoutes = new Map([
   ["news", "news.html"],
   ["company", "company.html"],
   ["contact", "contact.html"],
-  ["start-project", "start-project.html"]
+  ["start-project", "start-project.html"],
+  ["glossary", "glossary.html"]
 ]);
 
 const mimeTypes = {
@@ -229,7 +230,7 @@ async function generateSitemap() {
   const content = await readJson(dataFile, {});
   const localeList = content.meta?.locales || Array.from(locales);
   const updatedAt = (content.meta?.updatedAt || new Date().toISOString()).slice(0, 10);
-  const basePages = ["", "services", "solutions", "products", "news", "company", "contact", "start-project"];
+  const basePages = ["", "services", "solutions", "products", "news", "company", "contact", "start-project", "glossary"];
   const productPages = (content.products || []).map((product) => `products/${product.slug || product.id}`);
   const newsPages = (content.news || []).map((item) => `news/${item.slug || item.id}`);
   const entries = [...basePages, ...productPages, ...newsPages]
@@ -308,8 +309,154 @@ function routePublicPath(pathname) {
   return sanitizePublicPath(pathname);
 }
 
+function escapeHtml(value) {
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+function slugContext(pathname) {
+  const parts = pathname.split("/").filter(Boolean);
+  const first = parts[0];
+  const rest = locales.has(first) ? parts.slice(1) : parts;
+  if (rest[0] === "products" && rest[1]) return { type: "product", slug: rest[1] };
+  if (rest[0] === "news" && rest[1]) return { type: "news", slug: rest[1] };
+  return null;
+}
+
+async function enrichSlugHtml(html, ctx) {
+  const content = await readJson(dataFile, {});
+  const collection = ctx.type === "product" ? content.products : content.news;
+  const item = (collection || []).find(
+    (entry) => (entry.slug || entry.id) === ctx.slug
+  );
+  if (!item) return html;
+
+  const baseTitle = item.title || "WillowSoft";
+  const description = item.shortDescription || item.excerpt || "";
+  const image = item.image
+    ? `${siteUrl}/${String(item.image).replace(/^\/+/, "")}`
+    : `${siteUrl}/assets/hero-industrial-iot.png`;
+  const collectionPath = ctx.type === "product" ? "products" : "news";
+  const canonical = `${siteUrl}/en/${collectionPath}/${item.slug || item.id}`;
+  const ogType = ctx.type === "product" ? "product" : "article";
+
+  const orgRef = `${siteUrl}/#org`;
+  const breadcrumb = {
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: `${siteUrl}/en` },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: ctx.type === "product" ? "Products" : "News",
+        item: `${siteUrl}/en/${collectionPath}`,
+      },
+      { "@type": "ListItem", position: 3, name: baseTitle },
+    ],
+  };
+
+  let mainEntity;
+  if (ctx.type === "product") {
+    mainEntity = {
+      "@type": "Product",
+      name: baseTitle,
+      sku: item.slug || item.id,
+      image: [image],
+      description,
+      brand: { "@type": "Brand", name: "WillowSoft" },
+      manufacturer: { "@id": orgRef },
+      category: item.category || "Product",
+      offers: {
+        "@type": "Offer",
+        priceCurrency: "USD",
+        availability: "https://schema.org/InStock",
+        seller: { "@id": orgRef },
+        url: canonical,
+      },
+    };
+  } else {
+    mainEntity = {
+      "@type": "NewsArticle",
+      headline: baseTitle,
+      description,
+      image: [image],
+      datePublished: item.date || undefined,
+      dateModified: item.date || undefined,
+      author: { "@id": orgRef },
+      publisher: { "@id": orgRef },
+      mainEntityOfPage: canonical,
+      articleSection: item.category || "Company News",
+    };
+  }
+
+  const ldGraph = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": orgRef,
+        name: "WillowSoft",
+        url: siteUrl,
+        logo: `${siteUrl}/assets/willow-mark-transparent.png`,
+      },
+      breadcrumb,
+      mainEntity,
+    ],
+  };
+
+  const ldScript = `<script type="application/ld+json" data-ssr="true">${JSON.stringify(
+    ldGraph
+  )}</script>`;
+
+  const meta = [
+    `<link rel="canonical" href="${canonical}" />`,
+    ...locales.size && [...locales].map(
+      (loc) =>
+        `<link rel="alternate" hreflang="${loc}" href="${siteUrl}/${loc}/${collectionPath}/${item.slug || item.id}" />`
+    ),
+    `<link rel="alternate" hreflang="x-default" href="${canonical}" />`,
+    `<meta property="og:type" content="${ogType}" />`,
+    `<meta property="og:url" content="${canonical}" />`,
+    `<meta property="og:title" content="${escapeHtml(baseTitle + " | WillowSoft")}" />`,
+    `<meta property="og:description" content="${escapeHtml(description)}" />`,
+    `<meta property="og:image" content="${image}" />`,
+    `<meta property="og:image:width" content="1200" />`,
+    `<meta property="og:image:height" content="630" />`,
+    `<meta property="og:site_name" content="WillowSoft" />`,
+    `<meta name="twitter:card" content="summary_large_image" />`,
+    `<meta name="twitter:title" content="${escapeHtml(baseTitle + " | WillowSoft")}" />`,
+    `<meta name="twitter:description" content="${escapeHtml(description)}" />`,
+    `<meta name="twitter:image" content="${image}" />`,
+    ldScript,
+  ].join("\n    ");
+
+  // Replace <title> if present; insert if missing
+  if (/<title>[^<]*<\/title>/i.test(html)) {
+    html = html.replace(
+      /<title>[^<]*<\/title>/i,
+      `<title>${escapeHtml(baseTitle + " | WillowSoft")}</title>`
+    );
+  }
+  // Update meta description
+  if (/<meta name="description"[^>]*>/i.test(html)) {
+    html = html.replace(
+      /<meta name="description"[^>]*>/i,
+      `<meta name="description" content="${escapeHtml(description)}" />`
+    );
+  }
+  // Inject meta + schema before </head>
+  html = html.replace("</head>", `    ${meta}\n  </head>`);
+
+  return html;
+}
+
 async function serveStatic(req, res) {
   const url = new URL(req.url, `http://${req.headers.host}`);
+  const ctx = slugContext(url.pathname);
   const publicPath = routePublicPath(url.pathname);
   const filePath = path.join(root, publicPath);
   if (!filePath.startsWith(root)) return notFound(res);
@@ -318,9 +465,26 @@ async function serveStatic(req, res) {
     const info = await stat(filePath);
     const finalPath = info.isDirectory() ? path.join(filePath, "index.html") : filePath;
     const ext = path.extname(finalPath).toLowerCase();
+
+    // SSR enrichment for /[locale]/products/[slug] and /[locale]/news/[slug]
+    if (ctx && ext === ".html") {
+      let html = await readFile(finalPath, "utf8");
+      try {
+        html = await enrichSlugHtml(html, ctx);
+      } catch {
+        /* fall through to raw HTML if enrichment fails */
+      }
+      res.writeHead(200, {
+        "Content-Type": "text/html; charset=utf-8",
+        "Cache-Control": "no-store",
+      });
+      res.end(html);
+      return;
+    }
+
     res.writeHead(200, {
       "Content-Type": mimeTypes[ext] || "application/octet-stream",
-      "Cache-Control": ext === ".html" ? "no-store" : "public, max-age=120"
+      "Cache-Control": ext === ".html" ? "no-store" : "public, max-age=120",
     });
     createReadStream(finalPath).pipe(res);
   } catch {
