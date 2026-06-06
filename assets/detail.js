@@ -1,10 +1,101 @@
 (function () {
   const esc = (value) => window.WillowCMS.escapeHtml(value);
+  const SITE = "https://willowsoft.co";
 
   function slugFromPath(prefix) {
     const parts = window.location.pathname.split("/").filter(Boolean);
     const index = parts.indexOf(prefix);
     return index >= 0 ? parts[index + 1] : new URLSearchParams(location.search).get("slug");
+  }
+
+  function abs(url) {
+    if (!url) return SITE;
+    if (/^https?:\/\//i.test(url)) return url;
+    return `${SITE}/${url.replace(/^\/+/, "")}`;
+  }
+
+  function injectSchema(extra) {
+    // Remove any prior dynamic injection so re-renders stay clean
+    document
+      .querySelectorAll('script[data-dynamic-schema="true"]')
+      .forEach((node) => node.remove());
+
+    const graph = {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Organization",
+          "@id": `${SITE}/#org`,
+          "name": "WillowSoft",
+          "url": SITE,
+          "logo": `${SITE}/assets/willow-mark-transparent.png`
+        },
+        ...extra
+      ]
+    };
+
+    const script = document.createElement("script");
+    script.type = "application/ld+json";
+    script.dataset.dynamicSchema = "true";
+    script.textContent = JSON.stringify(graph);
+    document.head.appendChild(script);
+  }
+
+  function productSchema(product) {
+    return {
+      "@type": "Product",
+      "name": product.title,
+      "sku": product.slug || product.id,
+      "image": product.image ? [abs(product.image)] : [],
+      "description": product.shortDescription || "",
+      "brand": { "@type": "Brand", "name": "WillowSoft" },
+      "manufacturer": { "@id": `${SITE}/#org` },
+      "category": product.category || "Product",
+      "offers": {
+        "@type": "Offer",
+        "priceCurrency": "USD",
+        "availability": "https://schema.org/InStock",
+        "seller": { "@id": `${SITE}/#org` },
+        "url": `${SITE}/en/products/${product.slug || product.id}`
+      }
+    };
+  }
+
+  function newsSchema(item) {
+    return {
+      "@type": "NewsArticle",
+      "headline": item.title,
+      "description": item.excerpt || "",
+      "image": item.image ? [abs(item.image)] : [],
+      "datePublished": item.date || undefined,
+      "dateModified": item.date || undefined,
+      "author": { "@id": `${SITE}/#org` },
+      "publisher": { "@id": `${SITE}/#org` },
+      "mainEntityOfPage": `${SITE}/en/news/${item.slug || item.id}`,
+      "articleSection": item.category || "Company News"
+    };
+  }
+
+  function productBreadcrumb(product) {
+    return {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": `${SITE}/en` },
+        { "@type": "ListItem", "position": 2, "name": "Products", "item": `${SITE}/en/products` },
+        { "@type": "ListItem", "position": 3, "name": product.title }
+      ]
+    };
+  }
+
+  function newsBreadcrumb(item) {
+    return {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": `${SITE}/en` },
+        { "@type": "ListItem", "position": 2, "name": "News", "item": `${SITE}/en/news` },
+        { "@type": "ListItem", "position": 3, "name": item.title }
+      ]
+    };
   }
 
   function setText(selector, value) {
@@ -60,6 +151,9 @@
         "Related firmware, backend, PostgreSQL, web/admin and mobile layers can be added by WillowSoft."
       ].map((item) => `<li>${esc(item)}</li>`).join("");
     }
+
+    // Schema.org JSON-LD — AI search engines and Google Rich Results
+    injectSchema([productBreadcrumb(product), productSchema(product)]);
   }
 
   function renderNews(item) {
@@ -77,6 +171,9 @@
     setText("[data-news-excerpt]", item.excerpt);
     setText("[data-news-body]", item.content || `${item.excerpt} This update should be used as a trust signal on the public site and can be expanded from the admin panel with full article content in the next CMS phase.`);
     setImage("[data-news-image]", item.image, item.title);
+
+    // Schema.org JSON-LD — NewsArticle + breadcrumb for AI and Google
+    injectSchema([newsBreadcrumb(item), newsSchema(item)]);
   }
 
   async function init() {
