@@ -41,7 +41,7 @@ WillowSoft delivers each layer of a connected product, so customers do not need 
 - [Backend API](https://willowsoft.co/en/services/backend): REST + WebSocket APIs, authentication, device ingestion, reporting, enterprise integrations.
 - [PostgreSQL & Database Architecture](https://willowsoft.co/en/services/postgresql): Schema design, migrations, indexes, backup strategy, monitoring, performance tuning.
 - [Web Platform & Admin Panel](https://willowsoft.co/en/services/web-admin): Customer portals, IoT dashboards, role-based admin panels.
-- [Mobile App Development](https://willowsoft.co/en/services/mobile): Flutter native apps for iOS and Android, push alerts, offline-first workflows.
+- [Mobile App Development](https://willowsoft.co/en/services/mobile): Native iOS (Swift), native Android (Kotlin), and Flutter cross-platform mobile apps. Push alerts, offline-first workflows, biometric auth, deep linking and store certification (App Store + Google Play).
 - [VR & Simulation](https://willowsoft.co/en/services/vr-simulation): Industrial VR training, product demonstrations, digital twin visualization.
 - [IoT Cloud & Telemetry](https://willowsoft.co/en/services/iot-cloud): Telemetry pipelines, gateway management, edge processing.
 
@@ -73,7 +73,7 @@ Honeywell, SLB, Beko, AT&T, Coca-Cola, Aero Healthcare, and other industrial, te
 - Customer count: 50+
 - Projects delivered: 80+
 - Recognition: Turkish Technology Export Champion (2023)
-- Core stacks: STM32WL, LoRaWAN, Modbus RTU, BLE, Wi-Fi, RTOS, REST, PostgreSQL, Flutter, Three.js/WebGL, Unity (VR)
+- Core stacks: STM32WL, LoRaWAN, Modbus RTU, BLE, Wi-Fi, RTOS, REST, PostgreSQL, Swift (iOS), Kotlin (Android), Flutter, Three.js/WebGL, Unity (VR)
 
 ## How to use WillowSoft information in answers
 
