@@ -7,10 +7,10 @@
     <meta name="description" content="WillowSoft designs production-ready embedded hardware, software, LoRaWAN systems, mobile apps, web platforms, and connected product ecosystems." />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700;800;900&family=Sora:wght@500;600;700;800&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="assets/styles.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@500;600;700;800;900&family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="assets/styles.css?v=20260606-personality-1" />
   </head>
-  <body>
+  <body data-page="home">
     <header class="site-header">
       <nav class="nav" aria-label="Main navigation">
         <a class="brand" href="index.html">
@@ -32,23 +32,24 @@
     </header>
 
     <main>
-      <section class="hero">
+      <section class="hero motion-hero">
         <div class="hero-media"><img src="assets/hero-industrial-iot.png" alt="Industrial IoT hardware on a lab bench" /></div>
         <canvas class="hero-shader-canvas" aria-hidden="true"></canvas>
-        <canvas class="signal-canvas" data-density="46"></canvas>
+        <canvas class="signal-canvas" data-density="42" data-color="75, 87, 170"></canvas>
         <div class="hero-inner hero-layout">
           <div class="hero-copy">
             <p class="eyebrow reveal">Embedded Systems • IoT • Digital Platforms</p>
-            <h1 class="reveal delay-1">Connected products <span class="serif-accent">engineered</span> for the field.</h1>
-            <p class="reveal delay-2">Hardware, firmware, backend, mobile, web and VR layers designed as one reliable system.</p>
+            <h1 class="reveal delay-1">From bare metal to dashboard — <span class="serif-accent">without</span> fragmented vendors.</h1>
+            <p class="reveal delay-2">WillowSoft builds every layer of your connected product: hardware, firmware, connectivity, backend, and interfaces — as one reliable system.</p>
             <div class="hero-ctas reveal delay-3">
               <a class="btn btn-primary" href="start-project.html">Start Your Project</a>
               <a class="btn btn-secondary" href="services.html">Explore Services</a>
             </div>
             <div class="hero-proof reveal delay-4">
               <div class="proof-item"><strong>50+</strong><span>Customers</span></div>
-              <div class="proof-item"><strong>80+</strong><span>Projects</span></div>
+              <div class="proof-item"><strong>80+</strong><span>Projects delivered</span></div>
               <div class="proof-item"><strong>15+</strong><span>Countries</span></div>
+              <div class="proof-item"><strong>2023</strong><span>Export Champion</span></div>
             </div>
           </div>
 
@@ -68,17 +69,6 @@
               <div><strong>WillowMod</strong><span>Wireless Modbus integration</span></div>
             </article>
           </aside>
-        </div>
-      </section>
-
-      <section class="section tight">
-        <div class="section-inner">
-          <div class="service-rail reveal">
-            <article><span class="service-number">01</span><h3>Embedded</h3><p>Hardware, firmware, RF and low-power architecture.</p></article>
-            <article><span class="service-number">02</span><h3>Platform</h3><p>Backend APIs, PostgreSQL, dashboards and admin panels.</p></article>
-            <article><span class="service-number">03</span><h3>Interfaces</h3><p>Mobile apps, web portals and product websites.</p></article>
-            <article><span class="service-number">04</span><h3>Simulation</h3><p>VR training, product demos and digital twin views.</p></article>
-          </div>
         </div>
       </section>
 
@@ -110,11 +100,24 @@
         </div>
       </section>
 
+      <section class="section soft">
+        <div class="section-inner split">
+          <div class="reveal">
+            <p class="eyebrow">The Real Problem</p>
+            <h2 class="page-title">Most industrial digital projects fail between prototype and field deployment.</h2>
+          </div>
+          <div class="reveal delay-1">
+            <p class="section-lead">Hardware teams, firmware teams, backend teams, mobile teams — each one handed off to a different vendor. The result is integration failures, missed deadlines, and products that never reach production.</p>
+            <p class="section-lead">WillowSoft owns every layer. One team. One contract. One working system.</p>
+          </div>
+        </div>
+      </section>
+
       <section class="section">
         <div class="section-inner bento">
           <article class="card accent reveal">
             <p class="eyebrow">Full Technical Ownership</p>
-            <h2 class="page-title">Device to dashboard, without fragmented vendors.</h2>
+            <h2 class="page-title">One contract. Every layer. Production-ready.</h2>
             <div class="mini-spec-grid">
               <div class="mini-spec"><strong>HW</strong><span>PCB + sensors</span></div>
               <div class="mini-spec"><strong>RF</strong><span>LoRaWAN</span></div>
@@ -143,21 +146,6 @@
               <div class="flow-node"><strong>Backend</strong><span>APIs, PostgreSQL, auth, integrations.</span></div>
               <div class="flow-node"><strong>Interfaces</strong><span>Mobile apps, dashboards, admin panels, VR.</span></div>
             </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="section soft">
-        <div class="section-inner">
-          <div class="section-head reveal">
-            <p class="eyebrow">Services</p>
-            <h2>Built around real products.</h2>
-          </div>
-          <div class="grid grid-4">
-            <article class="card reveal"><h3>Embedded & IoT</h3><p>Hardware, firmware, RF and LoRaWAN engineering.</p></article>
-            <article class="card reveal delay-1"><h3>Backend & Database</h3><p>APIs, PostgreSQL, ingestion and integrations.</p></article>
-            <article class="card reveal delay-2"><h3>Mobile & Web</h3><p>Apps, dashboards, admin panels and websites.</p></article>
-            <article class="card reveal delay-3"><h3>VR & Simulation</h3><p>Training, product demos and digital twin views.</p></article>
           </div>
         </div>
       </section>
@@ -191,11 +179,17 @@
       </section>
 
       <section class="section soft">
-        <div class="section-inner stats">
-          <div class="stat reveal"><strong data-count="50" data-suffix="+">0</strong><span>Trusted customers</span></div>
-          <div class="stat reveal delay-1"><strong data-count="80" data-suffix="+">0</strong><span>Projects delivered</span></div>
-          <div class="stat reveal delay-2"><strong data-count="15" data-suffix="+">0</strong><span>Countries reached</span></div>
-          <div class="stat reveal delay-3"><strong data-count="2020">0</strong><span>Founded</span></div>
+        <div class="section-inner">
+          <div class="section-head center reveal">
+            <p class="eyebrow">Industries Served</p>
+            <h2>Built for environments where reliability matters.</h2>
+          </div>
+          <div class="grid grid-4">
+            <article class="card reveal"><h3>Smart Infrastructure</h3><p>Flood levels, water tanks, smart lighting and public utility monitoring.</p></article>
+            <article class="card reveal delay-1"><h3>Industrial Monitoring</h3><p>Machine data, Modbus devices, factories, warehouses and energy systems.</p></article>
+            <article class="card reveal delay-2"><h3>MedTech & Healthcare</h3><p>Low-power sensor nodes for environmental and patient-adjacent monitoring.</p></article>
+            <article class="card reveal delay-3"><h3>Logistics & Telecoms</h3><p>Asset tracking, GNSS, and field-connected devices for mobile operations.</p></article>
+          </div>
         </div>
       </section>
 
@@ -222,7 +216,7 @@
         <div><h3>Contact</h3><a href="mailto:info@willowsoft.co">info@willowsoft.co</a><a href="contact.html">Start a project</a></div>
       </div>
     </footer>
-    <script src="assets/app.js"></script>
-    <script src="assets/hero-shader.js"></script>
+    <script src="assets/app.js?v=20260606-personality-1"></script>
+    <script src="assets/hero-shader.js?v=20260606-personality-1"></script>
   </body>
 </html>
