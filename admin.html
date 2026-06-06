@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg?v=20260606-navy" />
+    <link rel="alternate icon" type="image/png" href="/assets/willow-mark-transparent.png?v=20260606-transparent" />
+    <link rel="apple-touch-icon" href="/assets/willow-mark-transparent.png?v=20260606-transparent" />
+    <title>WillowSoft Admin</title>
+    <meta name="robots" content="noindex,nofollow" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@500;600;700;800;900&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="assets/styles.css" />
+  </head>
+  <body data-page="services">
+    <section class="admin-login" data-admin-login>
+      <form class="admin-login-card" data-admin-login-form>
+        <p class="eyebrow">WillowSoft Admin</p>
+        <h1>Sign in to manage content.</h1>
+        <label>Username<input name="username" value="admin" autocomplete="username" /></label>
+        <label>Password<input name="password" type="password" autocomplete="current-password" required /></label>
+        <p class="admin-login-error" data-admin-login-error></p>
+        <button class="btn btn-primary" type="submit">Sign In</button>
+      </form>
+    </section>
+    <main class="admin-shell">
+      <aside class="admin-sidebar">
+        <a class="brand" href="index.html">
+          <span class="brand-mark" aria-hidden="true"><img src="assets/willow-mark-transparent.png" alt="" /></span>
+          <span><strong>WILLOWSOFT</strong><span>Admin Dashboard</span></span>
+        </a>
+        <nav class="admin-tabs" aria-label="Admin sections">
+          <button class="active" data-admin-tab="overview">Overview</button>
+          <button data-admin-tab="pages">Page Texts</button>
+          <button data-admin-tab="products">Products</button>
+          <button data-admin-tab="news">News</button>
+          <button data-admin-tab="clients">Clients</button>
+          <button data-admin-tab="messages">Messages</button>
+          <button data-admin-tab="analytics">Analytics</button>
+          <button data-admin-tab="settings">Settings</button>
+        </nav>
+        <p class="admin-note">MVP admin. Use a production auth layer before launch.</p>
+      </aside>
+
+      <section class="admin-main">
+        <header class="admin-top">
+          <div>
+            <p class="eyebrow">Dynamic MVP</p>
+            <h1>Content and lead management</h1>
+          </div>
+          <div class="admin-actions">
+            <a class="btn btn-secondary btn-small" href="index.html">View Site</a>
+            <button class="btn btn-secondary btn-small" type="button" data-admin-logout>Logout</button>
+            <button class="btn btn-primary btn-small" type="button" data-save-content>Save Content</button>
+          </div>
+        </header>
+
+        <section class="admin-panel active" data-panel="overview">
+          <div class="admin-grid" data-admin-overview></div>
+        </section>
+
+        <section class="admin-panel" data-panel="pages">
+          <div class="admin-section-head">
+            <div><h2>Page Texts</h2><p>Edit main website copy per language. Empty translations fall back to English.</p></div>
+          </div>
+          <div class="admin-list" data-admin-page-content></div>
+        </section>
+
+        <section class="admin-panel" data-panel="products">
+          <div class="admin-section-head">
+            <div><h2>Products</h2><p>Manage the public product catalog.</p></div>
+            <button class="btn btn-secondary btn-small" type="button" data-add-product>Add Product</button>
+          </div>
+          <div class="admin-list" data-admin-products></div>
+        </section>
+
+        <section class="admin-panel" data-panel="news">
+          <div class="admin-section-head">
+            <div><h2>News</h2><p>Manage company proof, events and updates.</p></div>
+            <button class="btn btn-secondary btn-small" type="button" data-add-news>Add News</button>
+          </div>
+          <div class="admin-list" data-admin-news></div>
+        </section>
+
+        <section class="admin-panel" data-panel="clients">
+          <div class="admin-section-head">
+            <div><h2>Client Logos</h2><p>Control trusted brand cards and ordering.</p></div>
+            <button class="btn btn-secondary btn-small" type="button" data-add-client>Add Client</button>
+          </div>
+          <div class="admin-list" data-admin-clients></div>
+        </section>
+
+        <section class="admin-panel" data-panel="messages">
+          <div class="admin-section-head">
+            <div><h2>Messages & Leads</h2><p>Contact, Start Project and product inquiry submissions.</p></div>
+            <button class="btn btn-secondary btn-small" type="button" data-refresh-leads>Refresh</button>
+          </div>
+          <div class="admin-list" data-admin-leads></div>
+        </section>
+
+        <section class="admin-panel" data-panel="analytics">
+          <div class="admin-section-head">
+            <div><h2>Visitor Analytics</h2><p>Page views, engagement events, countries and recent interactions.</p></div>
+            <button class="btn btn-secondary btn-small" type="button" data-refresh-analytics>Refresh</button>
+          </div>
+          <div class="admin-analytics" data-admin-analytics></div>
+        </section>
+
+        <section class="admin-panel" data-panel="settings">
+          <div class="admin-section-head">
+            <div><h2>Settings</h2><p>Company facts, locales and metadata.</p></div>
+          </div>
+          <div class="admin-settings" data-admin-settings></div>
+        </section>
+      </section>
+    </main>
+
+    <script src="assets/cms.js"></script>
+    <script src="assets/admin.js"></script>
+  </body>
+</html>

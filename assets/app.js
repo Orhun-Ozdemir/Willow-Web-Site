@@ -178,12 +178,12 @@
 
   function initFilters() {
     const filters = document.querySelectorAll("[data-filter]");
-    const products = document.querySelectorAll("[data-category]");
-    if (!filters.length || !products.length) return;
+    if (!filters.length) return;
 
     filters.forEach((button) => {
       button.addEventListener("click", () => {
         const category = button.dataset.filter;
+        const products = document.querySelectorAll("[data-category]");
         filters.forEach((item) => item.classList.remove("active"));
         button.classList.add("active");
         products.forEach((product) => {
@@ -220,13 +220,42 @@
 
   function initForms() {
     document.querySelectorAll("form").forEach((form) => {
-      form.addEventListener("submit", (event) => {
+      form.addEventListener("submit", async (event) => {
         event.preventDefault();
         const button = form.querySelector("button[type='submit']");
         if (!button) return;
         const original = button.textContent;
         button.textContent = "Sending...";
         button.disabled = true;
+
+        const data = Object.fromEntries(new FormData(form).entries());
+        const unnamedFields = form.querySelectorAll("input[id], select[id], textarea[id]");
+        unnamedFields.forEach((field) => {
+          if (!field.name && field.id && field.value && !data[field.id]) data[field.id] = field.value;
+        });
+
+        try {
+          await fetch("/api/leads", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              ...data,
+              sourcePage: window.location.pathname,
+              locale: document.documentElement.lang || "en"
+            })
+          });
+        } catch {
+          const localLeads = JSON.parse(window.localStorage.getItem("willowsoft-leads-offline") || "[]");
+          localLeads.unshift({
+            id: `offline-${Date.now()}`,
+            status: "new",
+            createdAt: new Date().toISOString(),
+            sourcePage: window.location.pathname,
+            ...data
+          });
+          window.localStorage.setItem("willowsoft-leads-offline", JSON.stringify(localLeads));
+        }
+
         setTimeout(() => {
           button.textContent = "Request Received";
           form.reset();

@@ -27,6 +27,10 @@
     uniform vec3 uBase;
     uniform vec3 uBloomA;
     uniform vec3 uBloomB;
+    uniform vec3 uAccent;
+    uniform vec3 uElectric;
+    uniform vec3 uViolet;
+    uniform vec3 uWarm;
 
     float hash(vec2 p) {
       p = fract(p * vec2(123.34, 456.21));
@@ -59,16 +63,43 @@
     vec3 scene(vec2 uv, float t) {
       float aspect = uResolution.x / max(uResolution.y, 1.0);
       vec2 p = uv * vec2(aspect, 1.0);
+      vec2 swirlCenter = vec2(aspect * 0.72, 0.22);
+      vec2 center = p - swirlCenter;
+      float dist = length(center);
+      float spin = 0.18 * sin(t * 0.55) + 0.62 * exp(-dist * 1.45) + t * 0.08;
+      float cs = cos(spin);
+      float sn = sin(spin);
+      mat2 rot = mat2(cs, -sn, sn, cs);
+      p = swirlCenter + rot * center;
+      center = p - vec2(aspect * 0.66, 0.42);
 
-      float b1 = fbm(p * 1.3 + vec2(t * 0.14, -t * 0.09));
-      float b2 = fbm(p * 1.9 + vec2(-t * 0.10, t * 0.07) + 4.7);
+      float b1 = fbm(p * 1.28 + vec2(t * 0.28, -t * 0.20));
+      float b2 = fbm(p * 1.86 + vec2(-t * 0.24, t * 0.16) + 4.7);
+      float liquid = fbm(p * 2.55 + vec2(t * 0.62, -t * 0.42) + b1 * 1.9);
 
-      float wa = smoothstep(0.45, 0.95, b1);
-      float wb = smoothstep(0.50, 0.92, b2);
+      float wa = smoothstep(0.42, 0.95, b1);
+      float wb = smoothstep(0.48, 0.92, b2);
+      float riverA = sin((p.x * 4.15 - p.y * 2.9) + liquid * 5.4 + t * 1.55);
+      float riverB = sin((p.x * 2.15 + p.y * 5.35) - b2 * 3.65 - t * 1.20);
+      float riverC = sin((p.x * 6.35 - p.y * 1.28) + b1 * 3.2 + t * 1.85);
+      float ribbonA = smoothstep(0.48, 0.98, riverA);
+      float ribbonB = smoothstep(0.52, 0.99, riverB);
+      float ribbonC = smoothstep(0.62, 0.998, riverC);
+      float ribbon = ribbonA * 0.85 + ribbonB * 0.58 + ribbonC * 0.44;
+      float focus = smoothstep(1.22, 0.08, length(center));
+      float rightField = smoothstep(0.18, 0.92, uv.x);
+      float topField = smoothstep(1.0, 0.10, uv.y);
 
       vec3 col = uBase;
-      col = mix(col, uBloomA, wa * 0.85);
-      col = mix(col, uBloomB, wb * 0.55);
+      col = mix(col, uBloomA, wa * 0.62);
+      col = mix(col, uBloomB, wb * 0.66);
+      float energy = clamp((ribbon * 0.85 + smoothstep(0.42, 0.98, b1 * b2 + 0.2) * 0.62) * rightField, 0.0, 1.0);
+      float stage = clamp(focus * 0.88 + rightField * 0.86 + topField * 0.34, 0.0, 1.0);
+      col = mix(col, uAccent, energy * stage * 0.58);
+      col = mix(col, uElectric, ribbonA * stage * rightField * 0.66);
+      col = mix(col, uViolet, ribbonB * stage * rightField * 0.42);
+      col = mix(col, uWarm, ribbonC * stage * rightField * topField * 0.36);
+      col += vec3(ribbon * 0.22 * stage);
       return col;
     }
 
@@ -80,9 +111,9 @@
       vec2 dir = vec2(cos(angle), sin(angle));
       vec2 perp = vec2(-dir.y, dir.x);
 
-      float coord = dot(uv * 7.5, dir);
-      float flute = sin(coord * 6.2831853);
-      float refraction = flute * 0.025;
+      float coord = dot(uv * 11.0, dir);
+      float flute = sin(coord * 6.2831853 + t * 0.72);
+      float refraction = flute * 0.022;
 
       vec2 displaced = uv + perp * refraction;
 
@@ -92,14 +123,14 @@
       vec3 b = scene(displaced - perp * ca, t);
       vec3 col = vec3(r.r, g.g, b.b);
 
-      float highlight = pow(0.5 + 0.5 * flute, 8.0);
-      col += vec3(highlight * 0.13);
+      float highlight = pow(0.5 + 0.5 * flute, 16.0);
+      col += vec3(highlight * 0.24);
 
       vec2 c = uv - 0.5;
-      col *= 1.0 - dot(c, c) * 0.35;
+      col *= 1.0 - dot(c, c) * 0.08;
 
       float grain = hash(gl_FragCoord.xy + t * 73.0) - 0.5;
-      col += grain * 0.025;
+      col += grain * 0.016;
 
       gl_FragColor = vec4(col, 1.0);
     }
@@ -152,6 +183,10 @@
   const uBase = gl.getUniformLocation(prog, "uBase");
   const uBloomA = gl.getUniformLocation(prog, "uBloomA");
   const uBloomB = gl.getUniformLocation(prog, "uBloomB");
+  const uAccent = gl.getUniformLocation(prog, "uAccent");
+  const uElectric = gl.getUniformLocation(prog, "uElectric");
+  const uViolet = gl.getUniformLocation(prog, "uViolet");
+  const uWarm = gl.getUniformLocation(prog, "uWarm");
 
   // Willow palette — read from CSS custom properties so the shader stays in sync
   // with any future token changes.
@@ -165,13 +200,21 @@
     return [r, g, b];
   };
 
-  const base = readColor("--deep", "#101a2e");
-  const bloomA = readColor("--blue", "#26348b");
-  const bloomB = readColor("--cyan", "#23a8d8");
+  const base = readColor("--shader-base", "#faf8ff");
+  const bloomA = readColor("--shader-bloom-a", "#dfe0ff");
+  const bloomB = readColor("--shader-bloom-b", "#bbc3ff");
+  const accent = readColor("--shader-accent", "#2d3a8c");
+  const electric = readColor("--shader-electric", "#18a7ff");
+  const violet = readColor("--shader-violet", "#704dff");
+  const warm = readColor("--shader-warm", "#ff6b3d");
 
   gl.uniform3f(uBase, base[0], base[1], base[2]);
   gl.uniform3f(uBloomA, bloomA[0], bloomA[1], bloomA[2]);
   gl.uniform3f(uBloomB, bloomB[0], bloomB[1], bloomB[2]);
+  gl.uniform3f(uAccent, accent[0], accent[1], accent[2]);
+  gl.uniform3f(uElectric, electric[0], electric[1], electric[2]);
+  gl.uniform3f(uViolet, violet[0], violet[1], violet[2]);
+  gl.uniform3f(uWarm, warm[0], warm[1], warm[2]);
   gl.uniform1f(uReduceMotion, reduceMotion ? 1.0 : 0.0);
 
   function resize() {

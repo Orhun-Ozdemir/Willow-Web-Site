@@ -3,6 +3,10 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg?v=20260606-navy" />
+    <link rel="alternate icon" type="image/png" href="/assets/willow-mark-transparent.png?v=20260606-transparent" />
+    <link rel="apple-touch-icon" href="/assets/willow-mark-transparent.png?v=20260606-transparent" />
     <title>WillowSoft | Embedded Hardware & Industrial IoT Engineering</title>
     <meta name="description" content="WillowSoft designs production-ready embedded hardware, software, LoRaWAN systems, mobile apps, web platforms, and connected product ecosystems." />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -17,17 +21,17 @@
           <span class="brand-mark" aria-hidden="true"><img src="assets/willow-mark-transparent.png" alt="" /></span>
           <span><strong>WILLOWSOFT</strong><span>Smart Embedded Connectivity</span></span>
         </a>
-        <button class="menu-toggle" aria-expanded="false" aria-label="Open menu">☰</button>
         <div class="nav-links">
           <a href="solutions.html">Solutions</a>
           <a href="services.html">Services</a>
           <a href="products.html">Products</a>
+          <a href="news.html">News</a>
           <a href="company.html">Company</a>
           <a href="contact.html">Contact</a>
         </div>
         <div class="nav-actions">
           <a class="btn btn-primary btn-small" href="start-project.html">Start Project</a>
-        </div>
+        <button class="menu-toggle" aria-expanded="false" aria-label="Open menu">☰</button></div>
       </nav>
     </header>
 
@@ -72,7 +76,7 @@
         </div>
       </section>
 
-      <section class="trust-showcase" aria-label="Trusted by clients">
+      <section class="trust-showcase" id="trusted-brands" aria-label="Trusted by clients">
         <div class="section-inner trust-layout">
           <div class="trust-copy reveal">
             <p class="eyebrow">Trusted by global teams</p>
@@ -88,7 +92,7 @@
           </div>
           <div class="trust-stage reveal delay-1">
             <div class="trust-mark"><img src="pdf-assets/p01_01_X0.jpg" alt="WillowSoft mark" /></div>
-            <div class="logo-cloud">
+            <div class="logo-cloud" data-cms-clients>
               <div class="logo-tile" style="--z:18px;--delay:0ms"><img src="assets/client-logos/honeywell.png" alt="Honeywell" /></div>
               <div class="logo-tile" style="--z:54px;--delay:130ms"><img src="assets/client-logos/slb.png" alt="SLB" /></div>
               <div class="logo-tile" style="--z:28px;--delay:260ms"><img src="assets/client-logos/beko.png" alt="Beko" /></div>
@@ -100,8 +104,8 @@
         </div>
       </section>
 
-      <section class="section soft">
-        <div class="section-inner split">
+      <section class="section soft problem-section">
+        <div class="section-inner split problem-layout">
           <div class="reveal">
             <p class="eyebrow">The Real Problem</p>
             <h2 class="page-title">Most industrial digital projects fail between prototype and field deployment.</h2>
@@ -109,54 +113,68 @@
           <div class="reveal delay-1">
             <p class="section-lead">Hardware teams, firmware teams, backend teams, mobile teams — each one handed off to a different vendor. The result is integration failures, missed deadlines, and products that never reach production.</p>
             <p class="section-lead">WillowSoft owns every layer. One team. One contract. One working system.</p>
+            <div class="problem-map" aria-label="Fragmented vendor problem">
+              <div><strong>Hardware</strong><span>Vendor A</span></div>
+              <div><strong>Firmware</strong><span>Vendor B</span></div>
+              <div><strong>Backend</strong><span>Vendor C</span></div>
+              <div><strong>Interface</strong><span>Vendor D</span></div>
+              <div class="problem-map-result"><strong>Risk</strong><span>Integration drift, delays, unclear ownership.</span></div>
+            </div>
           </div>
         </div>
       </section>
 
-      <section class="section">
+      <section class="section ownership-section">
         <div class="section-inner bento">
           <article class="card accent reveal">
             <p class="eyebrow">Full Technical Ownership</p>
             <h2 class="page-title">One contract. Every layer. Production-ready.</h2>
+            <p class="ownership-lead">A single engineering team designs the product architecture, device logic, data model and operator interface together.</p>
             <div class="mini-spec-grid">
               <div class="mini-spec"><strong>HW</strong><span>PCB + sensors</span></div>
               <div class="mini-spec"><strong>RF</strong><span>LoRaWAN</span></div>
               <div class="mini-spec"><strong>API</strong><span>Backend</span></div>
             </div>
           </article>
-          <article class="card visual-card reveal delay-1" style="background-image:url('pdf-assets/p29_06_X111.jpg')">
-            <h3>Engineering that reaches production.</h3>
-            <p>Field-ready hardware, stable software and interfaces teams can actually use.</p>
+          <article class="card ownership-stack reveal delay-1">
+            <div class="stack-beam" aria-hidden="true"></div>
+            <div class="stack-layer"><span>01</span><strong>Device</strong><small>Power, enclosure, sensing, RF.</small></div>
+            <div class="stack-layer"><span>02</span><strong>Data</strong><small>Packets, schemas, PostgreSQL.</small></div>
+            <div class="stack-layer"><span>03</span><strong>Operations</strong><small>Dashboard, mobile, admin, alerts.</small></div>
           </article>
         </div>
       </section>
 
-      <section class="section dark">
+      <section class="section dark ecosystem-section">
         <canvas class="signal-canvas" data-density="34" data-color="91, 166, 91"></canvas>
         <div class="section-inner">
           <div class="section-head center reveal">
             <p class="eyebrow">Complete Connected Product Ecosystem</p>
             <h2>One system. Five layers.</h2>
+            <p class="section-lead">Each layer is planned against the next one, so field telemetry becomes useful operational software instead of isolated device data.</p>
           </div>
           <div class="tech-flow reveal delay-1">
             <div class="flow-row">
-              <div class="flow-node"><strong>Hardware</strong><span>Custom PCB, sensors, power architecture.</span></div>
-              <div class="flow-node"><strong>Firmware</strong><span>RTOS, OTA, protocols, low-power logic.</span></div>
-              <div class="flow-node"><strong>Connectivity</strong><span>LoRaWAN, BLE, Wi-Fi, RF optimization.</span></div>
-              <div class="flow-node"><strong>Backend</strong><span>APIs, PostgreSQL, auth, integrations.</span></div>
-              <div class="flow-node"><strong>Interfaces</strong><span>Mobile apps, dashboards, admin panels, VR.</span></div>
+              <div class="flow-node"><small>01</small><strong>Hardware</strong><span>Custom PCB, sensors, power architecture.</span></div>
+              <div class="flow-node"><small>02</small><strong>Firmware</strong><span>RTOS, OTA, protocols, low-power logic.</span></div>
+              <div class="flow-node"><small>03</small><strong>Connectivity</strong><span>LoRaWAN, BLE, Wi-Fi, RF optimization.</span></div>
+              <div class="flow-node"><small>04</small><strong>Backend</strong><span>APIs, PostgreSQL, auth, integrations.</span></div>
+              <div class="flow-node"><small>05</small><strong>Interfaces</strong><span>Mobile apps, dashboards, admin panels, VR.</span></div>
             </div>
           </div>
         </div>
       </section>
 
-      <section class="section">
+      <section class="section home-products">
         <div class="section-inner">
-          <div class="section-head reveal">
-            <p class="eyebrow">Proven Hardware Portfolio</p>
-            <h2>Field-ready LoRaWAN products for industrial monitoring.</h2>
+          <div class="section-head reveal product-headline">
+            <div>
+              <p class="eyebrow">Proven Hardware Portfolio</p>
+              <h2>Field-ready LoRaWAN products for industrial monitoring.</h2>
+            </div>
+            <a class="btn btn-secondary btn-small" href="products.html">Browse Products</a>
           </div>
-          <div class="grid grid-4">
+          <div class="grid grid-4" data-cms-featured-products>
             <article class="card product-card reveal">
               <figure><img src="pdf-assets/p06_01_X13.jpg" alt="WillowBee module" /></figure>
               <div class="product-body"><h3>WillowBee</h3><p>LoRaWAN wireless MCU module.</p><div class="chip-row"><span class="chip">STM32WL</span><span class="chip">22 dBm</span></div></div>
@@ -174,26 +192,38 @@
               <div class="product-body"><h3>WillowMod</h3><p>Wireless Modbus bridge for IIoT.</p><div class="chip-row"><span class="chip">Modbus RTU</span><span class="chip">LoRaWAN</span></div></div>
             </article>
           </div>
-          <p style="margin-top: 28px;"><a class="btn btn-primary" href="products.html">Browse Products</a></p>
         </div>
       </section>
 
-      <section class="section soft">
+      <section class="section soft industries-section">
         <div class="section-inner">
           <div class="section-head center reveal">
             <p class="eyebrow">Industries Served</p>
             <h2>Built for environments where reliability matters.</h2>
           </div>
-          <div class="grid grid-4">
-            <article class="card reveal"><h3>Smart Infrastructure</h3><p>Flood levels, water tanks, smart lighting and public utility monitoring.</p></article>
-            <article class="card reveal delay-1"><h3>Industrial Monitoring</h3><p>Machine data, Modbus devices, factories, warehouses and energy systems.</p></article>
-            <article class="card reveal delay-2"><h3>MedTech & Healthcare</h3><p>Low-power sensor nodes for environmental and patient-adjacent monitoring.</p></article>
-            <article class="card reveal delay-3"><h3>Logistics & Telecoms</h3><p>Asset tracking, GNSS, and field-connected devices for mobile operations.</p></article>
+          <div class="industry-lanes">
+            <article class="industry-lane reveal"><span>01</span><h3>Smart Infrastructure</h3><p>Flood levels, water tanks, smart lighting and public utility monitoring.</p></article>
+            <article class="industry-lane reveal delay-1"><span>02</span><h3>Industrial Monitoring</h3><p>Machine data, Modbus devices, factories, warehouses and energy systems.</p></article>
+            <article class="industry-lane reveal delay-2"><span>03</span><h3>MedTech & Healthcare</h3><p>Low-power sensor nodes for environmental and patient-adjacent monitoring.</p></article>
+            <article class="industry-lane reveal delay-3"><span>04</span><h3>Logistics & Telecoms</h3><p>Asset tracking, GNSS, and field-connected devices for mobile operations.</p></article>
           </div>
         </div>
       </section>
 
-      <section class="section dark">
+      <section class="section proof-section">
+        <div class="section-inner">
+          <div class="section-head reveal product-headline">
+            <div>
+              <p class="eyebrow">News & Proof</p>
+              <h2>Recent signals from the WillowSoft ecosystem.</h2>
+            </div>
+            <a class="btn btn-secondary btn-small" href="news.html">View News</a>
+          </div>
+          <div class="grid grid-3" data-cms-news data-limit="3"></div>
+        </div>
+      </section>
+
+      <section class="section dark final-cta">
         <canvas class="signal-canvas" data-density="26" data-color="215, 154, 43"></canvas>
         <div class="section-inner split">
           <div class="reveal">
@@ -202,6 +232,11 @@
           </div>
           <div class="reveal delay-1">
             <p class="section-lead">Tell us whether you need hardware, firmware, backend, PostgreSQL, mobile app, web dashboard, website, VR simulation, or the complete system.</p>
+            <div class="cta-choice-grid" aria-label="Common project starting points">
+              <span>Hardware + Firmware</span>
+              <span>Backend + PostgreSQL</span>
+              <span>Web, Mobile + VR</span>
+            </div>
             <p><a class="btn btn-primary" href="contact.html">Talk to Engineering</a></p>
           </div>
         </div>
@@ -216,6 +251,9 @@
         <div><h3>Contact</h3><a href="mailto:info@willowsoft.co">info@willowsoft.co</a><a href="contact.html">Start a project</a></div>
       </div>
     </footer>
+    <script src="assets/cms.js"></script>
+    <script src="assets/i18n.js"></script>
+    <script src="/assets/analytics.js"></script>
     <script src="assets/app.js?v=20260606-personality-1"></script>
     <script src="assets/hero-shader.js?v=20260606-personality-1"></script>
   </body>

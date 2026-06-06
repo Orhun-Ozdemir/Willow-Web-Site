@@ -1,0 +1,3089 @@
+{
+  "meta": {
+    "defaultLocale": "en",
+    "locales": [
+      "en",
+      "tr",
+      "de",
+      "fr",
+      "es",
+      "it",
+      "ar",
+      "ja"
+    ],
+    "updatedAt": "2026-06-06T20:45:32.792Z"
+  },
+  "companyFacts": {
+    "founded": "2020",
+    "customers": "50+",
+    "projects": "80+",
+    "countries": "15+",
+    "exports": "9 countries",
+    "offices": [
+      "Turkey",
+      "United Kingdom"
+    ],
+    "email": "info@willowsoft.co",
+    "note": "Exact address and phone information should be verified before production launch."
+  },
+  "clients": [
+    {
+      "id": "honeywell",
+      "name": "Honeywell",
+      "industry": "Industrial Automation",
+      "country": "Global",
+      "logo": "assets/client-logos/honeywell.png",
+      "featured": true,
+      "sortOrder": 10,
+      "localized": {
+        "tr": {
+          "name": "",
+          "industry": "",
+          "country": ""
+        },
+        "de": {
+          "name": "",
+          "industry": "",
+          "country": ""
+        },
+        "fr": {
+          "name": "",
+          "industry": "",
+          "country": ""
+        },
+        "es": {
+          "name": "",
+          "industry": "",
+          "country": ""
+        },
+        "it": {
+          "name": "",
+          "industry": "",
+          "country": ""
+        },
+        "ar": {
+          "name": "",
+          "industry": "",
+          "country": ""
+        },
+        "ja": {
+          "name": "",
+          "industry": "",
+          "country": ""
+        }
+      }
+    },
+    {
+      "id": "slb",
+      "name": "SLB",
+      "industry": "Energy",
+      "country": "Global",
+      "logo": "assets/client-logos/slb.png",
+      "featured": true,
+      "sortOrder": 20,
+      "localized": {
+        "tr": {
+          "name": "",
+          "industry": "",
+          "country": ""
+        },
+        "de": {
+          "name": "",
+          "industry": "",
+          "country": ""
+        },
+        "fr": {
+          "name": "",
+          "industry": "",
+          "country": ""
+        },
+        "es": {
+          "name": "",
+          "industry": "",
+          "country": ""
+        },
+        "it": {
+          "name": "",
+          "industry": "",
+          "country": ""
+        },
+        "ar": {
+          "name": "",
+          "industry": "",
+          "country": ""
+        },
+        "ja": {
+          "name": "",
+          "industry": "",
+          "country": ""
+        }
+      }
+    },
+    {
+      "id": "beko",
+      "name": "Beko",
+      "industry": "Consumer Technology",
+      "country": "Turkey",
+      "logo": "assets/client-logos/beko.png",
+      "featured": true,
+      "sortOrder": 30,
+      "localized": {
+        "tr": {
+          "name": "",
+          "industry": "",
+          "country": ""
+        },
+        "de": {
+          "name": "",
+          "industry": "",
+          "country": ""
+        },
+        "fr": {
+          "name": "",
+          "industry": "",
+          "country": ""
+        },
+        "es": {
+          "name": "",
+          "industry": "",
+          "country": ""
+        },
+        "it": {
+          "name": "",
+          "industry": "",
+          "country": ""
+        },
+        "ar": {
+          "name": "",
+          "industry": "",
+          "country": ""
+        },
+        "ja": {
+          "name": "",
+          "industry": "",
+          "country": ""
+        }
+      }
+    },
+    {
+      "id": "aero-healthcare",
+      "name": "Aero Healthcare",
+      "industry": "Healthcare",
+      "country": "Global",
+      "logo": "assets/client-logos/aero.png",
+      "featured": true,
+      "sortOrder": 40,
+      "localized": {
+        "tr": {
+          "name": "",
+          "industry": "",
+          "country": ""
+        },
+        "de": {
+          "name": "",
+          "industry": "",
+          "country": ""
+        },
+        "fr": {
+          "name": "",
+          "industry": "",
+          "country": ""
+        },
+        "es": {
+          "name": "",
+          "industry": "",
+          "country": ""
+        },
+        "it": {
+          "name": "",
+          "industry": "",
+          "country": ""
+        },
+        "ar": {
+          "name": "",
+          "industry": "",
+          "country": ""
+        },
+        "ja": {
+          "name": "",
+          "industry": "",
+          "country": ""
+        }
+      }
+    },
+    {
+      "id": "coca-cola",
+      "name": "Coca-Cola",
+      "industry": "FMCG",
+      "country": "Global",
+      "logo": "assets/client-logos/cocacola.png",
+      "featured": true,
+      "sortOrder": 50,
+      "localized": {
+        "tr": {
+          "name": "",
+          "industry": "",
+          "country": ""
+        },
+        "de": {
+          "name": "",
+          "industry": "",
+          "country": ""
+        },
+        "fr": {
+          "name": "",
+          "industry": "",
+          "country": ""
+        },
+        "es": {
+          "name": "",
+          "industry": "",
+          "country": ""
+        },
+        "it": {
+          "name": "",
+          "industry": "",
+          "country": ""
+        },
+        "ar": {
+          "name": "",
+          "industry": "",
+          "country": ""
+        },
+        "ja": {
+          "name": "",
+          "industry": "",
+          "country": ""
+        }
+      }
+    },
+    {
+      "id": "att",
+      "name": "AT&T",
+      "industry": "Telecommunications",
+      "country": "United States",
+      "logo": "",
+      "featured": true,
+      "sortOrder": 60,
+      "localized": {
+        "tr": {
+          "name": "",
+          "industry": "",
+          "country": ""
+        },
+        "de": {
+          "name": "",
+          "industry": "",
+          "country": ""
+        },
+        "fr": {
+          "name": "",
+          "industry": "",
+          "country": ""
+        },
+        "es": {
+          "name": "",
+          "industry": "",
+          "country": ""
+        },
+        "it": {
+          "name": "",
+          "industry": "",
+          "country": ""
+        },
+        "ar": {
+          "name": "",
+          "industry": "",
+          "country": ""
+        },
+        "ja": {
+          "name": "",
+          "industry": "",
+          "country": ""
+        }
+      }
+    }
+  ],
+  "products": [
+    {
+      "id": "willowbee-lorawan-module",
+      "title": "WillowBee LoRaWAN Module",
+      "slug": "willowbee-lorawan-module",
+      "category": "modules",
+      "image": "pdf-assets/p06_01_X13.jpg",
+      "shortDescription": "Compact LoRaWAN-enabled MCU module for low-power industrial end nodes.",
+      "chips": [
+        "STM32WL",
+        "22 dBm",
+        "U.FL RF"
+      ],
+      "featured": true,
+      "detailUrl": "product-willowbee.html",
+      "localized": {
+        "tr": {
+          "title": "",
+          "category": "",
+          "shortDescription": "",
+          "chips": "",
+          "technicalSummary": "",
+          "useCases": "",
+          "specifications": ""
+        },
+        "de": {
+          "title": "",
+          "category": "",
+          "shortDescription": "",
+          "chips": "",
+          "technicalSummary": "",
+          "useCases": "",
+          "specifications": ""
+        },
+        "fr": {
+          "title": "",
+          "category": "",
+          "shortDescription": "",
+          "chips": "",
+          "technicalSummary": "",
+          "useCases": "",
+          "specifications": ""
+        },
+        "es": {
+          "title": "",
+          "category": "",
+          "shortDescription": "",
+          "chips": "",
+          "technicalSummary": "",
+          "useCases": "",
+          "specifications": ""
+        },
+        "it": {
+          "title": "",
+          "category": "",
+          "shortDescription": "",
+          "chips": "",
+          "technicalSummary": "",
+          "useCases": "",
+          "specifications": ""
+        },
+        "ar": {
+          "title": "",
+          "category": "",
+          "shortDescription": "",
+          "chips": "",
+          "technicalSummary": "",
+          "useCases": "",
+          "specifications": ""
+        },
+        "ja": {
+          "title": "",
+          "category": "",
+          "shortDescription": "",
+          "chips": "",
+          "technicalSummary": "",
+          "useCases": "",
+          "specifications": ""
+        }
+      }
+    },
+    {
+      "id": "temperature-humidity-sensor",
+      "title": "LoRaWAN Temperature & Humidity Sensor",
+      "slug": "temperature-humidity-sensor",
+      "category": "environment",
+      "image": "pdf-assets/p13_01_X45.jpg",
+      "shortDescription": "Temperature and humidity monitoring for indoor and outdoor industrial sites.",
+      "chips": [
+        "Temp",
+        "Humidity",
+        "Low power"
+      ],
+      "featured": true,
+      "detailUrl": "product-willowair.html",
+      "localized": {
+        "tr": {
+          "title": "",
+          "category": "",
+          "shortDescription": "",
+          "chips": "",
+          "technicalSummary": "",
+          "useCases": "",
+          "specifications": ""
+        },
+        "de": {
+          "title": "",
+          "category": "",
+          "shortDescription": "",
+          "chips": "",
+          "technicalSummary": "",
+          "useCases": "",
+          "specifications": ""
+        },
+        "fr": {
+          "title": "",
+          "category": "",
+          "shortDescription": "",
+          "chips": "",
+          "technicalSummary": "",
+          "useCases": "",
+          "specifications": ""
+        },
+        "es": {
+          "title": "",
+          "category": "",
+          "shortDescription": "",
+          "chips": "",
+          "technicalSummary": "",
+          "useCases": "",
+          "specifications": ""
+        },
+        "it": {
+          "title": "",
+          "category": "",
+          "shortDescription": "",
+          "chips": "",
+          "technicalSummary": "",
+          "useCases": "",
+          "specifications": ""
+        },
+        "ar": {
+          "title": "",
+          "category": "",
+          "shortDescription": "",
+          "chips": "",
+          "technicalSummary": "",
+          "useCases": "",
+          "specifications": ""
+        },
+        "ja": {
+          "title": "",
+          "category": "",
+          "shortDescription": "",
+          "chips": "",
+          "technicalSummary": "",
+          "useCases": "",
+          "specifications": ""
+        }
+      }
+    },
+    {
+      "id": "co2-sensor",
+      "title": "LoRaWAN CO2 Sensor",
+      "slug": "co2-sensor",
+      "category": "environment",
+      "image": "pdf-assets/p08_01_X22.jpg",
+      "shortDescription": "Indoor air quality sensor for CO2, TVOC and environmental monitoring.",
+      "chips": [
+        "CO2",
+        "TVOC",
+        "Indoor"
+      ],
+      "featured": false,
+      "detailUrl": "product-willowair.html",
+      "localized": {
+        "tr": {
+          "title": "",
+          "category": "",
+          "shortDescription": "",
+          "chips": "",
+          "technicalSummary": "",
+          "useCases": "",
+          "specifications": ""
+        },
+        "de": {
+          "title": "",
+          "category": "",
+          "shortDescription": "",
+          "chips": "",
+          "technicalSummary": "",
+          "useCases": "",
+          "specifications": ""
+        },
+        "fr": {
+          "title": "",
+          "category": "",
+          "shortDescription": "",
+          "chips": "",
+          "technicalSummary": "",
+          "useCases": "",
+          "specifications": ""
+        },
+        "es": {
+          "title": "",
+          "category": "",
+          "shortDescription": "",
+          "chips": "",
+          "technicalSummary": "",
+          "useCases": "",
+          "specifications": ""
+        },
+        "it": {
+          "title": "",
+          "category": "",
+          "shortDescription": "",
+          "chips": "",
+          "technicalSummary": "",
+          "useCases": "",
+          "specifications": ""
+        },
+        "ar": {
+          "title": "",
+          "category": "",
+          "shortDescription": "",
+          "chips": "",
+          "technicalSummary": "",
+          "useCases": "",
+          "specifications": ""
+        },
+        "ja": {
+          "title": "",
+          "category": "",
+          "shortDescription": "",
+          "chips": "",
+          "technicalSummary": "",
+          "useCases": "",
+          "specifications": ""
+        }
+      }
+    },
+    {
+      "id": "modbus-bridge",
+      "title": "LoRaWAN Modbus Bridge / Sensor",
+      "slug": "modbus-bridge",
+      "category": "industrial",
+      "image": "pdf-assets/p14_01_X50.jpg",
+      "shortDescription": "Wireless Modbus RTU integration for IIoT telemetry and industrial devices.",
+      "chips": [
+        "Modbus RTU",
+        "20 registers",
+        "LoRaWAN"
+      ],
+      "featured": true,
+      "detailUrl": "product-willowmod.html",
+      "localized": {
+        "tr": {
+          "title": "",
+          "category": "",
+          "shortDescription": "",
+          "chips": "",
+          "technicalSummary": "",
+          "useCases": "",
+          "specifications": ""
+        },
+        "de": {
+          "title": "",
+          "category": "",
+          "shortDescription": "",
+          "chips": "",
+          "technicalSummary": "",
+          "useCases": "",
+          "specifications": ""
+        },
+        "fr": {
+          "title": "",
+          "category": "",
+          "shortDescription": "",
+          "chips": "",
+          "technicalSummary": "",
+          "useCases": "",
+          "specifications": ""
+        },
+        "es": {
+          "title": "",
+          "category": "",
+          "shortDescription": "",
+          "chips": "",
+          "technicalSummary": "",
+          "useCases": "",
+          "specifications": ""
+        },
+        "it": {
+          "title": "",
+          "category": "",
+          "shortDescription": "",
+          "chips": "",
+          "technicalSummary": "",
+          "useCases": "",
+          "specifications": ""
+        },
+        "ar": {
+          "title": "",
+          "category": "",
+          "shortDescription": "",
+          "chips": "",
+          "technicalSummary": "",
+          "useCases": "",
+          "specifications": ""
+        },
+        "ja": {
+          "title": "",
+          "category": "",
+          "shortDescription": "",
+          "chips": "",
+          "technicalSummary": "",
+          "useCases": "",
+          "specifications": ""
+        }
+      }
+    },
+    {
+      "id": "ip67-outdoor-temperature",
+      "title": "LoRaWAN IP67 Outdoor Temperature Sensor",
+      "slug": "ip67-outdoor-temperature",
+      "category": "environment",
+      "image": "pdf-assets/p13_02_X46.jpg",
+      "shortDescription": "Rugged outdoor temperature sensing for field deployments.",
+      "chips": [
+        "IP67",
+        "Outdoor",
+        "Battery"
+      ],
+      "featured": false,
+      "detailUrl": "",
+      "localized": {
+        "tr": {
+          "title": "",
+          "category": "",
+          "shortDescription": "",
+          "chips": "",
+          "technicalSummary": "",
+          "useCases": "",
+          "specifications": ""
+        },
+        "de": {
+          "title": "",
+          "category": "",
+          "shortDescription": "",
+          "chips": "",
+          "technicalSummary": "",
+          "useCases": "",
+          "specifications": ""
+        },
+        "fr": {
+          "title": "",
+          "category": "",
+          "shortDescription": "",
+          "chips": "",
+          "technicalSummary": "",
+          "useCases": "",
+          "specifications": ""
+        },
+        "es": {
+          "title": "",
+          "category": "",
+          "shortDescription": "",
+          "chips": "",
+          "technicalSummary": "",
+          "useCases": "",
+          "specifications": ""
+        },
+        "it": {
+          "title": "",
+          "category": "",
+          "shortDescription": "",
+          "chips": "",
+          "technicalSummary": "",
+          "useCases": "",
+          "specifications": ""
+        },
+        "ar": {
+          "title": "",
+          "category": "",
+          "shortDescription": "",
+          "chips": "",
+          "technicalSummary": "",
+          "useCases": "",
+          "specifications": ""
+        },
+        "ja": {
+          "title": "",
+          "category": "",
+          "shortDescription": "",
+          "chips": "",
+          "technicalSummary": "",
+          "useCases": "",
+          "specifications": ""
+        }
+      }
+    },
+    {
+      "id": "panic-button",
+      "title": "LoRaWAN Panic Button",
+      "slug": "panic-button",
+      "category": "tracking",
+      "image": "pdf-assets/p10_01_X32.jpg",
+      "shortDescription": "Industrial panic button for emergency response and safety workflows.",
+      "chips": [
+        "Instant alert",
+        "IP67",
+        "Safety"
+      ],
+      "featured": false,
+      "detailUrl": "",
+      "localized": {
+        "tr": {
+          "title": "",
+          "category": "",
+          "shortDescription": "",
+          "chips": "",
+          "technicalSummary": "",
+          "useCases": "",
+          "specifications": ""
+        },
+        "de": {
+          "title": "",
+          "category": "",
+          "shortDescription": "",
+          "chips": "",
+          "technicalSummary": "",
+          "useCases": "",
+          "specifications": ""
+        },
+        "fr": {
+          "title": "",
+          "category": "",
+          "shortDescription": "",
+          "chips": "",
+          "technicalSummary": "",
+          "useCases": "",
+          "specifications": ""
+        },
+        "es": {
+          "title": "",
+          "category": "",
+          "shortDescription": "",
+          "chips": "",
+          "technicalSummary": "",
+          "useCases": "",
+          "specifications": ""
+        },
+        "it": {
+          "title": "",
+          "category": "",
+          "shortDescription": "",
+          "chips": "",
+          "technicalSummary": "",
+          "useCases": "",
+          "specifications": ""
+        },
+        "ar": {
+          "title": "",
+          "category": "",
+          "shortDescription": "",
+          "chips": "",
+          "technicalSummary": "",
+          "useCases": "",
+          "specifications": ""
+        },
+        "ja": {
+          "title": "",
+          "category": "",
+          "shortDescription": "",
+          "chips": "",
+          "technicalSummary": "",
+          "useCases": "",
+          "specifications": ""
+        }
+      }
+    },
+    {
+      "id": "battery-level-monitoring",
+      "title": "LoRaWAN Battery Level Monitoring Sensor",
+      "slug": "battery-level-monitoring",
+      "category": "industrial",
+      "image": "pdf-assets/p18_01_X68.jpg",
+      "shortDescription": "Remote battery level monitoring for field assets and distributed systems.",
+      "chips": [
+        "Battery",
+        "Telemetry",
+        "Alerts"
+      ],
+      "featured": false,
+      "detailUrl": "",
+      "localized": {
+        "tr": {
+          "title": "",
+          "category": "",
+          "shortDescription": "",
+          "chips": "",
+          "technicalSummary": "",
+          "useCases": "",
+          "specifications": ""
+        },
+        "de": {
+          "title": "",
+          "category": "",
+          "shortDescription": "",
+          "chips": "",
+          "technicalSummary": "",
+          "useCases": "",
+          "specifications": ""
+        },
+        "fr": {
+          "title": "",
+          "category": "",
+          "shortDescription": "",
+          "chips": "",
+          "technicalSummary": "",
+          "useCases": "",
+          "specifications": ""
+        },
+        "es": {
+          "title": "",
+          "category": "",
+          "shortDescription": "",
+          "chips": "",
+          "technicalSummary": "",
+          "useCases": "",
+          "specifications": ""
+        },
+        "it": {
+          "title": "",
+          "category": "",
+          "shortDescription": "",
+          "chips": "",
+          "technicalSummary": "",
+          "useCases": "",
+          "specifications": ""
+        },
+        "ar": {
+          "title": "",
+          "category": "",
+          "shortDescription": "",
+          "chips": "",
+          "technicalSummary": "",
+          "useCases": "",
+          "specifications": ""
+        },
+        "ja": {
+          "title": "",
+          "category": "",
+          "shortDescription": "",
+          "chips": "",
+          "technicalSummary": "",
+          "useCases": "",
+          "specifications": ""
+        }
+      }
+    },
+    {
+      "id": "soil-moisture",
+      "title": "LoRaWAN Soil Moisture Sensor",
+      "slug": "soil-moisture",
+      "category": "environment",
+      "image": "pdf-assets/p15_01_X55.jpg",
+      "shortDescription": "Soil moisture and soil temperature monitoring for agriculture and field research.",
+      "chips": [
+        "Soil",
+        "Agriculture",
+        "LoRaWAN"
+      ],
+      "featured": false,
+      "detailUrl": "",
+      "localized": {
+        "tr": {
+          "title": "",
+          "category": "",
+          "shortDescription": "",
+          "chips": "",
+          "technicalSummary": "",
+          "useCases": "",
+          "specifications": ""
+        },
+        "de": {
+          "title": "",
+          "category": "",
+          "shortDescription": "",
+          "chips": "",
+          "technicalSummary": "",
+          "useCases": "",
+          "specifications": ""
+        },
+        "fr": {
+          "title": "",
+          "category": "",
+          "shortDescription": "",
+          "chips": "",
+          "technicalSummary": "",
+          "useCases": "",
+          "specifications": ""
+        },
+        "es": {
+          "title": "",
+          "category": "",
+          "shortDescription": "",
+          "chips": "",
+          "technicalSummary": "",
+          "useCases": "",
+          "specifications": ""
+        },
+        "it": {
+          "title": "",
+          "category": "",
+          "shortDescription": "",
+          "chips": "",
+          "technicalSummary": "",
+          "useCases": "",
+          "specifications": ""
+        },
+        "ar": {
+          "title": "",
+          "category": "",
+          "shortDescription": "",
+          "chips": "",
+          "technicalSummary": "",
+          "useCases": "",
+          "specifications": ""
+        },
+        "ja": {
+          "title": "",
+          "category": "",
+          "shortDescription": "",
+          "chips": "",
+          "technicalSummary": "",
+          "useCases": "",
+          "specifications": ""
+        }
+      }
+    },
+    {
+      "id": "tilt-sensor",
+      "title": "LoRaWAN Tilt Sensor",
+      "slug": "tilt-sensor",
+      "category": "tracking",
+      "image": "pdf-assets/p12_01_X40.jpg",
+      "shortDescription": "3-axis tilt and acceleration monitoring for motion and tamper events.",
+      "chips": [
+        "3-axis",
+        "Motion",
+        "IP67"
+      ],
+      "featured": false,
+      "detailUrl": "",
+      "localized": {
+        "tr": {
+          "title": "",
+          "category": "",
+          "shortDescription": "",
+          "chips": "",
+          "technicalSummary": "",
+          "useCases": "",
+          "specifications": ""
+        },
+        "de": {
+          "title": "",
+          "category": "",
+          "shortDescription": "",
+          "chips": "",
+          "technicalSummary": "",
+          "useCases": "",
+          "specifications": ""
+        },
+        "fr": {
+          "title": "",
+          "category": "",
+          "shortDescription": "",
+          "chips": "",
+          "technicalSummary": "",
+          "useCases": "",
+          "specifications": ""
+        },
+        "es": {
+          "title": "",
+          "category": "",
+          "shortDescription": "",
+          "chips": "",
+          "technicalSummary": "",
+          "useCases": "",
+          "specifications": ""
+        },
+        "it": {
+          "title": "",
+          "category": "",
+          "shortDescription": "",
+          "chips": "",
+          "technicalSummary": "",
+          "useCases": "",
+          "specifications": ""
+        },
+        "ar": {
+          "title": "",
+          "category": "",
+          "shortDescription": "",
+          "chips": "",
+          "technicalSummary": "",
+          "useCases": "",
+          "specifications": ""
+        },
+        "ja": {
+          "title": "",
+          "category": "",
+          "shortDescription": "",
+          "chips": "",
+          "technicalSummary": "",
+          "useCases": "",
+          "specifications": ""
+        }
+      }
+    },
+    {
+      "id": "indoor-tilt",
+      "title": "LoRaWAN Indoor Tilt Sensor",
+      "slug": "indoor-tilt",
+      "category": "tracking",
+      "image": "pdf-assets/p12_02_X41.jpg",
+      "shortDescription": "Indoor tilt monitoring for cabinets, equipment and facility assets.",
+      "chips": [
+        "Indoor",
+        "Tilt",
+        "Low power"
+      ],
+      "featured": false,
+      "detailUrl": "",
+      "localized": {
+        "tr": {
+          "title": "",
+          "category": "",
+          "shortDescription": "",
+          "chips": "",
+          "technicalSummary": "",
+          "useCases": "",
+          "specifications": ""
+        },
+        "de": {
+          "title": "",
+          "category": "",
+          "shortDescription": "",
+          "chips": "",
+          "technicalSummary": "",
+          "useCases": "",
+          "specifications": ""
+        },
+        "fr": {
+          "title": "",
+          "category": "",
+          "shortDescription": "",
+          "chips": "",
+          "technicalSummary": "",
+          "useCases": "",
+          "specifications": ""
+        },
+        "es": {
+          "title": "",
+          "category": "",
+          "shortDescription": "",
+          "chips": "",
+          "technicalSummary": "",
+          "useCases": "",
+          "specifications": ""
+        },
+        "it": {
+          "title": "",
+          "category": "",
+          "shortDescription": "",
+          "chips": "",
+          "technicalSummary": "",
+          "useCases": "",
+          "specifications": ""
+        },
+        "ar": {
+          "title": "",
+          "category": "",
+          "shortDescription": "",
+          "chips": "",
+          "technicalSummary": "",
+          "useCases": "",
+          "specifications": ""
+        },
+        "ja": {
+          "title": "",
+          "category": "",
+          "shortDescription": "",
+          "chips": "",
+          "technicalSummary": "",
+          "useCases": "",
+          "specifications": ""
+        }
+      }
+    },
+    {
+      "id": "anemometer",
+      "title": "LoRaWAN Anemometer",
+      "slug": "anemometer",
+      "category": "environment",
+      "image": "pdf-assets/p17_01_X64.jpg",
+      "shortDescription": "Outdoor wind speed measurement for industrial and environmental monitoring.",
+      "chips": [
+        "Wind",
+        "Outdoor",
+        "0.5-50 m/s"
+      ],
+      "featured": false,
+      "detailUrl": "",
+      "localized": {
+        "tr": {
+          "title": "",
+          "category": "",
+          "shortDescription": "",
+          "chips": "",
+          "technicalSummary": "",
+          "useCases": "",
+          "specifications": ""
+        },
+        "de": {
+          "title": "",
+          "category": "",
+          "shortDescription": "",
+          "chips": "",
+          "technicalSummary": "",
+          "useCases": "",
+          "specifications": ""
+        },
+        "fr": {
+          "title": "",
+          "category": "",
+          "shortDescription": "",
+          "chips": "",
+          "technicalSummary": "",
+          "useCases": "",
+          "specifications": ""
+        },
+        "es": {
+          "title": "",
+          "category": "",
+          "shortDescription": "",
+          "chips": "",
+          "technicalSummary": "",
+          "useCases": "",
+          "specifications": ""
+        },
+        "it": {
+          "title": "",
+          "category": "",
+          "shortDescription": "",
+          "chips": "",
+          "technicalSummary": "",
+          "useCases": "",
+          "specifications": ""
+        },
+        "ar": {
+          "title": "",
+          "category": "",
+          "shortDescription": "",
+          "chips": "",
+          "technicalSummary": "",
+          "useCases": "",
+          "specifications": ""
+        },
+        "ja": {
+          "title": "",
+          "category": "",
+          "shortDescription": "",
+          "chips": "",
+          "technicalSummary": "",
+          "useCases": "",
+          "specifications": ""
+        }
+      }
+    },
+    {
+      "id": "door-sensor",
+      "title": "LoRaWAN Door Sensor",
+      "slug": "door-sensor",
+      "category": "tracking",
+      "image": "pdf-assets/p11_01_X36.jpg",
+      "shortDescription": "Door open and close monitoring for facilities, cabinets and field enclosures.",
+      "chips": [
+        "Open/close",
+        "Facility",
+        "Alerts"
+      ],
+      "featured": false,
+      "detailUrl": "",
+      "localized": {
+        "tr": {
+          "title": "",
+          "category": "",
+          "shortDescription": "",
+          "chips": "",
+          "technicalSummary": "",
+          "useCases": "",
+          "specifications": ""
+        },
+        "de": {
+          "title": "",
+          "category": "",
+          "shortDescription": "",
+          "chips": "",
+          "technicalSummary": "",
+          "useCases": "",
+          "specifications": ""
+        },
+        "fr": {
+          "title": "",
+          "category": "",
+          "shortDescription": "",
+          "chips": "",
+          "technicalSummary": "",
+          "useCases": "",
+          "specifications": ""
+        },
+        "es": {
+          "title": "",
+          "category": "",
+          "shortDescription": "",
+          "chips": "",
+          "technicalSummary": "",
+          "useCases": "",
+          "specifications": ""
+        },
+        "it": {
+          "title": "",
+          "category": "",
+          "shortDescription": "",
+          "chips": "",
+          "technicalSummary": "",
+          "useCases": "",
+          "specifications": ""
+        },
+        "ar": {
+          "title": "",
+          "category": "",
+          "shortDescription": "",
+          "chips": "",
+          "technicalSummary": "",
+          "useCases": "",
+          "specifications": ""
+        },
+        "ja": {
+          "title": "",
+          "category": "",
+          "shortDescription": "",
+          "chips": "",
+          "technicalSummary": "",
+          "useCases": "",
+          "specifications": ""
+        }
+      }
+    },
+    {
+      "id": "ultrasonic-level",
+      "title": "LoRaWAN Ultrasonic Level Sensor",
+      "slug": "ultrasonic-level",
+      "category": "environment",
+      "image": "pdf-assets/p07_01_X17.jpg",
+      "shortDescription": "Ultrasonic distance and level sensing for tanks, manholes and water systems.",
+      "chips": [
+        "Level",
+        "Ultrasonic",
+        "IP67"
+      ],
+      "featured": false,
+      "detailUrl": "",
+      "localized": {
+        "tr": {
+          "title": "",
+          "category": "",
+          "shortDescription": "",
+          "chips": "",
+          "technicalSummary": "",
+          "useCases": "",
+          "specifications": ""
+        },
+        "de": {
+          "title": "",
+          "category": "",
+          "shortDescription": "",
+          "chips": "",
+          "technicalSummary": "",
+          "useCases": "",
+          "specifications": ""
+        },
+        "fr": {
+          "title": "",
+          "category": "",
+          "shortDescription": "",
+          "chips": "",
+          "technicalSummary": "",
+          "useCases": "",
+          "specifications": ""
+        },
+        "es": {
+          "title": "",
+          "category": "",
+          "shortDescription": "",
+          "chips": "",
+          "technicalSummary": "",
+          "useCases": "",
+          "specifications": ""
+        },
+        "it": {
+          "title": "",
+          "category": "",
+          "shortDescription": "",
+          "chips": "",
+          "technicalSummary": "",
+          "useCases": "",
+          "specifications": ""
+        },
+        "ar": {
+          "title": "",
+          "category": "",
+          "shortDescription": "",
+          "chips": "",
+          "technicalSummary": "",
+          "useCases": "",
+          "specifications": ""
+        },
+        "ja": {
+          "title": "",
+          "category": "",
+          "shortDescription": "",
+          "chips": "",
+          "technicalSummary": "",
+          "useCases": "",
+          "specifications": ""
+        }
+      }
+    },
+    {
+      "id": "barometric-pressure",
+      "title": "LoRaWAN Barometric Pressure Sensor",
+      "slug": "barometric-pressure",
+      "category": "environment",
+      "image": "pdf-assets/p16_01_X59.jpg",
+      "shortDescription": "Pressure telemetry for liquid systems, pipelines and industrial tanks.",
+      "chips": [
+        "Pressure",
+        "Telemetry",
+        "Industrial"
+      ],
+      "featured": false,
+      "detailUrl": "",
+      "localized": {
+        "tr": {
+          "title": "",
+          "category": "",
+          "shortDescription": "",
+          "chips": "",
+          "technicalSummary": "",
+          "useCases": "",
+          "specifications": ""
+        },
+        "de": {
+          "title": "",
+          "category": "",
+          "shortDescription": "",
+          "chips": "",
+          "technicalSummary": "",
+          "useCases": "",
+          "specifications": ""
+        },
+        "fr": {
+          "title": "",
+          "category": "",
+          "shortDescription": "",
+          "chips": "",
+          "technicalSummary": "",
+          "useCases": "",
+          "specifications": ""
+        },
+        "es": {
+          "title": "",
+          "category": "",
+          "shortDescription": "",
+          "chips": "",
+          "technicalSummary": "",
+          "useCases": "",
+          "specifications": ""
+        },
+        "it": {
+          "title": "",
+          "category": "",
+          "shortDescription": "",
+          "chips": "",
+          "technicalSummary": "",
+          "useCases": "",
+          "specifications": ""
+        },
+        "ar": {
+          "title": "",
+          "category": "",
+          "shortDescription": "",
+          "chips": "",
+          "technicalSummary": "",
+          "useCases": "",
+          "specifications": ""
+        },
+        "ja": {
+          "title": "",
+          "category": "",
+          "shortDescription": "",
+          "chips": "",
+          "technicalSummary": "",
+          "useCases": "",
+          "specifications": ""
+        }
+      }
+    }
+  ],
+  "services": [
+    {
+      "id": "embedded-hardware",
+      "title": "Embedded Hardware Design",
+      "summary": "PCB, sensor design, rugged IoT gateways and low-power hardware.",
+      "deliverables": [
+        "Schematics",
+        "PCB design",
+        "Prototype",
+        "Production support"
+      ],
+      "localized": {
+        "tr": {
+          "title": "",
+          "summary": "",
+          "deliverables": ""
+        },
+        "de": {
+          "title": "",
+          "summary": "",
+          "deliverables": ""
+        },
+        "fr": {
+          "title": "",
+          "summary": "",
+          "deliverables": ""
+        },
+        "es": {
+          "title": "",
+          "summary": "",
+          "deliverables": ""
+        },
+        "it": {
+          "title": "",
+          "summary": "",
+          "deliverables": ""
+        },
+        "ar": {
+          "title": "",
+          "summary": "",
+          "deliverables": ""
+        },
+        "ja": {
+          "title": "",
+          "summary": "",
+          "deliverables": ""
+        }
+      }
+    },
+    {
+      "id": "firmware",
+      "title": "Firmware Development",
+      "summary": "MCU, RTOS, bare-metal, LoRaWAN stack and device drivers.",
+      "deliverables": [
+        "Firmware architecture",
+        "Drivers",
+        "OTA strategy",
+        "Power optimization"
+      ],
+      "localized": {
+        "tr": {
+          "title": "",
+          "summary": "",
+          "deliverables": ""
+        },
+        "de": {
+          "title": "",
+          "summary": "",
+          "deliverables": ""
+        },
+        "fr": {
+          "title": "",
+          "summary": "",
+          "deliverables": ""
+        },
+        "es": {
+          "title": "",
+          "summary": "",
+          "deliverables": ""
+        },
+        "it": {
+          "title": "",
+          "summary": "",
+          "deliverables": ""
+        },
+        "ar": {
+          "title": "",
+          "summary": "",
+          "deliverables": ""
+        },
+        "ja": {
+          "title": "",
+          "summary": "",
+          "deliverables": ""
+        }
+      }
+    },
+    {
+      "id": "backend-api",
+      "title": "Backend API",
+      "summary": "REST API, WebSocket, telemetry ingestion, auth and reporting.",
+      "deliverables": [
+        "API design",
+        "Telemetry pipeline",
+        "Auth",
+        "Reporting"
+      ],
+      "localized": {
+        "tr": {
+          "title": "",
+          "summary": "",
+          "deliverables": ""
+        },
+        "de": {
+          "title": "",
+          "summary": "",
+          "deliverables": ""
+        },
+        "fr": {
+          "title": "",
+          "summary": "",
+          "deliverables": ""
+        },
+        "es": {
+          "title": "",
+          "summary": "",
+          "deliverables": ""
+        },
+        "it": {
+          "title": "",
+          "summary": "",
+          "deliverables": ""
+        },
+        "ar": {
+          "title": "",
+          "summary": "",
+          "deliverables": ""
+        },
+        "ja": {
+          "title": "",
+          "summary": "",
+          "deliverables": ""
+        }
+      }
+    },
+    {
+      "id": "postgresql",
+      "title": "PostgreSQL & Database Architecture",
+      "summary": "Device data modeling, time-series data, reporting tables and dashboard queries.",
+      "deliverables": [
+        "Schema",
+        "Indexes",
+        "Time-series model",
+        "Query optimization"
+      ],
+      "localized": {
+        "tr": {
+          "title": "",
+          "summary": "",
+          "deliverables": ""
+        },
+        "de": {
+          "title": "",
+          "summary": "",
+          "deliverables": ""
+        },
+        "fr": {
+          "title": "",
+          "summary": "",
+          "deliverables": ""
+        },
+        "es": {
+          "title": "",
+          "summary": "",
+          "deliverables": ""
+        },
+        "it": {
+          "title": "",
+          "summary": "",
+          "deliverables": ""
+        },
+        "ar": {
+          "title": "",
+          "summary": "",
+          "deliverables": ""
+        },
+        "ja": {
+          "title": "",
+          "summary": "",
+          "deliverables": ""
+        }
+      }
+    },
+    {
+      "id": "web-admin",
+      "title": "Web Platform / Admin Panel",
+      "summary": "Web dashboards, admin panels, customer portals and monitoring interfaces.",
+      "deliverables": [
+        "Dashboard",
+        "Admin panel",
+        "Role access",
+        "Operations UI"
+      ],
+      "localized": {
+        "tr": {
+          "title": "",
+          "summary": "",
+          "deliverables": ""
+        },
+        "de": {
+          "title": "",
+          "summary": "",
+          "deliverables": ""
+        },
+        "fr": {
+          "title": "",
+          "summary": "",
+          "deliverables": ""
+        },
+        "es": {
+          "title": "",
+          "summary": "",
+          "deliverables": ""
+        },
+        "it": {
+          "title": "",
+          "summary": "",
+          "deliverables": ""
+        },
+        "ar": {
+          "title": "",
+          "summary": "",
+          "deliverables": ""
+        },
+        "ja": {
+          "title": "",
+          "summary": "",
+          "deliverables": ""
+        }
+      }
+    },
+    {
+      "id": "mobile",
+      "title": "Mobile App Development",
+      "summary": "iOS / Android apps for field operations, sensor monitoring and notifications.",
+      "deliverables": [
+        "Mobile app",
+        "Notifications",
+        "Offline states",
+        "Field UX"
+      ],
+      "localized": {
+        "tr": {
+          "title": "",
+          "summary": "",
+          "deliverables": ""
+        },
+        "de": {
+          "title": "",
+          "summary": "",
+          "deliverables": ""
+        },
+        "fr": {
+          "title": "",
+          "summary": "",
+          "deliverables": ""
+        },
+        "es": {
+          "title": "",
+          "summary": "",
+          "deliverables": ""
+        },
+        "it": {
+          "title": "",
+          "summary": "",
+          "deliverables": ""
+        },
+        "ar": {
+          "title": "",
+          "summary": "",
+          "deliverables": ""
+        },
+        "ja": {
+          "title": "",
+          "summary": "",
+          "deliverables": ""
+        }
+      }
+    },
+    {
+      "id": "vr",
+      "title": "VR / Simulation",
+      "summary": "Industrial training, product demos, digital twin and simulation presentations.",
+      "deliverables": [
+        "VR demo",
+        "Training flow",
+        "Simulation scene",
+        "Product presentation"
+      ],
+      "localized": {
+        "tr": {
+          "title": "",
+          "summary": "",
+          "deliverables": ""
+        },
+        "de": {
+          "title": "",
+          "summary": "",
+          "deliverables": ""
+        },
+        "fr": {
+          "title": "",
+          "summary": "",
+          "deliverables": ""
+        },
+        "es": {
+          "title": "",
+          "summary": "",
+          "deliverables": ""
+        },
+        "it": {
+          "title": "",
+          "summary": "",
+          "deliverables": ""
+        },
+        "ar": {
+          "title": "",
+          "summary": "",
+          "deliverables": ""
+        },
+        "ja": {
+          "title": "",
+          "summary": "",
+          "deliverables": ""
+        }
+      }
+    },
+    {
+      "id": "telemetry",
+      "title": "IoT Cloud / Telemetry",
+      "summary": "Device fleet monitoring, alerts, integrations and remote data visualization.",
+      "deliverables": [
+        "Fleet view",
+        "Alerts",
+        "Integrations",
+        "Remote monitoring"
+      ],
+      "localized": {
+        "tr": {
+          "title": "",
+          "summary": "",
+          "deliverables": ""
+        },
+        "de": {
+          "title": "",
+          "summary": "",
+          "deliverables": ""
+        },
+        "fr": {
+          "title": "",
+          "summary": "",
+          "deliverables": ""
+        },
+        "es": {
+          "title": "",
+          "summary": "",
+          "deliverables": ""
+        },
+        "it": {
+          "title": "",
+          "summary": "",
+          "deliverables": ""
+        },
+        "ar": {
+          "title": "",
+          "summary": "",
+          "deliverables": ""
+        },
+        "ja": {
+          "title": "",
+          "summary": "",
+          "deliverables": ""
+        }
+      }
+    }
+  ],
+  "news": [
+    {
+      "id": "embedded-world-2026",
+      "title": "WillowSoft at Embedded World 2026",
+      "slug": "embedded-world-2026",
+      "date": "2026-01-22",
+      "category": "Event",
+      "excerpt": "WillowSoft will showcase low-power embedded firmware, wireless connectivity and telemetry dashboards in Nuremberg.",
+      "image": "pdf-assets/p29_06_X111.jpg",
+      "featured": true,
+      "localized": {
+        "tr": {
+          "title": "",
+          "category": "",
+          "excerpt": "",
+          "content": ""
+        },
+        "de": {
+          "title": "",
+          "category": "",
+          "excerpt": "",
+          "content": ""
+        },
+        "fr": {
+          "title": "",
+          "category": "",
+          "excerpt": "",
+          "content": ""
+        },
+        "es": {
+          "title": "",
+          "category": "",
+          "excerpt": "",
+          "content": ""
+        },
+        "it": {
+          "title": "",
+          "category": "",
+          "excerpt": "",
+          "content": ""
+        },
+        "ar": {
+          "title": "",
+          "category": "",
+          "excerpt": "",
+          "content": ""
+        },
+        "ja": {
+          "title": "",
+          "category": "",
+          "excerpt": "",
+          "content": ""
+        }
+      }
+    },
+    {
+      "id": "uk-operations",
+      "title": "WillowSoft Launches UK Operations in London",
+      "slug": "uk-operations",
+      "date": "2025-09-24",
+      "category": "Company",
+      "excerpt": "The London operation supports UK and European customers with connected product engineering services.",
+      "image": "pdf-assets/p28_01_X104.jpg",
+      "featured": true,
+      "localized": {
+        "tr": {
+          "title": "",
+          "category": "",
+          "excerpt": "",
+          "content": ""
+        },
+        "de": {
+          "title": "",
+          "category": "",
+          "excerpt": "",
+          "content": ""
+        },
+        "fr": {
+          "title": "",
+          "category": "",
+          "excerpt": "",
+          "content": ""
+        },
+        "es": {
+          "title": "",
+          "category": "",
+          "excerpt": "",
+          "content": ""
+        },
+        "it": {
+          "title": "",
+          "category": "",
+          "excerpt": "",
+          "content": ""
+        },
+        "ar": {
+          "title": "",
+          "category": "",
+          "excerpt": "",
+          "content": ""
+        },
+        "ja": {
+          "title": "",
+          "category": "",
+          "excerpt": "",
+          "content": ""
+        }
+      }
+    },
+    {
+      "id": "minister-varank-visit",
+      "title": "Minister Varank Visit at Mugla Teknopark",
+      "slug": "minister-varank-visit",
+      "date": "2022-08-02",
+      "category": "Proof",
+      "excerpt": "WillowSoft presented LoRaWAN sensor solutions and local IoT engineering capabilities during the visit.",
+      "image": "pdf-assets/p29_03_X108.jpg",
+      "featured": false,
+      "localized": {
+        "tr": {
+          "title": "",
+          "category": "",
+          "excerpt": "",
+          "content": ""
+        },
+        "de": {
+          "title": "",
+          "category": "",
+          "excerpt": "",
+          "content": ""
+        },
+        "fr": {
+          "title": "",
+          "category": "",
+          "excerpt": "",
+          "content": ""
+        },
+        "es": {
+          "title": "",
+          "category": "",
+          "excerpt": "",
+          "content": ""
+        },
+        "it": {
+          "title": "",
+          "category": "",
+          "excerpt": "",
+          "content": ""
+        },
+        "ar": {
+          "title": "",
+          "category": "",
+          "excerpt": "",
+          "content": ""
+        },
+        "ja": {
+          "title": "",
+          "category": "",
+          "excerpt": "",
+          "content": ""
+        }
+      }
+    },
+    {
+      "id": "win-eurasia",
+      "title": "WillowSoft at WIN EURASIA",
+      "slug": "win-eurasia",
+      "date": "2022-08-02",
+      "category": "Event",
+      "excerpt": "Industrial IoT solutions and LoRaWAN products were presented to manufacturing and automation teams.",
+      "image": "pdf-assets/p29_02_X107.jpg",
+      "featured": false,
+      "localized": {
+        "tr": {
+          "title": "",
+          "category": "",
+          "excerpt": "",
+          "content": ""
+        },
+        "de": {
+          "title": "",
+          "category": "",
+          "excerpt": "",
+          "content": ""
+        },
+        "fr": {
+          "title": "",
+          "category": "",
+          "excerpt": "",
+          "content": ""
+        },
+        "es": {
+          "title": "",
+          "category": "",
+          "excerpt": "",
+          "content": ""
+        },
+        "it": {
+          "title": "",
+          "category": "",
+          "excerpt": "",
+          "content": ""
+        },
+        "ar": {
+          "title": "",
+          "category": "",
+          "excerpt": "",
+          "content": ""
+        },
+        "ja": {
+          "title": "",
+          "category": "",
+          "excerpt": "",
+          "content": ""
+        }
+      }
+    },
+    {
+      "id": "tubitak-workshop",
+      "title": "TUBITAK LoRaWAN End Node Workshop",
+      "slug": "tubitak-workshop",
+      "date": "2021-07-10",
+      "category": "Workshop",
+      "excerpt": "WillowSoft contributed to LoRaWAN end-node design and training for embedded connectivity teams.",
+      "image": "pdf-assets/p06_02_X14.jpg",
+      "featured": false,
+      "localized": {
+        "tr": {
+          "title": "",
+          "category": "",
+          "excerpt": "",
+          "content": ""
+        },
+        "de": {
+          "title": "",
+          "category": "",
+          "excerpt": "",
+          "content": ""
+        },
+        "fr": {
+          "title": "",
+          "category": "",
+          "excerpt": "",
+          "content": ""
+        },
+        "es": {
+          "title": "",
+          "category": "",
+          "excerpt": "",
+          "content": ""
+        },
+        "it": {
+          "title": "",
+          "category": "",
+          "excerpt": "",
+          "content": ""
+        },
+        "ar": {
+          "title": "",
+          "category": "",
+          "excerpt": "",
+          "content": ""
+        },
+        "ja": {
+          "title": "",
+          "category": "",
+          "excerpt": "",
+          "content": ""
+        }
+      }
+    }
+  ],
+  "translations": {
+    "en": {
+      "nav.solutions": "Solutions",
+      "nav.services": "Services",
+      "nav.products": "Products",
+      "nav.news": "News",
+      "nav.company": "Company",
+      "nav.contact": "Contact",
+      "cta.start": "Start Project",
+      "cta.viewDetails": "View Details",
+      "cta.readUpdate": "Read Update",
+      "cta.backProducts": "Back to Products",
+      "cta.backNews": "Back to News",
+      "language.label": "Language"
+    },
+    "tr": {
+      "nav.solutions": "Cozumler",
+      "nav.services": "Hizmetler",
+      "nav.products": "Urunler",
+      "nav.news": "Haberler",
+      "nav.company": "Sirket",
+      "nav.contact": "Iletisim",
+      "cta.start": "Projeye Basla",
+      "cta.viewDetails": "Detaylari Gor",
+      "cta.readUpdate": "Haberi Oku",
+      "cta.backProducts": "Urunlere Don",
+      "cta.backNews": "Haberlere Don",
+      "language.label": "Dil"
+    },
+    "de": {
+      "nav.solutions": "Losungen",
+      "nav.services": "Services",
+      "nav.products": "Produkte",
+      "nav.news": "News",
+      "nav.company": "Unternehmen",
+      "nav.contact": "Kontakt",
+      "cta.start": "Projekt starten",
+      "cta.viewDetails": "Details ansehen",
+      "cta.readUpdate": "Update lesen",
+      "cta.backProducts": "Zuruck zu Produkten",
+      "cta.backNews": "Zuruck zu News",
+      "language.label": "Sprache"
+    },
+    "fr": {
+      "nav.solutions": "Solutions",
+      "nav.services": "Services",
+      "nav.products": "Produits",
+      "nav.news": "Actualites",
+      "nav.company": "Entreprise",
+      "nav.contact": "Contact",
+      "cta.start": "Demarrer le projet",
+      "cta.viewDetails": "Voir les details",
+      "cta.readUpdate": "Lire",
+      "cta.backProducts": "Retour aux produits",
+      "cta.backNews": "Retour aux actualites",
+      "language.label": "Langue"
+    },
+    "es": {
+      "nav.solutions": "Soluciones",
+      "nav.services": "Servicios",
+      "nav.products": "Productos",
+      "nav.news": "Noticias",
+      "nav.company": "Empresa",
+      "nav.contact": "Contacto",
+      "cta.start": "Iniciar proyecto",
+      "cta.viewDetails": "Ver detalles",
+      "cta.readUpdate": "Leer noticia",
+      "cta.backProducts": "Volver a productos",
+      "cta.backNews": "Volver a noticias",
+      "language.label": "Idioma"
+    },
+    "it": {
+      "nav.solutions": "Soluzioni",
+      "nav.services": "Servizi",
+      "nav.products": "Prodotti",
+      "nav.news": "News",
+      "nav.company": "Azienda",
+      "nav.contact": "Contatto",
+      "cta.start": "Avvia progetto",
+      "cta.viewDetails": "Vedi dettagli",
+      "cta.readUpdate": "Leggi update",
+      "cta.backProducts": "Torna ai prodotti",
+      "cta.backNews": "Torna alle news",
+      "language.label": "Lingua"
+    },
+    "ar": {
+      "nav.solutions": "الحلول",
+      "nav.services": "الخدمات",
+      "nav.products": "المنتجات",
+      "nav.news": "الأخبار",
+      "nav.company": "الشركة",
+      "nav.contact": "اتصال",
+      "cta.start": "ابدأ المشروع",
+      "cta.viewDetails": "عرض التفاصيل",
+      "cta.readUpdate": "قراءة الخبر",
+      "cta.backProducts": "العودة إلى المنتجات",
+      "cta.backNews": "العودة إلى الأخبار",
+      "language.label": "اللغة"
+    },
+    "ja": {
+      "nav.solutions": "ソリューション",
+      "nav.services": "サービス",
+      "nav.products": "製品",
+      "nav.news": "ニュース",
+      "nav.company": "会社情報",
+      "nav.contact": "お問い合わせ",
+      "cta.start": "プロジェクト開始",
+      "cta.viewDetails": "詳細を見る",
+      "cta.readUpdate": "記事を読む",
+      "cta.backProducts": "製品一覧へ",
+      "cta.backNews": "ニュース一覧へ",
+      "language.label": "言語"
+    }
+  },
+  "pageContent": {
+    "home": {
+      "heroEyebrow": {
+        "en": "Embedded Systems • IoT • Digital Platforms",
+        "tr": "",
+        "de": "",
+        "fr": "",
+        "es": "",
+        "it": "",
+        "ar": "",
+        "ja": ""
+      },
+      "heroTitle": {
+        "en": "From bare metal to dashboard — without fragmented vendors.",
+        "tr": "",
+        "de": "",
+        "fr": "",
+        "es": "",
+        "it": "",
+        "ar": "",
+        "ja": ""
+      },
+      "heroLead": {
+        "en": "WillowSoft builds every layer of your connected product: hardware, firmware, connectivity, backend, and interfaces — as one reliable system.",
+        "tr": "",
+        "de": "",
+        "fr": "",
+        "es": "",
+        "it": "",
+        "ar": "",
+        "ja": ""
+      },
+      "trustEyebrow": {
+        "en": "Trusted by global teams",
+        "tr": "",
+        "de": "",
+        "fr": "",
+        "es": "",
+        "it": "",
+        "ar": "",
+        "ja": ""
+      },
+      "trustTitle": {
+        "en": "Engineering trusted across industries.",
+        "tr": "",
+        "de": "",
+        "fr": "",
+        "es": "",
+        "it": "",
+        "ar": "",
+        "ja": ""
+      },
+      "trustLead": {
+        "en": "WillowSoft supports connected products across industrial automation, healthcare, energy, telecommunications, logistics and consumer technology teams.",
+        "tr": "",
+        "de": "",
+        "fr": "",
+        "es": "",
+        "it": "",
+        "ar": "",
+        "ja": ""
+      },
+      "problemEyebrow": {
+        "en": "The Real Problem",
+        "tr": "",
+        "de": "",
+        "fr": "",
+        "es": "",
+        "it": "",
+        "ar": "",
+        "ja": ""
+      },
+      "problemTitle": {
+        "en": "Most industrial digital projects fail between prototype and field deployment.",
+        "tr": "",
+        "de": "",
+        "fr": "",
+        "es": "",
+        "it": "",
+        "ar": "",
+        "ja": ""
+      },
+      "problemLeadOne": {
+        "en": "Hardware teams, firmware teams, backend teams, mobile teams — each one handed off to a different vendor. The result is integration failures, missed deadlines, and products that never reach production.",
+        "tr": "",
+        "de": "",
+        "fr": "",
+        "es": "",
+        "it": "",
+        "ar": "",
+        "ja": ""
+      },
+      "problemLeadTwo": {
+        "en": "WillowSoft owns every layer. One team. One contract. One working system.",
+        "tr": "",
+        "de": "",
+        "fr": "",
+        "es": "",
+        "it": "",
+        "ar": "",
+        "ja": ""
+      },
+      "ownershipEyebrow": {
+        "en": "Full Technical Ownership",
+        "tr": "",
+        "de": "",
+        "fr": "",
+        "es": "",
+        "it": "",
+        "ar": "",
+        "ja": ""
+      },
+      "ownershipTitle": {
+        "en": "One contract. Every layer. Production-ready.",
+        "tr": "",
+        "de": "",
+        "fr": "",
+        "es": "",
+        "it": "",
+        "ar": "",
+        "ja": ""
+      },
+      "ecosystemEyebrow": {
+        "en": "Complete Connected Product Ecosystem",
+        "tr": "",
+        "de": "",
+        "fr": "",
+        "es": "",
+        "it": "",
+        "ar": "",
+        "ja": ""
+      },
+      "ecosystemTitle": {
+        "en": "One system. Five layers.",
+        "tr": "",
+        "de": "",
+        "fr": "",
+        "es": "",
+        "it": "",
+        "ar": "",
+        "ja": ""
+      },
+      "productsEyebrow": {
+        "en": "Proven Hardware Portfolio",
+        "tr": "",
+        "de": "",
+        "fr": "",
+        "es": "",
+        "it": "",
+        "ar": "",
+        "ja": ""
+      },
+      "productsTitle": {
+        "en": "Field-ready LoRaWAN products for industrial monitoring.",
+        "tr": "",
+        "de": "",
+        "fr": "",
+        "es": "",
+        "it": "",
+        "ar": "",
+        "ja": ""
+      },
+      "industriesEyebrow": {
+        "en": "Industries Served",
+        "tr": "",
+        "de": "",
+        "fr": "",
+        "es": "",
+        "it": "",
+        "ar": "",
+        "ja": ""
+      },
+      "industriesTitle": {
+        "en": "Built for environments where reliability matters.",
+        "tr": "",
+        "de": "",
+        "fr": "",
+        "es": "",
+        "it": "",
+        "ar": "",
+        "ja": ""
+      },
+      "newsEyebrow": {
+        "en": "News & Proof",
+        "tr": "",
+        "de": "",
+        "fr": "",
+        "es": "",
+        "it": "",
+        "ar": "",
+        "ja": ""
+      },
+      "newsTitle": {
+        "en": "Recent signals from the WillowSoft ecosystem.",
+        "tr": "",
+        "de": "",
+        "fr": "",
+        "es": "",
+        "it": "",
+        "ar": "",
+        "ja": ""
+      },
+      "ctaEyebrow": {
+        "en": "Start with clarity",
+        "tr": "",
+        "de": "",
+        "fr": "",
+        "es": "",
+        "it": "",
+        "ar": "",
+        "ja": ""
+      },
+      "ctaTitle": {
+        "en": "Ready to build a connected product or industrial platform?",
+        "tr": "",
+        "de": "",
+        "fr": "",
+        "es": "",
+        "it": "",
+        "ar": "",
+        "ja": ""
+      },
+      "ctaLead": {
+        "en": "Tell us whether you need hardware, firmware, backend, PostgreSQL, mobile app, web dashboard, website, VR simulation, or the complete system.",
+        "tr": "",
+        "de": "",
+        "fr": "",
+        "es": "",
+        "it": "",
+        "ar": "",
+        "ja": ""
+      }
+    },
+    "products": {
+      "heroEyebrow": {
+        "en": "Products",
+        "tr": "",
+        "de": "",
+        "fr": "",
+        "es": "",
+        "it": "",
+        "ar": "",
+        "ja": ""
+      },
+      "heroTitle": {
+        "en": "Industrial-grade LoRaWAN hardware portfolio.",
+        "tr": "",
+        "de": "",
+        "fr": "",
+        "es": "",
+        "it": "",
+        "ar": "",
+        "ja": ""
+      },
+      "heroLead": {
+        "en": "Modules, environmental sensors, tracking devices, safety products, and industrial interfaces for reliable remote monitoring.",
+        "tr": "",
+        "de": "",
+        "fr": "",
+        "es": "",
+        "it": "",
+        "ar": "",
+        "ja": ""
+      },
+      "featuredEyebrow": {
+        "en": "Featured Hardware",
+        "tr": "",
+        "de": "",
+        "fr": "",
+        "es": "",
+        "it": "",
+        "ar": "",
+        "ja": ""
+      },
+      "featuredTitle": {
+        "en": "LoRaWAN modules and sensors ready for real deployments.",
+        "tr": "",
+        "de": "",
+        "fr": "",
+        "es": "",
+        "it": "",
+        "ar": "",
+        "ja": ""
+      },
+      "catalogEyebrow": {
+        "en": "Catalog",
+        "tr": "",
+        "de": "",
+        "fr": "",
+        "es": "",
+        "it": "",
+        "ar": "",
+        "ja": ""
+      },
+      "catalogTitle": {
+        "en": "Filter by product family.",
+        "tr": "",
+        "de": "",
+        "fr": "",
+        "es": "",
+        "it": "",
+        "ar": "",
+        "ja": ""
+      }
+    },
+    "news": {
+      "heroEyebrow": {
+        "en": "News & Proof",
+        "tr": "",
+        "de": "",
+        "fr": "",
+        "es": "",
+        "it": "",
+        "ar": "",
+        "ja": ""
+      },
+      "heroTitle": {
+        "en": "Company signals that build trust.",
+        "tr": "",
+        "de": "",
+        "fr": "",
+        "es": "",
+        "it": "",
+        "ar": "",
+        "ja": ""
+      },
+      "heroLead": {
+        "en": "Events, export milestones, workshops and engineering updates should work as proof for enterprise customers.",
+        "tr": "",
+        "de": "",
+        "fr": "",
+        "es": "",
+        "it": "",
+        "ar": "",
+        "ja": ""
+      },
+      "latestEyebrow": {
+        "en": "Latest Updates",
+        "tr": "",
+        "de": "",
+        "fr": "",
+        "es": "",
+        "it": "",
+        "ar": "",
+        "ja": ""
+      },
+      "latestTitle": {
+        "en": "Proof that WillowSoft is active in the field.",
+        "tr": "",
+        "de": "",
+        "fr": "",
+        "es": "",
+        "it": "",
+        "ar": "",
+        "ja": ""
+      },
+      "pipelineEyebrow": {
+        "en": "Turn proof into pipeline",
+        "tr": "",
+        "de": "",
+        "fr": "",
+        "es": "",
+        "it": "",
+        "ar": "",
+        "ja": ""
+      },
+      "pipelineTitle": {
+        "en": "Use news, events and product launches to drive qualified leads.",
+        "tr": "",
+        "de": "",
+        "fr": "",
+        "es": "",
+        "it": "",
+        "ar": "",
+        "ja": ""
+      },
+      "pipelineLead": {
+        "en": "The admin panel can add new news items without touching code. Featured updates can later be surfaced on Home and Company pages.",
+        "tr": "",
+        "de": "",
+        "fr": "",
+        "es": "",
+        "it": "",
+        "ar": "",
+        "ja": ""
+      }
+    },
+    "services": {
+      "heroEyebrow": {
+        "en": "Services",
+        "tr": "",
+        "de": "",
+        "fr": "",
+        "es": "",
+        "it": "",
+        "ar": "",
+        "ja": ""
+      },
+      "heroTitle": {
+        "en": "From embedded hardware to the digital interface.",
+        "tr": "",
+        "de": "",
+        "fr": "",
+        "es": "",
+        "it": "",
+        "ar": "",
+        "ja": ""
+      },
+      "heroLead": {
+        "en": "We build the technical layers that make connected products work: hardware, firmware, backend APIs, PostgreSQL, mobile apps, web platforms, admin panels, websites, and VR simulations.",
+        "tr": "",
+        "de": "",
+        "fr": "",
+        "es": "",
+        "it": "",
+        "ar": "",
+        "ja": ""
+      },
+      "processEyebrow": {
+        "en": "Concept to Production",
+        "tr": "",
+        "de": "",
+        "fr": "",
+        "es": "",
+        "it": "",
+        "ar": "",
+        "ja": ""
+      },
+      "processTitle": {
+        "en": "A cleaner path from idea to deployed system.",
+        "tr": "",
+        "de": "",
+        "fr": "",
+        "es": "",
+        "it": "",
+        "ar": "",
+        "ja": ""
+      },
+      "stackEyebrow": {
+        "en": "Technology Stack Animation",
+        "tr": "",
+        "de": "",
+        "fr": "",
+        "es": "",
+        "it": "",
+        "ar": "",
+        "ja": ""
+      },
+      "stackTitle": {
+        "en": "The background moves like the system itself.",
+        "tr": "",
+        "de": "",
+        "fr": "",
+        "es": "",
+        "it": "",
+        "ar": "",
+        "ja": ""
+      },
+      "stackLead": {
+        "en": "Behind the technology cards, animated nodes and pulses represent sensor data traveling from device to gateway, backend, database, dashboard, mobile app, and VR layer.",
+        "tr": "",
+        "de": "",
+        "fr": "",
+        "es": "",
+        "it": "",
+        "ar": "",
+        "ja": ""
+      },
+      "digitalEyebrow": {
+        "en": "Digital Services",
+        "tr": "",
+        "de": "",
+        "fr": "",
+        "es": "",
+        "it": "",
+        "ar": "",
+        "ja": ""
+      },
+      "digitalTitle": {
+        "en": "Software services that complete the connected product.",
+        "tr": "",
+        "de": "",
+        "fr": "",
+        "es": "",
+        "it": "",
+        "ar": "",
+        "ja": ""
+      },
+      "vrEyebrow": {
+        "en": "VR Without Losing Focus",
+        "tr": "",
+        "de": "",
+        "fr": "",
+        "es": "",
+        "it": "",
+        "ar": "",
+        "ja": ""
+      },
+      "vrTitle": {
+        "en": "Immersive experiences for industrial value.",
+        "tr": "",
+        "de": "",
+        "fr": "",
+        "es": "",
+        "it": "",
+        "ar": "",
+        "ja": ""
+      },
+      "vrLead": {
+        "en": "VR is positioned as engineering support, not entertainment: training operators, demonstrating products, simulating maintenance, and visualizing digital twins.",
+        "tr": "",
+        "de": "",
+        "fr": "",
+        "es": "",
+        "it": "",
+        "ar": "",
+        "ja": ""
+      }
+    },
+    "solutions": {
+      "heroEyebrow": {
+        "en": "Solutions",
+        "tr": "",
+        "de": "",
+        "fr": "",
+        "es": "",
+        "it": "",
+        "ar": "",
+        "ja": ""
+      },
+      "heroTitle": {
+        "en": "Industrial IoT solutions for real-world operations.",
+        "tr": "",
+        "de": "",
+        "fr": "",
+        "es": "",
+        "it": "",
+        "ar": "",
+        "ja": ""
+      },
+      "heroLead": {
+        "en": "We connect distributed assets, buildings, machines, utilities, and logistics systems with low-power hardware and scalable digital platforms.",
+        "tr": "",
+        "de": "",
+        "fr": "",
+        "es": "",
+        "it": "",
+        "ar": "",
+        "ja": ""
+      },
+      "useCasesEyebrow": {
+        "en": "Use Cases",
+        "tr": "",
+        "de": "",
+        "fr": "",
+        "es": "",
+        "it": "",
+        "ar": "",
+        "ja": ""
+      },
+      "useCasesTitle": {
+        "en": "Built for environments where reliability matters.",
+        "tr": "",
+        "de": "",
+        "fr": "",
+        "es": "",
+        "it": "",
+        "ar": "",
+        "ja": ""
+      },
+      "howEyebrow": {
+        "en": "How It Works",
+        "tr": "",
+        "de": "",
+        "fr": "",
+        "es": "",
+        "it": "",
+        "ar": "",
+        "ja": ""
+      },
+      "howTitle": {
+        "en": "Sensors report, gateways connect, platforms act.",
+        "tr": "",
+        "de": "",
+        "fr": "",
+        "es": "",
+        "it": "",
+        "ar": "",
+        "ja": ""
+      },
+      "howLead": {
+        "en": "The moving background represents distributed field data. In the real system, each device sends telemetry into APIs, PostgreSQL, dashboards, mobile alerts, and reporting tools.",
+        "tr": "",
+        "de": "",
+        "fr": "",
+        "es": "",
+        "it": "",
+        "ar": "",
+        "ja": ""
+      },
+      "whyEyebrow": {
+        "en": "Why WillowSoft",
+        "tr": "",
+        "de": "",
+        "fr": "",
+        "es": "",
+        "it": "",
+        "ar": "",
+        "ja": ""
+      },
+      "whyTitle": {
+        "en": "Solutions are engineered around the site, not forced onto it.",
+        "tr": "",
+        "de": "",
+        "fr": "",
+        "es": "",
+        "it": "",
+        "ar": "",
+        "ja": ""
+      }
+    },
+    "company": {
+      "introEyebrow": {
+        "en": "About Us",
+        "tr": "",
+        "de": "",
+        "fr": "",
+        "es": "",
+        "it": "",
+        "ar": "",
+        "ja": ""
+      },
+      "introTitle": {
+        "en": "We do not just build devices; we engineer reliable ecosystems.",
+        "tr": "",
+        "de": "",
+        "fr": "",
+        "es": "",
+        "it": "",
+        "ar": "",
+        "ja": ""
+      },
+      "introLead": {
+        "en": "Founded in 2020, WillowSoft delivers embedded hardware and software solutions for industrial and IoT applications. The team focuses on low-power architecture, LoRa connectivity, firmware reliability, custom hardware design, backend systems, mobile and web interfaces, and production readiness.",
+        "tr": "",
+        "de": "",
+        "fr": "",
+        "es": "",
+        "it": "",
+        "ar": "",
+        "ja": ""
+      },
+      "principlesEyebrow": {
+        "en": "How We Work",
+        "tr": "",
+        "de": "",
+        "fr": "",
+        "es": "",
+        "it": "",
+        "ar": "",
+        "ja": ""
+      },
+      "principlesTitle": {
+        "en": "Engineering principles we don't compromise on.",
+        "tr": "",
+        "de": "",
+        "fr": "",
+        "es": "",
+        "it": "",
+        "ar": "",
+        "ja": ""
+      },
+      "historyEyebrow": {
+        "en": "Company History",
+        "tr": "",
+        "de": "",
+        "fr": "",
+        "es": "",
+        "it": "",
+        "ar": "",
+        "ja": ""
+      },
+      "historyTitle": {
+        "en": "From R&D roots to global deployment.",
+        "tr": "",
+        "de": "",
+        "fr": "",
+        "es": "",
+        "it": "",
+        "ar": "",
+        "ja": ""
+      },
+      "workWithEyebrow": {
+        "en": "Who We Work With",
+        "tr": "",
+        "de": "",
+        "fr": "",
+        "es": "",
+        "it": "",
+        "ar": "",
+        "ja": ""
+      },
+      "workWithTitle": {
+        "en": "Global teams trust WillowSoft for one reason: we deliver.",
+        "tr": "",
+        "de": "",
+        "fr": "",
+        "es": "",
+        "it": "",
+        "ar": "",
+        "ja": ""
+      },
+      "ctaEyebrow": {
+        "en": "Work with us",
+        "tr": "",
+        "de": "",
+        "fr": "",
+        "es": "",
+        "it": "",
+        "ar": "",
+        "ja": ""
+      },
+      "ctaTitle": {
+        "en": "Ready to build with a team that owns the full stack?",
+        "tr": "",
+        "de": "",
+        "fr": "",
+        "es": "",
+        "it": "",
+        "ar": "",
+        "ja": ""
+      },
+      "ctaLead": {
+        "en": "Tell us what you're building. We'll tell you how we'd approach it.",
+        "tr": "",
+        "de": "",
+        "fr": "",
+        "es": "",
+        "it": "",
+        "ar": "",
+        "ja": ""
+      }
+    },
+    "contact": {
+      "heroEyebrow": {
+        "en": "Contact",
+        "tr": "",
+        "de": "",
+        "fr": "",
+        "es": "",
+        "it": "",
+        "ar": "",
+        "ja": ""
+      },
+      "heroTitle": {
+        "en": "Let’s build the future of your industry.",
+        "tr": "",
+        "de": "",
+        "fr": "",
+        "es": "",
+        "it": "",
+        "ar": "",
+        "ja": ""
+      },
+      "heroLead": {
+        "en": "Tell us whether you need hardware, firmware, backend API, PostgreSQL architecture, admin panel, mobile app, website, web dashboard, VR simulation, or the complete connected product ecosystem.",
+        "tr": "",
+        "de": "",
+        "fr": "",
+        "es": "",
+        "it": "",
+        "ar": "",
+        "ja": ""
+      },
+      "directTitle": {
+        "en": "Direct Connection",
+        "tr": "",
+        "de": "",
+        "fr": "",
+        "es": "",
+        "it": "",
+        "ar": "",
+        "ja": ""
+      },
+      "directLead": {
+        "en": "Phone and WhatsApp numbers should be confirmed before production launch.",
+        "tr": "",
+        "de": "",
+        "fr": "",
+        "es": "",
+        "it": "",
+        "ar": "",
+        "ja": ""
+      }
+    },
+    "startProject": {
+      "heroEyebrow": {
+        "en": "Campaign Landing Page",
+        "tr": "",
+        "de": "",
+        "fr": "",
+        "es": "",
+        "it": "",
+        "ar": "",
+        "ja": ""
+      },
+      "heroTitle": {
+        "en": "Scale your connected product without engineering fragmentation.",
+        "tr": "",
+        "de": "",
+        "fr": "",
+        "es": "",
+        "it": "",
+        "ar": "",
+        "ja": ""
+      },
+      "realityEyebrow": {
+        "en": "Reality Check",
+        "tr": "",
+        "de": "",
+        "fr": "",
+        "es": "",
+        "it": "",
+        "ar": "",
+        "ja": ""
+      },
+      "realityTitle": {
+        "en": "Most industrial digital projects fail between prototype and field deployment.",
+        "tr": "",
+        "de": "",
+        "fr": "",
+        "es": "",
+        "it": "",
+        "ar": "",
+        "ja": ""
+      },
+      "pathsEyebrow": {
+        "en": "Solution Paths",
+        "tr": "",
+        "de": "",
+        "fr": "",
+        "es": "",
+        "it": "",
+        "ar": "",
+        "ja": ""
+      },
+      "pathsTitle": {
+        "en": "Choose the path that matches your project.",
+        "tr": "",
+        "de": "",
+        "fr": "",
+        "es": "",
+        "it": "",
+        "ar": "",
+        "ja": ""
+      },
+      "formEyebrow": {
+        "en": "Start Your Project",
+        "tr": "",
+        "de": "",
+        "fr": "",
+        "es": "",
+        "it": "",
+        "ar": "",
+        "ja": ""
+      },
+      "formTitle": {
+        "en": "Tell us what you are building.",
+        "tr": "",
+        "de": "",
+        "fr": "",
+        "es": "",
+        "it": "",
+        "ar": "",
+        "ja": ""
+      },
+      "formLead": {
+        "en": "This landing page intentionally has no full menu. It keeps campaign traffic focused on one action: sending a qualified project request.",
+        "tr": "",
+        "de": "",
+        "fr": "",
+        "es": "",
+        "it": "",
+        "ar": "",
+        "ja": ""
+      }
+    }
+  }
+}

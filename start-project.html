@@ -3,6 +3,10 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg?v=20260606-navy" />
+    <link rel="alternate icon" type="image/png" href="/assets/willow-mark-transparent.png?v=20260606-transparent" />
+    <link rel="apple-touch-icon" href="/assets/willow-mark-transparent.png?v=20260606-transparent" />
     <title>Start Your IoT Project | WillowSoft</title>
     <meta name="description" content="Campaign landing page for starting an IoT, embedded, backend, mobile, web, PostgreSQL, admin panel, or VR simulation project with WillowSoft." />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -54,16 +58,19 @@
         <div class="section-inner split">
           <div class="reveal"><p class="eyebrow">Start Your Project</p><h2 class="page-title">Tell us what you are building.</h2><p class="section-lead">This landing page intentionally has no full menu. It keeps campaign traffic focused on one action: sending a qualified project request.</p></div>
           <form class="form card reveal delay-1">
-            <div class="field"><label for="lpName">Name</label><input id="lpName" required /></div>
-            <div class="field"><label for="lpCompany">Company</label><input id="lpCompany" /></div>
-            <div class="field"><label for="lpEmail">Email</label><input id="lpEmail" type="email" required /></div>
-            <div class="field"><label for="lpType">Interested In</label><select id="lpType"><option>End-to-End Connected Product</option><option>IoT Hardware</option><option>Backend / PostgreSQL / Admin Panel</option><option>Mobile App / Web Platform</option><option>VR / Simulation</option></select></div>
-            <div class="field"><label for="lpMessage">Project Description</label><textarea id="lpMessage" required></textarea></div>
+            <div class="field"><label for="lpName">Name</label><input id="lpName" name="name" required /></div>
+            <div class="field"><label for="lpCompany">Company</label><input id="lpCompany" name="company" /></div>
+            <div class="field"><label for="lpEmail">Email</label><input id="lpEmail" name="email" type="email" required /></div>
+            <div class="field"><label for="lpType">Interested In</label><select id="lpType" name="interestType"><option>End-to-End Connected Product</option><option>IoT Hardware</option><option>Backend / PostgreSQL / Admin Panel</option><option>Mobile App / Web Platform</option><option>VR / Simulation</option></select></div>
+            <div class="field"><label for="lpMessage">Project Description</label><textarea id="lpMessage" name="message" required></textarea></div>
             <button class="btn btn-primary" type="submit">Start Your Project</button>
           </form>
         </div>
       </section>
     </main>
+    <script src="assets/cms.js"></script>
+    <script src="assets/i18n.js"></script>
+    <script src="/assets/analytics.js"></script>
     <script src="assets/app.js"></script>
   </body>
 </html>
