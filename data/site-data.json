@@ -15,16 +15,22 @@
   },
   "companyFacts": {
     "founded": "2020",
-    "customers": "50+",
+    "customers": "41+",
+    "happyClients": "41+",
+    "productsOnMarket": "100+",
     "projects": "80+",
     "countries": "15+",
     "exports": "9 countries",
+    "officesWorldwide": "2",
     "offices": [
       "Turkey",
       "United Kingdom"
     ],
+    "turkeyPhone": "+90 850 30 24766",
+    "turkeyOfficeAddress": "Altınkale Street 40101 District Antalya, Turkey",
+    "ukOfficeAddress": "East London (Wood Street, E17 3NU), UK",
     "email": "info@willowsoft.co",
-    "note": "Exact address and phone information should be verified before production launch."
+    "note": "Use the listed Turkey and UK office information for production contact pages."
   },
   "clients": [
     {
@@ -2587,7 +2593,7 @@
     },
     "services": {
       "heroEyebrow": {
-        "en": "Services",
+        "en": "Services • Device to interface",
         "tr": "",
         "de": "",
         "fr": "",
@@ -2597,7 +2603,7 @@
         "ja": ""
       },
       "heroTitle": {
-        "en": "From embedded hardware to the digital interface.",
+        "en": "Engineering services for connected products.",
         "tr": "",
         "de": "",
         "fr": "",
@@ -2607,7 +2613,7 @@
         "ja": ""
       },
       "heroLead": {
-        "en": "We build the technical layers that make connected products work: hardware, firmware, backend APIs, PostgreSQL, mobile apps, web platforms, admin panels, websites, and VR simulations.",
+        "en": "WillowSoft helps teams build the full product stack: embedded devices, firmware, connectivity, backend, PostgreSQL, web/admin, mobile and VR layers designed to work together.",
         "tr": "",
         "de": "",
         "fr": "",
@@ -2983,7 +2989,7 @@
         "ja": ""
       },
       "directLead": {
-        "en": "Phone and WhatsApp numbers should be confirmed before production launch.",
+        "en": "Use the contact form for general messages, office communication and first conversations that do not yet need a full project brief.",
         "tr": "",
         "de": "",
         "fr": "",
@@ -2995,7 +3001,7 @@
     },
     "startProject": {
       "heroEyebrow": {
-        "en": "Campaign Landing Page",
+        "en": "Start Project",
         "tr": "",
         "de": "",
         "fr": "",
@@ -3005,7 +3011,7 @@
         "ja": ""
       },
       "heroTitle": {
-        "en": "Scale your connected product without engineering fragmentation.",
+        "en": "Give us the brief. We’ll map the engineering path.",
         "tr": "",
         "de": "",
         "fr": "",
@@ -3015,7 +3021,7 @@
         "ja": ""
       },
       "realityEyebrow": {
-        "en": "Reality Check",
+        "en": "Project fit",
         "tr": "",
         "de": "",
         "fr": "",
@@ -3025,7 +3031,7 @@
         "ja": ""
       },
       "realityTitle": {
-        "en": "Most industrial digital projects fail between prototype and field deployment.",
+        "en": "Use Start Project when scope matters.",
         "tr": "",
         "de": "",
         "fr": "",
@@ -3035,7 +3041,7 @@
         "ja": ""
       },
       "pathsEyebrow": {
-        "en": "Solution Paths",
+        "en": "After submission",
         "tr": "",
         "de": "",
         "fr": "",
@@ -3045,7 +3051,7 @@
         "ja": ""
       },
       "pathsTitle": {
-        "en": "Choose the path that matches your project.",
+        "en": "A clearer first conversation.",
         "tr": "",
         "de": "",
         "fr": "",
@@ -3055,7 +3061,7 @@
         "ja": ""
       },
       "formEyebrow": {
-        "en": "Start Your Project",
+        "en": "Project brief",
         "tr": "",
         "de": "",
         "fr": "",
@@ -3075,7 +3081,7 @@
         "ja": ""
       },
       "formLead": {
-        "en": "This landing page intentionally has no full menu. It keeps campaign traffic focused on one action: sending a qualified project request.",
+        "en": "This form is intentionally more detailed than Contact. It helps WillowSoft understand whether you need one layer or an end-to-end connected product.",
         "tr": "",
         "de": "",
         "fr": "",
@@ -3085,5 +3091,309 @@
         "ja": ""
       }
     }
-  }
+  },
+  "solutions": [
+    {
+      "id": "water-level-monitoring",
+      "title": "Remote tanks, manholes and water infrastructure.",
+      "slug": "water-level-monitoring",
+      "category": "Water & level monitoring",
+      "headline": "Remote tanks, manholes and water infrastructure.",
+      "summary": "Detect level changes, overflow risk, pressure changes and field events without manual inspection routes.",
+      "image": "pdf-assets/p07_02_X18.jpg",
+      "bullets": [
+        "WillowSonic / pressure sensors",
+        "LoRaWAN telemetry",
+        "Dashboard alerts and reporting"
+      ],
+      "productsUsed": [
+        "willowsonic",
+        "willowpre"
+      ],
+      "servicesUsed": [
+        "iot-cloud",
+        "backend"
+      ],
+      "featured": true,
+      "sortOrder": 10,
+      "localized": {
+        "tr": {
+          "title": "",
+          "category": "",
+          "headline": "",
+          "summary": "",
+          "bullets": ""
+        },
+        "de": {
+          "title": "",
+          "category": "",
+          "headline": "",
+          "summary": "",
+          "bullets": ""
+        },
+        "fr": {
+          "title": "",
+          "category": "",
+          "headline": "",
+          "summary": "",
+          "bullets": ""
+        },
+        "es": {
+          "title": "",
+          "category": "",
+          "headline": "",
+          "summary": "",
+          "bullets": ""
+        },
+        "it": {
+          "title": "",
+          "category": "",
+          "headline": "",
+          "summary": "",
+          "bullets": ""
+        },
+        "ar": {
+          "title": "",
+          "category": "",
+          "headline": "",
+          "summary": "",
+          "bullets": ""
+        },
+        "ja": {
+          "title": "",
+          "category": "",
+          "headline": "",
+          "summary": "",
+          "bullets": ""
+        }
+      }
+    },
+    {
+      "id": "industrial-machine-telemetry",
+      "title": "PLC, meter and Modbus data made visible.",
+      "slug": "industrial-machine-telemetry",
+      "category": "Industrial machine telemetry",
+      "headline": "PLC, meter and Modbus data made visible.",
+      "summary": "Bring legacy industrial signals into APIs, PostgreSQL, dashboards and mobile workflows.",
+      "image": "pdf-assets/p14_02_X51.jpg",
+      "bullets": [
+        "WillowMod bridge",
+        "Backend API + PostgreSQL",
+        "Admin panel and operator dashboard"
+      ],
+      "productsUsed": [
+        "willowmod"
+      ],
+      "servicesUsed": [
+        "backend",
+        "postgresql",
+        "web-admin"
+      ],
+      "featured": true,
+      "sortOrder": 20,
+      "localized": {
+        "tr": {
+          "title": "",
+          "category": "",
+          "headline": "",
+          "summary": "",
+          "bullets": ""
+        },
+        "de": {
+          "title": "",
+          "category": "",
+          "headline": "",
+          "summary": "",
+          "bullets": ""
+        },
+        "fr": {
+          "title": "",
+          "category": "",
+          "headline": "",
+          "summary": "",
+          "bullets": ""
+        },
+        "es": {
+          "title": "",
+          "category": "",
+          "headline": "",
+          "summary": "",
+          "bullets": ""
+        },
+        "it": {
+          "title": "",
+          "category": "",
+          "headline": "",
+          "summary": "",
+          "bullets": ""
+        },
+        "ar": {
+          "title": "",
+          "category": "",
+          "headline": "",
+          "summary": "",
+          "bullets": ""
+        },
+        "ja": {
+          "title": "",
+          "category": "",
+          "headline": "",
+          "summary": "",
+          "bullets": ""
+        }
+      }
+    },
+    {
+      "id": "smart-buildings",
+      "title": "Air quality, comfort and facility monitoring.",
+      "slug": "smart-buildings",
+      "category": "Smart buildings",
+      "headline": "Air quality, comfort and facility monitoring.",
+      "summary": "Monitor indoor conditions and turn sensor readings into operational notifications and reports.",
+      "image": "pdf-assets/p08_04_X25.jpg",
+      "bullets": [
+        "WillowAir / WillowTemp",
+        "Building dashboards",
+        "Mobile notifications"
+      ],
+      "productsUsed": [
+        "willowair",
+        "willowtemp"
+      ],
+      "servicesUsed": [
+        "mobile",
+        "web-admin"
+      ],
+      "featured": true,
+      "sortOrder": 30,
+      "localized": {
+        "tr": {
+          "title": "",
+          "category": "",
+          "headline": "",
+          "summary": "",
+          "bullets": ""
+        },
+        "de": {
+          "title": "",
+          "category": "",
+          "headline": "",
+          "summary": "",
+          "bullets": ""
+        },
+        "fr": {
+          "title": "",
+          "category": "",
+          "headline": "",
+          "summary": "",
+          "bullets": ""
+        },
+        "es": {
+          "title": "",
+          "category": "",
+          "headline": "",
+          "summary": "",
+          "bullets": ""
+        },
+        "it": {
+          "title": "",
+          "category": "",
+          "headline": "",
+          "summary": "",
+          "bullets": ""
+        },
+        "ar": {
+          "title": "",
+          "category": "",
+          "headline": "",
+          "summary": "",
+          "bullets": ""
+        },
+        "ja": {
+          "title": "",
+          "category": "",
+          "headline": "",
+          "summary": "",
+          "bullets": ""
+        }
+      }
+    },
+    {
+      "id": "asset-field-operations",
+      "title": "Distributed assets, safety events and route visibility.",
+      "slug": "asset-field-operations",
+      "category": "Asset & field operations",
+      "headline": "Distributed assets, safety events and route visibility.",
+      "summary": "Track movement, door events, panic alerts and field asset state across multiple locations.",
+      "image": "pdf-assets/p09_02_X28.jpg",
+      "bullets": [
+        "GNSS and motion sensing",
+        "Event-based alerting",
+        "Map and fleet interfaces"
+      ],
+      "productsUsed": [
+        "willowgps",
+        "willowsens",
+        "willowpanic",
+        "willowtilt"
+      ],
+      "servicesUsed": [
+        "mobile",
+        "iot-cloud"
+      ],
+      "featured": true,
+      "sortOrder": 40,
+      "localized": {
+        "tr": {
+          "title": "",
+          "category": "",
+          "headline": "",
+          "summary": "",
+          "bullets": ""
+        },
+        "de": {
+          "title": "",
+          "category": "",
+          "headline": "",
+          "summary": "",
+          "bullets": ""
+        },
+        "fr": {
+          "title": "",
+          "category": "",
+          "headline": "",
+          "summary": "",
+          "bullets": ""
+        },
+        "es": {
+          "title": "",
+          "category": "",
+          "headline": "",
+          "summary": "",
+          "bullets": ""
+        },
+        "it": {
+          "title": "",
+          "category": "",
+          "headline": "",
+          "summary": "",
+          "bullets": ""
+        },
+        "ar": {
+          "title": "",
+          "category": "",
+          "headline": "",
+          "summary": "",
+          "bullets": ""
+        },
+        "ja": {
+          "title": "",
+          "category": "",
+          "headline": "",
+          "summary": "",
+          "bullets": ""
+        }
+      }
+    }
+  ]
 }
