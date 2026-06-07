@@ -3927,8 +3927,8 @@ body[data-page="products"] .product-card:hover img {
 
 .reveal {
   opacity: 0;
-  transform: translateY(18px);
-  transition: opacity 560ms ease, transform 560ms ease;
+  transform: translateY(14px);
+  transition: opacity 360ms ease, transform 360ms ease;
 }
 
 .reveal.visible {
@@ -7059,15 +7059,24 @@ body[data-page="home"] .final-cta p {
   color: rgba(255, 255, 255, 0.82);
 }
 
+/* Final CTA primary — navy fill with cyan glow ring so white text keeps
+   WCAG AA contrast (cyan #18a7ff + white was only 2.5:1). The cyan
+   shader colour ties into the theme via the surrounding glow instead. */
 body[data-page="home"] .final-cta .btn-primary {
-  background: var(--accent);
-  border-color: var(--accent);
+  background: var(--blue);
+  border: 1px solid rgba(var(--accent-rgb), 0.6);
   color: #ffffff;
+  box-shadow:
+    0 0 0 4px rgba(var(--accent-rgb), 0.16),
+    0 18px 38px rgba(var(--accent-violet-rgb), 0.22);
 }
 
 body[data-page="home"] .final-cta .btn-primary:hover {
   background: var(--accent-violet);
   border-color: var(--accent-violet);
+  box-shadow:
+    0 0 0 4px rgba(var(--accent-violet-rgb), 0.22),
+    0 22px 44px rgba(var(--accent-violet-rgb), 0.28);
   transform: translateY(-2px);
 }
 

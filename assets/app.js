@@ -28,10 +28,27 @@
           }
         });
       },
-      { threshold: 0.18 }
+      // Fire as soon as ANY pixel enters viewport (was 0.18 — caused ghost
+      // text when small elements like eyebrows never reached 18% visibility
+      // in the upper viewport). Extra rootMargin pre-triggers items about
+      // to scroll in, so reveal animation runs before user sees it.
+      { threshold: 0.01, rootMargin: "120px 0px 120px 0px" }
     );
 
     items.forEach((item) => observer.observe(item));
+
+    // Belt-and-suspenders: any .reveal item that's already in the viewport
+    // on initial page load gets visible immediately (no opacity-0 flash).
+    requestAnimationFrame(() => {
+      const vh = window.innerHeight;
+      items.forEach((item) => {
+        const rect = item.getBoundingClientRect();
+        if (rect.top < vh && rect.bottom > 0) {
+          item.classList.add("visible");
+          observer.unobserve(item);
+        }
+      });
+    });
   }
 
   function initCounters() {
@@ -196,10 +213,15 @@
 
   function initAccordion() {
     document.querySelectorAll(".accordion-item button").forEach((button) => {
+      const item = button.closest(".accordion-item");
+      if (item) {
+        button.setAttribute("aria-expanded", item.classList.contains("open") ? "true" : "false");
+      }
       button.addEventListener("click", () => {
         const item = button.closest(".accordion-item");
         if (!item) return;
-        item.classList.toggle("open");
+        const isOpen = item.classList.toggle("open");
+        button.setAttribute("aria-expanded", isOpen ? "true" : "false");
       });
     });
   }
@@ -228,7 +250,15 @@
         button.textContent = "Sending...";
         button.disabled = true;
 
-        const data = Object.fromEntries(new FormData(form).entries());
+        const data = {};
+        const formData = new FormData(form);
+        formData.forEach((value, key) => {
+          if (Object.prototype.hasOwnProperty.call(data, key)) {
+            data[key] = Array.isArray(data[key]) ? [...data[key], value] : [data[key], value];
+            return;
+          }
+          data[key] = value;
+        });
         const unnamedFields = form.querySelectorAll("input[id], select[id], textarea[id]");
         unnamedFields.forEach((field) => {
           if (!field.name && field.id && field.value && !data[field.id]) data[field.id] = field.value;
@@ -257,12 +287,47 @@
         }
 
         setTimeout(() => {
-          button.textContent = "Request Received";
           form.reset();
-          setTimeout(() => {
-            button.textContent = original;
-            button.disabled = false;
-          }, 1800);
+          const lang = document.documentElement.lang || "en";
+          const successTitles = {
+            en: "Submission Received!",
+            tr: "Talebiniz Alındı!",
+            ar: "تم استلام طلبك!",
+            de: "Anfrage Erhalten!",
+            fr: "Demande Reçue!",
+            es: "¡Solicitud Recibida!",
+            it: "Richiesta Ricevuta!",
+            ja: "送信が完了しました！"
+          };
+          const successTexts = {
+            en: "Thank you for reaching out. Our engineering team will review your details and contact you shortly.",
+            tr: "Bizimle iletişime geçtiğiniz için teşekkürler. Mühendislik ekibimiz detayları inceleyip en kısa sürede sizinle iletişime geçecektir.",
+            ar: "نشكرك على التواصل معنا. سيقوم فريق الهندسة لدينا بمراجعة التفاصيل والاتصال بك قريباً.",
+            de: "Vielen Dank für Ihre Kontaktaufnahme. Unser Engineering-Team wird Ihre Angaben prüfen und sich in Kürze mit Ihnen in Verbindung setzen.",
+            fr: "Merci de nous avoir contactés. Notre équipe d'ingénierie examinera vos détails et vous contactera sous peu.",
+            es: "Gracias por ponerse en contacto. Nuestro equipo de ingeniería revisará sus detalles y se comunicará con usted en breve.",
+            it: "Grazie per averci contattato. Il nostro team di ingegneria esaminerà i tuoi dettagli e ti contatterà al più presto.",
+            ja: "お問い合わせいただきありがとうございます。エンジニアリングチームが内容を確認し、追ってご連絡いたします。"
+          };
+          const successButtons = {
+            en: "Send another message",
+            tr: "Yeni mesaj gönder",
+            ar: "إرسال رسالة أخرى",
+            de: "Weitere Nachricht senden",
+            fr: "Envoyer un autre message",
+            es: "Enviar otro mensaje",
+            it: "Invia un altro messaggio",
+            ja: "別のメッセージを送る"
+          };
+
+          form.innerHTML = `
+            <div class="form-success-state" style="text-align: center; padding: 40px 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; animation: fadeIn 0.4s ease;">
+              <div class="success-icon" style="width: 56px; height: 56px; border-radius: 50%; background: var(--accent-soft); display: grid; place-items: center; color: var(--accent); font-size: 1.8rem; font-weight: bold;">✓</div>
+              <h3 style="font-family: var(--font-display); font-size: 1.5rem; color: var(--ink); margin: 0;">${successTitles[lang] || successTitles.en}</h3>
+              <p style="color: var(--muted); font-size: 0.96rem; margin: 0; line-height: 1.5; max-width: 320px;">${successTexts[lang] || successTexts.en}</p>
+              <button type="button" class="btn btn-secondary btn-small" onclick="window.location.reload()" style="margin-top: 10px;">${successButtons[lang] || successButtons.en}</button>
+            </div>
+          `;
         }, 700);
       });
     });
