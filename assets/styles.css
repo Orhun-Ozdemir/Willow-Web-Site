@@ -3156,15 +3156,48 @@ select {
    structured VR list, premium CTA block.
    ============================================================ */
 
+/* Tighter hero on services — page only needs 600-640px, not full viewport */
+.hero-services {
+  min-height: clamp(560px, 64vh, 680px);
+}
+
+.hero-services .hero-inner {
+  padding: 110px 0 64px;
+}
+
+.hero-services .hero-media img {
+  opacity: 0.66;
+}
+
 /* Hero metric strip */
 .services-hero-meta {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 18px;
-  margin-top: 38px;
-  color: rgba(255, 255, 255, 0.84);
+  margin-top: 30px;
+  color: rgba(255, 255, 255, 0.86);
   font-size: 0.94rem;
+}
+
+/* Showcase use chips (VR card's "Use it for" condensed) */
+.showcase-uses {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 14px;
+}
+
+.showcase-use {
+  display: inline-block;
+  padding: 4px 10px;
+  border: 1px solid rgba(var(--accent-rgb), 0.32);
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
 }
 
 .services-hero-meta .hero-meta-item {
