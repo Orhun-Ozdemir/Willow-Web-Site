@@ -132,6 +132,180 @@
         </div>
       </section>
 
+      <!-- BUILT IN PRODUCTION — visual showcase: real devices, mobile apps, dashboards, VR -->
+      <section class="section showcase-section">
+        <div class="section-inner">
+          <div class="section-head reveal">
+            <p class="eyebrow">Built in production</p>
+            <h2 class="page-title">What this looks like when it ships.</h2>
+            <p class="section-lead">Concrete examples of each layer — devices on the bench, mobile apps in pockets, dashboards on screens, VR scenes in training rooms. Not mockups for marketing, the same patterns we deploy in the field.</p>
+          </div>
+          <div class="showcase-grid reveal delay-1">
+
+            <!-- 1. HARDWARE — floating device cards -->
+            <article class="showcase-card showcase-hardware">
+              <div class="showcase-visual">
+                <div class="showcase-grid-bg" aria-hidden="true"></div>
+                <div class="device-stack" aria-hidden="true">
+                  <figure class="device-card device-1">
+                    <img src="pdf-assets/p06_01_X13.jpg" alt="" loading="lazy" decoding="async" />
+                    <figcaption><strong>WillowBee</strong><span>STM32WL · 22 dBm</span></figcaption>
+                  </figure>
+                  <figure class="device-card device-2">
+                    <img src="pdf-assets/p08_01_X22.jpg" alt="" loading="lazy" decoding="async" />
+                    <figcaption><strong>WillowAir</strong><span>TVOC · eCO₂</span></figcaption>
+                  </figure>
+                  <figure class="device-card device-3">
+                    <img src="pdf-assets/p14_01_X50.jpg" alt="" loading="lazy" decoding="async" />
+                    <figcaption><strong>WillowMod</strong><span>Modbus · LoRaWAN</span></figcaption>
+                  </figure>
+                </div>
+              </div>
+              <div class="showcase-meta">
+                <span class="showcase-chip">Hardware</span>
+                <h3>Production-ready devices.</h3>
+                <p>Custom PCB, RF tuning, enclosure, certification and field-ready firmware — shipped to 15+ countries.</p>
+              </div>
+            </article>
+
+            <!-- 2. MOBILE — iOS + Android phone frames with animated UI -->
+            <article class="showcase-card showcase-mobile">
+              <div class="showcase-visual">
+                <div class="showcase-grid-bg" aria-hidden="true"></div>
+                <div class="phone-stack" aria-hidden="true">
+                  <div class="phone-frame phone-ios">
+                    <div class="phone-notch"></div>
+                    <div class="phone-screen">
+                      <div class="phone-status-bar"></div>
+                      <div class="phone-app-header">
+                        <span class="phone-app-title">Devices</span>
+                        <span class="phone-app-badge">12 online</span>
+                      </div>
+                      <div class="phone-app-list">
+                        <div class="phone-app-row"><span class="ui-dot ui-green"></span>WillowAir #04</div>
+                        <div class="phone-app-row"><span class="ui-dot ui-green"></span>WillowMod #11</div>
+                        <div class="phone-app-row"><span class="ui-dot ui-amber"></span>WillowSonic #03</div>
+                        <div class="phone-app-row"><span class="ui-dot ui-green"></span>WillowGPS #07</div>
+                      </div>
+                      <div class="phone-app-chart">
+                        <span class="phone-chart-bar" style="--h:38%"></span>
+                        <span class="phone-chart-bar" style="--h:62%"></span>
+                        <span class="phone-chart-bar" style="--h:48%"></span>
+                        <span class="phone-chart-bar" style="--h:80%"></span>
+                        <span class="phone-chart-bar" style="--h:56%"></span>
+                        <span class="phone-chart-bar" style="--h:72%"></span>
+                      </div>
+                    </div>
+                    <span class="phone-label">iOS · Swift</span>
+                  </div>
+                  <div class="phone-frame phone-android">
+                    <div class="phone-screen">
+                      <div class="phone-status-bar"></div>
+                      <div class="phone-app-header">
+                        <span class="phone-app-title">Alerts</span>
+                        <span class="phone-app-badge phone-badge-amber">3 new</span>
+                      </div>
+                      <div class="phone-alert-card">
+                        <strong>Soil moisture low</strong>
+                        <span>Greenhouse 03 — 18%</span>
+                      </div>
+                      <div class="phone-alert-card">
+                        <strong>Battery warning</strong>
+                        <span>WillowMod #11 — 14%</span>
+                      </div>
+                      <div class="phone-alert-card phone-alert-quiet">
+                        <strong>Tilt event</strong>
+                        <span>WillowTilt #02</span>
+                      </div>
+                    </div>
+                    <span class="phone-label">Android · Kotlin</span>
+                  </div>
+                </div>
+              </div>
+              <div class="showcase-meta">
+                <span class="showcase-chip">Mobile</span>
+                <h3>Native iOS, Native Android &amp; Flutter.</h3>
+                <p>Field operations apps, push alerts, offline-first workflows, biometric auth and App Store + Google Play certification.</p>
+              </div>
+            </article>
+
+            <!-- 3. WEB / DASHBOARD — browser frame -->
+            <article class="showcase-card showcase-web">
+              <div class="showcase-visual">
+                <div class="showcase-grid-bg" aria-hidden="true"></div>
+                <div class="browser-frame" aria-hidden="true">
+                  <div class="browser-bar">
+                    <span class="browser-traffic"><span class="browser-dot browser-red"></span><span class="browser-dot browser-amber"></span><span class="browser-dot browser-green"></span></span>
+                    <span class="browser-url">willowsoft.app/dashboard</span>
+                  </div>
+                  <div class="browser-screen">
+                    <div class="dashboard-sidebar">
+                      <span class="dashboard-logo-dot"></span>
+                      <span class="dashboard-nav-item active">Overview</span>
+                      <span class="dashboard-nav-item">Devices</span>
+                      <span class="dashboard-nav-item">Alerts</span>
+                      <span class="dashboard-nav-item">Reports</span>
+                      <span class="dashboard-nav-item">Settings</span>
+                    </div>
+                    <div class="dashboard-main">
+                      <div class="dashboard-stats">
+                        <div class="stat-tile"><strong>1,284</strong><span>devices online</span></div>
+                        <div class="stat-tile"><strong>96.4%</strong><span>uptime</span></div>
+                        <div class="stat-tile"><strong>12</strong><span>active alerts</span></div>
+                      </div>
+                      <div class="dashboard-chart">
+                        <svg viewBox="0 0 220 60" preserveAspectRatio="none" class="dashboard-svg">
+                          <defs>
+                            <linearGradient id="chartFill" x1="0" y1="0" x2="0" y2="1">
+                              <stop offset="0%" stop-color="currentColor" stop-opacity="0.35" />
+                              <stop offset="100%" stop-color="currentColor" stop-opacity="0" />
+                            </linearGradient>
+                          </defs>
+                          <path d="M0,42 Q20,30 40,32 T80,24 T120,28 T160,14 T200,20 L220,18 L220,60 L0,60 Z" fill="url(#chartFill)"/>
+                          <path d="M0,42 Q20,30 40,32 T80,24 T120,28 T160,14 T200,20 L220,18" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" />
+                        </svg>
+                      </div>
+                      <div class="dashboard-table">
+                        <span class="dashboard-row"><span class="ui-dot ui-green"></span>WillowAir #04 — 23.1 °C</span>
+                        <span class="dashboard-row"><span class="ui-dot ui-amber"></span>WillowSonic #03 — alert</span>
+                        <span class="dashboard-row"><span class="ui-dot ui-green"></span>WillowMod #11 — synced</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="showcase-meta">
+                <span class="showcase-chip">Web platform</span>
+                <h3>Dashboards &amp; admin panels.</h3>
+                <p>Role-based access, fleet management, telemetry visualization and operational reporting — built around the operator, not the engineer.</p>
+              </div>
+            </article>
+
+            <!-- 4. VR — 3D layered scene -->
+            <article class="showcase-card showcase-vr">
+              <div class="showcase-visual">
+                <div class="vr-scene" aria-hidden="true">
+                  <div class="vr-grid"></div>
+                  <div class="vr-orb vr-orb-1"></div>
+                  <div class="vr-orb vr-orb-2"></div>
+                  <div class="vr-orb vr-orb-3"></div>
+                  <div class="vr-panel vr-panel-back"><strong>Sensor #04</strong><span>23.1 °C</span></div>
+                  <div class="vr-panel vr-panel-mid"><strong>Gateway</strong><span>Online</span></div>
+                  <div class="vr-panel vr-panel-front"><strong>Dashboard</strong><span>1,284 devices</span></div>
+                  <div class="vr-stream"></div>
+                </div>
+              </div>
+              <div class="showcase-meta">
+                <span class="showcase-chip">VR &amp; simulation</span>
+                <h3>Immersive operator training.</h3>
+                <p>Unity VR, 3D digital twin views, maintenance simulations and remote onboarding for distributed industrial teams.</p>
+              </div>
+            </article>
+
+          </div>
+        </div>
+      </section>
+
       <!-- PROCESS TIMELINE PREMIUM -->
       <section class="section soft">
         <div class="section-inner">
