@@ -50,28 +50,28 @@
       heroEyebrow: ".hero .eyebrow",
       heroTitle: ".hero h1",
       heroLead: ".hero p.reveal.delay-2",
-      processEyebrow: ".section.soft .section-head .eyebrow",
-      processTitle: ".section.soft .section-head h2",
-      stackEyebrow: ".section.dark .section-head .eyebrow",
-      stackTitle: ".section.dark .section-head h2",
-      stackLead: ".section.dark .section-head .section-lead",
-      digitalEyebrow: ".section.soft:nth-of-type(4) .section-head .eyebrow",
-      digitalTitle: ".section.soft:nth-of-type(4) .section-head h2",
-      vrEyebrow: ".section:not(.soft):not(.dark) .split .eyebrow",
-      vrTitle: ".section:not(.soft):not(.dark) .split .page-title",
-      vrLead: ".section:not(.soft):not(.dark) .split .section-lead"
+      processEyebrow: ".process-section .section-head .eyebrow",
+      processTitle: ".process-section .section-head h2",
+      stackEyebrow: "[data-unused-services-stack-eyebrow]",
+      stackTitle: "[data-unused-services-stack-title]",
+      stackLead: "[data-unused-services-stack-lead]",
+      digitalEyebrow: "[data-unused-services-digital-eyebrow]",
+      digitalTitle: "[data-unused-services-digital-title]",
+      vrEyebrow: "[data-unused-services-vr-eyebrow]",
+      vrTitle: "[data-unused-services-vr-title]",
+      vrLead: "[data-unused-services-vr-lead]"
     },
     solutions: {
       heroEyebrow: ".hero .eyebrow",
       heroTitle: ".hero h1",
       heroLead: ".hero p.reveal.delay-2",
-      useCasesEyebrow: ".section:not(.dark):not(.soft) .section-head .eyebrow",
-      useCasesTitle: ".section:not(.dark):not(.soft) .section-head h2",
+      useCasesEyebrow: ".solution-market-section .section-head .eyebrow",
+      useCasesTitle: ".solution-market-section .section-head h2",
       howEyebrow: ".section.dark .eyebrow",
       howTitle: ".section.dark .page-title",
       howLead: ".section.dark .section-lead",
-      whyEyebrow: ".section.soft .section-head .eyebrow",
-      whyTitle: ".section.soft .section-head h2"
+      whyEyebrow: ".solutions-why-section .section-head .eyebrow",
+      whyTitle: ".solutions-why-section .section-head h2"
     },
     company: {
       introEyebrow: ".section:first-of-type .eyebrow",
@@ -97,10 +97,10 @@
     startProject: {
       heroEyebrow: ".hero .eyebrow",
       heroTitle: ".hero h1",
-      realityEyebrow: ".section:not(.dark):not(.soft) .section-head .eyebrow",
-      realityTitle: ".section:not(.dark):not(.soft) .section-head h2",
-      pathsEyebrow: ".section.dark .section-head .eyebrow",
-      pathsTitle: ".section.dark .section-head h2",
+      realityEyebrow: "[data-unused-start-project-reality-eyebrow]",
+      realityTitle: "[data-unused-start-project-reality-title]",
+      pathsEyebrow: ".start-process-section .section-head .eyebrow",
+      pathsTitle: ".start-process-section .section-head h2",
       formEyebrow: "#lead-form .eyebrow",
       formTitle: "#lead-form .page-title",
       formLead: "#lead-form .section-lead"
@@ -183,10 +183,12 @@
       .join("");
     const productUrl = `/products/${encodeURIComponent(product.slug || product.id)}`;
     const link = `<p style="margin-top:16px"><a class="btn btn-ghost btn-small" href="${productUrl}">View Details</a></p>`;
+    const cutoutImage = product.cardImage || `assets/product-cutouts/${product.id}.png`;
+    const originalImage = product.image || cutoutImage;
 
     return `
       <article class="card product-card reveal${delay}" data-category="${escapeHtml(product.category)}">
-        <figure><img src="${escapeHtml(product.image)}" alt="${escapeHtml(product.title)}" /></figure>
+        <figure><img src="${escapeHtml(cutoutImage)}" data-original-image="${escapeHtml(originalImage)}" alt="${escapeHtml(product.title)}" onerror="this.onerror=null;this.src=this.dataset.originalImage" /></figure>
         <div class="product-body">
           <h3>${escapeHtml(product.title)}</h3>
           <p>${escapeHtml(product.shortDescription)}</p>
@@ -228,6 +230,37 @@
       ? `<img src="${escapeHtml(client.logo)}" alt="${escapeHtml(client.name)}" />`
       : `<strong>${escapeHtml(client.name)}</strong>`;
     return `<div class="logo-tile" style="--z:${z}px;--delay:${delay}ms" data-client="${escapeHtml(client.id)}" title="${escapeHtml(client.name)}">${logo}</div>`;
+  }
+
+  function solutionCard(solution, index) {
+    solution = localizeItem(solution);
+    const delay = index % 4 ? ` delay-${index % 4}` : "";
+    const bullets = Array.isArray(solution.bullets)
+      ? solution.bullets
+      : String(solution.bullets || "").split(/\r?\n|,/).map((b) => b.trim()).filter(Boolean);
+    const bulletsHtml = bullets.map((b) => `<li>${escapeHtml(b)}</li>`).join("");
+    const headline = solution.headline || solution.title || "";
+
+    return `
+      <article class="solution-case-card reveal${delay}" data-solution="${escapeHtml(solution.slug || solution.id)}">
+        ${solution.image ? `<figure><img src="${escapeHtml(solution.image)}" alt="${escapeHtml(headline)}" loading="lazy" decoding="async" /></figure>` : ""}
+        <div class="solution-case-body">
+          ${solution.category ? `<span>${escapeHtml(solution.category)}</span>` : ""}
+          <h3>${escapeHtml(headline)}</h3>
+          ${solution.summary ? `<p>${escapeHtml(solution.summary)}</p>` : ""}
+          ${bulletsHtml ? `<ul>${bulletsHtml}</ul>` : ""}
+        </div>
+      </article>
+    `;
+  }
+
+  function renderSolutions(content) {
+    const root = document.querySelector("[data-cms-solutions]");
+    if (!root) return;
+    const items = (content.solutions || [])
+      .slice()
+      .sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
+    root.innerHTML = items.map(solutionCard).join("");
   }
 
   function renderProducts(content) {
@@ -282,7 +315,7 @@
   }
 
   function revealDynamicContent() {
-    const nodes = document.querySelectorAll("[data-cms-products] .reveal, [data-cms-featured-products] .reveal, [data-cms-news] .reveal");
+    const nodes = document.querySelectorAll("[data-cms-products] .reveal, [data-cms-featured-products] .reveal, [data-cms-news] .reveal, [data-cms-solutions] .reveal");
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || !("IntersectionObserver" in window)) {
       nodes.forEach((node) => {
         node.classList.add("visible");
@@ -315,7 +348,8 @@
     renderFeaturedProducts,
     renderNews,
     renderClients,
-    renderFacts
+    renderFacts,
+    renderSolutions
   };
 
   document.addEventListener("DOMContentLoaded", async () => {
@@ -326,6 +360,7 @@
       renderNews(content);
       renderClients(content);
       renderFacts(content);
+      renderSolutions(content);
       renderPageContent(content);
       revealDynamicContent();
       document.dispatchEvent(new CustomEvent("willow:content-ready", { detail: content }));

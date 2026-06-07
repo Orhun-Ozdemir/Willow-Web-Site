@@ -224,6 +224,46 @@
     `;
   }
 
+  function solutionEditor(solution, index) {
+    const bulletsText = Array.isArray(solution.bullets)
+      ? solution.bullets.join("\n")
+      : String(solution.bullets || "");
+    const productsText = Array.isArray(solution.productsUsed)
+      ? solution.productsUsed.join(", ")
+      : String(solution.productsUsed || "");
+    const servicesText = Array.isArray(solution.servicesUsed)
+      ? solution.servicesUsed.join(", ")
+      : String(solution.servicesUsed || "");
+    return `
+      <article class="admin-card" data-solution-index="${index}">
+        <div class="admin-card-top">
+          <strong>${esc(solution.title || solution.headline || "New Solution")}</strong>
+          <button type="button" data-remove-solution="${index}">Remove</button>
+        </div>
+        <div class="admin-form-grid">
+          <label>Title<input data-field="title" value="${esc(solution.title)}" /></label>
+          <label>Slug<input data-field="slug" value="${esc(solution.slug)}" /></label>
+          <label>Category<input data-field="category" value="${esc(solution.category)}" /></label>
+          <label>Image<input data-field="image" value="${esc(solution.image)}" /></label>
+          <label>Sort Order<input data-field="sortOrder" type="number" value="${esc(solution.sortOrder)}" /></label>
+          <label>Featured<select data-field="featured"><option value="true"${solution.featured ? " selected" : ""}>Yes</option><option value="false"${!solution.featured ? " selected" : ""}>No</option></select></label>
+          <label class="span-2">Headline<input data-field="headline" value="${esc(solution.headline)}" /></label>
+          <label class="span-2">Summary<textarea data-field="summary">${esc(solution.summary)}</textarea></label>
+          <label class="span-2">Bullet points (one per line)<textarea data-field="bullets" rows="4">${esc(bulletsText)}</textarea></label>
+          <label>Products used (comma-separated slugs)<input data-field="productsUsed" value="${esc(productsText)}" /></label>
+          <label>Services used (comma-separated slugs)<input data-field="servicesUsed" value="${esc(servicesText)}" /></label>
+        </div>
+        ${translationEditor("solution", index, solution, [
+          { key: "title", label: "Title" },
+          { key: "category", label: "Category" },
+          { key: "headline", label: "Headline" },
+          { key: "summary", label: "Summary", type: "textarea" },
+          { key: "bullets", label: "Bullet points (one per line)", type: "textarea" }
+        ])}
+      </article>
+    `;
+  }
+
   function clientEditor(client, index) {
     return `
       <article class="admin-card" data-client-index="${index}">
@@ -251,6 +291,11 @@
   function renderProducts() {
     const root = qs("[data-admin-products]");
     if (root) root.innerHTML = (state.content.products || []).map(productEditor).join("");
+  }
+
+  function renderSolutions() {
+    const root = qs("[data-admin-solutions]");
+    if (root) root.innerHTML = (state.content.solutions || []).map(solutionEditor).join("");
   }
 
   function renderNews() {
@@ -303,10 +348,16 @@
         <div class="admin-form-grid" data-company-facts-editor>
           <label>Founded<input data-field="founded" value="${esc(facts.founded)}" /></label>
           <label>Customers<input data-field="customers" value="${esc(facts.customers)}" /></label>
+          <label>Happy Clients<input data-field="happyClients" value="${esc(facts.happyClients)}" /></label>
+          <label>Products on Market<input data-field="productsOnMarket" value="${esc(facts.productsOnMarket)}" /></label>
           <label>Projects<input data-field="projects" value="${esc(facts.projects)}" /></label>
           <label>Countries<input data-field="countries" value="${esc(facts.countries)}" /></label>
+          <label>Offices Worldwide<input data-field="officesWorldwide" value="${esc(facts.officesWorldwide)}" /></label>
           <label>Email<input data-field="email" value="${esc(facts.email)}" /></label>
+          <label>Turkey Phone<input data-field="turkeyPhone" value="${esc(facts.turkeyPhone)}" /></label>
           <label>Exports<input data-field="exports" value="${esc(facts.exports)}" /></label>
+          <label class="span-2">Turkey Office Address<textarea data-field="turkeyOfficeAddress">${esc(facts.turkeyOfficeAddress)}</textarea></label>
+          <label class="span-2">UK Office Address<textarea data-field="ukOfficeAddress">${esc(facts.ukOfficeAddress)}</textarea></label>
           <label class="span-2">Launch Note<textarea data-field="note">${esc(facts.note)}</textarea></label>
         </div>
       </article>
@@ -496,10 +547,16 @@
         ...state.content.companyFacts,
         founded: facts.querySelector('[data-field="founded"]').value,
         customers: facts.querySelector('[data-field="customers"]').value,
+        happyClients: facts.querySelector('[data-field="happyClients"]').value,
+        productsOnMarket: facts.querySelector('[data-field="productsOnMarket"]').value,
         projects: facts.querySelector('[data-field="projects"]').value,
         countries: facts.querySelector('[data-field="countries"]').value,
+        officesWorldwide: facts.querySelector('[data-field="officesWorldwide"]').value,
         email: facts.querySelector('[data-field="email"]').value,
+        turkeyPhone: facts.querySelector('[data-field="turkeyPhone"]').value,
         exports: facts.querySelector('[data-field="exports"]').value,
+        turkeyOfficeAddress: facts.querySelector('[data-field="turkeyOfficeAddress"]').value,
+        ukOfficeAddress: facts.querySelector('[data-field="ukOfficeAddress"]').value,
         note: facts.querySelector('[data-field="note"]').value
       };
     }
@@ -611,6 +668,33 @@
     renderNews();
   }
 
+  function addSolution() {
+    collectContentFromDom();
+    if (!state.content.solutions) state.content.solutions = [];
+    state.content.solutions.unshift({
+      id: `solution-${Date.now()}`,
+      title: "New Solution",
+      slug: "new-solution",
+      category: "Use case",
+      headline: "What this solution does, in one line.",
+      summary: "Short paragraph describing the operational problem and what WillowSoft delivers.",
+      image: "",
+      bullets: ["Product or sensor", "Connectivity / backend", "Operator interface"],
+      productsUsed: [],
+      servicesUsed: [],
+      featured: true,
+      sortOrder: 100
+    });
+    state.content.solutions[0].localized = Object.fromEntries(locales().filter((locale) => locale !== "en").map((locale) => [locale, {
+      title: "",
+      category: "",
+      headline: "",
+      summary: "",
+      bullets: ""
+    }]));
+    renderSolutions();
+  }
+
   function addClient() {
     collectContentFromDom();
     state.content.clients.push({
@@ -640,6 +724,8 @@
     qs("[data-add-product]").addEventListener("click", addProduct);
     qs("[data-add-news]").addEventListener("click", addNews);
     qs("[data-add-client]").addEventListener("click", addClient);
+    const addSolutionBtn = qs("[data-add-solution]");
+    if (addSolutionBtn) addSolutionBtn.addEventListener("click", addSolution);
     qs("[data-refresh-leads]").addEventListener("click", loadLeads);
     qs("[data-refresh-analytics]").addEventListener("click", loadAnalytics);
 
@@ -647,6 +733,7 @@
       const removeProduct = event.target.closest("[data-remove-product]");
       const removeNews = event.target.closest("[data-remove-news]");
       const removeClient = event.target.closest("[data-remove-client]");
+      const removeSolution = event.target.closest("[data-remove-solution]");
       const updateLeadButton = event.target.closest("[data-update-lead]");
       if (removeProduct) {
         collectContentFromDom();
@@ -662,6 +749,11 @@
         collectContentFromDom();
         state.content.clients.splice(Number(removeClient.dataset.removeClient), 1);
         renderClients();
+      }
+      if (removeSolution) {
+        collectContentFromDom();
+        state.content.solutions.splice(Number(removeSolution.dataset.removeSolution), 1);
+        renderSolutions();
       }
       if (updateLeadButton) updateLead(updateLeadButton.dataset.updateLead);
     });
@@ -680,6 +772,7 @@
     renderProducts();
     renderNews();
     renderClients();
+    renderSolutions();
     renderPageContent();
     renderSettings();
     await loadLeads();
