@@ -1,0 +1,91 @@
+{
+  "solutions": {
+    "water-level-monitoring": {
+      "category": { "tr": "Su ve seviye izleme", "de": "Wasser- & Füllstandüberwachung", "fr": "Surveillance de l'eau et du niveau", "es": "Monitorización de agua y nivel", "it": "Monitoraggio acqua e livello", "ar": "مراقبة المياه والمستوى", "ja": "水・レベル監視" },
+      "headline": { "tr": "Uzaktaki tanklar, rögarlar ve su altyapısı.", "de": "Entfernte Tanks, Schächte und Wasserinfrastruktur.", "fr": "Réservoirs, regards et infrastructures d'eau à distance.", "es": "Tanques, registros e infraestructura de agua remotos.", "it": "Serbatoi, pozzetti e infrastrutture idriche da remoto.", "ar": "الخزانات وغرف التفتيش والبنية التحتية للمياه عن بُعد.", "ja": "遠隔のタンク、マンホール、水インフラ。" },
+      "title": { "tr": "Uzaktaki tanklar, rögarlar ve su altyapısı.", "de": "Entfernte Tanks, Schächte und Wasserinfrastruktur.", "fr": "Réservoirs, regards et infrastructures d'eau à distance.", "es": "Tanques, registros e infraestructura de agua remotos.", "it": "Serbatoi, pozzetti e infrastrutture idriche da remoto.", "ar": "الخزانات وغرف التفتيش والبنية التحتية للمياه عن بُعد.", "ja": "遠隔のタンク、マンホール、水インフラ。" },
+      "summary": { "tr": "Manuel denetim turları olmadan seviye değişimlerini, taşma riskini, basınç değişimlerini ve saha olaylarını algılayın.", "de": "Erkennen Sie Füllstandänderungen, Überlaufrisiken, Druckänderungen und Feldereignisse ohne manuelle Inspektionsrouten.", "fr": "Détectez les variations de niveau, les risques de débordement, les changements de pression et les événements de terrain sans tournées d'inspection manuelles.", "es": "Detecte cambios de nivel, riesgo de desbordamiento, cambios de presión y eventos de campo sin rutas de inspección manuales.", "it": "Rileva variazioni di livello, rischio di troppopieno, variazioni di pressione ed eventi sul campo senza giri di ispezione manuali.", "ar": "اكتشف تغيّرات المستوى وخطر الفيضان وتغيّرات الضغط والأحداث الميدانية دون جولات تفتيش يدوية.", "ja": "手動の点検巡回なしで、レベル変化、溢水リスク、圧力変化、現場イベントを検知します。" },
+      "bullets": {
+        "tr": ["WillowSonic / basınç sensörleri", "LoRaWAN telemetrisi", "Pano uyarıları ve raporlama"],
+        "de": ["WillowSonic / Drucksensoren", "LoRaWAN-Telemetrie", "Dashboard-Alarme und Reporting"],
+        "fr": ["Capteurs WillowSonic / de pression", "Télémétrie LoRaWAN", "Alertes et rapports sur tableau de bord"],
+        "es": ["Sensores WillowSonic / de presión", "Telemetría LoRaWAN", "Alertas e informes en el panel"],
+        "it": ["Sensori WillowSonic / di pressione", "Telemetria LoRaWAN", "Avvisi e report su dashboard"],
+        "ar": ["مستشعرات WillowSonic / الضغط", "قياس LoRaWAN عن بُعد", "تنبيهات لوحة المعلومات والتقارير"],
+        "ja": ["WillowSonic / 圧力センサー", "LoRaWAN テレメトリ", "ダッシュボードのアラートとレポート"]
+      }
+    },
+    "industrial-machine-telemetry": {
+      "category": { "tr": "Endüstriyel makine telemetrisi", "de": "Telemetrie für Industriemaschinen", "fr": "Télémétrie de machines industrielles", "es": "Telemetría de máquinas industriales", "it": "Telemetria di macchine industriali", "ar": "قياس بيانات الآلات الصناعية", "ja": "産業機械のテレメトリ" },
+      "headline": { "tr": "PLC, sayaç ve Modbus verileri artık izlenebilir.", "de": "SPS-, Zähler- und Modbus-Daten jetzt direkt auslesbar und überwachbar.", "fr": "Données API, compteurs et Modbus désormais accessibles et exploitables.", "es": "Datos de PLC, medidores y Modbus ahora visibles y accesibles.", "it": "Dati PLC, contatori e Modbus ora visibili e accessibili.", "ar": "بيانات PLC والعدادات وModbus تصبح الآن قابلة للرصد والمتابعة.", "ja": "PLC・メーター・Modbus のデータを可視化。" },
+      "title": { "tr": "PLC, sayaç ve Modbus verileri artık izlenebilir.", "de": "SPS-, Zähler- und Modbus-Daten jetzt direkt auslesbar und überwachbar.", "fr": "Données API, compteurs et Modbus désormais accessibles et exploitables.", "es": "Datos de PLC, medidores y Modbus ahora visibles y accesibles.", "it": "Dati PLC, contatori e Modbus ora visibili e accessibili.", "ar": "بيانات PLC والعدادات وModbus تصبح الآن قابلة للرصد والمتابعة.", "ja": "PLC・メーター・Modbus のデータを可視化。" },
+      "summary": { "tr": "Eski endüstriyel sinyalleri API'lere, PostgreSQL'e, panolara ve mobil iş akışlarına taşıyın.", "de": "Bringen Sie alte Industriesignale in APIs, PostgreSQL, Dashboards und mobile Workflows.", "fr": "Intégrez les signaux industriels existants dans des API, PostgreSQL, des tableaux de bord et des flux mobiles.", "es": "Lleve las señales industriales heredadas a API, PostgreSQL, paneles y flujos móviles.", "it": "Porta i segnali industriali legacy in API, PostgreSQL, dashboard e flussi mobili.", "ar": "انقل الإشارات الصناعية القديمة إلى واجهات البرمجة وPostgreSQL ولوحات المعلومات وسير العمل على الجوال.", "ja": "レガシーな産業信号を API、PostgreSQL、ダッシュボード、モバイルワークフローに取り込みます。" },
+      "bullets": {
+        "tr": ["WillowMod köprüsü", "Backend API + PostgreSQL", "Yönetim paneli ve operatör panosu"],
+        "de": ["WillowMod-Brücke", "Backend-API + PostgreSQL", "Admin-Panel und Bediener-Dashboard"],
+        "fr": ["Passerelle WillowMod", "API backend + PostgreSQL", "Panneau d'administration et tableau de bord opérateur"],
+        "es": ["Puente WillowMod", "API backend + PostgreSQL", "Panel de administración y panel de operador"],
+        "it": ["Bridge WillowMod", "API backend + PostgreSQL", "Pannello di amministrazione e dashboard operatore"],
+        "ar": ["جسر WillowMod", "واجهة خلفية + PostgreSQL", "لوحة إدارة ولوحة معلومات للمشغّل"],
+        "ja": ["WillowMod ブリッジ", "バックエンド API + PostgreSQL", "管理パネルとオペレーター用ダッシュボード"]
+      }
+    },
+    "smart-buildings": {
+      "category": { "tr": "Akıllı binalar", "de": "Smart Buildings", "fr": "Bâtiments intelligents", "es": "Edificios inteligentes", "it": "Edifici intelligenti", "ar": "المباني الذكية", "ja": "スマートビル" },
+      "headline": { "tr": "Hava kalitesi, konfor ve tesis izleme.", "de": "Luftqualität, Komfort und Gebäudeüberwachung.", "fr": "Qualité de l'air, confort et surveillance des installations.", "es": "Calidad del aire, confort y monitorización de instalaciones.", "it": "Qualità dell'aria, comfort e monitoraggio degli impianti.", "ar": "جودة الهواء والراحة ومراقبة المرافق.", "ja": "空気質、快適性、施設の監視。" },
+      "title": { "tr": "Hava kalitesi, konfor ve tesis izleme.", "de": "Luftqualität, Komfort und Gebäudeüberwachung.", "fr": "Qualité de l'air, confort et surveillance des installations.", "es": "Calidad del aire, confort y monitorización de instalaciones.", "it": "Qualità dell'aria, comfort e monitoraggio degli impianti.", "ar": "جودة الهواء والراحة ومراقبة المرافق.", "ja": "空気質、快適性、施設の監視。" },
+      "summary": { "tr": "İç mekân koşullarını izleyin ve sensör okumalarını operasyonel bildirimlere ve raporlara dönüştürün.", "de": "Überwachen Sie die Innenraumbedingungen und verwandeln Sie Sensormesswerte in operative Benachrichtigungen und Berichte.", "fr": "Surveillez les conditions intérieures et transformez les relevés des capteurs en notifications et rapports opérationnels.", "es": "Supervise las condiciones interiores y convierta las lecturas de los sensores en notificaciones e informes operativos.", "it": "Monitora le condizioni interne e trasforma le letture dei sensori in notifiche e report operativi.", "ar": "راقب الظروف الداخلية وحوّل قراءات المستشعرات إلى إشعارات وتقارير تشغيلية.", "ja": "屋内環境を監視し、センサーの測定値を運用上の通知やレポートに変換します。" },
+      "bullets": {
+        "tr": ["WillowAir / WillowTemp", "Bina panoları", "Mobil bildirimler"],
+        "de": ["WillowAir / WillowTemp", "Gebäude-Dashboards", "Mobile Benachrichtigungen"],
+        "fr": ["WillowAir / WillowTemp", "Tableaux de bord du bâtiment", "Notifications mobiles"],
+        "es": ["WillowAir / WillowTemp", "Paneles del edificio", "Notificaciones móviles"],
+        "it": ["WillowAir / WillowTemp", "Dashboard dell'edificio", "Notifiche mobili"],
+        "ar": ["WillowAir / WillowTemp", "لوحات معلومات المبنى", "إشعارات على الجوال"],
+        "ja": ["WillowAir / WillowTemp", "建物ダッシュボード", "モバイル通知"]
+      }
+    },
+    "asset-field-operations": {
+      "category": { "tr": "Varlık ve saha operasyonları", "de": "Asset- & Außendienstbetrieb", "fr": "Actifs et opérations sur le terrain", "es": "Activos y operaciones de campo", "it": "Asset e operazioni sul campo", "ar": "الأصول والعمليات الميدانية", "ja": "資産・現場オペレーション" },
+      "headline": { "tr": "Dağıtık varlıklar, güvenlik olayları ve rota takibi.", "de": "Verteilte Anlagen, Sicherheitsereignisse und Routentransparenz.", "fr": "Actifs distribués, événements de sécurité et visibilité des itinéraires.", "es": "Activos distribuidos, eventos de seguridad y visibilidad de rutas.", "it": "Asset distribuiti, eventi di sicurezza e visibilità dei percorsi.", "ar": "أصول موزّعة وأحداث سلامة ووضوح للمسارات.", "ja": "分散資産、安全イベント、ルートの可視化。" },
+      "title": { "tr": "Dağıtık varlıklar, güvenlik olayları ve rota takibi.", "de": "Verteilte Anlagen, Sicherheitsereignisse und Routentransparenz.", "fr": "Actifs distribués, événements de sécurité et visibilité des itinéraires.", "es": "Activos distribuidos, eventos de seguridad y visibilidad de rutas.", "it": "Asset distribuiti, eventi di sicurezza e visibilità dei percorsi.", "ar": "أصول موزّعة وأحداث سلامة ووضوح للمسارات.", "ja": "分散資産、安全イベント、ルートの可視化。" },
+      "summary": { "tr": "Birden fazla konumda hareketi, kapı olaylarını, panik uyarılarını ve saha varlığı durumunu takip edin.", "de": "Verfolgen Sie Bewegungen, Türereignisse, Panikalarme und den Zustand von Feldgeräten über mehrere Standorte hinweg.", "fr": "Suivez les déplacements, les événements de porte, les alertes de panique et l'état des actifs sur plusieurs sites.", "es": "Realice el seguimiento del movimiento, los eventos de puertas, las alertas de pánico y el estado de los activos en varias ubicaciones.", "it": "Monitora movimenti, eventi delle porte, allarmi antipanico e stato degli asset su più sedi.", "ar": "تتبّع الحركة وأحداث الأبواب وتنبيهات الطوارئ وحالة الأصول الميدانية عبر مواقع متعددة.", "ja": "複数拠点にわたり、移動、扉イベント、緊急アラート、現場資産の状態を追跡します。" },
+      "bullets": {
+        "tr": ["GNSS ve hareket algılama", "Olay tabanlı uyarı", "Harita ve filo arayüzleri"],
+        "de": ["GNSS und Bewegungserkennung", "Ereignisbasierte Alarmierung", "Karten- und Flottenschnittstellen"],
+        "fr": ["GNSS et détection de mouvement", "Alertes basées sur les événements", "Interfaces cartographiques et de flotte"],
+        "es": ["GNSS y detección de movimiento", "Alertas basadas en eventos", "Interfaces de mapa y flota"],
+        "it": ["GNSS e rilevamento del movimento", "Avvisi basati su eventi", "Interfacce mappa e flotta"],
+        "ar": ["GNSS واستشعار الحركة", "تنبيهات قائمة على الأحداث", "واجهات الخرائط والأسطول"],
+        "ja": ["GNSS と動き検知", "イベントベースのアラート", "地図・車両管理インターフェース"]
+      }
+    }
+  },
+  "news": {
+    "embedded-world-2026": {
+      "category": { "tr": "Etkinlik", "de": "Veranstaltung", "fr": "Événement", "es": "Evento", "it": "Evento", "ar": "فعالية", "ja": "イベント" },
+      "title": { "tr": "WillowSoft, Embedded World 2026'da", "de": "WillowSoft auf der Embedded World 2026", "fr": "WillowSoft à Embedded World 2026", "es": "WillowSoft en Embedded World 2026", "it": "WillowSoft a Embedded World 2026", "ar": "WillowSoft في معرض Embedded World 2026", "ja": "WillowSoft、Embedded World 2026 に出展" },
+      "excerpt": { "tr": "WillowSoft, Nürnberg'de düşük güçlü gömülü firmware, kablosuz bağlantı ve telemetri panolarını sergileyecek.", "de": "WillowSoft präsentiert in Nürnberg energiesparende Embedded-Firmware, drahtlose Konnektivität und Telemetrie-Dashboards.", "fr": "WillowSoft présentera à Nuremberg des firmwares embarqués basse consommation, la connectivité sans fil et des tableaux de bord de télémétrie.", "es": "WillowSoft mostrará en Núremberg firmware embebido de bajo consumo, conectividad inalámbrica y paneles de telemetría.", "it": "WillowSoft presenterà a Norimberga firmware embedded a basso consumo, connettività wireless e dashboard di telemetria.", "ar": "ستعرض WillowSoft في نورمبرغ برامج ثابتة مدمجة منخفضة الطاقة واتصالاً لاسلكياً ولوحات قياس عن بُعد.", "ja": "WillowSoft はニュルンベルクで、低消費電力の組み込みファームウェア、無線接続、テレメトリダッシュボードを展示します。" }
+    },
+    "uk-operations": {
+      "category": { "tr": "Şirket", "de": "Unternehmen", "fr": "Entreprise", "es": "Empresa", "it": "Azienda", "ar": "الشركة", "ja": "会社" },
+      "title": { "tr": "WillowSoft, Londra'da Birleşik Krallık Operasyonlarını Başlattı", "de": "WillowSoft startet UK-Geschäft in London", "fr": "WillowSoft lance ses opérations britanniques à Londres", "es": "WillowSoft inicia sus operaciones en el Reino Unido en Londres", "it": "WillowSoft avvia le operazioni nel Regno Unito a Londra", "ar": "WillowSoft تطلق عملياتها في المملكة المتحدة من لندن", "ja": "WillowSoft、ロンドンで英国事業を開始" },
+      "excerpt": { "tr": "Londra operasyonu, Birleşik Krallık ve Avrupa'daki müşterilere bağlı ürün mühendisliği hizmetleri sunar.", "de": "Der Standort London unterstützt Kunden in Großbritannien und Europa mit Engineering-Services für vernetzte Produkte.", "fr": "L'antenne de Londres accompagne les clients britanniques et européens avec des services d'ingénierie de produits connectés.", "es": "La operación de Londres da soporte a clientes del Reino Unido y Europa con servicios de ingeniería de productos conectados.", "it": "La sede di Londra supporta i clienti del Regno Unito e d'Europa con servizi di ingegneria di prodotti connessi.", "ar": "تدعم عمليات لندن عملاء المملكة المتحدة وأوروبا بخدمات هندسة المنتجات المتصلة.", "ja": "ロンドン拠点は、コネクテッド製品のエンジニアリングサービスで英国および欧州の顧客を支援します。" }
+    },
+    "minister-varank-visit": {
+      "category": { "tr": "Kanıt", "de": "Beleg", "fr": "Preuve", "es": "Prueba", "it": "Prova", "ar": "إثبات", "ja": "実績" },
+      "title": { "tr": "Bakan Varank'ın Muğla Teknopark Ziyareti", "de": "Besuch von Minister Varank im Mugla Teknopark", "fr": "Visite du ministre Varank au Mugla Teknopark", "es": "Visita del ministro Varank al Mugla Teknopark", "it": "Visita del ministro Varank al Mugla Teknopark", "ar": "زيارة الوزير وارانك إلى مجمّع موغلا التقني", "ja": "ヴァランク大臣がムーラ・テクノパークを訪問" },
+      "excerpt": { "tr": "WillowSoft, ziyaret sırasında LoRaWAN sensör çözümlerini ve yerel IoT mühendislik yeteneklerini sundu.", "de": "WillowSoft präsentierte beim Besuch LoRaWAN-Sensorlösungen und lokale IoT-Engineering-Kompetenzen.", "fr": "WillowSoft a présenté lors de la visite des solutions de capteurs LoRaWAN et ses compétences locales en ingénierie IoT.", "es": "Durante la visita, WillowSoft presentó soluciones de sensores LoRaWAN y capacidades locales de ingeniería IoT.", "it": "Durante la visita, WillowSoft ha presentato soluzioni di sensori LoRaWAN e competenze locali di ingegneria IoT.", "ar": "قدّمت WillowSoft خلال الزيارة حلول مستشعرات LoRaWAN وقدرات هندسة إنترنت الأشياء المحلية.", "ja": "WillowSoft は訪問時に、LoRaWAN センサーソリューションと地域の IoT エンジニアリング能力を紹介しました。" }
+    },
+    "win-eurasia": {
+      "category": { "tr": "Etkinlik", "de": "Veranstaltung", "fr": "Événement", "es": "Evento", "it": "Evento", "ar": "فعالية", "ja": "イベント" },
+      "title": { "tr": "WillowSoft, WIN EURASIA'da", "de": "WillowSoft auf der WIN EURASIA", "fr": "WillowSoft à WIN EURASIA", "es": "WillowSoft en WIN EURASIA", "it": "WillowSoft a WIN EURASIA", "ar": "WillowSoft في معرض WIN EURASIA", "ja": "WillowSoft、WIN EURASIA に出展" },
+      "excerpt": { "tr": "Üretim ve otomasyon ekiplerine Endüstriyel IoT çözümleri ve LoRaWAN ürünleri sunuldu.", "de": "Fertigungs- und Automatisierungsteams wurden industrielle IoT-Lösungen und LoRaWAN-Produkte vorgestellt.", "fr": "Des solutions IoT industrielles et des produits LoRaWAN ont été présentés aux équipes de fabrication et d'automatisation.", "es": "Se presentaron soluciones de IoT industrial y productos LoRaWAN a equipos de fabricación y automatización.", "it": "Sono state presentate soluzioni IoT industriali e prodotti LoRaWAN ai team di produzione e automazione.", "ar": "عُرضت حلول إنترنت الأشياء الصناعي ومنتجات LoRaWAN على فرق التصنيع والأتمتة.", "ja": "製造・オートメーションのチームに、産業用 IoT ソリューションと LoRaWAN 製品を紹介しました。" }
+    },
+    "tubitak-workshop": {
+      "category": { "tr": "Atölye", "de": "Workshop", "fr": "Atelier", "es": "Taller", "it": "Workshop", "ar": "ورشة عمل", "ja": "ワークショップ" },
+      "title": { "tr": "TÜBİTAK LoRaWAN Uç Düğüm Atölyesi", "de": "TUBITAK LoRaWAN End-Node-Workshop", "fr": "Atelier TUBITAK sur les nœuds finaux LoRaWAN", "es": "Taller TUBITAK sobre nodos finales LoRaWAN", "it": "Workshop TUBITAK sui nodi finali LoRaWAN", "ar": "ورشة TÜBİTAK حول عُقد LoRaWAN الطرفية", "ja": "TUBITAK LoRaWAN エンドノードワークショップ" },
+      "excerpt": { "tr": "WillowSoft, gömülü bağlantı ekipleri için LoRaWAN uç düğüm tasarımına ve eğitimine katkıda bulundu.", "de": "WillowSoft trug zum LoRaWAN-End-Node-Design und zur Schulung von Embedded-Connectivity-Teams bei.", "fr": "WillowSoft a contribué à la conception de nœuds finaux LoRaWAN et à la formation des équipes de connectivité embarquée.", "es": "WillowSoft contribuyó al diseño de nodos finales LoRaWAN y a la formación de equipos de conectividad embebida.", "it": "WillowSoft ha contribuito alla progettazione di nodi finali LoRaWAN e alla formazione dei team di connettività embedded.", "ar": "ساهمت WillowSoft في تصميم عُقد LoRaWAN الطرفية وتدريب فرق الاتصال المدمج.", "ja": "WillowSoft は、組み込み接続チーム向けの LoRaWAN エンドノード設計とトレーニングに貢献しました。" }
+    }
+  }
+}

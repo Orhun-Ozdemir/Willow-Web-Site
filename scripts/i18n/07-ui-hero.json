@@ -1,0 +1,76 @@
+{
+  "ui": {
+    "en": {
+      "cta.exploreServices": "Explore Services",
+      "cta.browseProducts": "Browse Products",
+      "cta.viewNews": "View News",
+      "proof.productsOnMarket": "Products on market",
+      "proof.happyClients": "Happy clients",
+      "proof.founded": "Founded",
+      "proof.officesWorldwide": "Offices worldwide"
+    },
+    "tr": {
+      "cta.exploreServices": "Hizmetleri Keşfet",
+      "cta.browseProducts": "Ürünleri İncele",
+      "cta.viewNews": "Haberleri Gör",
+      "proof.productsOnMarket": "Pazardaki ürünler",
+      "proof.happyClients": "Memnun müşteriler",
+      "proof.founded": "Kuruluş",
+      "proof.officesWorldwide": "Dünya genelinde ofisler"
+    },
+    "de": {
+      "cta.exploreServices": "Leistungen entdecken",
+      "cta.browseProducts": "Produkte ansehen",
+      "cta.viewNews": "News ansehen",
+      "proof.productsOnMarket": "Produkte am Markt",
+      "proof.happyClients": "Zufriedene Kunden",
+      "proof.founded": "Gegründet",
+      "proof.officesWorldwide": "Büros weltweit"
+    },
+    "fr": {
+      "cta.exploreServices": "Découvrir les services",
+      "cta.browseProducts": "Parcourir les produits",
+      "cta.viewNews": "Voir les actualités",
+      "proof.productsOnMarket": "Produits sur le marché",
+      "proof.happyClients": "Clients satisfaits",
+      "proof.founded": "Fondée",
+      "proof.officesWorldwide": "Bureaux dans le monde"
+    },
+    "es": {
+      "cta.exploreServices": "Explorar servicios",
+      "cta.browseProducts": "Ver productos",
+      "cta.viewNews": "Ver noticias",
+      "proof.productsOnMarket": "Productos en el mercado",
+      "proof.happyClients": "Clientes satisfechos",
+      "proof.founded": "Fundada",
+      "proof.officesWorldwide": "Oficinas en el mundo"
+    },
+    "it": {
+      "cta.exploreServices": "Esplora i servizi",
+      "cta.browseProducts": "Sfoglia i prodotti",
+      "cta.viewNews": "Vedi le notizie",
+      "proof.productsOnMarket": "Prodotti sul mercato",
+      "proof.happyClients": "Clienti soddisfatti",
+      "proof.founded": "Fondata",
+      "proof.officesWorldwide": "Uffici nel mondo"
+    },
+    "ar": {
+      "cta.exploreServices": "استكشف الخدمات",
+      "cta.browseProducts": "تصفّح المنتجات",
+      "cta.viewNews": "عرض الأخبار",
+      "proof.productsOnMarket": "منتجات في السوق",
+      "proof.happyClients": "عملاء سعداء",
+      "proof.founded": "تأسست",
+      "proof.officesWorldwide": "مكاتب حول العالم"
+    },
+    "ja": {
+      "cta.exploreServices": "サービスを見る",
+      "cta.browseProducts": "製品を見る",
+      "cta.viewNews": "ニュースを見る",
+      "proof.productsOnMarket": "市場投入製品",
+      "proof.happyClients": "満足した顧客",
+      "proof.founded": "設立",
+      "proof.officesWorldwide": "世界の拠点"
+    }
+  }
+}
