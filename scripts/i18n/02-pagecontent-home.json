@@ -1,0 +1,213 @@
+{
+  "pageContent": {
+    "home": {
+      "heroEyebrow": {
+        "tr": "Gömülü Sistemler • IoT • Dijital Platformlar",
+        "de": "Embedded-Systeme • IoT • Digitale Plattformen",
+        "fr": "Systèmes embarqués • IoT • Plateformes numériques",
+        "es": "Sistemas embebidos • IoT • Plataformas digitales",
+        "it": "Sistemi embedded • IoT • Piattaforme digitali",
+        "ar": "الأنظمة المدمجة • إنترنت الأشياء • المنصات الرقمية",
+        "ja": "組み込みシステム • IoT • デジタルプラットフォーム"
+      },
+      "heroTitle": {
+        "tr": "<em class=\"hw-serif\">Yalın donanımdan</em> <strong class=\"hw-display\">yönetim paneline</strong> — <span class=\"hw-muted\">birbirinden kopuk tedarikçilerle uğraşmadan.</span>",
+        "de": "Von <em class=\"hw-serif\">Bare Metal</em> bis zum <strong class=\"hw-display\">Dashboard</strong> — <span class=\"hw-muted\">ohne zersplitterte Dienstleister.</span>",
+        "fr": "Du <em class=\"hw-serif\">Bare Metal</em> au <strong class=\"hw-display\">tableau de bord</strong> — <span class=\"hw-muted\">sans multiplier les prestataires.</span>",
+        "es": "Del <em class=\"hw-serif\">bare metal</em> al <strong class=\"hw-display\">panel de control</strong> — <span class=\"hw-muted\">sin lidiar con múltiples proveedores.</span>",
+        "it": "Dal <em class=\"hw-serif\">bare metal</em> alla <strong class=\"hw-display\">dashboard</strong> — <span class=\"hw-muted\">senza dover gestire molteplici fornitori.</span>",
+        "ar": "من <em class=\"hw-serif\">العتاد الأساسي</em> إلى <strong class=\"hw-display\">لوحة التحكم</strong> — <span class=\"hw-muted\">دون موردين مُجزّأين.</span>",
+        "ja": "<em class=\"hw-serif\">ベアメタル</em>から<strong class=\"hw-display\">ダッシュボード</strong>まで — <span class=\"hw-muted\">複数のベンダーに分散することなく。</span>"
+      },
+      "heroLead": {
+        "tr": "WillowSoft, bağlı ürününüzün her katmanını inşa eder: donanım, firmware, bağlantı, backend ve arayüzler — tek ve güvenilir bir sistem olarak.",
+        "de": "WillowSoft entwickelt jede Schicht Ihres vernetzten Produkts: Hardware, Firmware, Konnektivität, Backend und Schnittstellen — als ein zuverlässiges System.",
+        "fr": "WillowSoft construit chaque couche de votre produit connecté : matériel, firmware, connectivité, backend et interfaces — comme un seul système fiable.",
+        "es": "WillowSoft construye cada capa de su producto conectado: hardware, firmware, conectividad, backend e interfaces, como un único sistema fiable.",
+        "it": "WillowSoft costruisce ogni livello del tuo prodotto connesso: hardware, firmware, connettività, backend e interfacce — come un unico sistema affidabile.",
+        "ar": "تبني WillowSoft كل طبقة من منتجك المتصل: العتاد والبرامج الثابتة والاتصال والواجهة الخلفية والواجهات — كنظام واحد موثوق.",
+        "ja": "WillowSoftは、コネクテッド製品のすべてのレイヤーを構築します。ハードウェア、ファームウェア、接続、バックエンド、インターフェースを、一つの信頼できるシステムとして。"
+      },
+      "trustEyebrow": {
+        "tr": "Küresel ekiplerin güveni",
+        "de": "Von globalen Teams vertraut",
+        "fr": "La confiance des équipes mondiales",
+        "es": "La confianza de equipos globales",
+        "it": "La fiducia dei team globali",
+        "ar": "موضع ثقة الفرق العالمية",
+        "ja": "世界中のチームに信頼されています"
+      },
+      "trustTitle": {
+        "tr": "Farklı <strong class=\"hw-display\">sektörlerde</strong><br><em class=\"hw-serif\">güvenilen</em> mühendislik.",
+        "de": "<em class=\"hw-serif\">Vertrauenswürdige</em> Technik<br>über <strong class=\"hw-display\">Branchen</strong> hinweg.",
+        "fr": "Une ingénierie <em class=\"hw-serif\">de confiance</em><br>dans tous les <strong class=\"hw-display\">secteurs</strong>.",
+        "es": "Ingeniería <em class=\"hw-serif\">de confianza</em><br>en todos los <strong class=\"hw-display\">sectores</strong>.",
+        "it": "Ingegneria <em class=\"hw-serif\">affidabile</em><br>in tutti i <strong class=\"hw-display\">settori</strong>.",
+        "ar": "هندسة <em class=\"hw-serif\">موثوقة</em><br>عبر <strong class=\"hw-display\">القطاعات</strong>.",
+        "ja": "<strong class=\"hw-display\">各業界</strong>で<br><em class=\"hw-serif\">信頼される</em>エンジニアリング。"
+      },
+      "trustLead": {
+        "tr": "WillowSoft; endüstriyel otomasyon, sağlık, enerji, telekomünikasyon, lojistik ve tüketici teknolojisi alanlarında bağlantılı ürün ekosistemlerini güçlendirir.",
+        "de": "WillowSoft unterstützt vernetzte Produkte in den Bereichen Industrieautomation, Gesundheitswesen, Energie, Telekommunikation, Logistik und Consumer-Technologie.",
+        "fr": "WillowSoft accompagne les produits connectés dans l'automatisation industrielle, la santé, l'énergie, les télécommunications, la logistique et les technologies grand public.",
+        "es": "WillowSoft impulsa productos conectados en los sectores de automatización industrial, salud, energía, telecomunicaciones, logística y tecnología de consumo.",
+        "it": "WillowSoft supporta lo sviluppo di prodotti connessi nei settori dell'automazione industriale, sanità, energia, telecomunicazioni, logistica e tecnologia di consumo.",
+        "ar": "تدعم WillowSoft المنتجات المتصلة في مجالات الأتمتة الصناعية والرعاية الصحية والطاقة والاتصالات والخدمات اللوجستية وتقنيات المستهلك.",
+        "ja": "WillowSoftは、産業オートメーション、ヘルスケア、エネルギー、通信、物流、コンシューマー技術の各分野でコネクテッド製品を支援します。"
+      },
+      "problemEyebrow": {
+        "tr": "Asıl Sorun",
+        "de": "Das eigentliche Problem",
+        "fr": "Le vrai problème",
+        "es": "El verdadero problema",
+        "it": "Il vero problema",
+        "ar": "المشكلة الحقيقية",
+        "ja": "本当の課題"
+      },
+      "problemTitle": {
+        "tr": "Çoğu endüstriyel dijital proje, prototip aşaması ile sahada devreye alınma süreci arasında başarısız olur.",
+        "de": "Die meisten industriellen Digitalprojekte scheitern am Übergang vom Prototyp zum realen Feldeinsatz.",
+        "fr": "La plupart des projets numériques industriels échouent lors de la transition entre le prototype et le déploiement sur le terrain.",
+        "es": "La mayoría de los proyectos digitales industriales fracasan en la transición del prototipo al despliegue en campo.",
+        "it": "La maggior parte dei progetti digitali industriali fallisce nella transizione dal prototipo al dispiegamento sul campo.",
+        "ar": "تفشل معظم المشاريع الرقمية الصناعية في مرحلة الانتقال من النموذج الأولي إلى النشر الميداني.",
+        "ja": "産業向けデジタルプロジェクトの多くは、試作から現場展開までの間に頓挫します。"
+      },
+      "problemLeadOne": {
+        "tr": "Donanım, firmware, backend ve mobil ekiplerinin her biri farklı bir tedarikçiye devredilir. Sonuç: entegrasyon hataları, sarkan teslim tarihleri ve hiçbir zaman seri üretime geçemeyen ürünler.",
+        "de": "Hardware-Teams, Firmware-Teams, Backend-Teams, Mobile-Teams — jedes an einen anderen Partner vergeben. Das Ergebnis: Integrationsfehler, verpasste Fristen und Produkte, die nie die Serienreife erreichen.",
+        "fr": "Équipes matériel, firmware, backend, mobile — chacune confiée à un prestataire différent. Résultat : des échecs d'intégration, des délais non tenus et des produits qui n'atteignent jamais la production en série.",
+        "es": "Equipos de hardware, firmware, backend, móvil: cada uno encargado a un proveedor distinto. El resultado son fallos de integración, plazos incumplidos y productos que nunca llegan a la fase de producción en serie.",
+        "it": "Team hardware, firmware, backend, mobile — ciascuno affidato a un fornitore diverso. Il risultato sono errori di integrazione, scadenze mancate e prodotti che non raggiungono mai la produzione in serie.",
+        "ar": "فرق العتاد وفرق البرامج الثابتة وفرق الخلفية وفرق التطبيقات — كلٌّ منها يُسلَّم إلى مورّد مختلف. والنتيجة: إخفاقات في التكامل ومواعيد نهائية فائتة ومنتجات لا تصل إلى مرحلة الإنتاج التجاري أبدًا.",
+        "ja": "ハードウェアチーム、ファームウェアチーム、バックエンドチーム、モバイルチーム——それぞれが異なるベンダーに委ねられます。その結果、統合の失敗、納期の遅延、そして決して量産に至らない製品が生まれます。"
+      },
+      "problemLeadTwo": {
+        "tr": "WillowSoft her katmanın sahibidir. Tek ekip. Tek sözleşme. Sorunsuz çalışan tek bir sistem.",
+        "de": "WillowSoft verantwortet jede Schicht. Ein Team. Ein Vertrag. Ein funktionierendes System.",
+        "fr": "WillowSoft maîtrise chaque couche. Une équipe. Un contrat. Un système qui fonctionne.",
+        "es": "WillowSoft es responsable de cada capa. Un equipo. Un contrato. Un sistema que funciona.",
+        "it": "WillowSoft governa ogni livello. Un team. Un contratto. Un sistema funzionante.",
+        "ar": "تمتلك WillowSoft كل طبقة. فريق واحد. عقد واحد. نظام واحد يعمل.",
+        "ja": "WillowSoftはすべてのレイヤーを担います。一つのチーム。一つの契約。一つの動くシステム。"
+      },
+      "ownershipEyebrow": {
+        "tr": "Tam Teknik Sahiplik",
+        "de": "Vollständige technische Verantwortung",
+        "fr": "Maîtrise technique totale",
+        "es": "Propiedad técnica total",
+        "it": "Piena responsabilità tecnica",
+        "ar": "ملكية تقنية كاملة",
+        "ja": "完全な技術的オーナーシップ"
+      },
+      "ownershipTitle": {
+        "tr": "Tek sözleşme. Her katman. Üretime hazır.",
+        "de": "Ein Vertrag. Jede Schicht. Produktionsbereit.",
+        "fr": "Un contrat. Chaque couche. Prêt pour la production.",
+        "es": "Un contrato. Cada capa. Listo para producción.",
+        "it": "Un contratto. Ogni livello. Pronto per la produzione.",
+        "ar": "عقد واحد. كل طبقة. جاهز للإنتاج.",
+        "ja": "一つの契約。あらゆるレイヤー。量産対応。"
+      },
+      "ecosystemEyebrow": {
+        "tr": "Eksiksiz Bağlı Ürün Ekosistemi",
+        "de": "Komplettes Ökosystem für vernetzte Produkte",
+        "fr": "Écosystème complet de produits connectés",
+        "es": "Ecosistema completo de productos conectados",
+        "it": "Ecosistema completo per prodotti connessi",
+        "ar": "منظومة متكاملة للمنتجات المتصلة",
+        "ja": "コネクテッド製品の完全なエコシステム"
+      },
+      "ecosystemTitle": {
+        "tr": "<strong class=\"hw-display\">Tek</strong> sistem. <em class=\"hw-serif\">Beş katman</em>.",
+        "de": "<strong class=\"hw-display\">Ein</strong> System. <em class=\"hw-serif\">Fünf Schichten</em>.",
+        "fr": "<strong class=\"hw-display\">Un</strong> système. <em class=\"hw-serif\">Cinq couches</em>.",
+        "es": "<strong class=\"hw-display\">Un</strong> sistema. <em class=\"hw-serif\">Cinco capas</em>.",
+        "it": "<strong class=\"hw-display\">Un</strong> sistema. <em class=\"hw-serif\">Cinque livelli</em>.",
+        "ar": "<strong class=\"hw-display\">نظام</strong> واحد. <em class=\"hw-serif\">خمس طبقات</em>.",
+        "ja": "<strong class=\"hw-display\">1つ</strong>のシステム。<em class=\"hw-serif\">5つのレイヤー</em>。"
+      },
+      "productsEyebrow": {
+        "tr": "Kanıtlanmış Donanım Portföyü",
+        "de": "Bewährtes Hardware-Portfolio",
+        "fr": "Portefeuille matériel éprouvé",
+        "es": "Portafolio de hardware probado",
+        "it": "Portfolio hardware collaudato",
+        "ar": "محفظة عتاد مُثبتة الجدارة",
+        "ja": "実績あるハードウェアポートフォリオ"
+      },
+      "productsTitle": {
+        "tr": "<span class=\"hw-muted\">Endüstriyel</span> <strong class=\"hw-display\">izleme</strong> <span class=\"hw-muted\">için sahaya hazır</span> <em class=\"hw-serif\">LoRaWAN</em> ürünleri.",
+        "de": "Feldtaugliche <em class=\"hw-serif\">LoRaWAN</em>-Produkte <span class=\"hw-muted\">für die industrielle</span> <strong class=\"hw-display\">Überwachung</strong>.",
+        "fr": "Des produits <em class=\"hw-serif\">LoRaWAN</em> prêts pour le terrain <span class=\"hw-muted\">pour la</span> <strong class=\"hw-display\">surveillance</strong> industrielle.",
+        "es": "Productos <em class=\"hw-serif\">LoRaWAN</em> listos para el campo <span class=\"hw-muted\">para la</span> <strong class=\"hw-display\">monitorización</strong> industrial.",
+        "it": "Prodotti <em class=\"hw-serif\">LoRaWAN</em> pronti per il campo <span class=\"hw-muted\">per il</span> <strong class=\"hw-display\">monitoraggio</strong> industriale.",
+        "ar": "منتجات <em class=\"hw-serif\">LoRaWAN</em> جاهزة للميدان <span class=\"hw-muted\">من أجل</span> <strong class=\"hw-display\">المراقبة</strong> الصناعية.",
+        "ja": "現場対応の <em class=\"hw-serif\">LoRaWAN</em> 製品で、<span class=\"hw-muted\">産業用の</span><strong class=\"hw-display\">モニタリング</strong>を。"
+      },
+      "industriesEyebrow": {
+        "tr": "Hizmet Verilen Sektörler",
+        "de": "Bediente Branchen",
+        "fr": "Secteurs desservis",
+        "es": "Sectores atendidos",
+        "it": "Settori serviti",
+        "ar": "القطاعات المخدومة",
+        "ja": "対応業界"
+      },
+      "industriesTitle": {
+        "tr": "<em class=\"hw-serif\">Güvenilirliğin</em> <strong class=\"hw-display\">önem taşıdığı</strong> ortamlar için tasarlandı.",
+        "de": "Entwickelt für Umgebungen, in denen <em class=\"hw-serif\">Zuverlässigkeit</em> <strong class=\"hw-display\">zählt</strong>.",
+        "fr": "Conçu pour les environnements où la <em class=\"hw-serif\">fiabilité</em> <strong class=\"hw-display\">compte</strong>.",
+        "es": "Diseñado para entornos donde la <em class=\"hw-serif\">fiabilidad</em> <strong class=\"hw-display\">importa</strong>.",
+        "it": "Progettato per ambienti in cui <em class=\"hw-serif\">l'affidabilità</em> <strong class=\"hw-display\">conta</strong>.",
+        "ar": "مُصمّم لبيئات تكون فيها <em class=\"hw-serif\">الموثوقية</em> <strong class=\"hw-display\">أساسية</strong>.",
+        "ja": "<em class=\"hw-serif\">信頼性</em>が<strong class=\"hw-display\">重要</strong>な環境のために設計。"
+      },
+      "newsEyebrow": {
+        "tr": "Haberler ve Kanıt",
+        "de": "News & Belege",
+        "fr": "Actualités et preuves",
+        "es": "Noticias y pruebas",
+        "it": "Notizie e prove",
+        "ar": "الأخبار والإثبات",
+        "ja": "ニュースと実績"
+      },
+      "newsTitle": {
+        "tr": "<strong class=\"hw-display\">WillowSoft</strong> dünyasından <span class=\"hw-muted\">en yeni</span> <em class=\"hw-serif\">güncellemeler</em>.",
+        "de": "Neueste <em class=\"hw-serif\">Entwicklungen</em> <span class=\"hw-muted\">aus dem</span> <strong class=\"hw-display\">WillowSoft</strong>-Ökosystem.",
+        "fr": "Dernières <em class=\"hw-serif\">évolutions</em> <span class=\"hw-muted\">au sein de l'écosystème</span> <strong class=\"hw-display\">WillowSoft</strong>.",
+        "es": "Últimas <em class=\"hw-serif\">novedades</em> <span class=\"hw-muted\">del ecosistema</span> <strong class=\"hw-display\">WillowSoft</strong>.",
+        "it": "Ultime <em class=\"hw-serif\">novità</em> <span class=\"hw-muted\">dall'ecosistema</span> <strong class=\"hw-display\">WillowSoft</strong>.",
+        "ar": "آخر <em class=\"hw-serif\">التطورات</em> <span class=\"hw-muted\">من منظومة</span> <strong class=\"hw-display\">WillowSoft</strong>.",
+        "ja": "<strong class=\"hw-display\">WillowSoft</strong> エコシステムからの<span class=\"hw-muted\">最新の</span><em class=\"hw-serif\">動向</em>。"
+      },
+      "ctaEyebrow": {
+        "tr": "Netlikle başlayın",
+        "de": "Mit Klarheit beginnen",
+        "fr": "Commencez avec clarté",
+        "es": "Empiece con claridad",
+        "it": "Inizia con chiarezza",
+        "ar": "ابدأ بوضوح",
+        "ja": "明確さから始める"
+      },
+      "ctaTitle": {
+        "tr": "Bir <em class=\"hw-serif\">bağlı ürün</em> ya da <strong class=\"hw-display\">endüstriyel platform</strong> kurmaya hazır mısınız?",
+        "de": "Bereit, ein <em class=\"hw-serif\">vernetztes Produkt</em> oder eine <strong class=\"hw-display\">industrielle Plattform</strong> zu entwickeln?",
+        "fr": "Prêt à créer un <em class=\"hw-serif\">produit connecté</em> ou une <strong class=\"hw-display\">plateforme industrielle</strong> ?",
+        "es": "¿Listo para crear un <em class=\"hw-serif\">producto conectado</em> o una <strong class=\"hw-display\">plataforma industrial</strong>?",
+        "it": "Pronto a creare un <em class=\"hw-serif\">prodotto connesso</em> o una <strong class=\"hw-display\">piattaforma industriale</strong>?",
+        "ar": "هل أنت مستعد لبناء <em class=\"hw-serif\">منتج متصل</em> أو <strong class=\"hw-display\">منصة صناعية</strong>؟",
+        "ja": "<em class=\"hw-serif\">コネクテッド製品</em>または<strong class=\"hw-display\">産業用プラットフォーム</strong>を構築する準備はできていますか？"
+      },
+      "ctaLead": {
+        "tr": "Donanım, firmware, backend, PostgreSQL, mobil uygulama, web yönetim paneli, web sitesi, VR simülasyonu veya uçtan uca tüm sistem mimarisi konusundaki ihtiyaçlarınızı bizimle paylaşın.",
+        "de": "Teilen Sie uns mit, ob Sie Hardware, Firmware, Backend, PostgreSQL, eine mobile App, ein Web-Dashboard, eine Website, eine VR-Simulation oder ein schlüsselfertiges Gesamtsystem benötigen.",
+        "fr": "Dites-nous si vous avez besoin de matériel, firmware, backend, PostgreSQL, application mobile, tableau de bord web, site web, simulation VR ou d'une solution clé en main complète.",
+        "es": "Cuéntenos si necesita hardware, firmware, backend, PostgreSQL, aplicación móvil, panel web, sitio web, simulación VR o una solución integral completa.",
+        "it": "Dicci se hai bisogno di hardware, firmware, backend, PostgreSQL, app mobile, dashboard web, sito web, simulazione VR o di una soluzione completa chiavi in mano.",
+        "ar": "أخبرنا إن كنت بحاجة إلى العتاد، أو البرامج الثابتة، أو الخلفية، أو PostgreSQL، أو تطبيق جوال، أو لوحة تحكم ويب، أو موقع إلكتروني، أو محاكاة الواقع الافتراضي، أو حل متكامل وشامل.",
+        "ja": "ハードウェア、ファームウェア、バックエンド、PostgreSQL、モバイルアプリ、Webダッシュボード、Webサイト、VRシミュレーション、あるいはすべてを網羅した包括的なシステムの中から、何が必要かお聞かせください。"
+      }
+    }
+  }
+}
