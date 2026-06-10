@@ -1,5 +1,9 @@
 {
-  "dependencies": {
-    "jsdom": "^29.1.1"
+  "name": "willowsoft-site",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "start": "node server.mjs",
+    "dev": "node server.mjs"
   }
 }
