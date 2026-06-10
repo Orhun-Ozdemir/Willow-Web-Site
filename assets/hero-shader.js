@@ -63,7 +63,12 @@
     vec3 scene(vec2 uv, float t) {
       float aspect = uResolution.x / max(uResolution.y, 1.0);
       vec2 p = uv * vec2(aspect, 1.0);
-      vec2 swirlCenter = vec2(aspect * 0.72, 0.22);
+      
+      // Dynamic sweep factor that oscillates between 0 (right) and 1 (left) over a ~22-second cycle
+      float sweep = 0.5 + 0.5 * sin(t * 0.285);
+      
+      // Sweep diagonally: from bottom-right (0.74, 0.22) to top-left (0.18, 0.82)
+      vec2 swirlCenter = vec2(aspect * mix(0.74, 0.18, sweep), mix(0.22, 0.82, sweep));
       vec2 center = p - swirlCenter;
       float dist = length(center);
       float spin = 0.18 * sin(t * 0.55) + 0.62 * exp(-dist * 1.45) + t * 0.08;
@@ -71,7 +76,10 @@
       float sn = sin(spin);
       mat2 rot = mat2(cs, -sn, sn, cs);
       p = swirlCenter + rot * center;
-      center = p - vec2(aspect * 0.66, 0.42);
+      
+      // Focus center also sweeps diagonally to the top-left
+      vec2 focusCenter = vec2(aspect * mix(0.68, 0.24, sweep), mix(0.42, 0.88, sweep));
+      center = p - focusCenter;
 
       float b1 = fbm(p * 1.28 + vec2(t * 0.28, -t * 0.20));
       float b2 = fbm(p * 1.86 + vec2(-t * 0.24, t * 0.16) + 4.7);
@@ -87,8 +95,10 @@
       float ribbonC = smoothstep(0.62, 0.998, riverC);
       float ribbon = ribbonA * 0.85 + ribbonB * 0.58 + ribbonC * 0.44;
       float focus = smoothstep(1.22, 0.08, length(center));
-      float rightField = smoothstep(0.18, 0.92, uv.x);
-      float topField = smoothstep(1.0, 0.10, uv.y);
+      
+      // Let the visibility fields sweep along with the centers, opening up the top-left during the sweep
+      float rightField = smoothstep(mix(0.18, -0.45, sweep), mix(0.92, 0.38, sweep), uv.x);
+      float topField = smoothstep(mix(1.0, 1.6, sweep), mix(0.10, -0.3, sweep), uv.y);
 
       vec3 col = uBase;
       col = mix(col, uBloomA, wa * 0.62);
@@ -218,7 +228,7 @@
   gl.uniform1f(uReduceMotion, reduceMotion ? 1.0 : 0.0);
 
   function resize() {
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
     const w = canvas.clientWidth;
     const h = canvas.clientHeight;
     if (w === 0 || h === 0) return;

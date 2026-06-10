@@ -2,13 +2,16 @@
   "version": "0.0.1",
   "configurations": [
     {
-      "name": "willow-static",
-      "runtimeExecutable": "/bin/sh",
-      "runtimeArgs": [
-        "-c",
-        "cd '/Users/orhunozdemir/Documents/Willow Web Site' && exec python3 -m http.server 8000"
-      ],
+      "name": "willow-site",
+      "runtimeExecutable": "/opt/homebrew/bin/npx",
+      "runtimeArgs": ["serve", "-l", "8000", "/Users/orhunozdemir/Documents/Willow Web Site"],
       "port": 8000
+    },
+    {
+      "name": "willow-dynamic",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["server.mjs"],
+      "port": 4173
     }
   ]
 }

@@ -13,19 +13,19 @@
       problemTitle: ".section.soft .section-inner.split .page-title",
       problemLeadOne: ".section.soft .section-inner.split .section-lead:nth-of-type(1)",
       problemLeadTwo: ".section.soft .section-inner.split .section-lead:nth-of-type(2)",
-      ownershipEyebrow: "main > section:nth-of-type(4) .eyebrow",
-      ownershipTitle: "main > section:nth-of-type(4) .page-title",
-      ecosystemEyebrow: "main > section:nth-of-type(5) .section-head .eyebrow",
-      ecosystemTitle: "main > section:nth-of-type(5) .section-head h2",
-      productsEyebrow: "main > section:nth-of-type(6) .section-head .eyebrow",
-      productsTitle: "main > section:nth-of-type(6) .section-head h2",
-      industriesEyebrow: "main > section:nth-of-type(7) .section-head .eyebrow",
-      industriesTitle: "main > section:nth-of-type(7) .section-head h2",
-      newsEyebrow: "main > section:nth-of-type(8) .section-head .eyebrow",
-      newsTitle: "main > section:nth-of-type(8) .section-head h2",
-      ctaEyebrow: ".section.dark:last-of-type .eyebrow",
-      ctaTitle: ".section.dark:last-of-type .page-title",
-      ctaLead: ".section.dark:last-of-type .section-lead"
+      ownershipEyebrow: ".ownership-section .eyebrow",
+      ownershipTitle: ".ownership-section .page-title",
+      ecosystemEyebrow: ".ecosystem-section .section-head .eyebrow",
+      ecosystemTitle: ".ecosystem-section .section-head h2",
+      productsEyebrow: ".home-products .section-head .eyebrow",
+      productsTitle: ".home-products .section-head h2",
+      industriesEyebrow: ".industries-section .section-head .eyebrow",
+      industriesTitle: ".industries-section .section-head h2",
+      newsEyebrow: ".proof-section .section-head .eyebrow",
+      newsTitle: ".proof-section .section-head h2",
+      ctaEyebrow: ".final-cta .eyebrow",
+      ctaTitle: ".final-cta .page-title",
+      ctaLead: ".final-cta .section-lead"
     },
     products: {
       heroEyebrow: ".hero .eyebrow",
@@ -272,14 +272,21 @@
   function renderFeaturedProducts(content) {
     const root = document.querySelector("[data-cms-featured-products]");
     if (!root) return;
-    root.innerHTML = (content.products || []).filter((product) => product.featured).slice(0, 4).map(productCard).join("");
+    const featured = (content.products || []).filter((product) => product.featured).slice(0, 4);
+    root.innerHTML = featured.map(productCard).join("");
+    root.className = `grid grid-${Math.min(4, featured.length || 4)}`;
   }
 
   function renderNews(content) {
     document.querySelectorAll("[data-cms-news]").forEach((root) => {
       const limit = Number(root.dataset.limit || 99);
-      root.innerHTML = (content.news || []).slice(0, limit).map(newsCard).join("");
+      const newsItems = (content.news || []).slice(0, limit);
+      root.innerHTML = newsItems.map(newsCard).join("");
+      root.className = `grid grid-${Math.min(3, newsItems.length || 3)}`;
     });
+    // Hide skeleton loader once real content is injected
+    const skeleton = document.getElementById("news-skeleton");
+    if (skeleton) skeleton.remove();
   }
 
   function renderClients(content) {
@@ -301,6 +308,33 @@
     });
   }
 
+  function faqItem(faq) {
+    faq = localizeItem(faq);
+    // Question and answer are stored as display-ready text (answers already
+    // contain pre-escaped entities like "&amp;"), so insert them as-is —
+    // matching the static FAQ markup in products.html. Only convert newlines.
+    const question = String(faq.question || "");
+    const answer = String(faq.answer || "").replace(/\r?\n/g, "<br>");
+    return `
+      <details class="faq-item">
+        <summary><span class="faq-q">${question}</span><span class="faq-toggle" aria-hidden="true"></span></summary>
+        <p>${answer}</p>
+      </details>
+    `;
+  }
+
+  function renderFaqs(content) {
+    const faqs = content.faqs || [];
+    document.querySelectorAll("[data-cms-faqs]").forEach((root) => {
+      const page = root.dataset.page;
+      const items = faqs
+        .filter((faq) => !page || faq.page === page)
+        .slice()
+        .sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
+      root.innerHTML = items.map(faqItem).join("");
+    });
+  }
+
   function renderPageContent(content) {
     const pageKey = activePageKey();
     const pageContent = content.pageContent?.[pageKey];
@@ -310,7 +344,15 @@
     Object.entries(bindings).forEach(([key, selector]) => {
       const node = document.querySelector(selector);
       const value = localizedValue(pageContent[key], locale);
-      if (node && value) node.textContent = value;
+      if (node && value) {
+        // Title fields may contain formatted HTML (hw-serif / hw-display markup).
+        // Other fields (eyebrow, lead) are plain text and stay as textContent.
+        if (key.toLowerCase().endsWith("title")) {
+          node.innerHTML = value;
+        } else {
+          node.textContent = value;
+        }
+      }
     });
   }
 
@@ -349,7 +391,8 @@
     renderNews,
     renderClients,
     renderFacts,
-    renderSolutions
+    renderSolutions,
+    renderFaqs
   };
 
   document.addEventListener("DOMContentLoaded", async () => {
@@ -361,6 +404,7 @@
       renderClients(content);
       renderFacts(content);
       renderSolutions(content);
+      renderFaqs(content);
       renderPageContent(content);
       revealDynamicContent();
       document.dispatchEvent(new CustomEvent("willow:content-ready", { detail: content }));

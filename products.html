@@ -53,42 +53,79 @@
     <header class="site-header">
       <nav class="nav" aria-label="Main navigation">
         <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true"><img src="assets/willow-mark-transparent.png" alt="" decoding="async"/></span><span><strong>WILLOWSOFT</strong><span>Smart Embedded Connectivity</span></span></a>
-        <div class="nav-links"><a href="solutions.html">Solutions</a><a href="services.html">Services</a><a aria-current="page" href="products.html">Products</a><a href="news.html">News</a><a href="company.html">Company</a><a href="contact.html">Contact</a></div>
+        <div class="nav-links"><a href="index.html">Home</a><a href="solutions.html">Solutions</a><a href="services.html">Services</a><a aria-current="page" href="products.html">Products</a><a href="news.html">News</a><a href="company.html">Company</a><a href="contact.html">Contact</a>
+          <a class="mobile-cta" href="start-project.html">Start Project</a>
+        </div>
         <div class="nav-actions"><a class="btn btn-primary btn-small" href="start-project.html">Start Project</a><button class="menu-toggle" aria-expanded="false" aria-label="Open menu">☰</button></div>
       </nav>
     </header>
     <main>
-      <section class="hero compact">
-        <div class="hero-media"><img src="pdf-assets/p29_06_X111.jpg" alt="Embedded electronics board testing" loading="lazy" decoding="async"/></div>
-        <canvas class="signal-canvas" data-density="38"></canvas>
-        <div class="hero-inner">
-          <p class="eyebrow reveal">Products</p>
-          <h1 class="reveal delay-1">Industrial-grade LoRaWAN hardware portfolio.</h1>
-          <p class="reveal delay-2">Modules, environmental sensors, tracking devices, safety products, and industrial interfaces for reliable remote monitoring.</p>
-        </div>
-      </section>
-
-      <section class="section">
-        <div class="section-inner bento">
-          <article class="card accent reveal">
-            <p class="eyebrow">Featured Hardware</p>
-            <h2 class="page-title">LoRaWAN modules and sensors ready for real deployments.</h2>
-            <div class="mini-spec-grid">
-              <div class="mini-spec"><strong>15 km</strong><span>Range</span></div>
-              <div class="mini-spec"><strong>10 yrs</strong><span>Battery</span></div>
-              <div class="mini-spec"><strong>IP67</strong><span>Outdoor</span></div>
+      <section class="hero compact products-motion-hero">
+        <canvas class="signal-canvas" data-density="34" data-color="24, 167, 255"></canvas>
+        <div class="services-hero-light" aria-hidden="true"></div>
+        <div class="hero-inner products-hero-grid">
+          <div class="products-hero-copy">
+            <p class="eyebrow reveal">Products</p>
+            <h1 class="reveal delay-1">Industrial-grade LoRaWAN hardware portfolio.</h1>
+            <p class="reveal delay-2">Modules, environmental sensors, tracking devices, safety products, and industrial interfaces for reliable remote monitoring.</p>
+            <div class="services-hero-meta reveal delay-3" role="list" aria-label="Product portfolio facts">
+              <span class="hero-meta-item" role="listitem"><strong data-company-fact="productsOnMarket">100+</strong><span>Products on Market</span></span>
+              <span class="hero-meta-divider" aria-hidden="true"></span>
+              <span class="hero-meta-item" role="listitem"><strong>14</strong><span>catalog items</span></span>
+              <span class="hero-meta-divider" aria-hidden="true"></span>
+              <span class="hero-meta-item" role="listitem"><strong>IP67</strong><span>field-ready options</span></span>
             </div>
-          </article>
-          <article class="card visual-card reveal delay-1" style="background-image:url('pdf-assets/p06_02_X14.jpg')">
-            <h3>WillowBee at the core.</h3>
-            <p>A compact LoRaWAN-enabled MCU module for low-power sensor end-nodes.</p>
-          </article>
+          </div>
+          <aside class="product-hero-showcase reveal delay-2" aria-label="Featured WillowSoft hardware">
+            <div class="product-showcase-stage">
+              <img src="assets/product-cutouts/willowbee-lorawan-module.png" alt="WillowBee LoRaWAN module" loading="lazy" decoding="async" />
+            </div>
+            <div class="product-showcase-copy">
+              <p class="architecture-label">Featured Hardware</p>
+              <h2>WillowBee at the core.</h2>
+              <p>A compact LoRaWAN-enabled MCU module for low-power sensor end-nodes.</p>
+            </div>
+          </aside>
         </div>
       </section>
 
-      <section class="section soft">
+      <section class="section product-proof-section">
         <div class="section-inner">
-          <div class="section-head reveal"><p class="eyebrow">Catalog</p><h2>Filter by product family.</h2></div>
+          <div class="product-proof-grid">
+            <article class="proof-stat-card reveal">
+              <span>Range</span>
+              <strong>15 km</strong>
+              <p>Long-range LoRaWAN communication for remote field deployments.</p>
+            </article>
+            <article class="proof-stat-card reveal delay-1">
+              <span>Battery</span>
+              <strong>10 yrs</strong>
+              <p>Low-power hardware design for unattended sensor operation.</p>
+            </article>
+            <article class="proof-stat-card reveal delay-2">
+              <span>Outdoor</span>
+              <strong>IP67</strong>
+              <p>Rugged enclosures for industrial, utility and outdoor sites.</p>
+            </article>
+            <article class="proof-stat-card reveal delay-3">
+              <span>Regions</span>
+              <strong>7</strong>
+              <p>US915, EU868, AS923, AU915, KR920, IN865 and RU864 support.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section soft product-catalog-section" id="catalog">
+        <div class="section-inner">
+          <div class="section-head reveal product-headline">
+            <div>
+              <p class="eyebrow">Catalog</p>
+              <h2>Filter by product family.</h2>
+              <p class="section-lead">A clean catalog view for comparing modules, environmental sensors, tracking/safety devices and industrial interfaces without changing visual language from the rest of the site.</p>
+            </div>
+            <a class="btn btn-secondary btn-small" href="contact.html">Request Quote</a>
+          </div>
           <div class="filter-bar reveal">
             <button class="filter-btn active" data-filter="all">All</button>
             <button class="filter-btn" data-filter="modules">Modules</button>
@@ -112,8 +149,56 @@
           </div>
         </div>
       </section>
+
+      <!-- FAQ — visible HTML version of the existing FAQPage schema -->
+      <section class="section soft services-faq-section" id="faq">
+        <div class="section-inner">
+          <div class="section-head reveal center" style="margin-bottom: 36px;">
+            <p class="eyebrow">Frequently asked</p>
+            <h2 class="page-title">Questions about our products.</h2>
+            <p class="section-lead" style="max-width: 720px; margin-left: auto; margin-right: auto;">Here are answers to the most common questions about our LoRaWAN devices and module specifications.</p>
+          </div>
+          <div class="faq-list reveal delay-1">
+            <details class="faq-item">
+              <summary><span class="faq-q">What LoRaWAN products does WillowSoft manufacture?</span><span class="faq-toggle" aria-hidden="true"></span></summary>
+              <p>WillowSoft's hardware portfolio includes WillowBee (LoRaWAN MCU module), WillowAir (indoor air quality), WillowMod (Modbus RTU bridge), WillowSonic (ultrasonic level), WillowGPS (GNSS tracker), WillowPanic (panic button), WillowSens (door sensor), WillowTilt (3-axis tilt), WillowTemp (temperature/humidity), WillowMos (soil moisture), WillowPre (pressure), WillowAne (anemometer), WillowCO2 and WillowBatt.</p>
+            </details>
+            <details class="faq-item">
+              <summary><span class="faq-q">Which LoRaWAN regions do WillowSoft devices support?</span><span class="faq-toggle" aria-hidden="true"></span></summary>
+              <p>Multi-region: US915, EU868, AS923, AU915, KR920, IN865 and RU864. Devices are configurable to operate across these frequency plans.</p>
+            </details>
+            <details class="faq-item">
+              <summary><span class="faq-q">Are WillowSoft products field-ready for outdoor industrial use?</span><span class="faq-toggle" aria-hidden="true"></span></summary>
+              <p>Yes. Devices like WillowSonic, WillowGPS, WillowPre and WillowTilt are rated IP67 for outdoor and harsh-environment deployments. Battery life is engineered for years of unattended operation.</p>
+            </details>
+          </div>
+        </div>
+      </section>
     </main>
-    <footer class="footer"><div class="footer-grid"><div><h3>WillowSoft</h3><p>LoRaWAN hardware and complete digital systems.</p></div><div><h3>Company</h3><a href="company.html">About</a><a href="services.html">Services</a></div><div><h3>Products</h3><a href="product-willowbee.html">WillowBee</a><a href="product-willowair.html">WillowAir</a></div><div><h3>Contact</h3><a href="contact.html">Get Quote</a><a href="mailto:info@willowsoft.co">info@willowsoft.co</a></div></div></footer>
+        <footer class="footer">
+      <div class="footer-grid">
+        <div>
+          <h3>WillowSoft</h3>
+          <p>Smart Embedded Connectivity &amp; Industrial IoT.</p>
+        </div>
+        <div>
+          <h3>Explore</h3>
+          <a href="solutions.html">Solutions</a>
+          <a href="services.html">Services</a>
+          <a href="products.html">Products</a>
+        </div>
+        <div>
+          <h3>Company</h3>
+          <a href="company.html">Company</a>
+          <a href="news.html">News</a>
+        </div>
+        <div>
+          <h3>Contact</h3>
+          <a href="contact.html">Contact</a>
+          <a href="mailto:info@willowsoft.co">info@willowsoft.co</a>
+        </div>
+      </div>
+    </footer>
     <script src="assets/cms.js"></script>
     <script src="assets/i18n.js"></script>
     <script src="/assets/analytics.js"></script>

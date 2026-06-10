@@ -12,13 +12,15 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@500;600;700;800;900&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="/assets/styles.css" />
+    <link rel="stylesheet" href="/assets/styles.css?v=fram-gap-final" />
   </head>
   <body data-page="product-bee">
     <header class="site-header">
       <nav class="nav" aria-label="Main navigation">
         <a class="brand" href="/index.html"><span class="brand-mark" aria-hidden="true"><img src="/assets/willow-mark-transparent.png" alt="" decoding="async"/></span><span><strong>WILLOWSOFT</strong><span>Smart Embedded Connectivity</span></span></a>
-        <div class="nav-links"><a href="/solutions.html">Solutions</a><a href="/services.html">Services</a><a aria-current="page" href="/products.html">Products</a><a href="/news.html">News</a><a href="/company.html">Company</a><a href="/contact.html">Contact</a></div>
+        <div class="nav-links"><a href="/index.html">Home</a><a href="/solutions.html">Solutions</a><a href="/services.html">Services</a><a aria-current="page" href="/products.html">Products</a><a href="/news.html">News</a><a href="/company.html">Company</a><a href="/contact.html">Contact</a>
+          <a class="mobile-cta" href="/start-project.html">Start Project</a>
+        </div>
         <div class="nav-actions"><a class="btn btn-primary btn-small" href="/start-project.html">Start Project</a><button class="menu-toggle" aria-expanded="false" aria-label="Open menu">☰</button></div>
       </nav>
     </header>
@@ -49,6 +51,17 @@
         </div>
       </section>
 
+      <section class="section product-gallery-section" data-detail-gallery-section hidden>
+        <div class="section-inner">
+          <div class="section-head"><p class="eyebrow">Gallery</p><h2 class="page-title">Product gallery.</h2></div>
+          <div class="product-gallery" data-detail-gallery></div>
+        </div>
+      </section>
+
+      <section class="section soft product-tech-section" data-detail-tech-section hidden>
+        <div class="section-inner" data-detail-tech-sections></div>
+      </section>
+
       <section class="section soft">
         <div class="section-inner split">
           <div class="reveal">
@@ -61,9 +74,97 @@
           </div>
         </div>
       </section>
+
+      <section class="section product-decision-section">
+        <div class="section-inner">
+          <div class="section-head reveal product-headline">
+            <div>
+              <p class="eyebrow">Buyer Checklist</p>
+              <h2>What this product helps you decide before deployment.</h2>
+            </div>
+            <a class="btn btn-secondary btn-small" href="/start-project.html">Plan Deployment</a>
+          </div>
+          <div class="product-decision-grid">
+            <article class="product-decision-card reveal">
+              <span>Use Case</span>
+              <h3 data-detail-use-case-title>Field monitoring</h3>
+              <p data-detail-use-case>Use this device where field data must be collected without frequent site visits.</p>
+            </article>
+            <article class="product-decision-card reveal delay-1">
+              <span>System Role</span>
+              <h3 data-detail-system-role-title>Telemetry source</h3>
+              <p data-detail-system-role>This product becomes the device layer feeding backend APIs, PostgreSQL, dashboards and alerts.</p>
+            </article>
+            <article class="product-decision-card reveal delay-2">
+              <span>Delivered With</span>
+              <h3>Hardware plus software path</h3>
+              <ul data-detail-delivered-with>
+                <li>Firmware and connectivity configuration</li>
+                <li>Backend ingestion and PostgreSQL model</li>
+                <li>Web/admin dashboard and mobile alerts</li>
+              </ul>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section soft product-system-section">
+        <div class="section-inner split">
+          <div class="reveal">
+            <p class="eyebrow">System Architecture</p>
+            <h2 class="page-title">A product page should show the whole operating path.</h2>
+            <p class="section-lead">WillowSoft products are strongest when they are presented as part of a complete operational system: sensor, connectivity, backend, database, dashboard, mobile and alerting.</p>
+          </div>
+          <div class="tech-flow product-tech-flow reveal delay-1">
+            <div class="flow-row">
+              <div class="flow-node"><small>01</small><strong>Device</strong><span>Sensing, enclosure, battery and RF behavior.</span></div>
+              <div class="flow-node"><small>02</small><strong>Network</strong><span>LoRaWAN payloads and gateway planning.</span></div>
+              <div class="flow-node"><small>03</small><strong>Data</strong><span>API ingestion and PostgreSQL schema.</span></div>
+              <div class="flow-node"><small>04</small><strong>Interface</strong><span>Dashboard, mobile app and admin panel.</span></div>
+              <div class="flow-node"><small>05</small><strong>Action</strong><span>Alerts, reports, integrations and service workflows.</span></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section product-quote-band">
+        <div class="section-inner product-quote-inner reveal">
+          <div>
+            <p class="eyebrow">Need this in a project?</p>
+            <h2 class="page-title">Ask for product fit, integration path and deployment scope.</h2>
+          </div>
+          <div class="product-quote-actions">
+            <a class="btn btn-primary" data-detail-project-cta href="/start-project.html">Start Project</a>
+            <a class="btn btn-secondary" data-detail-contact-cta href="/contact.html">Contact Sales</a>
+          </div>
+        </div>
+      </section>
     </main>
 
-    <footer class="footer"><div class="footer-grid"><div><h3>WillowSoft</h3><p>Product details for industrial IoT and LoRaWAN systems.</p></div><div><h3>Explore</h3><a href="/products.html">Products</a><a href="/services.html">Services</a></div><div><h3>Company</h3><a href="/company.html">About</a><a href="/news.html">News</a></div><div><h3>Contact</h3><a href="/contact.html">Get Quote</a><a href="mailto:info@willowsoft.co">info@willowsoft.co</a></div></div></footer>
+        <footer class="footer">
+      <div class="footer-grid">
+        <div>
+          <h3>WillowSoft</h3>
+          <p>Smart Embedded Connectivity &amp; Industrial IoT.</p>
+        </div>
+        <div>
+          <h3>Explore</h3>
+          <a href="/solutions.html">Solutions</a>
+          <a href="/services.html">Services</a>
+          <a href="/products.html">Products</a>
+        </div>
+        <div>
+          <h3>Company</h3>
+          <a href="/company.html">Company</a>
+          <a href="/news.html">News</a>
+        </div>
+        <div>
+          <h3>Contact</h3>
+          <a href="/contact.html">Contact</a>
+          <a href="mailto:info@willowsoft.co">info@willowsoft.co</a>
+        </div>
+      </div>
+    </footer>
     <script src="/assets/cms.js"></script>
     <script src="/assets/i18n.js"></script>
     <script src="/assets/detail.js"></script>
