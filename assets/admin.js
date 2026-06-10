@@ -5,7 +5,9 @@
     analytics: null,
     editLocale: "tr",
     editingProduct: null, // index of the product being edited (null = grid view)
-    editingPage: null     // key of the page being edited (null = grid view)
+    editingPage: null,    // key of the page being edited (null = grid view)
+    seoActivePage: null,
+    seoActivePanel: "general"
   };
 
   const qs = (selector) => document.querySelector(selector);
@@ -1082,178 +1084,826 @@
     root.innerHTML = gridHtml;
   }
   // ===== SEO SCORE ENGINE =====
-  function calcSEOScore(seoData, locale, allLocalesData) {
-    const checks = [];
+  function calcSEOScore(seoData, locale, allLocalesData, pageKey) {
+    const seoChecks = [];
+    const aiChecks = [];
+    
     const title = (seoData.seoTitle || '').trim();
     const desc = (seoData.metaDescription || '').trim();
     const keyword = (seoData.focusKeyword || '').trim().toLowerCase();
     const slug = (seoData.slug || '').trim();
+    const canonical = (seoData.canonical || '').trim();
+    const h1 = (seoData.h1 || '').trim();
     const ogImage = (seoData.ogImage || '').trim();
-
-    // Title
-    if (title.length === 0) checks.push({ label: 'SEO başlığı eksik', ok: false, warn: false });
-    else if (title.length >= 50 && title.length <= 60) checks.push({ label: `SEO başlığı ideal uzunlukta (${title.length} karakter)`, ok: true });
-    else if (title.length >= 40 && title.length <= 70) checks.push({ label: `SEO başlığı biraz ${title.length < 50 ? 'kısa' : 'uzun'} (${title.length} karakter, ideal 50-60)`, ok: false, warn: true });
-    else checks.push({ label: `SEO başlığı çok ${title.length < 40 ? 'kısa' : 'uzun'} (${title.length} karakter, ideal 50-60)`, ok: false, warn: false });
-
-    // Meta desc
-    if (desc.length === 0) checks.push({ label: 'Meta açıklama eksik', ok: false, warn: false });
-    else if (desc.length >= 150 && desc.length <= 160) checks.push({ label: `Meta açıklama ideal uzunlukta (${desc.length} karakter)`, ok: true });
-    else if (desc.length >= 130 && desc.length <= 175) checks.push({ label: `Meta açıklama biraz ${desc.length < 150 ? 'kısa' : 'uzun'} (${desc.length} karakter, ideal 150-160)`, ok: false, warn: true });
-    else checks.push({ label: `Meta açıklama çok ${desc.length < 130 ? 'kısa' : 'uzun'} (${desc.length} karakter, ideal 150-160)`, ok: false, warn: false });
-
-    // Keyword in title
-    if (keyword) {
-      if (title.toLowerCase().includes(keyword)) checks.push({ label: 'Anahtar kelime başlıkta geçiyor ✓', ok: true });
-      else checks.push({ label: 'Anahtar kelime başlıkta geçmiyor', ok: false, warn: true });
-      if (desc.toLowerCase().includes(keyword)) checks.push({ label: 'Anahtar kelime açıklamada geçiyor ✓', ok: true });
-      else checks.push({ label: 'Anahtar kelime açıklamada geçmiyor', ok: false, warn: true });
+    const schemaType = (seoData.schemaType || '').trim();
+    
+    const noindex = !!seoData.noindex;
+    const nosnippet = !!seoData.nosnippet;
+    
+    // --- SEO SCORE ACCUMULATOR ---
+    let seoScoreVal = 0;
+    
+    // 1. Title
+    if (!title) {
+      seoChecks.push({ label: 'SEO başlığı girilmemiş.', ok: false, fail: true });
     } else {
-      checks.push({ label: 'Odak anahtar kelime belirlenmemiş', ok: false, warn: false });
+      seoScoreVal += 10;
+      if (title.length >= 50 && title.length <= 60) {
+        seoScoreVal += 5;
+        seoChecks.push({ label: `SEO başlığı ideal uzunlukta (${title.length} kar.).`, ok: true, pass: true });
+      } else if (title.length >= 40 && title.length <= 70) {
+        seoScoreVal += 2;
+        seoChecks.push({ label: `SEO başlığı sınır değerlerde (${title.length} kar., ideal 50-60).`, ok: false, warn: true });
+      } else {
+        seoChecks.push({ label: `SEO başlığı çok ${title.length < 40 ? 'kısa' : 'uzun'} (${title.length} kar.).`, ok: false, fail: true });
+      }
     }
-
-    // Slug
-    if (!slug) checks.push({ label: 'URL slug eksik', ok: false, warn: false });
-    else if (slug.length > 75) checks.push({ label: 'URL çok uzun (75 karakterden kısa tutun)', ok: false, warn: true });
-    else checks.push({ label: 'URL slug mevcut ✓', ok: true });
-
-    // OG Image
-    if (!ogImage) checks.push({ label: 'OG Görseli ayarlanmamış (sosyal paylaşım için önemli)', ok: false, warn: true });
-    else checks.push({ label: 'OG Görseli ayarlı ✓', ok: true });
-
-    // All locales filled
-    if (allLocalesData) {
-      const filledLocales = Object.keys(allLocalesData).filter(l => (allLocalesData[l].seoTitle || '').trim());
-      if (filledLocales.length === 8) checks.push({ label: 'Tüm 8 dilde SEO başlığı dolu ✓', ok: true });
-      else checks.push({ label: `SEO başlığı sadece ${filledLocales.length}/8 dilde dolu`, ok: false, warn: filledLocales.length >= 4 });
+    
+    // 2. Meta Desc
+    if (!desc) {
+      seoChecks.push({ label: 'Meta açıklama girilmemiş.', ok: false, fail: true });
+    } else {
+      seoScoreVal += 10;
+      if (desc.length >= 150 && desc.length <= 160) {
+        seoScoreVal += 5;
+        seoChecks.push({ label: `Meta açıklama ideal uzunlukta (${desc.length} kar.).`, ok: true, pass: true });
+      } else if (desc.length >= 130 && desc.length <= 175) {
+        seoScoreVal += 2;
+        seoChecks.push({ label: `Meta açıklama sınır değerlerde (${desc.length} kar., ideal 150-160).`, ok: false, warn: true });
+      } else {
+        seoChecks.push({ label: `Meta açıklama çok ${desc.length < 130 ? 'kısa' : 'uzun'} (${desc.length} kar.).`, ok: false, fail: true });
+      }
     }
-
-    const passed = checks.filter(c => c.ok).length;
-    const total = checks.length;
-    const score = Math.round((passed / total) * 100);
-    const level = score >= 80 ? 'good' : score >= 50 ? 'ok' : 'bad';
-    return { score, level, checks };
+    
+    // 3. Focus Keyword
+    if (!keyword) {
+      seoChecks.push({ label: 'Odak anahtar kelime belirlenmemiş.', ok: false, fail: true });
+    } else {
+      seoScoreVal += 10;
+      seoChecks.push({ label: `Odak anahtar kelime tanımlanmış (${keyword}).`, ok: true, pass: true });
+      
+      if (title.toLowerCase().includes(keyword)) {
+        seoScoreVal += 10;
+        seoChecks.push({ label: 'Anahtar kelime başlıkta geçiyor.', ok: true, pass: true });
+      } else {
+        seoChecks.push({ label: 'Anahtar kelime başlıkta geçmiyor.', ok: false, warn: true });
+      }
+      
+      if (desc.toLowerCase().includes(keyword)) {
+        seoScoreVal += 10;
+        seoChecks.push({ label: 'Anahtar kelime açıklamada geçiyor.', ok: true, pass: true });
+      } else {
+        seoChecks.push({ label: 'Anahtar kelime açıklamada geçmiyor.', ok: false, warn: true });
+      }
+    }
+    
+    // 4. Slug
+    if (!slug) {
+      seoChecks.push({ label: 'Slug / URL yolu girilmemiş.', ok: false, fail: true });
+    } else {
+      seoScoreVal += 5;
+      const isLower = slug === slug.toLowerCase();
+      const hasSpaces = slug.includes(' ');
+      const trChars = /[çşğışöüIŞĞÖÜİ]/;
+      const hasTr = trChars.test(slug);
+      
+      if (!isLower || hasSpaces || hasTr) {
+        seoChecks.push({ label: 'Slug temiz değil (küçük harf, tire ve İngilizce karakter olmalı).', ok: false, fail: true });
+      } else if (slug.length > 75) {
+        seoScoreVal += 2;
+        seoChecks.push({ label: 'Slug çok uzun (75 karakterden kısa tutun).', ok: false, warn: true });
+      } else {
+        seoScoreVal += 5;
+        seoChecks.push({ label: 'Slug yapısı temiz ve uygun.', ok: true, pass: true });
+      }
+    }
+    
+    // 5. Canonical
+    if (!canonical) {
+      seoChecks.push({ label: 'Canonical URL girilmemiş (sayfanın kendi URL\'si kullanılır).', ok: false, warn: true });
+    } else {
+      seoScoreVal += 10;
+      seoChecks.push({ label: 'Canonical URL tanımlanmış.', ok: true, pass: true });
+    }
+    
+    // 6. Robots Index
+    if (noindex) {
+      seoChecks.push({ label: 'Sayfa noindex durumunda (indekslenemez).', ok: false, warn: true });
+    } else {
+      seoScoreVal += 10;
+      seoChecks.push({ label: 'Sayfa indekslemeye açık.', ok: true, pass: true });
+    }
+    
+    // 7. H1 Header & Title Uyumu
+    if (!h1) {
+      seoChecks.push({ label: 'H1 başlığı eksik.', ok: false, fail: true });
+    } else {
+      seoScoreVal += 5;
+      seoChecks.push({ label: 'H1 başlığı mevcut.', ok: true, pass: true });
+      if (title.toLowerCase().includes(h1.toLowerCase()) || h1.toLowerCase().includes(title.toLowerCase())) {
+        seoScoreVal += 5;
+        seoChecks.push({ label: 'H1 başlığı ve SEO title birbiriyle uyumlu.', ok: true, pass: true });
+      } else {
+        seoChecks.push({ label: 'H1 başlığı ve SEO title uyumsuz olabilir.', ok: false, warn: true });
+      }
+    }
+    
+    // 8. Schema
+    if (!schemaType) {
+      seoChecks.push({ label: 'Schema yapısal veri tipi seçilmemiş.', ok: false, fail: true });
+    } else {
+      seoScoreVal += 5;
+      seoChecks.push({ label: `Yapısal veri tipi: ${schemaType}.`, ok: true, pass: true });
+    }
+    
+    // 9. OG Image
+    if (!ogImage) {
+      seoChecks.push({ label: 'Sosyal paylaşım görseli (OG Image) eksik.', ok: false, warn: true });
+    } else {
+      seoScoreVal += 5;
+      seoChecks.push({ label: 'Sosyal paylaşım görseli tanımlı.', ok: true, pass: true });
+    }
+    
+    // 10. Duplicate Checks
+    if (allLocalesData && pageKey) {
+      let duplicateTitle = false;
+      let duplicateSlug = false;
+      const currentTitle = title.toLowerCase();
+      const currentSlug = slug.toLowerCase();
+      
+      for (const [pk, localesData] of Object.entries(allLocalesData)) {
+        if (pk === pageKey) continue;
+        const locData = localesData[locale] || {};
+        if (title && locData.seoTitle && locData.seoTitle.trim().toLowerCase() === currentTitle) {
+          duplicateTitle = true;
+        }
+        if (slug && locData.slug && locData.slug.trim().toLowerCase() === currentSlug) {
+          duplicateSlug = true;
+        }
+      }
+      
+      if (duplicateTitle) {
+        seoScoreVal -= 15;
+        seoChecks.push({ label: 'Bu SEO Başlığı başka bir sayfada kullanılıyor (Çift kayıt).', ok: false, fail: true });
+      }
+      if (duplicateSlug) {
+        seoScoreVal -= 15;
+        seoChecks.push({ label: 'Bu URL Slug başka bir sayfada kullanılıyor (Çift kayıt).', ok: false, fail: true });
+      }
+    }
+    
+    const seoScore = Math.max(0, Math.min(100, seoScoreVal));
+    const seoLevel = seoScore >= 80 ? 'good' : seoScore >= 50 ? 'ok' : 'bad';
+    
+    // --- AI SCORE ACCUMULATOR ---
+    let aiScoreVal = 0;
+    
+    // 1. Robots Index & Snippet
+    if (noindex) {
+      aiChecks.push({ label: 'Sayfa noindex olduğu için AI Overview kullanamaz.', ok: false, fail: true });
+    } else if (nosnippet) {
+      aiChecks.push({ label: 'nosnippet aktif, arama robotları yapay zeka özeti üretemez.', ok: false, fail: true });
+    } else {
+      aiScoreVal += 20;
+      aiChecks.push({ label: 'Sayfa indekse açık ve snippet kullanımına izin veriyor.', ok: true, pass: true });
+    }
+    
+    // 2. AI Kısa Cevap
+    const aiShort = (seoData.aiShortAnswer || '').trim();
+    if (!aiShort) {
+      aiChecks.push({ label: 'AI Kısa Cevap alanı doldurulmamış.', ok: false, fail: true });
+    } else if (aiShort.length < 50) {
+      aiScoreVal += 10;
+      aiChecks.push({ label: 'AI Kısa Cevap alanı çok kısa (en az 50 kar. olmalı).', ok: false, warn: true });
+    } else {
+      aiScoreVal += 20;
+      aiChecks.push({ label: 'AI Kısa Cevap bölümü hazır.', ok: true, pass: true });
+    }
+    
+    // 3. AI FAQ QAs
+    const faqList = seoData.aiFAQ || [];
+    if (faqList.length === 0) {
+      aiChecks.push({ label: 'AI soru-cevap blokları eklenmemiş.', ok: false, fail: true });
+    } else if (faqList.length < 3) {
+      aiScoreVal += faqList.length * 7;
+      aiChecks.push({ label: `Soru-cevap sayısı az (${faqList.length}/3). En az 3 adet önerilir.`, ok: false, warn: true });
+    } else {
+      aiScoreVal += 20;
+      aiChecks.push({ label: `AI soru-cevap listesi hazır (${faqList.length} adet).`, ok: true, pass: true });
+    }
+    
+    // 4. Maddeleme / Liste / Tablo Kontrolü
+    let hasListsOrTables = false;
+    const pgContent = state.content.pageContent?.[pageKey] || {};
+    const pageStr = JSON.stringify(pgContent).toLowerCase();
+    if (pageStr.includes('<li>') || pageStr.includes('<ul') || pageStr.includes('<ol') || pageStr.includes('<table') || pageStr.includes('\n-') || pageStr.includes('\n*') || pageStr.includes('|') || ['solutions', 'products', 'news', 'services'].includes(pageKey)) {
+      hasListsOrTables = true;
+    }
+    
+    if (hasListsOrTables) {
+      aiScoreVal += 20;
+      aiChecks.push({ label: 'İçerikte maddeleme, tablo veya liste yapısı mevcut.', ok: true, pass: true });
+    } else {
+      aiChecks.push({ label: 'İçerik düz uzun paragraflardan oluşuyor. Liste/tablo önerilir.', ok: false, warn: true });
+    }
+    
+    // 5. E-E-A-T (Author, Expertise Note, Sources, ReviewedBy, CompanyCompetency)
+    const author = (seoData.author || '').trim();
+    const expertise = (seoData.expertiseNote || '').trim();
+    const sources = (seoData.sources || '').trim();
+    let eeatCount = 0;
+    if (author) eeatCount++;
+    if (expertise) eeatCount++;
+    if ((seoData.reviewedBy || '').trim()) eeatCount++;
+    if (sources) eeatCount++;
+    if ((seoData.companyCompetency || '').trim()) eeatCount++;
+    
+    aiScoreVal += eeatCount * 2; // Max 10 points
+    
+    if (author && expertise) {
+      aiChecks.push({ label: 'E-E-A-T yazar ve uzmanlık bilgisi girilmiş.', ok: true, pass: true });
+    } else {
+      aiChecks.push({ label: 'Yazar veya uzmanlık bilgisi (E-E-A-T) eksik.', ok: false, warn: true });
+    }
+    
+    if (sources) {
+      aiChecks.push({ label: 'Teknik kaynak ve referanslar listelenmiş.', ok: true, pass: true });
+    } else {
+      aiChecks.push({ label: 'Kaynak gösterimi / resmi teknik referanslar girilmemiş.', ok: false, warn: true });
+    }
+    
+    // 6. Son Güncelleme Tarihi
+    const lastUpd = (seoData.lastUpdated || '').trim();
+    if (lastUpd) {
+      aiScoreVal += 10;
+      aiChecks.push({ label: `Güncellik ve yayın tarihi bilgisi mevcut (${lastUpd}).`, ok: true, pass: true });
+    } else {
+      aiChecks.push({ label: 'Son güncelleme tarihi girilmemiş.', ok: false, warn: true });
+    }
+    
+    const aiScore = Math.max(0, Math.min(100, aiScoreVal));
+    const aiLevel = aiScore >= 80 ? 'good' : aiScore >= 50 ? 'ok' : 'bad';
+    
+    return {
+      score: seoScore,
+      level: seoLevel,
+      seoScore,
+      seoLevel,
+      seoChecks,
+      aiScore,
+      aiLevel,
+      aiChecks
+    };
   }
 
   // ===== SEO CENTER DASHBOARD =====
+  function getImagesForPage(pageKey) {
+    const images = [];
+    if (!state.content) return images;
+
+    if (pageKey === "home") {
+      images.push({ url: "/assets/hero-industrial-iot.png", alt: "Industrial IoT Hero Image" });
+      if (state.content.products) {
+        state.content.products.slice(0, 4).forEach(p => {
+          if (p.image) images.push({ url: p.image, alt: p.title || "" });
+        });
+      }
+    } else if (pageKey === "products") {
+      if (state.content.products) {
+        state.content.products.forEach(p => {
+          if (p.image) images.push({ url: p.image, alt: p.title || "" });
+        });
+      }
+    } else if (pageKey === "news") {
+      if (state.content.news) {
+        state.content.news.forEach(n => {
+          if (n.image) images.push({ url: n.image, alt: n.title || "" });
+        });
+      }
+    } else if (pageKey === "solutions") {
+      if (state.content.solutions) {
+        state.content.solutions.forEach(s => {
+          if (s.image) images.push({ url: s.image, alt: s.headline || s.title || "" });
+        });
+      }
+    } else if (pageKey === "services") {
+      images.push({ url: "/assets/hero-industrial-iot.png", alt: "Services Hero Background" });
+    }
+    
+    // Clean duplicates
+    const seen = new Set();
+    return images.filter(img => {
+      if (!img.url) return false;
+      const url = img.url.trim();
+      if (seen.has(url)) return false;
+      seen.add(url);
+      return true;
+    });
+  }
+
+  function auditImageSEO(img) {
+    const checks = [];
+    const filename = img.url.split('/').pop();
+    
+    // 1. Alt text
+    const hasAlt = !!img.alt && img.alt.trim().length > 3;
+    checks.push({ label: 'Alt Etiketi', ok: hasAlt });
+    
+    // 2. File name
+    const isFriendly = !filename.toLowerCase().startsWith('img_') && 
+                       !filename.toLowerCase().startsWith('screenshot_') &&
+                       filename.length > 5 &&
+                       !filename.includes(' ') &&
+                       !/[çşğışöüIŞĞÖÜİ]/.test(filename);
+    checks.push({ label: 'Dosya Adı', ok: isFriendly });
+    
+    // 3. Lazy Load
+    const isLazy = !img.url.includes('hero'); // Hero images shouldn't be lazy loaded!
+    checks.push({ label: 'Lazy Load', ok: isLazy });
+
+    return { filename, checks };
+  }
+
+  function refreshPageSEOReviews(pageKey, locale) {
+    const pageSeo = state.content.pageSeo || {};
+    const pgData = pageSeo[pageKey] || {};
+    const locData = pgData[locale] || {};
+    const score = calcSEOScore(locData, locale, pageSeo, pageKey);
+    
+    // 1. Update score labels & badge colors
+    const seoCircleBar = document.querySelector(`[data-seo-circle-bar="${pageKey}"]`);
+    const seoCircleText = document.querySelector(`[data-seo-circle-text="${pageKey}"]`);
+    const seoScoreDesc = document.querySelector(`[data-seo-score-desc="${pageKey}"]`);
+    if (seoCircleText) seoCircleText.textContent = score.seoScore;
+    if (seoScoreDesc) seoScoreDesc.textContent = score.seoLevel === 'good' ? 'İyi' : score.seoLevel === 'ok' ? 'Orta' : 'Kritik';
+    if (seoCircleBar) {
+      seoCircleBar.className.baseVal = `admin-score-circle-bar ${score.seoLevel}`;
+      const offset = 182.2 - (score.seoScore / 100) * 182.2;
+      seoCircleBar.style.strokeDashoffset = offset;
+    }
+    
+    const aiCircleBar = document.querySelector(`[data-ai-circle-bar="${pageKey}"]`);
+    const aiCircleText = document.querySelector(`[data-ai-circle-text="${pageKey}"]`);
+    const aiScoreDesc = document.querySelector(`[data-ai-score-desc="${pageKey}"]`);
+    if (aiCircleText) aiCircleText.textContent = score.aiScore;
+    if (aiScoreDesc) aiScoreDesc.textContent = score.aiLevel === 'good' ? 'Uyumlu' : score.aiLevel === 'ok' ? 'Orta' : 'Kritik';
+    if (aiCircleBar) {
+      aiCircleBar.className.baseVal = `admin-score-circle-bar ${score.aiLevel}`;
+      const offset = 182.2 - (score.aiScore / 100) * 182.2;
+      aiCircleBar.style.strokeDashoffset = offset;
+    }
+    
+    // 2. Update SERP previews
+    const serpTitle = document.querySelector(`[data-serp-title-preview="${pageKey}"]`);
+    const serpDesc = document.querySelector(`[data-serp-desc-preview="${pageKey}"]`);
+    const serpUrlText = document.querySelector(`[data-serp-url-text="${pageKey}"]`);
+    if (serpTitle) serpTitle.textContent = locData.seoTitle || 'Başlık girilmemiş';
+    if (serpDesc) serpDesc.textContent = locData.metaDescription || 'Açıklama girilmemiş.';
+    if (serpUrlText) serpUrlText.textContent = `willowsoft.co › ${locale} › ${(locData.slug || pageKey).replace(/^\//, '')}`;
+
+    // Clean SEO center live widgets
+    const cleanSeoScore = document.querySelector(`[data-clean-seo-score="${pageKey}"]`);
+    const cleanAiScore = document.querySelector(`[data-clean-ai-score="${pageKey}"]`);
+    const cleanStatus = document.querySelector(`[data-clean-seo-status="${pageKey}"]`);
+    if (cleanSeoScore) cleanSeoScore.textContent = score.seoScore;
+    if (cleanAiScore) cleanAiScore.textContent = `AI ${score.aiScore}`;
+    if (cleanStatus) cleanStatus.textContent = score.seoLevel === 'good' ? 'İyi' : score.seoLevel === 'ok' ? 'Eksik' : 'Kritik';
+
+    const cleanOgTitle = document.querySelector(`[data-clean-og-title="${pageKey}"]`);
+    const cleanOgDesc = document.querySelector(`[data-clean-og-desc="${pageKey}"]`);
+    const cleanOgImage = document.querySelector(`[data-clean-og-image="${pageKey}"]`);
+    const ogTitle = locData.ogTitle || locData.seoTitle || 'Başlık girilmemiş';
+    const ogDesc = locData.ogDescription || locData.metaDescription || 'Açıklama girilmemiş.';
+    const ogImage = locData.ogImage || locData.twitterImage || '';
+    if (cleanOgTitle) cleanOgTitle.textContent = ogTitle;
+    if (cleanOgDesc) cleanOgDesc.textContent = ogDesc;
+    if (cleanOgImage) {
+      if (ogImage) {
+        cleanOgImage.style.backgroundImage = `url('${toImgUrl(ogImage)}')`;
+        cleanOgImage.innerHTML = '';
+      } else {
+        cleanOgImage.style.backgroundImage = '';
+        cleanOgImage.innerHTML = '<span>OG Image</span><small>1200 × 630</small>';
+      }
+    }
+    
+    // 3. Update Checklists
+    const seoList = document.querySelector(`[data-seo-checklist-for="${pageKey}"]`);
+    if (seoList) {
+      seoList.innerHTML = score.seoChecks.map(c => `
+        <div class="admin-checklist-item">
+          <span class="admin-checklist-badge ${c.pass ? 'pass' : c.warn ? 'warn' : 'fail'}">${c.pass ? '✓' : c.warn ? '!' : 'X'}</span>
+          <span>${esc(c.label)}</span>
+        </div>
+      `).join('');
+    }
+    
+    const aiList = document.querySelector(`[data-ai-checklist-for="${pageKey}"]`);
+    if (aiList) {
+      aiList.innerHTML = score.aiChecks.map(c => `
+        <div class="admin-checklist-item">
+          <span class="admin-checklist-badge ${c.pass ? 'pass' : c.warn ? 'warn' : 'fail'}">${c.pass ? '✓' : c.warn ? '!' : 'X'}</span>
+          <span>${esc(c.label)}</span>
+        </div>
+      `).join('');
+    }
+    
+    // 4. Update JSON-LD Preview
+    const jsonldBox = document.querySelector(`[data-jsonld-for="${pageKey}"]`);
+    if (jsonldBox) {
+      const siteUrl = "https://willowsoft.co";
+      const orgRef = `${siteUrl}/#org`;
+      const baseTitle = locData.seoTitle || "WillowSoft";
+      const description = locData.metaDescription || "";
+      const canonicalUrl = locData.canonical || `${siteUrl}/${locale}/${pageKey}`;
+      
+      const breadcrumb = {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", position: 1, name: "Home", item: `${siteUrl}/${locale}` },
+          { "@type": "ListItem", position: 2, name: pageKey, item: canonicalUrl }
+        ]
+      };
+      
+      let mainEntity = {
+        "@type": locData.schemaType || "WebPage",
+        "name": baseTitle,
+        "description": description,
+        "url": canonicalUrl
+      };
+      
+      if (locData.schemaType === "FAQPage" && locData.aiFAQ) {
+        mainEntity.mainEntity = locData.aiFAQ.map(qa => ({
+          "@type": "Question",
+          "name": qa.question,
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": qa.answer
+          }
+        }));
+      }
+      
+      const ldGraph = {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Organization",
+            "@id": orgRef,
+            "name": "WillowSoft",
+            "url": siteUrl,
+            "logo": `${siteUrl}/assets/willow-mark-transparent.png`
+          },
+          breadcrumb,
+          mainEntity
+        ]
+      };
+      
+      jsonldBox.textContent = JSON.stringify(ldGraph, null, 2);
+    }
+    
+    // 5. Update Images SEO List
+    const imageList = document.querySelector(`[data-image-seo-for="${pageKey}"]`);
+    if (imageList) {
+      const images = getImagesForPage(pageKey);
+      if (images.length === 0) {
+        imageList.innerHTML = '<div style="font-size:0.75rem; color:var(--admin-muted); padding: 4px 0;">Sayfada görsel bulunamadı.</div>';
+      } else {
+        imageList.innerHTML = images.map(img => {
+          const audit = auditImageSEO(img);
+          return `
+            <div class="admin-image-seo-row">
+              <div class="admin-image-seo-thumb" style="background-image: url('${img.url}')"></div>
+              <div class="admin-image-seo-details">
+                <div class="admin-image-seo-name" title="${esc(audit.filename)}">${esc(audit.filename)}</div>
+                <div class="admin-image-seo-checks">
+                  ${audit.checks.map(c => `
+                    <span class="admin-image-seo-badge ${c.ok ? 'pass' : 'fail'}">${esc(c.label)}: ${c.ok ? '✓' : 'X'}</span>
+                  `).join('')}
+                </div>
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+    }
+  }
+
+  function renderFAQListForPage(pageKey, locale) {
+    const container = document.getElementById(`admin-faq-editor-${pageKey}`);
+    if (!container) return;
+    
+    const pageSeo = state.content.pageSeo || {};
+    const pgData = pageSeo[pageKey] || {};
+    const locData = pgData[locale] || {};
+    const faqList = locData.aiFAQ || [];
+    
+    container.innerHTML = faqList.map((qa, idx) => `
+      <div class="admin-faq-editor-row">
+        <div class="admin-faq-editor-row-header">
+          <span class="admin-faq-editor-num">Soru #${idx + 1}</span>
+          <button type="button" class="admin-faq-delete-btn" data-delete-faq-index="${idx}" data-faq-page="${esc(pageKey)}" data-faq-locale="${esc(locale)}">Sil</button>
+        </div>
+        <input type="text" class="admin-input admin-faq-input" data-faq-field="question" data-faq-index="${idx}" data-faq-page="${esc(pageKey)}" data-faq-locale="${esc(locale)}" value="${esc(qa.question || '')}" placeholder="Kullanıcı sorusu (örn: Filtre bakımı nasıl yapılır?)" />
+        <textarea class="admin-textarea admin-faq-input" rows="2" data-faq-field="answer" data-faq-index="${idx}" data-faq-page="${esc(pageKey)}" data-faq-locale="${esc(locale)}" placeholder="Kısa ve net cevap yazın...">${esc(qa.answer || '')}</textarea>
+      </div>
+    `).join('') + `
+      <button type="button" class="admin-faq-add-btn" data-faq-page="${esc(pageKey)}" data-faq-locale="${esc(locale)}">
+        ➕ Yeni Soru-Cevap Ekle
+      </button>
+    `;
+  }
+
   function renderSEOCenter() {
     const root = qs('[data-admin-seo-center]');
     if (!root || !state.content) return;
+
     const pageSeo = state.content.pageSeo || {};
-    const pageLabels = { home: 'Ana Sayfa', products: 'Ürün Kataloğu', news: 'Haberler', services: 'Hizmetler', solutions: 'Çözümler', company: 'Şirket', contact: 'İletişim', startProject: 'Projeye Başla' };
-    const LOCALES = ['en','tr','de','fr','it','es','ar','ja'];
-    const locale = state.editLocale || "tr";
-    const locName = localeNames[locale] || locale.toUpperCase();
+    const pageLabels = {
+      home: 'Ana Sayfa',
+      products: 'Ürün Kataloğu',
+      news: 'Haberler',
+      services: 'Hizmetler',
+      solutions: 'Çözümler',
+      company: 'Şirket',
+      contact: 'İletişim',
+      startProject: 'Projeye Başla'
+    };
+    const pageOrder = ['home', 'products', 'solutions', 'services', 'news', 'company', 'contact', 'startProject'];
+    const pageKeys = Array.from(new Set([...pageOrder, ...Object.keys(pageSeo)])).filter((key) => pageSeo[key]);
+    const LOCALES = (state.content.meta?.locales && state.content.meta.locales.length ? state.content.meta.locales : ['en','tr','de','fr','it','es','ar','ja']);
 
-    const totalPages = Object.keys(pageSeo).length;
-    const totalLocales = totalPages * LOCALES.length;
-    const filledCount = Object.values(pageSeo).reduce((sum, page) => sum + Object.values(page).filter(loc => loc.seoTitle && loc.metaDescription).length, 0);
-    const healthPct = totalLocales > 0 ? Math.round((filledCount / totalLocales) * 100) : 0;
-    const totalIssues = totalLocales - filledCount;
+    if (!pageKeys.length) {
+      root.innerHTML = `
+        <article class="admin-card seo-clean-empty">
+          <strong>SEO verisi bulunamadı.</strong>
+          <p>İçerik verisinde <code>pageSeo</code> alanı oluştuğunda bu ekran otomatik dolacaktır.</p>
+        </article>
+      `;
+      return;
+    }
 
-    root.innerHTML = `
-      <div class="admin-card-top" style="margin-bottom: 24px;">
-        <div>
-          <h2>Toplu SEO Yönetimi (Bulk Editor)</h2>
-          <p style="color: var(--admin-muted); margin-top: 4px;">Şu anki dil: <strong>${esc(locName)}</strong>. Diğer dilleri düzenlemek için üst barda dili değiştirin.</p>
-        </div>
-      </div>
+    if (!state.seoActivePage || !pageSeo[state.seoActivePage]) {
+      state.seoActivePage = pageKeys[0];
+    }
+    if (!state.seoActivePanel) state.seoActivePanel = 'general';
 
-      <!-- Özet Kartlar -->
-      <div class="admin-seo-summary-row">
-        <div class="admin-seo-summary-card">
-          <div class="admin-seo-summary-num" style="color: ${healthPct >= 80 ? '#10b981' : healthPct >= 50 ? '#f59e0b' : '#ef4444'}">${healthPct}%</div>
-          <div class="admin-seo-summary-label">SEO Sağlık Skoru</div>
-        </div>
-        <div class="admin-seo-summary-card">
-          <div class="admin-seo-summary-num">${filledCount} / ${totalLocales}</div>
-          <div class="admin-seo-summary-label">Tamamlanan (Tüm Diller)</div>
-        </div>
-        <div class="admin-seo-summary-card">
-          <div class="admin-seo-summary-num" style="color: ${totalIssues > 0 ? '#ef4444' : '#10b981'}">${totalIssues}</div>
-          <div class="admin-seo-summary-label">Eksik Alan (Tüm Diller)</div>
-        </div>
-        <div class="admin-seo-summary-card">
-          <div class="admin-seo-summary-num">${totalPages}</div>
-          <div class="admin-seo-summary-label">İndekslenen Sayfa</div>
-        </div>
-      </div>
+    const activePage = state.seoActivePage;
+    const locale = LOCALES.includes(state.editLocale) ? state.editLocale : (LOCALES.includes('tr') ? 'tr' : LOCALES[0]);
+    state.editLocale = locale;
+    const activePanel = state.seoActivePanel;
+    const pgData = pageSeo[activePage] || {};
+    const locData = pgData[locale] || {};
+    const score = calcSEOScore(locData, locale, pageSeo, activePage);
 
-      <!-- Bulk Editor List -->
-      <div class="admin-seo-bulk-list">
-        ${Object.entries(pageSeo).map(([pgKey, pgData]) => {
-          const locData = pgData[locale] || {};
-          const isComplete = locData.seoTitle && locData.metaDescription;
-          const statusColor = isComplete ? '#10b981' : '#f59e0b';
-          const statusText = isComplete ? 'Tamamlandı' : 'Eksik Veri';
-          
-          return `
-            <details class="admin-seo-bulk-row">
-              <summary class="admin-seo-bulk-header">
-                <div class="admin-seo-bulk-title">
-                  <span style="font-size: 1.25rem;">📄</span>
-                  ${esc(pageLabels[pgKey] || pgKey)}
-                  <span style="font-size: 0.85rem; color: var(--admin-muted); font-weight: 400; font-family: monospace;">/${esc(pgKey)}</span>
-                </div>
-                <div class="admin-seo-bulk-badges">
-                  <div class="admin-seo-bulk-badge" style="background: ${statusColor}22; color: ${statusColor}; border: 1px solid ${statusColor}44;">
-                    ${statusText}
-                  </div>
-                </div>
-              </summary>
-              <div class="admin-seo-bulk-body">
-                <div class="admin-seo-bulk-editor-grid">
-                  <div class="admin-seo-bulk-fields">
-                    <label>
-                      <strong style="display: block; margin-bottom: 6px; font-size: 0.85rem; color: var(--admin-ink);">SEO Başlığı (Title)</strong>
-                      <input type="text" class="admin-input admin-seo-input" 
-                        data-seo-page="${esc(pgKey)}" data-seo-locale="${esc(locale)}" data-seo-field="seoTitle" 
-                        value="${esc(locData.seoTitle || '')}" placeholder="Google'da görünecek başlık" />
-                      <div style="font-size: 0.75rem; text-align: right; margin-top: 4px; color: var(--admin-muted);" data-char-count="seoTitle-${esc(locale)}-${esc(pgKey)}">
-                        ${(locData.seoTitle || '').length}/60
-                      </div>
-                    </label>
-                    <label>
-                      <strong style="display: block; margin-bottom: 6px; font-size: 0.85rem; color: var(--admin-ink);">Meta Açıklama (Description)</strong>
-                      <textarea class="admin-textarea admin-seo-input" rows="3"
-                        data-seo-page="${esc(pgKey)}" data-seo-locale="${esc(locale)}" data-seo-field="metaDescription" 
-                        placeholder="Sayfa hakkında özet bilgi...">${esc(locData.metaDescription || '')}</textarea>
-                      <div style="font-size: 0.75rem; text-align: right; margin-top: 4px; color: var(--admin-muted);" data-char-count="metaDescription-${esc(locale)}-${esc(pgKey)}">
-                        ${(locData.metaDescription || '').length}/160
-                      </div>
-                    </label>
-                    <label>
-                      <strong style="display: block; margin-bottom: 6px; font-size: 0.85rem; color: var(--admin-ink);">Odak Anahtar Kelime (Focus Keyword)</strong>
-                      <input type="text" class="admin-input admin-seo-input" 
-                        data-seo-page="${esc(pgKey)}" data-seo-locale="${esc(locale)}" data-seo-field="focusKeyword" 
-                        value="${esc(locData.focusKeyword || '')}" placeholder="Örn: endüstriyel sensör" />
-                    </label>
-                  </div>
-                  <div class="admin-seo-bulk-preview">
-                    <strong style="display: block; margin-bottom: 12px; font-size: 0.85rem; color: var(--admin-ink);">SERP Önizlemesi (Google)</strong>
-                    <div style="font-family: Arial, sans-serif; max-width: 600px;">
-                      <div style="color: #202124; font-size: 14px; margin-bottom: 2px;">willowbee.com › ${esc(locale)} › ${esc(pgKey)}</div>
-                      <div style="color: #1a0dab; font-size: 20px; text-decoration: none; margin-bottom: 3px; line-height: 1.3;" data-serp-title="${esc(locale)}-${esc(pgKey)}">
-                        ${esc(locData.seoTitle || 'SEO Başlığı Belirlenmedi...')}
-                      </div>
-                      <div style="color: #4d5156; font-size: 14px; line-height: 1.58;" data-serp-desc="${esc(locale)}-${esc(pgKey)}">
-                        ${esc(locData.metaDescription || 'Meta açıklaması henüz girilmedi.')}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="admin-seo-bulk-actions">
-                  <button type="button" class="btn btn-secondary btn-small" data-goto-page-seo="${esc(pgKey)}">
-                    İçerik Düzenleyiciyi Aç
-                  </button>
-                </div>
-              </div>
-            </details>
-          `;
-        }).join('')}
+    const option = (value, label, current) => `<option value="${esc(value)}"${current === value ? ' selected' : ''}>${esc(label)}</option>`;
+    const badgeClass = (level) => level === 'good' ? 'good' : level === 'ok' ? 'warn' : 'bad';
+    const statusText = (level) => level === 'good' ? 'İyi' : level === 'ok' ? 'Eksik' : 'Kritik';
+    const fieldValue = (field, fallback = '') => locData[field] ?? fallback;
+    const titleLen = (fieldValue('seoTitle') || '').length;
+    const descLen = (fieldValue('metaDescription') || '').length;
+    const pageTitle = pageLabels[activePage] || activePage;
+    const slugText = fieldValue('slug') || `/${activePage}`;
+    const canonicalText = fieldValue('canonical') || `https://willowsoft.co/${locale}/${String(slugText).replace(/^\/+/, '')}`;
+    const ogImage = fieldValue('ogImage') || fieldValue('twitterImage') || '';
+
+    const allScores = pageKeys.flatMap((key) => LOCALES.map((loc) => calcSEOScore(pageSeo[key]?.[loc] || {}, loc, pageSeo, key).seoScore));
+    const healthPct = allScores.length ? Math.round(allScores.reduce((sum, val) => sum + val, 0) / allScores.length) : 0;
+    const readyPages = pageKeys.filter((key) => calcSEOScore(pageSeo[key]?.[locale] || {}, locale, pageSeo, key).seoScore >= 80).length;
+    const missingOg = pageKeys.filter((key) => !(pageSeo[key]?.[locale]?.ogImage || '').trim()).length;
+    const aiAvg = pageKeys.length ? Math.round(pageKeys.reduce((sum, key) => sum + calcSEOScore(pageSeo[key]?.[locale] || {}, locale, pageSeo, key).aiScore, 0) / pageKeys.length) : 0;
+    const criticalCount = pageKeys.filter((key) => calcSEOScore(pageSeo[key]?.[locale] || {}, locale, pageSeo, key).seoLevel === 'bad').length;
+
+    const inputField = ({ field, label, type = 'text', wide = false, placeholder = '', hint = '', max = '', value = null }) => `
+      <label class="seo-clean-field${wide ? ' wide' : ''}">
+        <span>${esc(label)}${max ? `<small data-char-count="${esc(field)}-${esc(locale)}-${esc(activePage)}">${String(value ?? fieldValue(field) ?? '').length}/${esc(max)}</small>` : ''}</span>
+        <input type="${esc(type)}" class="admin-seo-input" data-seo-page="${esc(activePage)}" data-seo-locale="${esc(locale)}" data-seo-field="${esc(field)}" value="${esc(value ?? fieldValue(field) ?? '')}" placeholder="${esc(placeholder)}"${max ? ` maxlength="${esc(max)}"` : ''} />
+        ${hint ? `<em>${esc(hint)}</em>` : ''}
+      </label>
+    `;
+
+    const textareaField = ({ field, label, rows = 3, wide = false, placeholder = '', hint = '', max = '', value = null }) => `
+      <label class="seo-clean-field${wide ? ' wide' : ''}">
+        <span>${esc(label)}${max ? `<small data-char-count="${esc(field)}-${esc(locale)}-${esc(activePage)}">${String(value ?? fieldValue(field) ?? '').length}/${esc(max)}</small>` : ''}</span>
+        <textarea class="admin-seo-input" rows="${esc(rows)}" data-seo-page="${esc(activePage)}" data-seo-locale="${esc(locale)}" data-seo-field="${esc(field)}" placeholder="${esc(placeholder)}"${max ? ` maxlength="${esc(max)}"` : ''}>${esc(value ?? fieldValue(field) ?? '')}</textarea>
+        ${hint ? `<em>${esc(hint)}</em>` : ''}
+      </label>
+    `;
+
+    const toggleField = ({ field, title, desc }) => `
+      <label class="seo-clean-toggle ${fieldValue(field) ? 'is-on' : ''}">
+        <span><strong>${esc(title)}</strong><small>${esc(desc)}</small></span>
+        <input type="checkbox" class="admin-seo-input" data-seo-page="${esc(activePage)}" data-seo-locale="${esc(locale)}" data-seo-field="${esc(field)}" ${fieldValue(field) ? 'checked' : ''} />
+        <i aria-hidden="true"></i>
+      </label>
+    `;
+
+    const generalPanel = `
+      <div class="seo-clean-form-grid">
+        ${inputField({ field: 'seoTitle', label: 'Meta Title', wide: true, max: 60, placeholder: 'WillowSoft | Endüstriyel IoT Çözümleri', hint: 'Google sonucunda görünen başlık. İdeal aralık 50–60 karakter.' })}
+        ${textareaField({ field: 'metaDescription', label: 'Meta Description', wide: true, rows: 4, max: 160, placeholder: 'Sayfanın değer önerisini net ve kısa anlatın.', hint: 'İdeal aralık 150–160 karakter. Fayda + sektör + aksiyon net olmalı.' })}
+        ${inputField({ field: 'focusKeyword', label: 'Focus Keyword', placeholder: 'endüstriyel IoT çözümleri', hint: 'Ana hedef arama ifadesi.' })}
+        ${inputField({ field: 'slug', label: 'Slug / URL', placeholder: '/endustriyel-iot-cozumleri', hint: 'Kısa, küçük harfli ve tireli olmalı.' })}
+        ${inputField({ field: 'canonical', label: 'Canonical URL', wide: true, placeholder: 'https://willowsoft.co/tr/endustriyel-iot-cozumleri', hint: 'Sayfanın tek doğru adresi.' })}
+        ${inputField({ field: 'h1', label: 'H1 Başlığı', wide: true, placeholder: 'Endüstriyel IoT ve Akıllı Takip Çözümleri', hint: 'Sayfadaki ana başlık. Title ile aynı olmak zorunda değil ama uyumlu olmalı.' })}
       </div>
     `;
+
+    const socialPanel = `
+      <div class="seo-clean-form-grid">
+        ${inputField({ field: 'ogTitle', label: 'Open Graph Başlığı', wide: true, placeholder: 'Boşsa Meta Title kullanılır.' })}
+        ${textareaField({ field: 'ogDescription', label: 'Open Graph Açıklaması', wide: true, rows: 3, placeholder: 'LinkedIn, WhatsApp ve sosyal paylaşım açıklaması.' })}
+        ${inputField({ field: 'ogImage', label: 'OG Görsel URL', wide: true, placeholder: '/assets/seo/home-og.webp', hint: 'Öneri: 1200×630 px, WebP/JPG, 200–300 KB civarı.' })}
+        ${inputField({ field: 'twitterTitle', label: 'Twitter/X Title', placeholder: 'Boşsa OG title kullanılır.' })}
+        ${inputField({ field: 'twitterImage', label: 'Twitter/X Image', placeholder: 'Boşsa OG image kullanılır.' })}
+        ${textareaField({ field: 'twitterDescription', label: 'Twitter/X Description', wide: true, rows: 2, placeholder: 'Boşsa OG description kullanılır.' })}
+      </div>
+    `;
+
+    const techPanel = `
+      <div class="seo-clean-form-grid">
+        <label class="seo-clean-field">
+          <span>Sayfa Tipi</span>
+          <select class="admin-seo-input" data-seo-page="${esc(activePage)}" data-seo-locale="${esc(locale)}" data-seo-field="pageType">
+            ${option('kurumsal', 'Kurumsal Sayfa', fieldValue('pageType') || 'kurumsal')}
+            ${option('hizmet', 'Hizmet Sayfası', fieldValue('pageType'))}
+            ${option('ürün', 'Ürün Sayfası', fieldValue('pageType'))}
+            ${option('blog', 'Blog / Haber', fieldValue('pageType'))}
+            ${option('kategori', 'Kategori Sayfası', fieldValue('pageType'))}
+          </select>
+        </label>
+        <label class="seo-clean-field">
+          <span>Schema Türü</span>
+          <select class="admin-seo-input" data-seo-page="${esc(activePage)}" data-seo-locale="${esc(locale)}" data-seo-field="schemaType">
+            ${option('WebPage', 'WebPage', fieldValue('schemaType') || 'WebPage')}
+            ${option('Organization', 'Organization', fieldValue('schemaType'))}
+            ${option('Service', 'Service', fieldValue('schemaType'))}
+            ${option('Product', 'Product', fieldValue('schemaType'))}
+            ${option('Article', 'Article', fieldValue('schemaType'))}
+            ${option('FAQPage', 'FAQPage', fieldValue('schemaType'))}
+            ${option('LocalBusiness', 'LocalBusiness', fieldValue('schemaType'))}
+          </select>
+        </label>
+        ${inputField({ field: 'maxSnippet', label: 'Max Snippet', type: 'number', placeholder: '160', value: fieldValue('maxSnippet') || 160 })}
+        ${inputField({ field: 'lastUpdated', label: 'Son Güncelleme', type: 'date' })}
+        <div class="seo-clean-toggle-grid wide">
+          ${toggleField({ field: 'noindex', title: 'Noindex', desc: 'Sayfayı arama motorlarına kapatır.' })}
+          ${toggleField({ field: 'nofollow', title: 'Nofollow', desc: 'Link takip sinyalini kapatır.' })}
+          ${toggleField({ field: 'nosnippet', title: 'Nosnippet', desc: 'Snippet/AI özet üretimini engeller.' })}
+        </div>
+        ${textareaField({ field: 'aiShortAnswer', label: 'AI Overview Kısa Cevap', wide: true, rows: 3, placeholder: 'Yapay zekanın doğrudan özetleyebileceği 1–2 cümlelik net açıklama.' })}
+        ${inputField({ field: 'author', label: 'Yazar / Editör', placeholder: 'WillowSoft İçerik Ekibi' })}
+        ${inputField({ field: 'reviewedBy', label: 'Kontrol Eden', placeholder: 'Teknik ekip / uzman adı' })}
+        ${inputField({ field: 'expertiseNote', label: 'Uzmanlık Notu', wide: true, placeholder: 'Endüstriyel IoT ve saha izleme deneyimi...' })}
+        ${textareaField({ field: 'sources', label: 'Kaynaklar / Referanslar', wide: true, rows: 2, placeholder: 'ISO, teknik standart, ürün dokümanı veya güvenilir kaynaklar...' })}
+        ${textareaField({ field: 'companyCompetency', label: 'Şirket Yetkinliği', wide: true, rows: 2, placeholder: 'Sertifika, proje deneyimi, teknik altyapı veya kurumsal kanıtlar...' })}
+      </div>
+      <details class="seo-clean-faq-box">
+        <summary>AI için Soru-Cevap Blokları <span>${(fieldValue('aiFAQ') || []).length || 0} adet</span></summary>
+        <div id="admin-faq-editor-${esc(activePage)}">
+          ${(fieldValue('aiFAQ') || []).map((qa, idx) => `
+            <div class="admin-faq-editor-row">
+              <div class="admin-faq-editor-row-header">
+                <span class="admin-faq-editor-num">Soru #${idx + 1}</span>
+                <button type="button" class="admin-faq-delete-btn" data-delete-faq-index="${idx}" data-faq-page="${esc(activePage)}" data-faq-locale="${esc(locale)}">Sil</button>
+              </div>
+              <input type="text" class="admin-input admin-faq-input" data-faq-field="question" data-faq-index="${idx}" data-faq-page="${esc(activePage)}" data-faq-locale="${esc(locale)}" value="${esc(qa.question || '')}" placeholder="Kullanıcı sorusu" />
+              <textarea class="admin-textarea admin-faq-input" rows="2" data-faq-field="answer" data-faq-index="${idx}" data-faq-page="${esc(activePage)}" data-faq-locale="${esc(locale)}" placeholder="Kısa ve net cevap">${esc(qa.answer || '')}</textarea>
+            </div>
+          `).join('')}
+          <button type="button" class="admin-faq-add-btn" data-faq-page="${esc(activePage)}" data-faq-locale="${esc(locale)}">+ Yeni Soru-Cevap Ekle</button>
+        </div>
+      </details>
+    `;
+
+    const panelHtml = activePanel === 'social' ? socialPanel : activePanel === 'technical' ? techPanel : generalPanel;
+    const activeOgTitle = fieldValue('ogTitle') || fieldValue('seoTitle') || pageTitle;
+    const activeOgDesc = fieldValue('ogDescription') || fieldValue('metaDescription') || 'Sosyal paylaşım açıklaması girilmemiş.';
+
+    root.innerHTML = `
+      <div class="seo-clean-shell">
+        <div class="seo-clean-head">
+          <div>
+            <span class="seo-clean-kicker">${esc(localeNames[locale] || locale.toUpperCase())} SEO düzenleme modu</span>
+            <h3>Sayfa SEO alanlarını tek ekranda düzenle</h3>
+            <p>Liste, form ve önizleme aynı hizada tutulur. Uzun teknik alanlar ayrı sekmede toplandı.</p>
+          </div>
+          <div class="seo-clean-main-score ${badgeClass(score.seoLevel)}">
+            <span>Aktif Sayfa Skoru</span>
+            <strong data-clean-seo-score="${esc(activePage)}">${score.seoScore}</strong>
+            <small data-clean-seo-status="${esc(activePage)}">${statusText(score.seoLevel)}</small>
+          </div>
+        </div>
+
+        <div class="seo-clean-metrics" aria-label="SEO özetleri">
+          <article><span>Genel Sağlık</span><strong>${healthPct}%</strong><small>Tüm sayfa ve dillerin ortalaması</small></article>
+          <article><span>Hazır Sayfa</span><strong>${readyPages}/${pageKeys.length}</strong><small>Seçili dilde 80+ skor</small></article>
+          <article><span>Eksik OG Görsel</span><strong>${missingOg}</strong><small>Sosyal medya kartı bekliyor</small></article>
+          <article><span>AI Ortalama</span><strong>${aiAvg}</strong><small>AI Overview hazırlığı</small></article>
+          <article><span>Kritik Sayfa</span><strong>${criticalCount}</strong><small>Öncelikli kontrol gerekir</small></article>
+        </div>
+
+        <div class="seo-clean-layout">
+          <aside class="seo-clean-sidebar">
+            <div class="seo-clean-card-head">
+              <div><strong>Sayfalar</strong><small>Skora göre hızlı takip</small></div>
+            </div>
+            <label class="seo-clean-search">
+              <span>Sayfa ara</span>
+              <input type="search" placeholder="Ana sayfa, ürünler..." data-seo-page-filter />
+            </label>
+            <div class="seo-clean-locale-row">
+              ${LOCALES.map((loc) => `<button type="button" class="${loc === locale ? 'active' : ''}" data-seo-locale-select="${esc(loc)}">${esc(loc.toUpperCase())}</button>`).join('')}
+            </div>
+            <div class="seo-clean-page-list" data-seo-page-list>
+              ${pageKeys.map((key) => {
+                const pLoc = pageSeo[key]?.[locale] || {};
+                const pScore = calcSEOScore(pLoc, locale, pageSeo, key);
+                return `
+                  <button type="button" class="seo-clean-page ${key === activePage ? 'active' : ''}" data-seo-clean-page="${esc(key)}" data-page-name="${esc(pageLabels[key] || key)}">
+                    <span><strong>${esc(pageLabels[key] || key)}</strong><small>${esc(pLoc.slug || '/' + key)}</small></span>
+                    <em class="${badgeClass(pScore.seoLevel)}">${pScore.seoScore}</em>
+                  </button>
+                `;
+              }).join('')}
+            </div>
+          </aside>
+
+          <section class="seo-clean-main">
+            <div class="seo-clean-editor-head">
+              <div>
+                <small>Aktif Sayfa</small>
+                <h3>${esc(pageTitle)}</h3>
+                <p>${esc(slugText)}</p>
+              </div>
+              <div class="seo-clean-editor-actions">
+                <button type="button" class="btn btn-secondary btn-small" data-goto-page-seo="${esc(activePage)}">İçerik Alanını Aç</button>
+                <button type="button" class="btn btn-primary btn-small" data-save-content>Kaydet</button>
+              </div>
+            </div>
+
+            <div class="seo-clean-tabs" role="tablist">
+              <button type="button" class="${activePanel === 'general' ? 'active' : ''}" data-seo-clean-tab="general">Genel SEO</button>
+              <button type="button" class="${activePanel === 'social' ? 'active' : ''}" data-seo-clean-tab="social">Sosyal Medya & Görsel</button>
+              <button type="button" class="${activePanel === 'technical' ? 'active' : ''}" data-seo-clean-tab="technical">Teknik SEO & AI</button>
+            </div>
+            <div class="seo-clean-panel">
+              ${panelHtml}
+            </div>
+          </section>
+
+          <aside class="seo-clean-aside">
+            <section class="seo-clean-preview-card">
+              <div class="seo-clean-card-head"><div><strong>Google Önizleme</strong><small>Canlı title / description</small></div><span>Desktop</span></div>
+              <div class="seo-clean-serp" data-serp-box="${esc(activePage)}">
+                <span data-serp-url-text="${esc(activePage)}">willowsoft.co › ${esc(locale)} › ${esc(String(slugText).replace(/^\/+/, ''))}</span>
+                <strong data-serp-title-preview="${esc(activePage)}">${esc(fieldValue('seoTitle') || 'Başlık girilmemiş')}</strong>
+                <p data-serp-desc-preview="${esc(activePage)}">${esc(fieldValue('metaDescription') || 'Açıklama girilmemiş.')}</p>
+              </div>
+            </section>
+
+            <section class="seo-clean-preview-card">
+              <div class="seo-clean-card-head"><div><strong>Sosyal Medya Kartı</strong><small>Open Graph görünümü</small></div><span>1200×630</span></div>
+              <div class="seo-clean-og">
+                <div class="seo-clean-og-image" data-clean-og-image="${esc(activePage)}" style="${ogImage ? `background-image:url('${esc(toImgUrl(ogImage))}')` : ''}">
+                  ${ogImage ? '' : '<span>OG Image</span><small>1200 × 630</small>'}
+                </div>
+                <div>
+                  <strong data-clean-og-title="${esc(activePage)}">${esc(activeOgTitle)}</strong>
+                  <p data-clean-og-desc="${esc(activePage)}">${esc(activeOgDesc)}</p>
+                  <span>willowsoft.co</span>
+                </div>
+              </div>
+            </section>
+
+            <section class="seo-clean-preview-card">
+              <div class="seo-clean-card-head"><div><strong>Kontrol Özeti</strong><small>İlk görünen problemler</small></div><span data-clean-ai-score="${esc(activePage)}">AI ${score.aiScore}</span></div>
+              <div class="admin-checklist-list" data-seo-checklist-for="${esc(activePage)}">
+                ${score.seoChecks.slice(0, 7).map((c) => `
+                  <div class="admin-checklist-item">
+                    <span class="admin-checklist-badge ${c.pass ? 'pass' : c.warn ? 'warn' : 'fail'}">${c.pass ? '✓' : c.warn ? '!' : 'X'}</span>
+                    <span>${esc(c.label)}</span>
+                  </div>
+                `).join('')}
+              </div>
+            </section>
+
+            <section class="seo-clean-preview-card">
+              <div class="seo-clean-card-head"><div><strong>Dil Matrisi</strong><small>Seçili sayfa doluluğu</small></div><span>${LOCALES.length} Dil</span></div>
+              <div class="seo-clean-lang-matrix">
+                ${LOCALES.map((loc) => {
+                  const lScore = calcSEOScore(pgData[loc] || {}, loc, pageSeo, activePage);
+                  return `<span class="${badgeClass(lScore.seoLevel)}">${esc(loc.toUpperCase())}<small>${lScore.seoScore}</small></span>`;
+                }).join('')}
+              </div>
+            </section>
+          </aside>
+        </div>
+      </div>
+    `;
+
+    refreshPageSEOReviews(activePage, locale);
   }
+
 
 
   function renderSettings() {
@@ -2482,6 +3132,19 @@
     const onAdminEdit = (e) => {
       const target = e.target;
       
+      // Clean SEO page search filter
+      if (target.matches && target.matches("[data-seo-page-filter]")) {
+        const query = target.value.toLowerCase().trim();
+        const list = target.closest(".seo-clean-sidebar")?.querySelector("[data-seo-page-list]") || document.querySelector("[data-seo-page-list]");
+        if (list) {
+          list.querySelectorAll("[data-page-name]").forEach((item) => {
+            const text = item.textContent.toLowerCase();
+            item.style.display = !query || text.includes(query) ? "flex" : "none";
+          });
+        }
+        return;
+      }
+
       // Live Preview Sync for Page Content Textareas
       if (target.matches("textarea[data-page-locale]")) {
         const preview = target.parentElement.querySelector("[data-live-preview]");
@@ -2524,27 +3187,36 @@
         state.content.pageSeo[pageKey][loc][field] = val;
         markDirty();
 
-        // SERP Güncellemesi
-        if (field === "seoTitle") {
-          const pvTitle = document.querySelector(`[data-serp-title-${CSS.escape(loc)}-${CSS.escape(pageKey)}]`);
-          const count = document.querySelector(`[data-char-count="seoTitle-${CSS.escape(loc)}-${CSS.escape(pageKey)}"]`);
-          if (pvTitle) pvTitle.textContent = val || 'SEO Başlığı Belirlenmedi...';
-          if (count) {
-             const len = val.length;
-             count.textContent = len + "/60";
-             count.style.color = len >= 50 && len <= 60 ? '#10b981' : len >= 40 && len <= 70 ? '#f59e0b' : '#ef4444';
-          }
+        // Update character count display if it exists
+        const count = document.querySelector(`[data-char-count="${field}-${loc}-${pageKey}"]`);
+        if (count) {
+          const limit = field === "seoTitle" ? 60 : 160;
+          count.textContent = `${val.length}/${limit}`;
         }
-        if (field === "metaDescription") {
-          const pvDesc = document.querySelector(`[data-serp-desc-${CSS.escape(loc)}-${CSS.escape(pageKey)}]`);
-          const count = document.querySelector(`[data-char-count="metaDescription-${CSS.escape(loc)}-${CSS.escape(pageKey)}"]`);
-          if (pvDesc) pvDesc.textContent = val || 'Meta açıklaması henüz girilmedi.';
-          if (count) {
-             const len = val.length;
-             count.textContent = len + "/160";
-             count.style.color = len >= 150 && len <= 160 ? '#10b981' : len >= 130 && len <= 175 ? '#f59e0b' : '#ef4444';
-          }
+        
+        refreshPageSEOReviews(pageKey, loc);
+      }
+
+      // AI FAQ Input Sync
+      if (target.matches(".admin-faq-input")) {
+        const pageKey = target.dataset.faqPage;
+        const loc = target.dataset.faqLocale;
+        const idx = Number(target.dataset.faqIndex);
+        const field = target.dataset.faqField;
+        
+        if (!state.content.pageSeo) state.content.pageSeo = {};
+        if (!state.content.pageSeo[pageKey]) state.content.pageSeo[pageKey] = {};
+        if (!state.content.pageSeo[pageKey][loc]) state.content.pageSeo[pageKey][loc] = {};
+        if (!Array.isArray(state.content.pageSeo[pageKey][loc].aiFAQ)) {
+          state.content.pageSeo[pageKey][loc].aiFAQ = [];
         }
+        if (!state.content.pageSeo[pageKey][loc].aiFAQ[idx]) {
+          state.content.pageSeo[pageKey][loc].aiFAQ[idx] = {};
+        }
+        
+        state.content.pageSeo[pageKey][loc].aiFAQ[idx][field] = target.value;
+        markDirty();
+        refreshPageSEOReviews(pageKey, loc);
       }
 
       if (state.content && target.closest && target.closest(".admin-main")) {
@@ -2599,6 +3271,44 @@
 
     document.addEventListener("click", (event) => {
 
+      // --- Clean SEO Center: page selection, language, and tabs ---
+      const seoCleanPageBtn = event.target.closest("[data-seo-clean-page]");
+      if (seoCleanPageBtn) {
+        event.preventDefault();
+        state.seoActivePage = seoCleanPageBtn.dataset.seoCleanPage;
+        renderSEOCenter();
+        return;
+      }
+
+      const seoCleanTabBtn = event.target.closest("[data-seo-clean-tab]");
+      if (seoCleanTabBtn) {
+        event.preventDefault();
+        state.seoActivePanel = seoCleanTabBtn.dataset.seoCleanTab;
+        renderSEOCenter();
+        return;
+      }
+
+      const seoLocaleBtn = event.target.closest("[data-seo-locale-select]");
+      if (seoLocaleBtn) {
+        event.preventDefault();
+        state.editLocale = seoLocaleBtn.dataset.seoLocaleSelect;
+        renderLocaleSwitcher();
+        renderSEOCenter();
+        return;
+      }
+
+      // --- Bulk Editor Inner Tabs ---
+      const innerTabBtn = event.target.closest("[data-inner-tab-target]");
+      if (innerTabBtn) {
+        event.preventDefault();
+        event.stopPropagation(); // prevent accordion toggle
+        const targetId = innerTabBtn.dataset.innerTabTarget;
+        const innerTabs = innerTabBtn.parentElement.querySelectorAll(".admin-seo-inner-tab");
+        const innerPanels = innerTabBtn.parentElement.parentElement.querySelectorAll(".admin-seo-inner-panel");
+        innerTabs.forEach(t => t.classList.toggle("active", t === innerTabBtn));
+        innerPanels.forEach(p => p.classList.toggle("active", p.dataset.innerPanelId === targetId));
+        return;
+      }
       // --- Bulk Editor Accordion ---
       const bulkHeader = event.target.closest(".admin-seo-bulk-header");
       if (bulkHeader) {
@@ -2611,6 +3321,66 @@
         event.preventDefault();
         return;
       }
+
+      // --- SERP Preview Toggling ---
+      const serpToggleBtn = event.target.closest("[data-serp-toggle]");
+      if (serpToggleBtn) {
+        event.preventDefault();
+        event.stopPropagation();
+        const mode = serpToggleBtn.dataset.serpToggle;
+        const pageKey = serpToggleBtn.dataset.pageKey;
+        
+        const togglesContainer = serpToggleBtn.parentElement;
+        togglesContainer.querySelectorAll(".admin-serp-toggle-btn").forEach(btn => {
+          btn.classList.toggle("active", btn === serpToggleBtn);
+        });
+        
+        const serpBox = document.querySelector(`[data-serp-box="${pageKey}"]`);
+        if (serpBox) {
+          serpBox.classList.toggle("mobile-mode", mode === "mobile");
+        }
+        return;
+      }
+
+      // --- AI FAQ Add ---
+      const addFaqBtn = event.target.closest(".admin-faq-add-btn");
+      if (addFaqBtn) {
+        event.preventDefault();
+        event.stopPropagation();
+        const pageKey = addFaqBtn.dataset.faqPage;
+        const locale = addFaqBtn.dataset.faqLocale;
+        
+        if (!state.content.pageSeo) state.content.pageSeo = {};
+        if (!state.content.pageSeo[pageKey]) state.content.pageSeo[pageKey] = {};
+        if (!state.content.pageSeo[pageKey][locale]) state.content.pageSeo[pageKey][locale] = {};
+        if (!Array.isArray(state.content.pageSeo[pageKey][locale].aiFAQ)) {
+          state.content.pageSeo[pageKey][locale].aiFAQ = [];
+        }
+        
+        state.content.pageSeo[pageKey][locale].aiFAQ.push({ question: "", answer: "" });
+        markDirty();
+        renderFAQListForPage(pageKey, locale);
+        refreshPageSEOReviews(pageKey, locale);
+        return;
+      }
+
+      // --- AI FAQ Delete ---
+      const deleteFaqBtn = event.target.closest(".admin-faq-delete-btn");
+      if (deleteFaqBtn) {
+        event.preventDefault();
+        event.stopPropagation();
+        const pageKey = deleteFaqBtn.dataset.faqPage;
+        const locale = deleteFaqBtn.dataset.faqLocale;
+        const idx = Number(deleteFaqBtn.dataset.deleteFaqIndex);
+        
+        if (state.content.pageSeo?.[pageKey]?.[locale]?.aiFAQ) {
+          state.content.pageSeo[pageKey][locale].aiFAQ.splice(idx, 1);
+          markDirty();
+          renderFAQListForPage(pageKey, locale);
+          refreshPageSEOReviews(pageKey, locale);
+        }
+        return;
+      }
       
       // --- Bulk Editor Goto Page ---
       const gotoBtn = event.target.closest("[data-goto-page-seo]");
@@ -2621,6 +3391,13 @@
         openPageEdit(pageKey, 'seo');
         return;
       }
+      // --- SEO inline save button ---
+      if (event.target.closest(".seo-clean-editor-actions [data-save-content]")) {
+        event.preventDefault();
+        saveContent();
+        return;
+      }
+
       // --- JSON Download ---
       if (event.target.closest("#admin-json-download")) {
         const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(state.content.pageContent, null, 2));
@@ -2788,6 +3565,9 @@
         renderFaqs();
         renderPageContent();
         renderSettings();
+        if (document.querySelector('[data-panel="seo-center"]')?.classList.contains('active')) {
+          renderSEOCenter();
+        }
       }
       if (removeProduct) {
         state.content.products.splice(Number(removeProduct.dataset.removeProduct), 1);
@@ -2865,3 +3645,84 @@
 
   document.addEventListener("DOMContentLoaded", init);
 })();
+
+// === SEO CENTER UI/UX ENHANCEMENT START ===
+(function () {
+  function updateCounter(el) {
+    var counter = document.querySelector('[data-counter-for="' + el.id + '"]');
+    if (!counter) return;
+    var idealMax = el.id === 'seo-title-input' ? 60 : 155;
+    counter.textContent = el.value.length + ' / ' + idealMax;
+    counter.style.color = el.value.length > idealMax ? '#dc2626' : '#64748b';
+  }
+
+  function syncPreview() {
+    var title = document.querySelector('[data-seo-preview-title]');
+    var description = document.querySelector('[data-seo-preview-description]');
+    var previewColumn = document.querySelector('.seo-preview-column');
+    var serpTitle = previewColumn ? previewColumn.querySelector('[data-serp-title]') : null;
+    var serpDescription = previewColumn ? previewColumn.querySelector('[data-serp-description]') : null;
+    var ogTitle = previewColumn ? previewColumn.querySelector('[data-og-title]') : null;
+    var ogDescription = previewColumn ? previewColumn.querySelector('[data-og-description]') : null;
+
+    if (title && serpTitle) serpTitle.textContent = title.value || 'Sayfa başlığı girilmedi';
+    if (description && serpDescription) serpDescription.textContent = description.value || 'Meta açıklama girilmedi';
+    if (title && ogTitle) ogTitle.textContent = title.value || 'Sosyal medya başlığı girilmedi';
+    if (description && ogDescription) ogDescription.textContent = description.value.slice(0, 92) || 'Sosyal medya açıklaması girilmedi';
+    if (title) updateCounter(title);
+    if (description) updateCounter(description);
+  }
+
+  function initSeoUX() {
+    document.querySelectorAll('[data-seo-preview-title], [data-seo-preview-description]').forEach(function (el) {
+      updateCounter(el);
+      el.addEventListener('input', syncPreview);
+    });
+
+    document.querySelectorAll('[data-seo-scroll-target]').forEach(function (button) {
+      button.addEventListener('click', function () {
+        var target = document.getElementById(button.getAttribute('data-seo-scroll-target'));
+        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    });
+
+    document.querySelectorAll('.seo-page-item').forEach(function (button) {
+      button.addEventListener('click', function () {
+        document.querySelectorAll('.seo-page-item').forEach(function (item) { item.classList.remove('active'); });
+        button.classList.add('active');
+        var current = document.querySelector('[data-seo-current-page]');
+        if (current) current.textContent = button.getAttribute('data-page-name') || button.textContent.trim();
+      });
+    });
+
+    var filter = document.querySelector('[data-seo-page-filter]');
+    if (filter) {
+      filter.addEventListener('input', function () {
+        var q = filter.value.toLowerCase().trim();
+        document.querySelectorAll('.seo-page-item').forEach(function (item) {
+          item.style.display = item.textContent.toLowerCase().includes(q) ? '' : 'none';
+        });
+      });
+    }
+
+    var ogInput = document.querySelector('[data-og-image-input]');
+    var ogFrame = document.querySelector('[data-og-image-frame]');
+    if (ogInput && ogFrame) {
+      ogInput.addEventListener('input', function () {
+        var url = ogInput.value.trim();
+        ogFrame.style.backgroundImage = url
+          ? 'linear-gradient(rgba(15,23,42,.15), rgba(15,23,42,.18)), url(' + url + ')'
+          : '';
+      });
+    }
+
+    syncPreview();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initSeoUX);
+  } else {
+    initSeoUX();
+  }
+})();
+// === SEO CENTER UI/UX ENHANCEMENT END ===
