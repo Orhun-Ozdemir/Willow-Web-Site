@@ -840,15 +840,15 @@
               <div class="admin-seo-locale-panel ${loc === activeLocale ? 'active' : ''}" data-seo-panel-locale="${esc(loc)}" dir="${isRtl ? 'rtl' : 'ltr'}">
 
                 <!-- SERP Önizleme -->
-                <div class="admin-serp-preview" data-serp-preview-${esc(loc)}>
+                <div class="admin-serp-preview" data-serp-preview="${esc(loc)}-${esc(pageKey)}">
                   <div class="admin-serp-label">🔍 Google Arama Sonucu Önizlemesi</div>
                   <div class="admin-serp-box">
-                    <div class="admin-serp-url">
+                    <div class="admin-serp-url" data-serp-url="${esc(loc)}-${esc(pageKey)}">
                       <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
                       willowsoft.co › ${esc((locSeo.slug || '/').replace(/^\//, '') || 'en')}
                     </div>
-                    <div class="admin-serp-title" data-serp-title-${esc(loc)}>${esc(locSeo.seoTitle || 'SEO Başlığı Belirlenmedi...')}</div>
-                    <div class="admin-serp-desc" data-serp-desc-${esc(loc)}>${esc(locSeo.metaDescription || 'Meta açıklaması henüz girilmedi. Bu alan Google arama sonuçlarında görünür.')}</div>
+                    <div class="admin-serp-title" data-serp-title="${esc(loc)}-${esc(pageKey)}">${esc(locSeo.seoTitle || 'SEO Başlığı Belirlenmedi...')}</div>
+                    <div class="admin-serp-desc" data-serp-description="${esc(loc)}-${esc(pageKey)}">${esc(locSeo.metaDescription || 'Meta açıklaması henüz girilmedi. Bu alan Google arama sonuçlarında görünür.')}</div>
                   </div>
                 </div>
 
@@ -1460,6 +1460,18 @@
     if (serpTitle) serpTitle.textContent = locData.seoTitle || 'Başlık girilmemiş';
     if (serpDesc) serpDesc.textContent = locData.metaDescription || 'Açıklama girilmemiş.';
     if (serpUrlText) serpUrlText.textContent = `willowsoft.co › ${locale} › ${(locData.slug || pageKey).replace(/^\//, '')}`;
+
+    const modalTitle = document.querySelector(`[data-serp-title="${locale}-${pageKey}"]`);
+    const modalDesc = document.querySelector(`[data-serp-description="${locale}-${pageKey}"]`);
+    const modalUrl = document.querySelector(`[data-serp-url="${locale}-${pageKey}"]`);
+    if (modalTitle) modalTitle.textContent = locData.seoTitle || 'SEO Başlığı Belirlenmedi...';
+    if (modalDesc) modalDesc.textContent = locData.metaDescription || 'Meta açıklaması henüz girilmedi. Bu alan Google arama sonuçlarında görünür.';
+    if (modalUrl) {
+      modalUrl.innerHTML = `
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+        willowsoft.co › ${(locData.slug || '/').replace(/^\//, '') || 'en'}
+      `;
+    }
 
     // Clean SEO center live widgets
     const cleanSeoScore = document.querySelector(`[data-clean-seo-score="${pageKey}"]`);
