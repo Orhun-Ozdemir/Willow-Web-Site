@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import RevealObserver from "@/components/RevealObserver";
 import type { Locale } from "@/lib/cms";
 import "../globals.css";
 
@@ -34,6 +35,7 @@ export default async function LocaleLayout({
   return (
     <html lang={locale} className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col">
+        <RevealObserver />
         <Header locale={locale as Locale} />
         {children}
         <Footer locale={locale as Locale} />
