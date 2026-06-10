@@ -1,0 +1,102 @@
+{
+  "ui": {
+    "tr": {
+      "nav.solutions": "Çözümler",
+      "nav.services": "Hizmetler",
+      "nav.products": "Ürünler",
+      "nav.news": "Haberler",
+      "nav.company": "Şirket",
+      "nav.contact": "İletişim",
+      "cta.start": "Projeye Başla",
+      "cta.viewDetails": "Detayları Gör",
+      "cta.readUpdate": "Güncellemeyi Oku",
+      "cta.backProducts": "Ürünlere Dön",
+      "cta.backNews": "Haberlere Dön",
+      "language.label": "Dil"
+    },
+    "de": {
+      "nav.solutions": "Lösungen",
+      "nav.services": "Leistungen",
+      "nav.products": "Produkte",
+      "nav.news": "Neuigkeiten",
+      "nav.company": "Unternehmen",
+      "nav.contact": "Kontakt",
+      "cta.start": "Projekt starten",
+      "cta.viewDetails": "Details ansehen",
+      "cta.readUpdate": "Update lesen",
+      "cta.backProducts": "Zurück zu Produkten",
+      "cta.backNews": "Zurück zu Neuigkeiten",
+      "language.label": "Sprache"
+    },
+    "fr": {
+      "nav.solutions": "Solutions",
+      "nav.services": "Services",
+      "nav.products": "Produits",
+      "nav.news": "Actualités",
+      "nav.company": "Entreprise",
+      "nav.contact": "Contact",
+      "cta.start": "Démarrer un projet",
+      "cta.viewDetails": "Voir les détails",
+      "cta.readUpdate": "Lire l'actualité",
+      "cta.backProducts": "Retour aux produits",
+      "cta.backNews": "Retour aux actualités",
+      "language.label": "Langue"
+    },
+    "es": {
+      "nav.solutions": "Soluciones",
+      "nav.services": "Servicios",
+      "nav.products": "Productos",
+      "nav.news": "Noticias",
+      "nav.company": "Empresa",
+      "nav.contact": "Contacto",
+      "cta.start": "Iniciar proyecto",
+      "cta.viewDetails": "Ver detalles",
+      "cta.readUpdate": "Leer actualización",
+      "cta.backProducts": "Volver a productos",
+      "cta.backNews": "Volver a noticias",
+      "language.label": "Idioma"
+    },
+    "it": {
+      "nav.solutions": "Soluzioni",
+      "nav.services": "Servizi",
+      "nav.products": "Prodotti",
+      "nav.news": "Notizie",
+      "nav.company": "Azienda",
+      "nav.contact": "Contatti",
+      "cta.start": "Avvia progetto",
+      "cta.viewDetails": "Vedi dettagli",
+      "cta.readUpdate": "Leggi aggiornamento",
+      "cta.backProducts": "Torna ai prodotti",
+      "cta.backNews": "Torna alle notizie",
+      "language.label": "Lingua"
+    },
+    "ar": {
+      "nav.solutions": "الحلول",
+      "nav.services": "الخدمات",
+      "nav.products": "المنتجات",
+      "nav.news": "الأخبار",
+      "nav.company": "الشركة",
+      "nav.contact": "اتصل بنا",
+      "cta.start": "ابدأ مشروعًا",
+      "cta.viewDetails": "عرض التفاصيل",
+      "cta.readUpdate": "قراءة التحديث",
+      "cta.backProducts": "العودة إلى المنتجات",
+      "cta.backNews": "العودة إلى الأخبار",
+      "language.label": "اللغة"
+    },
+    "ja": {
+      "nav.solutions": "ソリューション",
+      "nav.services": "サービス",
+      "nav.products": "製品",
+      "nav.news": "ニュース",
+      "nav.company": "会社情報",
+      "nav.contact": "お問い合わせ",
+      "cta.start": "プロジェクトを開始",
+      "cta.viewDetails": "詳細を見る",
+      "cta.readUpdate": "更新を読む",
+      "cta.backProducts": "製品一覧へ戻る",
+      "cta.backNews": "ニュース一覧へ戻る",
+      "language.label": "言語"
+    }
+  }
+}
