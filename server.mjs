@@ -62,7 +62,14 @@ async function readBody(req) {
   const chunks = [];
   for await (const chunk of req) chunks.push(chunk);
   const raw = Buffer.concat(chunks).toString("utf8");
-  return raw ? JSON.parse(raw) : {};
+  if (!raw) return {};
+  try {
+    return JSON.parse(raw);
+  } catch (err) {
+    const error = new Error("Invalid JSON body");
+    error.status = 400;
+    throw error;
+  }
 }
 
 function sendJson(res, status, payload) {
@@ -792,7 +799,8 @@ const server = createServer(async (req, res) => {
     if (pathname.startsWith("/api/")) return await handleApi(req, res, pathname);
     return await serveStatic(req, res);
   } catch (error) {
-    sendJson(res, 500, { ok: false, error: error.message || "Server error" });
+    const status = error.status || 500;
+    sendJson(res, status, { ok: false, error: error.message || "Server error" });
   }
 });
 
