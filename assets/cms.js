@@ -94,6 +94,20 @@
       formEyebrow: "#lead-form .eyebrow",
       formTitle: "#lead-form .page-title",
       formLead: "#lead-form .section-lead"
+    },
+    glossary: {
+      heroEyebrow: "[data-cms-key='heroEyebrow']",
+      heroTitle: "[data-cms-key='heroTitle']",
+      heroLead: "[data-cms-key='heroLead']",
+      connectivityEyebrow: "[data-cms-key='connectivityEyebrow']",
+      connectivityTitle: "[data-cms-key='connectivityTitle']",
+      devicesEyebrow: "[data-cms-key='devicesEyebrow']",
+      devicesTitle: "[data-cms-key='devicesTitle']",
+      softwareEyebrow: "[data-cms-key='softwareEyebrow']",
+      softwareTitle: "[data-cms-key='softwareTitle']",
+      ctaEyebrow: "[data-cms-key='ctaEyebrow']",
+      ctaTitle: "[data-cms-key='ctaTitle']",
+      ctaLead: "[data-cms-key='ctaLead']"
     }
   };
 
@@ -263,6 +277,30 @@
     root.innerHTML = (content.products || []).map(productCard).join("");
   }
 
+  function glossaryCard(item, index) {
+    item = localizeItem(item);
+    const delay = index % 2 ? ` delay-${index % 2}` : "";
+    const noteHtml = item.note ? `<p><strong>${escapeHtml(item.noteLabel || (currentLocale() === 'tr' ? 'WillowSoft kullanım alanları:' : 'WillowSoft uses it in:'))}</strong> ${escapeHtml(item.note)}</p>` : "";
+    return `
+      <article class="card reveal${delay}" id="${escapeHtml(item.id)}">
+        <h3>${escapeHtml(item.term)}</h3>
+        <p>${escapeHtml(item.definition)}</p>
+        ${noteHtml}
+      </article>
+    `;
+  }
+
+  function renderGlossary(content) {
+    const glossary = content.glossary || [];
+    document.querySelectorAll("[data-cms-glossary]").forEach((root) => {
+      const category = root.dataset.cmsGlossary;
+      const items = glossary
+        .filter((item) => item.category === category)
+        .sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
+      root.innerHTML = items.map((item, idx) => glossaryCard(item, idx)).join("");
+    });
+  }
+
   function renderFeaturedProducts(content) {
     const root = document.querySelector("[data-cms-featured-products]");
     if (!root) return;
@@ -351,7 +389,7 @@
   }
 
   function revealDynamicContent() {
-    const nodes = document.querySelectorAll("[data-cms-products] .reveal, [data-cms-featured-products] .reveal, [data-cms-news] .reveal, [data-cms-solutions] .reveal");
+    const nodes = document.querySelectorAll("[data-cms-products] .reveal, [data-cms-featured-products] .reveal, [data-cms-news] .reveal, [data-cms-solutions] .reveal, [data-cms-glossary] .reveal");
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || !("IntersectionObserver" in window)) {
       nodes.forEach((node) => {
         node.classList.add("visible");
@@ -473,6 +511,7 @@
     renderFacts,
     renderSolutions,
     renderFaqs,
+    renderGlossary,
     renderPageSEOInjections
   };
 
@@ -486,6 +525,7 @@
       renderFacts(content);
       renderSolutions(content);
       renderFaqs(content);
+      renderGlossary(content);
       renderPageContent(content);
       renderPageSEOInjections(content);
       revealDynamicContent();
