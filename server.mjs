@@ -13,6 +13,9 @@ const port = Number(process.env.PORT || 4173);
 const siteUrl = (process.env.SITE_URL || "https://willowsoft.co").replace(/\/$/, "");
 const adminUser = process.env.ADMIN_USER || "admin";
 const adminPassword = process.env.ADMIN_PASSWORD || "willow-admin-2026";
+if (process.env.NODE_ENV === "production" && (!process.env.ADMIN_PASSWORD || process.env.ADMIN_PASSWORD === "willow-admin-2026")) {
+  throw new Error("ADMIN_PASSWORD environment variable must be set in production, and cannot be the default value.");
+}
 const sessionTtlMs = 1000 * 60 * 60 * 12;
 const sessions = new Map();
 const maxStoredEvents = Number(process.env.MAX_STORED_EVENTS || 5000);
