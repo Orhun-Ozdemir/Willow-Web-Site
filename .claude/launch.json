@@ -1,0 +1,17 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "willow-site",
+      "runtimeExecutable": "/opt/homebrew/bin/npx",
+      "runtimeArgs": ["serve", "-l", "8000", "/Users/orhunozdemir/Documents/Willow Web Site"],
+      "port": 8000
+    },
+    {
+      "name": "willow-dynamic",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["server.mjs"],
+      "port": 4173
+    }
+  ]
+}

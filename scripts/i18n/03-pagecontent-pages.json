@@ -1,0 +1,346 @@
+{
+  "pageContent": {
+    "products": {
+      "heroEyebrow": { "tr": "Ürünler", "de": "Produkte", "fr": "Produits", "es": "Productos", "it": "Prodotti", "ar": "المنتجات", "ja": "製品" },
+      "heroTitle": {
+        "tr": "Endüstriyel sınıf LoRaWAN donanım portföyü.",
+        "de": "LoRaWAN-Hardware-Portfolio in Industriequalität.",
+        "fr": "Portefeuille matériel LoRaWAN de qualité industrielle.",
+        "es": "Portafolio de hardware LoRaWAN de calidad industrial.",
+        "it": "Portfolio hardware LoRaWAN di livello industriale.",
+        "ar": "محفظة عتاد LoRaWAN بمواصفات صناعية.",
+        "ja": "産業グレードの LoRaWAN ハードウェアポートフォリオ。"
+      },
+      "heroLead": {
+        "tr": "Güvenilir uzaktan izleme için modüller, çevresel sensörler, takip cihazları, güvenlik ürünleri ve endüstriyel arayüzler.",
+        "de": "Module, Umweltsensoren, Tracking-Geräte, Sicherheitsprodukte und industrielle Schnittstellen für eine zuverlässige Fernüberwachung.",
+        "fr": "Modules, capteurs environnementaux, dispositifs de suivi, produits de sécurité et interfaces industrielles pour une surveillance à distance fiable.",
+        "es": "Módulos, sensores ambientales, dispositivos de seguimiento, productos de seguridad e interfaces industriales para una monitorización remota fiable.",
+        "it": "Moduli, sensori ambientali, dispositivi di tracciamento, prodotti per la sicurezza e interfacce industriali per un monitoraggio remoto affidabile.",
+        "ar": "وحدات وأجهزة استشعار بيئية وأجهزة تتبّع ومنتجات سلامة وواجهات صناعية للمراقبة عن بُعد بشكل موثوق.",
+        "ja": "信頼性の高いリモート監視のための、モジュール、環境センサー、追跡デバイス、安全製品、産業用インターフェース。"
+      },
+      "featuredEyebrow": { "tr": "Öne Çıkan Donanım", "de": "Ausgewählte Hardware", "fr": "Matériel en vedette", "es": "Hardware destacado", "it": "Hardware in evidenza", "ar": "عتاد مميّز", "ja": "注目のハードウェア" },
+      "featuredTitle": {
+        "tr": "Gerçek dağıtımlara hazır LoRaWAN modülleri ve sensörleri.",
+        "de": "LoRaWAN-Module und -Sensoren, bereit für reale Einsätze.",
+        "fr": "Des modules et capteurs LoRaWAN prêts pour des déploiements réels.",
+        "es": "Módulos y sensores LoRaWAN listos para despliegues reales.",
+        "it": "Moduli e sensori LoRaWAN pronti per implementazioni reali.",
+        "ar": "وحدات وأجهزة استشعار LoRaWAN جاهزة للنشر الفعلي.",
+        "ja": "実運用に対応した LoRaWAN モジュールとセンサー。"
+      },
+      "catalogEyebrow": { "tr": "Katalog", "de": "Katalog", "fr": "Catalogue", "es": "Catálogo", "it": "Catalogo", "ar": "الكتالوج", "ja": "カタログ" },
+      "catalogTitle": {
+        "tr": "Ürün ailesine göre filtreleyin.",
+        "de": "Nach Produktfamilie filtern.",
+        "fr": "Filtrer par famille de produits.",
+        "es": "Filtrar por familia de productos.",
+        "it": "Filtra per famiglia di prodotti.",
+        "ar": "التصفية حسب عائلة المنتج.",
+        "ja": "製品ファミリーで絞り込む。"
+      }
+    },
+    "news": {
+      "heroEyebrow": { "tr": "Haberler ve Kanıt", "de": "News & Belege", "fr": "Actualités et preuves", "es": "Noticias y pruebas", "it": "Notizie e prove", "ar": "الأخبار والإثبات", "ja": "ニュースと実績" },
+      "heroTitle": {
+        "tr": "Güven veren kurumsal adımlar.",
+        "de": "Unternehmensmeldungen, die Vertrauen schaffen.",
+        "fr": "L'actualité d'entreprise qui inspire confiance.",
+        "es": "Noticias corporativas que generan confianza.",
+        "it": "Novità aziendali che costruiscono fiducia.",
+        "ar": "أخبار وإنجازات تبني الثقة.",
+        "ja": "信頼を築く、当社の実績と最新動向。"
+      },
+      "heroLead": {
+        "tr": "Etkinlikler, ihracat dönüm noktaları, atölyeler ve mühendislik güncellemeleri kurumsal müşteriler için kanıt niteliği taşır.",
+        "de": "Veranstaltungen, Exportmeilensteine, Workshops und Engineering-Updates dienen Unternehmenskunden als Beleg.",
+        "fr": "Événements, jalons à l'export, ateliers et mises à jour techniques font office de preuves pour les clients entreprise.",
+        "es": "Eventos, hitos de exportación, talleres y novedades de ingeniería sirven como prueba para clientes corporativos.",
+        "it": "Eventi, traguardi di esportazione, workshop e aggiornamenti tecnici fungono da prova per i clienti enterprise.",
+        "ar": "الفعاليات ومحطات التصدير وورش العمل وتحديثات الهندسة تعمل كإثبات لعملاء المؤسسات.",
+        "ja": "イベント、輸出の節目、ワークショップ、エンジニアリングの最新情報は、エンタープライズ顧客への実績となります。"
+      },
+      "latestEyebrow": { "tr": "Son Güncellemeler", "de": "Neueste Updates", "fr": "Dernières actualités", "es": "Últimas novedades", "it": "Ultimi aggiornamenti", "ar": "أحدث التحديثات", "ja": "最新情報" },
+      "latestTitle": {
+        "tr": "WillowSoft'un sahada aktif olduğunun kanıtı.",
+        "de": "Beleg dafür, dass WillowSoft im Feld aktiv ist.",
+        "fr": "La preuve que WillowSoft est actif sur le terrain.",
+        "es": "La prueba de que WillowSoft está activo en el campo.",
+        "it": "La prova che WillowSoft è attiva sul campo.",
+        "ar": "دليل على أن WillowSoft نشطة في الميدان.",
+        "ja": "WillowSoft が現場で活動している証。"
+      },
+      "pipelineEyebrow": { "tr": "Referansları fırsata dönüştürün", "de": "Referenzen in Leads verwandeln", "fr": "Transformer les réussites en opportunités", "es": "Convierta los casos de éxito en oportunidades", "it": "Trasforma i risultati in opportunità commerciali", "ar": "تحويل الإنجازات إلى فرص تجارية", "ja": "実績を商談につなげる" },
+      "pipelineTitle": {
+        "tr": "Nitelikli müşteri adayları için haberleri, etkinlikleri ve ürün lansmanlarını kullanın.",
+        "de": "Nutzen Sie News, Events und Produkteinführungen, um qualifizierte Leads zu gewinnen.",
+        "fr": "Utilisez les actualités, événements et lancements de produits pour générer des prospects qualifiés.",
+        "es": "Use noticias, eventos y lanzamientos de productos para generar oportunidades cualificadas.",
+        "it": "Usa notizie, eventi e lanci di prodotto per generare lead qualificati.",
+        "ar": "استخدم الأخبار والفعاليات وإطلاق المنتجات لجذب عملاء محتملين مؤهلين.",
+        "ja": "ニュース、イベント、製品発表を活用して、有望なリードを獲得します。"
+      },
+      "pipelineLead": {
+        "tr": "Yönetim paneli, koda dokunmadan yeni haber öğeleri ekleyebilir. Öne çıkan güncellemeler daha sonra Ana Sayfa ve Şirket sayfalarında gösterilebilir.",
+        "de": "Über das Admin-Panel lassen sich neue Beiträge ohne Code hinzufügen. Ausgewählte Updates können später auf der Start- und Unternehmensseite erscheinen.",
+        "fr": "Le panneau d'administration permet d'ajouter des actualités sans toucher au code. Les mises à jour en vedette peuvent ensuite apparaître sur les pages Accueil et Entreprise.",
+        "es": "El panel de administración permite añadir noticias sin tocar código. Las novedades destacadas pueden mostrarse después en las páginas de Inicio y Empresa.",
+        "it": "Il pannello di amministrazione consente di aggiungere notizie senza toccare il codice. Gli aggiornamenti in evidenza possono poi comparire nelle pagine Home e Azienda.",
+        "ar": "تتيح لوحة الإدارة إضافة أخبار جديدة دون تعديل الشيفرة. ويمكن لاحقًا إبراز التحديثات المميزة في صفحتَي الرئيسية والشركة.",
+        "ja": "管理パネルからコードに触れずに新しいニュースを追加できます。注目の更新は後でホームや会社ページに表示できます。"
+      }
+    },
+    "services": {
+      "heroEyebrow": { "tr": "Hizmetler • Cihazdan arayüze", "de": "Leistungen • Vom Gerät zur Schnittstelle", "fr": "Services • Du dispositif à l'interface", "es": "Servicios • Del dispositivo a la interfaz", "it": "Servizi • Dal dispositivo all'interfaccia", "ar": "الخدمات • من الجهاز إلى الواجهة", "ja": "サービス • デバイスからインターフェースまで" },
+      "heroTitle": {
+        "tr": "Bağlı ürünler için mühendislik hizmetleri.",
+        "de": "Engineering-Leistungen für vernetzte Produkte.",
+        "fr": "Services d'ingénierie pour produits connectés.",
+        "es": "Servicios de ingeniería para productos conectados.",
+        "it": "Servizi di ingegneria per prodotti connessi.",
+        "ar": "خدمات هندسية للمنتجات المتصلة.",
+        "ja": "コネクテッド製品のためのエンジニアリングサービス。"
+      },
+      "heroLead": {
+        "tr": "WillowSoft, ekiplerin tüm ürün altyapısını inşa etmesine yardımcı olur: gömülü cihazlar, firmware, bağlantı, backend, PostgreSQL, web yönetim paneli, mobil ve birlikte çalışacak şekilde tasarlanmış VR katmanları.",
+        "de": "WillowSoft hilft Teams, den gesamten Produkt-Stack aufzubauen: Embedded-Geräte, Firmware, Konnektivität, Backend, PostgreSQL, Web/Admin, Mobile- und VR-Schichten, die für das Zusammenspiel konzipiert sind.",
+        "fr": "WillowSoft aide les équipes à construire l'intégralité de l'architecture produit : dispositifs embarqués, firmware, connectivité, backend, PostgreSQL, web/admin, mobile et VR, conçus pour fonctionner ensemble.",
+        "es": "WillowSoft ayuda a los equipos a construir toda la arquitectura del producto: dispositivos embebidos, firmware, conectividad, backend, PostgreSQL, web/admin, móvil y capas de VR diseñadas para funcionar juntas.",
+        "it": "WillowSoft aiuta i team a costruire l'intera architettura di prodotto: dispositivi embedded, firmware, connettività, backend, PostgreSQL, web/admin, mobile e livelli VR progettati per funzionare insieme.",
+        "ar": "تساعد WillowSoft الفرق على بناء البنية المتكاملة للمنتج: الأجهزة المدمجة، والبرامج الثابتة، والاتصال، والخلفية، وPostgreSQL، والويب/الإدارة، والموبايل، وطبقات الواقع الافتراضي المصممة للعمل معًا.",
+        "ja": "WillowSoftは、組み込みデバイス、ファームウェア、接続、バックエンド、PostgreSQL、Web/管理、モバイル、VRの各レイヤーを連携するよう設計し、チームが製品の全レイヤーを構築できるよう支援します。"
+      },
+      "processEyebrow": { "tr": "Konseptten Üretime", "de": "Vom Konzept zur Produktion", "fr": "Du concept à la production", "es": "Del concepto a la producción", "it": "Dal concetto alla produzione", "ar": "من الفكرة إلى الإنتاج", "ja": "コンセプトから量産まで" },
+      "processTitle": {
+        "tr": "Fikirden dağıtılmış sisteme daha temiz bir yol.",
+        "de": "Ein klarerer Weg von der Idee zum eingesetzten System.",
+        "fr": "Un parcours plus clair de l'idée au système déployé.",
+        "es": "Un camino más claro de la idea al sistema desplegado.",
+        "it": "Un percorso più lineare dall'idea al sistema in produzione.",
+        "ar": "مسار أوضح من الفكرة إلى النظام المنشور.",
+        "ja": "アイデアから本番システムまで、より明快な道のり。"
+      },
+      "stackEyebrow": { "tr": "Teknoloji Yığını Animasyonu", "de": "Technologie-Stack-Animation", "fr": "Animation de la pile technologique", "es": "Animación de pila tecnológica", "it": "Animazione dello stack tecnologico", "ar": "حركة البنية التقنية", "ja": "技術スタックアニメーション" },
+      "stackTitle": { "tr": "Arka plan sistemin kendisi gibi hareket eder.", "de": "Der Hintergrund bewegt sich wie das System selbst.", "fr": "L'arrière-plan s'anime au rythme du système.", "es": "El fondo se mueve como el propio sistema.", "it": "Lo sfondo si muove come il sistema stesso.", "ar": "الخلفية تتحرك مثل النظام نفسه.", "ja": "システムそのもののように動き出す背景。" },
+      "stackLead": { "tr": "Teknoloji kartlarının arkasındaki hareketli düğümler ve sinyaller; cihazdan geçite, backend'e, veritabanına, yönetim paneline, mobil uygulamaya ve VR katmanına uzanan veri akışını temsil eder.", "de": "Hinter den Technologiekarten repräsentieren animierte Knoten und Impulse den Fluss von Sensordaten: vom Gerät zum Gateway, Backend, zur Datenbank, zum Dashboard, zur mobilen App und zur VR-Schicht.", "fr": "Derrière les cartes technologiques, des nœuds animés et des impulsions représentent les données des capteurs transitant de l'appareil vers la passerelle, le backend, la base de données, le tableau de bord, l'application mobile et la couche VR.", "es": "Detrás de las tarjetas tecnológicas, los nodos e impulsos animados representan los datos de los sensores que viajan desde el dispositivo hasta la pasarela, el backend, la base de datos, el panel, la app móvil y la capa de VR.", "it": "Dietro le schede tecnologiche, nodi e impulsi animati rappresentano i dati dei sensori che viaggiano dal dispositivo al gateway, al backend, al database, alla dashboard, all'app mobile e al livello VR.", "ar": "خلف بطاقات التكنولوجيا، تمثّل العُقد والنبضات المتحركة تدفق بيانات المستشعرات من الجهاز إلى البوابة، ثم الواجهة الخلفية وقاعدة البيانات ولوحة المعلومات وتطبيق الجوال وطبقة الواقع الافتراضي.", "ja": "技術カードの背景で明滅するノードとパルスは、デバイスからゲートウェイ、バックエンド、データベース、ダッシュボード、モバイルアプリ、あるいはVRレイヤーへと伝わるセンサーデータの流れを表しています。" },
+      "digitalEyebrow": { "tr": "Dijital Hizmetler", "de": "Digitale Dienste", "fr": "Services numériques", "es": "Servicios digitales", "it": "Servizi digitali", "ar": "الخدمات الرقمية", "ja": "デジタルサービス" },
+      "digitalTitle": { "tr": "Bağlı ürünü tamamlayan yazılım hizmetleri.", "de": "Software-Services, die das vernetzte Produkt vervollständigen.", "fr": "Services logiciels qui complètent le produit connecté.", "es": "Servicios de software que completan el producto conectado.", "it": "Servizi software che completano il prodotto connesso.", "ar": "خدمات البرمجيات التي تكمّل المنتج المتصل.", "ja": "コネクテッド製品を完成させるソフトウェアサービス。" },
+      "vrEyebrow": { "tr": "Odağı Kaybetmeden VR", "de": "VR ohne Fokusverlust", "fr": "La VR sans perdre le focus", "es": "VR sin perder el enfoque", "it": "VR senza perdere il focus", "ar": "واقع افتراضي دون فقدان التركيز", "ja": "本質を見失わないVR" },
+      "vrTitle": { "tr": "Endüstriyel değer yaratan sürükleyici deneyimler.", "de": "Immersive Erlebnisse für industriellen Mehrwert.", "fr": "Expériences immersives à forte valeur industrielle.", "es": "Experiencias inmersivas para aportar valor industrial.", "it": "Esperienze immersive per il valore industriale.", "ar": "تجارب غامرة تقدم قيمة صناعية.", "ja": "産業価値を生み出す没入型体験。" },
+      "vrLead": { "tr": "VR bir eğlence aracı değil, mühendislik desteği olarak konumlandırılmıştır: operatör eğitimi, ürün tanıtımları, bakım simülasyonları ve dijital ikizlerin görselleştirilmesi.", "de": "VR wird als Unterstützung für das Engineering positioniert, nicht zur Unterhaltung: Schulung von Bedienern, Produktpräsentationen, Wartungssimulationen und Visualisierung digitaler Zwillinge.", "fr": "La VR est positionnée comme un outil d'ingénierie et non de divertissement : formation des opérateurs, démonstration de produits, simulation de maintenance et visualisation de jumeaux numériques.", "es": "La VR se plantea como un soporte de ingeniería, no como entretenimiento: formación de operarios, demostraciones de productos, simulación de mantenimiento y visualización de gemelos digitales.", "it": "La VR è concepita come supporto ingegneristico, non come intrattenimento: formazione degli operatori, dimostrazione dei prodotti, simulazione della manutenzione e visualizzazione dei gemelli digitali.", "ar": "يتم وضع الواقع الافتراضي كدعم هندسي وليس للتسلية: تدريب المشغلين، واستعراض المنتجات، ومحاكاة الصيانة، وتصور التوائم الرقمية.", "ja": "VRは娯楽ではなくエンジニアリング支援として位置づけられています。オペレーターの教育訓練、製品のデモンストレーション、メンテナンスのシミュレーション、そしてデジタルツインの可視化に対応します。" }
+    },
+    "solutions": {
+      "heroEyebrow": { "tr": "Çözümler", "de": "Lösungen", "fr": "Solutions", "es": "Soluciones", "it": "Soluzioni", "ar": "الحلول", "ja": "ソリューション" },
+      "heroTitle": {
+        "tr": "Gerçek dünya operasyonları için Endüstriyel IoT çözümleri.",
+        "de": "Industrielle IoT-Lösungen für den realen Betrieb.",
+        "fr": "Solutions IoT industrielles pour des opérations concrètes.",
+        "es": "Soluciones de IoT industrial para operaciones del mundo real.",
+        "it": "Soluzioni IoT industriali per operazioni reali.",
+        "ar": "حلول إنترنت الأشياء الصناعي لعمليات واقعية.",
+        "ja": "実運用のための産業用 IoT ソリューション。"
+      },
+      "heroLead": {
+        "tr": "Dağıtık varlıkları, binaları, makineleri, altyapıları ve lojistik sistemlerini düşük güçlü donanım ve ölçeklenebilir dijital platformlarla birbirine bağlıyoruz.",
+        "de": "Wir verbinden verteilte Anlagen, Gebäude, Maschinen, Versorgungsnetze und Logistiksysteme mit energiesparender Hardware und skalierbaren digitalen Plattformen.",
+        "fr": "Nous connectons des actifs distribués, des bâtiments, des machines, des réseaux et des systèmes logistiques grâce à du matériel basse consommation et à des plateformes numériques évolutives.",
+        "es": "Conectamos activos distribuidos, edificios, máquinas, servicios públicos y sistemas logísticos con hardware de bajo consumo y plataformas digitales escalables.",
+        "it": "Colleghiamo asset distribuiti, edifici, macchine, utility e sistemi logistici con hardware a basso consumo e piattaforme digitali scalabili.",
+        "ar": "نربط الأصول الموزّعة والمباني والآلات والمرافق وأنظمة الخدمات اللوجستية بعتاد منخفض الطاقة ومنصات رقمية قابلة للتوسّع.",
+        "ja": "分散した資産、建物、機械、インフラ、物流システムを、低消費電力ハードウェアとスケーラブルなデジタルプラットフォームで接続します。"
+      },
+      "useCasesEyebrow": { "tr": "Kullanım Senaryoları", "de": "Anwendungsfälle", "fr": "Cas d'usage", "es": "Casos de uso", "it": "Casi d'uso", "ar": "حالات الاستخدام", "ja": "ユースケース" },
+      "useCasesTitle": {
+        "tr": "Güvenilirliğin önem taşıdığı ortamlar için tasarlandı.",
+        "de": "Entwickelt für Umgebungen, in denen Zuverlässigkeit zählt.",
+        "fr": "Conçu pour les environnements où la fiabilité compte.",
+        "es": "Diseñado para entornos donde la fiabilidad importa.",
+        "it": "Progettato per ambienti in cui l'affidabilità conta.",
+        "ar": "مُصمّم لبيئات تكون فيها الموثوقية أساسية.",
+        "ja": "信頼性が重要な環境のために設計。"
+      },
+      "howEyebrow": { "tr": "Nasıl Çalışır", "de": "So funktioniert es", "fr": "Comment ça marche", "es": "Cómo funciona", "it": "Come funziona", "ar": "كيف يعمل", "ja": "仕組み" },
+      "howTitle": {
+        "tr": "Sensörler raporlar, geçitler bağlar, platformlar harekete geçer.",
+        "de": "Sensoren melden, Gateways verbinden, Plattformen handeln.",
+        "fr": "Les capteurs remontent, les passerelles connectent, les plateformes agissent.",
+        "es": "Los sensores informan, las pasarelas conectan, las plataformas actúan.",
+        "it": "I sensori segnalano, i gateway collegano, le piattaforme agiscono.",
+        "ar": "تُبلِّغ المستشعرات، وتربط البوابات، وتتصرّف المنصات.",
+        "ja": "センサーが報告し、ゲートウェイがつなぎ、プラットフォームが動く。"
+      },
+      "howLead": {
+        "tr": "Hareketli arka plan, dağıtık saha verisini temsil eder. Gerçek sistemde her cihaz, telemetriyi API'lere, PostgreSQL'e, panolara, mobil uyarılara ve raporlama araçlarına gönderir.",
+        "de": "Der bewegte Hintergrund steht für verteilte Felddaten. Im realen System sendet jedes Gerät Telemetrie an APIs, PostgreSQL, Dashboards, mobile Benachrichtigungen und Reporting-Tools.",
+        "fr": "L'arrière-plan animé représente des données de terrain distribuées. Dans le système réel, chaque appareil envoie sa télémétrie vers des API, PostgreSQL, des tableaux de bord, des alertes mobiles et des outils de reporting.",
+        "es": "El fondo en movimiento representa datos de campo distribuidos. En el sistema real, cada dispositivo envía telemetría a API, PostgreSQL, paneles, alertas móviles y herramientas de informes.",
+        "it": "Lo sfondo in movimento rappresenta dati di campo distribuiti. Nel sistema reale, ogni dispositivo invia la telemetria ad API, PostgreSQL, dashboard, avvisi mobili e strumenti di reporting.",
+        "ar": "تمثّل الخلفية المتحركة بيانات ميدانية موزّعة. في النظام الفعلي، يرسل كل جهاز بيانات القياس إلى واجهات البرمجة وPostgreSQL ولوحات المعلومات والتنبيهات على الجوال وأدوات إعداد التقارير.",
+        "ja": "動く背景は、分散した現場データを表しています。実際のシステムでは、各デバイスがテレメトリを API、PostgreSQL、ダッシュボード、モバイル通知、レポートツールへ送信します。"
+      },
+      "whyEyebrow": { "tr": "Neden WillowSoft", "de": "Warum WillowSoft", "fr": "Pourquoi WillowSoft", "es": "Por qué WillowSoft", "it": "Perché WillowSoft", "ar": "لماذا WillowSoft", "ja": "WillowSoft が選ばれる理由" },
+      "whyTitle": {
+        "tr": "Çözümler sahaya dayatılmaz; sahanın dinamiklerine göre tasarlanır.",
+        "de": "Lösungen werden an die Gegebenheiten vor Ort angepasst, anstatt sie aufzuzwingen.",
+        "fr": "Les solutions sont conçues en fonction des réalités du terrain, et non imposées à celui-ci.",
+        "es": "Las soluciones se diseñan en función de las necesidades del terreno, no se imponen sobre él.",
+        "it": "Le soluzioni sono progettate in base alle reali esigenze del terreno, non imposte su di esso.",
+        "ar": "تُصمَّم الحلول بناءً على احتياجات الميدان, لا تُفرَض عليه.",
+        "ja": "ソリューションは現場に押し付けるのではなく、現場に合わせて設計します。"
+      }
+    },
+    "company": {
+      "introEyebrow": { "tr": "Hakkımızda", "de": "Über uns", "fr": "À propos", "es": "Acerca de nosotros", "it": "Chi siamo", "ar": "من نحن", "ja": "会社について" },
+      "introTitle": {
+        "tr": "Sadece cihaz üretmiyoruz; güvenilir ekosistemler tasarlıyoruz.",
+        "de": "Wir bauen nicht nur Geräte, wir entwickeln zuverlässige Ökosysteme.",
+        "fr": "Nous ne construisons pas seulement des appareils ; nous concevons des écosystèmes fiables.",
+        "es": "No solo fabricamos dispositivos; diseñamos ecosistemas fiables.",
+        "it": "Non costruiamo solo dispositivi; progettiamo ecosistemi affidabili.",
+        "ar": "نحن لا نصنع الأجهزة فحسب؛ بل نهندس منظومات موثوقة.",
+        "ja": "私たちはデバイスを作るだけでなく、信頼できるエコシステムを設計します。"
+      },
+      "introLead": {
+        "tr": "2020'de kurulan WillowSoft, endüstriyel ve IoT uygulamaları için gömülü donanım ve yazılım çözümleri sunar. Ekip; düşük güç mimarisi, LoRa bağlantısı, firmware güvenilirliği, özel donanım tasarımı, backend sistemleri, mobil ve web arayüzleri ile üretime hazırlığa odaklanır.",
+        "de": "Das 2020 gegründete Unternehmen WillowSoft liefert Embedded-Hardware- und Softwarelösungen für industrielle und IoT-Anwendungen. Das Team konzentriert sich auf energiesparende Architektur, LoRa-Konnektivität, Firmware-Zuverlässigkeit, kundenspezifisches Hardware-Design, Backend-Systeme, mobile und Web-Schnittstellen sowie Produktionsreife.",
+        "fr": "Fondée en 2020, WillowSoft fournit des solutions matérielles et logicielles embarquées pour les applications industrielles et IoT. L'équipe se concentre sur l'architecture basse consommation, la connectivité LoRa, la fiabilité du firmware, la conception matérielle sur mesure, les systèmes backend, les interfaces mobiles et web, et la préparation à la production.",
+        "es": "Fundada en 2020, WillowSoft ofrece soluciones de hardware y software embebidos para aplicaciones industriales e IoT. El equipo se centra en la arquitectura de bajo consumo, la conectividad LoRa, la fiabilidad del firmware, el diseño de hardware a medida, los sistemas backend, las interfaces móviles y web, y la preparación para producción.",
+        "it": "Fondata nel 2020, WillowSoft offre soluzioni hardware e software embedded per applicazioni industriali e IoT. Il team si concentra su architettura a basso consumo, connettività LoRa, affidabilità del firmware, progettazione hardware su misura, sistemi backend, interfacce mobili e web e prontezza alla produzione.",
+        "ar": "تأسست WillowSoft عام 2020، وتقدّم حلول العتاد والبرمجيات المدمجة للتطبيقات الصناعية وإنترنت الأشياء. يركّز الفريق على البنية منخفضة الطاقة واتصال LoRa وموثوقية البرامج الثابتة وتصميم العتاد المخصص وأنظمة الخلفية وواجهات الجوال والويب والجاهزية للإنتاج.",
+        "ja": "2020年に設立された WillowSoft は、産業用および IoT 向けの組み込みハードウェア・ソフトウェアソリューションを提供します。チームは、低消費電力アーキテクチャ、LoRa 接続、ファームウェアの信頼性、カスタムハードウェア設計、バックエンドシステム、モバイル・Web インターフェース、量産対応に注力しています。"
+      },
+      "principlesEyebrow": { "tr": "Nasıl Çalışırız", "de": "Wie wir arbeiten", "fr": "Notre façon de travailler", "es": "Cómo trabajamos", "it": "Come lavoriamo", "ar": "كيف نعمل", "ja": "私たちの働き方" },
+      "principlesTitle": {
+        "tr": "Taviz vermediğimiz mühendislik ilkeleri.",
+        "de": "Engineering-Prinzipien, bei denen wir keine Kompromisse machen.",
+        "fr": "Des principes d'ingénierie sur lesquels nous ne transigeons pas.",
+        "es": "Principios de ingeniería en los que no transigimos.",
+        "it": "Principi di ingegneria su cui non scendiamo a compromessi.",
+        "ar": "مبادئ هندسية لا نساوم عليها.",
+        "ja": "私たちが妥協しないエンジニアリングの原則。"
+      },
+      "historyEyebrow": { "tr": "Şirket Tarihi", "de": "Unternehmensgeschichte", "fr": "Histoire de l'entreprise", "es": "Historia de la empresa", "it": "Storia dell'azienda", "ar": "تاريخ الشركة", "ja": "会社の沿革" },
+      "historyTitle": {
+        "tr": "Ar-Ge köklerinden küresel dağıtıma.",
+        "de": "Von F&E-Wurzeln zum globalen Einsatz.",
+        "fr": "Des racines en R&D au déploiement mondial.",
+        "es": "De las raíces en I+D al despliegue global.",
+        "it": "Dalle radici nella R&S al dispiegamento globale.",
+        "ar": "من جذور البحث والتطوير إلى النشر العالمي.",
+        "ja": "研究開発のルーツからグローバル展開へ。"
+      },
+      "workWithEyebrow": { "tr": "Kimlerle Çalışıyoruz", "de": "Mit wem wir arbeiten", "fr": "Avec qui nous travaillons", "es": "Con quién trabajamos", "it": "Con chi lavoriamo", "ar": "مع من نعمل", "ja": "取引先" },
+      "workWithTitle": {
+        "tr": "Küresel ekipler WillowSoft'a tek bir nedenle güvenir: verdiğimiz sözü tutarız.",
+        "de": "Globale Teams vertrauen WillowSoft aus einem Grund: Wir halten, was wir versprechen.",
+        "fr": "Les équipes mondiales font confiance à WillowSoft pour une raison : nous tenons nos engagements.",
+        "es": "Los equipos globales confían en WillowSoft por una razón: cumplimos lo prometido.",
+        "it": "I team globali si fidano di WillowSoft per un motivo: manteniamo le promesse.",
+        "ar": "تثق الفرق العالمية بـ WillowSoft لسبب واحد: نحن نُنجز.",
+        "ja": "世界中のチームが WillowSoft を信頼する理由はただ一つ。私たちは約束を確実に果たすからです。"
+      },
+      "ctaEyebrow": { "tr": "Bizimle çalışın", "de": "Arbeiten Sie mit uns", "fr": "Travaillez avec nous", "es": "Trabaje con nosotros", "it": "Lavora con noi", "ar": "اعمل معنا", "ja": "一緒に働く" },
+      "ctaTitle": {
+        "tr": "Uçtan uca tüm altyapıyı üstlenen bir ekiple inşa etmeye hazır mısınız?",
+        "de": "Bereit, mit einem Team zu bauen, das den gesamten Stack verantwortet?",
+        "fr": "Prêt à construire avec une équipe qui maîtrise l'intégralité de l'architecture ?",
+        "es": "¿Listo para construir con un equipo que domina toda la arquitectura?",
+        "it": "Pronto a costruire con un team che governa l'intera architettura?",
+        "ar": "هل أنت مستعد للبناء مع فريق يمتلك البنية المتكاملة؟",
+        "ja": "フルスタックを担うチームと共に構築する準備はできていますか？"
+      },
+      "ctaLead": {
+        "tr": "Ne inşa ettiğinizi bize anlatın. Biz de buna nasıl yaklaşacağımızı söyleyelim.",
+        "de": "Sagen Sie uns, was Sie bauen. Wir sagen Ihnen, wie wir es angehen würden.",
+        "fr": "Dites-nous ce que vous construisez. Nous vous dirons comment nous l'aborderions.",
+        "es": "Cuéntenos qué está construyendo. Le diremos cómo lo abordaríamos.",
+        "it": "Raccontaci cosa stai costruendo. Ti diremo come lo affronteremmo.",
+        "ar": "أخبرنا بما تبنيه، وسنخبرك كيف سنتعامل معه.",
+        "ja": "何を作ろうとしているのかをお聞かせください。私たちならどう取り組むかをお伝えします。"
+      }
+    },
+    "contact": {
+      "heroEyebrow": { "tr": "İletişim", "de": "Kontakt", "fr": "Contact", "es": "Contacto", "it": "Contatti", "ar": "اتصل بنا", "ja": "お問い合わせ" },
+      "heroTitle": {
+        "tr": "Sektörünüzün geleceğini birlikte inşa edelim.",
+        "de": "Lassen Sie uns die Zukunft Ihrer Branche gestalten.",
+        "fr": "Construisons ensemble l'avenir de votre secteur.",
+        "es": "Construyamos juntos el futuro de su sector.",
+        "it": "Costruiamo insieme il futuro del tuo settore.",
+        "ar": "لنبنِ معًا مستقبل قطاعك.",
+        "ja": "あなたの業界の未来を、共に築きましょう。"
+      },
+      "heroLead": {
+        "tr": "Donanım, firmware, backend API, PostgreSQL mimarisi, yönetim paneli, mobil uygulama, web sitesi, web panosu, VR simülasyonu veya uçtan uca tüm bağlı ürün ekosistemi konusundaki ihtiyaçlarınızı bizimle paylaşın.",
+        "de": "Sagen Sie uns, ob Sie Hardware, Firmware, Backend-API, PostgreSQL-Architektur, Admin-Panel, mobile App, Website, Web-Dashboard, VR-Simulation oder das komplette vernetzte Produkt-Ökosystem benötigen.",
+        "fr": "Dites-nous si vous avez besoin de matériel, firmware, API backend, architecture PostgreSQL, panneau d'administration, application mobile, site web, tableau de bord web, simulation VR ou d'un écosystème complet de produits connectés.",
+        "es": "Cuéntenos si necesita hardware, firmware, API backend, arquitectura PostgreSQL, panel de administración, aplicación móvil, sitio web, panel web, simulación VR o un ecosistema completo de productos conectados.",
+        "it": "Dicci se hai bisogno di hardware, firmware, API backend, architettura PostgreSQL, pannello di amministrazione, app mobile, sito web, dashboard web, simulazione VR o di un intero ecosistema di prodotti connessi.",
+        "ar": "أخبرنا إن كنت بحاجة إلى العتاد، أو البرامج الثابتة، أو واجهة برمجة خلفية، أو بنية PostgreSQL، أو لوحة إدارة، أو تطبيق جوال، أو موقع إلكتروني، أو لوحة تحكم ويب، أو محاكاة واقع افتراضي، أو منظومة متكاملة من المنتجات المتصلة.",
+        "ja": "ハードウェア、ファームウェア、バックエンド API、PostgreSQL アーキテクチャ、管理パネル、モバイルアプリ、Webサイト、Webダッシュボード、VRシミュレーション、あるいはコネクテッド製品エコシステム全体のいずれが必要かをお聞かせください。"
+      },
+      "directTitle": { "tr": "Doğrudan Bağlantı", "de": "Direkter Kontakt", "fr": "Contact direct", "es": "Conexión directa", "it": "Contatto diretto", "ar": "تواصل مباشر", "ja": "ダイレクト連絡" },
+      "directLead": {
+        "tr": "Genel mesajlar, ofis iletişimi ve henüz tam bir proje özeti gerektirmeyen ilk görüşmeler için iletişim formunu kullanın.",
+        "de": "Nutzen Sie das Kontaktformular für allgemeine Nachrichten, die Kommunikation mit dem Büro und erste Gespräche, die noch kein vollständiges Projektbriefing erfordern.",
+        "fr": "Utilisez le formulaire de contact pour les messages généraux, les échanges avec le bureau et les premières conversations qui ne nécessitent pas encore de brief de projet complet.",
+        "es": "Use el formulario de contacto para mensajes generales, comunicación con la oficina y primeras conversaciones que aún no requieren un brief de proyecto completo.",
+        "it": "Usa il modulo di contatto per messaggi generali, comunicazioni con l'ufficio e primi contatti che non richiedono ancora un brief di progetto completo.",
+        "ar": "استخدم نموذج التواصل للرسائل العامة والتواصل مع المكتب والمحادثات الأولى التي لا تتطلب بعد ملخّص مشروع كامل.",
+        "ja": "一般的なお問い合わせ、オフィスとの連絡、まだ詳細なプロジェクト概要を必要としない初回のご相談には、お問い合わせフォームをご利用ください。"
+      }
+    },
+    "startProject": {
+      "heroEyebrow": { "tr": "Projeye Başla", "de": "Projekt starten", "fr": "Démarrer un projet", "es": "Iniciar proyecto", "it": "Avvia progetto", "ar": "ابدأ مشروعًا", "ja": "プロジェクトを開始" },
+      "heroTitle": {
+        "tr": "Özeti bize verin. Mühendislik yol haritasını biz çıkaralım.",
+        "de": "Geben Sie uns das Briefing. Wir skizzieren den Engineering-Weg.",
+        "fr": "Donnez-nous le brief. Nous tracerons le parcours d'ingénierie.",
+        "es": "Denos el brief. Trazaremos la ruta de ingeniería.",
+        "it": "Dacci il brief. Tracceremo il percorso ingegneristico.",
+        "ar": "زوّدنا بالملخّص، وسنرسم لك مسار الهندسة.",
+        "ja": "概要をお聞かせください。エンジニアリングの道筋を私たちが描きます。"
+      },
+      "realityEyebrow": { "tr": "Proje Uyumu", "de": "Projekt-Passung", "fr": "Adéquation du projet", "es": "Ajuste del proyecto", "it": "Idoneità del progetto", "ar": "ملائمة المشروع", "ja": "プロジェクト適合性" },
+      "realityTitle": {
+        "tr": "Kapsamın kritik olduğu durumlar için Projeye Başla formunu kullanın.",
+        "de": "Nutzen Sie 'Projekt starten', wenn der Umfang entscheidend ist.",
+        "fr": "Utilisez 'Démarrer un projet' lorsque le périmètre est essentiel.",
+        "es": "Use 'Iniciar proyecto' cuando el alcance sea lo importante.",
+        "it": "Usa 'Avvia progetto' quando l'ambito è fondamentale.",
+        "ar": "استخدم 'ابدأ مشروعًا' عندما يكون نطاق العمل مهمًا.",
+        "ja": "開発スコープの明確化が重要な場合は「プロジェクトを開始」をご利用ください。"
+      },
+      "pathsEyebrow": { "tr": "Gönderimden sonra", "de": "Nach dem Absenden", "fr": "Après l'envoi", "es": "Después de enviar", "it": "Dopo l'invio", "ar": "بعد الإرسال", "ja": "送信後の流れ" },
+      "pathsTitle": {
+        "tr": "Daha net bir ilk görüşme.",
+        "de": "Ein klareres erstes Gespräch.",
+        "fr": "Une première conversation plus claire.",
+        "es": "Una primera conversación más clara.",
+        "it": "Una prima conversazione più chiara.",
+        "ar": "محادثة أولى أكثر وضوحًا.",
+        "ja": "より明確な初回の対話。"
+      },
+      "formEyebrow": { "tr": "Proje özeti", "de": "Projektbriefing", "fr": "Brief de projet", "es": "Brief de proyecto", "it": "Brief di progetto", "ar": "ملخّص المشروع", "ja": "プロジェクト概要" },
+      "formTitle": {
+        "tr": "Ne inşa ettiğinizi bize anlatın.",
+        "de": "Sagen Sie uns, was Sie bauen.",
+        "fr": "Dites-nous ce que vous construisez.",
+        "es": "Cuéntenos qué está construyendo.",
+        "it": "Raccontaci cosa stai costruendo.",
+        "ar": "أخبرنا بما تبنيه.",
+        "ja": "何を作ろうとしているのかをお聞かせください。"
+      },
+      "formLead": {
+        "tr": "Bu form, kasıtlı olarak genel iletişim formundan daha detaylı hazırlanmıştır. WillowSoft'un tek bir katmana mı yoksa uçtan uca bağlı bir ürüne mi ihtiyacınız olduğunu anlamasına yardımcı olur.",
+        "de": "Dieses Formular ist bewusst detaillierter als das Kontaktformular. Es hilft WillowSoft zu verstehen, ob Sie eine einzelne Schicht oder ein durchgängiges vernetztes Produkt benötigen.",
+        "fr": "Ce formulaire est volontairement plus détaillé que le formulaire de contact. Il aide WillowSoft à déterminer si vous avez besoin d'une seule couche ou d'un produit connecté de bout en bout.",
+        "es": "Este formulario es intencionadamente más detallado que el de contacto. Ayuda a WillowSoft a entender si necesita una sola capa o un producto conectado de extremo a extremo.",
+        "it": "Questo modulo è volutamente più dettagliato di quello di contatto. Aiuta WillowSoft a capire se hai bisogno di un singolo livello o di un prodotto connesso end-to-end.",
+        "ar": "هذا النموذج أكثر تفصيلاً عن قصد من نموذج التواصل، ويساعد WillowSoft على فهم ما إذا كنت بحاجة إلى طبقة واحدة أم منتج متصل متكامل من البداية إلى النهاية.",
+        "ja": "このフォームは、お問い合わせフォームよりも意図的に詳細になっています。WillowSoft が、単一のレイヤーが必要なのか、エンドツーエンドのコネクテッド製品が必要なのかを把握するのに役立ちます。"
+      }
+    }
+  }
+}

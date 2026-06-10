@@ -1,0 +1,324 @@
+{
+  "faqs": {
+    "faq-services-what-engineering-services-does-willowsoft-offer": {
+      "question": {
+        "tr": "WillowSoft hangi mühendislik hizmetlerini sunar?",
+        "de": "Welche Engineering-Leistungen bietet WillowSoft an?",
+        "fr": "Quels services d'ingénierie WillowSoft propose-t-il ?",
+        "es": "¿Qué servicios de ingeniería ofrece WillowSoft?",
+        "it": "Quali servizi di ingegneria offre WillowSoft?",
+        "ar": "ما الخدمات الهندسية التي تقدّمها WillowSoft؟",
+        "ja": "WillowSoft はどのようなエンジニアリングサービスを提供していますか？"
+      },
+      "answer": {
+        "tr": "WillowSoft, sekiz disiplinde uçtan uca bağlı ürün mühendisliği sunar: gömülü donanım tasarımı (özel PCB, RF, düşük güç), firmware geliştirme (STM32, RTOS, OTA), backend API'leri (REST + WebSocket, kimlik doğrulama, veri alımı), PostgreSQL veritabanı mimarisi, web platformları ve yönetim panelleri, native iOS (Swift) + native Android (Kotlin) + Flutter çapraz platform mobil uygulamalar, VR ve simülasyon, ve IoT bulut telemetrisi.",
+        "de": "WillowSoft bietet durchgängiges Engineering für vernetzte Produkte in acht Disziplinen: Embedded-Hardware-Design (kundenspezifische PCB, RF, Low-Power), Firmware-Entwicklung (STM32, RTOS, OTA), Backend-APIs (REST + WebSocket, Authentifizierung, Datenaufnahme), PostgreSQL-Datenbankarchitektur, Webplattformen und Admin-Panels, native iOS- (Swift) + native Android- (Kotlin) + Flutter-Cross-Platform-Apps, VR und Simulation sowie IoT-Cloud-Telemetrie.",
+        "fr": "WillowSoft assure l'ingénierie de produits connectés de bout en bout dans huit disciplines : conception de matériel embarqué (PCB sur mesure, RF, basse consommation), développement de firmware (STM32, RTOS, OTA), API backend (REST + WebSocket, authentification, ingestion), architecture de base de données PostgreSQL, plateformes web et panneaux d'administration, applications mobiles natives iOS (Swift) + Android (Kotlin) + Flutter multiplateformes, VR et simulation, et télémétrie IoT dans le cloud.",
+        "es": "WillowSoft ofrece ingeniería integral de productos conectados en ocho disciplinas: diseño de hardware embebido (PCB a medida, RF, bajo consumo), desarrollo de firmware (STM32, RTOS, OTA), API backend (REST + WebSocket, autenticación, ingesta), arquitectura de base de datos PostgreSQL, plataformas web y paneles de administración, apps móviles nativas de iOS (Swift) + Android (Kotlin) + Flutter multiplataforma, VR y simulación, y telemetría IoT en la nube.",
+        "it": "WillowSoft offre ingegneria end-to-end di prodotti connessi in otto discipline: progettazione hardware embedded (PCB su misura, RF, basso consumo), sviluppo firmware (STM32, RTOS, OTA), API backend (REST + WebSocket, autenticazione, ingestione), architettura di database PostgreSQL, piattaforme web e pannelli di amministrazione, app mobili native iOS (Swift) + Android (Kotlin) + Flutter multipiattaforma, VR e simulazione, e telemetria IoT nel cloud.",
+        "ar": "تقدّم WillowSoft هندسة متكاملة للمنتجات المتصلة عبر ثماني تخصّصات: تصميم العتاد المدمج (لوحات PCB مخصصة، RF، طاقة منخفضة)، تطوير البرامج الثابتة (STM32، RTOS، OTA)، واجهات برمجة خلفية (REST + WebSocket، المصادقة، استيعاب البيانات)، بنية قواعد بيانات PostgreSQL، منصات ويب ولوحات إدارة، تطبيقات جوال أصلية iOS (Swift) + Android (Kotlin) + Flutter متعددة المنصات، الواقع الافتراضي والمحاكاة، وقياس بيانات إنترنت الأشياء عبر السحابة.",
+        "ja": "WillowSoft は、8つの専門領域にわたってコネクテッド製品のエンドツーエンドのエンジニアリングを提供します。組み込みハードウェア設計（カスタム PCB、RF、低消費電力）、ファームウェア開発（STM32、RTOS、OTA）、バックエンド API（REST + WebSocket、認証、データ取り込み）、PostgreSQL データベースアーキテクチャ、Web プラットフォームと管理パネル、ネイティブ iOS（Swift）+ ネイティブ Android（Kotlin）+ Flutter クロスプラットフォームアプリ、VR とシミュレーション、IoT クラウドテレメトリです。"
+      }
+    },
+    "faq-services-does-willowsoft-deliver-complete-connected-products-end-to-e": {
+      "question": {
+        "tr": "WillowSoft uçtan uca eksiksiz bağlı ürünler teslim ediyor mu?",
+        "de": "Liefert WillowSoft vollständige vernetzte Produkte end-to-end?",
+        "fr": "WillowSoft livre-t-il des produits connectés complets de bout en bout ?",
+        "es": "¿WillowSoft entrega productos conectados completos de extremo a extremo?",
+        "it": "WillowSoft consegna prodotti connessi completi end-to-end?",
+        "ar": "هل تُسلّم WillowSoft منتجات متصلة متكاملة من البداية إلى النهاية؟",
+        "ja": "WillowSoft はコネクテッド製品をエンドツーエンドで一貫して提供しますか？"
+      },
+      "answer": {
+        "tr": "Evet. WillowSoft, bağlı bir ürünün tüm katmanlarını üstlenir — donanım, firmware, RF/LoRaWAN bağlantısı, backend, veritabanı, mobil ve web arayüzleri — böylece müşterilerin birden fazla tedarikçiyi koordine etmesine veya kopuk ekipler arasında gereksinimleri tercüme etmesine gerek kalmaz.",
+        "de": "Ja. WillowSoft verantwortet jede Schicht eines vernetzten Produkts — Hardware, Firmware, RF/LoRaWAN-Konnektivität, Backend, Datenbank, mobile und Web-Schnittstellen —, sodass Kunden weder mehrere Anbieter koordinieren noch Anforderungen zwischen getrennten Teams übersetzen müssen.",
+        "fr": "Oui. WillowSoft maîtrise chaque couche d'un produit connecté — matériel, firmware, connectivité RF/LoRaWAN, backend, base de données, interfaces mobiles et web —, de sorte que les clients n'ont pas à coordonner plusieurs fournisseurs ni à traduire les exigences entre des équipes cloisonnées.",
+        "es": "Sí. WillowSoft es responsable de cada capa de un producto conectado: hardware, firmware, conectividad RF/LoRaWAN, backend, base de datos, interfaces móviles y web, de modo que los clientes no necesitan coordinar varios proveedores ni traducir requisitos entre equipos desconectados.",
+        "it": "Sì. WillowSoft governa ogni livello di un prodotto connesso — hardware, firmware, connettività RF/LoRaWAN, backend, database, interfacce mobili e web — così i clienti non devono coordinare più fornitori né tradurre i requisiti tra team scollegati.",
+        "ar": "نعم. تمتلك WillowSoft كل طبقة من المنتج المتصل — العتاد والبرامج الثابتة واتصال RF/LoRaWAN والخلفية وقاعدة البيانات وواجهات الجوال والويب — بحيث لا يحتاج العملاء إلى تنسيق عدة موردين أو ترجمة المتطلبات بين فرق منفصلة.",
+        "ja": "はい。WillowSoft はコネクテッド製品のあらゆるレイヤー（ハードウェア、ファームウェア、RF/LoRaWAN 接続、バックエンド、データベース、モバイル・Web インターフェース）を担うため、お客様が複数のベンダーを調整したり、分断されたチーム間で要件を翻訳したりする必要はありません。"
+      }
+    },
+    "faq-services-which-technologies-does-willowsoft-specialise-in": {
+      "question": {
+        "tr": "WillowSoft hangi teknolojilerde uzmanlaşmıştır?",
+        "de": "Auf welche Technologien ist WillowSoft spezialisiert?",
+        "fr": "Dans quelles technologies WillowSoft est-il spécialisé ?",
+        "es": "¿En qué tecnologías se especializa WillowSoft?",
+        "it": "In quali tecnologie è specializzata WillowSoft?",
+        "ar": "ما التقنيات التي تتخصّص فيها WillowSoft؟",
+        "ja": "WillowSoft はどのような技術を専門としていますか？"
+      },
+      "answer": {
+        "tr": "Uzman olduğumuz temel teknolojiler arasında STM32WL Cortex-M4 mikrodenetleyiciler, LoRaWAN 1.1.0, Modbus RTU, BLE, Wi-Fi, FreeRTOS, REST API'leri, WebSocket, PostgreSQL, Swift (native iOS), Kotlin (native Android), Flutter, web için Three.js / WebGL ve VR simülasyonları için Unity yer alır.",
+        "de": "Zu den Kerntechnologien zählen STM32WL-Cortex-M4-Mikrocontroller, LoRaWAN 1.1.0, Modbus RTU, BLE, Wi-Fi, FreeRTOS, REST-APIs, WebSocket, PostgreSQL, Swift (native iOS), Kotlin (native Android), Flutter, Three.js / WebGL für das Web und Unity für VR-Simulationen.",
+        "fr": "Les principales technologies incluent les microcontrôleurs STM32WL Cortex-M4, LoRaWAN 1.1.0, Modbus RTU, BLE, Wi-Fi, FreeRTOS, les API REST, WebSocket, PostgreSQL, Swift (iOS natif), Kotlin (Android natif), Flutter, Three.js / WebGL pour le web et Unity pour les simulations VR.",
+        "es": "Las tecnologías principales incluyen microcontroladores STM32WL Cortex-M4, LoRaWAN 1.1.0, Modbus RTU, BLE, Wi-Fi, FreeRTOS, API REST, WebSocket, PostgreSQL, Swift (iOS nativo), Kotlin (Android nativo), Flutter, Three.js / WebGL para web y Unity para simulaciones VR.",
+        "it": "Gli stack tecnologici principali includono microcontrollori STM32WL Cortex-M4, LoRaWAN 1.1.0, Modbus RTU, BLE, Wi-Fi, FreeRTOS, API REST, WebSocket, PostgreSQL, Swift (iOS nativo), Kotlin (Android nativo), Flutter, Three.js / WebGL per il web e Unity per le simulazioni VR.",
+        "ar": "تشمل التقنيات الأساسية متحكمات STM32WL Cortex-M4، وLoRaWAN 1.1.0، وModbus RTU، وBLE، وWi-Fi، وFreeRTOS، وواجهات REST، وWebSocket، وPostgreSQL، وSwift (iOS الأصلي)، وKotlin (Android الأصلي)، وFlutter، وThree.js / WebGL للويب، وUnity لمحاكاة الواقع الافتراضي.",
+        "ja": "中核となる技術スタックには、STM32WL Cortex-M4 マイコン、LoRaWAN 1.1.0、Modbus RTU、BLE、Wi-Fi、FreeRTOS、REST API、WebSocket、PostgreSQL、Swift（ネイティブ iOS）、Kotlin（ネイティブ Android）、Flutter、Web 向けの Three.js / WebGL、VR シミュレーション向けの Unity が含まれます。"
+      }
+    },
+    "faq-services-can-willowsoft-handle-production-readiness-and-certification": {
+      "question": {
+        "tr": "WillowSoft üretime hazırlık ve sertifikasyonu üstlenebilir mi?",
+        "de": "Kann WillowSoft Produktionsreife und Zertifizierung übernehmen?",
+        "fr": "WillowSoft peut-il gérer la préparation à la production et la certification ?",
+        "es": "¿WillowSoft puede encargarse de la preparación para producción y la certificación?",
+        "it": "WillowSoft può occuparsi della prontezza alla produzione e della certificazione?",
+        "ar": "هل تستطيع WillowSoft التعامل مع الجاهزية للإنتاج والاعتماد؟",
+        "ja": "WillowSoft は量産対応と認証に対応できますか？"
+      },
+      "answer": {
+        "tr": "Evet. WillowSoft'un mühendislik süreci RF ayarı, cihaz kararlılığı, sertifikasyon desteği (CE, FCC, TELEC, KC), üretim devri ve sürekli saha iyileştirmelerini içerir.",
+        "de": "Ja. Der Engineering-Prozess von WillowSoft umfasst RF-Tuning, Gerätestabilität, Zertifizierungsunterstützung (CE, FCC, TELEC, KC), Produktionsübergabe und laufende Feldverbesserungen.",
+        "fr": "Oui. Le processus d'ingénierie de WillowSoft comprend le réglage RF, la stabilité des appareils, le support de certification (CE, FCC, TELEC, KC), le transfert en production et les améliorations continues sur le terrain.",
+        "es": "Sí. El proceso de ingeniería de WillowSoft incluye el ajuste de RF, la estabilidad del dispositivo, el soporte de certificación (CE, FCC, TELEC, KC), la transferencia a producción y las mejoras continuas en campo.",
+        "it": "Sì. Il processo di ingegneria di WillowSoft include la messa a punto RF, la stabilità dei dispositivi, il supporto alla certificazione (CE, FCC, TELEC, KC), il passaggio in produzione e i miglioramenti continui sul campo.",
+        "ar": "نعم. تشمل عملية الهندسة لدى WillowSoft ضبط RF واستقرار الجهاز ودعم الاعتماد (CE وFCC وTELEC وKC) وتسليم الإنتاج والتحسينات الميدانية المستمرة.",
+        "ja": "はい。WillowSoft のエンジニアリングプロセスには、RF チューニング、デバイスの安定性、認証サポート（CE、FCC、TELEC、KC）、量産への引き渡し、継続的な現場改善が含まれます。"
+      }
+    },
+    "faq-services-do-you-sign-ndas-before-sharing-technical-details": {
+      "question": {
+        "tr": "Teknik ayrıntıları paylaşmadan önce gizlilik sözleşmesi (NDA) imzalıyor musunuz?",
+        "de": "Unterzeichnen Sie NDAs, bevor technische Details geteilt werden?",
+        "fr": "Signez-vous des NDA avant de partager des détails techniques ?",
+        "es": "¿Firman acuerdos de confidencialidad (NDA) antes de compartir detalles técnicos?",
+        "it": "Firmate accordi di riservatezza (NDA) prima di condividere dettagli tecnici?",
+        "ar": "هل توقّعون اتفاقيات عدم إفصاح (NDA) قبل مشاركة التفاصيل التقنية؟",
+        "ja": "技術的な詳細を共有する前に NDA を締結しますか？"
+      },
+      "answer": {
+        "tr": "Evet. WillowSoft, müşteri donanım spesifikasyonları, fikri mülkiyet veya hassas dağıtım verileri içeren her ticari görüşmenin başında karşılıklı NDA imzalar.",
+        "de": "Ja. WillowSoft unterzeichnet zu Beginn jedes kommerziellen Gesprächs, das Kunden-Hardwarespezifikationen, geistiges Eigentum oder sensible Einsatzdaten betrifft, eine gegenseitige Geheimhaltungsvereinbarung.",
+        "fr": "Oui. WillowSoft signe des NDA réciproques dès le début de toute discussion commerciale impliquant des spécifications matérielles du client, de la propriété intellectuelle ou des données de déploiement sensibles.",
+        "es": "Sí. WillowSoft firma acuerdos de confidencialidad mutuos al inicio de cualquier conversación comercial que implique especificaciones de hardware del cliente, propiedad intelectual o datos de despliegue sensibles.",
+        "it": "Sì. WillowSoft firma NDA reciproci all'inizio di ogni conversazione commerciale che coinvolga specifiche hardware del cliente, proprietà intellettuale o dati di distribuzione sensibili.",
+        "ar": "نعم. توقّع WillowSoft اتفاقيات عدم إفصاح متبادلة في بداية أي محادثة تجارية تتضمّن مواصفات عتاد العميل أو الملكية الفكرية أو بيانات نشر حساسة.",
+        "ja": "はい。WillowSoft は、顧客のハードウェア仕様、知的財産、または機密性の高い展開データが関わるあらゆる商談の開始時に、相互 NDA を締結します。"
+      }
+    },
+    "faq-services-what-s-a-typical-project-timeline": {
+      "question": {
+        "tr": "Tipik bir proje süresi nedir?",
+        "de": "Wie sieht ein typischer Projektzeitplan aus?",
+        "fr": "Quel est le calendrier type d'un projet ?",
+        "es": "¿Cuál es el plazo típico de un proyecto?",
+        "it": "Qual è la tempistica tipica di un progetto?",
+        "ar": "ما الجدول الزمني المعتاد للمشروع؟",
+        "ja": "プロジェクトの一般的な期間はどのくらいですか？"
+      },
+      "answer": {
+        "tr": "Donanım prototipleri genellikle 4–8 hafta sürer. Eksiksiz bağlı ürün sistemleri (donanım + firmware + backend + pano + mobil) genellikle başlangıçtan sahaya hazır dağıtıma kadar 4–6 ay sürer.",
+        "de": "Hardware-Prototypen dauern in der Regel 4–8 Wochen. Komplette vernetzte Produktsysteme (Hardware + Firmware + Backend + Dashboard + Mobile) dauern in der Regel 4–6 Monate vom Kickoff bis zum feldreifen Einsatz.",
+        "fr": "Les prototypes matériels prennent généralement 4 à 8 semaines. Les systèmes de produits connectés complets (matériel + firmware + backend + tableau de bord + mobile) prennent généralement 4 à 6 mois, du lancement au déploiement prêt pour le terrain.",
+        "es": "Los prototipos de hardware suelen tardar de 4 a 8 semanas. Los sistemas completos de producto conectado (hardware + firmware + backend + panel + móvil) suelen tardar de 4 a 6 meses desde el inicio hasta el despliegue listo para campo.",
+        "it": "I prototipi hardware richiedono in genere 4–8 settimane. I sistemi completi di prodotto connesso (hardware + firmware + backend + dashboard + mobile) richiedono in genere 4–6 mesi dall'avvio al dispiegamento pronto per il campo.",
+        "ar": "تستغرق النماذج الأولية للعتاد عادةً من 4 إلى 8 أسابيع. أما أنظمة المنتج المتصل الكاملة (عتاد + برامج ثابتة + خلفية + لوحة معلومات + تطبيق جوال) فتستغرق عادةً من 4 إلى 6 أشهر من الانطلاق حتى النشر الجاهز للميدان.",
+        "ja": "ハードウェアの試作は通常 4〜8 週間です。コネクテッド製品システム一式（ハードウェア + ファームウェア + バックエンド + ダッシュボード + モバイル）は、キックオフから現場対応の展開まで通常 4〜6 か月です。"
+      }
+    },
+    "faq-services-who-owns-the-ip-at-the-end-of-the-project": {
+      "question": {
+        "tr": "Proje sonunda fikri mülkiyet (IP) kime ait olur?",
+        "de": "Wem gehört das geistige Eigentum am Ende des Projekts?",
+        "fr": "À qui appartient la propriété intellectuelle à la fin du projet ?",
+        "es": "¿Quién es el propietario de la propiedad intelectual al final del proyecto?",
+        "it": "A chi appartiene la proprietà intellettuale alla fine del progetto?",
+        "ar": "لمن تعود الملكية الفكرية في نهاية المشروع؟",
+        "ja": "プロジェクト終了時に知的財産は誰のものになりますか？"
+      },
+      "answer": {
+        "tr": "Proje fikri mülkiyeti müşteriye aittir — şematikler, firmware kaynak kodu, backend kodu, mobil uygulamalar. WillowSoft; iş başlamadan önce var olan dahili referans kütüphaneleri, sertifikalı RF blokları ve yeniden kullanılabilir platform bileşenleri üzerindeki haklarını saklı tutar.",
+        "de": "Das Projekt-IP gehört dem Kunden — Schaltpläne, Firmware-Quellcode, Backend-Code, mobile Apps. WillowSoft behält die Rechte an seinen internen Referenzbibliotheken, zertifizierten RF-Blöcken und wiederverwendbaren Plattformkomponenten, die bereits vor dem Engagement bestehen.",
+        "fr": "La propriété intellectuelle du projet appartient au client — schémas, code source du firmware, code backend, applications mobiles. WillowSoft conserve les droits sur ses bibliothèques de référence internes, ses blocs RF certifiés et ses composants de plateforme réutilisables préexistants à la mission.",
+        "es": "La propiedad intelectual del proyecto es del cliente: esquemas, código fuente del firmware, código backend, apps móviles. WillowSoft conserva los derechos sobre sus bibliotecas de referencia internas, bloques RF certificados y componentes de plataforma reutilizables que existen antes del encargo.",
+        "it": "La proprietà intellettuale del progetto appartiene al cliente — schemi, codice sorgente del firmware, codice backend, app mobili. WillowSoft mantiene i diritti sulle proprie librerie di riferimento interne, sui blocchi RF certificati e sui componenti di piattaforma riutilizzabili preesistenti all'incarico.",
+        "ar": "تعود الملكية الفكرية للمشروع إلى العميل — المخططات، وشيفرة البرامج الثابتة، وشيفرة الخلفية، وتطبيقات الجوال. وتحتفظ WillowSoft بحقوقها في مكتباتها المرجعية الداخلية وكتل RF المعتمدة ومكونات المنصة القابلة لإعادة الاستخدام الموجودة قبل بدء التعاون.",
+        "ja": "プロジェクトの知的財産は顧客に帰属します（回路図、ファームウェアのソース、バックエンドコード、モバイルアプリ）。WillowSoft は、契約前から存在する社内リファレンスライブラリ、認証済み RF ブロック、再利用可能なプラットフォームコンポーネントに対する権利を保持します。"
+      }
+    },
+    "faq-solutions-which-industries-does-willowsoft-serve-with-iot-solutions": {
+      "question": {
+        "tr": "WillowSoft IoT çözümleriyle hangi sektörlere hizmet veriyor?",
+        "de": "Welche Branchen bedient WillowSoft mit IoT-Lösungen?",
+        "fr": "Quels secteurs WillowSoft dessert-il avec ses solutions IoT ?",
+        "es": "¿A qué industrias atiende WillowSoft con soluciones IoT?",
+        "it": "Quali settori serve WillowSoft con le soluzioni IoT?",
+        "ar": "ما القطاعات التي تخدمها WillowSoft بحلول إنترنت الأشياء؟",
+        "ja": "WillowSoft は IoT ソリューションでどの業界に対応していますか？"
+      },
+      "answer": {
+        "tr": "WillowSoft; endüstriyel otomasyon, enerji ve güneş santralleri, akıllı binalar, telekomünikasyon, akıllı lojistik ve soğuk zincir, sağlık, akıllı tarım ve seralar ile altyapı ve kamu hizmetleri için saha telemetrisi alanlarına hizmet verir.",
+        "de": "WillowSoft bedient Industrieautomation, Energie- und Solaranlagen, Smart Buildings, Telekommunikation, intelligente Logistik und Kühlkette, Gesundheitswesen, Smart Agriculture und Gewächshäuser sowie Feldtelemetrie für Versorger und Infrastruktur.",
+        "fr": "WillowSoft dessert l'automatisation industrielle, les centrales énergétiques et solaires, les bâtiments intelligents, les télécommunications, la logistique intelligente et la chaîne du froid, la santé, l'agriculture intelligente et les serres, ainsi que la télémétrie de terrain pour les services publics et les infrastructures.",
+        "es": "WillowSoft atiende la automatización industrial, las plantas de energía y solares, los edificios inteligentes, las telecomunicaciones, la logística inteligente y la cadena de frío, la salud, la agricultura inteligente y los invernaderos, y la telemetría de campo para servicios públicos e infraestructuras.",
+        "it": "WillowSoft serve l'automazione industriale, gli impianti energetici e solari, gli edifici intelligenti, le telecomunicazioni, la logistica intelligente e la catena del freddo, la sanità, l'agricoltura intelligente e le serre, e la telemetria sul campo per utility e infrastrutture.",
+        "ar": "تخدم WillowSoft الأتمتة الصناعية ومحطات الطاقة والطاقة الشمسية والمباني الذكية والاتصالات والخدمات اللوجستية الذكية وسلسلة التبريد والرعاية الصحية والزراعة الذكية والبيوت المحمية، إضافةً إلى القياس الميداني للمرافق والبنية التحتية.",
+        "ja": "WillowSoft は、産業オートメーション、エネルギー・太陽光発電所、スマートビル、通信、スマート物流とコールドチェーン、ヘルスケア、スマート農業と温室、そして公益事業・インフラ向けの現場テレメトリに対応しています。"
+      }
+    },
+    "faq-solutions-does-willowsoft-provide-complete-iot-solutions-or-just-devic": {
+      "question": {
+        "tr": "WillowSoft eksiksiz IoT çözümleri mi sunuyor yoksa yalnızca cihaz mı?",
+        "de": "Bietet WillowSoft komplette IoT-Lösungen oder nur Geräte?",
+        "fr": "WillowSoft propose-t-il des solutions IoT complètes ou seulement des appareils ?",
+        "es": "¿WillowSoft ofrece soluciones IoT completas o solo dispositivos?",
+        "it": "WillowSoft fornisce soluzioni IoT complete o solo dispositivi?",
+        "ar": "هل تقدّم WillowSoft حلول إنترنت أشياء متكاملة أم مجرّد أجهزة؟",
+        "ja": "WillowSoft は完全な IoT ソリューションを提供しますか、それともデバイスのみですか？"
+      },
+      "answer": {
+        "tr": "Evet. WillowSoft uçtan uca tüm altyapıyı sunar — sensörler ve geçitler, LoRaWAN bağlantısı, backend API'leri, PostgreSQL depolama, web ve mobil panolar, uyarı iş akışları ve yönetim panelleri.",
+        "de": "Ja. WillowSoft liefert den gesamten Stack — Sensoren und Gateways, LoRaWAN-Konnektivität, Backend-APIs, PostgreSQL-Speicher, Web- und Mobile-Dashboards, Alarm-Workflows und Admin-Panels.",
+        "fr": "Oui. WillowSoft fournit la solution complète — capteurs et passerelles, connectivité LoRaWAN, API backend, stockage PostgreSQL, tableaux de bord web et mobiles, flux d'alertes et panneaux d'administration.",
+        "es": "Sí. WillowSoft entrega la solución completa: sensores y pasarelas, conectividad LoRaWAN, API backend, almacenamiento PostgreSQL, paneles web y móviles, flujos de alertas y paneles de administración.",
+        "it": "Sì. WillowSoft consegna l'intero stack — sensori e gateway, connettività LoRaWAN, API backend, archiviazione PostgreSQL, dashboard web e mobili, flussi di avviso e pannelli di amministrazione.",
+        "ar": "نعم. تُسلّم WillowSoft الحزمة الكاملة — المستشعرات والبوابات، واتصال LoRaWAN، وواجهات الخلفية، وتخزين PostgreSQL، ولوحات معلومات على الويب والجوال، وسير عمل التنبيهات، ولوحات الإدارة.",
+        "ja": "はい。WillowSoft はスタック全体を提供します。センサーとゲートウェイ、LoRaWAN 接続、バックエンド API、PostgreSQL ストレージ、Web・モバイルダッシュボード、アラートワークフロー、管理パネルです。"
+      }
+    },
+    "faq-solutions-what-sensor-types-can-willowsoft-deploy-in-industrial-enviro": {
+      "question": {
+        "tr": "WillowSoft endüstriyel ortamlarda hangi sensör türlerini kullanabilir?",
+        "de": "Welche Sensortypen kann WillowSoft in industriellen Umgebungen einsetzen?",
+        "fr": "Quels types de capteurs WillowSoft peut-il déployer en environnement industriel ?",
+        "es": "¿Qué tipos de sensores puede desplegar WillowSoft en entornos industriales?",
+        "it": "Quali tipi di sensori può implementare WillowSoft in ambienti industriali?",
+        "ar": "ما أنواع المستشعرات التي يمكن لـ WillowSoft نشرها في البيئات الصناعية؟",
+        "ja": "WillowSoft は産業環境でどのような種類のセンサーを展開できますか？"
+      },
+      "answer": {
+        "tr": "Ultrasonik seviye (WillowSonic), hava kalitesi (WillowAir), Modbus RTU köprüleri (WillowMod), GNSS takip cihazları (WillowGPS), basınç (WillowPre), eğim (WillowTilt), toprak nemi (WillowMos), rüzgâr hızı (WillowAne), sıcaklık ve nem (WillowTemp), CO₂ (WillowCO2) ve kapı açık/kapalı (WillowSens).",
+        "de": "Ultraschall-Füllstand (WillowSonic), Luftqualität (WillowAir), Modbus-RTU-Brücken (WillowMod), GNSS-Tracker (WillowGPS), Druck (WillowPre), Neigung (WillowTilt), Bodenfeuchte (WillowMos), Windgeschwindigkeit (WillowAne), Temperatur und Feuchte (WillowTemp), CO₂ (WillowCO2) und Tür auf/zu (WillowSens).",
+        "fr": "Niveau par ultrasons (WillowSonic), qualité de l'air (WillowAir), passerelles Modbus RTU (WillowMod), traceurs GNSS (WillowGPS), pression (WillowPre), inclinaison (WillowTilt), humidité du sol (WillowMos), vitesse du vent (WillowAne), température et humidité (WillowTemp), CO₂ (WillowCO2) et ouverture/fermeture de porte (WillowSens).",
+        "es": "Nivel por ultrasonidos (WillowSonic), calidad del aire (WillowAir), puentes Modbus RTU (WillowMod), rastreadores GNSS (WillowGPS), presión (WillowPre), inclinación (WillowTilt), humedad del suelo (WillowMos), velocidad del viento (WillowAne), temperatura y humedad (WillowTemp), CO₂ (WillowCO2) y apertura/cierre de puerta (WillowSens).",
+        "it": "Livello a ultrasuoni (WillowSonic), qualità dell'aria (WillowAir), bridge Modbus RTU (WillowMod), tracker GNSS (WillowGPS), pressione (WillowPre), inclinazione (WillowTilt), umidità del suolo (WillowMos), velocità del vento (WillowAne), temperatura e umidità (WillowTemp), CO₂ (WillowCO2) e apertura/chiusura porta (WillowSens).",
+        "ar": "مستوى بالموجات فوق الصوتية (WillowSonic)، وجودة الهواء (WillowAir)، وجسور Modbus RTU (WillowMod)، وأجهزة تتبّع GNSS (WillowGPS)، والضغط (WillowPre)، والميل (WillowTilt)، ورطوبة التربة (WillowMos)، وسرعة الرياح (WillowAne)، ودرجة الحرارة والرطوبة (WillowTemp)، وثاني أكسيد الكربون (WillowCO2)، وفتح/إغلاق الأبواب (WillowSens).",
+        "ja": "超音波レベル（WillowSonic）、空気質（WillowAir）、Modbus RTU ブリッジ（WillowMod）、GNSS トラッカー（WillowGPS）、圧力（WillowPre）、傾斜（WillowTilt）、土壌水分（WillowMos）、風速（WillowAne）、温湿度（WillowTemp）、CO₂（WillowCO2）、扉の開閉（WillowSens）。"
+      }
+    },
+    "faq-contact-how-can-i-reach-willowsoft": {
+      "question": {
+        "tr": "WillowSoft'a nasıl ulaşabilirim?",
+        "de": "Wie kann ich WillowSoft erreichen?",
+        "fr": "Comment puis-je contacter WillowSoft ?",
+        "es": "¿Cómo puedo contactar con WillowSoft?",
+        "it": "Come posso contattare WillowSoft?",
+        "ar": "كيف يمكنني التواصل مع WillowSoft؟",
+        "ja": "WillowSoft にはどのように連絡できますか？"
+      },
+      "answer": {
+        "tr": "info@willowsoft.co adresine e-posta gönderin veya bu sayfadaki iletişim formunu kullanın. WillowSoft, Birleşik Krallık müşteri ilişkileri için bir Londra ofisi de işletmektedir.",
+        "de": "Schreiben Sie an info@willowsoft.co oder nutzen Sie das Kontaktformular auf dieser Seite. WillowSoft betreibt außerdem ein Büro in London für die Betreuung von Kunden im Vereinigten Königreich.",
+        "fr": "Envoyez un e-mail à info@willowsoft.co ou utilisez le formulaire de contact de cette page. WillowSoft dispose également d'un bureau à Londres pour les clients du Royaume-Uni.",
+        "es": "Escriba a info@willowsoft.co o use el formulario de contacto de esta página. WillowSoft también opera una oficina en Londres para los clientes del Reino Unido.",
+        "it": "Scrivi a info@willowsoft.co o usa il modulo di contatto in questa pagina. WillowSoft gestisce anche un ufficio a Londra per i clienti del Regno Unito.",
+        "ar": "راسلنا عبر info@willowsoft.co أو استخدم نموذج التواصل في هذه الصفحة. كما تدير WillowSoft مكتبًا في لندن لخدمة عملاء المملكة المتحدة.",
+        "ja": "info@willowsoft.co までメールでご連絡いただくか、このページのお問い合わせフォームをご利用ください。WillowSoft は英国の顧客対応のためにロンドンオフィスも運営しています。"
+      }
+    },
+    "faq-contact-where-is-willowsoft-based": {
+      "question": {
+        "tr": "WillowSoft nerede bulunuyor?",
+        "de": "Wo hat WillowSoft seinen Sitz?",
+        "fr": "Où WillowSoft est-il implanté ?",
+        "es": "¿Dónde tiene su sede WillowSoft?",
+        "it": "Dove ha sede WillowSoft?",
+        "ar": "أين يقع مقرّ WillowSoft؟",
+        "ja": "WillowSoft はどこに拠点を置いていますか？"
+      },
+      "answer": {
+        "tr": "WillowSoft'un merkezi Türkiye'dedir ve operasyonları Birleşik Krallık'a (Londra) doğru genişlemektedir. Şirket; ABD, İngiltere, Almanya, İtalya, Japonya ve Suudi Arabistan dâhil 15'ten fazla ülkeye ihracat yapmaktadır.",
+        "de": "WillowSoft hat seinen Hauptsitz in der Türkei und baut seine Aktivitäten ins Vereinigte Königreich (London) aus. Das Unternehmen exportiert in über 15 Länder, darunter USA, Großbritannien, Deutschland, Italien, Japan und Saudi-Arabien.",
+        "fr": "WillowSoft a son siège en Turquie et étend ses activités au Royaume-Uni (Londres). L'entreprise exporte vers plus de 15 pays, dont les États-Unis, le Royaume-Uni, l'Allemagne, l'Italie, le Japon et l'Arabie saoudite.",
+        "es": "WillowSoft tiene su sede en Turquía y está ampliando sus operaciones al Reino Unido (Londres). La empresa exporta a más de 15 países, entre ellos EE. UU., Reino Unido, Alemania, Italia, Japón y Arabia Saudí.",
+        "it": "WillowSoft ha sede in Turchia e sta espandendo le proprie attività nel Regno Unito (Londra). L'azienda esporta in oltre 15 paesi, tra cui USA, Regno Unito, Germania, Italia, Giappone e Arabia Saudita.",
+        "ar": "يقع المقر الرئيسي لـ WillowSoft في تركيا، مع توسّع عملياتها إلى المملكة المتحدة (لندن). وتصدّر الشركة إلى أكثر من 15 دولة، من بينها الولايات المتحدة والمملكة المتحدة وألمانيا وإيطاليا واليابان والمملكة العربية السعودية.",
+        "ja": "WillowSoft はトルコに本社を置き、英国（ロンドン）へ事業を拡大しています。同社は米国、英国、ドイツ、イタリア、日本、サウジアラビアなど 15 か国以上に輸出しています。"
+      }
+    },
+    "faq-contact-does-willowsoft-sign-ndas-before-sharing-technical-details": {
+      "question": {
+        "tr": "WillowSoft teknik ayrıntıları paylaşmadan önce NDA imzalıyor mu?",
+        "de": "Unterzeichnet WillowSoft NDAs, bevor technische Details geteilt werden?",
+        "fr": "WillowSoft signe-t-il des NDA avant de partager des détails techniques ?",
+        "es": "¿WillowSoft firma NDA antes de compartir detalles técnicos?",
+        "it": "WillowSoft firma NDA prima di condividere dettagli tecnici?",
+        "ar": "هل توقّع WillowSoft اتفاقيات عدم إفصاح قبل مشاركة التفاصيل التقنية؟",
+        "ja": "WillowSoft は技術的な詳細を共有する前に NDA を締結しますか？"
+      },
+      "answer": {
+        "tr": "Evet. WillowSoft, müşteri donanım spesifikasyonları, fikri mülkiyet veya hassas dağıtım verileri içeren her ticari görüşmenin başında karşılıklı NDA imzalar.",
+        "de": "Ja. WillowSoft unterzeichnet zu Beginn jedes kommerziellen Gesprächs, das Kunden-Hardwarespezifikationen, geistiges Eigentum oder sensible Einsatzdaten betrifft, eine gegenseitige Geheimhaltungsvereinbarung.",
+        "fr": "Oui. WillowSoft signe des NDA réciproques dès le début de toute discussion commerciale impliquant des spécifications matérielles du client, de la propriété intellectuelle ou des données de déploiement sensibles.",
+        "es": "Sí. WillowSoft firma acuerdos de confidencialidad mutuos al inicio de cualquier conversación comercial que implique especificaciones de hardware del cliente, propiedad intelectual o datos de despliegue sensibles.",
+        "it": "Sì. WillowSoft firma NDA reciproci all'inizio di ogni conversazione commerciale che coinvolga specifiche hardware del cliente, proprietà intellettuale o dati di distribuzione sensibili.",
+        "ar": "نعم. توقّع WillowSoft اتفاقيات عدم إفصاح متبادلة في بداية أي محادثة تجارية تتضمّن مواصفات عتاد العميل أو الملكية الفكرية أو بيانات نشر حساسة.",
+        "ja": "はい。WillowSoft は、顧客のハードウェア仕様、知的財産、または機密性の高い展開データが関わるあらゆる商談の開始時に、相互 NDA を締結します。"
+      }
+    },
+    "faq-start-project-how-do-i-start-a-project-with-willowsoft": {
+      "question": {
+        "tr": "WillowSoft ile bir projeye nasıl başlarım?",
+        "de": "Wie starte ich ein Projekt mit WillowSoft?",
+        "fr": "Comment démarrer un projet avec WillowSoft ?",
+        "es": "¿Cómo inicio un proyecto con WillowSoft?",
+        "it": "Come avvio un progetto con WillowSoft?",
+        "ar": "كيف أبدأ مشروعًا مع WillowSoft؟",
+        "ja": "WillowSoft とどのようにプロジェクトを始めればよいですか？"
+      },
+      "answer": {
+        "tr": "Bu sayfadaki formu proje türü, kapsam ve zaman çizelgesiyle doldurun veya info@willowsoft.co adresine e-posta gönderin. WillowSoft mühendisliği, gereksinimler, kısıtlar ve sonraki adımlar üzerinde anlaşmak için bir keşif görüşmesiyle yanıt verecektir.",
+        "de": "Füllen Sie das Formular auf dieser Seite mit Projekttyp, Umfang und Zeitplan aus oder schreiben Sie an info@willowsoft.co. Das Engineering-Team von WillowSoft meldet sich mit einem Discovery-Call, um Anforderungen, Rahmenbedingungen und nächste Schritte abzustimmen.",
+        "fr": "Remplissez le formulaire de cette page avec le type de projet, le périmètre et le calendrier, ou envoyez un e-mail à info@willowsoft.co. L'équipe d'ingénierie de WillowSoft vous répondra par un appel de cadrage pour aligner les exigences, les contraintes et les prochaines étapes.",
+        "es": "Rellene el formulario de esta página con el tipo de proyecto, el alcance y el plazo, o escriba a info@willowsoft.co. El equipo de ingeniería de WillowSoft responderá con una llamada de descubrimiento para alinear requisitos, restricciones y próximos pasos.",
+        "it": "Compila il modulo in questa pagina con tipo di progetto, ambito e tempistiche, oppure scrivi a info@willowsoft.co. Il team di ingegneria di WillowSoft risponderà con una call di discovery per allineare requisiti, vincoli e passi successivi.",
+        "ar": "املأ النموذج في هذه الصفحة بنوع المشروع ونطاقه وجدوله الزمني، أو راسلنا عبر info@willowsoft.co. سيردّ فريق هندسة WillowSoft بمكالمة استكشافية لمواءمة المتطلبات والقيود والخطوات التالية.",
+        "ja": "このページのフォームにプロジェクトの種類・範囲・スケジュールをご記入いただくか、info@willowsoft.co までメールをお送りください。WillowSoft のエンジニアリングチームが、要件・制約・次のステップをすり合わせるためのディスカバリーコールでご返信します。"
+      }
+    },
+    "faq-start-project-what-s-the-typical-project-timeline": {
+      "question": {
+        "tr": "Tipik proje süresi nedir?",
+        "de": "Wie lang ist der typische Projektzeitplan?",
+        "fr": "Quel est le calendrier type d'un projet ?",
+        "es": "¿Cuál es el plazo típico del proyecto?",
+        "it": "Qual è la tempistica tipica del progetto?",
+        "ar": "ما الجدول الزمني المعتاد للمشروع؟",
+        "ja": "プロジェクトの一般的な期間はどのくらいですか？"
+      },
+      "answer": {
+        "tr": "Donanım prototipleri genellikle 4–8 hafta sürer. Eksiksiz bağlı ürün sistemleri (donanım + firmware + backend + pano + mobil) genellikle başlangıçtan sahaya hazır dağıtıma kadar 4–6 ay sürer.",
+        "de": "Hardware-Prototypen dauern in der Regel 4–8 Wochen. Komplette vernetzte Produktsysteme (Hardware + Firmware + Backend + Dashboard + Mobile) dauern in der Regel 4–6 Monate vom Kickoff bis zum feldreifen Einsatz.",
+        "fr": "Les prototypes matériels prennent généralement 4 à 8 semaines. Les systèmes de produits connectés complets (matériel + firmware + backend + tableau de bord + mobile) prennent généralement 4 à 6 mois, du lancement au déploiement prêt pour le terrain.",
+        "es": "Los prototipos de hardware suelen tardar de 4 a 8 semanas. Los sistemas completos de producto conectado (hardware + firmware + backend + panel + móvil) suelen tardar de 4 a 6 meses desde el inicio hasta el despliegue listo para campo.",
+        "it": "I prototipi hardware richiedono in genere 4–8 settimane. I sistemi completi di prodotto connesso (hardware + firmware + backend + dashboard + mobile) richiedono in genere 4–6 mesi dall'avvio al dispiegamento pronto per il campo.",
+        "ar": "تستغرق النماذج الأولية للعتاد عادةً من 4 إلى 8 أسابيع. أما أنظمة المنتج المتصل الكاملة (عتاد + برامج ثابتة + خلفية + لوحة معلومات + تطبيق جوال) فتستغرق عادةً من 4 إلى 6 أشهر من الانطلاق حتى النشر الجاهز للميدان.",
+        "ja": "ハードウェアの試作は通常 4〜8 週間です。コネクテッド製品システム一式（ハードウェア + ファームウェア + バックエンド + ダッシュボード + モバイル）は、キックオフから現場対応の展開まで通常 4〜6 か月です。"
+      }
+    },
+    "faq-start-project-can-willowsoft-join-an-existing-project-mid-way": {
+      "question": {
+        "tr": "WillowSoft devam eden bir projeye yarı yolda katılabilir mi?",
+        "de": "Kann WillowSoft einem laufenden Projekt mitten im Verlauf beitreten?",
+        "fr": "WillowSoft peut-il rejoindre un projet en cours en cours de route ?",
+        "es": "¿WillowSoft puede incorporarse a un proyecto en curso a mitad de camino?",
+        "it": "WillowSoft può unirsi a un progetto già avviato a metà percorso?",
+        "ar": "هل يمكن لـ WillowSoft الانضمام إلى مشروع قائم في منتصف الطريق؟",
+        "ja": "WillowSoft は進行中のプロジェクトに途中から参加できますか？"
+      },
+      "answer": {
+        "tr": "Evet. WillowSoft, eksik katmanları tamamlamak için tıkanmış projeleri düzenli olarak devralır — firmware güvenilirliği, backend yeniden inşaları, mobil veya yönetim panelleri ya da üretim için donanım revizyonları.",
+        "de": "Ja. WillowSoft übernimmt regelmäßig ins Stocken geratene Projekte, um fehlende Schichten zu liefern — Firmware-Zuverlässigkeit, Backend-Neuaufbauten, Mobile- oder Admin-Panels oder Hardware-Respins für die Produktion.",
+        "fr": "Oui. WillowSoft reprend régulièrement des projets bloqués pour livrer les couches manquantes — fiabilité du firmware, reconstruction de backend, applications mobiles ou panneaux d'administration, ou re-conception matérielle pour la production.",
+        "es": "Sí. WillowSoft asume con regularidad proyectos estancados para entregar las capas que faltan: fiabilidad del firmware, reconstrucción de backend, apps móviles o paneles de administración, o rediseños de hardware para producción.",
+        "it": "Sì. WillowSoft rileva regolarmente progetti in stallo per completare i livelli mancanti — affidabilità del firmware, ricostruzioni del backend, app mobili o pannelli di amministrazione, o nuovi respin hardware per la produzione.",
+        "ar": "نعم. تتولّى WillowSoft بانتظام المشاريع المتعثّرة لإنجاز الطبقات الناقصة — موثوقية البرامج الثابتة، وإعادة بناء الخلفية، وتطبيقات الجوال أو لوحات الإدارة، أو إعادة تصميم العتاد للإنتاج.",
+        "ja": "はい。WillowSoft は停滞したプロジェクトを引き継ぎ、不足しているレイヤーを仕上げることがよくあります。ファームウェアの信頼性、バックエンドの再構築、モバイルや管理パネル、量産向けのハードウェア再設計などです。"
+      }
+    }
+  }
+}
