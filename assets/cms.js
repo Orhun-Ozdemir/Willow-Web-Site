@@ -51,15 +51,7 @@
       heroTitle: ".hero h1",
       heroLead: ".hero p.reveal.delay-2",
       processEyebrow: ".process-section .section-head .eyebrow",
-      processTitle: ".process-section .section-head h2",
-      stackEyebrow: "[data-unused-services-stack-eyebrow]",
-      stackTitle: "[data-unused-services-stack-title]",
-      stackLead: "[data-unused-services-stack-lead]",
-      digitalEyebrow: "[data-unused-services-digital-eyebrow]",
-      digitalTitle: "[data-unused-services-digital-title]",
-      vrEyebrow: "[data-unused-services-vr-eyebrow]",
-      vrTitle: "[data-unused-services-vr-title]",
-      vrLead: "[data-unused-services-vr-lead]"
+      processTitle: ".process-section .section-head h2"
     },
     solutions: {
       heroEyebrow: ".hero .eyebrow",
@@ -97,8 +89,6 @@
     startProject: {
       heroEyebrow: ".hero .eyebrow",
       heroTitle: ".hero h1",
-      realityEyebrow: "[data-unused-start-project-reality-eyebrow]",
-      realityTitle: "[data-unused-start-project-reality-title]",
       pathsEyebrow: ".start-process-section .section-head .eyebrow",
       pathsTitle: ".start-process-section .section-head h2",
       formEyebrow: "#lead-form .eyebrow",
