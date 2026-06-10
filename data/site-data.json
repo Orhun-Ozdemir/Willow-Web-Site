@@ -3200,6 +3200,128 @@
         "ar": "هذا النموذج أكثر تفصيلاً عن قصد من نموذج التواصل، ويساعد WillowSoft على فهم ما إذا كنت بحاجة إلى طبقة واحدة أم منتج متصل متكامل من البداية إلى النهاية.",
         "ja": "このフォームは、お問い合わせフォームよりも意図的に詳細になっています。WillowSoft が、単一のレイヤーが必要なのか、エンドツーエンドのコネクテッド製品が必要なのかを把握するのに役立ちます。"
       }
+    },
+    "glossary": {
+      "heroEyebrow": {
+        "en": "Glossary",
+        "tr": "Sözlük",
+        "de": "Glossar",
+        "fr": "Glossaire",
+        "es": "Glosario",
+        "it": "Glossario",
+        "ar": "قاموس المصطلحات",
+        "ja": "用語集"
+      },
+      "heroTitle": {
+        "en": "Plain-English definitions <span class=\"serif-accent\">for the field</span>.",
+        "tr": "Saha için <span class=\"serif-accent\">sade dilde</span> tanımlar.",
+        "de": "Einfache Definitionen <span class=\"serif-accent\">für die Praxis</span>.",
+        "fr": "Définitions simples <span class=\"serif-accent\">pour le terrain</span>.",
+        "es": "Definiciones sencillas <span class=\"serif-accent\">para el terreno</span>.",
+        "it": "Definizioni semplici <span class=\"serif-accent\">per il settore</span>.",
+        "ar": "تعاريف مبسطة <span class=\"serif-accent\">للمجال العملي</span>.",
+        "ja": "現場のための <span class=\"serif-accent\">平易な定義</span>。"
+      },
+      "heroLead": {
+        "en": "Reference terms WillowSoft uses across embedded hardware, firmware, LoRaWAN, Modbus and industrial IoT projects — written for engineers and decision-makers without the marketing layer.",
+        "tr": "WillowSoft'un gömülü donanım, firmware, LoRaWAN, Modbus ve endüstriyel IoT projelerinde kullandığı referans terimler; pazarlama süslemelerinden uzak, mühendisler ve karar vericiler için yazıldı.",
+        "de": "Referenzbegriffe, die WillowSoft in den Bereichen Embedded Hardware, Firmware, LoRaWAN, Modbus und industrielles IoT verwendet – geschrieben für Ingenieure und Entscheidungsträger, ohne Marketingfloskeln.",
+        "fr": "Termes de référence utilisés par WillowSoft dans ses projets de matériel embarqué, firmware, LoRaWAN, Modbus et IoT industriel — écrits pour les ingénieurs et décideurs, sans le jargon marketing.",
+        "es": "Términos de referencia que WillowSoft utiliza en proyectos de hardware embebido, firmware, LoRaWAN, Modbus e IoT industrial, redactados para ingenieros y tomadores de decisiones sin capas de marketing.",
+        "it": "Termini di riferimento utilizzati da WillowSoft nei progetti di hardware embedded, firmware, LoRaWAN, Modbus e IoT industriale, scritti per ingegneri e decisori senza fronzoli di marketing.",
+        "ar": "مصطلحات مرجعية تستخدمها WillowSoft في مشاريع العtاد المدمج، والبرامج الثابتة، وLoRaWAN، ve Modbus، veإنترنت الأشياء الصناعي - مكتوبة للمهندسين وصناع القرار دون زخرفة تسويقية.",
+        "ja": "WillowSoftが組み込みハードウェア、ファームウェア、LoRaWAN、Modbus、産業用IoTプロジェクトで使用する参照用語。マーケティング的な誇張を排し、エンジニアや意思決定者のために執筆されました。"
+      },
+      "connectivityEyebrow": {
+        "en": "Connectivity",
+        "tr": "Bağlantı",
+        "de": "Konnektivität",
+        "fr": "Connectivité",
+        "es": "Conectividad",
+        "it": "Connettività",
+        "ar": "الاتصال",
+        "ja": "接続性"
+      },
+      "connectivityTitle": {
+        "en": "Wireless & network protocols.",
+        "tr": "Kablosuz iletişim ve ağ protokolleri.",
+        "de": "Drahtlose & Netzwerk-Protokolle.",
+        "fr": "Protocoles sans fil & réseau.",
+        "es": "Protocolos de red y conexão inalámbrica.",
+        "it": "Protocolli di rete e wireless.",
+        "ar": "البروتوكولات اللاسلكية والشبكية.",
+        "ja": "ワイヤレスおよびネットワークプロトコル。"
+      },
+      "devicesEyebrow": {
+        "en": "Devices",
+        "tr": "Cihazlar",
+        "de": "Geräte",
+        "fr": "Appareils",
+        "es": "Dispositivos",
+        "it": "Dispositivi",
+        "ar": "الأجهزة",
+        "ja": "デバイス"
+      },
+      "devicesTitle": {
+        "en": "Hardware & embedded terms.",
+        "tr": "Donanım ve gömülü sistem terimleri.",
+        "de": "Hardware & Embedded-Begriffe.",
+        "fr": "Termes matériels & embarqués.",
+        "es": "Términos de hardware y sistemas embebidos.",
+        "it": "Termini hardware ed embedded.",
+        "ar": "مصطلحات العتاد والأنظمة المدمجة.",
+        "ja": "ハードウェアおよび組み込み用語。"
+      },
+      "softwareEyebrow": {
+        "en": "Software & Operations",
+        "tr": "Yazılım ve Operasyonlar",
+        "de": "Software & Betrieb",
+        "fr": "Logiciel & Opérations",
+        "es": "Software y operaciones",
+        "it": "Software e operazioni",
+        "ar": "البرمجيات والعمليات",
+        "ja": "ソフトウェアと運用"
+      },
+      "softwareTitle": {
+        "en": "Firmware, edge and cloud terms.",
+        "tr": "Firmware, uç ve bulut bilişim terimleri.",
+        "de": "Firmware-, Edge- und Cloud-Begriffe.",
+        "fr": "Termes firmware, edge et cloud.",
+        "es": "Términos de firmware, edge y cloud.",
+        "it": "Termini firmware, edge e cloud.",
+        "ar": "مصطلحات البرامج الثابتة، والحوسبة الطرفية، والسحابية.",
+        "ja": "ファームウェア、エッジ、クラウドの用語。"
+      },
+      "ctaEyebrow": {
+        "en": "Missing a term?",
+        "tr": "Aradığınız terim yok mu?",
+        "de": "Fehlt ein Begriff?",
+        "fr": "Un terme manquant ?",
+        "es": "¿Falta algún término?",
+        "it": "Manca un termine?",
+        "ar": "هل تفتقد مصطلحًا؟",
+        "ja": "用語が見つかりませんか？"
+      },
+      "ctaTitle": {
+        "en": "We'd rather explain it than assume you know it.",
+        "tr": "Bildiğinizi varsaymak yerine açıklamayı tercih ederiz.",
+        "de": "Wir erklären es lieber, als es vorauszusetzen.",
+        "fr": "Nous préférons l'expliquer plutôt que de présumer que vous le connaissez.",
+        "es": "Preferimos explicarlo a asumir que ya lo sabe.",
+        "it": "Preferiamo spiegarlo piuttosto che dare per scontato che lo conosca.",
+        "ar": "نفضل شرحه بدلاً من افتراض معرفتك به.",
+        "ja": "ご存じであると仮定するよりも、説明することを選びます。"
+      },
+      "ctaLead": {
+        "en": "If your project introduces specific protocols, certifications or industrial concepts not covered here, WillowSoft engineering is happy to walk through them in the discovery call.",
+        "tr": "Projeniz burada yer almayan özel protokoller, sertifikalar veya endüstriyel kavramlar gerektiriyorsa, WillowSoft mühendislik ekibi keşif görüşmesinde bunları memnuniyetle açıklayacaktır.",
+        "de": "Wenn Ihr Projekt spezifische Protokolle, Zertifizierungen oder industrielle Konzepte erfordert, die hier nicht aufgeführt sind, bespricht das WillowSoft-Engineering-Team diese gerne im ersten Gespräch.",
+        "fr": "Si votre projet implique des protocoles spécifiques, des certifications ou des concepts industriels non couverts ici, l'ingénierie WillowSoft se fera un plaisir de les passer en revue lors de l'appel de découverte.",
+        "es": "Si su proyecto introduce protocolos, certificaciones o conceptos industriales específicos que no se tratan aquí, el equipo de ingeniería de WillowSoft estará encantado de explicárselos en la llamada de descubrimiento.",
+        "it": "Se il tuo progetto introduce protocolli, certificazioni o concetti industriali specifici non trattati qui, il team di ingegneria WillowSoft sarà felice di illustrarteli nella chiamata conoscitiva.",
+        "ar": "إذا كان مشروعك يتضمن بروتوكولات أو شهادات أو مفاهيم صناعية معينة لم تغط هنا، فإن فريق هندسة WillowSoft يسعده مناقştها وتوضيحها خلال مكالمة الاستكشاف الأولى.",
+        "ja": "プロジェクトでここに記載されていない特定のプロトコル、認証、または産業上の概念が導入される場合, WillowSoftのエンジニアリングチームがディスカバリーコールで喜んで説明いたします。"
+      }
     }
   },
   "solutions": [
@@ -5252,6 +5374,337 @@
         "changefreq": "weekly",
         "priority": "0.5"
       }
+    },
+    "glossary": {
+      "en": {
+        "seoTitle": "IoT & LoRaWAN Glossary — Industrial Engineering Terms | WillowSoft",
+        "metaDescription": "Plain-English definitions of LoRaWAN, Modbus RTU, Industrial IoT, embedded systems, MCU, IP67, edge computing and other terms used by WillowSoft engineering.",
+        "focusKeyword": "IoT glossary",
+        "slug": "/en/glossary",
+        "canonical": "https://willowsoft.co/en/glossary",
+        "ogTitle": "IoT & LoRaWAN Glossary — Industrial Engineering Terms | WillowSoft",
+        "ogDescription": "Plain-English definitions of LoRaWAN, Modbus, Industrial IoT, embedded systems and other engineering terms used by WillowSoft.",
+        "ogImage": "https://willowsoft.co/assets/hero-industrial-iot.png",
+        "twitterCard": "summary_large_image",
+        "noindex": false,
+        "nofollow": false,
+        "schemaType": "WebPage",
+        "changefreq": "weekly",
+        "priority": "0.5"
+      },
+      "tr": {
+        "seoTitle": "IoT ve LoRaWAN Sözlüğü — Endüstriyel Mühendislik Terimleri | WillowSoft",
+        "metaDescription": "LoRaWAN, Modbus RTU, Endüstriyel IoT, gömülü sistemler, MCU, IP67, sınır bilişim ve WillowSoft mühendisliğinde kullanılan diğer terimlerin yalın tanımları.",
+        "focusKeyword": "IoT sözlüğü",
+        "slug": "/tr/glossary",
+        "canonical": "https://willowsoft.co/tr/glossary",
+        "ogTitle": "IoT ve LoRaWAN Sözlüğü — Endüstriyel Mühendislik Terimleri | WillowSoft",
+        "ogDescription": "LoRaWAN, Modbus, Endüstriyel IoT, gömülü sistemler ve WillowSoft tarafından kullanılan diğer mühendislik terimlerinin yalın tanımları.",
+        "ogImage": "https://willowsoft.co/assets/hero-industrial-iot.png",
+        "twitterCard": "summary_large_image",
+        "noindex": false,
+        "nofollow": false,
+        "schemaType": "WebPage",
+        "changefreq": "weekly",
+        "priority": "0.5"
+      },
+      "de": {
+        "seoTitle": "",
+        "metaDescription": "",
+        "focusKeyword": "",
+        "slug": "/de/glossary",
+        "canonical": "https://willowsoft.co/de/glossary",
+        "ogTitle": "",
+        "ogDescription": "",
+        "ogImage": "",
+        "twitterCard": "summary_large_image",
+        "noindex": false,
+        "nofollow": false,
+        "schemaType": "WebPage",
+        "changefreq": "weekly",
+        "priority": "0.5"
+      },
+      "fr": {
+        "seoTitle": "",
+        "metaDescription": "",
+        "focusKeyword": "",
+        "slug": "/fr/glossary",
+        "canonical": "https://willowsoft.co/fr/glossary",
+        "ogTitle": "",
+        "ogDescription": "",
+        "ogImage": "",
+        "twitterCard": "summary_large_image",
+        "noindex": false,
+        "nofollow": false,
+        "schemaType": "WebPage",
+        "changefreq": "weekly",
+        "priority": "0.5"
+      },
+      "es": {
+        "seoTitle": "",
+        "metaDescription": "",
+        "focusKeyword": "",
+        "slug": "/es/glossary",
+        "canonical": "https://willowsoft.co/es/glossary",
+        "ogTitle": "",
+        "ogDescription": "",
+        "ogImage": "",
+        "twitterCard": "summary_large_image",
+        "noindex": false,
+        "nofollow": false,
+        "schemaType": "WebPage",
+        "changefreq": "weekly",
+        "priority": "0.5"
+      },
+      "it": {
+        "seoTitle": "",
+        "metaDescription": "",
+        "focusKeyword": "",
+        "slug": "/it/glossary",
+        "canonical": "https://willowsoft.co/it/glossary",
+        "ogTitle": "",
+        "ogDescription": "",
+        "ogImage": "",
+        "twitterCard": "summary_large_image",
+        "noindex": false,
+        "nofollow": false,
+        "schemaType": "WebPage",
+        "changefreq": "weekly",
+        "priority": "0.5"
+      },
+      "ar": {
+        "seoTitle": "",
+        "metaDescription": "",
+        "focusKeyword": "",
+        "slug": "/ar/glossary",
+        "canonical": "https://willowsoft.co/ar/glossary",
+        "ogTitle": "",
+        "ogDescription": "",
+        "ogImage": "",
+        "twitterCard": "summary_large_image",
+        "noindex": false,
+        "nofollow": false,
+        "schemaType": "WebPage",
+        "changefreq": "weekly",
+        "priority": "0.5"
+      },
+      "ja": {
+        "seoTitle": "",
+        "metaDescription": "",
+        "focusKeyword": "",
+        "slug": "/ja/glossary",
+        "canonical": "https://willowsoft.co/ja/glossary",
+        "ogTitle": "",
+        "ogDescription": "",
+        "ogImage": "",
+        "twitterCard": "summary_large_image",
+        "noindex": false,
+        "nofollow": false,
+        "schemaType": "WebPage",
+        "changefreq": "weekly",
+        "priority": "0.5"
+      }
     }
-  }
+  },
+  "glossary": [
+    {
+      "id": "lorawan",
+      "category": "connectivity",
+      "term": "LoRaWAN",
+      "definition": "LoRaWAN (Long Range Wide Area Network) is a low-power wide-area network protocol designed for battery-operated wireless devices in regional, national or global networks. It runs on unlicensed sub-GHz radio bands (US915, EU868, AS923, AU915, KR920, IN865, RU864) and reaches up to ~15 km in rural environments with multi-year battery life.",
+      "note": "WillowSoft designs and manufactures LoRaWAN end-nodes (WillowBee, WillowAir, WillowMod and others) and complete gateway-to-dashboard systems.",
+      "sortOrder": 10,
+      "localized": {
+        "tr": {
+          "term": "LoRaWAN",
+          "definition": "LoRaWAN (Uzun Menzilli Geniş Alan Ağı), bölgesel, ulusal veya küresel ağlardaki pille çalışan kablosuz cihazlar için tasarlanmış düşük güçlü bir geniş alan ağı protokolüdür. Lisanssız sub-GHz radyo bantlarında çalışır ve kırsal ortamlarda çok yıllık pil ömrüyle ~15 km'ye kadar ulaşır.",
+          "note": "WillowSoft, LoRaWAN uç düğümlerini (WillowBee, WillowAir, WillowMod vb.) ve uçtan uca ağ geçidinden kontrol paneline sistemlerini tasarlar ve üretir."
+        }
+      }
+    },
+    {
+      "id": "modbus-rtu",
+      "category": "connectivity",
+      "term": "Modbus RTU",
+      "definition": "Modbus RTU is a serial communication protocol widely used in industrial automation to connect PLCs, energy meters, drives, sensors and other field devices. It runs over RS-485 and uses a master/slave register model.",
+      "note": "WillowSoft's WillowMod bridges Modbus RTU devices into LoRaWAN networks, allowing legacy industrial equipment to be read remotely without rewiring.",
+      "sortOrder": 20,
+      "localized": {
+        "tr": {
+          "term": "Modbus RTU",
+          "definition": "Modbus RTU, PLC'leri, enerji sayaçlarını, sürücüleri, sensörleri ve diğer saha cihazlarını bağlamak için endüstriyel otomasyonda yaygın olarak kullanılan bir seri iletişim protokolüdür. RS-485 üzerinden çalışır ve bir master/slave yazmaç (register) modeli kullanır.",
+          "note": "WillowSoft'un WillowMod ürünü, Modbus RTU cihazlarını LoRaWAN ağlarına bağlayarak eski endüstriyel ekipmanların kablolama gerektirmeden uzaktan okunmasını sağlar."
+        }
+      }
+    },
+    {
+      "id": "lorawan-classes",
+      "category": "connectivity",
+      "term": "LoRaWAN device classes (A / B / C)",
+      "definition": "Class A wakes up to transmit and immediately listens for downlinks — most energy-efficient, used for battery sensors. Class B listens at scheduled time slots. Class C listens continuously — for latency-sensitive applications with available power.",
+      "sortOrder": 30,
+      "localized": {
+        "tr": {
+          "term": "LoRaWAN Cihaz Sınıfları (A / B / C)",
+          "definition": "Sınıf A, veri göndermek için uyanır ve hemen ardından gelen verileri dinler; en enerji verimli sınıftır, pilli sensörlerde kullanılır. Sınıf B, planlanmış zaman dilimlerinde dinleme yapar. Sınıf C, sürekli dinleme yapar; güç kaynağı olan ve düşük gecikme gerektiren uygulamalar içindir."
+        }
+      }
+    },
+    {
+      "id": "gateway",
+      "category": "connectivity",
+      "term": "LoRaWAN Gateway",
+      "definition": "Multi-channel radio receiver bridging end-nodes and the LoRaWAN network server via IP backhaul (Ethernet, Wi-Fi or cellular). A single gateway can cover several kilometres line-of-sight and serve thousands of end-nodes.",
+      "sortOrder": 40,
+      "localized": {
+        "tr": {
+          "term": "LoRaWAN Ağ Geçidi (Gateway)",
+          "definition": "Uç düğümler ile LoRaWAN ağ sunucusu arasında IP omurgası (Ethernet, Wi-Fi veya hücresel) üzerinden köprü kuran çok kanallı radyo alıcısıdır. Tek bir ağ geçidi, açık alanda birkaç kilometreyi kapsayabilir ve binlerce uç düğüme hizmet verebilir."
+        }
+      }
+    },
+    {
+      "id": "mcu",
+      "category": "devices",
+      "term": "MCU (Microcontroller Unit)",
+      "definition": "A single integrated circuit combining CPU, memory and peripherals — the brain of an embedded device. WillowSoft commonly uses STM32WL Cortex-M4, which integrates the LoRa radio on-chip and simplifies both hardware design and certification.",
+      "sortOrder": 50,
+      "localized": {
+        "tr": {
+          "term": "MCU (Mikrodenetleyici Birimi)",
+          "definition": "CPU, bellek ve çevre birimlerini tek bir entegre devrede birleştiren mikroçiptir; gömülü cihazın beynidir. WillowSoft, LoRa radyosunu çip üzerinde entegre eden, böylece donanım tasarımını ve sertifikasyonunu basitleştiren STM32WL Cortex-M4'ü yaygın olarak kullanır."
+        }
+      }
+    },
+    {
+      "id": "embedded",
+      "category": "devices",
+      "term": "Embedded System",
+      "definition": "A purpose-built computing device combining MCU, firmware and hardware peripherals to perform a specific function. Examples: a LoRaWAN sensor node, a smart meter, an industrial controller. WillowSoft designs these from PCB through firmware to production-ready field deployment.",
+      "sortOrder": 60,
+      "localized": {
+        "tr": {
+          "term": "Gömülü Sistem (Embedded System)",
+          "definition": "Belirli bir işlevi gerçekleştirmek için mikrodenetleyici, firmware ve donanım bileşenlerini birleştiren özel amaçlı bilgi işlem cihazıdır. Örnekler: bir LoRaWAN sensör düğümü, akıllı sayaç, endüstriyel kontrolör. WillowSoft, bunları PCB tasarımından yazılıma ve sahaya hazır kuruluma kadar tasarlar."
+        }
+      }
+    },
+    {
+      "id": "pcb",
+      "category": "devices",
+      "term": "PCB",
+      "definition": "Printed Circuit Board — the structural and electrical substrate that connects electronic components. WillowSoft PCB design considers RF performance, power efficiency, manufacturability and enclosure constraints from the first schematic.",
+      "sortOrder": 70,
+      "localized": {
+        "tr": {
+          "term": "PCB (Baskı Devre Kartı)",
+          "definition": "Baskılı Devre Kartı — elektronik bileşenleri bağlayan yapısal ve elektriksel temel katmandır. WillowSoft PCB tasarımı, ilk şematikten itibaren RF performansını, güç verimliliğini, üretilebilirliği ve kutu kısıtlamalarını dikkate alır."
+        }
+      }
+    },
+    {
+      "id": "sensor-node",
+      "category": "devices",
+      "term": "Sensor Node",
+      "definition": "An end-device that measures a physical parameter (temperature, pressure, motion, level, gas concentration) and transmits the reading wirelessly. WillowSoft's product portfolio is built around battery-powered LoRaWAN sensor nodes designed for years of unattended operation.",
+      "sortOrder": 80,
+      "localized": {
+        "tr": {
+          "term": "Sensör Düğümü (Sensor Node)",
+          "definition": "Fiziksel bir parametreyi (sıcaklık, basınç, hareket, seviye, gaz konsantrasyonu vb.) ölçen ve veriyi kablosuz olarak ileten uç cihazdır. WillowSoft'un ürün portföyü, yıllarca bakım gerektirmeden çalışacak şekilde tasarlanmış pilli LoRaWAN sensör düğümleri etrafında şekillenmiştir."
+        }
+      }
+    },
+    {
+      "id": "ip67",
+      "category": "devices",
+      "term": "IP67 Rating",
+      "definition": "Ingress Protection rating: dust-tight (6) and able to withstand immersion in water up to 1 metre for 30 minutes (7). WillowSoft outdoor sensors (WillowSonic, WillowGPS, WillowPre, WillowTilt, WillowAne) are IP67-rated.",
+      "sortOrder": 90,
+      "localized": {
+        "tr": {
+          "term": "IP67 Koruma Sınıfı",
+          "definition": "Giriş Koruması (Ingress Protection) derecesi: toz geçirmez (6) ve 30 dakika boyunca 1 metreye kadar suya daldırmaya dayanıklı (7). WillowSoft dış mekan sensörleri (WillowSonic, WillowGPS, WillowPre, WillowTilt, WillowAne) IP67 sınıfına sahiptir."
+        }
+      }
+    },
+    {
+      "id": "rf",
+      "category": "devices",
+      "term": "RF (Radio Frequency)",
+      "definition": "The electromagnetic frequencies used for wireless communication. LoRaWAN uses sub-GHz RF bands chosen per region for long-range, low-power links. WillowSoft engineering includes RF design, antenna matching, regulatory compliance and field RF tuning.",
+      "sortOrder": 100,
+      "localized": {
+        "tr": {
+          "term": "RF (Radyo Frekansı)",
+          "definition": "Kablosuz iletişim için kullanılan elektromanyetik frekanslardır. LoRaWAN, uzun menzilli, düşük güçlü bağlantılar için bölgeye göre seçilen sub-GHz RF bantlarını kullanır. WillowSoft mühendisliği; RF tasarımı, anten eşleme, yasal uyumluluk ve sahada RF ayarlamalarını kapsar."
+        }
+      }
+    },
+    {
+      "id": "ota",
+      "category": "software",
+      "term": "OTA Update",
+      "definition": "Over-the-Air firmware update — delivering software changes to deployed devices over the wireless link without physical access. WillowSoft firmware projects ship with OTA support so devices can be patched for bug fixes, security or new features without truck rolls.",
+      "sortOrder": 110,
+      "localized": {
+        "tr": {
+          "term": "OTA Güncellemesi (Over-the-Air)",
+          "definition": "Kablosuz Havadan (Over-the-Air) ürün yazılımı güncellemesi — fiziksel erişim olmadan kablosuz bağlantı üzerinden cihazlara yazılım değişikliklerini ulaştırma işlemidir. WillowSoft yazılım projeleri OTA desteğiyle sunulur, böylece cihazlar sahaya gitmeden güncellenebilir."
+        }
+      }
+    },
+    {
+      "id": "edge",
+      "category": "software",
+      "term": "Edge Computing",
+      "definition": "Processing data on the device or gateway rather than sending all raw measurements to the cloud. Lowers bandwidth costs, enables faster local alerts and improves privacy. Increasingly part of WillowSoft firmware and gateway architecture.",
+      "sortOrder": 120,
+      "localized": {
+        "tr": {
+          "term": "Sınır Bilişim (Edge Computing)",
+          "definition": "Verileri doğrudan buluta göndermek yerine cihaz veya ağ geçidi seviyesinde işleme yöntemidir. Bant genişliği maliyetlerini düşürür, daha hızlı yerel alarmlar sağlar ve veri gizliliğini artırır. WillowSoft yazılımları ve ağ geçidi mimarilerinde giderek daha fazla yer almaktadır."
+        }
+      }
+    },
+    {
+      "id": "telemetry",
+      "category": "software",
+      "term": "Telemetry",
+      "definition": "Automated, remote collection and transmission of sensor measurements for monitoring, alerting and analysis. The complete WillowSoft telemetry pipeline: sensor → LoRaWAN → gateway → backend API → PostgreSQL → dashboard → mobile alerts.",
+      "sortOrder": 130,
+      "localized": {
+        "tr": {
+          "term": "Telemetri",
+          "definition": "Sensör ölçümlerinin izleme, alarm ve analiz amacıyla otomatik ve uzaktan toplanıp iletilmesidir. WillowSoft telemetri hattı: sensör → LoRaWAN → ağ geçidi → backend API → PostgreSQL → yönetim paneli → mobil uyarılar şeklinde çalışır."
+        }
+      }
+    },
+    {
+      "id": "digital-twin",
+      "category": "software",
+      "term": "Digital Twin",
+      "definition": "A virtual representation of a physical asset, process or facility kept in sync with the real world via telemetry. WillowSoft VR and simulation services support digital twin visualization, operator training and pre-deployment scenario testing.",
+      "sortOrder": 140,
+      "localized": {
+        "tr": {
+          "term": "Dijital İkiz (Digital Twin)",
+          "definition": "Fiziksel bir varlık, süreç veya tesisin telemetri aracılığıyla gerçek dünyayla senkronize tutulan sanal temsilidir. WillowSoft VR ve simülasyon hizmetleri, dijital ikiz görselleştirmesini, operatör eğitimini ve dağıtım öncesi senaryo testlerini destekler."
+        }
+      }
+    },
+    {
+      "id": "iiot",
+      "category": "software",
+      "term": "Industrial IoT (IIoT)",
+      "definition": "Networks of sensors, controllers, gateways and software collecting operational telemetry from manufacturing, energy, utility and field environments. IIoT prioritises reliability, multi-year battery life, harsh-environment ratings and integration with industrial protocols. WillowSoft delivers IIoT systems end-to-end.",
+      "sortOrder": 150,
+      "localized": {
+        "tr": {
+          "term": "Endüstriyel IoT (IIoT)",
+          "definition": "Üretim, enerji, altyapı ve saha ortamlarından operasyonel telemetri toplayan sensörler, kontrolörler, ağ geçitleri ve yazılım ağlarıdır. IIoT güvenilirliğe, uzun pil ömrüne, zorlu ortam sınıflandırmalarına ve endüstriyel protokollere entegrasyona öncelik verir."
+        }
+      }
+    }
+  ]
 }

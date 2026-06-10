@@ -54,37 +54,20 @@
       <section class="hero compact">
         <canvas class="signal-canvas" data-density="28" data-color="26, 163, 196"></canvas>
         <div class="hero-inner">
-          <p class="eyebrow reveal">Glossary</p>
-          <h1 class="reveal delay-1">Plain-English definitions <span class="serif-accent">for the field</span>.</h1>
-          <p class="reveal delay-2">Reference terms WillowSoft uses across embedded hardware, firmware, LoRaWAN, Modbus and industrial IoT projects — written for engineers and decision-makers without the marketing layer.</p>
+          <p class="eyebrow reveal" data-cms-key="heroEyebrow">Glossary</p>
+          <h1 class="reveal delay-1" data-cms-key="heroTitle">Plain-English definitions <span class="serif-accent">for the field</span>.</h1>
+          <p class="reveal delay-2" data-cms-key="heroLead">Reference terms WillowSoft uses across embedded hardware, firmware, LoRaWAN, Modbus and industrial IoT projects — written for engineers and decision-makers without the marketing layer.</p>
         </div>
       </section>
 
       <section class="section">
         <div class="section-inner">
           <div class="section-head reveal">
-            <p class="eyebrow">Connectivity</p>
-            <h2>Wireless &amp; network protocols.</h2>
+            <p class="eyebrow" data-cms-key="connectivityEyebrow">Connectivity</p>
+            <h2 data-cms-key="connectivityTitle">Wireless &amp; network protocols.</h2>
           </div>
-          <div class="grid grid-2">
-            <article class="card reveal" id="lorawan">
-              <h3>LoRaWAN</h3>
-              <p>Long Range Wide Area Network — a low-power, long-range wireless protocol designed for battery-operated devices in regional or national networks. Runs on unlicensed sub-GHz radio bands (US915, EU868, AS923, AU915, KR920, IN865, RU864) and reaches up to ~15&nbsp;km in rural conditions with multi-year battery life.</p>
-              <p><strong>WillowSoft uses it in:</strong> WillowBee module, WillowAir, WillowMod, WillowSonic and the rest of the LoRaWAN portfolio.</p>
-            </article>
-            <article class="card reveal delay-1" id="modbus">
-              <h3>Modbus RTU</h3>
-              <p>Serial communication protocol used across industrial automation to connect PLCs, energy meters, drives and sensors over RS-485. Master/slave register model with deterministic timing — the de-facto integration layer for legacy industrial equipment.</p>
-              <p><strong>WillowSoft uses it in:</strong> WillowMod bridges existing Modbus devices into LoRaWAN networks without rewiring.</p>
-            </article>
-            <article class="card reveal delay-2" id="lorawan-classes">
-              <h3>LoRaWAN device classes (A / B / C)</h3>
-              <p>Class&nbsp;A wakes up to transmit and immediately listens for downlinks — most energy-efficient, used for battery sensors. Class&nbsp;B listens at scheduled time slots. Class&nbsp;C listens continuously — for latency-sensitive applications with available power.</p>
-            </article>
-            <article class="card reveal delay-3" id="gateway">
-              <h3>LoRaWAN Gateway</h3>
-              <p>Multi-channel radio receiver bridging end-nodes and the LoRaWAN network server via IP backhaul (Ethernet, Wi-Fi or cellular). A single gateway can cover several kilometres line-of-sight and serve thousands of end-nodes.</p>
-            </article>
+          <div class="grid grid-2" data-cms-glossary="connectivity">
+            <!-- Dynamic CMS content -->
           </div>
         </div>
       </section>
@@ -92,34 +75,11 @@
       <section class="section soft">
         <div class="section-inner">
           <div class="section-head reveal">
-            <p class="eyebrow">Devices</p>
-            <h2>Hardware &amp; embedded terms.</h2>
+            <p class="eyebrow" data-cms-key="devicesEyebrow">Devices</p>
+            <h2 data-cms-key="devicesTitle">Hardware &amp; embedded terms.</h2>
           </div>
-          <div class="grid grid-2">
-            <article class="card reveal" id="mcu">
-              <h3>MCU (Microcontroller Unit)</h3>
-              <p>A single integrated circuit combining CPU, memory and peripherals — the brain of an embedded device. WillowSoft commonly uses STM32WL Cortex-M4, which integrates the LoRa radio on-chip and simplifies both hardware design and certification.</p>
-            </article>
-            <article class="card reveal delay-1" id="embedded">
-              <h3>Embedded System</h3>
-              <p>A purpose-built computing device combining MCU, firmware and hardware peripherals to perform a specific function. Examples: a LoRaWAN sensor node, a smart meter, an industrial controller. WillowSoft designs these from PCB through firmware to production-ready field deployment.</p>
-            </article>
-            <article class="card reveal delay-2" id="pcb">
-              <h3>PCB</h3>
-              <p>Printed Circuit Board — the structural and electrical substrate that connects electronic components. WillowSoft PCB design considers RF performance, power efficiency, manufacturability and enclosure constraints from the first schematic.</p>
-            </article>
-            <article class="card reveal delay-3" id="sensor-node">
-              <h3>Sensor Node</h3>
-              <p>An end-device that measures a physical parameter (temperature, pressure, motion, level, gas concentration) and transmits the reading wirelessly. WillowSoft's product portfolio is built around battery-powered LoRaWAN sensor nodes designed for years of unattended operation.</p>
-            </article>
-            <article class="card reveal" id="ip67">
-              <h3>IP67 Rating</h3>
-              <p>Ingress Protection rating: dust-tight (6) and able to withstand immersion in water up to 1&nbsp;metre for 30&nbsp;minutes (7). WillowSoft outdoor sensors (WillowSonic, WillowGPS, WillowPre, WillowTilt, WillowAne) are IP67-rated.</p>
-            </article>
-            <article class="card reveal delay-1" id="rf">
-              <h3>RF (Radio Frequency)</h3>
-              <p>The electromagnetic frequencies used for wireless communication. LoRaWAN uses sub-GHz RF bands chosen per region for long-range, low-power links. WillowSoft engineering includes RF design, antenna matching, regulatory compliance and field RF tuning.</p>
-            </article>
+          <div class="grid grid-2" data-cms-glossary="devices">
+            <!-- Dynamic CMS content -->
           </div>
         </div>
       </section>
@@ -127,30 +87,11 @@
       <section class="section">
         <div class="section-inner">
           <div class="section-head reveal">
-            <p class="eyebrow">Software &amp; Operations</p>
-            <h2>Firmware, edge and cloud terms.</h2>
+            <p class="eyebrow" data-cms-key="softwareEyebrow">Software &amp; Operations</p>
+            <h2 data-cms-key="softwareTitle">Firmware, edge and cloud terms.</h2>
           </div>
-          <div class="grid grid-2">
-            <article class="card reveal" id="ota">
-              <h3>OTA Update</h3>
-              <p>Over-the-Air firmware update — delivering software changes to deployed devices over the wireless link without physical access. WillowSoft firmware projects ship with OTA support so devices can be patched for bug fixes, security or new features without truck rolls.</p>
-            </article>
-            <article class="card reveal delay-1" id="edge">
-              <h3>Edge Computing</h3>
-              <p>Processing data on the device or gateway rather than sending all raw measurements to the cloud. Lowers bandwidth costs, enables faster local alerts and improves privacy. Increasingly part of WillowSoft firmware and gateway architecture.</p>
-            </article>
-            <article class="card reveal delay-2" id="telemetry">
-              <h3>Telemetry</h3>
-              <p>Automated, remote collection and transmission of sensor measurements for monitoring, alerting and analysis. The complete WillowSoft telemetry pipeline: sensor → LoRaWAN → gateway → backend API → PostgreSQL → dashboard → mobile alerts.</p>
-            </article>
-            <article class="card reveal delay-3" id="digital-twin">
-              <h3>Digital Twin</h3>
-              <p>A virtual representation of a physical asset, process or facility kept in sync with the real world via telemetry. WillowSoft VR and simulation services support digital twin visualization, operator training and pre-deployment scenario testing.</p>
-            </article>
-            <article class="card reveal" id="iiot">
-              <h3>Industrial IoT (IIoT)</h3>
-              <p>Networks of sensors, controllers, gateways and software collecting operational telemetry from manufacturing, energy, utility and field environments. IIoT prioritises reliability, multi-year battery life, harsh-environment ratings and integration with industrial protocols. WillowSoft delivers IIoT systems end-to-end.</p>
-            </article>
+          <div class="grid grid-2" data-cms-glossary="software">
+            <!-- Dynamic CMS content -->
           </div>
         </div>
       </section>
@@ -158,11 +99,11 @@
       <section class="section dark">
         <div class="section-inner split">
           <div class="reveal">
-            <p class="eyebrow">Missing a term?</p>
-            <h2 class="page-title">We'd rather explain it than assume you know it.</h2>
+            <p class="eyebrow" data-cms-key="ctaEyebrow">Missing a term?</p>
+            <h2 class="page-title" data-cms-key="ctaTitle">We'd rather explain it than assume you know it.</h2>
           </div>
           <div class="reveal delay-1">
-            <p class="section-lead">If your project introduces specific protocols, certifications or industrial concepts not covered here, WillowSoft engineering is happy to walk through them in the discovery call.</p>
+            <p class="section-lead" data-cms-key="ctaLead">If your project introduces specific protocols, certifications or industrial concepts not covered here, WillowSoft engineering is happy to walk through them in the discovery call.</p>
             <p><a class="btn btn-primary" href="contact.html">Talk to Engineering</a></p>
           </div>
         </div>
@@ -192,6 +133,7 @@
         </div>
       </div>
     </footer>
+    <script src="assets/cms.js"></script>
     <script src="assets/i18n.js"></script>
     <script src="assets/analytics.js"></script>
     <script src="assets/app.js"></script>

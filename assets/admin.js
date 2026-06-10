@@ -1638,9 +1638,10 @@
       solutions: 'Çözümler',
       company: 'Şirket',
       contact: 'İletişim',
-      startProject: 'Projeye Başla'
+      startProject: 'Projeye Başla',
+      glossary: 'Sözlük'
     };
-    const pageOrder = ['home', 'products', 'solutions', 'services', 'news', 'company', 'contact', 'startProject'];
+    const pageOrder = ['home', 'products', 'solutions', 'services', 'news', 'company', 'contact', 'startProject', 'glossary'];
     const pageKeys = Array.from(new Set([...pageOrder, ...Object.keys(pageSeo)])).filter((key) => pageSeo[key]);
     const LOCALES = (state.content.meta?.locales && state.content.meta.locales.length ? state.content.meta.locales : ['en','tr','de','fr','it','es','ar','ja']);
 
