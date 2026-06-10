@@ -172,7 +172,8 @@
       .slice(0, 3)
       .map((chip) => `<span class="chip">${escapeHtml(chip)}</span>`)
       .join("");
-    const productUrl = `/products/${encodeURIComponent(product.slug || product.id)}`;
+    const locale = currentLocale();
+    const productUrl = `/${locale}/products/${encodeURIComponent(product.slug || product.id)}`;
     const link = `<p style="margin-top:16px"><a class="btn btn-ghost btn-small" href="${productUrl}">View Details</a></p>`;
     const cutoutImage = product.cardImage || `assets/product-cutouts/${product.id}.png`;
     const originalImage = product.image || cutoutImage;
@@ -199,6 +200,8 @@
       day: "numeric"
     }) : "";
 
+    const locale = currentLocale();
+    const newsUrl = `/${locale}/news/${encodeURIComponent(item.slug || item.id)}`;
     return `
       <article class="card news-card reveal${delay}">
         <figure><img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.title)}" /></figure>
@@ -206,7 +209,7 @@
           <p class="eyebrow">${escapeHtml(item.category)} ${date ? "• " + escapeHtml(date) : ""}</p>
           <h3>${escapeHtml(item.title)}</h3>
           <p>${escapeHtml(item.excerpt)}</p>
-          <p style="margin-top:16px"><a class="btn btn-ghost btn-small" href="/news/${encodeURIComponent(item.slug || item.id)}">Read Update</a></p>
+          <p style="margin-top:16px"><a class="btn btn-ghost btn-small" href="${newsUrl}">Read Update</a></p>
         </div>
       </article>
     `;
