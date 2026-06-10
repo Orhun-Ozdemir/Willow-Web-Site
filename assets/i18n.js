@@ -106,19 +106,35 @@
   }
 
   function applyTranslations(messages) {
-    document.querySelectorAll(".nav-links a[href]").forEach((anchor) => {
+    document.querySelectorAll(".nav-links a[href], .footer a[href]").forEach((anchor) => {
       const key = navKeyForHref(anchor.getAttribute("href") || "");
       if (key) anchor.textContent = t(messages, key);
     });
     document.querySelectorAll(".nav-actions .btn-primary, a[href*='start-project']").forEach((node) => {
       if (node.textContent.trim().toLowerCase().includes("start")) node.textContent = t(messages, "cta.start");
     });
+    const linkLabels = {
+      "View Details": "cta.viewDetails",
+      "Read Update": "cta.readUpdate",
+      "Back to Products": "cta.backProducts",
+      "Back to News": "cta.backNews",
+      "Explore Services": "cta.exploreServices",
+      "Browse Products": "cta.browseProducts",
+      "View News": "cta.viewNews"
+    };
     document.querySelectorAll("a").forEach((anchor) => {
-      const text = anchor.textContent.trim();
-      if (text === "View Details") anchor.textContent = t(messages, "cta.viewDetails");
-      if (text === "Read Update") anchor.textContent = t(messages, "cta.readUpdate");
-      if (text === "Back to Products") anchor.textContent = t(messages, "cta.backProducts");
-      if (text === "Back to News") anchor.textContent = t(messages, "cta.backNews");
+      const key = linkLabels[anchor.textContent.trim()];
+      if (key) anchor.textContent = t(messages, key);
+    });
+    const proofLabels = {
+      "Products on market": "proof.productsOnMarket",
+      "Happy clients": "proof.happyClients",
+      "Founded": "proof.founded",
+      "Offices worldwide": "proof.officesWorldwide"
+    };
+    document.querySelectorAll(".proof-item span").forEach((span) => {
+      const key = proofLabels[span.textContent.trim()];
+      if (key) span.textContent = t(messages, key);
     });
   }
 

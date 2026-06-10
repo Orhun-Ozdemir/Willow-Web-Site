@@ -53,7 +53,9 @@
     <header class="site-header">
       <nav class="nav" aria-label="Main navigation">
         <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true"><img src="assets/willow-mark-transparent.png" alt="" decoding="async"/></span><span><strong>WILLOWSOFT</strong><span>Smart Embedded Connectivity</span></span></a>
-        <div class="nav-links"><a href="solutions.html">Solutions</a><a aria-current="page" href="services.html">Services</a><a href="products.html">Products</a><a href="news.html">News</a><a href="company.html">Company</a><a href="contact.html">Contact</a></div>
+        <div class="nav-links"><a href="index.html">Home</a><a href="solutions.html">Solutions</a><a aria-current="page" href="services.html">Services</a><a href="products.html">Products</a><a href="news.html">News</a><a href="company.html">Company</a><a href="contact.html">Contact</a>
+          <a class="mobile-cta" href="start-project.html">Start Project</a>
+        </div>
         <div class="nav-actions"><a class="btn btn-primary btn-small" href="start-project.html">Start Project</a><button class="menu-toggle" aria-expanded="false" aria-label="Open menu">☰</button></div>
       </nav>
     </header>
@@ -65,34 +67,32 @@
         <div class="services-hero-light" aria-hidden="true"></div>
         <div class="hero-inner services-hero-grid">
           <div class="services-hero-copy">
-            <p class="eyebrow reveal">Services • One engineering system</p>
-            <h1 class="reveal delay-1">From device electronics to global digital operations.</h1>
-            <p class="reveal delay-2">WillowSoft designs the full connected product stack: hardware, firmware, connectivity, backend, PostgreSQL, web/admin, mobile and VR — planned together, delivered as one production-ready system.</p>
+            <p class="eyebrow reveal">Services • Device to interface</p>
+            <h1 class="reveal delay-1">Engineering services for connected products.</h1>
+            <p class="reveal delay-2">WillowSoft helps teams build the full product stack: embedded devices, firmware, connectivity, backend, PostgreSQL, web/admin, mobile and VR layers designed to work together.</p>
             <div class="services-hero-meta reveal delay-3" role="list" aria-label="Service capacity">
-              <span class="hero-meta-item" role="listitem"><strong>80+</strong><span>projects shipped</span></span>
+              <span class="hero-meta-item" role="listitem"><strong data-company-fact="productsOnMarket">100+</strong><span>Products on Market</span></span>
               <span class="hero-meta-divider" aria-hidden="true"></span>
-              <span class="hero-meta-item" role="listitem"><strong>50+</strong><span>customers</span></span>
+              <span class="hero-meta-item" role="listitem"><strong data-company-fact="happyClients">41+</strong><span>happy clients</span></span>
               <span class="hero-meta-divider" aria-hidden="true"></span>
-              <span class="hero-meta-item" role="listitem"><strong>15+</strong><span>countries deployed</span></span>
+              <span class="hero-meta-item" role="listitem"><strong data-company-fact="founded">2020</strong><span>Founded</span></span>
               <span class="hero-meta-divider" aria-hidden="true"></span>
-              <span class="hero-meta-item" role="listitem"><strong>7</strong><span>LoRaWAN regions</span></span>
+              <span class="hero-meta-item" role="listitem"><strong data-company-fact="officesWorldwide">2</strong><span>offices worldwide</span></span>
             </div>
           </div>
           <div class="service-architecture reveal delay-2" aria-label="Connected product architecture summary">
             <div class="architecture-deck architecture-deck-simple">
               <p class="architecture-label">Service architecture</p>
-              <h2>One team owns every layer.</h2>
-              <div class="summary-layers">
-                <span>Device</span>
-                <span>Firmware</span>
-                <span>Cloud</span>
-                <span>Data</span>
-                <span>Interface</span>
+              <h2>Device to data to interface.</h2>
+              <div class="architecture-flow">
+                <div class="flow-node-large"><span>01</span><strong>Device</strong><small>Hardware + firmware</small></div>
+                <div class="flow-node-large"><span>02</span><strong>Data</strong><small>API + PostgreSQL</small></div>
+                <div class="flow-node-large"><span>03</span><strong>Interface</strong><small>Web + mobile + VR</small></div>
               </div>
               <div class="summary-metrics">
                 <div><strong>8</strong><span>capabilities</span></div>
-                <div><strong>1</strong><span>technical owner</span></div>
-                <div><strong>0</strong><span>vendor hand-off</span></div>
+                <div><strong>4</strong><span>delivery layers</span></div>
+                <div><strong>1</strong><span>system view</span></div>
               </div>
             </div>
           </div>
@@ -117,106 +117,152 @@
         </div>
       </section>
 
-      <!-- CAPABILITY SYSTEM: eight services as premium cards -->
+      <!-- SERVICE SYSTEM: grouped by the way connected products are actually built -->
       <section class="section tight service-capabilities-section">
         <div class="section-inner">
           <div class="section-head reveal product-headline">
             <div>
-              <p class="eyebrow">Capability system</p>
-              <h2 class="page-title">Eight service layers. One accountable team.</h2>
-              <p class="section-lead">Each capability can be delivered alone, but the real advantage appears when they are architected together from the first technical decision.</p>
+              <p class="eyebrow">Service system</p>
+              <h2 class="page-title">Choose one layer, or build the whole stack.</h2>
+              <p class="section-lead">The services are grouped by product layer, so buyers can quickly understand where WillowSoft fits: device engineering, cloud/data, operator interfaces, and simulation.</p>
             </div>
             <a class="btn btn-secondary btn-small" href="start-project.html">Start Discovery</a>
           </div>
-          <div class="service-capability-grid reveal delay-1">
-            <article class="premium-service-card">
-              <span class="service-detail-number">01</span>
-              <p class="service-card-kicker">Embedded</p>
-              <h3>Hardware Design</h3>
-              <p>Custom PCB, low-power architecture, sensor design, enclosure planning, RF layout and production support for field devices.</p>
-              <div class="chip-row"><span class="chip">PCB</span><span class="chip">Sensors</span><span class="chip">RF</span></div>
+          <div class="service-system-grid reveal delay-1">
+            <article class="system-layer-card">
+              <span class="layer-index">01</span>
+              <p class="service-card-kicker">Device engineering</p>
+              <h3>Hardware, firmware and connectivity.</h3>
+              <p>For teams building physical IoT products that need reliable sensing, power, RF behavior and production-ready firmware.</p>
+              <div class="layer-services">
+                <span>Embedded Hardware</span>
+                <span>Firmware</span>
+                <span>Connectivity</span>
+              </div>
+              <p class="layer-output"><strong>Typical output</strong> PCB package, firmware source, RF notes and production handoff.</p>
             </article>
-            <article class="premium-service-card">
-              <span class="service-detail-number">02</span>
-              <p class="service-card-kicker">Device logic</p>
-              <h3>Firmware Development</h3>
-              <p>MCU firmware, RTOS, bare-metal logic, drivers, OTA strategy, LoRaWAN stack integration and power optimization.</p>
-              <div class="chip-row"><span class="chip">STM32</span><span class="chip">RTOS</span><span class="chip">OTA</span></div>
+            <article class="system-layer-card">
+              <span class="layer-index">02</span>
+              <p class="service-card-kicker">Cloud & data</p>
+              <h3>Backend APIs and PostgreSQL architecture.</h3>
+              <p>For products that collect device data, need authentication, reporting, alerts, dashboards and scalable operational data models.</p>
+              <div class="layer-services">
+                <span>Backend API</span>
+                <span>PostgreSQL</span>
+                <span>IoT Cloud</span>
+              </div>
+              <p class="layer-output"><strong>Typical output</strong> API contracts, database schema, auth flow and reporting queries.</p>
             </article>
-            <article class="premium-service-card">
-              <span class="service-detail-number">03</span>
-              <p class="service-card-kicker">Connectivity</p>
-              <h3>IoT Cloud & Telemetry</h3>
-              <p>Device fleet monitoring, alerts, remote data visualization, gateway flows and integrations for distributed field systems.</p>
-              <div class="chip-row"><span class="chip">LoRaWAN</span><span class="chip">BLE</span><span class="chip">Telemetry</span></div>
+            <article class="system-layer-card">
+              <span class="layer-index">03</span>
+              <p class="service-card-kicker">Operator interface</p>
+              <h3>Web platforms, admin panels and mobile apps.</h3>
+              <p>For teams that need operators, customers and field technicians to actually use the connected product every day.</p>
+              <div class="layer-services">
+                <span>Web/Admin</span>
+                <span>Mobile Apps</span>
+                <span>Customer Portal</span>
+              </div>
+              <p class="layer-output"><strong>Typical output</strong> Dashboards, mobile flows, user roles, alerts and portal screens.</p>
             </article>
-            <article class="premium-service-card">
-              <span class="service-detail-number">04</span>
-              <p class="service-card-kicker">Platform</p>
-              <h3>Backend API</h3>
-              <p>REST APIs, WebSocket streams, telemetry ingestion, authentication, reporting and integrations for operational software.</p>
-              <div class="chip-row"><span class="chip">REST</span><span class="chip">WebSocket</span><span class="chip">Auth</span></div>
-            </article>
-            <article class="premium-service-card">
-              <span class="service-detail-number">05</span>
-              <p class="service-card-kicker">Data</p>
-              <h3>PostgreSQL Architecture</h3>
-              <p>Device data models, time-series tables, indexes, reporting schemas and dashboard-ready query design.</p>
-              <div class="chip-row"><span class="chip">Schema</span><span class="chip">Indexes</span><span class="chip">Reports</span></div>
-            </article>
-            <article class="premium-service-card">
-              <span class="service-detail-number">06</span>
-              <p class="service-card-kicker">Operations</p>
-              <h3>Web Platform / Admin</h3>
-              <p>Dashboards, admin panels, customer portals, role access, monitoring interfaces and operational control surfaces.</p>
-              <div class="chip-row"><span class="chip">Dashboard</span><span class="chip">Admin</span><span class="chip">Portal</span></div>
-            </article>
-            <article class="premium-service-card">
-              <span class="service-detail-number">07</span>
-              <p class="service-card-kicker">Field teams</p>
-              <h3>Mobile App Development</h3>
-              <p>Native iOS, native Android and Flutter apps for sensor monitoring, notifications, offline states and field operation flows.</p>
-              <div class="chip-row"><span class="chip">Swift</span><span class="chip">Kotlin</span><span class="chip">Flutter</span></div>
-            </article>
-            <article class="premium-service-card">
-              <span class="service-detail-number">08</span>
+            <article class="system-layer-card">
+              <span class="layer-index">04</span>
               <p class="service-card-kicker">Immersive</p>
-              <h3>VR / Simulation</h3>
-              <p>Industrial training, product demos, digital twin views and simulation-based presentations for complex systems.</p>
-              <div class="chip-row"><span class="chip">Unity</span><span class="chip">WebGL</span><span class="chip">Digital Twin</span></div>
+              <h3>VR, simulation and digital twin experiences.</h3>
+              <p>For products or environments that are hard to explain through flat screens, training documents or static presentations.</p>
+              <div class="layer-services">
+                <span>VR Training</span>
+                <span>Product Demo</span>
+                <span>Digital Twin</span>
+              </div>
+              <p class="layer-output"><strong>Typical output</strong> Simulation scene, training flow, 3D presentation and demo assets.</p>
             </article>
           </div>
         </div>
       </section>
 
-      <!-- OUTCOMES — concise proof without heavy mockup clutter -->
+      <!-- DELIVERABLES — what customers receive -->
       <section class="section service-outcomes-section">
         <div class="section-inner">
-          <div class="section-head reveal">
-            <p class="eyebrow">What you get</p>
-            <h2 class="page-title">Clear deliverables, not decorative promises.</h2>
-            <p class="section-lead">The page stays focused on what customers need to understand: what WillowSoft can deliver, where each layer fits, and how the result becomes a working connected product.</p>
+          <div class="deliverables-split">
+            <div class="section-head reveal">
+              <p class="eyebrow">Deliverables</p>
+              <h2 class="page-title">What leaves the project, layer by layer.</h2>
+              <p class="section-lead">The deliverables are practical: source files, firmware, APIs, data models, dashboards and deployment documentation.</p>
+              <div class="handoff-note">
+                <strong>Project handoff</strong>
+                <span>Every layer is documented so your internal team can operate, extend and audit the system.</span>
+              </div>
+            </div>
+            <div class="deliverable-ledger reveal delay-1">
+              <div><span>Device package</span><strong>Schematics, PCB, BOM, prototype notes, RF and power decisions.</strong></div>
+              <div><span>Firmware package</span><strong>Firmware source, drivers, protocol logic, OTA and low-power behavior.</strong></div>
+              <div><span>Platform package</span><strong>API contracts, WebSocket events, PostgreSQL schema, auth and reporting flow.</strong></div>
+              <div><span>Interface package</span><strong>Dashboard, admin panel, mobile app, roles, alerts and operator workflows.</strong></div>
+              <div><span>Launch package</span><strong>Testing notes, deployment support, documentation and production handoff.</strong></div>
+            </div>
           </div>
-          <div class="outcome-grid reveal delay-1">
-            <article class="outcome-card outcome-card-primary">
-              <span>01</span>
-              <h3>Device layer</h3>
-              <p>PCB, firmware, LoRaWAN, power strategy and production handoff planned as one technical package.</p>
+        </div>
+      </section>
+
+      <!-- CASE STUDIES — real-world engineering proof -->
+      <section class="section services-case-studies-section" id="case-studies" style="background: var(--surface); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);">
+        <div class="section-inner">
+          <div class="section-head reveal center" style="margin-bottom: 48px;">
+            <p class="eyebrow">Case Studies</p>
+            <h2 class="page-title">Proven in production.</h2>
+            <p class="section-lead" style="max-width: 720px; margin-left: auto; margin-right: auto;">See how WillowSoft's integrated hardware, firmware, and digital stack delivers measurable operational ROI for our clients.</p>
+          </div>
+          
+          <div class="case-studies-list" style="display: grid; gap: 64px;">
+            <!-- Case Study 1 -->
+            <article class="split reveal" style="align-items: stretch;">
+              <div class="split-media" style="position: relative; display: flex; flex-direction: column; justify-content: center; background: rgba(255,255,255,0.8); border: 1px solid var(--line); overflow: hidden; border-radius: var(--radius); box-shadow: var(--shadow);">
+                <img src="assets/client-logos/slb.png" alt="SLB" style="max-height: 44px; width: auto; object-fit: contain; margin: 40px auto 20px; opacity: 0.85;" />
+                <div class="case-stats" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 20px; background: rgba(240, 245, 255, 0.5); border-top: 1px solid var(--line); text-align: center;">
+                  <div><strong style="display: block; font-size: 1.85rem; color: var(--accent); font-family: var(--font-display);">-32%</strong><span style="font-size: 0.74rem; color: var(--muted); font-weight: 700; text-transform: uppercase; letter-spacing: 0.02em;">Maintenance Costs</span></div>
+                  <div><strong style="display: block; font-size: 1.85rem; color: var(--accent); font-family: var(--font-display);">99.6%</strong><span style="font-size: 0.74rem; color: var(--muted); font-weight: 700; text-transform: uppercase; letter-spacing: 0.02em;">Network Uptime</span></div>
+                  <div><strong style="display: block; font-size: 1.85rem; color: var(--accent); font-family: var(--font-display);">&lt;5m</strong><span style="font-size: 0.74rem; color: var(--muted); font-weight: 700; text-transform: uppercase; letter-spacing: 0.02em;">Fault Alerts</span></div>
+                </div>
+              </div>
+              <div style="display: flex; flex-direction: column; justify-content: center;">
+                <p class="eyebrow" style="color: var(--accent); margin-bottom: 8px;">Solar Plant Remote Monitoring</p>
+                <h3 style="font-family: var(--font-display); font-size: clamp(1.6rem, 2.4vw, 2.5rem); margin: 0 0 16px; color: var(--ink); line-height: 1.1; letter-spacing: -0.02em;">Predictive maintenance layer for distributed solar fields.</h3>
+                <p style="color: var(--muted); font-size: 0.98rem; line-height: 1.6; margin: 0 0 20px 0;">
+                  <strong>The Problem:</strong> Manual inspections of inverters and transformers led to high operational overhead and late fault detection across thousands of distributed solar panels.
+                  <br><br>
+                  <strong>The Approach:</strong> WillowSoft designed and deployed IP67-rated Modbus bridges (WillowMod) collecting inverter registry data, transmitting via LoRaWAN to a high-concurrency API and PostgreSQL telemetry database.
+                </p>
+                <blockquote style="margin: 0; padding-left: 20px; border-left: 3px solid var(--accent); font-style: italic; color: var(--muted); font-size: 0.94rem; line-height: 1.55;">
+                  "WillowSoft unified our field devices and dashboards into one reliable system. Our maintenance cycles are now purely predictive."
+                  <cite style="display: block; margin-top: 8px; font-weight: 700; font-style: normal; font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--ink);">— Lead Operations Engineer, SLB Energy</cite>
+                </blockquote>
+              </div>
             </article>
-            <article class="outcome-card">
-              <span>02</span>
-              <h3>Data layer</h3>
-              <p>Backend API, WebSocket, PostgreSQL schema, reporting tables and telemetry pipelines.</p>
-            </article>
-            <article class="outcome-card">
-              <span>03</span>
-              <h3>Operator layer</h3>
-              <p>Web dashboards, admin panels, mobile apps, notifications, user roles and customer portals.</p>
-            </article>
-            <article class="outcome-card">
-              <span>04</span>
-              <h3>Simulation layer</h3>
-              <p>VR training, digital twin demos and simulation views when the product needs immersive explanation.</p>
+
+            <!-- Case Study 2 -->
+            <article class="split reveal" style="align-items: stretch; direction: rtl;">
+              <div class="split-media" style="position: relative; display: flex; flex-direction: column; justify-content: center; background: rgba(255,255,255,0.8); border: 1px solid var(--line); overflow: hidden; border-radius: var(--radius); box-shadow: var(--shadow); direction: ltr;">
+                <img src="assets/client-logos/cocacola.png" alt="Coca-Cola" style="max-height: 44px; width: auto; object-fit: contain; margin: 40px auto 20px; opacity: 0.85;" />
+                <div class="case-stats" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 20px; background: rgba(240, 245, 255, 0.5); border-top: 1px solid var(--line); text-align: center;">
+                  <div><strong style="display: block; font-size: 1.85rem; color: var(--accent); font-family: var(--font-display);">0%</strong><span style="font-size: 0.74rem; color: var(--muted); font-weight: 700; text-transform: uppercase; letter-spacing: 0.02em;">Spoilage Incidents</span></div>
+                  <div><strong style="display: block; font-size: 1.85rem; color: var(--accent); font-family: var(--font-display);">5 Yrs</strong><span style="font-size: 0.74rem; color: var(--muted); font-weight: 700; text-transform: uppercase; letter-spacing: 0.02em;">Battery Life</span></div>
+                  <div><strong style="display: block; font-size: 1.85rem; color: var(--accent); font-family: var(--font-display);">Realtime</strong><span style="font-size: 0.74rem; color: var(--muted); font-weight: 700; text-transform: uppercase; letter-spacing: 0.02em;">Temp Alerts</span></div>
+                </div>
+              </div>
+              <div style="display: flex; flex-direction: column; justify-content: center; direction: ltr; text-align: left;">
+                <p class="eyebrow" style="color: var(--accent); margin-bottom: 8px;">Cold Chain Logistics & Quality Control</p>
+                <h3 style="font-family: var(--font-display); font-size: clamp(1.6rem, 2.4vw, 2.5rem); margin: 0 0 16px; color: var(--ink); line-height: 1.1; letter-spacing: -0.02em;">Real-time asset tracking and environmental monitoring.</h3>
+                <p style="color: var(--muted); font-size: 0.98rem; line-height: 1.6; margin: 0 0 20px 0;">
+                  <strong>The Problem:</strong> Temperature fluctuations and open-door incidents during logistics transit caused product quality concerns, with high battery drain on legacy cellular trackers.
+                  <br><br>
+                  <strong>The Approach:</strong> WillowSoft designed a custom low-power GNSS tracker (WillowGPS) with integrated temperature and door open/close sensors, running custom low-power firmware combined with a native mobile dashboard for driver alerts.
+                </p>
+                <blockquote style="margin: 0; padding-left: 20px; border-left: 3px solid var(--accent); font-style: italic; color: var(--muted); font-size: 0.94rem; line-height: 1.55;">
+                  "The hardware battery life and native dashboard alert responsiveness exceeded our expectations. An exceptional end-to-end telemetry system."
+                  <cite style="display: block; margin-top: 8px; font-weight: 700; font-style: normal; font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--ink);">— Logistics Director, FMCG Group</cite>
+                </blockquote>
+              </div>
             </article>
           </div>
         </div>
@@ -246,36 +292,7 @@
             <h2 class="page-title">Questions before you brief us.</h2>
             <p class="section-lead">Engineering buyers usually arrive with the same operational questions. Here are the answers — the rest happens in the discovery call.</p>
           </div>
-          <div class="faq-list reveal delay-1">
-            <details class="faq-item">
-              <summary><span class="faq-q">What engineering services does WillowSoft offer?</span><span class="faq-toggle" aria-hidden="true"></span></summary>
-              <p>WillowSoft delivers end-to-end connected product engineering across eight disciplines: embedded hardware design (custom PCB, RF, low-power), firmware development (STM32, RTOS, OTA), backend APIs (REST + WebSocket, auth, ingestion), PostgreSQL database architecture, web platforms and admin panels, native iOS (Swift) + native Android (Kotlin) + Flutter cross-platform mobile apps, VR &amp; simulation, and IoT cloud telemetry.</p>
-            </details>
-            <details class="faq-item">
-              <summary><span class="faq-q">Does WillowSoft deliver complete connected products end-to-end?</span><span class="faq-toggle" aria-hidden="true"></span></summary>
-              <p>Yes. WillowSoft owns every layer of a connected product — hardware, firmware, RF/LoRaWAN connectivity, backend, database, mobile and web interfaces — so customers do not need to coordinate multiple vendors or translate requirements between disconnected teams.</p>
-            </details>
-            <details class="faq-item">
-              <summary><span class="faq-q">Which technologies does WillowSoft specialise in?</span><span class="faq-toggle" aria-hidden="true"></span></summary>
-              <p>Core stacks include STM32WL Cortex-M4 microcontrollers, LoRaWAN 1.1.0, Modbus RTU, BLE, Wi-Fi, FreeRTOS, REST APIs, WebSocket, PostgreSQL, Swift (native iOS), Kotlin (native Android), Flutter, Three.js / WebGL for web, and Unity for VR simulations.</p>
-            </details>
-            <details class="faq-item">
-              <summary><span class="faq-q">Can WillowSoft handle production-readiness and certification?</span><span class="faq-toggle" aria-hidden="true"></span></summary>
-              <p>Yes. WillowSoft's engineering process includes RF tuning, device stability, certification support (CE, FCC, TELEC, KC), production handoff and ongoing field improvements.</p>
-            </details>
-            <details class="faq-item">
-              <summary><span class="faq-q">Do you sign NDAs before sharing technical details?</span><span class="faq-toggle" aria-hidden="true"></span></summary>
-              <p>Yes. WillowSoft signs mutual NDAs at the start of any commercial conversation involving customer hardware specifications, intellectual property, or sensitive deployment data.</p>
-            </details>
-            <details class="faq-item">
-              <summary><span class="faq-q">What's a typical project timeline?</span><span class="faq-toggle" aria-hidden="true"></span></summary>
-              <p>Hardware prototypes typically take 4–8 weeks. Full connected product systems (hardware + firmware + backend + dashboard + mobile) typically take 4–6 months from kickoff to field-ready deployment.</p>
-            </details>
-            <details class="faq-item">
-              <summary><span class="faq-q">Who owns the IP at the end of the project?</span><span class="faq-toggle" aria-hidden="true"></span></summary>
-              <p>The customer owns the project IP — schematics, firmware source, backend code, mobile apps. WillowSoft retains rights to its internal reference libraries, certified RF blocks and reusable platform components that pre-exist the engagement.</p>
-            </details>
-          </div>
+          <div class="faq-list reveal delay-1" data-cms-faqs data-page="services"></div>
         </div>
       </section>
 
@@ -297,7 +314,30 @@
       </section>
     </main>
 
-    <footer class="footer"><div class="footer-grid"><div><h3>WillowSoft</h3><p>Complete connected product engineering.</p></div><div><h3>Company</h3><a href="company.html">About</a><a href="contact.html">Contact</a></div><div><h3>Explore</h3><a href="solutions.html">Solutions</a><a href="products.html">Products</a></div><div><h3>Start</h3><a href="start-project.html">Start Project</a><a href="mailto:info@willowsoft.co">info@willowsoft.co</a></div></div></footer>
+        <footer class="footer">
+      <div class="footer-grid">
+        <div>
+          <h3>WillowSoft</h3>
+          <p>Smart Embedded Connectivity &amp; Industrial IoT.</p>
+        </div>
+        <div>
+          <h3>Explore</h3>
+          <a href="solutions.html">Solutions</a>
+          <a href="services.html">Services</a>
+          <a href="products.html">Products</a>
+        </div>
+        <div>
+          <h3>Company</h3>
+          <a href="company.html">Company</a>
+          <a href="news.html">News</a>
+        </div>
+        <div>
+          <h3>Contact</h3>
+          <a href="contact.html">Contact</a>
+          <a href="mailto:info@willowsoft.co">info@willowsoft.co</a>
+        </div>
+      </div>
+    </footer>
     <script src="assets/cms.js"></script>
     <script src="assets/i18n.js"></script>
     <script src="/assets/analytics.js"></script>
