@@ -135,8 +135,9 @@
   }
 
   async function fetchContent() {
+    const isAdminPreview = window.self !== window.top || location.pathname.includes("admin.html") || location.search.includes("preview=true");
     const cached = window.localStorage.getItem("willowsoft-content-draft");
-    if (cached && !location.pathname.includes("admin")) {
+    if (cached && isAdminPreview) {
       try {
         return JSON.parse(cached);
       } catch {
