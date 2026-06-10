@@ -327,6 +327,153 @@ function slugContext(pathname) {
   return null;
 }
 
+async function enrichPageHtml(html, pageKey, locale) {
+  let content;
+  try {
+    content = await readJson(dataFile, {});
+  } catch {
+    return html;
+  }
+  const pageSeo = content.pageSeo || {};
+  const pgData = pageSeo[pageKey] || {};
+  const seoData = pgData[locale] || {};
+
+  if (!seoData.seoTitle && !seoData.metaDescription) {
+    return html;
+  }
+
+  const baseTitle = seoData.seoTitle || "WillowSoft";
+  const description = seoData.metaDescription || "";
+  const image = seoData.ogImage
+    ? (seoData.ogImage.startsWith("http") ? seoData.ogImage : `${siteUrl}/${seoData.ogImage.replace(/^\/+/, "")}`)
+    : `${siteUrl}/assets/hero-industrial-iot.png`;
+
+  const canonical = seoData.canonical || `${siteUrl}/${locale}/${pageKey === "home" ? "" : pageKey}`;
+  const ogType = "website";
+  const orgRef = `${siteUrl}/#org`;
+
+  // Breadcrumb
+  const breadcrumb = {
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", position: 1, name: "Home", item: `${siteUrl}/${locale}` }
+    ]
+  };
+  if (pageKey !== "home") {
+    breadcrumb.itemListElement.push({
+      "@type": "ListItem",
+      position: 2,
+      name: pageKey.charAt(0).toUpperCase() + pageKey.slice(1),
+      item: canonical
+    });
+  }
+
+  let mainEntity = {
+    "@type": seoData.schemaType || "WebPage",
+    "name": baseTitle,
+    "description": description,
+    "url": canonical
+  };
+
+  if (seoData.schemaType === "FAQPage" && Array.isArray(seoData.aiFAQ)) {
+    mainEntity.mainEntity = seoData.aiFAQ.map(qa => ({
+      "@type": "Question",
+      "name": qa.question,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": qa.answer
+      }
+    }));
+  }
+
+  const ldGraph = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": orgRef,
+        name: "WillowSoft",
+        url: siteUrl,
+        logo: `${siteUrl}/assets/willow-mark-transparent.png`,
+      },
+      breadcrumb,
+      mainEntity,
+    ],
+  };
+
+  const ldScript = `<script type="application/ld+json" data-ssr="true">${JSON.stringify(ldGraph)}</script>`;
+
+  // Alternate locale tags (hreflang)
+  const alternateLinks = [];
+  const LOCALES = ["en", "tr", "de", "fr", "es", "it", "ar", "ja"];
+  LOCALES.forEach(loc => {
+    const locSeo = pgData[loc] || {};
+    const locSlug = locSeo.slug || (pageKey === "home" ? "" : pageKey);
+    alternateLinks.push(`<link rel="alternate" hreflang="${loc}" href="${siteUrl}/${loc}/${locSlug.replace(/^\/+/, "").replace(/^\//, "")}" />`);
+  });
+  alternateLinks.push(`<link rel="alternate" hreflang="x-default" href="${siteUrl}/en/${pageKey === "home" ? "" : pageKey}" />`);
+
+  // Robots meta tags
+  const robotsDirectives = [];
+  if (seoData.noindex) robotsDirectives.push("noindex");
+  if (seoData.nofollow) robotsDirectives.push("nofollow");
+  if (seoData.nosnippet) robotsDirectives.push("nosnippet");
+  if (seoData.maxSnippet) robotsDirectives.push(`max-snippet:${seoData.maxSnippet}`);
+  const robotsMeta = robotsDirectives.length > 0 ? `<meta name="robots" content="${robotsDirectives.join(", ")}" />` : "";
+
+  // Open Graph & Twitter Cards
+  const ogTitleVal = seoData.ogTitle || baseTitle;
+  const ogDescVal = seoData.ogDescription || description;
+  const twitterTitleVal = seoData.twitterTitle || ogTitleVal;
+  const twitterDescVal = seoData.twitterDescription || ogDescVal;
+  const twitterImageVal = seoData.twitterImage
+    ? (seoData.twitterImage.startsWith("http") ? seoData.twitterImage : `${siteUrl}/${seoData.twitterImage.replace(/^\/+/, "")}`)
+    : image;
+
+  const meta = [
+    `<link rel="canonical" href="${canonical}" />`,
+    ...alternateLinks,
+    robotsMeta,
+    `<meta property="og:type" content="${ogType}" />`,
+    `<meta property="og:url" content="${canonical}" />`,
+    `<meta property="og:title" content="${escapeHtml(ogTitleVal)}" />`,
+    `<meta property="og:description" content="${escapeHtml(ogDescVal)}" />`,
+    `<meta property="og:image" content="${image}" />`,
+    `<meta property="og:image:width" content="1200" />`,
+    `<meta property="og:image:height" content="630" />`,
+    `<meta property="og:site_name" content="WillowSoft" />`,
+    `<meta name="twitter:card" content="summary_large_image" />`,
+    `<meta name="twitter:title" content="${escapeHtml(twitterTitleVal)}" />`,
+    `<meta name="twitter:description" content="${escapeHtml(twitterDescVal)}" />`,
+    `<meta name="twitter:image" content="${twitterImageVal}" />`,
+    ldScript,
+  ].filter(Boolean).join("\n    ");
+
+  // Replace <title> if present; insert if missing
+  if (/<title>[^<]*<\/title>/i.test(html)) {
+    html = html.replace(
+      /<title>[^<]*<\/title>/i,
+      `<title>${escapeHtml(baseTitle)}</title>`
+    );
+  } else {
+    html = html.replace("</head>", `  <title>${escapeHtml(baseTitle)}</title>\n  </head>`);
+  }
+  // Update/insert meta description
+  if (/<meta name="description"[^>]*>/i.test(html)) {
+    html = html.replace(
+      /<meta name="description"[^>]*>/i,
+      `<meta name="description" content="${escapeHtml(description)}" />`
+    );
+  } else {
+    html = html.replace("</head>", `  <meta name="description" content="${escapeHtml(description)}" />\n  </head>`);
+  }
+  
+  // Inject meta + schema before </head>
+  html = html.replace("</head>", `    ${meta}\n  </head>`);
+
+  return html;
+}
+
 async function enrichSlugHtml(html, ctx) {
   const content = await readJson(dataFile, {});
   const collection = ctx.type === "product" ? content.products : content.news;
@@ -473,6 +620,39 @@ async function serveStatic(req, res) {
         html = await enrichSlugHtml(html, ctx);
       } catch {
         /* fall through to raw HTML if enrichment fails */
+      }
+      res.writeHead(200, {
+        "Content-Type": "text/html; charset=utf-8",
+        "Cache-Control": "no-store",
+      });
+      res.end(html);
+      return;
+    }
+
+    if (ext === ".html" && !publicPath.includes("admin.html")) {
+      // Find pageKey and locale
+      const parts = url.pathname.split("/").filter(Boolean);
+      let locale = "en";
+      let pageKey = "home";
+      if (parts.length > 0) {
+        if (locales.has(parts[0])) {
+          locale = parts[0];
+          pageKey = parts[1] || "home";
+        } else {
+          pageKey = parts[0];
+        }
+      }
+      if (pageKey === "index" || pageKey === "index.html") {
+        pageKey = "home";
+      } else if (pageKey.endsWith(".html")) {
+        pageKey = pageKey.replace(/\.html$/, "");
+      }
+
+      let html = await readFile(finalPath, "utf8");
+      try {
+        html = await enrichPageHtml(html, pageKey, locale);
+      } catch (e) {
+        console.error("enrichPageHtml failed for", pageKey, locale, e);
       }
       res.writeHead(200, {
         "Content-Type": "text/html; charset=utf-8",
