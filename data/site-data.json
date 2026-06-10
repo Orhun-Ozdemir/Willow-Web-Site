@@ -324,7 +324,7 @@
         "U.FL RF"
       ],
       "featured": true,
-      "detailUrl": "product-willowbee.html",
+      "detailUrl": "/en/products/willowbee-lorawan-module",
       "localized": {
         "tr": {
           "title": "WillowBee LoRaWAN Modülü",
@@ -404,7 +404,7 @@
         "Low power"
       ],
       "featured": true,
-      "detailUrl": "product-willowair.html",
+      "detailUrl": "/en/products/temperature-humidity-sensor",
       "localized": {
         "tr": {
           "title": "LoRaWAN Sıcaklık ve Nem Sensörü",
@@ -484,7 +484,7 @@
         "Indoor"
       ],
       "featured": false,
-      "detailUrl": "product-willowair.html",
+      "detailUrl": "/en/products/co2-sensor",
       "localized": {
         "tr": {
           "title": "LoRaWAN CO2 Sensörü",
@@ -564,7 +564,7 @@
         "LoRaWAN"
       ],
       "featured": true,
-      "detailUrl": "product-willowmod.html",
+      "detailUrl": "/en/products/modbus-bridge",
       "localized": {
         "tr": {
           "title": "LoRaWAN Modbus Köprüsü / Sensörü",
