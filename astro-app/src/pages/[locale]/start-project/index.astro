@@ -3,6 +3,7 @@ import PageLayout from "@/layouts/PageLayout.astro";
 import StartProjectForm from "@/components/StartProjectForm.astro";
 import FaqAccordion from "@/components/FaqAccordion.astro";
 import { loadContent } from "@/lib/content";
+import { pageSeo } from "@/lib/seo";
 import { localizedValue, locales, type Locale } from "@/lib/cms";
 
 export function getStaticPaths() {
@@ -11,7 +12,7 @@ export function getStaticPaths() {
 
 const { locale } = Astro.params as { locale: Locale };
 const content = loadContent();
-const seo = content.pageSeo?.startProject?.[locale] || {};
+const seoProps = pageSeo(content, "startProject", locale, "/start-project", "Start Your IoT Project | WillowSoft", "Start a connected hardware, software or platform project with WillowSoft.");
 const pageContent = content.pageContent?.startProject || {};
 const getVal = (key: string) => localizedValue(pageContent[key], locale);
 
@@ -61,8 +62,7 @@ const getSteps = () => {
 ---
 
 <PageLayout
-  title={seo.seoTitle || "Start Your IoT Project | WillowSoft"}
-  description={seo.metaDescription || "Start a connected hardware, software or platform project with WillowSoft."}
+  {...seoProps}
   locale={locale}
   dataPage="start-project"
 >

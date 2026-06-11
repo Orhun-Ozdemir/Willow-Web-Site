@@ -1,19 +1,50 @@
 ---
 import "@/styles/globals.css";
+import { OG_LOCALE_MAP, SITE_NAME, type Alternate } from "@/lib/seo";
+import type { Locale } from "@/lib/cms";
 
 interface Props {
   title: string;
   description?: string;
   canonical?: string;
-  locale?: string;
+  locale?: Locale;
   dataPage?: string;
+  ogTitle?: string;
+  ogDescription?: string;
+  ogImage?: string;
+  ogType?: string;
+  noindex?: boolean;
+  alternates?: Alternate[];
+  schema?: object | object[];
 }
 
-const { title, description = "", canonical, locale = "en", dataPage } = Astro.props;
+const {
+  title,
+  description = "",
+  canonical,
+  locale = "en",
+  dataPage,
+  ogTitle,
+  ogDescription,
+  ogImage,
+  ogType = "website",
+  noindex = false,
+  alternates = [],
+  schema,
+} = Astro.props;
+
+const ogLocale = OG_LOCALE_MAP[locale] || "en_US";
+const ogLocaleAlternates = Object.entries(OG_LOCALE_MAP)
+  .filter(([key]) => key !== locale)
+  .map(([, value]) => value);
+const robots = noindex
+  ? "noindex, nofollow"
+  : "index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1";
+const dir = locale === "ar" ? "rtl" : "ltr";
 ---
 
 <!doctype html>
-<html lang={locale} class="h-full antialiased">
+<html lang={locale} dir={dir} class="h-full antialiased">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -27,6 +58,25 @@ const { title, description = "", canonical, locale = "en", dataPage } = Astro.pr
     <title>{title}</title>
     {description && <meta name="description" content={description} />}
     {canonical && <link rel="canonical" href={canonical} />}
+    {alternates.map((alt) => <link rel="alternate" hreflang={alt.hreflang} href={alt.href} />)}
+    <meta name="robots" content={robots} />
+    <meta name="author" content={SITE_NAME} />
+    <meta name="theme-color" content="#132175" />
+    <meta property="og:type" content={ogType} />
+    {canonical && <meta property="og:url" content={canonical} />}
+    <meta property="og:title" content={ogTitle || title} />
+    {(ogDescription || description) && <meta property="og:description" content={ogDescription || description} />}
+    {ogImage && <meta property="og:image" content={ogImage} />}
+    {ogImage && <meta property="og:image:width" content="1200" />}
+    {ogImage && <meta property="og:image:height" content="630" />}
+    <meta property="og:site_name" content={SITE_NAME} />
+    <meta property="og:locale" content={ogLocale} />
+    {ogLocaleAlternates.map((alt) => <meta property="og:locale:alternate" content={alt} />)}
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={ogTitle || title} />
+    {(ogDescription || description) && <meta name="twitter:description" content={ogDescription || description} />}
+    {ogImage && <meta name="twitter:image" content={ogImage} />}
+    {schema && <script type="application/ld+json" set:html={JSON.stringify(schema)} />}
   </head>
   <body data-page={dataPage} class="min-h-full flex flex-col">
     <a class="skip-link" href="#main-content">Ana içeriğe atla</a>

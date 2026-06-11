@@ -3,6 +3,7 @@ import PageLayout from "@/layouts/PageLayout.astro";
 import ProductCard from "@/components/ProductCard.astro";
 import NewsCard from "@/components/NewsCard.astro";
 import { loadContent } from "@/lib/content";
+import { pageSeo } from "@/lib/seo";
 import { localizedValue, locales, type Locale } from "@/lib/cms";
 
 export function getStaticPaths() {
@@ -13,7 +14,7 @@ const { locale } = Astro.params as { locale: Locale };
 const content = loadContent();
 const pageContent = content.pageContent?.home || {};
 const companyFacts = content.companyFacts || {};
-const seo = content.pageSeo?.home?.[locale] || {};
+const seoProps = pageSeo(content, "home", locale, "", "WillowSoft | Embedded Hardware & Industrial IoT Engineering", "Embedded hardware and Industrial IoT engineering.");
 
 const getVal = (key: string) => localizedValue(pageContent[key], locale);
 
@@ -36,12 +37,132 @@ const labels: Record<string, Record<string, string>> = {
 };
 
 const getLabel = (key: string) => labels[key]?.[locale] || labels[key]?.en || key;
+
+type L10n = Record<string, string>;
+const loc = (m: L10n) => m[locale] || m.en;
+
+const serviceRail: { title: L10n; desc: L10n }[] = [
+  {
+    title: { en: "Embedded", tr: "Gömülü Sistemler", de: "Embedded", fr: "Embarqué", es: "Embebido", it: "Embedded", ar: "الأنظمة المدمجة", ja: "組み込み" },
+    desc: { en: "Hardware, firmware, RF and low-power architecture.", tr: "Donanım, gömülü yazılım, RF ve düşük güç mimarisi.", de: "Hardware, Firmware, HF und Low-Power-Architektur.", fr: "Matériel, firmware, RF et architecture basse consommation.", es: "Hardware, firmware, RF y arquitectura de bajo consumo.", it: "Hardware, firmware, RF e architettura a basso consumo.", ar: "العتاد والبرامج الثابتة والترددات اللاسلكية وبنية الطاقة المنخفضة.", ja: "ハードウェア、ファームウェア、RF、低消費電力設計。" },
+  },
+  {
+    title: { en: "Platform", tr: "Platform", de: "Plattform", fr: "Plateforme", es: "Plataforma", it: "Piattaforma", ar: "المنصة", ja: "プラットフォーム" },
+    desc: { en: "Backend APIs, PostgreSQL, dashboards and admin panels.", tr: "Backend API'ler, PostgreSQL, kontrol panelleri ve yönetim ekranları.", de: "Backend-APIs, PostgreSQL, Dashboards und Admin-Panels.", fr: "API backend, PostgreSQL, tableaux de bord et panneaux d'administration.", es: "APIs de backend, PostgreSQL, paneles de control y administración.", it: "API backend, PostgreSQL, dashboard e pannelli di amministrazione.", ar: "واجهات برمجة خلفية وPostgreSQL ولوحات تحكم وإدارة.", ja: "バックエンドAPI、PostgreSQL、ダッシュボード、管理画面。" },
+  },
+  {
+    title: { en: "Interfaces", tr: "Arayüzler", de: "Schnittstellen", fr: "Interfaces", es: "Interfaces", it: "Interfacce", ar: "الواجهات", ja: "インターフェース" },
+    desc: { en: "Mobile apps, web portals and product websites.", tr: "Mobil uygulamalar, web portalları ve ürün siteleri.", de: "Mobile Apps, Webportale und Produkt-Websites.", fr: "Applications mobiles, portails web et sites produits.", es: "Aplicaciones móviles, portales web y sitios de producto.", it: "App mobili, portali web e siti di prodotto.", ar: "تطبيقات الجوال وبوابات الويب ومواقع المنتجات.", ja: "モバイルアプリ、Webポータル、製品サイト。" },
+  },
+  {
+    title: { en: "Simulation", tr: "Simülasyon", de: "Simulation", fr: "Simulation", es: "Simulación", it: "Simulazione", ar: "المحاكاة", ja: "シミュレーション" },
+    desc: { en: "VR training, product demos and digital twin views.", tr: "VR eğitimleri, ürün demoları ve dijital ikiz görünümleri.", de: "VR-Training, Produktdemos und Digital-Twin-Ansichten.", fr: "Formation VR, démos produits et vues de jumeau numérique.", es: "Entrenamiento VR, demos de producto y vistas de gemelo digital.", it: "Formazione VR, demo di prodotto e viste digital twin.", ar: "تدريب الواقع الافتراضي وعروض المنتجات والتوأم الرقمي.", ja: "VRトレーニング、製品デモ、デジタルツイン。" },
+  },
+];
+
+const trustChips: L10n[] = [
+  { en: "Industrial Automation", tr: "Endüstriyel Otomasyon", de: "Industrieautomation", fr: "Automatisation industrielle", es: "Automatización industrial", it: "Automazione industriale", ar: "الأتمتة الصناعية", ja: "産業オートメーション" },
+  { en: "MedTech", tr: "MedTech", de: "MedTech", fr: "MedTech", es: "MedTech", it: "MedTech", ar: "التقنية الطبية", ja: "医療技術" },
+  { en: "Energy", tr: "Enerji", de: "Energie", fr: "Énergie", es: "Energía", it: "Energia", ar: "الطاقة", ja: "エネルギー" },
+  { en: "Telecom", tr: "Telekom", de: "Telekom", fr: "Télécoms", es: "Telecom", it: "Telecom", ar: "الاتصالات", ja: "通信" },
+  { en: "Smart Logistics", tr: "Akıllı Lojistik", de: "Smarte Logistik", fr: "Logistique intelligente", es: "Logística inteligente", it: "Logistica intelligente", ar: "اللوجستيات الذكية", ja: "スマート物流" },
+];
+
+const ecosystemLead: L10n = {
+  en: "Each layer is planned against the next one, so field telemetry becomes useful operational software instead of isolated device data.",
+  tr: "Her katman bir sonrakiyle birlikte planlanır; böylece saha telemetrisi izole cihaz verisi yerine işe yarayan operasyonel yazılıma dönüşür.",
+  de: "Jede Ebene wird mit Blick auf die nächste geplant, damit Feldtelemetrie zu nützlicher Betriebssoftware statt isolierter Gerätedaten wird.",
+  fr: "Chaque couche est conçue en fonction de la suivante, afin que la télémétrie de terrain devienne un logiciel opérationnel utile plutôt que des données isolées.",
+  es: "Cada capa se planifica junto con la siguiente, para que la telemetría de campo se convierta en software operativo útil en lugar de datos aislados.",
+  it: "Ogni livello è progettato in funzione del successivo, così la telemetria sul campo diventa software operativo utile invece di dati isolati.",
+  ar: "يُخطط كل مستوى مع المستوى التالي، لتتحول بيانات القياس الميدانية إلى برمجيات تشغيلية مفيدة بدلاً من بيانات معزولة.",
+  ja: "各レイヤーは次のレイヤーを見据えて設計され、フィールドのテレメトリーが孤立したデータではなく実用的な運用ソフトウェアになります。",
+};
+
+const flowNodes: { title: L10n; desc: L10n }[] = [
+  {
+    title: { en: "Hardware", tr: "Donanım", de: "Hardware", fr: "Matériel", es: "Hardware", it: "Hardware", ar: "العتاد", ja: "ハードウェア" },
+    desc: { en: "Custom PCB, sensors, power architecture.", tr: "Özel PCB, sensörler, güç mimarisi.", de: "Custom-PCB, Sensoren, Stromarchitektur.", fr: "PCB sur mesure, capteurs, architecture d'alimentation.", es: "PCB a medida, sensores, arquitectura de energía.", it: "PCB su misura, sensori, architettura di alimentazione.", ar: "لوحات PCB مخصصة ومستشعرات وبنية الطاقة.", ja: "カスタムPCB、センサー、電源設計。" },
+  },
+  {
+    title: { en: "Firmware", tr: "Gömülü Yazılım", de: "Firmware", fr: "Firmware", es: "Firmware", it: "Firmware", ar: "البرامج الثابتة", ja: "ファームウェア" },
+    desc: { en: "RTOS, OTA, protocols, low-power logic.", tr: "RTOS, OTA, protokoller, düşük güç mantığı.", de: "RTOS, OTA, Protokolle, Low-Power-Logik.", fr: "RTOS, OTA, protocoles, logique basse consommation.", es: "RTOS, OTA, protocolos, lógica de bajo consumo.", it: "RTOS, OTA, protocolli, logica a basso consumo.", ar: "RTOS وتحديثات OTA والبروتوكولات ومنطق الطاقة المنخفضة.", ja: "RTOS、OTA、プロトコル、低消費電力ロジック。" },
+  },
+  {
+    title: { en: "Connectivity", tr: "Bağlantı", de: "Konnektivität", fr: "Connectivité", es: "Conectividad", it: "Connettività", ar: "الاتصال", ja: "コネクティビティ" },
+    desc: { en: "LoRaWAN, BLE, Wi-Fi, RF optimization.", tr: "LoRaWAN, BLE, Wi-Fi, RF optimizasyonu.", de: "LoRaWAN, BLE, WLAN, HF-Optimierung.", fr: "LoRaWAN, BLE, Wi-Fi, optimisation RF.", es: "LoRaWAN, BLE, Wi-Fi, optimización RF.", it: "LoRaWAN, BLE, Wi-Fi, ottimizzazione RF.", ar: "LoRaWAN وBLE وWi-Fi وتحسين الترددات.", ja: "LoRaWAN、BLE、Wi-Fi、RF最適化。" },
+  },
+  {
+    title: { en: "Backend", tr: "Backend", de: "Backend", fr: "Backend", es: "Backend", it: "Backend", ar: "الخلفية", ja: "バックエンド" },
+    desc: { en: "APIs, PostgreSQL, auth, integrations.", tr: "API'ler, PostgreSQL, kimlik doğrulama, entegrasyonlar.", de: "APIs, PostgreSQL, Auth, Integrationen.", fr: "API, PostgreSQL, authentification, intégrations.", es: "APIs, PostgreSQL, autenticación, integraciones.", it: "API, PostgreSQL, autenticazione, integrazioni.", ar: "واجهات برمجة وPostgreSQL ومصادقة وتكاملات.", ja: "API、PostgreSQL、認証、外部連携。" },
+  },
+  {
+    title: { en: "Interfaces", tr: "Arayüzler", de: "Schnittstellen", fr: "Interfaces", es: "Interfaces", it: "Interfacce", ar: "الواجهات", ja: "インターフェース" },
+    desc: { en: "Mobile apps, dashboards, admin panels, VR.", tr: "Mobil uygulamalar, kontrol panelleri, yönetim ekranları, VR.", de: "Mobile Apps, Dashboards, Admin-Panels, VR.", fr: "Applications mobiles, tableaux de bord, panneaux d'administration, VR.", es: "Aplicaciones móviles, paneles de control, administración, VR.", it: "App mobili, dashboard, pannelli admin, VR.", ar: "تطبيقات الجوال ولوحات التحكم ولوحات الإدارة والواقع الافتراضي.", ja: "モバイルアプリ、ダッシュボード、管理画面、VR。" },
+  },
+];
+
+const industryLanes: { icon: string; title: L10n; desc: L10n }[] = [
+  {
+    icon: "🏙️",
+    title: { en: "Smart Infrastructure", tr: "Akıllı Altyapı", de: "Smarte Infrastruktur", fr: "Infrastructures intelligentes", es: "Infraestructura inteligente", it: "Infrastrutture intelligenti", ar: "البنية التحتية الذكية", ja: "スマートインフラ" },
+    desc: { en: "Flood levels, water tanks, smart lighting and public utility monitoring.", tr: "Taşkın seviyeleri, su depoları, akıllı aydınlatma ve kamu hizmeti izleme.", de: "Hochwasserpegel, Wassertanks, intelligente Beleuchtung und Überwachung öffentlicher Versorgung.", fr: "Niveaux de crue, réservoirs d'eau, éclairage intelligent et suivi des services publics.", es: "Niveles de inundación, tanques de agua, alumbrado inteligente y monitoreo de servicios públicos.", it: "Livelli di piena, serbatoi d'acqua, illuminazione intelligente e monitoraggio dei servizi pubblici.", ar: "مستويات الفيضانات وخزانات المياه والإنارة الذكية ومراقبة المرافق العامة.", ja: "洪水水位、貯水タンク、スマート照明、公共インフラの監視。" },
+  },
+  {
+    icon: "⚙️",
+    title: { en: "Industrial Monitoring", tr: "Endüstriyel İzleme", de: "Industrielle Überwachung", fr: "Surveillance industrielle", es: "Monitoreo industrial", it: "Monitoraggio industriale", ar: "المراقبة الصناعية", ja: "産業モニタリング" },
+    desc: { en: "Machine data, Modbus devices, factories, warehouses and energy systems.", tr: "Makine verileri, Modbus cihazları, fabrikalar, depolar ve enerji sistemleri.", de: "Maschinendaten, Modbus-Geräte, Fabriken, Lager und Energiesysteme.", fr: "Données machines, équipements Modbus, usines, entrepôts et systèmes énergétiques.", es: "Datos de máquinas, dispositivos Modbus, fábricas, almacenes y sistemas de energía.", it: "Dati macchina, dispositivi Modbus, fabbriche, magazzini e sistemi energetici.", ar: "بيانات الآلات وأجهزة Modbus والمصانع والمستودعات وأنظمة الطاقة.", ja: "機械データ、Modbus機器、工場、倉庫、エネルギーシステム。" },
+  },
+  {
+    icon: "🩺",
+    title: { en: "MedTech & Healthcare", tr: "MedTech ve Sağlık", de: "MedTech & Gesundheit", fr: "MedTech & Santé", es: "MedTech y Salud", it: "MedTech e Sanità", ar: "التقنية الطبية والرعاية الصحية", ja: "医療・ヘルスケア" },
+    desc: { en: "Low-power sensor nodes for environmental and patient-adjacent monitoring.", tr: "Çevresel ve hasta yakını izleme için düşük güçlü sensör düğümleri.", de: "Low-Power-Sensorknoten für Umgebungs- und patientennahe Überwachung.", fr: "Capteurs basse consommation pour la surveillance environnementale et proche du patient.", es: "Nodos sensores de bajo consumo para monitoreo ambiental y cercano al paciente.", it: "Nodi sensore a basso consumo per il monitoraggio ambientale e in prossimità del paziente.", ar: "عقد استشعار منخفضة الطاقة للمراقبة البيئية والمحيطة بالمريض.", ja: "環境および患者周辺モニタリング向けの低消費電力センサーノード。" },
+  },
+  {
+    icon: "📦",
+    title: { en: "Logistics & Telecoms", tr: "Lojistik ve Telekom", de: "Logistik & Telekom", fr: "Logistique & Télécoms", es: "Logística y Telecomunicaciones", it: "Logistica e Telecomunicazioni", ar: "اللوجستيات والاتصالات", ja: "物流・通信" },
+    desc: { en: "Asset tracking, GNSS, and field-connected devices for mobile operations.", tr: "Varlık takibi, GNSS ve mobil operasyonlar için sahaya bağlı cihazlar.", de: "Asset-Tracking, GNSS und feldvernetzte Geräte für mobile Einsätze.", fr: "Suivi d'actifs, GNSS et appareils connectés pour les opérations mobiles.", es: "Seguimiento de activos, GNSS y dispositivos conectados para operaciones móviles.", it: "Tracciamento asset, GNSS e dispositivi connessi per operazioni mobili.", ar: "تتبع الأصول وGNSS وأجهزة ميدانية متصلة للعمليات المتنقلة.", ja: "資産追跡、GNSS、移動オペレーション向けフィールド接続デバイス。" },
+  },
+];
+
+const homeSchema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://willowsoft.co/#org",
+      name: "WillowSoft",
+      alternateName: "WILLOWSOFT",
+      url: "https://willowsoft.co",
+      logo: "https://willowsoft.co/assets/willow-mark-transparent.png",
+      slogan: "Smart Embedded Connectivity",
+      description: "Embedded hardware and Industrial IoT engineering company. WillowSoft designs LoRaWAN devices, firmware, backend APIs, dashboards, mobile apps and VR layers as one connected system.",
+      foundingDate: "2020",
+      areaServed: "Worldwide",
+      address: { "@type": "PostalAddress", addressCountry: "TR" },
+      contactPoint: {
+        "@type": "ContactPoint",
+        email: "info@willowsoft.co",
+        contactType: "Sales",
+        areaServed: ["TR", "GB", "US", "DE", "IT", "JP", "SA"],
+        availableLanguage: ["English", "Turkish", "German", "French", "Spanish", "Italian", "Arabic", "Japanese"],
+      },
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://willowsoft.co/#site",
+      url: "https://willowsoft.co",
+      name: "WillowSoft",
+      publisher: { "@id": "https://willowsoft.co/#org" },
+      inLanguage: ["en", "tr", "de", "fr", "es", "it", "ar", "ja"],
+    },
+  ],
+};
 ---
 
 <PageLayout
-  title={seo.seoTitle || "WillowSoft | Embedded Hardware & Industrial IoT Engineering"}
-  description={seo.metaDescription || "Embedded hardware and Industrial IoT engineering."}
-  canonical={seo.canonical || `https://willowsoft.co/${locale}`}
+  {...seoProps}
+  schema={homeSchema}
   locale={locale}
   dataPage="home"
 >
@@ -104,10 +225,9 @@ const getLabel = (key: string) => labels[key]?.[locale] || labels[key]?.en || ke
     <section class="section tight">
       <div class="section-inner">
         <div class="service-rail reveal">
-          <article><span class="service-number">01</span><h3>Embedded</h3><p>Hardware, firmware, RF and low-power architecture.</p></article>
-          <article><span class="service-number">02</span><h3>Platform</h3><p>Backend APIs, PostgreSQL, dashboards and admin panels.</p></article>
-          <article><span class="service-number">03</span><h3>Interfaces</h3><p>Mobile apps, web portals and product websites.</p></article>
-          <article><span class="service-number">04</span><h3>Simulation</h3><p>VR training, product demos and digital twin views.</p></article>
+          {serviceRail.map((item, idx) => (
+            <article><span class="service-number">{String(idx + 1).padStart(2, "0")}</span><h3>{loc(item.title)}</h3><p>{loc(item.desc)}</p></article>
+          ))}
         </div>
       </div>
     </section>
@@ -120,7 +240,7 @@ const getLabel = (key: string) => labels[key]?.[locale] || labels[key]?.en || ke
           <h2 set:html={getVal("trustTitle")} />
           <p>{getVal("trustLead")}</p>
           <div class="trust-more" aria-label="Additional sectors">
-            <span>Industrial Automation</span><span>MedTech</span><span>Energy</span><span>Telecom</span><span>Smart Logistics</span>
+            {trustChips.map((chip) => <span>{loc(chip)}</span>)}
           </div>
         </div>
         <div class="trust-stage reveal-right delay-1">
@@ -148,15 +268,13 @@ const getLabel = (key: string) => labels[key]?.[locale] || labels[key]?.en || ke
         <div class="section-head center reveal">
           <p class="eyebrow">{getVal("ecosystemEyebrow")}</p>
           <h2 set:html={getVal("ecosystemTitle")} />
-          <p class="section-lead">Each layer is planned against the next one, so field telemetry becomes useful operational software instead of isolated device data.</p>
+          <p class="section-lead">{loc(ecosystemLead)}</p>
         </div>
         <div class="tech-flow reveal delay-1">
           <div class="flow-row">
-            <div class="flow-node"><small>01</small><strong>Hardware</strong><span>Custom PCB, sensors, power architecture.</span></div>
-            <div class="flow-node"><small>02</small><strong>Firmware</strong><span>RTOS, OTA, protocols, low-power logic.</span></div>
-            <div class="flow-node"><small>03</small><strong>Connectivity</strong><span>LoRaWAN, BLE, Wi-Fi, RF optimization.</span></div>
-            <div class="flow-node"><small>04</small><strong>Backend</strong><span>APIs, PostgreSQL, auth, integrations.</span></div>
-            <div class="flow-node"><small>05</small><strong>Interfaces</strong><span>Mobile apps, dashboards, admin panels, VR.</span></div>
+            {flowNodes.map((node, idx) => (
+              <div class="flow-node"><small>{String(idx + 1).padStart(2, "0")}</small><strong>{loc(node.title)}</strong><span>{loc(node.desc)}</span></div>
+            ))}
           </div>
         </div>
       </div>
@@ -188,10 +306,9 @@ const getLabel = (key: string) => labels[key]?.[locale] || labels[key]?.en || ke
           <h2 set:html={getVal("industriesTitle")} />
         </div>
         <div class="industry-lanes">
-          <article class="industry-lane reveal"><div class="industry-lane-icon" aria-hidden="true">🏙️</div><h3>Smart Infrastructure</h3><p>Flood levels, water tanks, smart lighting and public utility monitoring.</p></article>
-          <article class="industry-lane reveal delay-1"><div class="industry-lane-icon" aria-hidden="true">⚙️</div><h3>Industrial Monitoring</h3><p>Machine data, Modbus devices, factories, warehouses and energy systems.</p></article>
-          <article class="industry-lane reveal delay-2"><div class="industry-lane-icon" aria-hidden="true">🩺</div><h3>MedTech &amp; Healthcare</h3><p>Low-power sensor nodes for environmental and patient-adjacent monitoring.</p></article>
-          <article class="industry-lane reveal delay-3"><div class="industry-lane-icon" aria-hidden="true">📦</div><h3>Logistics &amp; Telecoms</h3><p>Asset tracking, GNSS, and field-connected devices for mobile operations.</p></article>
+          {industryLanes.map((lane, idx) => (
+            <article class={`industry-lane reveal${idx > 0 ? ` delay-${idx}` : ""}`}><div class="industry-lane-icon" aria-hidden="true">{lane.icon}</div><h3>{loc(lane.title)}</h3><p>{loc(lane.desc)}</p></article>
+          ))}
         </div>
       </div>
     </section>

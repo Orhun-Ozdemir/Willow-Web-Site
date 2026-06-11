@@ -2,6 +2,7 @@
 import PageLayout from "@/layouts/PageLayout.astro";
 import NewsCard from "@/components/NewsCard.astro";
 import { loadContent } from "@/lib/content";
+import { pageSeo } from "@/lib/seo";
 import { localizedValue, locales, type Locale } from "@/lib/cms";
 
 export function getStaticPaths() {
@@ -10,7 +11,7 @@ export function getStaticPaths() {
 
 const { locale } = Astro.params as { locale: Locale };
 const content = loadContent();
-const seo = content.pageSeo?.news?.[locale] || {};
+const seoProps = pageSeo(content, "news", locale, "/news", "News | WillowSoft", "WillowSoft company updates, events, export news, and engineering updates.");
 const pageContent = content.pageContent?.news || {};
 const getVal = (key: string) => localizedValue(pageContent[key], locale);
 
@@ -30,8 +31,7 @@ const getLabel = (key: keyof typeof labels) => {
 ---
 
 <PageLayout
-  title={seo.seoTitle || "News | WillowSoft"}
-  description={seo.metaDescription || "WillowSoft company updates, events, export news, and engineering updates."}
+  {...seoProps}
   locale={locale}
   dataPage="news"
 >

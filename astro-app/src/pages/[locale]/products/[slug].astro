@@ -3,6 +3,7 @@ import PageLayout from "@/layouts/PageLayout.astro";
 import ProductGallery from "@/components/ProductGallery.astro";
 import { loadContent } from "@/lib/content";
 import { localizedValue, localizeItem, locales, type Locale } from "@/lib/cms";
+import { buildAlternates, DEFAULT_OG_IMAGE, SITE_ORIGIN } from "@/lib/seo";
 
 export function getStaticPaths() {
   const content = loadContent();
@@ -234,12 +235,17 @@ const getT = (key: keyof typeof t) => {
 <PageLayout
   title={seo.seoTitle || `${product.title} | WillowSoft`}
   description={seo.metaDescription || product.shortDescription || ""}
+  canonical={seo.canonical || `${SITE_ORIGIN}/${locale}/products/${slug}`}
+  ogTitle={seo.ogTitle || product.title}
+  ogDescription={seo.ogDescription || seo.metaDescription || product.shortDescription || ""}
+  ogImage={product.image ? `${SITE_ORIGIN}/${product.image}`.replace(/([^:])\/\//g, "$1/") : DEFAULT_OG_IMAGE}
+  alternates={buildAlternates(`/products/${slug}`)}
+  schema={graphSchema}
   locale={locale}
   dataPage="product-detail"
 >
   <main>
-    <script type="application/ld+json" set:html={JSON.stringify(graphSchema)} />
-    
+
     <section class="hero compact">
       <div class="hero-media">
         <img src={product.image ? `/${product.image}`.replace("//", "/") : "/assets/hero-industrial-iot.png"} alt={product.title} loading="lazy" decoding="async" />

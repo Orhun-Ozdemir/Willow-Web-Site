@@ -1,6 +1,7 @@
 ---
 import PageLayout from "@/layouts/PageLayout.astro";
 import { loadContent } from "@/lib/content";
+import { pageSeo } from "@/lib/seo";
 import { localizeItem, localizedValue, locales, type Locale } from "@/lib/cms";
 
 export function getStaticPaths() {
@@ -11,7 +12,7 @@ const { locale } = Astro.params as { locale: Locale };
 const content = loadContent();
 const pageContent = content.pageContent?.glossary || {};
 const glossaryList = content.glossary || [];
-const seo = content.pageSeo?.glossary?.[locale] || {};
+const seoProps = pageSeo(content, "glossary", locale, "/glossary", "IoT & LoRaWAN Glossary | WillowSoft", "Plain-English definitions of LoRaWAN, Modbus RTU, Industrial IoT, embedded systems, MCU, IP67, edge computing and other terms used by WillowSoft engineering.");
 
 const getVal = (key: string) => localizedValue(pageContent[key], locale);
 
@@ -32,8 +33,7 @@ const getNoteLabel = () => {
 ---
 
 <PageLayout
-  title={seo.seoTitle || "IoT & LoRaWAN Glossary | WillowSoft"}
-  description={seo.metaDescription || "Plain-English definitions of LoRaWAN, Modbus RTU, Industrial IoT, embedded systems, MCU, IP67, edge computing and other terms used by WillowSoft engineering."}
+  {...seoProps}
   locale={locale}
   dataPage="glossary"
 >

@@ -2,6 +2,7 @@
 import PageLayout from "@/layouts/PageLayout.astro";
 import { loadContent } from "@/lib/content";
 import { localizedValue, localizeItem, locales, type Locale } from "@/lib/cms";
+import { buildAlternates, DEFAULT_OG_IMAGE, SITE_ORIGIN } from "@/lib/seo";
 
 export function getStaticPaths() {
   const content = loadContent();
@@ -25,11 +26,41 @@ if (!raw) return Astro.redirect(`/${locale}/news`);
 
 const article = localizeItem(raw, locale);
 const seo = raw.seo?.[locale] || {};
+
+const slugByLocale = Object.fromEntries(
+  locales.map((l) => [l, `/news/${localizedValue(raw.slug, l) || raw.slug?.en || raw.id}`]),
+) as Record<Locale, string>;
+const canonical = seo.canonical || `${SITE_ORIGIN}/${locale}${slugByLocale[locale]}`;
+const ogImage = article.image ? `${SITE_ORIGIN}${article.image.startsWith("/") ? "" : "/"}${article.image}` : DEFAULT_OG_IMAGE;
+const articleSchema = {
+  "@context": "https://schema.org",
+  "@type": "NewsArticle",
+  headline: article.title,
+  description: seo.metaDescription || article.excerpt || "",
+  image: [ogImage],
+  inLanguage: locale,
+  mainEntityOfPage: { "@type": "WebPage", "@id": canonical },
+  ...(article.date ? { datePublished: article.date } : {}),
+  author: { "@type": "Organization", name: "WillowSoft", url: SITE_ORIGIN },
+  publisher: {
+    "@type": "Organization",
+    "@id": `${SITE_ORIGIN}/#org`,
+    name: "WillowSoft",
+    logo: { "@type": "ImageObject", url: `${SITE_ORIGIN}/assets/willow-mark-transparent.png` },
+  },
+};
 ---
 
 <PageLayout
   title={seo.seoTitle || `${article.title} | WillowSoft`}
   description={seo.metaDescription || article.excerpt || ""}
+  canonical={canonical}
+  ogTitle={seo.ogTitle || article.title}
+  ogDescription={seo.ogDescription || seo.metaDescription || article.excerpt || ""}
+  ogImage={ogImage}
+  ogType="article"
+  alternates={buildAlternates(slugByLocale[locale], slugByLocale)}
+  schema={articleSchema}
   locale={locale}
   dataPage="news-detail"
 >

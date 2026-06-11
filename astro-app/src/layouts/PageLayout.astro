@@ -3,6 +3,7 @@ import BaseLayout from "./BaseLayout.astro";
 import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
 import type { Locale } from "@/lib/cms";
+import type { Alternate } from "@/lib/seo";
 
 interface Props {
   title: string;
@@ -10,12 +11,19 @@ interface Props {
   canonical?: string;
   locale: Locale;
   dataPage?: string;
+  ogTitle?: string;
+  ogDescription?: string;
+  ogImage?: string;
+  ogType?: string;
+  noindex?: boolean;
+  alternates?: Alternate[];
+  schema?: object | object[];
 }
 
-const { title, description, canonical, locale, dataPage } = Astro.props;
+const { locale } = Astro.props;
 ---
 
-<BaseLayout title={title} description={description} canonical={canonical} locale={locale} dataPage={dataPage}>
+<BaseLayout {...Astro.props}>
   <Header locale={locale} currentPath={Astro.url.pathname} />
   <slot />
   <Footer locale={locale} />

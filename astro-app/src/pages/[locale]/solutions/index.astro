@@ -3,6 +3,7 @@ import PageLayout from "@/layouts/PageLayout.astro";
 import SolutionCard from "@/components/SolutionCard.astro";
 import FaqAccordion from "@/components/FaqAccordion.astro";
 import { loadContent } from "@/lib/content";
+import { pageSeo } from "@/lib/seo";
 import { localizedValue, locales, type Locale } from "@/lib/cms";
 
 export function getStaticPaths() {
@@ -11,7 +12,7 @@ export function getStaticPaths() {
 
 const { locale } = Astro.params as { locale: Locale };
 const content = loadContent();
-const seo = content.pageSeo?.solutions?.[locale] || {};
+const seoProps = pageSeo(content, "solutions", locale, "/solutions", "Solutions | WillowSoft", "Industry-specific IoT solutions.");
 const pageContent = content.pageContent?.solutions || {};
 const getVal = (key: string) => localizedValue(pageContent[key], locale);
 
@@ -41,8 +42,7 @@ const getLabel = (key: keyof typeof labels) => {
 ---
 
 <PageLayout
-  title={seo.seoTitle || "Solutions | WillowSoft"}
-  description={seo.metaDescription || "Industry-specific IoT solutions."}
+  {...seoProps}
   locale={locale}
   dataPage="solutions"
 >
