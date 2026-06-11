@@ -1,10 +1,20 @@
 import { defineConfig } from "astro/config";
 import react from "@astrojs/react";
 import node from "@astrojs/node";
+import vercel from "@astrojs/vercel/serverless";
 import tailwindcss from "@tailwindcss/vite";
 
+const isVercel = Boolean(process.env.VERCEL);
+
 export default defineConfig({
-  adapter: node({ mode: "standalone" }),
+  ...(isVercel
+    ? {}
+    : {
+        site: "https://orhun-ozdemir.github.io",
+        base: "/Willow-Web-Site/",
+      }),
+  output: "static",
+  adapter: isVercel ? vercel() : node({ mode: "standalone" }),
   integrations: [react()],
   vite: {
     plugins: [tailwindcss()],
