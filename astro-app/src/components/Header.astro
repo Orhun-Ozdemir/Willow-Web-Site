@@ -1,0 +1,88 @@
+---
+import type { Locale } from "@/lib/cms";
+import { locales } from "@/lib/cms";
+
+interface Props {
+  locale: Locale;
+  currentPath: string;
+}
+
+const { locale, currentPath } = Astro.props;
+
+const labels: Record<string, string> = { en: "EN", tr: "TR", de: "DE", fr: "FR", es: "ES", it: "IT", ar: "AR", ja: "JA" };
+
+const links = [
+  { name: "Ana Sayfa", href: `/${locale}`, accent: "nav-accent-cyan" },
+  { name: "Solutions", href: `/${locale}/solutions`, accent: "nav-accent-green" },
+  { name: "Services", href: `/${locale}/services`, accent: "nav-accent-cyan" },
+  { name: "Products", href: `/${locale}/products`, accent: "nav-accent-cyan" },
+  { name: "News", href: `/${locale}/news`, accent: "nav-accent-amber" },
+  { name: "Company", href: `/${locale}/company`, accent: "nav-accent-warm" },
+  { name: "Contact", href: `/${locale}/contact`, accent: "nav-accent-green" },
+];
+
+function isActive(href: string) {
+  if (href === `/${locale}`) return currentPath === href || currentPath === `/${locale}/`;
+  return currentPath.startsWith(href);
+}
+---
+
+<header class="site-header">
+  <nav class="nav" aria-label="Main navigation">
+    <a href={`/${locale}`} class="brand">
+      <span class="brand-mark" aria-hidden="true">
+        <img src="/assets/willow-mark-transparent.png" alt="" decoding="async" />
+      </span>
+      <span>
+        <strong>WILLOWSOFT</strong>
+        <span>Smart Embedded Connectivity</span>
+      </span>
+    </a>
+
+    <div class="nav-links" id="nav-links">
+      {links.map((link) => (
+        <a
+          href={link.href}
+          class={link.accent}
+          aria-current={isActive(link.href) ? "page" : undefined}
+        >
+          {link.name}
+        </a>
+      ))}
+      <a href={`/${locale}/start-project`} class="mobile-cta">Start Project</a>
+    </div>
+
+    <div class="nav-actions">
+      <label class="language-switcher" data-language-switcher>
+        <span class="sr-only">Language</span>
+        <select aria-label="Language" id="locale-select">
+          {locales.map((loc) => (
+            <option value={loc} selected={loc === locale}>{labels[loc]}</option>
+          ))}
+        </select>
+      </label>
+
+      <a href={`/${locale}/start-project`} class="btn btn-primary btn-small">Start Project</a>
+      <button class="menu-toggle" aria-expanded="false" aria-label="Open menu" id="menu-toggle">☰</button>
+    </div>
+  </nav>
+</header>
+
+<script>
+  const toggle = document.getElementById("menu-toggle");
+  const navLinks = document.getElementById("nav-links");
+  toggle?.addEventListener("click", () => {
+    const open = navLinks?.classList.toggle("open");
+    toggle.setAttribute("aria-expanded", String(!!open));
+  });
+
+  const select = document.getElementById("locale-select") as HTMLSelectElement | null;
+  select?.addEventListener("change", (e) => {
+    const nextLocale = (e.target as HTMLSelectElement).value;
+    const parts = window.location.pathname.split("/").filter(Boolean);
+    const locales = ["en", "tr", "de", "fr", "es", "it", "ar", "ja"];
+    if (locales.includes(parts[0])) parts[0] = nextLocale;
+    else parts.unshift(nextLocale);
+    window.location.href = "/" + parts.join("/") + window.location.search + window.location.hash;
+  });
+</script>

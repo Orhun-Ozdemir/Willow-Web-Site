@@ -1,0 +1,36 @@
+---
+import { localizeItem, type Locale } from "@/lib/cms";
+
+interface Props {
+  product: any;
+  locale: Locale;
+  index: number;
+}
+
+const { product, locale, index } = Astro.props;
+const p = localizeItem(product, locale);
+const delay = index % 4 ? ` delay-${index % 4}` : "";
+const chips = (p.chips || []).slice(0, 3);
+const cutoutImage = p.cardImage || `/assets/product-cutouts/${p.id}.png`;
+const originalImage = p.image || cutoutImage;
+---
+
+<article class={`card product-card reveal${delay}`} data-category={p.category}>
+  <figure>
+    <img src={cutoutImage} alt={p.title} loading="lazy" decoding="async" />
+  </figure>
+  <div class="product-body">
+    <h3>{p.title}</h3>
+    <p>{p.shortDescription}</p>
+    <div class="chip-row">
+      {chips.map((chip: string) => (
+        <span class="chip">{chip}</span>
+      ))}
+    </div>
+    <p class="mt-4">
+      <a href={`/${locale}/products/${encodeURIComponent(p.slug || p.id)}`} class="btn btn-ghost btn-small">
+        View Details
+      </a>
+    </p>
+  </div>
+</article>

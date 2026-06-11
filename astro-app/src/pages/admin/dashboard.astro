@@ -1,0 +1,10 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import AdminDashboard from "@/components/admin/AdminDashboard";
+
+export const prerender = false;
+---
+
+<BaseLayout title="WillowSoft Admin Dashboard" dataPage="admin">
+  <AdminDashboard client:only="react" />
+</BaseLayout>

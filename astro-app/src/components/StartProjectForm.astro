@@ -1,0 +1,299 @@
+---
+import type { Locale } from "@/lib/cms";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+
+const successTitles: Record<string, string> = {
+  en: "Submission Received!",
+  tr: "Talebiniz Alındı!",
+  ar: "تم استلام طلبك!",
+  de: "Anfrage Erhalten!",
+  fr: "Demande Reçue!",
+  es: "¡Solicitud Recibida!",
+  it: "Richiesta Ricevuta!",
+  ja: "送信が完了しました！",
+};
+
+const successTexts: Record<string, string> = {
+  en: "Thank you for reaching out. Our engineering team will review your details and contact you shortly.",
+  tr: "Bizimle iletişime geçtiğiniz için teşekkürler. Mühendislik ekibimiz detayları inceleyip en kısa sürede sizinle iletişime geçecektir.",
+  ar: "نشكرك على التواصل معنا. سيقوم فريق الهندسة لدينا بمراجعة التفاصيل والاتصال بك قريباً.",
+  de: "Vielen Dank für Ihre Kontaktaufnahme. Unser Engineering-Team wird Ihre Angaben prüfen und sich in Kürze mit Ihnen in Verbindung setzen.",
+  fr: "Merci de nous avoir contactés. Notre équipe d'ingénierie examinera vos détails et vous contactera sous peu.",
+  es: "Gracias por ponerse en contacto. Nuestro equipo de ingeniería revisará sus detalles y se comunicará con usted en breve.",
+  it: "Grazie per averci contattato. Il nostro team di ingegneria esaminerà i tuoi dettagli e ti contatterà al più presto.",
+  ja: "お問い合わせいただきありがとうございます。エンジニアリングチームが内容を確認し、追ってご連絡いたします。",
+};
+
+const successButtons: Record<string, string> = {
+  en: "Send another message",
+  tr: "Yeni mesaj gönder",
+  ar: "إرسال رسالة أخرى",
+  de: "Weitere Nachricht senden",
+  fr: "Envoyer un autre message",
+  es: "Enviar otro mensaje",
+  it: "Invia un altro messaggio",
+  ja: "別のメッセージを送る",
+};
+
+const labels = {
+  formHeader: { en: "Structured brief", tr: "Yapılandırılmış özet", de: "Strukturiertes Briefing", fr: "Brief structuré", es: "Briefing estructurado", it: "Brief strutturato", ar: "ملخص مهيكل", ja: "要件定義書" },
+  formSteps: { en: "4 steps, one engineering review", tr: "4 adım, tek mühendislik incelemesi", de: "4 Schritte, eine technische Prüfung", fr: "4 étapes, une révision d'ingénierie", es: "4 pasos, una revisión de ingeniería", it: "4 passaggi, una revisione ingegneristica", ar: "4 خطوات، مراجعة هندسية واحدة", ja: "4ステップ、エンジニアによるレビュー" },
+  step1: { en: "Project Concept", tr: "Proje Konsepti", de: "Projektkonzept", fr: "Concept de projet", es: "Concepto del proyecto", it: "Concetto del progetto", ar: "مفهوم المشروع", ja: "プロジェクト概要" },
+  step2: { en: "Needed Layers", tr: "Gerekli Katmanlar", de: "Benötigte Ebenen", fr: "Couches nécessaires", es: "Capas nécessaires", it: "Livelli necessari", ar: "الطبقات المطلوبة", ja: "必要な技術レイヤー" },
+  step3: { en: "Timeline & Budget", tr: "Zaman Planı ve Bütçe", de: "Zeitplan & Budget", fr: "Calendrier et budget", es: "Cronograma y presupuesto", it: "Tempistiche e budget", ar: "الجدول الزمني والميزانية", ja: "スケジュールと予算" },
+  step4: { en: "Your Information", tr: "Bilgileriniz", de: "Ihre Informationen", fr: "Vos informations", es: "Su información", it: "Le tue informazioni", ar: "معلوماتك", ja: "ご連絡先情報" },
+  message: { en: "What are you building? *", tr: "Ne inşa ediyorsunuz? *", de: "Was bauen Sie? *", fr: "Que construisez-vous? *", es: "¿Qué está construyendo? *", it: "Cosa stai costruendo? *", ar: "ماذا تبني؟ *", ja: "何を作ろうとしていますか？ *" },
+  projectType: { en: "Primary Scope", tr: "Birincil Kapsam", de: "Hauptbereich", fr: "Périmètre principal", es: "Alcance principal", it: "Ambito principale", ar: "النطاق الأساسي", ja: "主な開発領域" },
+  currentStatus: { en: "Current Status", tr: "Mevcut Durum", de: "Aktueller Status", fr: "Statut actuel", es: "Estado actual", it: "Stato attuale", ar: "الوضع الحالي", ja: "現在の開発フェーズ" },
+  layersQuestion: { en: "Which layers does this project require?", tr: "Bu proje hangi katmanları gerektiriyor?", de: "Welche Ebenen erfordert dieses Projekt?", fr: "Quelles couches ce projet nécessite-t-il?", es: "¿Qué capas requiere este proyecto?", it: "Quali livelli richiede questo progetto?", ar: "ما هي الطبقات التي يتطلبها هذا المشروع؟", ja: "このプロジェクトに必要なレイヤーは何ですか？" },
+  timeline: { en: "Timeline", tr: "Zaman Planı", de: "Zeitplan", fr: "Calendrier", es: "Cronograma", it: "Tempistiche", ar: "الجدول الزمني", ja: "ご希望の納期" },
+  budgetRange: { en: "Budget Range", tr: "Bütçe Aralığı", de: "Budgetbereich", fr: "Gamme de budget", es: "Rango de presupuesto", it: "Fascia di budget", ar: "نطاق الميزانية", ja: "ご予算感" },
+  name: { en: "Name *", tr: "İsim *", de: "Name *", fr: "Nom *", es: "Nombre *", it: "Nome *", ar: "الاسم *", ja: "お名前 *" },
+  email: { en: "Email *", tr: "E-posta *", de: "E-Mail *", fr: "E-mail *", es: "Correo *", it: "Email *", ar: "البريد الإلكتروني *", ja: "メールアドレス *" },
+  company: { en: "Company", tr: "Şirket", de: "Unternehmen", fr: "Entreprise", es: "Empresa", it: "Azienda", ar: "الشركة", ja: "会社名" },
+  submit: { en: "Send Project Brief", tr: "Proje Özetini Gönder", de: "Projektbriefing senden", fr: "Envoyer le brief du projet", es: "Enviar brief de proyecto", it: "Invia brief del progetto", ar: "إرسال ملخص المشروع", ja: "要件概要を送信" },
+  sending: { en: "Sending...", tr: "Gönderiliyor...", de: "Wird gesendet...", fr: "Envoi...", es: "Enviando...", it: "Invio in corso...", ar: "جاري الإرسال...", ja: "送信中..." },
+  errorMsg: { en: "Something went wrong. Please try again.", tr: "Bir şeyler yanlış gitti. Lütfen tekrar deneyin.", de: "Etwas ist schief gelaufen. Bitte versuchen Sie es erneut.", fr: "Une erreur s'est produite. Veuillez réessayer.", es: "Algo salió mal. Por favor intente de nuevo.", it: "Qualcosa è andato storto. Riprova.", ar: "حدث خطأ ما. يرجى المحاولة مرة أخرى.", ja: "エラーが発生しました。もう一度お試しください。" }
+};
+
+const getLabel = (key: keyof typeof labels) => {
+  return labels[key][locale] || labels[key]["en"];
+};
+---
+
+<div class="start-project-form-container">
+  <form id="start-project-form" class="project-brief-form">
+    <div class="form-header">
+      <span>{getLabel("formHeader")}</span>
+      <strong>{getLabel("formSteps")}</strong>
+    </div>
+    
+    <fieldset class="brief-form-group">
+      <legend><span>1</span>{getLabel("step1")}</legend>
+      <div class="field span-2">
+        <label for="lpMessage">{getLabel("message")}</label>
+        <textarea
+          id="lpMessage"
+          name="message"
+          placeholder="Describe your product idea, operational goal, current blocker, or field deployment problem..."
+          required
+        ></textarea>
+      </div>
+      <div class="field">
+        <label for="lpType">{getLabel("projectType")}</label>
+        <select id="lpType" name="projectType">
+          <option value="End-to-End Connected Product">End-to-End Connected Product</option>
+          <option value="Custom IoT Hardware">Custom IoT Hardware</option>
+          <option value="Firmware / Connectivity">Firmware / Connectivity</option>
+          <option value="Backend / PostgreSQL / Admin Panel">Backend / PostgreSQL / Admin Panel</option>
+          <option value="Mobile App / Web Platform">Mobile App / Web Platform</option>
+          <option value="Website Development">Website Development</option>
+          <option value="VR / Simulation">VR / Simulation</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="lpStatus">{getLabel("currentStatus")}</label>
+        <select id="lpStatus" name="currentStatus">
+          <option value="Idea / early planning">Idea / early planning</option>
+          <option value="Prototype exists">Prototype exists</option>
+          <option value="Hardware exists, software needed">Hardware exists, software needed</option>
+          <option value="Software exists, hardware needed">Software exists, hardware needed</option>
+          <option value="Existing system needs rebuild">Existing system needs rebuild</option>
+          <option value="Ready for production support">Ready for production support</option>
+        </select>
+      </div>
+    </fieldset>
+
+    <fieldset class="brief-form-group">
+      <legend><span>2</span>{getLabel("step2")}</legend>
+      <div class="field span-2">
+        <label>{getLabel("layersQuestion")}</label>
+        <div class="option-grid">
+          {([
+            { value: "hardware", label: "Hardware" },
+            { value: "firmware", label: "Firmware" },
+            { value: "backend", label: "Backend API" },
+            { value: "postgresql", label: "PostgreSQL" },
+            { value: "web-admin", label: "Web/Admin" },
+            { value: "mobile", label: "Mobile" },
+            { value: "website", label: "Website" },
+            { value: "vr", label: "VR / Simulation" }
+          ]).map((layer) => (
+            <label>
+              <input
+                type="checkbox"
+                name="layers"
+                value={layer.value}
+              />{" "}
+              {layer.label}
+            </label>
+          ))}
+        </div>
+      </div>
+    </fieldset>
+
+    <fieldset class="brief-form-group">
+      <legend><span>3</span>{getLabel("step3")}</legend>
+      <div class="field">
+        <label for="lpTimeline">{getLabel("timeline")}</label>
+        <select id="lpTimeline" name="timeline">
+          <option value="Exploring options">Exploring options</option>
+          <option value="0-3 months">0-3 months</option>
+          <option value="3-6 months">3-6 months</option>
+          <option value="6+ months">6+ months</option>
+          <option value="Urgent rescue project">Urgent rescue project</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="lpBudget">{getLabel("budgetRange")}</label>
+        <select id="lpBudget" name="budgetRange">
+          <option value="Not sure yet">Not sure yet</option>
+          <option value="Under $10k">Under $10k</option>
+          <option value="$10k - $25k">$10k - $25k</option>
+          <option value="$25k - $75k">$25k - $75k</option>
+          <option value="$75k+">$75k+</option>
+        </select>
+      </div>
+    </fieldset>
+
+    <fieldset class="brief-form-group">
+      <legend><span>4</span>{getLabel("step4")}</legend>
+      <div class="field">
+        <label for="lpName">{getLabel("name")}</label>
+        <input id="lpName" name="name" autocomplete="name" required />
+      </div>
+      <div class="field">
+        <label for="lpEmail">{getLabel("email")}</label>
+        <input id="lpEmail" name="email" type="email" autocomplete="email" required />
+      </div>
+      <div class="field span-2">
+        <label for="lpCompany">{getLabel("company")}</label>
+        <input id="lpCompany" name="company" autocomplete="organization" />
+      </div>
+    </fieldset>
+
+    <p id="error-message" style="color: #ef4444; font-size: 0.875rem; display: none; margin-bottom: 12px;">{getLabel("errorMsg")}</p>
+    <button class="btn btn-primary project-submit" type="submit" id="submit-btn">{getLabel("submit")}</button>
+  </form>
+
+  <div id="success-message" class="form card" style="text-align: center; padding: 40px 20px; display: none; flex-direction: column; align-items: center; justify-content: center; gap: 16px;">
+    <div class="success-icon" style="width: 56px; height: 56px; border-radius: 50%; background: rgba(16, 185, 129, 0.1); display: grid; place-items: center; color: #10b981; font-size: 1.8rem; font-weight: bold;">✓</div>
+    <h3 style="font-size: 1.5rem; margin: 0;">{successTitles[locale] || successTitles.en}</h3>
+    <p style="color: var(--muted); font-size: 0.96rem; margin: 0; line-height: 1.5; max-width: 320px;">{successTexts[locale] || successTexts.en}</p>
+    <button type="button" class="btn btn-secondary btn-small" id="reset-btn" style="margin-top: 10px;">
+      {successButtons[locale] || successButtons.en}
+    </button>
+  </div>
+</div>
+
+<script define:vars={{ locale, sendingLabel: getLabel("sending"), submitLabel: getLabel("submit") }}>
+  function setupStartProjectForm() {
+    const form = document.getElementById('start-project-form');
+    const successMsg = document.getElementById('success-message');
+    const errorMsg = document.getElementById('error-message');
+    const submitBtn = document.getElementById('submit-btn');
+    const resetBtn = document.getElementById('reset-btn');
+
+    if (!form || !successMsg || !errorMsg || !submitBtn || !resetBtn) return;
+
+    // Prefill product query param if any
+    const urlParams = new URLSearchParams(window.location.search);
+    const productSlug = urlParams.get('product');
+    if (productSlug) {
+      const messageField = form.querySelector('#lpMessage');
+      if (messageField) {
+        const prefillText = {
+          en: `Hello, I'd like to plan a project incorporating the ${productSlug} device into our operational system.`,
+          tr: `Merhaba, ${productSlug} cihazını operasyonel sistemimize dahil eden bir proje planlamak istiyorum.`,
+          de: `Hallo, ich möchte ein Projekt planen, das das Gerät ${productSlug} in unser Betriebssystem integriert.`,
+          fr: `Bonjour, je souhaite planifier un projet intégrant le produit ${productSlug} dans notre système opérationnel.`,
+          es: `Hola, me gustaría planificar un proyecto que incorpore el dispositivo ${productSlug} en nuestro sistema operativo.`,
+          it: `Ciao, vorrei pianificare un progetto che integri il dispositivo ${productSlug} nel nostro sistema operativo.`,
+          ar: `مرحباً، أود التخطيط لمشروع يتضمن دمج جهاز ${productSlug} في نظامنا التشغيلي.`,
+          ja: `こんにちは。${productSlug} デバイスを当社のシステムに導入するプロジェクトについて相談させてください。`
+        };
+        messageField.value = prefillText[locale] || prefillText['en'];
+      }
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      submitBtn.disabled = true;
+      submitBtn.textContent = sendingLabel;
+      errorMsg.style.display = 'none';
+
+      const checkedLayers = [];
+      const checkboxes = form.querySelectorAll('input[name="layers"]:checked');
+      checkboxes.forEach(cb => checkedLayers.push(cb.value));
+
+      const formData = {
+        message: form.message.value,
+        projectType: form.projectType.value,
+        currentStatus: form.currentStatus.value,
+        layers: checkedLayers,
+        timeline: form.timeline.value,
+        budgetRange: form.budgetRange.value,
+        name: form.name.value,
+        email: form.email.value,
+        company: form.company.value,
+      };
+
+      try {
+        const res = await fetch('/api/leads', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            ...formData,
+            sourcePage: window.location.pathname,
+            locale: locale,
+          }),
+        });
+
+        if (res.ok) {
+          form.style.display = 'none';
+          successMsg.style.display = 'flex';
+          form.reset();
+        } else {
+          throw new Error('Failed to submit form');
+        }
+      } catch (err) {
+        console.error(err);
+        try {
+          // Offline fallback
+          const localLeads = JSON.parse(window.localStorage.getItem('willowsoft-leads-offline') || '[]');
+          localLeads.unshift({
+            id: `offline-${Date.now()}`,
+            status: 'new',
+            createdAt: new Date().toISOString(),
+            sourcePage: window.location.pathname,
+            locale: locale,
+            ...formData,
+          });
+          window.localStorage.setItem('willowsoft-leads-offline', JSON.stringify(localLeads));
+          
+          form.style.display = 'none';
+          successMsg.style.display = 'flex';
+          form.reset();
+        } catch {
+          errorMsg.style.display = 'block';
+        }
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = submitLabel;
+      }
+    });
+
+    resetBtn.addEventListener('click', () => {
+      successMsg.style.display = 'none';
+      form.style.display = 'block';
+    });
+  }
+
+  setupStartProjectForm();
+  document.addEventListener('astro:after-swap', setupStartProjectForm);
+</script>

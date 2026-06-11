@@ -1,0 +1,49 @@
+---
+import type { Locale } from "@/lib/cms";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+---
+
+<footer class="footer">
+  <div class="footer-grid">
+    <div>
+      <h3>WillowSoft</h3>
+      <p>Smart Embedded Connectivity &amp; Industrial IoT.<br />Turkey &amp; United Kingdom offices.</p>
+      <div class="footer-social" aria-label="Social media links">
+        <a href="https://linkedin.com/company/willowsoft" aria-label="LinkedIn" rel="noopener noreferrer" target="_blank">in</a>
+        <a href="https://github.com/willowsoft" aria-label="GitHub" rel="noopener noreferrer" target="_blank">gh</a>
+        <a href="mailto:info@willowsoft.co" aria-label="Email">✉</a>
+      </div>
+    </div>
+    <div>
+      <h3>Explore</h3>
+      <a href={`/${locale}/solutions`}>Solutions</a>
+      <a href={`/${locale}/services`}>Services</a>
+      <a href={`/${locale}/products`}>Products</a>
+    </div>
+    <div>
+      <h3>Company</h3>
+      <a href={`/${locale}/company`}>Company</a>
+      <a href={`/${locale}/news`}>News</a>
+      <a href={`/${locale}/glossary`}>Glossary</a>
+    </div>
+    <div>
+      <h3>Contact</h3>
+      <a href={`/${locale}/contact`}>Contact</a>
+      <a href={`/${locale}/start-project`}>Start a Project</a>
+      <a href="mailto:info@willowsoft.co">info@willowsoft.co</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 WillowSoft. All rights reserved.</span>
+    <div class="footer-bottom-links">
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms of Use</a>
+      <a href="#">Cookie Settings</a>
+    </div>
+  </div>
+</footer>

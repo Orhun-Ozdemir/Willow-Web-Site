@@ -1,0 +1,604 @@
+---
+import PageLayout from "@/layouts/PageLayout.astro";
+import FaqAccordion from "@/components/FaqAccordion.astro";
+import { loadContent } from "@/lib/content";
+import { localizedValue, locales, type Locale } from "@/lib/cms";
+
+export function getStaticPaths() {
+  return locales.map((locale) => ({ params: { locale } }));
+}
+
+const { locale } = Astro.params as { locale: Locale };
+const content = loadContent();
+const seo = content.pageSeo?.services?.[locale] || {};
+const pageContent = content.pageContent?.services || {};
+const companyFacts = content.companyFacts || {};
+const getVal = (key: string) => localizedValue(pageContent[key], locale);
+
+const featuredClients = (content.clients || [])
+  .filter((c: any) => c.featured)
+  .sort((a: any, b: any) => (a.sortOrder || 0) - (b.sortOrder || 0));
+
+const labels = {
+  productsOnMarket: { en: "Products on Market", tr: "Piyasadaki Ürünler", de: "Produkte am Markt", fr: "Produits sur le marché", es: "Productos en el mercado", it: "Prodotti sul mercato", ar: "منتج في السوق", ja: "市場実績製品" },
+  happyClients: { en: "happy clients", tr: "mutlu müşteriler", de: "zufriedene Kunden", fr: "clients satisfaits", es: "clientes satisfechos", it: "clienti felici", ar: "عميل سعيد", ja: "取引先企業数" },
+  founded: { en: "Founded", tr: "Kuruluş", de: "Gegründet", fr: "Fondation", es: "Fundación", it: "Fondazione", ar: "تأسست عام", ja: "設立年" },
+  officesWorldwide: { en: "offices worldwide", tr: "dünya çapında ofis", de: "Büros weltweit", fr: "bureaux dans le monde", es: "oficinas en el mundo", it: "uffici nel mondo", ar: "مكتب حول العالم", ja: "拠点数" },
+  
+  serviceArchitecture: { en: "Service architecture", tr: "Hizmet mimarisi", de: "Dienstarchitektur", fr: "Architecture de service", es: "Arquitectura de servicio", it: "Architettura dei servizi", ar: "مخطط الخدمة", ja: "サービス構成" },
+  deviceToData: { en: "Device to data to interface.", tr: "Cihazdan veriye, veriden arayüze.", de: "Gerät zu Daten zu Schnittstelle.", fr: "Du dispositif aux données à l'interface.", es: "Del dispositivo a los datos a la interfaz.", it: "Dal dispositivo ai dati all'interfaccia.", ar: "من الجهاز إلى البيانات إلى الواجهة.", ja: "デバイスからデータ、インターフェースまで。" },
+  device: { en: "Device", tr: "Cihaz", de: "Gerät", fr: "Dispositif", es: "Dispositivo", it: "Dispositivo", ar: "الجهاز", ja: "デバイス" },
+  hwFirmware: { en: "Hardware + firmware", tr: "Donanım + yazılım", de: "Hardware + Firmware", fr: "Matériel + firmware", es: "Hardware + firmware", it: "Hardware + firmware", ar: "العتاد + البرمجيات", ja: "ハードウェア + ファームウェア" },
+  data: { en: "Data", tr: "Veri", de: "Daten", fr: "Données", es: "Datos", it: "Dati", ar: "البيانات", ja: "データ" },
+  apiPostgres: { en: "API + PostgreSQL", tr: "API + PostgreSQL", de: "API + PostgreSQL", fr: "API + PostgreSQL", es: "API + PostgreSQL", it: "API + PostgreSQL", ar: "API + PostgreSQL", ja: "API + PostgreSQL" },
+  interface: { en: "Interface", tr: "Arayüz", de: "Schnittstelle", fr: "Interface", es: "Interfaz", it: "Interfaccia", ar: "الواجهة", ja: "インターフェース" },
+  webMobileVr: { en: "Web + mobile + VR", tr: "Web + mobil + VR", de: "Web + Mobile + VR", fr: "Web + mobile + VR", es: "Web + móvil + VR", it: "Web + mobile + VR", ar: "ويب + جوal + واقع افتراضي", ja: "Web + モバイル + VR" },
+  capabilities: { en: "capabilities", tr: "kabiliyet", de: "Fähigkeiten", fr: "capacités", es: "capacidades", it: "funzionalità", ar: "قدرات", ja: "対応技術" },
+  deliveryLayers: { en: "delivery layers", tr: "teslimat katmanı", de: "Lieferschichten", fr: "couches de livraison", es: "capas de entrega", it: "livelli di consegna", ar: "طبقات التسليم", ja: "提供レイヤー" },
+  systemView: { en: "system view", tr: "sistem görünümü", de: "Systemansicht", fr: "vue système", es: "vista del sistema", it: "vista di sistema", ar: "عرض النظام", ja: "統合システムビュー" },
+
+  serviceSystem: { en: "Service system", tr: "Hizmet sistemi", de: "Dienstleistungssystem", fr: "Système de services", es: "Sistema de servicios", it: "Sistema dei servizi", ar: "نظام الخدمة", ja: "サービス体系" },
+  chooseLayer: { en: "Choose one layer, or build the whole stack.", tr: "İster tek bir katman seçin, ister tüm altyapıyı inşa edin.", de: "Wählen Sie eine Schicht oder bauen Sie den gesamten Stack.", fr: "Choisissez une couche ou construisez tout le stack.", es: "Elija una capa o construya todo el stack.", it: "Scegli un livello o costruisci l'intero stack.", ar: "اختر طبقة واحدة، أو ابني النظام بالكامل.", ja: "必要なレイヤーのみの開発、またはフルスタック開発のいずれにも対応。" },
+  servicesLead: {
+    en: "The services are grouped by product layer, so buyers can quickly understand where WillowSoft fits: device engineering, cloud/data, operator interfaces, and simulation.",
+    tr: "Hizmetlerimiz ürün katmanına göre gruplandırılmıştır, böylece satın alıcılar WillowSoft'un nerede konumlandığını kolayca görebilir: cihaz mühendisliği, bulut/veri, operatör arayüzleri ve simülasyon.",
+    de: "Die Dienste sind nach Produktschichten gruppiert, sodass Käufer schnell verstehen, wo WillowSoft hineinpasst: Geräteentwicklung, Cloud/Daten, Operator-Schnittstellen und Simulation.",
+    fr: "Les services sont regroupés par couche de produit, afin que les acheteurs comprennent rapidement où se situe WillowSoft : ingénierie des dispositifs, cloud/données, interfaces opérateurs et simulation.",
+    es: "Los servicios se agrupan por capa de producto, para que los compradores comprendan rápidamente dónde encaja WillowSoft: ingeniería de dispositivos, nube/datos, interfaces de operador y simulación.",
+    it: "I servizi sono raggruppati per livello di prodotto, in modo da comprendere rapidamente il ruolo di WillowSoft: ingegneria dei dispositivi, cloud/dati, interfacce operatore e simulazione.",
+    ar: "يتم تجميع الخدمات حسب طبقة المنتج، حتى يتمكن المشترون من فهم مكان WillowSoft بسرعة: هندسة الأجهزة، السحابة/البيانات، واجهات التشغيل، والمحاكاة.",
+    ja: "開発レイヤーごとに分類されており、デバイス開発、クラウド／データ、オペレーター画面、シミュレーションなど、WillowSoftの担当領域を明確に把握できます。"
+  },
+  startDiscovery: { en: "Start Discovery", tr: "Keşif Başlat", de: "Entdeckung starten", fr: "Démarrer la découverte", es: "Iniciar descubrimiento", it: "Avvia scoperta", ar: "ابدأ aşaması الاستكشاف", ja: "要件定義の相談をする" },
+
+  deviceEng: { en: "Device engineering", tr: "Cihaz mühendisliği", de: "Geräteentwicklung", fr: "Ingénierie des dispositifs", es: "Ingeniería de dispositivos", it: "Ingegneria dei dispositivi", ar: "هندسة الأجهزة", ja: "デバイス開発" },
+  deviceEngTitle: { en: "Hardware, firmware and connectivity.", tr: "Donanım, firmware ve bağlantı.", de: "Hardware, Firmware und Konnektivität.", fr: "Matériel, firmware et connectivité.", es: "Hardware, firmware y conectividad.", it: "Hardware, firmware e connettività.", ar: "العتاد، البرمجيات والاتصال.", ja: "ハードウェア、ファームウェア、接続性" },
+  deviceEngDesc: {
+    en: "For teams building physical IoT products that need reliable sensing, power, RF behavior and production-ready firmware.",
+    tr: "Güvenilir algılama, güç yönetimi, RF davranışı ve üretime hazır firmware gerektiren fiziksel IoT ürünleri inşa eden ekipler için.",
+    de: "Für Teams, die physische IoT-Produkte bauen, die zuverlässige Sensorik, Stromversorgung, RF-Verhalten und produktionsbereite Firmware benötigen.",
+    fr: "Pour les équipes qui construisent des produits IoT physiques ayant besoin d'une détection, d'une alimentation, d'un comportement RF fiables et d'un firmware prêt pour la production.",
+    es: "Para equipos que construyen productos IoT físicos que necesitan detección, energía, comportamiento RF fiables y firmware listo para producción.",
+    it: "Per i team che creano prodotti IoT fisici che richiedono sensori, alimentazione, comportamento RF e firmware pronti per la produzione.",
+    ar: "للفرق التي تبني منتجات إنترنت الأشياء المادية التي تحتاج إلى استشعار وطاقة وسلوك RF موثوق به وبرمجيات جاهزة للإنتاج.",
+    ja: "信頼性の高いセンシング、省電力設計、アンテナ調整、量産対応のファームウェアを必要とするハードウェア開発に。"
+  },
+  deviceOutput: { en: "PCB package, firmware source, RF notes and production handoff.", tr: "PCB paketi, firmware kaynağı, RF raporları ve üretim teslimi.", de: "PCB-Paket, Firmware-Quelle, RF-Hinweise und Produktionsübergabe.", fr: "Package PCB, source du firmware, notes RF et remise en production.", es: "Paquete de PCB, fuente de firmware, notas de RF y entrega de producción.", it: "Pacchetto PCB, sorgente firmware, note RF e consegna alla produzione.", ar: "حزمة PCB، مصدر البرمجيات، ملاحظات الـ RF وتسليم الإنتاج.", ja: "PCB設計データ、ファームウェアソースコード、アンテナ性能レポート、製造指示書" },
+
+  cloudData: { en: "Cloud & data", tr: "Bulut & veri", de: "Cloud & Daten", fr: "Cloud & données", es: "Nube y datos", it: "Cloud e dati", ar: "السحابة والبيانات", ja: "クラウド＆データ" },
+  cloudDataTitle: { en: "Backend APIs and PostgreSQL architecture.", tr: "Backend API'leri ve PostgreSQL mimarisi.", de: "Backend-APIs und PostgreSQL-Architektur.", fr: "APIs backend et architecture PostgreSQL.", es: "APIs de backend y arquitectura de PostgreSQL.", it: "API di backend e architettura PostgreSQL.", ar: "واجهات برمجة التطبيقات الخلفية ومخطط PostgreSQL.", ja: "バックエンドAPIとPostgreSQL設計" },
+  cloudDataDesc: {
+    en: "For products that collect device data, need authentication, reporting, alerts, dashboards and scalable operational data models.",
+    tr: "Cihaz verilerini toplayan, kimlik doğrulama, raporlama, alarmlar, paneller ve ölçeklenebilir operasyonel veri modelleri gerektiren ürünler için.",
+    de: "Für Produkte, die Gerätedaten erfassen, Authentifizierung, Berichte, Warnungen, Dashboards und skalierbare operative Datenmodelle benötigen.",
+    fr: "Pour les produits qui collectent des données d'appareils, ont besoin d'authentification, de rapports, d'alertes, de tableaux de bord et de modèles de données opérationnels évolutifs.",
+    es: "Para productos que recopilan datos de dispositivos, necesitan autenticación, informes, alertas, paneles y modelos de datos operativos escalables.",
+    it: "Per i prodotti che raccolgono dati dai dispositivi, richiedono autenticazione, reportistica, allarmi, dashboard e modelli di dati scalabili.",
+    ar: "للمنتجات التي تجمع بيانات الأجهزة، وتحتاج إلى مصادقة، وتقارير، وتنبيهات، ولوحات معلومات، ونماذج بيانات تشغيلية قابلة للتوسع.",
+    ja: "デバイスデータの収集、ユーザー認証、集計機能、閾値アラート、スケーラブルなデータベース設計が必要なシステムに。"
+  },
+  cloudOutput: { en: "API contracts, database schema, auth flow and reporting queries.", tr: "API sözleşmeleri, veritabanı şeması, yetkilendirme akışı ve raporlama sorguları.", de: "API-Verträge, Datenbankschema, Authentifizierungsablauf und Berichtabfragen.", fr: "Contrats API, schéma de base de données, flux d'authentification et requêtes de rapports.", es: "Contratos de API, esquema de base de datos, flujo de autenticación y consultas de informes.", it: "Contratti API, schema database, flusso di autenticazione e query di reportistica.", ar: "عقود واجهة برمجة التطبيقات، مخطط قاعدة البيانات، تدفق المصادقة واستعلامات التقارير.", ja: "API仕様書、DB定義書、認証フロー図、レポート生成クエリ" },
+
+  operatorInterface: { en: "Operator interface", tr: "Operatör arayüzü", de: "Bedieneroberfläche", fr: "Interface opérateur", es: "Interfaz de operador", it: "Interfaccia operatore", ar: "واجهة المشغل", ja: "オペレーター画面" },
+  operatorTitle: { en: "Web platforms, admin panels and mobile apps.", tr: "Web platformları, yönetim panelleri ve mobil uygulamalar.", de: "Webplattformen, Admin-Panels und mobile Apps.", fr: "Plateformes web, panneaux d'administration et applications mobiles.", es: "Plataformas web, paneles de administración y aplicaciones móviles.", it: "Piattaforme web, pannelli di amministrazione e app mobili.", ar: "منصات الويب، لوحات التحكم وتطبيقات الجوال.", ja: "Webシステム、管理画面、モバイルアプリ" },
+  operatorDesc: {
+    en: "For teams that need operators, customers and field technicians to actually use the connected product every day.",
+    tr: "Operatörlerin, müşterilerin ve saha teknisyenlerinin bağlı ürünü her gün aktif olarak kullanması gereken ekipler için.",
+    de: "Für Teams, bei denen Bediener, Kunden und Servicetechniker das vernetzte Produkt täglich nutzen müssen.",
+    fr: "Pour les équipes qui ont besoin que les opérateurs, les clients et les techniciens de terrain utilisent réellement le produit connecté chaque jour.",
+    es: "Para equipos que necesitan que los operadores, clientes y técnicos de campo utilicen realmente el producto conectado todos los días.",
+    it: "Per i team che richiedono che operatori, clienti e tecnici sul campo utilizzino il prodotto connesso quotidianamente.",
+    ar: "للفرق التي تحتاج إلى أن يستخدم المشغلون والعملاء وفنيو الموقع المنتج المتصل كل يوم.",
+    ja: "オペレーター、顧客、現地保守員が、毎日ストレスなくコネクテッド製品を操作・運用するためのインターフェースに。"
+  },
+  operatorOutput: { en: "Dashboards, mobile flows, user roles, alerts and portal screens.", tr: "Paneller, mobil akışlar, kullanıcı rolleri, alarmlar ve portal ekranları.", de: "Dashboards, mobile Abläufe, Benutzerrollen, Warnungen und Portalseiten.", fr: "Tableaux de bord, flux mobiles, rôles d'utilisateurs, alertes et écrans de portail.", es: "Paneles, flujos móviles, roles de usuario, alertas y pantallas de portal.", it: "Dashboard, flussi mobili, ruoli utente, allarmi e schermate del portale.", ar: "لوحات المعلومات، تدفقات الجوال، أدوار المستخدمين، التنبيهات وشashات البوابة.", ja: "管理画面UI、モバイル操作フロー、権限定義、プッシュ通知フロー、ポータル画面" },
+
+  immersive: { en: "Immersive", tr: "İnteraktif / 3D", de: "Immersiv", fr: "Immersif", es: "Inmersivo", it: "Immersivo", ar: "محاكاة ثلاثية الأبعاد", ja: "3Dシミュレーション" },
+  immersiveTitle: { en: "VR, simulation and digital twin experiences.", tr: "VR, simülasyon ve dijital ikiz deneyimleri.", de: "VR, Simulation und digitale Zwillinge.", fr: "VR, simulation et expériences de jumeaux numériques.", es: "VR, simulación y experiencias de gemelos digitales.", it: "VR, simulazione ed esperienze di gemelli digitali.", ar: "الواقع الافتراضي، المحاكاة وتجارب التوأم الرقمي.", ja: "VR、シミュレータ、デジタルツイン" },
+  immersiveDesc: {
+    en: "For products or environments that are hard to explain through flat screens, training documents or static presentations.",
+    tr: "Düz ekranlar, eğitim belgeleri veya statik sunumlarla anlatılması zor olan ürünler veya ortamlar için.",
+    de: "Für Produkte oder Umgebungen, die durch flache Bildschirme, Schulungsunterlagen oder statische Präsentationen schwer zu erklären sind.",
+    fr: "Pour les produits ou les environnements difficiles à expliquer à travers des écrans plats, des documents de formation ou des présentations statiques.",
+    es: "Para productos o entornos que son difíciles de explicar a través de pantallas planas, documentos de capacitación o presentaciones estáticas.",
+    it: "Per prodotti o ambienti difficili da spiegare tramite schermi piatti, documenti di formazione o presentazioni statiche.",
+    ar: "للمنتجات أو البيئات التي يصعب شرحها من خلال الشاشات المسطحة أو مستندات التدريب أو العروض التقديمية الثابتة.",
+    ja: "平面の画面やマニュアル、静的なプレゼン資料だけでは説明が困難な複雑な機器や広大な現場環境に。"
+  },
+  immersiveOutput: { en: "Simulation scene, training flow, 3D presentation and demo assets.", tr: "Simülasyon sahnesi, eğitim akışı, 3D sunum ve demo varlıkları.", de: "Simulationsszene, Schulungsablauf, 3D-Präsentation und Demo-Assets.", fr: "Scène de simulation, flux de formation, présentation 3D et ressources de démonstration.", es: "Escena de simulación, flujo de capacitación, presentación 3D y activos de demostración.", it: "Scena di simulazione, flusso di formazione, presentazione 3D e asset dimostrativi.", ar: "مشهد المحاكاة، تدفق التدريب، العرض ثلاثي الأبعاد وأصول العرض التجريبي.", ja: "シミュレーション空間、トレーニング手順、3D製品デモ、3Dモデリングアセット" },
+
+  typicalOutputLabel: { en: "Typical output", tr: "Tipik teslimat", de: "Typische Ausgabe", fr: "Livrable type", es: "Entregable típico", it: "Output tipico", ar: "المخرجات النموذجية", ja: "主な納品物" },
+
+  deliverables: { en: "Deliverables", tr: "Teslimatlar", de: "Liefergegenstände", fr: "Livrables", es: "Entregables", it: "Entregabili", ar: "التسليمات", ja: "開発成果物" },
+  whatLeaves: { en: "What leaves the project, layer by layer.", tr: "Katman katman projeden çıkan somut çıktılar.", de: "Was das Projekt verlässt, Schicht für Schicht.", fr: "Ce qui ressort du projet, couche par couche.", es: "Lo que sale del proyecto, capa por capa.", it: "Cosa viene rilasciato, livello dopo livello.", ar: "ما ينتج عن المشروع، طبقة تلو طبقة.", ja: "各開発フェーズにおける具体的な成果物" },
+  deliverablesLead: {
+    en: "The deliverables are practical: source files, firmware, APIs, data models, dashboards and deployment documentation.",
+    tr: "Teslimatlarımız pratiktir: kaynak kodları, cihaz yazılımı (firmware), API'ler, veri modelleri, paneller ve devreye alma belgeleri.",
+    de: "Die Ergebnisse sind praktisch: Quelldateien, Firmware, APIs, Datenmodelle, Dashboards und Bereitstellungsdokumentation.",
+    fr: "Les livrables sont pratiques : fichiers sources, firmware, APIs, modèles de données, tableaux de bord et documentation de déploiement.",
+    es: "Los entregables son prácticos: archivos fuente, firmware, APIs, modelos de datos, paneles y documentación de implementación.",
+    it: "I risultati sono pratici: file sorgente, firmware, API, modelli di dati, dashboard e documentazione di installazione.",
+    ar: "التسليمات عملية: ملفات المصدر، البرمجيات، واجهات البرمجة، نماذج البيانات، لوحات التحكم ووثائق النشر.",
+    ja: "ソースファイル、ファームウェア、API定義、データ設計、ダッシュボード、導入マニュアルなど、実用的な納品物一式。"
+  },
+  projectHandoff: { en: "Project handoff", tr: "Proje devri", de: "Projektübergabe", fr: "Remise du projet", es: "Entrega de proyecto", it: "Consegna del progetto", ar: "تسليم المشروع", ja: "プロジェクトの引き渡し" },
+  handoffDesc: {
+    en: "Every layer is documented so your internal team can operate, extend and audit the system.",
+    tr: "Her katman belgelenmiştir, böylece kendi ekibiniz sistemi işletebilir, genişletebilir ve denetleyebilir.",
+    de: "Jede Schicht ist dokumentiert, damit Ihr internes Team das System betreiben, erweitern und prüfen kann.",
+    fr: "Chaque couche est documentée afin que votre équipe interne puisse exploiter, étendre et auditer le système.",
+    es: "Cada capa está documentada para que su equipo interno pueda operar, extender y auditar el sistema.",
+    it: "Ogni livello è documentato in modo che il vostro team interno possa gestire, estendere e verificare il sistema.",
+    ar: "تم توثيق كل طبقة بحيث يمكن لفريقك الداخلي تشغيل النظام وتوسيعه وتدقيقه.",
+    ja: "内製化を想定し、お客様のチームがシステムを運用・拡張・管理できるよう、全レイヤーをドキュメント化します。"
+  },
+  devicePackageDesc: { en: "Schematics, PCB, BOM, prototype notes, RF and power decisions.", tr: "Şemalar, PCB şablonu, BOM listesi, prototip notları, RF ve güç kararları.", de: "Schaltpläne, PCB, Stückliste, Prototypnotizen, RF- und Stromversorgungsentscheidungen.", fr: "Schémas, PCB, BOM, notes de prototype, décisions RF et d'alimentation.", es: "Esquemas, PCB, BOM, notas de prototipo, decisiones de RF y energía.", it: "Schemi, PCB, BOM, note di prototipo, decisioni RF e di alimentazione.", ar: "المخططات، الـ PCB، الـ BOM، ملاحظات النماذج، قرارات الـ RF والطاقة.", ja: "回路図、基板レイアウト（PCB）、部品表（BOM）、試作評価メモ、RF・電力設計仕様" },
+  firmwarePackageDesc: { en: "Firmware source, drivers, protocol logic, OTA and low-power behavior.", tr: "Firmware kaynak kodu, sürücüler, protokol mantığı, OTA ve düşük güç modu.", de: "Firmware-Quelle, Treiber, Protokolllogik, OTA und Low-Power-Verhalten.", fr: "Source du firmware, pilotes, logique de protocole, OTA et comportement basse consommation.", es: "Fuente de firmware, controladores, lógica de protocolo, OTA y bajo consumo.", it: "Sorgente firmware, driver, logica di protocollo, OTA e gestione a basso consumo.", ar: "مصدر البرمجيات، التعريفات، منطق البروتوكول، الـ OTA وإجراءات الطاقة المنخفضة.", ja: "ファームウェアソースコード、各種ドライバ、通信プロトコル、OTAアップデート、低消費電力処理" },
+  platformPackageDesc: { en: "API contracts, WebSocket events, PostgreSQL schema, auth and reporting flow.", tr: "API sözleşmeleri, WebSocket olayları, PostgreSQL şeması, yetki ve rapor akışı.", de: "API-Verträge, WebSocket-Ereignisse, PostgreSQL-Schema, Auth und Berichtsfluss.", fr: "Contrats API, événements WebSocket, schéma PostgreSQL, auth et flux de rapports.", es: "Contratos de API, eventos de WebSocket, esquema de PostgreSQL, auth y flujo de informes.", it: "Contratti API, eventi WebSocket, schema PostgreSQL, autenticazione e flusso di reportistica.", ar: "عقود واجهة البرمجة، أحداث WebSocket، مخطط PostgreSQL، تدفق المصادقة والتقarير.", ja: "API仕様書、WebSocketイベント定義、PostgreSQLスキーマ設計、認証＆集計フロー" },
+  interfacePackageDesc: { en: "Dashboard, admin panel, mobile app, roles, alerts and operator workflows.", tr: "Panel, yönetim ekranı, mobil uygulama, roller, alarmlar ve operatör akışları.", de: "Dashboard, Admin-Panel, mobile App, Rollen, Warnungen und Bedienerabläufe.", fr: "Tableau de bord, panneau d'administration, application mobile, rôles, alertes et flux de travail des opérateurs.", es: "Panel, panel de administración, aplicación móvil, roles, alertas y flujos de trabajo del operador.", it: "Dashboard, pannello di amministrazione, app mobile, ruoli, allarmi e flussi di lavoro degli operatori.", ar: "لوحة التحكم، لوحة الإدارة، تطبيق الجوال، الأدوار، التنبيهات وسير عمل المشغل.", ja: "ダッシュボード画面、管理画面、モバイルアプリ、役割定義（ロール）、アラート設定、運用ワークフロー" },
+  launchPackageDesc: { en: "Testing notes, deployment support, documentation and production handoff.", tr: "Test notları, kurulum desteği, kılavuzlar ve üretim teslimatı.", de: "Testnotizen, Bereitstellungsunterstützung, Dokumentation und Übergabe an die Produktion.", fr: "Notes de test, support de déploiement, documentation et transfert à la production.", es: "Notas de prueba, soporte de implementación, documentación y entrega a producción.", it: "Note di test, supporto all'installazione, documentazione e passaggio alla produzione.", ar: "ملاحظات الاختبار، دعم النشر، التوثيق وتسليم الإنتاج.", ja: "試験成績書、現地導入支援、ドキュメント一式、量産引き渡し手順" },
+
+  caseStudies: { en: "Case Studies", tr: "Vaka Analizleri", de: "Fallstudien", fr: "Études de cas", es: "Estudios de caso", it: "Studi di caso", ar: "حالات دراسية", ja: "導入事例" },
+  provenInProduction: { en: "Proven in production.", tr: "Sahada kendini kanıtlamış.", de: "In der Praxis bewährt.", fr: "Fait ses preuves en production.", es: "Probado en producción.", it: "Testato in produzione.", ar: "مثبت في واقع التشغيل.", ja: "稼働実績による実証" },
+  caseStudiesLead: {
+    en: "See how WillowSoft's integrated hardware, firmware, and digital stack delivers measurable operational ROI for our clients.",
+    tr: "WillowSoft'un entegre donanım, yazılım ve dijital altyapısının müşterilerimize sağladığı ölçülebilir operasyonel yatırım getirisini (ROI) görün.",
+    de: "Sehen Sie, wie der integrierte Hardware-, Firmware- und Digital-Stack von WillowSoft für unsere Kunden einen messbaren betrieblichen ROI liefert.",
+    fr: "Découvrez comment le stack intégré matériel, firmware et numérique de WillowSoft offre un ROI opérationnel mesurable pour nos clients.",
+    es: "Vea cómo el stack integrado de hardware, firmware y digital de WillowSoft ofrece un ROI operativo medible para nuestros clientes.",
+    it: "Scoprite in che modo lo stack hardware, firmware e digitale integrato di WillowSoft offre un ROI operativo misurabile per i nostri clienti.",
+    ar: "تعرف على كيفية مساهمة حزمة الأجهزة والبرمجيات المتكاملة والمنصة الرقمية من WillowSoft في تحقيق عائد استثماري تشغيلي ملموس لعملائنا.",
+    ja: "WillowSoftのデバイス・ファームウェア・Web統合システムが、お客様の現場にどのような成果（ROI）をもたらしたかをご紹介します。"
+  },
+  solarTitle: { en: "Solar Plant Remote Monitoring", tr: "Güneş Enerjisi Sahası Uzaktan İzleme", de: "Fernüberwachung von Solaranlagen", fr: "Surveillance à distance de centrales solaires", es: "Monitoreo remoto de plantas solares", it: "Monitoraggio remoto di impianti solari", ar: "المراقبة عن بعد لمحطة الطاقة الشمسية", ja: "太陽光発電所の遠隔監視" },
+  solarSub: { en: "Predictive maintenance layer for distributed solar fields.", tr: "Dağıtık güneş paneli sahaları için öngörücü bakım katmanı.", de: "Vorausschauende Wartungsschicht für verteilte Solarfelder.", fr: "Couche de maintenance prédictive pour champs solaires distribués.", es: "Capa de mantenimiento predictivo para campos solares distribuidos.", it: "Livello di manutenzione predittiva per campi solari distribuiti.", ar: "طبقة صيانة تنبؤية لحقول الطاقة الشمسية الموزعة.", ja: "分散型太陽光発電パネルのための予知保全システム" },
+  solarProblem: {
+    en: "<strong>The Problem:</strong> Manual inspections of inverters and transformers led to high operational overhead and late fault detection across thousands of distributed solar panels.<br><br><strong>The Approach:</strong> WillowSoft designed and deployed IP67-rated Modbus bridges (WillowMod) collecting inverter registry data, transmitting via LoRaWAN to a high-concurrency API and PostgreSQL telemetry database.",
+    tr: "<strong>Sorun:</strong> İnverter ve trafoların manuel olarak incelenmesi, binlerce dağıtık güneş panelinde yüksek operasyonel maliyetlere ve geç arıza tespitine yol açıyordu.<br><br><strong>Yöntem:</strong> WillowSoft, inverter yazmaç (registry) verilerini toplayıp LoRaWAN üzerinden yüksek eşzamanlı bir API'ye ve PostgreSQL telemetri veritabanına ileten IP67 sınıfı Modbus köprüleri (WillowMod) tasarladı ve sahaya kurdu.",
+    de: "<strong>Das Problem:</strong> Manuelle Inspektionen von Wechselrichtern und Transformatoren führten zu hohem betrieblichen Aufwand und verspäteter Fehlererkennung bei Tausenden von verteilten Solarmodulen.<br><br><strong>Der Ansatz:</strong> WillowSoft entwickelte und implementierte IP67-zertifizierte Modbus-Brücken (WillowMod), die Registerdaten des Wechselrichters erfassen und über LoRaWAN an eine API mit hoher Gleichzeitigkeit und eine PostgreSQL-Telemetriedatenbank übertragen.",
+    fr: "<strong>Le problème :</strong> Les inspections manuelles des onduleurs et des transformateurs entraînaient des coûts opérationnels élevés et une détection tardive des pannes sur des milliers de panneaux solaires distribués.<br><br><strong>L'approche :</strong> WillowSoft a conçu et déployé des ponts Modbus (WillowMod) classés IP67 collectant les données des registres d'onduleurs, transmises via LoRaWAN à une API à haute concurrence et à une base de données de télémétrie PostgreSQL.",
+    es: "<strong>El problema:</strong> Las inspecciones manuales de inversores y transformadores generaban altos costos operativos y detección tardía de fallas en miles de paneles solares distribuidos.<br><br><strong>El enfoque:</strong> WillowSoft diseñó e implementó puentes Modbus (WillowMod) con clasificación IP67 que recopilan datos del registro del inversor, transmitidos a través de LoRaWAN a una API de alta concurrencia y a una base de datos de telemetría de PostgreSQL.",
+    it: "<strong>Il problema:</strong> Le ispezioni manuali di inverter e trasformatori causavano elevati costi operativi e ritardi nel rilevamento dei guasti su migliaia di pannelli solari.<br><br><strong>L'approccio:</strong> WillowSoft ha progettato e installato bridge Modbus (WillowMod) classificati IP67 per raccogliere i dati dei registri degli inverter e inviarli via LoRaWAN a un'API ad alta concorrenza e a un database di telemetria PostgreSQL.",
+    ar: "<strong>المشكلة:</strong> أدت عمليات الفحص اليدوي للعواكس والمحولات إلى تكاليف تشغيلية عالية واكتشاف متأخر للأعطال عبر آلاف الألواح الشمسية الموزعة.<br><br><strong>النهج:</strong> صممت WillowSoft ونشرت جسور Modbus المصنفة IP67 (WillowMod) التي تجمع بيانات سجل العاكس، وترسلها عبر LoRaWAN إلى واجهة برمجة تطبيقات عالية التزامن وقاعدة بيانات قياس PostgreSQL.",
+    ja: "<strong>課題：</strong> インバータや変圧器の手動点検は運用コストが大きく、広大な太陽光パネルエリアにおける故障検知の遅れに繋がっていた。<br><br><strong>アプローチ：</strong> インバータのレジスタデータを収集し、LoRaWAN経由で高同時実行APIおよびPostgreSQLの時系列DBに送信するIP67定格のModbusブリッジ（WillowMod）を設計・導入。"
+  },
+  solarQuote: {
+    en: '"WillowSoft unified our field devices and dashboards into one reliable system. Our maintenance cycles are now purely predictive."',
+    tr: '"WillowSoft, saha cihazlarımızı ve panellerimizi tek bir güvenilir sistemde birleştirdi. Bakım döngülerimiz artık tamamen öngörücü hale geldi."',
+    de: '"WillowSoft hat unsere Feldgeräte und Dashboards in einem zuverlässigen System zusammengeführt. Unsere Wartungszyklen sind jetzt rein vorausschauend."',
+    fr: '"WillowSoft a unifié nos appareils de terrain et nos tableaux de bord en un seul système fiable. Nos cycles de maintenance sont désormais purement prédictifs."',
+    es: '"WillowSoft unificó nuestros dispositivos de campo y paneles en un solo sistema confiable. Nuestros ciclos de mantenimiento son ahora puramente predictivos."',
+    it: '"WillowSoft ha unificato i nostri dispositivi sul campo e le dashboard in un unico sistema affidabile. I nostri cicli di manutenzione sono ora puramente predittivi."',
+    ar: '"وحّدت WillowSoft أجهزتنا الميدانية ولوحات التحكم في نظام موثوق واحد. أصبحت دورات الصيانة لدينا الآن تنبؤية بالكامل."',
+    ja: "「WillowSoftは、現場のデバイスと管理システムを1つの信頼できる仕組みに統合してくれました。メンテナンス業務は完全に予知保全へとシフトしています」"
+  },
+  solarQuoteAuthor: {
+    en: "— Lead Operations Engineer, SLB",
+    tr: "— Baş Operasyon Mühendisi, SLB",
+    de: "— Leitender Betriebsingenieur, SLB",
+    fr: "— Ingénieur principal des opérations, SLB",
+    es: "— Ingeniero principal de operaciones, SLB",
+    it: "— Ingegnere capo delle operazioni, SLB",
+    ar: "— كبير مهندسي العمليات، SLB",
+    ja: "— SLB 運用管理責任者"
+  },
+
+  coldTitle: { en: "Cold Chain Logistics & Quality Control", tr: "Soğuk Zincir Lojistiği & Kalite Kontrolü", de: "Kühlkettenlogistik & Qualitätskontrolle", fr: "Logistique de la chaîne du froid & contrôle qualité", es: "Logística de cadena de frío y control de calidad", it: "Logistica della catena del freddo e controllo qualità", ar: "لوجستيات سلسلة التبريد ومراقبة الجودة", ja: "コールドチェーン管理＆品質管理" },
+  coldSub: { en: "Real-time asset tracking and environmental monitoring.", tr: "Gerçek zamanlı varlık takibi ve çevresel izleme.", de: "Echtzeit-Asset-Tracking und Umgebungsüberwachung.", fr: "Suivi des actifs en temps réel et surveillance environnementale.", es: "Seguimiento de activos en tiempo real y monitoreo ambiental.", it: "Tracciamento degli asset in tempo reale e monitoraggio ambientale.", ar: "تتبع الأصول في الوقت الفعلي والمراقبة البيئية.", ja: "リアルタイムアセット追跡および環境センシング" },
+  coldProblem: {
+    en: "<strong>The Problem:</strong> Temperature fluctuations and open-door incidents during logistics transit caused product quality concerns, with high battery drain on legacy cellular trackers.<br><br><strong>The Approach:</strong> WillowSoft designed a custom low-power GNSS tracker (WillowGPS) with integrated temperature and door open/close sensors, running custom low-power firmware combined with a native mobile dashboard for driver alerts.",
+    tr: "<strong>Sorun:</strong> Taşıma sırasında yaşanan sıcaklık dalgalanmaları ve açık kalan kapı olayları, ürün kalitesinde endişelere yol açıyor; eski hücresel takip cihazlarının yüksek pil tüketimi ise süreci zorlaştırıyordu.<br><br><strong>Yöntem:</strong> WillowSoft, entegre sıcaklık ve kapı açık/kapalı sensörlerine sahip, özel düşük güç tüketimli yazılımla çalışan GNSS takip cihazı (WillowGPS) tasarladı ve sürücü uyarıları için yerel bir mobil panele entegre etti.",
+    de: "<strong>Das Problem:</strong> Temperaturschwankungen und Vorfälle mit offenen Türen während des Logistiktransports führten zu Bedenken hinsichtlich der Produktqualität bei hohem Batterieverbrauch älterer Mobilfunk-Tracker.<br><br><strong>Der Ansatz:</strong> WillowSoft entwickelte einen maßgeschneiderten, stromsparenden GNSS-Tracker (WillowGPS) mit integrierten Temperatur- und Türöffnungs-/schließsensoren, auf dem eine spezielle, stromsparende Firmware läuft, kombiniert mit einem nativen mobilen Dashboard für Fahrerwarnungen.",
+    fr: "<strong>Le problème :</strong> Les fluctuations de température et les incidents de portes ouvertes pendant le transit logistique entraînaient des problèmes de qualité des produits, avec une forte consommation de batterie sur les anciens trackers cellulaires.<br><br><strong>L'approche :</strong> WillowSoft a conçu un tracker GNSS basse consommation personnalisé (WillowGPS) avec capteurs intégrés de température et d'ouverture/fermeture de porte, exécutant un firmware basse consommation personnalisé combiné à un tableau de bord mobile natif pour les alertes des conducteurs.",
+    es: "<strong>El problema:</strong> Las fluctuaciones de temperatura y los incidentes de puertas abiertas durante el tránsito logístico causaron problemas de calidad del producto, con un alto consumo de batería en los rastreadores celulares heredados.<br><br><strong>El enfoque:</strong> WillowSoft diseñó un rastreador GNSS de bajo consumo personalizado (WillowGPS) con sensores de temperatura y apertura/cierre de puertas integrados, que ejecuta un firmware de bajo consumo personalizado combinado con un panel móvil nativo para las alertas del conductor.",
+    it: "<strong>Il problema:</strong> Le fluttuazioni di temperatura e le aperture accidentali dei portelloni durante il trasporto merci causavano problemi di qualità del prodotto, aggravati dal consumo elevato delle batterie dei vecchi localizzatori cellulari.<br><br><strong>L'approccio:</strong> WillowSoft ha progettato un localizzatore GNSS a basso consumo personalizzato (WillowGPS) con sensori di temperatura e apertura porte integrati, equipaggiato con firmware a basso consumo e abbinato a una dashboard mobile nativa per gli autisti.",
+    ar: "<strong>المشكلة:</strong> تسببت تقلبات درجات الحرارة وحوادث فتح الأبواب أثناء النقل اللوجستي في مخاوف بشأن جودة المنتج، مع استنزاف كبير للبطارية في أجهزة التتبع الخلوية القديمة.<br><br><strong>النهج:</strong> صممت WillowSoft جهاز تتبع GNSS مخصصًا منخفض الطاقة (WillowGPS) مع مستشعرات حرارة وفتح/إغلاق أبواب مدمجة، يعمل ببرمجيات مخصصة منخفضة الطاقة مقترنة بلوحة معلومات جوال مnative لتنبيه السائقين.",
+    ja: "<strong>課題：</strong> 物流輸送中の温度変化やドアの開閉トラブルは製品の品質に関わる重大な懸念事項であり、従来の携帯回線式GPSは消費電力が極めて大きいという課題があった。<br><br><strong>アプローチ：</strong> 温度とドア開閉検知センサを統合したカスタム省電力GNSSトラッカー（WillowGPS）を開発。専用の超低消費電力ファームウェアで駆動し、ドライバーへのアラート用に専用のモバイル管理画面を構築。"
+  },
+  coldQuote: {
+    en: '"The hardware battery life and native dashboard alert responsiveness exceeded our expectations. An exceptional end-to-end telemetry system."',
+    tr: '"Donanım pil ömrü ve yerel kontrol panelinin alarm hassasiyeti beklentilerimizi fazlasıyla karşıladı. Olağanüstü bir uçtan uca telemetri sistemi."',
+    de: '"Die Batterielebensdauer der Hardware und die Reaktionsfähigkeit des nativen Dashboards bei Warnungen haben unsere Erwartungen übertroffen. Ein außergewöhnliches End-to-End-Telemetriesystem."',
+    fr: '"La durée de vie de la batterie du matériel et la réactivité du tableau de bord natif pour les alertes ont dépassé nos attentes. Un système de télémétrie de bout en bout exceptionnel."',
+    es: '"La duración de la batería del hardware y la capacidad de respuesta de alerta del panel nativo superaron nuestras expectativas. Un sistema de telemetría de extremo a extremo excepcional."',
+    it: '"La durata della batteria dell\'hardware e la reattività della dashboard mobile hanno superato le nostre aspettative. Un sistema di telemetria end-to-end eccezionale."',
+    ar: '"تجاوز عمر بطارية الأجهزة وسرعة استجابة التنبيهات في لوحة التحكم توقعاتنا. نظام قياس عن بعد استثنائي متكامل من البداية للنهاية."',
+    ja: "「デバイスのバッテリー寿命と、管理画面のアラート検知スピードは期待以上でした。極めて完成度の高い、エンドツーエンドの遠隔監視システムです」"
+  },
+  coldQuoteAuthor: {
+    en: "— Logistics Director, FMCG Group",
+    tr: "— Lojistik Direktörü, FMCG Grubu",
+    de: "— Logistikleiter, FMCG-Gruppe",
+    fr: "— Directeur logistique, Groupe FMCG",
+    es: "— Director de logística, Grupo FMCG",
+    it: "— Direttore della logistica, Gruppo FMCG",
+    ar: "— مدير الخدمات اللوجستية، مجموعة FMCG",
+    ja: "— 大手FMCGグループ 物流部門ディレクター"
+  },
+
+  maintenanceCosts: { en: "Maintenance Costs", tr: "Bakım Maliyetleri", de: "Wartungskosten", fr: "Coûts de maintenance", es: "Costos de mantenimiento", it: "Costi di manutenzione", ar: "تكاليف الصيانة", ja: "メンテナンス費" },
+  networkUptime: { en: "Network Uptime", tr: "Ağ Çalışma Süresi", de: "Netzwerk-Uptime", fr: "Uptime réseau", es: "Uptime de red", it: "Tempo di attività di rete", ar: "وقت تشغيل الشبكة", ja: "通信稼働率" },
+  faultAlerts: { en: "Fault Alerts", tr: "Hata Uyarıları", de: "Störungsalarme", fr: "Alertes défauts", es: "Alertas de falla", it: "Allarmi di guasto", ar: "تنبيهات الأعطال", ja: "障害通知" },
+  spoilageIncidents: { en: "Spoilage Incidents", tr: "Bozulma Vakaları", de: "Verderb-Vorfälle", fr: "Pertes / Altérations", es: "Incidentes de deterioro", it: "Perdite di prodotto", ar: "حوادث التلف", ja: "品質劣化ゼロ" },
+  batteryLife: { en: "Battery Life", tr: "Pil Ömrü", de: "Batterielaufzeit", fr: "Autonomie batterie", es: "Duración de batería", it: "Autonomia batteria", ar: "عمر البطارية", ja: "バッテリー寿命" },
+  tempAlerts: { en: "Temp Alerts", tr: "Sıcaklık Uyarıları", de: "Temperatur-Alarme", fr: "Alertes temp.", es: "Alertas de temp.", it: "Allarmi temp.", ar: "تنبيهات الحرارة", ja: "温度アラート" },
+
+  conceptToProduction: { en: "Concept to production", tr: "Konseptten üretime", de: "Konzept bis Produktion", fr: "Du concept à la production", es: "Del concepto a la producción", it: "Dal concept alla produzione", ar: "من الفكرة إلى الإنتاج", ja: "設計から量産まで" },
+  cleanerPath: { en: "A cleaner path from idea to deployed system.", tr: "Fikirden çalışan sisteme giden en net yol.", de: "Ein klarer Weg von der Idee zum installierten System.", fr: "Un chemin plus clair de l'idée au système déployé.", es: "Un camino más claro de la idea al sistema implementado.", it: "Un percorso più lineare dall'idea al sistema installato.", ar: "مسار أكثر وضوحاً من الفكرة إلى النظام المفعل.", ja: "アイデアを確実に形にする合理的な開発ステップ" },
+  analyze: { en: "Analyze", tr: "Analiz", de: "Analysieren", fr: "Analyser", es: "Analizar", it: "Analizzare", ar: "التحليل", ja: "分析" },
+  analyzeDesc: { en: "Requirements, field conditions, integrations and technical risks are clarified first.", tr: "Gereksinimler, saha koşulları, entegrasyonlar ve teknik riskler ilk aşamada netleştirilir.", de: "Anforderungen, Feldbedingungen, Integrationen und technische Risiken werden zuerst geklärt.", fr: "Les exigences, les conditions sur le terrain, les intégrations et les risques techniques sont clarifiés en premier.", es: "Primero se aclaran los requisitos, las condiciones del campo, las integraciones y los riesgos técnicos.", it: "I requisiti, le condizioni sul campo, le integrazioni e i rischi tecnici vengono chiariti per primi.", ar: "يتم توضيح المتطلبات والظروف الميدانية وعمليات التكامل والمخاطر الفنية أولاً.", ja: "要件、設置環境、他システム連携, 技術リスクを事前に明確化します。" },
+  architect: { en: "Architect", tr: "Tasarım", de: "Architektur", fr: "Concevoir", es: "Diseñar", it: "Progettare", ar: "الهندسة", ja: "設計" },
+  architectDesc: { en: "Hardware, firmware, API, database and interfaces are planned as one system.", tr: "Donanım, firmware, API, veritabanı ve arayüzler tek bir sistem olarak planlanır.", de: "Hardware, Firmware, API, Datenbank und Schnittstellen werden als ein System geplant.", fr: "Le matériel, le firmware, l'API, la base de données et les interfaces sont planifiés comme un seul système.", es: "El hardware, el firmware, la API, la base de datos y las interfaces se planifican como un solo sistema.", it: "L'hardware, il firmware, l'API, il database e le interfacce vengono pianificati come un unico sistema.", ar: "يتم التخطيط للعتاد والبرمجيات وواجهات البرمجة وقاعدة البيانات والواجهات كنظام واحد.", ja: "ハード、ファーム、API、DB、UIのすべてを、1つのシステムとして設計します。" },
+  build: { en: "Build", tr: "Geliştirme", de: "Bauen", fr: "Construire", es: "Construir", it: "Sviluppare", ar: "البناء", ja: "開発" },
+  buildDesc: { en: "The product is developed across layers without vendor hand-off gaps.", tr: "Ürün, tedarikçi el değiştirme boşlukları olmadan tüm katmanlarda geliştirilir.", de: "Das Produkt wird über alle Schichten hinweg ohne Übergabelücken der Anbieter entwickelt.", fr: "Le produit est développé à travers les couches sans lacunes de transfert de fournisseur.", es: "El producto se desarrolla a través de capas sin brechas de transferencia del proveedor.", it: "Il prodotto viene sviluppato su tutti i livelli senza interruzioni di consegna dei fornitori.", ar: "يتم تطوير المنتج عبر الطبقات المختلفة دون فجوات تسليم بين الموردين.", ja: "ベンダー間の伝達ロスなく、全レイヤーの同時開発を自社内で行います。" },
+  validate: { en: "Validate", tr: "Doğrulama", de: "Validieren", fr: "Valider", es: "Validar", it: "Validare", ar: "التحقق", ja: "検証" },
+  validateDesc: { en: "RF, device stability, API reliability, UX and field readiness are tested together.", tr: "RF, cihaz kararlılığı, API güvenilirliği, UX ve sahaya hazırlık birlikte test edilir.", de: "RF, Gerätestabilität, API-Zuverlässigkeit, UX und Feldbereitschaft werden zusammen getestet.", fr: "RF, stabilité des dispositifs, fiabilité des APIs, UX et préparation sur le terrain sont testés ensemble.", es: "Se prueban juntos la RF, la estabilidad del dispositivo, la confiabilidad de la API, la UX y la preparación para el campo.", it: "RF, stabilità del dispositivo, affidabilità delle API, UX e prontezza sul campo vengono testate insieme.", ar: "يتم اختبار الـ RF، واستقرار الجهاز، وموثوقية واجهة البرمجة، وتجربة المستخدم، وجاهزية الموقع معاً.", ja: "アンテナ性能、稼働安定性、API負荷、操作性、実地テストを統合検証します。" },
+
+  questionsBefore: { en: "Frequently asked", tr: "Sıkça Sorulan", de: "Häufig gestellte", fr: "Foire aux questions", es: "Preguntas frecuentes", it: "Domande frequenti", ar: "الأسئلة الشائعة", ja: "よくある質問" },
+  engineeringBuyers: {
+    en: "Engineering buyers usually arrive with the same operational questions. Here are the answers — the rest happens in the discovery call.",
+    tr: "Mühendislik alıcıları genellikle aynı operasyonel sorularla gelir. İşte yanıtlar; geri kalanı keşif görüşmesinde gerçekleşir.",
+    de: "Engineering-Einkäufer kommen meist mit denselben betrieblichen Fragen. Hier sind die Antworten – der Rest klärt sich im Erstgespräch.",
+    fr: "Les acheteurs d'ingénierie arrivent généralement avec les mêmes questions opérationnelles. Voici les réponses — le reste se passe lors de l'appel de découverte.",
+    es: "Los compradores de ingeniería suelen llegar con las mismas preguntas operativas. Aquí están las respuestas; el resto ocurre en la llamada de descubrimiento.",
+    it: "I responsabili tecnici arrivano in genere con le stesse domande operative. Ecco le risposte: il resto viene approfondito nella chiamata conoscitiva.",
+    ar: "عادة ما يأتي مهندسو المشتريات بالأسئلة التشغيلية نفسها. إليك الإجابات — ويتم توضيح الباقي في مكالمة الاستكشاف.",
+    ja: "開発のご担当者様からよくいただく共通の質問と回答をまとめました。詳細な要件は、初回面談時にヒアリングいたします。"
+  },
+
+  startWithEng: { en: "Start with engineering", tr: "Mühendislikle başlayın", de: "Beginnen Sie mit dem Engineering", fr: "Commencer par l'ingénierie", es: "Comenzar con la ingeniería", it: "Inizia dall'ingegneria", ar: "ابدأ من الجانب الهندسي", ja: "技術検証からスタート" },
+  readyToShip: { en: "Ready to ship a connected product that actually works in the field?", tr: "Sahada gerçekten çalışan bağlı bir ürün sunmaya hazır mısınız?", de: "Bereit für ein vernetztes Produkt, das in der Praxis wirklich funktioniert?", fr: "Prêt à livrer un produit connecté qui fonctionne réellement sur le terrain ?", es: "¿Listo para lanzar un producto conectado que realmente funcione en el campo?", it: "Pronto a lanciare un prodotto connesso che funzioni davvero sul campo?", ar: "جاهز لإطلاق منتج متصل يعمل بالفعل في موقع التشغيل؟", ja: "現場で「実用に耐える」IoT製品を構築しませんか？" },
+  ctaLead: {
+    en: "Tell us which layer you need first — hardware, firmware, backend, mobile, web or immersive — and WillowSoft engineering will respond with a discovery plan and a realistic timeline.",
+    tr: "İlk etapta hangi katmana ihtiyacınız olduğunu bize söyleyin (donanım, yazılım, backend, mobil, web veya simülasyon) ve WillowSoft mühendisliği size bir keşif planı ve gerçekçi bir zaman çizelgesiyle dönsün.",
+    de: "Teilen Sie uns mit, welche Schicht Sie zuerst benötigen – Hardware, Firmware, Backend, Mobile, Web oder Immersiv – und das WillowSoft-Engineering wird mit einem Entdeckungsplan und einem realistischen Zeitplan antworten.",
+    fr: "Dites-nous de quelle couche vous avez besoin en premier — matériel, firmware, backend, mobile, web ou immersif — et l'ingénierie de WillowSoft vous répondra avec un plan de découverte et un calendrier réaliste.",
+    es: "Díganos qué capa necesita primero (hardware, firmware, backend, móvil, web o inmersivo) y el equipo de ingeniería de WillowSoft responderá con un plan de descubrimiento y un cronograma realista.",
+    it: "Diteci di quale livello avete bisogno per primo (hardware, firmware, backend, mobile, web o immersivo) e il team tecnico di WillowSoft vi risponderà con un piano di lavoro e una tempistica realistica.",
+    ar: "أخبرنا بالطبقة التي تحتاجها أولاً — عتاد، برمجيات، منصة خلفية، تطبيق جوال، ويب أو محاكاة — وسيقوم مهندسو WillowSoft بالرد عليك بخطة استكشاف وجدول زمني واقعي.",
+    ja: "ハードウェア、ファームウェア、バックエンド、アプリ、3Dシミュレータなど、まず必要な開発内容をお知らせください。技術検討プランと開発スケジュールをご提案します。"
+  },
+  talkToEngineering: { en: "Talk to Engineering", tr: "Mühendislerle Görüşün", de: "Mit Engineering sprechen", fr: "Parler à l'ingénierie", es: "Hablar con ingeniería", it: "Parla con il team", ar: "تحدث إلى الهندسة", ja: "技術チームへ相談" },
+  startYourProject: { en: "Start Your Project", tr: "Projeye Başlayın", de: "Projekt starten", fr: "Démarrer le projet", es: "Iniciar proyecto", it: "Avvia progetto", ar: "ابدأ مشروعًا", ja: "プロジェクトを開始" }
+};
+
+const getLabel = (key: keyof typeof labels) => {
+  return labels[key][locale] || labels[key]["en"];
+};
+---
+
+<PageLayout
+  title={seo.seoTitle || "Services | WillowSoft"}
+  description={seo.metaDescription || "Embedded systems & Industrial IoT services."}
+  locale={locale}
+  dataPage="services"
+>
+  <main class="services-premium">
+    <!-- HERO: light premium motion + service architecture -->
+    <section class="hero compact hero-services services-motion-hero">
+      <canvas class="signal-canvas" data-density="34" data-color="24, 167, 255"></canvas>
+      <div class="services-hero-light" aria-hidden="true"></div>
+      <div class="hero-inner services-hero-grid">
+        <div class="services-hero-copy">
+          <p class="eyebrow reveal">{getVal("heroEyebrow")}</p>
+          <h1 class="reveal delay-1">{getVal("heroTitle")}</h1>
+          <p class="reveal delay-2">{getVal("heroLead")}</p>
+          <div class="services-hero-meta reveal delay-3" role="list" aria-label="Service capacity">
+            <span class="hero-meta-item" role="listitem">
+              <strong data-company-fact="productsOnMarket">{companyFacts.productsOnMarket}</strong>
+              <span>{getLabel("productsOnMarket")}</span>
+            </span>
+            <span class="hero-meta-divider" aria-hidden="true"></span>
+            <span class="hero-meta-item" role="listitem">
+              <strong data-company-fact="happyClients">{companyFacts.happyClients}</strong>
+              <span>{getLabel("happyClients")}</span>
+            </span>
+            <span class="hero-meta-divider" aria-hidden="true"></span>
+            <span class="hero-meta-item" role="listitem">
+              <strong data-company-fact="founded">2020</strong>
+              <span>{getLabel("founded")}</span>
+            </span>
+            <span class="hero-meta-divider" aria-hidden="true"></span>
+            <span class="hero-meta-item" role="listitem">
+              <strong data-company-fact="officesWorldwide">{companyFacts.officesWorldwide}</strong>
+              <span>{getLabel("officesWorldwide")}</span>
+            </span>
+          </div>
+        </div>
+        <div class="service-architecture reveal delay-2" aria-label="Connected product architecture summary">
+          <div class="architecture-deck architecture-deck-simple">
+            <p class="architecture-label">{getLabel("serviceArchitecture")}</p>
+            <h2>{getLabel("deviceToData")}</h2>
+            <div class="architecture-flow">
+              <div class="flow-node-large">
+                <span>01</span>
+                <strong>{getLabel("device")}</strong>
+                <small>{getLabel("hwFirmware")}</small>
+              </div>
+              <div class="flow-node-large">
+                <span>02</span>
+                <strong>{getLabel("data")}</strong>
+                <small>{getLabel("apiPostgres")}</small>
+              </div>
+              <div class="flow-node-large">
+                <span>03</span>
+                <strong>{getLabel("interface")}</strong>
+                <small>{getLabel("webMobileVr")}</small>
+              </div>
+            </div>
+            <div class="summary-metrics">
+              <div>
+                <strong>8</strong>
+                <span>{getLabel("capabilities")}</span>
+              </div>
+              <div>
+                <strong>4</strong>
+                <span>{getLabel("deliveryLayers")}</span>
+              </div>
+              <div>
+                <strong>1</strong>
+                <span>{getLabel("systemView")}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TRUSTED BY — global customer logos for immediate trust signal -->
+    <section class="section trusted-by-section">
+      <div class="section-inner">
+        <div class="trusted-by-row reveal">
+          <p class="trusted-by-label">Trusted by global teams</p>
+          <div class="trusted-by-logos" aria-label="Customer logos">
+            {featuredClients.map((client: any) => (
+              <div class="trusted-logo" title={client.name}>
+                {client.logo ? <img src={`/${client.logo}`} alt={client.name} loading="lazy" decoding="async" /> : <strong>{client.name}</strong>}
+              </div>
+            ))}
+          </div>
+          <span class="trusted-by-pill">+ 15 export countries</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- SERVICE SYSTEM: grouped by the way connected products are actually built -->
+    <section class="section tight service-capabilities-section">
+      <div class="section-inner">
+        <div class="section-head reveal product-headline">
+          <div>
+            <p class="eyebrow">{getLabel("serviceSystem")}</p>
+            <h2>{getLabel("chooseLayer")}</h2>
+            <p class="section-lead">{getLabel("servicesLead")}</p>
+          </div>
+          <a class="btn btn-secondary btn-small" href={`/${locale}/start-project`}>{getLabel("startDiscovery")}</a>
+        </div>
+        <div class="service-system-grid reveal delay-1">
+          <article class="system-layer-card">
+            <span class="layer-index">01</span>
+            <p class="service-card-kicker">{getLabel("deviceEng")}</p>
+            <h3>{getLabel("deviceEngTitle")}</h3>
+            <p>{getLabel("deviceEngDesc")}</p>
+            <div class="layer-services">
+              <span>Embedded Hardware</span>
+              <span>Firmware</span>
+              <span>Connectivity</span>
+            </div>
+            <p class="layer-output">
+              <strong>{getLabel("typicalOutputLabel")}</strong> {getLabel("deviceOutput")}
+            </p>
+          </article>
+          <article class="system-layer-card">
+            <span class="layer-index">02</span>
+            <p class="service-card-kicker">{getLabel("cloudData")}</p>
+            <h3>{getLabel("cloudDataTitle")}</h3>
+            <p>{getLabel("cloudDataDesc")}</p>
+            <div class="layer-services">
+              <span>Backend API</span>
+              <span>PostgreSQL</span>
+              <span>IoT Cloud</span>
+            </div>
+            <p class="layer-output">
+              <strong>{getLabel("typicalOutputLabel")}</strong> {getLabel("cloudOutput")}
+            </p>
+          </article>
+          <article class="system-layer-card">
+            <span class="layer-index">03</span>
+            <p class="service-card-kicker">{getLabel("operatorInterface")}</p>
+            <h3>{getLabel("operatorTitle")}</h3>
+            <p>{getLabel("operatorDesc")}</p>
+            <div class="layer-services">
+              <span>Web/Admin</span>
+              <span>Mobile Apps</span>
+              <span>Customer Portal</span>
+            </div>
+            <p class="layer-output">
+              <strong>{getLabel("typicalOutputLabel")}</strong> {getLabel("operatorOutput")}
+            </p>
+          </article>
+          <article class="system-layer-card">
+            <span class="layer-index">04</span>
+            <p class="service-card-kicker">{getLabel("immersive")}</p>
+            <h3>{getLabel("immersiveTitle")}</h3>
+            <p>{getLabel("immersiveDesc")}</p>
+            <div class="layer-services">
+              <span>VR Training</span>
+              <span>Product Demo</span>
+              <span>Digital Twin</span>
+            </div>
+            <p class="layer-output">
+              <strong>{getLabel("typicalOutputLabel")}</strong> {getLabel("immersiveOutput")}
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- DELIVERABLES — what customers receive -->
+    <section class="section service-outcomes-section">
+      <div class="section-inner">
+        <div class="deliverables-split">
+          <div class="section-head reveal">
+            <p class="eyebrow">{getLabel("deliverables")}</p>
+            <h2 class="page-title">{getLabel("whatLeaves")}</h2>
+            <p class="section-lead">{getLabel("deliverablesLead")}</p>
+            <div class="handoff-note">
+              <strong>{getLabel("projectHandoff")}</strong>
+              <span>{getLabel("handoffDesc")}</span>
+            </div>
+          </div>
+          <div class="deliverable-ledger reveal delay-1">
+            <div>
+              <span>Device package</span>
+              <strong>{getLabel("devicePackageDesc")}</strong>
+            </div>
+            <div>
+              <span>Firmware package</span>
+              <strong>{getLabel("firmwarePackageDesc")}</strong>
+            </div>
+            <div>
+              <span>Platform package</span>
+              <strong>{getLabel("platformPackageDesc")}</strong>
+            </div>
+            <div>
+              <span>Interface package</span>
+              <strong>{getLabel("interfacePackageDesc")}</strong>
+            </div>
+            <div>
+              <span>Launch package</span>
+              <strong>{getLabel("launchPackageDesc")}</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CASE STUDIES — real-world engineering proof -->
+    <section class="section services-case-studies-section" id="case-studies" style={{ background: "var(--surface)", borderTop: "1px solid var(--line)", borderBottom: "1px solid var(--line)" }}>
+      <div class="section-inner">
+        <div class="section-head reveal center" style={{ marginBottom: "48px" }}>
+          <p class="eyebrow">{getLabel("caseStudies")}</p>
+          <h2 class="page-title">{getLabel("provenInProduction")}</h2>
+          <p class="section-lead" style={{ maxWidth: "720px", marginLeft: "auto", marginRight: "auto" }}>
+            {getLabel("caseStudiesLead")}
+          </p>
+        </div>
+        
+        <div class="case-studies-list" style={{ display: "grid", gap: "64px" }}>
+          {/* Case Study 1 */}
+          <article class="split reveal" style={{ alignItems: "stretch" }}>
+            <div class="split-media" style={{ position: "relative", display: "flex", flexDirection: "column", justifyContent: "center", background: "rgba(255,255,255,0.8)", border: "1px solid var(--line)", overflow: "hidden", borderRadius: "var(--radius)", boxShadow: "var(--shadow)" }}>
+              <img src="/assets/client-logos/slb.png" alt="SLB" style={{ maxHeight: "44px", width: "auto", objectFit: "contain", margin: "40px auto 20px", opacity: 0.85 }} />
+              <div class="case-stats" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "10px", padding: "20px", background: "rgba(240, 245, 255, 0.5)", borderTop: "1px solid var(--line)", textAlign: "center" }}>
+                <div><strong style={{ display: "block", fontSize: "1.85rem", color: "var(--accent)", fontFamily: "var(--font-display)" }}>-32%</strong><span style={{ fontSize: "0.74rem", color: "var(--muted)", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.02em" }}>{getLabel("maintenanceCosts")}</span></div>
+                <div><strong style={{ display: "block", fontSize: "1.85rem", color: "var(--accent)", fontFamily: "var(--font-display)" }}>99.6%</strong><span style={{ fontSize: "0.74rem", color: "var(--muted)", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.02em" }}>{getLabel("networkUptime")}</span></div>
+                <div><strong style={{ display: "block", fontSize: "1.85rem", color: "var(--accent)", fontFamily: "var(--font-display)" }}>&lt;5m</strong><span style={{ fontSize: "0.74rem", color: "var(--muted)", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.02em" }}>{getLabel("faultAlerts")}</span></div>
+              </div>
+            </div>
+            <div style={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>
+              <p class="eyebrow" style={{ color: "var(--accent)", marginBottom: "8px" }}>{getLabel("solarTitle")}</p>
+              <h3 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(1.6rem, 2.4vw, 2.5rem)", margin: "0 0 16px", color: "var(--ink)", lineHeight: 1.1, letterSpacing: "-0.02em" }}>{getLabel("solarSub")}</h3>
+              <p style={{ color: "var(--muted)", fontSize: "0.98rem", lineHeight: 1.6, margin: "0 0 20px 0" }} set:html={getLabel("solarProblem")}></p>
+              <blockquote style={{ margin: 0, paddingLeft: "20px", borderLeft: "3px solid var(--accent)", fontStyle: "italic", color: "var(--muted)", fontSize: "0.94rem", lineHeight: 1.55 }}>
+                {getLabel("solarQuote")}
+                <cite style={{ display: "block", marginTop: "8px", fontWeight: 700, fontStyle: "normal", fontSize: "0.82rem", textTransform: "uppercase", letterSpacing: "0.04em", color: "var(--ink)" }}>{getLabel("solarQuoteAuthor")}</cite>
+              </blockquote>
+            </div>
+          </article>
+
+          {/* Case Study 2 */}
+          <article class="split reveal" style={{ alignItems: "stretch" }}>
+            <div class="split-media" style={{ position: "relative", display: "flex", flexDirection: "column", justifyContent: "center", background: "rgba(255,255,255,0.8)", border: "1px solid var(--line)", overflow: "hidden", borderRadius: "var(--radius)", boxShadow: "var(--shadow)" }}>
+              <img src="/assets/client-logos/cocacola.png" alt="Coca-Cola" style={{ maxHeight: "44px", width: "auto", objectFit: "contain", margin: "40px auto 20px", opacity: 0.85 }} />
+              <div class="case-stats" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "10px", padding: "20px", background: "rgba(240, 245, 255, 0.5)", borderTop: "1px solid var(--line)", textAlign: "center" }}>
+                <div><strong style={{ display: "block", fontSize: "1.85rem", color: "var(--accent)", fontFamily: "var(--font-display)" }}>0%</strong><span style={{ fontSize: "0.74rem", color: "var(--muted)", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.02em" }}>{getLabel("spoilageIncidents")}</span></div>
+                <div><strong style={{ display: "block", fontSize: "1.85rem", color: "var(--accent)", fontFamily: "var(--font-display)" }}>5 Yrs</strong><span style={{ fontSize: "0.74rem", color: "var(--muted)", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.02em" }}>{getLabel("batteryLife")}</span></div>
+                <div><strong style={{ display: "block", fontSize: "1.85rem", color: "var(--accent)", fontFamily: "var(--font-display)" }}>Realtime</strong><span style={{ fontSize: "0.74rem", color: "var(--muted)", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.02em" }}>{getLabel("tempAlerts")}</span></div>
+              </div>
+            </div>
+            <div style={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>
+              <p class="eyebrow" style={{ color: "var(--accent)", marginBottom: "8px" }}>{getLabel("coldTitle")}</p>
+              <h3 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(1.6rem, 2.4vw, 2.5rem)", margin: "0 0 16px", color: "var(--ink)", lineHeight: 1.1, letterSpacing: "-0.02em" }}>{getLabel("coldSub")}</h3>
+              <p style={{ color: "var(--muted)", fontSize: "0.98rem", lineHeight: 1.6, margin: "0 0 20px 0" }} set:html={getLabel("coldProblem")}></p>
+              <blockquote style={{ margin: 0, paddingLeft: "20px", borderLeft: "3px solid var(--accent)", fontStyle: "italic", color: "var(--muted)", fontSize: "0.94rem", lineHeight: 1.55 }}>
+                {getLabel("coldQuote")}
+                <cite style={{ display: "block", marginTop: "8px", fontWeight: 700, fontStyle: "normal", fontSize: "0.82rem", textTransform: "uppercase", letterSpacing: "0.04em", color: "var(--ink)" }}>{getLabel("coldQuoteAuthor")}</cite>
+              </blockquote>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROCESS TIMELINE PREMIUM -->
+    <section class="section soft process-section">
+      <div class="section-inner">
+        <div class="section-head reveal">
+          <p class="eyebrow">{getLabel("conceptToProduction")}</p>
+          <h2>{getLabel("cleanerPath")}</h2>
+        </div>
+        <div class="process process-premium process-compact">
+          <div class="process-step reveal">
+            <div class="step-dot">1</div>
+            <article class="card process-card">
+              <h3>{getLabel("analyze")}</h3>
+              <p>{getLabel("analyzeDesc")}</p>
+            </article>
+          </div>
+          <div class="process-step reveal delay-1">
+            <div class="step-dot">2</div>
+            <article class="card process-card">
+              <h3>{getLabel("architect")}</h3>
+              <p>{getLabel("architectDesc")}</p>
+            </article>
+          </div>
+          <div class="process-step reveal delay-2">
+            <div class="step-dot">3</div>
+            <article class="card process-card">
+              <h3>{getLabel("build")}</h3>
+              <p>{getLabel("buildDesc")}</p>
+            </article>
+          </div>
+          <div class="process-step reveal delay-3">
+            <div class="step-dot">4</div>
+            <article class="card process-card">
+              <h3>{getLabel("validate")}</h3>
+              <p>{getLabel("validateDesc")}</p>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="section soft services-faq-section" id="faq">
+      <div class="section-inner">
+        <div class="section-head reveal center" style={{ marginBottom: "36px" }}>
+          <p class="eyebrow">{getLabel("questionsBefore")}</p>
+          <h2 class="page-title">{getVal("stackTitle") || "Questions before you brief us."}</h2>
+          <p class="section-lead" style={{ maxWidth: "720px", marginLeft: "auto", marginRight: "auto" }}>
+            {getLabel("engineeringBuyers")}
+          </p>
+        </div>
+        <FaqAccordion pageKey="services" faqs={content.faqs || []} locale={locale} />
+      </div>
+    </section>
+
+    <!-- FINAL PREMIUM CTA -->
+    <section class="section soft services-cta-section">
+      <div class="section-inner">
+        <div class="services-cta-block reveal">
+          <div class="services-cta-content">
+            <p class="eyebrow">{getLabel("startWithEng")}</p>
+            <h2 class="page-title">{getLabel("readyToShip")}</h2>
+            <p class="section-lead">{getLabel("ctaLead")}</p>
+          </div>
+          <div class="services-cta-actions">
+            <a class="btn btn-primary" href={`/${locale}/contact`}>{getLabel("talkToEngineering")}</a>
+            <a class="btn btn-secondary" href={`/${locale}/start-project`}>{getLabel("startYourProject")}</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</PageLayout>

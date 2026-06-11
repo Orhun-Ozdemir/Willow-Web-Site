@@ -1,0 +1,397 @@
+---
+import PageLayout from "@/layouts/PageLayout.astro";
+import ProductGallery from "@/components/ProductGallery.astro";
+import { loadContent } from "@/lib/content";
+import { localizedValue, localizeItem, locales, type Locale } from "@/lib/cms";
+
+export function getStaticPaths() {
+  const content = loadContent();
+  const products = content.products || [];
+  const paths: any[] = [];
+  for (const locale of locales) {
+    for (const product of products) {
+      const slug = product.slug || product.id;
+      paths.push({ params: { locale, slug }, props: { productId: product.id } });
+    }
+  }
+  return paths;
+}
+
+const { locale, slug } = Astro.params as { locale: Locale; slug: string };
+const { productId } = Astro.props;
+const content = loadContent();
+const rawProduct = (content.products || []).find((p: any) => p.id === productId);
+
+if (!rawProduct) {
+  return Astro.redirect(`/${locale}/products`);
+}
+
+const product = localizeItem(rawProduct, locale);
+const seo = rawProduct.seo?.[locale] || {};
+const titleLower = (product.title || "").toLowerCase();
+
+// Category text mappings
+const categoryMap: Record<string, string> = {
+  modules: "Use this module as the embedded core of low-power connected devices where firmware, RF performance and long-term maintainability matter.",
+  environment: "Use this sensor family for environmental telemetry, alerts and remote monitoring in industrial, utility and field conditions.",
+  tracking: "Use this device family to detect movement, access, safety events and asset state changes across distributed sites.",
+  industrial: "Use this product to connect industrial equipment, Modbus devices and telemetry workflows into a unified platform."
+};
+const fitText = categoryMap[product.category] || "Use this product as part of a reliable connected product ecosystem.";
+
+const snapshotMap: Record<string, string> = {
+  modules: "Embedded core for low-power device builds.",
+  environment: "Field telemetry for environmental monitoring.",
+  tracking: "Event detection for distributed operations.",
+  industrial: "Industrial bridge for machine-side data."
+};
+const snapshotText = snapshotMap[product.category] || "Built for field telemetry.";
+
+const byCategory: Record<string, any> = {
+  modules: {
+    useTitle: "Custom connected devices",
+    use: "Use this module when you need a low-power LoRaWAN core for a custom sensor, controller or field device.",
+    roleTitle: "Embedded core",
+    role: "It sits at the device layer, where MCU logic, RF behavior, GPIO mapping and firmware maintainability decide product reliability.",
+    delivered: ["Firmware architecture and low-power logic", "LoRaWAN payload design and RF validation", "Prototype-to-production embedded support"]
+  },
+  environment: {
+    useTitle: "Environmental monitoring",
+    use: "Use this sensor family for indoor, outdoor or field conditions where measurements must become alerts, dashboards and reports.",
+    roleTitle: "Measurement node",
+    role: "It captures field conditions and sends structured telemetry into the platform for monitoring, reporting and operator action.",
+    delivered: ["Sensor configuration and reporting intervals", "Backend ingestion and PostgreSQL time-series model", "Dashboards, thresholds and mobile notifications"]
+  },
+  tracking: {
+    useTitle: "Event and asset state tracking",
+    use: "Use this device when movement, access, safety, tilt or route events need to be visible without manual site checks.",
+    roleTitle: "Event trigger",
+    role: "It becomes the field signal that turns physical state changes into operational alerts and history.",
+    delivered: ["Event logic and payload design", "Alert routing and operator workflow", "Map, log or admin panel integration"]
+  },
+  industrial: {
+    useTitle: "Industrial telemetry integration",
+    use: "Use this product when existing meters, PLCs or field assets need to report operational data into a modern digital platform.",
+    roleTitle: "Industrial bridge",
+    role: "It connects machine-side data with APIs, PostgreSQL, web dashboards and mobile operational tools.",
+    delivered: ["Register mapping and device configuration", "API ingestion and PostgreSQL schema", "Admin dashboard, reporting and integrations"]
+  }
+};
+
+const decision = { ...(byCategory[product.category] || {
+  useTitle: "Field monitoring",
+  use: "Use this product where physical-world data must be measured, transmitted and turned into operational decisions.",
+  roleTitle: "Telemetry source",
+  role: "It feeds the digital layer with structured measurements, events and device state.",
+  delivered: ["Firmware and connectivity configuration", "Backend ingestion and PostgreSQL model", "Dashboard, mobile and alerting workflow"]
+}) };
+
+if (titleLower.includes("panic")) {
+  decision.useTitle = "Safety and emergency workflows";
+  decision.use = "Use this device where operators need a physical emergency trigger connected to remote alerts and response workflows.";
+}
+if (titleLower.includes("modbus")) {
+  decision.useTitle = "Legacy equipment integration";
+  decision.roleTitle = "Modbus-to-platform bridge";
+}
+if (titleLower.includes("ultrasonic") || titleLower.includes("level")) {
+  decision.useTitle = "Tank, manhole and level monitoring";
+  decision.use = "Use this product where level, distance or fill state must be monitored remotely across distributed field assets.";
+}
+if (titleLower.includes("soil")) {
+  decision.useTitle = "Agriculture and field research";
+}
+
+const galleryImages = Array.isArray(product.images) ? product.images.filter(Boolean) : (product.image ? [product.image] : []);
+
+// Technical sections
+const techBlocks = [
+  { label: "Technical Summary", html: product.technicalSummary },
+  { label: "Use Cases", html: product.useCases },
+  { label: "Specifications", html: product.specifications }
+].filter((block) => block.html && String(block.html).trim());
+
+// Schema.org Graph
+const graphSchema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://willowsoft.co/#org",
+      "name": "WillowSoft",
+      "url": "https://willowsoft.co",
+      "logo": "https://willowsoft.co/assets/willow-mark-transparent.png"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": `https://willowsoft.co/${locale}` },
+        { "@type": "ListItem", "position": 2, "name": "Products", "item": `https://willowsoft.co/${locale}/products` },
+        { "@type": "ListItem", "position": 3, "name": product.title }
+      ]
+    },
+    {
+      "@type": "Product",
+      "name": product.title,
+      "sku": product.slug || product.id,
+      "image": product.image ? [`https://willowsoft.co/${product.image}`] : [],
+      "description": product.shortDescription || "",
+      "brand": { "@type": "Brand", "name": "WillowSoft" },
+      "manufacturer": { "@id": "https://willowsoft.co/#org" },
+      "category": product.category || "Product",
+      "offers": {
+        "@type": "Offer",
+        "priceCurrency": "USD",
+        "availability": "https://schema.org/InStock",
+        "seller": { "@id": "https://willowsoft.co/#org" },
+        "url": `https://willowsoft.co/${locale}/products/${slug}`
+      }
+    }
+  ]
+};
+
+// Localized UI Labels
+const t = {
+  technicalSnapshot: { en: "Technical Snapshot", tr: "Teknik Özet", de: "Technische Momentaufnahme", fr: "Aperçu technique", es: "Resumen técnico", it: "Panoramica tecnica", ar: "لقطة فنية", ja: "技術概要" },
+  capability: { en: "Capability", tr: "Yetenek", de: "Fähigkeit", fr: "Capacité", es: "Capacidad", it: "Funzionalità", ar: "القدرة", ja: "機能" },
+  readyText: { en: "Industrial deployment ready.", tr: "Endüstriyel kuruluma hazır.", de: "Bereit für den industriellen Einsatz.", fr: "Prêt pour le déploiement industriel.", es: "Listo para implementación industrial.", it: "Pronto per l'installazione industriale", ar: "جاهز للنشر الصناعي.", ja: "産業用途への即時導入が可能" },
+  readyDesc: {
+    en: "Use this product as part of a complete WillowSoft hardware, firmware, backend and dashboard stack.",
+    tr: "Bu ürünü eksiksiz bir WillowSoft donanım, gömülü yazılım, arka plan ve kontrol paneli yığınının parçası olarak kullanın.",
+    de: "Nutzen Sie dieses Produkt als Teil eines vollständigen WillowSoft-Hardware-, Firmware-, Backend- und Dashboard-Stacks.",
+    fr: "Utilisez ce produit dans le cadre d'une pile complète de matériel, de micrologiciel, de backend et de tableau de bord WillowSoft.",
+    es: "Utilice este producto como parte de una pila completa de hardware, firmware, backend y panel de control de WillowSoft.",
+    it: "Utilizza questo prodotto come parte di uno stack completo WillowSoft di hardware, firmware, backend e dashboard.",
+    ar: "استخدم هذا CNBC كجزء من أجهزة وبرامج مدمجة ولوحة تحكم متكاملة من WillowSoft.",
+    ja: "無線デバイス、デバイスファームウェア、クラウドバックエンド、およびダッシュボードを含む統合システムとして導入できます。"
+  },
+  gallery: { en: "Gallery", tr: "Galeri", de: "Galerie", fr: "Galerie", es: "Galería", it: "Galleria", ar: "معرض الصور", ja: "製品ギャラリー" },
+  whereFits: { en: "Where It Fits", tr: "Uyumlu Olduğu Yapı", de: "Wo es hineinpasst", fr: "Où cela s'intègre", es: "Dónde encaja", it: "Dove si integra", ar: "مكان الاستخدام", ja: "システム構成" },
+  fitsTitle: { en: "From device data to operational decisions.", tr: "Cihaz verilerinden operasyonel kararlara.", de: "Von Gerätedaten zu betrieblichen Entscheidungen.", fr: "Des données de l'appareil aux décisions opérationnelles.", es: "Desde los datos del dispositivo hasta las decisiones operativas.", it: "Dai dati del dispositivo alle decisioni operative.", ar: "من بيانات الجهاز إلى القرارات التشغيلية.", ja: "デバイスデータから業務の意思決定まで" },
+  fitsLi1: {
+    en: "Can be evaluated as a standalone product or part of a complete connected system.",
+    tr: "Tek başına bir ürün olarak veya eksiksiz bir bağlantılı sistemin parçası olarak değerlendirilebilir.",
+    de: "Kann als eigenständiges Produkt oder als Teil eines vollständig vernetzten Systems bewertet werden.",
+    fr: "Peut être évalué comme un produit autonome ou dans le cadre d'un système connecté complet.",
+    es: "Puede evaluarse como un producto independiente o como parte de un sistema conectado completo.",
+    it: "Può essere valutato come prodotto autonomo o come parte di un sistema connesso completo.",
+    ar: "يمكن تقييمه كمنتج مستقل أو كجزء من نظام متصل متكامل.",
+    ja: "スタンドアロンのハードウェアとして、または統合されたエンドツーエンドのシステムとして評価可能です。"
+  },
+  fitsLi2: {
+    en: "Useful when field data must become dashboards, alerts, reports or integrations.",
+    tr: "Saha verilerinin kontrol panellerine, uyarılara, raporlara veya entegrasyonlara dönüşmesi gerektiğinde kullanışlıdır.",
+    de: "Nützlich, wenn Felddaten in Dashboards, Warnungen, Berichte oder Integrationen einfließen müssen.",
+    fr: "Utile lorsque les données de terrain doivent se transformer en tableaux de bord, alertes, rapports ou intégrations.",
+    es: "Útil cuando los datos de campo deben convertirse en paneles de control, alertas, informes o integraciones.",
+    it: "Utile quando i dati sul campo devono tradursi in dashboard, avvisi, report o integrazioni.",
+    ar: "مفيد عندما يجب أن تتحول البيانات الميدانية إلى لوحات تحكم أو تنبيهات أو تقارير أو عمليات ربط.",
+    ja: "現場での測定データをダッシュボード、アラート、定期レポート、または外部システム連携に活用する際に最適です。"
+  },
+  fitsLi3: {
+    en: "Related firmware, backend, PostgreSQL, web/admin and mobile layers can be delivered by WillowSoft.",
+    tr: "İlgili gömülü yazılım, arka plan, PostgreSQL, web/yönetim ve mobil katmanlar WillowSoft tarafından teslim edilebilir.",
+    de: "Zugehörige Firmware, Backends, PostgreSQL, Web/Admin- und mobile Schichten können von WillowSoft geliefert werden.",
+    fr: "Les couches de micrologiciel, de backend, de PostgreSQL, de site web/d'administration et de mobile associées peuvent être fournies par WillowSoft.",
+    es: "Las capas de firmware, backend, PostgreSQL, web/administración y móvil relacionadas pueden ser entregadas por WillowSoft.",
+    it: "I relativi livelli di firmware, backend, PostgreSQL, portale web/amministratore e app mobile possono essere forniti da WillowSoft.",
+    ar: "يمكن لـ WillowSoft تقديم البرامج المدمجة ذات الصلة، والخلفية، وقاعدة بيانات PostgreSQL، وطبقات الويب/الإدارة والجوال.",
+    ja: "対応するファームウェア、APIサーバー、PostgreSQLデータベース、Web管理画面、モバイルアプリの全レイヤーをWillowSoftが開発提供します。"
+  },
+  buyerChecklist: { en: "Buyer Checklist", tr: "Alıcı Kontrol Listesi", de: "Käufer-Checkliste", fr: "Liste de contrôle de l'acheteur", es: "Lista de verificación del comprador", it: "Checklist per l'acquisto", ar: "قائمة التحقق للمشتري", ja: "導入計画チェックリスト" },
+  buyerTitle: { en: "What this product helps you decide before deployment.", tr: "Kurulumdan önce bu ürünün karar vermenize yardımcı olduğu konular.", de: "Was dieses Produkt Ihnen vor der Bereitstellung zu entscheiden hilft.", fr: "Ce que ce produit vous aide à décider avant le déploiement.", es: "Lo que este producto le ayuda a decidir antes de la implementación.", it: "Cosa ti aiuta a decidere questo prodotto prima dell'installazione.", ar: "ما يساعدك هذا المنتج على قراره قبل عملية النشر.", ja: "導入前に検討すべき要素" },
+  planDeployment: { en: "Plan Deployment", tr: "Kurulum Planla", de: "Bereitstellung planen", fr: "Planifier le déploiement", es: "Planificar la implementación", it: "Pianifica l'installazione", ar: "تخطيط النشر", ja: "導入計画を開始" },
+  useCase: { en: "Use Case", tr: "Kullanım Durumu", de: "Anwendungsfall", fr: "Cas d'usage", es: "Caso de uso", it: "Caso d'uso", ar: "حالة الاستخدام", ja: "ユースケース" },
+  systemRole: { en: "System Role", tr: "Sistem Rolü", de: "Systemrolü", fr: "Rôle du système", es: "Rol del sistema", it: "Ruolo del sistema", ar: "دور النظام", ja: "システム上の役割" },
+  deliveredWith: { en: "Delivered With", tr: "Birlikte Teslim Edilenler", de: "Geliefert mit", fr: "Livré avec", es: "Entregado con", it: "Fornito con", ar: "يُسلم مع", ja: "提供内容" },
+  hwSwPath: { en: "Hardware plus software path", tr: "Donanım artı yazılım yolu", de: "Hardware- und Softwarepfad", fr: "Parcours matériel et logiciel", es: "Ruta de hardware más software", it: "Percorso hardware e software", ar: "مسار الأجهزة والبرامج", ja: "ハードウェア ＋ ソフトウェア開発" },
+  sysArch: { en: "System Architecture", tr: "Sistem Mimarisi", de: "Systemarchitektur", fr: "Architecture système", es: "Arquitectura del sistema", it: "Architettura del sistema", ar: "بنية النظام", ja: "システム構成図" },
+  sysTitle: { en: "A product page should show the whole operating path.", tr: "Bir ürün sayfası tüm çalışma yolunu göstermelidir.", de: "Eine Produktseite sollte den gesamten Betriebspfad zeigen.", fr: "Une page produit doit montrer tout le parcours opérationnel.", es: "Una página de producto debe mostrar toda la ruta operativa.", it: "Una pagina prodotto dovrebbe mostrare l'intero percorso operativo.", ar: "يجب أن توضح صفحة المنتج مسار التشغيل بالكامل.", ja: "デバイスからクラウドまでの接続図" },
+  sysDesc: {
+    en: "WillowSoft products are strongest when they are presented as part of a complete operational system: sensor, connectivity, backend, database, dashboard, mobile and alerting.",
+    tr: "WillowSoft ürünleri, eksiksiz bir operasyonel sistemin parçası olarak sunulduğunda en güçlü yönlerini ortaya koyar: sensör, bağlantı, arka uç, veritabanı, kontrol paneli, mobil ve uyarı.",
+    de: "WillowSoft-Produkte sind am stärksten, wenn sie als Teil eines vollständigen Betriebssystems präsentiert werden: Sensor, Konnektivität, Backend, Datenbank, Dashboard, Mobile und Alarmierung.",
+    fr: "Les produits WillowSoft sont les plus performants lorsqu'ils sont présentés comme faisant partie d'un système opérationnel complet : capteur, connectivité, backend, base de données, tableau de bord, mobile et alerte.",
+    es: "Los productos de WillowSoft son más fuertes cuando se presentan como parte de un sistema operativo completo: sensor, conectividad, backend, base de datos, panel de control, móvil y alertas.",
+    it: "I prodotti WillowSoft offrono il massimo valore quando presentati come parte di un sistema operativo completo: sensore, connettività, backend, database, dashboard, app mobile e avvisi.",
+    ar: "تكون منتجات WillowSoft في أقوى حالاتها عندما تُقدم كجزء من نظام تشغيلي متكامل: المستشعر، والاتصال، والخلفية، وقاعدة البيانات، ولوحة التحكم، والجوال، والتنبيهات.",
+    ja: "WillowSoftのデバイスは、センサー、ネットワーク、サーバー、データベース、ダッシュボード、モバイル通知までを網羅した統合システムの一部として導入することで、最大の効果を発揮します。"
+  },
+  needInProject: { en: "Need this in a project?", tr: "Projelerinizde buna mı ihtiyacınız var?", de: "Benötigen Sie dies in einem Projekt?", fr: "Besoin de cela dans un projet ?", es: "¿Necesita esto en un proyecto?", it: "Ti serve in un progetto?", ar: "هل تحتاج هذا في مشروعك؟", ja: "プロジェクトへの導入をご検討中ですか？" },
+  askProductFit: { en: "Ask for product fit, integration path and deployment scope.", tr: "Ürün uyumu, entegrasyon yolu ve kurulum kapsamı hakkında bilgi isteyin.", de: "Fragen Sie nach Produktpassung, Integrationspfad und Bereitstellungsumfang.", fr: "Demandez l'adéquation du produit, le parcours d'intégration et la portée du déploiement.", es: "Pregunte por la idoneidad del producto, la ruta de integración y el alcance de la implementación.", it: "Chiedi informazioni sulla compatibilità del prodotto, il percorso di integrazione e l'ambito dell'installazione.", ar: "اسأل عن مدى ملاءمة المنتج ومسار الربط ونطاق النشر.", ja: "製品の適合性、既存システムとの連携方法、および導入規模についてお問い合わせください。"
+  },
+  startProject: { en: "Start Project", tr: "Projeyi Başlat", de: "Projekt starten", fr: "Démarrer le projet", es: "Iniciar proyecto", it: "Avvia progetto", ar: "بدء المشروع", ja: "プロジェクト相談" },
+  contactSales: { en: "Contact Sales", tr: "Satışla İletişime Geçin", de: "Vertrieb kontaktieren", fr: "Contacter le service commercial", es: "Contactar a ventas", it: "Contatta le vendite", ar: "الاتصال بالمبيعات", ja: "営業チームに相談" },
+  backToProducts: { en: "Back to Products", tr: "Ürünlere Dön", de: "Zurück zu Produkten", fr: "Retour aux Produkten", es: "Volver a productos", it: "Torna ai prodotti", ar: "العودة إلى المنتجات", ja: "製品一覧へ戻る" },
+  reqInfo: { en: "Request Information", tr: "Bilgi Talep Et", de: "Informationen anfordern", fr: "Demander des informations", es: "Solicitar información", it: "Richiedi informazioni", ar: "طلب معلومات", ja: "資料請求・お問い合わせ" }
+};
+
+const getT = (key: keyof typeof t) => {
+  return t[key][locale] || t[key]["en"];
+};
+---
+
+<PageLayout
+  title={seo.seoTitle || `${product.title} | WillowSoft`}
+  description={seo.metaDescription || product.shortDescription || ""}
+  locale={locale}
+  dataPage="product-detail"
+>
+  <main>
+    <script type="application/ld+json" set:html={JSON.stringify(graphSchema)} />
+    
+    <section class="hero compact">
+      <div class="hero-media">
+        <img src={product.image ? `/${product.image}`.replace("//", "/") : "/assets/hero-industrial-iot.png"} alt={product.title} loading="lazy" decoding="async" />
+      </div>
+      <canvas class="signal-canvas" data-density="36"></canvas>
+      <div class="hero-inner">
+        <p class="eyebrow reveal">{product.category || "Product"}</p>
+        <h1 class="reveal delay-1">{product.title}</h1>
+        <p class="reveal delay-2">{product.shortDescription}</p>
+        <div class="hero-ctas reveal delay-3">
+          <a class="btn btn-primary" href={`/${locale}/contact?product=${encodeURIComponent(slug)}`}>{getT("reqInfo")}</a>
+          <a class="btn btn-secondary" href={`/${locale}/products`}>{getT("backToProducts")}</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Bento Snapshot -->
+    <section class="section">
+      <div class="section-inner bento">
+        <article class="card accent reveal">
+          <p class="eyebrow">{getT("technicalSnapshot")}</p>
+          <h2 class="page-title">{snapshotText}</h2>
+          <div class="mini-spec-grid">
+            {(product.chips || []).slice(0, 3).map((chip: string) => (
+              <div class="mini-spec">
+                <strong>{chip}</strong>
+                <span>{getT("capability")}</span>
+              </div>
+            ))}
+          </div>
+        </article>
+        <article
+          class="card visual-card reveal delay-1"
+          style={product.image ? `background-image: url('/${product.image}')` : ""}
+        >
+          <h3>{getT("readyText")}</h3>
+          <p>{getT("readyDesc")}</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- Gallery Section -->
+    {galleryImages.length > 1 && (
+      <section class="section product-gallery-section">
+        <div class="section-inner">
+          <div class="section-head">
+            <p class="eyebrow">{getT("gallery")}</p>
+            <h2 class="page-title">{getT("gallery")}</h2>
+          </div>
+          <ProductGallery images={galleryImages} title={product.title} />
+        </div>
+      </section>
+    )}
+
+    <!-- Tech sections -->
+    {techBlocks.length > 0 && (
+      <section class="section soft product-tech-section">
+        <div class="section-inner">
+          {techBlocks.map((block) => (
+            <article class="product-tech-block" style={{ marginBottom: "40px" }}>
+              <h2 class="page-title">{block.label}</h2>
+              <div class="rich-content" set:html={block.html} />
+            </article>
+          ))}
+        </div>
+      </section>
+    )}
+
+    <!-- Where it fits -->
+    <section class="section soft">
+      <div class="section-inner split">
+        <div class="reveal">
+          <p class="eyebrow">{getT("whereFits")}</p>
+          <h2 class="page-title">{getT("fitsTitle")}</h2>
+        </div>
+        <div class="reveal delay-1">
+          <p class="section-lead">{fitText}</p>
+          <ul class="spec-list">
+            <li>{getT("fitsLi1")}</li>
+            <li>{getT("fitsLi2")}</li>
+            <li>{getT("fitsLi3")}</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Buyer Checklist -->
+    <section class="section product-decision-section">
+      <div class="section-inner">
+        <div class="section-head reveal product-headline">
+          <div>
+            <p class="eyebrow">{getT("buyerChecklist")}</p>
+            <h2>{getT("buyerTitle")}</h2>
+          </div>
+          <a class="btn btn-secondary btn-small" href={`/${locale}/start-project`}>{getT("planDeployment")}</a>
+        </div>
+        <div class="product-decision-grid">
+          <article class="product-decision-card reveal">
+            <span>{getT("useCase")}</span>
+            <h3>{decision.useTitle}</h3>
+            <p>{decision.use}</p>
+          </article>
+          <article class="product-decision-card reveal delay-1">
+            <span>{getT("systemRole")}</span>
+            <h3>{decision.roleTitle}</h3>
+            <p>{decision.role}</p>
+          </article>
+          <article class="product-decision-card reveal delay-2">
+            <span>{getT("deliveredWith")}</span>
+            <h3>{getT("hwSwPath")}</h3>
+            <ul>
+              {decision.delivered.map((item: string) => (
+                <li>{item}</li>
+              ))}
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- System Architecture -->
+    <section class="section soft product-system-section">
+      <div class="section-inner split">
+        <div class="reveal">
+          <p class="eyebrow">{getT("sysArch")}</p>
+          <h2 class="page-title">{getT("sysTitle")}</h2>
+          <p class="section-lead">{getT("sysDesc")}</p>
+        </div>
+        <div class="tech-flow product-tech-flow reveal delay-1">
+          <div class="flow-row">
+            <div class="flow-node"><small>01</small><strong>Device</strong><span>Sensing, enclosure, battery and RF behavior.</span></div>
+            <div class="flow-node"><small>02</small><strong>Network</strong><span>LoRaWAN payloads and gateway planning.</span></div>
+            <div class="flow-node"><small>03</small><strong>Data</strong><span>API ingestion and PostgreSQL schema.</span></div>
+            <div class="flow-node"><small>04</small><strong>Interface</strong><span>Dashboard, mobile app and admin panel.</span></div>
+            <div class="flow-node"><small>05</small><strong>Action</strong><span>Alerts, reports, integrations and service workflows.</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Quote band -->
+    <section class="section product-quote-band">
+      <div class="section-inner product-quote-inner reveal">
+        <div>
+          <p class="eyebrow">{getT("needInProject")}</p>
+          <h2 class="page-title">{getT("askProductFit")}</h2>
+        </div>
+        <div class="product-quote-actions">
+          <a class="btn btn-primary" href={`/${locale}/start-project?product=${encodeURIComponent(slug)}`}>{getT("startProject")}</a>
+          <a class="btn btn-secondary" href={`/${locale}/contact?product=${encodeURIComponent(slug)}`}>{getT("contactSales")}</a>
+        </div>
+      </div>
+    </section>
+  </main>
+</PageLayout>
