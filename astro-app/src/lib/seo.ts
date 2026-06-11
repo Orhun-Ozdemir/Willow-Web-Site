@@ -15,6 +15,50 @@ export const OG_LOCALE_MAP: Record<Locale, string> = {
   ja: "ja_JP",
 };
 
+export const ORGANIZATION_SCHEMA = {
+  "@type": "Organization",
+  "@id": `${SITE_ORIGIN}/#org`,
+  name: "WillowSoft",
+  alternateName: "WILLOWSOFT",
+  url: SITE_ORIGIN,
+  logo: `${SITE_ORIGIN}/assets/willow-mark-transparent.png`,
+  slogan: "Smart Embedded Connectivity",
+  description:
+    "Embedded hardware and Industrial IoT engineering company. WillowSoft designs LoRaWAN devices, firmware, backend APIs, dashboards, mobile apps and VR layers as one connected system.",
+  foundingDate: "2020",
+  areaServed: "Worldwide",
+  address: { "@type": "PostalAddress", addressCountry: "TR" },
+  contactPoint: {
+    "@type": "ContactPoint",
+    email: "info@willowsoft.co",
+    contactType: "Sales",
+    areaServed: ["TR", "GB", "US", "DE", "IT", "JP", "SA"],
+    availableLanguage: ["English", "Turkish", "German", "French", "Spanish", "Italian", "Arabic", "Japanese"],
+  },
+};
+
+export const WEBSITE_SCHEMA = {
+  "@type": "WebSite",
+  "@id": `${SITE_ORIGIN}/#site`,
+  url: SITE_ORIGIN,
+  name: "WillowSoft",
+  publisher: { "@id": `${SITE_ORIGIN}/#org` },
+  inLanguage: [...locales],
+};
+
+/** Page-level node (AboutPage, ContactPage, CollectionPage…) tied to the org/site graph. */
+export function webPageNode(type: string, canonical: string, name: string, description: string, locale: Locale) {
+  return {
+    "@type": type,
+    "@id": canonical,
+    url: canonical,
+    name,
+    description,
+    inLanguage: locale,
+    isPartOf: { "@id": `${SITE_ORIGIN}/#site` },
+  };
+}
+
 export interface Alternate {
   hreflang: string;
   href: string;

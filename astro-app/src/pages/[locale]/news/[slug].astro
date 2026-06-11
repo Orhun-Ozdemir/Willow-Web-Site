@@ -2,7 +2,7 @@
 import PageLayout from "@/layouts/PageLayout.astro";
 import { loadContent } from "@/lib/content";
 import { localizedValue, localizeItem, locales, type Locale } from "@/lib/cms";
-import { buildAlternates, DEFAULT_OG_IMAGE, SITE_ORIGIN } from "@/lib/seo";
+import { buildAlternates, DEFAULT_OG_IMAGE, ORGANIZATION_SCHEMA, WEBSITE_SCHEMA, SITE_ORIGIN } from "@/lib/seo";
 
 export function getStaticPaths() {
   const content = loadContent();
@@ -34,20 +34,21 @@ const canonical = seo.canonical || `${SITE_ORIGIN}/${locale}${slugByLocale[local
 const ogImage = article.image ? `${SITE_ORIGIN}${article.image.startsWith("/") ? "" : "/"}${article.image}` : DEFAULT_OG_IMAGE;
 const articleSchema = {
   "@context": "https://schema.org",
-  "@type": "NewsArticle",
-  headline: article.title,
-  description: seo.metaDescription || article.excerpt || "",
-  image: [ogImage],
-  inLanguage: locale,
-  mainEntityOfPage: { "@type": "WebPage", "@id": canonical },
-  ...(article.date ? { datePublished: article.date } : {}),
-  author: { "@type": "Organization", name: "WillowSoft", url: SITE_ORIGIN },
-  publisher: {
-    "@type": "Organization",
-    "@id": `${SITE_ORIGIN}/#org`,
-    name: "WillowSoft",
-    logo: { "@type": "ImageObject", url: `${SITE_ORIGIN}/assets/willow-mark-transparent.png` },
-  },
+  "@graph": [
+    ORGANIZATION_SCHEMA,
+    WEBSITE_SCHEMA,
+    {
+      "@type": "NewsArticle",
+      headline: article.title,
+      description: seo.metaDescription || article.excerpt || "",
+      image: [ogImage],
+      inLanguage: locale,
+      mainEntityOfPage: { "@type": "WebPage", "@id": canonical },
+      ...(article.date ? { datePublished: article.date } : {}),
+      author: { "@id": `${SITE_ORIGIN}/#org` },
+      publisher: { "@id": `${SITE_ORIGIN}/#org` },
+    },
+  ],
 };
 ---
 

@@ -3,7 +3,7 @@ import PageLayout from "@/layouts/PageLayout.astro";
 import ProductCard from "@/components/ProductCard.astro";
 import NewsCard from "@/components/NewsCard.astro";
 import { loadContent } from "@/lib/content";
-import { pageSeo } from "@/lib/seo";
+import { pageSeo, ORGANIZATION_SCHEMA, WEBSITE_SCHEMA } from "@/lib/seo";
 import { localizedValue, locales, type Locale } from "@/lib/cms";
 
 export function getStaticPaths() {
@@ -127,36 +127,7 @@ const industryLanes: { icon: string; title: L10n; desc: L10n }[] = [
 
 const homeSchema = {
   "@context": "https://schema.org",
-  "@graph": [
-    {
-      "@type": "Organization",
-      "@id": "https://willowsoft.co/#org",
-      name: "WillowSoft",
-      alternateName: "WILLOWSOFT",
-      url: "https://willowsoft.co",
-      logo: "https://willowsoft.co/assets/willow-mark-transparent.png",
-      slogan: "Smart Embedded Connectivity",
-      description: "Embedded hardware and Industrial IoT engineering company. WillowSoft designs LoRaWAN devices, firmware, backend APIs, dashboards, mobile apps and VR layers as one connected system.",
-      foundingDate: "2020",
-      areaServed: "Worldwide",
-      address: { "@type": "PostalAddress", addressCountry: "TR" },
-      contactPoint: {
-        "@type": "ContactPoint",
-        email: "info@willowsoft.co",
-        contactType: "Sales",
-        areaServed: ["TR", "GB", "US", "DE", "IT", "JP", "SA"],
-        availableLanguage: ["English", "Turkish", "German", "French", "Spanish", "Italian", "Arabic", "Japanese"],
-      },
-    },
-    {
-      "@type": "WebSite",
-      "@id": "https://willowsoft.co/#site",
-      url: "https://willowsoft.co",
-      name: "WillowSoft",
-      publisher: { "@id": "https://willowsoft.co/#org" },
-      inLanguage: ["en", "tr", "de", "fr", "es", "it", "ar", "ja"],
-    },
-  ],
+  "@graph": [ORGANIZATION_SCHEMA, WEBSITE_SCHEMA],
 };
 ---
 

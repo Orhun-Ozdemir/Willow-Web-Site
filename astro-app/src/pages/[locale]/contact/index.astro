@@ -3,7 +3,7 @@ import PageLayout from "@/layouts/PageLayout.astro";
 import ContactForm from "@/components/ContactForm.astro";
 import FaqAccordion from "@/components/FaqAccordion.astro";
 import { loadContent } from "@/lib/content";
-import { pageSeo } from "@/lib/seo";
+import { pageSeo, webPageNode, ORGANIZATION_SCHEMA, WEBSITE_SCHEMA, SITE_ORIGIN } from "@/lib/seo";
 import { localizedValue, locales, type Locale } from "@/lib/cms";
 
 export function getStaticPaths() {
@@ -13,6 +13,17 @@ export function getStaticPaths() {
 const { locale } = Astro.params as { locale: Locale };
 const content = loadContent();
 const seoProps = pageSeo(content, "contact", locale, "/contact", "Contact | WillowSoft", "Contact WillowSoft for IoT hardware, backend, PostgreSQL, and software development projects.");
+const contactSchema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    ORGANIZATION_SCHEMA,
+    WEBSITE_SCHEMA,
+    {
+      ...webPageNode("ContactPage", seoProps.canonical, seoProps.title, seoProps.description, locale),
+      mainEntity: { "@id": `${SITE_ORIGIN}/#org` },
+    },
+  ],
+};
 const pageContent = content.pageContent?.contact || {};
 const getVal = (key: string) => localizedValue(pageContent[key], locale);
 
@@ -43,6 +54,7 @@ const getLabel = (key: keyof typeof labels) => {
 
 <PageLayout
   {...seoProps}
+  schema={contactSchema}
   locale={locale}
   dataPage="contact"
 >

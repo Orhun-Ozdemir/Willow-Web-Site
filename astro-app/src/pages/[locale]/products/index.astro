@@ -3,7 +3,7 @@ import PageLayout from "@/layouts/PageLayout.astro";
 import ProductCard from "@/components/ProductCard.astro";
 import FaqAccordion from "@/components/FaqAccordion.astro";
 import { loadContent } from "@/lib/content";
-import { pageSeo } from "@/lib/seo";
+import { pageSeo, webPageNode, ORGANIZATION_SCHEMA, WEBSITE_SCHEMA, SITE_ORIGIN } from "@/lib/seo";
 import { localizedValue, locales, type Locale } from "@/lib/cms";
 
 export function getStaticPaths() {
@@ -18,6 +18,29 @@ const companyFacts = content.companyFacts || {};
 const getVal = (key: string) => localizedValue(pageContent[key], locale);
 
 const productsList = content.products || [];
+
+const productsItemListId = `${seoProps.canonical}#itemlist`;
+const productsSchema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    ORGANIZATION_SCHEMA,
+    WEBSITE_SCHEMA,
+    {
+      ...webPageNode("CollectionPage", seoProps.canonical, seoProps.title, seoProps.description, locale),
+      mainEntity: { "@id": productsItemListId },
+    },
+    {
+      "@type": "ItemList",
+      "@id": productsItemListId,
+      itemListElement: productsList.map((product: any, idx: number) => ({
+        "@type": "ListItem",
+        position: idx + 1,
+        name: localizedValue(product.title, locale),
+        url: `${SITE_ORIGIN}/${locale}/products/${product.slug || product.id}`,
+      })),
+    },
+  ],
+};
 
 const labels = {
   productsOnMarket: { en: "Products on Market", tr: "Piyasadaki Ürünler", de: "Produkte am Markt", fr: "Produits sur le marché", es: "Productos en el mercado", it: "Prodotti sul mercato", ar: "منتجات في السوق", ja: "市場実績製品" },
@@ -119,6 +142,7 @@ const getLabel = (key: keyof typeof labels) => {
 
 <PageLayout
   {...seoProps}
+  schema={productsSchema}
   locale={locale}
   dataPage="products"
 >

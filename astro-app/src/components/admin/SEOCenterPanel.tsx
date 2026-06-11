@@ -131,7 +131,7 @@ export default function SEOCenterPanel() {
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <FormField label="H1 Başlık" value={seoData.h1 || ""} onChange={(v) => updateSEO("h1", v)} />
-                <FormField label="Canonical URL" value={seoData.canonical || ""} onChange={(v) => updateSEO("canonical", v)} placeholder="https://willowsoft.com/..." />
+                <FormField label="Canonical URL" value={seoData.canonical || ""} onChange={(v) => updateSEO("canonical", v)} placeholder="https://willowsoft.co/..." />
               </div>
               <div className="grid grid-cols-3 gap-4">
                 <FormField label="Schema Tipi" type="select" value={seoData.schemaType || ""} onChange={(v) => updateSEO("schemaType", v)} options={SCHEMA_TYPES} />
@@ -145,7 +145,7 @@ export default function SEOCenterPanel() {
             <>
               <FormField label="OG Title" value={seoData.ogTitle || ""} onChange={(v) => updateSEO("ogTitle", v)} hint="Boş bırakırsanız SEO başlığı kullanılır" />
               <FormField label="OG Description" value={seoData.ogDescription || ""} onChange={(v) => updateSEO("ogDescription", v)} type="textarea" rows={2} />
-              <FormField label="OG Image URL" value={seoData.ogImage || ""} onChange={(v) => updateSEO("ogImage", v)} placeholder="https://willowsoft.com/assets/og/..." />
+              <FormField label="OG Image URL" value={seoData.ogImage || ""} onChange={(v) => updateSEO("ogImage", v)} placeholder="https://willowsoft.co/assets/og/..." />
 
               {/* SERP Preview */}
               <div className="border border-gray-300 rounded-lg p-4 bg-gray-50">

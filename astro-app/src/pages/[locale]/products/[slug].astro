@@ -3,7 +3,7 @@ import PageLayout from "@/layouts/PageLayout.astro";
 import ProductGallery from "@/components/ProductGallery.astro";
 import { loadContent } from "@/lib/content";
 import { localizedValue, localizeItem, locales, type Locale } from "@/lib/cms";
-import { buildAlternates, DEFAULT_OG_IMAGE, SITE_ORIGIN } from "@/lib/seo";
+import { buildAlternates, DEFAULT_OG_IMAGE, ORGANIZATION_SCHEMA, WEBSITE_SCHEMA, SITE_ORIGIN } from "@/lib/seo";
 
 export function getStaticPaths() {
   const content = loadContent();
@@ -116,18 +116,13 @@ const techBlocks = [
 const graphSchema = {
   "@context": "https://schema.org",
   "@graph": [
-    {
-      "@type": "Organization",
-      "@id": "https://willowsoft.co/#org",
-      "name": "WillowSoft",
-      "url": "https://willowsoft.co",
-      "logo": "https://willowsoft.co/assets/willow-mark-transparent.png"
-    },
+    ORGANIZATION_SCHEMA,
+    WEBSITE_SCHEMA,
     {
       "@type": "BreadcrumbList",
       "itemListElement": [
-        { "@type": "ListItem", "position": 1, "name": "Home", "item": `https://willowsoft.co/${locale}` },
-        { "@type": "ListItem", "position": 2, "name": "Products", "item": `https://willowsoft.co/${locale}/products` },
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": `${SITE_ORIGIN}/${locale}` },
+        { "@type": "ListItem", "position": 2, "name": "Products", "item": `${SITE_ORIGIN}/${locale}/products` },
         { "@type": "ListItem", "position": 3, "name": product.title }
       ]
     },
@@ -135,17 +130,17 @@ const graphSchema = {
       "@type": "Product",
       "name": product.title,
       "sku": product.slug || product.id,
-      "image": product.image ? [`https://willowsoft.co/${product.image}`] : [],
+      "image": product.image ? [`${SITE_ORIGIN}/${product.image}`.replace(/([^:])\/\//g, "$1/")] : [],
       "description": product.shortDescription || "",
       "brand": { "@type": "Brand", "name": "WillowSoft" },
-      "manufacturer": { "@id": "https://willowsoft.co/#org" },
+      "manufacturer": { "@id": `${SITE_ORIGIN}/#org` },
       "category": product.category || "Product",
       "offers": {
         "@type": "Offer",
         "priceCurrency": "USD",
         "availability": "https://schema.org/InStock",
-        "seller": { "@id": "https://willowsoft.co/#org" },
-        "url": `https://willowsoft.co/${locale}/products/${slug}`
+        "seller": { "@id": `${SITE_ORIGIN}/#org` },
+        "url": `${SITE_ORIGIN}/${locale}/products/${slug}`
       }
     }
   ]

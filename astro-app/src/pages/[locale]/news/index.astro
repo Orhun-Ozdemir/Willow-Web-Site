@@ -2,7 +2,7 @@
 import PageLayout from "@/layouts/PageLayout.astro";
 import NewsCard from "@/components/NewsCard.astro";
 import { loadContent } from "@/lib/content";
-import { pageSeo } from "@/lib/seo";
+import { pageSeo, webPageNode, ORGANIZATION_SCHEMA, WEBSITE_SCHEMA, SITE_ORIGIN } from "@/lib/seo";
 import { localizedValue, locales, type Locale } from "@/lib/cms";
 
 export function getStaticPaths() {
@@ -21,6 +21,29 @@ const newsList = (content.news || []).sort((a: any, b: any) => {
   return dateB - dateA;
 });
 
+const newsItemListId = `${seoProps.canonical}#itemlist`;
+const newsSchema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    ORGANIZATION_SCHEMA,
+    WEBSITE_SCHEMA,
+    {
+      ...webPageNode("CollectionPage", seoProps.canonical, seoProps.title, seoProps.description, locale),
+      mainEntity: { "@id": newsItemListId },
+    },
+    {
+      "@type": "ItemList",
+      "@id": newsItemListId,
+      itemListElement: newsList.map((item: any, idx: number) => ({
+        "@type": "ListItem",
+        position: idx + 1,
+        name: localizedValue(item.title, locale),
+        url: `${SITE_ORIGIN}/${locale}/news/${localizedValue(item.slug, locale) || item.slug?.en || item.id}`,
+      })),
+    },
+  ],
+};
+
 const labels = {
   backAdmin: { en: "Open Admin", tr: "Yönetici Panelini Aç", de: "Admin öffnen", fr: "Ouvrir l'admin", es: "Abrir admin", it: "Apri admin", ar: "افتح الإدارة", ja: "管理画面を開く" }
 };
@@ -32,6 +55,7 @@ const getLabel = (key: keyof typeof labels) => {
 
 <PageLayout
   {...seoProps}
+  schema={newsSchema}
   locale={locale}
   dataPage="news"
 >

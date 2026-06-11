@@ -1,7 +1,7 @@
 ---
 import PageLayout from "@/layouts/PageLayout.astro";
 import { loadContent } from "@/lib/content";
-import { pageSeo } from "@/lib/seo";
+import { pageSeo, webPageNode, ORGANIZATION_SCHEMA, WEBSITE_SCHEMA, SITE_ORIGIN } from "@/lib/seo";
 import { localizedValue, locales, type Locale } from "@/lib/cms";
 
 export function getStaticPaths() {
@@ -11,6 +11,17 @@ export function getStaticPaths() {
 const { locale } = Astro.params as { locale: Locale };
 const content = loadContent();
 const seoProps = pageSeo(content, "company", locale, "/company", "Company | WillowSoft", "About WillowSoft.");
+const companySchema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    ORGANIZATION_SCHEMA,
+    WEBSITE_SCHEMA,
+    {
+      ...webPageNode("AboutPage", seoProps.canonical, seoProps.title, seoProps.description, locale),
+      mainEntity: { "@id": `${SITE_ORIGIN}/#org` },
+    },
+  ],
+};
 const pageContent = content.pageContent?.company || {};
 const getVal = (key: string) => localizedValue(pageContent[key], locale);
 
@@ -183,6 +194,7 @@ const getLabel = (key: keyof typeof labels) => {
 
 <PageLayout
   {...seoProps}
+  schema={companySchema}
   locale={locale}
   dataPage="company"
 >
