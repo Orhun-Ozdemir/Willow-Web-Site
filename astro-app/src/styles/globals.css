@@ -2250,6 +2250,10 @@ select {
     linear-gradient(180deg, #fff, #f8faff);
 }
 
+.home-products [data-cms-featured-products] {
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
 
 
 .home-products .product-card {
