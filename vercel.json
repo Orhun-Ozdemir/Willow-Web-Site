@@ -1,4 +1,0 @@
-{
-  "installCommand": "cd astro-app && npm ci",
-  "buildCommand": "cd astro-app && npm run build"
-}
