@@ -40,3 +40,26 @@ export async function PATCH(req: NextRequest, { params }: RouteParams) {
     return NextResponse.json({ ok: false, error: error.message || "Invalid payload" }, { status });
   }
 }
+
+export async function DELETE(req: NextRequest, { params }: RouteParams) {
+  const session = getSession(req);
+  if (!session) {
+    return NextResponse.json({ ok: false, error: "Unauthorized" }, { status: 401 });
+  }
+
+  const { id } = await params;
+
+  try {
+    const leads = fs.existsSync(leadsFile) ? JSON.parse(fs.readFileSync(leadsFile, "utf8")) : [];
+    const filtered = leads.filter((lead: any) => lead.id !== id);
+
+    if (filtered.length === leads.length) {
+      return NextResponse.json({ ok: false, error: "Lead not found" }, { status: 404 });
+    }
+
+    fs.writeFileSync(leadsFile, JSON.stringify(filtered, null, 2) + "\n", "utf8");
+    return NextResponse.json({ ok: true });
+  } catch (error: any) {
+    return NextResponse.json({ ok: false, error: error.message || "Delete failed" }, { status: 400 });
+  }
+}

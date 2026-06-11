@@ -1,6 +1,3 @@
-import fs from "node:fs";
-import path from "node:path";
-
 export const locales = ["en", "tr", "de", "fr", "es", "it", "ar", "ja"] as const;
 export type Locale = (typeof locales)[number];
 
@@ -42,28 +39,4 @@ export function localizeItem(item: any, locale: Locale): any {
     next[key] = key === "chips" || key === "deliverables" ? normalizeLocalizedList(value) : value;
   });
   return next;
-}
-
-export function fetchContentSync(): any {
-  try {
-    const dataPath = path.join(process.cwd(), "../data/site-data.json");
-    if (fs.existsSync(dataPath)) {
-      return JSON.parse(fs.readFileSync(dataPath, "utf8"));
-    }
-  } catch (error) {
-    console.error("fetchContentSync failed", error);
-  }
-  return {};
-}
-
-export async function fetchContent(): Promise<any> {
-  // If running on the server, load directly from filesystem to avoid HTTP overhead
-  if (typeof window === "undefined") {
-    return fetchContentSync();
-  }
-  
-  // Client-side fetch
-  const res = await fetch("/api/content", { cache: "no-store" });
-  if (res.ok) return res.json();
-  throw new Error("Failed to fetch content");
 }

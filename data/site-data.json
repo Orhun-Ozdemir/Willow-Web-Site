@@ -2905,14 +2905,14 @@
         "ja": "センサーが報告し、ゲートウェイがつなぎ、プラットフォームが動く。"
       },
       "howLead": {
-        "en": "The moving background represents distributed field data. In the real system, each device sends telemetry into APIs, PostgreSQL, dashboards, mobile alerts, and reporting tools.",
-        "tr": "Hareketli arka plan, dağıtık saha verisini temsil eder. Gerçek sistemde her cihaz, telemetriyi API'lere, PostgreSQL'e, panolara, mobil uyarılara ve raporlama araçlarına gönderir.",
-        "de": "Der bewegte Hintergrund steht für verteilte Felddaten. Im realen System sendet jedes Gerät Telemetrie an APIs, PostgreSQL, Dashboards, mobile Benachrichtigungen und Reporting-Tools.",
-        "fr": "L'arrière-plan animé représente des données de terrain distribuées. Dans le système réel, chaque appareil envoie sa télémétrie vers des API, PostgreSQL, des tableaux de bord, des alertes mobiles et des outils de reporting.",
-        "es": "El fondo en movimiento representa datos de campo distribuidos. En el sistema real, cada dispositivo envía telemetría a API, PostgreSQL, paneles, alertas móviles y herramientas de informes.",
-        "it": "Lo sfondo in movimento rappresenta dati di campo distribuiti. Nel sistema reale, ogni dispositivo invia la telemetria ad API, PostgreSQL, dashboard, avvisi mobili e strumenti di reporting.",
-        "ar": "تمثّل الخلفية المتحركة بيانات ميدانية موزّعة. في النظام الفعلي، يرسل كل جهاز بيانات القياس إلى واجهات البرمجة وPostgreSQL ولوحات المعلومات والتنبيهات على الجوال وأدوات إعداد التقارير.",
-        "ja": "動く背景は、分散した現場データを表しています。実際のシステムでは、各デバイスがテレメトリを API、PostgreSQL、ダッシュボード、モバイル通知、レポートツールへ送信します。"
+        "en": "WillowSoft integrates distributed field telemetry with scalable data networks. In our production systems, each device streams real-time telemetry directly into secure APIs, PostgreSQL databases, monitoring dashboards, mobile alerts, and operational reporting tools.",
+        "tr": "WillowSoft, dağıtık saha telemetrisini ölçeklenebilir veri ağlarıyla entegre eder. Üretim sistemlerimizde her cihaz, telemetri verilerini doğrudan güvenli API'lere, PostgreSQL veritabanlarına, izleme panolarına, mobil uyarılara ve operasyonel raporlama araçlarına gerçek zamanlı olarak aktarır.",
+        "de": "WillowSoft integriert verteilte Feldtelemetrie in skalierbare Datennetzwerke. In unseren Produktionssystemen überträgt jedes Gerät Echtzeit-Telemetrie direkt an sichere APIs, PostgreSQL-Datenbanken, Dashboards, mobile Benachrichtigungen und operative Reporting-Tools.",
+        "fr": "WillowSoft intègre la télémétrie de terrain distribuée avec des réseaux de données évolutifs. Dans nos systèmes de production, chaque appareil transmet sa télémétrie en temps réel directement vers des API sécurisées, des bases de données PostgreSQL, des tableaux de bord, des alertes mobiles et des outils de reporting.",
+        "es": "WillowSoft integra la telemetría de campo distribuida con redes de datos escalables. En nuestros sistemas de producción, cada dispositivo transmite telemetría en tiempo real directamente a API seguras, bases de datos PostgreSQL, paneles de control, alertas móviles y herramientas de informes operativos.",
+        "it": "WillowSoft integra la telemetria di campo distribuita con reti dati scalabili. Nei nostri sistemi di produzione, ogni dispositivo trasmette la telemetria in tempo reale direttamente ad API sicure, database PostgreSQL, dashboard di monitoraggio, avvisi mobili e strumenti di reporting operativo.",
+        "ar": "تدمج WillowSoft قياس البيانات الميدانية الموزعة مع شبكات بيانات قابلة للتطوير. في أنظمة الإنتاج لدينا، يرسل كل جهاز بيانات القياس في الوقت الفعلي مباشرة إلى واجهات برمجة التطبيقات الآمنة وقواعد بيانات PostgreSQL ولوحات المراقبة وتنبيهات الجوال وأدوات التقارير التشغيلية.",
+        "ja": "WillowSoftは、分散した現場のテレメトリをスケーラブルなデータネットワークと統合します。実稼働システムでは、各デバイスがリアルタイムのテレメトリをセキュアなAPI、PostgreSQLデータベース、監視ダッシュボード、モバイルアラート、業務レポートツールへ直接配信します。"
       },
       "whyEyebrow": {
         "en": "Why WillowSoft",
