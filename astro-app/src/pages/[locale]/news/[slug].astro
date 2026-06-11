@@ -1,0 +1,60 @@
+---
+import PageLayout from "@/layouts/PageLayout.astro";
+import { loadContent } from "@/lib/content";
+import { localizedValue, localizeItem, locales, type Locale } from "@/lib/cms";
+
+export function getStaticPaths() {
+  const content = loadContent();
+  const news = content.news || [];
+  const paths: any[] = [];
+  for (const locale of locales) {
+    for (const item of news) {
+      const slug = localizedValue(item.slug, locale) || item.slug?.en || item.id;
+      paths.push({ params: { locale, slug }, props: { newsId: item.id } });
+    }
+  }
+  return paths;
+}
+
+const { locale, slug } = Astro.params as { locale: Locale; slug: string };
+const { newsId } = Astro.props;
+const content = loadContent();
+const raw = (content.news || []).find((n: any) => n.id === newsId);
+
+if (!raw) return Astro.redirect(`/${locale}/news`);
+
+const article = localizeItem(raw, locale);
+const seo = raw.seo?.[locale] || {};
+---
+
+<PageLayout
+  title={seo.seoTitle || `${article.title} | WillowSoft`}
+  description={seo.metaDescription || article.excerpt || ""}
+  locale={locale}
+  dataPage="news-detail"
+>
+  <main>
+    <article>
+      <section class="hero compact">
+        <div class="hero-inner">
+          <a href={`/${locale}/news`} class="back-link reveal">← News</a>
+          {article.category && <span class="eyebrow reveal">{article.category}</span>}
+          <h1 class="reveal delay-1">{article.title}</h1>
+          {article.date && <time class="reveal delay-2">{article.date}</time>}
+        </div>
+      </section>
+
+      {article.image && (
+        <section class="section">
+          <div class="section-inner">
+            <img src={article.image} alt={article.title} class="article-hero-img" loading="lazy" />
+          </div>
+        </section>
+      )}
+
+      <section class="section">
+        <div class="section-inner prose" set:html={article.content || article.excerpt || ""} />
+      </section>
+    </article>
+  </main>
+</PageLayout>

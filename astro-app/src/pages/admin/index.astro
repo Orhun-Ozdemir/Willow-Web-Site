@@ -1,0 +1,10 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import AdminLogin from "@/components/admin/AdminLogin";
+
+export const prerender = false;
+---
+
+<BaseLayout title="WillowSoft Admin" dataPage="admin">
+  <AdminLogin client:only="react" />
+</BaseLayout>

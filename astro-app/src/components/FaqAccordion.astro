@@ -1,0 +1,31 @@
+---
+import type { Locale } from "@/lib/cms";
+
+interface Props {
+  pageKey: string;
+  faqs: any[];
+  locale: Locale;
+}
+
+const { pageKey, faqs, locale } = Astro.props;
+
+const filteredFaqs = (faqs || [])
+  .filter((f: any) => f.page === pageKey)
+  .sort((a: any, b: any) => (a.sortOrder || 0) - (b.sortOrder || 0));
+---
+
+<div class="faq-list reveal delay-1">
+  {filteredFaqs.map((faq: any) => {
+    const q = faq.localized?.[locale]?.question || faq.question;
+    const a = faq.localized?.[locale]?.answer || faq.answer;
+    return (
+      <details class="faq-item">
+        <summary>
+          <span class="faq-q" set:html={q} />
+          <span class="faq-toggle" aria-hidden="true"></span>
+        </summary>
+        <p set:html={a} />
+      </details>
+    );
+  })}
+</div>

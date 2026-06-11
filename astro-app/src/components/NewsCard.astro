@@ -1,0 +1,34 @@
+---
+import { localizeItem, type Locale } from "@/lib/cms";
+
+interface Props {
+  item: any;
+  locale: Locale;
+  index: number;
+}
+
+const { item, locale, index } = Astro.props;
+const n = localizeItem(item, locale);
+const delay = index % 3 ? ` delay-${index % 3}` : "";
+const date = n.date
+  ? new Date(`${n.date}T00:00:00`).toLocaleDateString(locale, { year: "numeric", month: "short", day: "numeric" })
+  : "";
+---
+
+<article class={`card news-card reveal${delay}`}>
+  <figure>
+    <img src={n.image} alt={n.title} loading="lazy" decoding="async" />
+  </figure>
+  <div class="product-body">
+    <p class="eyebrow">
+      {n.category} {date && `• ${date}`}
+    </p>
+    <h3>{n.title}</h3>
+    <p>{n.excerpt}</p>
+    <p class="mt-4">
+      <a href={`/${locale}/news/${encodeURIComponent(n.slug || n.id)}`} class="btn btn-ghost btn-small">
+        Read Update
+      </a>
+    </p>
+  </div>
+</article>

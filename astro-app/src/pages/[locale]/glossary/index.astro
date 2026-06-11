@@ -1,0 +1,143 @@
+---
+import PageLayout from "@/layouts/PageLayout.astro";
+import { loadContent } from "@/lib/content";
+import { localizeItem, localizedValue, locales, type Locale } from "@/lib/cms";
+
+export function getStaticPaths() {
+  return locales.map((locale) => ({ params: { locale } }));
+}
+
+const { locale } = Astro.params as { locale: Locale };
+const content = loadContent();
+const pageContent = content.pageContent?.glossary || {};
+const glossaryList = content.glossary || [];
+const seo = content.pageSeo?.glossary?.[locale] || {};
+
+const getVal = (key: string) => localizedValue(pageContent[key], locale);
+
+const getGlossaryItems = (category: string) => {
+  return glossaryList
+    .filter((item: any) => item.category === category)
+    .sort((a: any, b: any) => (a.sortOrder || 0) - (b.sortOrder || 0))
+    .map((item: any) => localizeItem(item, locale));
+};
+
+const connectivityItems = getGlossaryItems("connectivity");
+const devicesItems = getGlossaryItems("devices");
+const softwareItems = getGlossaryItems("software");
+
+const getNoteLabel = () => {
+  return locale === "tr" ? "WillowSoft kullanım alanları:" : "WillowSoft uses it in:";
+};
+---
+
+<PageLayout
+  title={seo.seoTitle || "IoT & LoRaWAN Glossary | WillowSoft"}
+  description={seo.metaDescription || "Plain-English definitions of LoRaWAN, Modbus RTU, Industrial IoT, embedded systems, MCU, IP67, edge computing and other terms used by WillowSoft engineering."}
+  locale={locale}
+  dataPage="glossary"
+>
+  <main>
+    <!-- Hero -->
+    <section class="hero compact">
+      <canvas class="signal-canvas" data-density="28" data-color="26, 163, 196"></canvas>
+      <div class="hero-inner">
+        <p class="eyebrow reveal">{getVal("heroEyebrow")}</p>
+        <h1 class="reveal delay-1" set:html={getVal("heroTitle")} />
+        <p class="reveal delay-2">{getVal("heroLead")}</p>
+      </div>
+    </section>
+
+    <!-- Connectivity Section -->
+    <section class="section">
+      <div class="section-inner">
+        <div class="section-head reveal">
+          <p class="eyebrow">{getVal("connectivityEyebrow")}</p>
+          <h2>{getVal("connectivityTitle")}</h2>
+        </div>
+        <div class="grid grid-2">
+          {connectivityItems.map((item: any, index: number) => {
+            const delay = index % 2 ? " delay-1" : "";
+            return (
+              <article class={`card reveal${delay}`} id={item.id}>
+                <h3>{item.term}</h3>
+                <p>{item.definition}</p>
+                {item.note && (
+                  <p>
+                    <strong>{getNoteLabel()}</strong> {item.note}
+                  </p>
+                )}
+              </article>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+
+    <!-- Devices Section -->
+    <section class="section soft">
+      <div class="section-inner">
+        <div class="section-head reveal">
+          <p class="eyebrow">{getVal("devicesEyebrow")}</p>
+          <h2>{getVal("devicesTitle")}</h2>
+        </div>
+        <div class="grid grid-2">
+          {devicesItems.map((item: any, index: number) => {
+            const delay = index % 2 ? " delay-1" : "";
+            return (
+              <article class={`card reveal${delay}`} id={item.id}>
+                <h3>{item.term}</h3>
+                <p>{item.definition}</p>
+                {item.note && (
+                  <p>
+                    <strong>{getNoteLabel()}</strong> {item.note}
+                  </p>
+                )}
+              </article>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+
+    <!-- Software Section -->
+    <section class="section">
+      <div class="section-inner">
+        <div class="section-head reveal">
+          <p class="eyebrow">{getVal("softwareEyebrow")}</p>
+          <h2>{getVal("softwareTitle")}</h2>
+        </div>
+        <div class="grid grid-2">
+          {softwareItems.map((item: any, index: number) => {
+            const delay = index % 2 ? " delay-1" : "";
+            return (
+              <article class={`card reveal${delay}`} id={item.id}>
+                <h3>{item.term}</h3>
+                <p>{item.definition}</p>
+                {item.note && (
+                  <p>
+                    <strong>{getNoteLabel()}</strong> {item.note}
+                  </p>
+                )}
+              </article>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="section dark">
+      <div class="section-inner split">
+        <div class="reveal">
+          <p class="eyebrow">{getVal("ctaEyebrow")}</p>
+          <h2 class="page-title">{getVal("ctaTitle")}</h2>
+        </div>
+        <div class="reveal delay-1">
+          <p class="section-lead">{getVal("ctaLead")}</p>
+          <p><a class="btn btn-primary" href={`/${locale}/contact`}>Talk to Engineering</a></p>
+        </div>
+      </div>
+    </section>
+  </main>
+</PageLayout>

@@ -1,0 +1,52 @@
+---
+interface Props {
+  images: string[];
+  title: string;
+}
+
+const { images, title } = Astro.props;
+---
+
+{images && images.length > 1 && (
+  <div class="product-gallery">
+    <div class="product-gallery-main">
+      <img id="main-gallery-img" src={`/${images[0]}`.replace("//", "/")} alt={title} />
+    </div>
+    <div class="product-gallery-thumbs">
+      {images.map((src, idx) => (
+        <button
+          type="button"
+          class={`product-gallery-thumb${idx === 0 ? " active" : ""}`}
+          data-src={`/${src}`.replace("//", "/")}
+        >
+          <img src={`/${src}`.replace("//", "/")} alt="" loading="lazy" decoding="async" />
+        </button>
+      ))}
+    </div>
+  </div>
+)}
+
+<script>
+  function setupGallery() {
+    const galleries = document.querySelectorAll('.product-gallery');
+    galleries.forEach(gallery => {
+      const mainImg = gallery.querySelector('#main-gallery-img') as HTMLImageElement;
+      const thumbs = gallery.querySelectorAll('.product-gallery-thumb');
+      
+      thumbs.forEach(thumb => {
+        thumb.addEventListener('click', () => {
+          thumbs.forEach(t => t.classList.remove('active'));
+          thumb.classList.add('active');
+          const src = (thumb as HTMLButtonElement).dataset.src;
+          if (src && mainImg) {
+            mainImg.src = src;
+          }
+        });
+      });
+    });
+  }
+
+  // Run on load and after View Transitions if any
+  setupGallery();
+  document.addEventListener('astro:after-swap', setupGallery);
+</script>

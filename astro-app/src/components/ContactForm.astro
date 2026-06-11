@@ -1,0 +1,198 @@
+---
+import type { Locale } from "@/lib/cms";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+
+const successTitles: Record<string, string> = {
+  en: "Submission Received!",
+  tr: "Talebiniz Alındı!",
+  ar: "تم استلام طلبك!",
+  de: "Anfrage Erhalten!",
+  fr: "Demande Reçue!",
+  es: "¡Solicitud Recibida!",
+  it: "Richiesta Ricevuta!",
+  ja: "送信が完了しました！",
+};
+
+const successTexts: Record<string, string> = {
+  en: "Thank you for reaching out. Our engineering team will review your details and contact you shortly.",
+  tr: "Bizimle iletişime geçtiğiniz için teşekkürler. Mühendislik ekibimiz detayları inceleyip en kısa sürede sizinle iletişime geçecektir.",
+  ar: "نشكرك على التواصل معنا. سيقوم فريق الهندسة لدينا بمراجعة التفاصيل والاتصال بك قريباً.",
+  de: "Vielen Dank für Ihre Kontaktaufnahme. Unser Engineering-Team wird Ihre Angaben prüfen und sich in Kürze mit Ihnen in Verbindung setzen.",
+  fr: "Merci de nous avoir contactés. Notre équipe d'ingénierie examinera vos détails et vous contactera sous peu.",
+  es: "Gracias por ponerse en contacto. Nuestro equipo de ingeniería revisará sus detalles y se comunicará con usted en breve.",
+  it: "Grazie per averci contattato. Il nostro team di ingegneria esaminerà i tuoi dettagli e ti contatterà al più presto.",
+  ja: "お問い合わせいただきありがとうございます。エンジニアリングチームが内容を確認し、追ってご連絡いたします。",
+};
+
+const successButtons: Record<string, string> = {
+  en: "Send another message",
+  tr: "Yeni mesaj gönder",
+  ar: "إرسال رسالة أخرى",
+  de: "Weitere Nachricht senden",
+  fr: "Envoyer un autre message",
+  es: "Enviar otro mensaje",
+  it: "Invia un altro messaggio",
+  ja: "別のメッセージを送る",
+};
+
+const labels = {
+  name: { en: "Name*", tr: "İsim*", de: "Name*", fr: "Nom*", es: "Nombre*", it: "Nome*", ar: "الاسم*", ja: "お名前*" },
+  email: { en: "Email*", tr: "E-posta*", de: "E-Mail*", fr: "E-mail*", es: "Correo*", it: "Email*", ar: "البريد الإلكتروني*", ja: "メールアドレス*" },
+  company: { en: "Company", tr: "Şirket", de: "Unternehmen", fr: "Entreprise", es: "Empresa", it: "Azienda", ar: "الشركة", ja: "会社名" },
+  subject: { en: "Reason for Contact", tr: "İletişim Nedeni", de: "Kontaktgrund", fr: "Motif", es: "Motivo", it: "Motivo", ar: "سبب الاتصال", ja: "お問い合わせ件名" },
+  message: { en: "How can we help?*", tr: "Nasıl yardımcı olabiliriz?*", de: "Wie können wir helfen?*", fr: "Comment pouvons-nous vous aider?*", es: "¿Cómo podemos ayudarle?*", it: "Come possiamo aiutarti?*", ar: "كيف يمكننا مساعدتك؟*", ja: "お問い合わせ内容*" },
+  send: { en: "Send Message", tr: "Mesaj Gönder", de: "Nachricht senden", fr: "Envoyer le message", es: "Enviar mensaje", it: "Invia messaggio", ar: "إرسال الرسالة", ja: "メッセージを送信" },
+  sending: { en: "Sending...", tr: "Gönderiliyor...", de: "Wird gesendet...", fr: "Envoi...", es: "Enviando...", it: "Invio in corso...", ar: "جاري الإرسال...", ja: "送信中..." },
+  errorMsg: { en: "Something went wrong. Please try again.", tr: "Bir şeyler yanlış gitti. Lütfen tekrar deneyin.", de: "Etwas ist schief gelaufen. Bitte versuchen Sie es erneut.", fr: "Une erreur s'est produite. Veuillez réessayer.", es: "Algo salió mal. Por favor intente de nuevo.", it: "Qualcosa è andato storto. Riprova.", ar: "حدث خطأ ما. يرجى المحاولة مرة أخرى.", ja: "エラーが発生しました。もう一度お試しください。" }
+};
+
+const getLabel = (key: keyof typeof labels) => {
+  return labels[key][locale] || labels[key]["en"];
+};
+---
+
+<div class="contact-form-container">
+  <form id="contact-form" class="form card">
+    <div class="field">
+      <label for="name">{getLabel("name")}</label>
+      <input id="name" name="name" autocomplete="name" required />
+    </div>
+    <div class="field">
+      <label for="email">{getLabel("email")}</label>
+      <input id="email" name="email" type="email" autocomplete="email" required />
+    </div>
+    <div class="field">
+      <label for="company">{getLabel("company")}</label>
+      <input id="company" name="company" autocomplete="organization" />
+    </div>
+    <div class="field">
+      <label for="subject">{getLabel("subject")}</label>
+      <select id="subject" name="subject">
+        <option value="General Inquiry">General Inquiry</option>
+        <option value="Partnership Opportunity">Partnership Opportunity</option>
+        <option value="Careers & Contracting">Careers & Contracting</option>
+        <option value="Press & Media">Press & Media</option>
+        <option value="Other">Other</option>
+      </select>
+    </div>
+    <div class="field">
+      <label for="message">{getLabel("message")}</label>
+      <textarea id="message" name="message" required></textarea>
+    </div>
+    <p id="error-message" style="color: #ef4444; font-size: 0.875rem; display: none; margin-bottom: 12px;">{getLabel("errorMsg")}</p>
+    <button class="btn btn-primary" type="submit" id="submit-btn">{getLabel("send")}</button>
+  </form>
+
+  <div id="success-message" class="form card" style="text-align: center; padding: 40px 20px; display: none; flex-direction: column; align-items: center; justify-content: center; gap: 16px;">
+    <div class="success-icon" style="width: 56px; height: 56px; border-radius: 50%; background: rgba(16, 185, 129, 0.1); display: grid; place-items: center; color: #10b981; font-size: 1.8rem; font-weight: bold;">✓</div>
+    <h3 style="font-size: 1.5rem; margin: 0;">{successTitles[locale] || successTitles.en}</h3>
+    <p style="color: var(--muted); font-size: 0.96rem; margin: 0; line-height: 1.5; max-width: 320px;">{successTexts[locale] || successTexts.en}</p>
+    <button type="button" class="btn btn-secondary btn-small" id="reset-btn" style="margin-top: 10px;">
+      {successButtons[locale] || successButtons.en}
+    </button>
+  </div>
+</div>
+
+<script define:vars={{ locale, sendingLabel: getLabel("sending"), sendLabel: getLabel("send") }}>
+  function setupContactForm() {
+    const form = document.getElementById('contact-form');
+    const successMsg = document.getElementById('success-message');
+    const errorMsg = document.getElementById('error-message');
+    const submitBtn = document.getElementById('submit-btn');
+    const resetBtn = document.getElementById('reset-btn');
+
+    if (!form || !successMsg || !errorMsg || !submitBtn || !resetBtn) return;
+
+    // Prefill product query param if any
+    const urlParams = new URLSearchParams(window.location.search);
+    const productSlug = urlParams.get('product');
+    if (productSlug) {
+      const messageField = form.querySelector('#message');
+      if (messageField) {
+        const prefillText = {
+          en: `Hello, I'm interested in learning more about the ${productSlug} product.`,
+          tr: `Merhaba, ${productSlug} ürünü hakkında daha fazla bilgi almak istiyorum.`,
+          de: `Hallo, ich bin daran interessiert, mehr über das Produkt ${productSlug} zu erfahren.`,
+          fr: `Bonjour, je souhaite en savoir plus sur le produit ${productSlug}.`,
+          es: `Hola, estoy interesado en obtener más información sobre el producto ${productSlug}.`,
+          it: `Ciao, sono interessato a saperne di più sul prodotto ${productSlug}.`,
+          ar: `مرحباً، أنا مهتم بمعرفة المزيد عن منتج ${productSlug}.`,
+          ja: `こんにちは。${productSlug} 製品についての詳細を希望します。`
+        };
+        messageField.value = prefillText[locale] || prefillText['en'];
+      }
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      submitBtn.disabled = true;
+      submitBtn.textContent = sendingLabel;
+      errorMsg.style.display = 'none';
+
+      const formData = {
+        name: form.name.value,
+        email: form.email.value,
+        company: form.company.value,
+        subject: form.subject.value,
+        message: form.message.value,
+      };
+
+      try {
+        const res = await fetch('/api/leads', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            ...formData,
+            sourcePage: window.location.pathname,
+            locale: locale,
+          }),
+        });
+
+        if (res.ok) {
+          form.style.display = 'none';
+          successMsg.style.display = 'flex';
+          form.reset();
+        } else {
+          throw new Error('Failed to submit form');
+        }
+      } catch (err) {
+        console.error(err);
+        try {
+          // Offline fallback
+          const localLeads = JSON.parse(window.localStorage.getItem('willowsoft-leads-offline') || '[]');
+          localLeads.unshift({
+            id: `offline-${Date.now()}`,
+            status: 'new',
+            createdAt: new Date().toISOString(),
+            sourcePage: window.location.pathname,
+            locale: locale,
+            ...formData,
+          });
+          window.localStorage.setItem('willowsoft-leads-offline', JSON.stringify(localLeads));
+          
+          form.style.display = 'none';
+          successMsg.style.display = 'flex';
+          form.reset();
+        } catch {
+          errorMsg.style.display = 'block';
+        }
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = sendLabel;
+      }
+    });
+
+    resetBtn.addEventListener('click', () => {
+      successMsg.style.display = 'none';
+      form.style.display = 'block';
+    });
+  }
+
+  setupContactForm();
+  document.addEventListener('astro:after-swap', setupContactForm);
+</script>

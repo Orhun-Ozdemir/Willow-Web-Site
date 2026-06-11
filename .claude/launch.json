@@ -12,6 +12,20 @@
       "runtimeExecutable": "node",
       "runtimeArgs": ["server.mjs"],
       "port": 4173
+    },
+    {
+      "name": "next-dev",
+      "runtimeExecutable": "/opt/homebrew/bin/npx",
+      "runtimeArgs": ["next", "dev", "--port", "3100"],
+      "port": 3100,
+      "cwd": "next-app"
+    },
+    {
+      "name": "astro-dev",
+      "runtimeExecutable": "/opt/homebrew/bin/npx",
+      "runtimeArgs": ["astro", "dev", "--port", "4100"],
+      "port": 4100,
+      "cwd": "astro-app"
     }
   ]
 }

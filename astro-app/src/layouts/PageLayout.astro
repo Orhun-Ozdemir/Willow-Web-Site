@@ -1,0 +1,22 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+import Header from "@/components/Header.astro";
+import Footer from "@/components/Footer.astro";
+import type { Locale } from "@/lib/cms";
+
+interface Props {
+  title: string;
+  description?: string;
+  canonical?: string;
+  locale: Locale;
+  dataPage?: string;
+}
+
+const { title, description, canonical, locale, dataPage } = Astro.props;
+---
+
+<BaseLayout title={title} description={description} canonical={canonical} locale={locale} dataPage={dataPage}>
+  <Header locale={locale} currentPath={Astro.url.pathname} />
+  <slot />
+  <Footer locale={locale} />
+</BaseLayout>

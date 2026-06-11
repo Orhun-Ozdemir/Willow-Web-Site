@@ -1,0 +1,200 @@
+---
+import PageLayout from "@/layouts/PageLayout.astro";
+import StartProjectForm from "@/components/StartProjectForm.astro";
+import FaqAccordion from "@/components/FaqAccordion.astro";
+import { loadContent } from "@/lib/content";
+import { localizedValue, locales, type Locale } from "@/lib/cms";
+
+export function getStaticPaths() {
+  return locales.map((locale) => ({ params: { locale } }));
+}
+
+const { locale } = Astro.params as { locale: Locale };
+const content = loadContent();
+const seo = content.pageSeo?.startProject?.[locale] || {};
+const pageContent = content.pageContent?.startProject || {};
+const getVal = (key: string) => localizedValue(pageContent[key], locale);
+
+const companyFacts = content.companyFacts || {};
+
+const labels = {
+  brief: { en: "Project brief", tr: "Proje Özeti", de: "Projektbriefing", fr: "Brief du projet", es: "Brief de proyecto", it: "Brief del progetto", ar: "ملخص المشروع", ja: "プロジェクト概要" },
+  builderTitle: { en: "Project brief builder", tr: "Proje özeti hazırlayıcı", de: "Projektbriefing-Builder", fr: "Créateur de brief", es: "Creador de brief", it: "Generatore di brief", ar: "منشئ ملخص المشروع", ja: "要件定義ツール" },
+  builderTitle2: { en: "Structured intake, faster discovery.", tr: "Yapılandırılmış alım, hızlı keşif.", de: "Strukturierte Erfassung, schnelle Erkennung.", fr: "Saisie structurée, découverte rapide.", es: "Entrada estructurada, descubrimiento más rápido.", it: "Raccolta strutturata, scoperta rapida.", ar: "استقبال منظم، استكشاف أسرع.", ja: "効率的な要件定義で開発を迅速に" },
+  steps: {
+    en: ["Product idea", "Required layers", "Timeline and budget", "Contact details"],
+    tr: ["Ürün fikri", "Gerekli katmanlar", "Süreç ve bütçe", "İletişim bilgileri"],
+    de: ["Produktidee", "Benötigte Ebenen", "Zeitplan und Budget", "Kontaktdaten"],
+    fr: ["Idée de produit", "Couches requises", "Calendrier et budget", "Coordonnées"],
+    es: ["Idea de producto", "Capas requeridas", "Cronograma y presupuesto", "Datos de contacto"],
+    it: ["Idea del prodotto", "Livelli richiesti", "Tempistiche e budget", "Dettagli di contatto"],
+    ar: ["فكرة المنتج", "الطبقات المطلوبة", "الجدول الزمني والميزانية", "تفاصيل الاتصال"],
+    ja: ["プロダクトアイデア", "必要なレイヤー", "納期・ご予算", "ご連絡先情報"]
+  },
+  useStartFor: { en: "Use Start Project for", tr: "Projeye Başla formunun amacı", de: "Projekt starten für", fr: "Utiliser Démarrer un projet pour", es: "Use Iniciar proyecto para", it: "Usa Avvia progetto per", ar: "استخدم ابدأ مشروعًا لـ", ja: "「プロジェクトを開始」の対象" },
+  useStartDesc: { en: "New connected products, rescue projects, backend rebuilds, mobile apps, admin panels, VR demos or website delivery.", tr: "Yeni bağlı ürünler, kurtarma projeleri, backend yeniden yapılandırması, mobil uygulamalar, yönetim panelleri, VR demoları veya web sitesi teslimatı.", de: "Neue vernetzte Produkte, Rettungsprojekte, Backend-Neubauten, mobile Apps, Admin-Panels, VR-Demos oder Website-Bereitstellung.", fr: "Nouveaux produits connectés, projets de sauvetage, reconstructions de backend, applications mobiles, panneaux d'administration, démos VR ou livraison de sites web.", es: "Nuevos productos conectados, proyectos de rescate, reconstrucciones de backend, aplicaciones móviles, paneles de administración, demostraciones de VR o entrega de sitios web.", it: "Nuovi prodotti connessi, progetti di salvataggio, ricostruzioni backend, app mobile, pannelli di amministrazione, demo VR o consegna di siti web.", ar: "المنتجات المتصلة الجديدة، مشاريع الإنقاذ، إعادة بناء الأنظمة الخلفية، تطبيقات الجوال، لوحات الإدارة، عروض الواقع الافتراضي، أو تسليم المواقع الإلكترونية.", ja: "新規の IoT 製品、既存システムの再構築、バックエンド刷新、モバイルアプリ、管理画面、VRシミュレーション、Webサイト構築。" },
+  useContactFor: { en: "Use Contact for", tr: "İletişim formunun amacı", de: "Kontakt nutzen für", fr: "Utiliser Contact pour", es: "Use Contacto para", it: "Usa Contatti per", ar: "استخدم اتصل بنا لـ", ja: "「お問い合わせ」の対象" },
+  useContactDesc: { en: "Office details, supplier communication, press, events or a short message without technical scope.", tr: "Ofis detayları, tedarikçi iletişimi, basın, etkinlikler veya teknik kapsam içermeyen kısa mesajlar.", de: "Bürodetails, Lieferantenkommunikation, Presse, Veranstaltungen oder eine kurze Nachricht ohne technischen Umfang.", fr: "Détails du bureau, communication avec les fournisseurs, presse, événements ou court message sans portée technique.", es: "Detalles de la oficina, comunicación con proveedores, prensa, eventos o un mensaje corto sin alcance técnico.", it: "Dettagli dell'ufficio, comunicazioni con i fornitori, stampa, eventi o un breve messaggio senza ambito tecnico.", ar: "تفاصيل المكتب، التواصل مع الموردين، الصحافة، الفعاليات، أو رسالة قصيرة دون نطاق تقني.", ja: "オフィス所在地、お取引先様からの連絡、プレス・メディア、イベント、その他開発要件のない一般的なメッセージ。" },
+  afterSubmitTitle: { en: "After submit", tr: "Gönderdikten sonra", de: "Nach dem Absenden", fr: "Après l'envoi", es: "Después de enviar", it: "Dopo l'invio", ar: "بعد الإرسال", ja: "送信完了後の流れ" },
+  afterSubmitDesc: { en: "We review the brief, identify missing requirements, then prepare the first technical conversation around feasibility, sequence and risk.", tr: "Özeti inceleriz, eksik gereksinimleri belirleriz ve ardından fizibilite, sıra ve risk etrafında ilk teknik görüşmeyi hazırlarız.", de: "Wir prüfen das Briefing, ermitteln fehlende Anforderungen und bereiten dann das erste technische Gespräch über Machbarkeit, Ablauf und Risiken vor.", fr: "Nous examinons le brief, identifions les exigences manquantes, puis préparons la première conversation technique sur la faisabilité, le calendrier et les risques.", es: "Revisamos el brief, identificamos requisitos faltantes y luego preparamos la primera conversación técnica sobre viabilidad, secuencia y riesgo.", it: "Esaminiamo il brief, idenfichiamo i requisiti mancanti, quindi prepariamo il primo colloquio tecnico su fattibilità, sequenza e rischi.", ar: "نراجع الملخص، ونحدد المتطلبات المفقودة، ثم نعد للمحادثة التقنية الأولى حول الجدوى والترتيب والمخاطر.", ja: "要件の確認を行い、追加情報が必要な点についてヒアリングの上、技術的な実現可能性・開発フェーズ・リスクなどを踏まえた初回面談を設定します。" },
+  faqEyebrow: { en: "Frequently asked", tr: "Sıkça sorulanlar", de: "Häufig gestellte Fragen", fr: "Questions fréquentes", es: "Preguntas frecuentes", it: "Domande frequenti", ar: "أسئلة مكررة", ja: "よくある質問" },
+  faqTitle: { en: "Questions about starting a project.", tr: "Projeye başlama ile ilgili sorular.", de: "Fragen zum Projektstart.", fr: "Questions sur le démarrage d'un projet.", es: "Preguntas sobre cómo iniciar un proyecto.", it: "Domande sull'avvio di un progetto.", ar: "أسئلة حول بدء مشروع.", ja: "プロジェクト開始に関するご質問" },
+  faqLead: {
+    en: "Here are answers to common questions about our client onboarding, timelines, and technical project delivery.",
+    tr: "Müşteri onboarding sürecimiz, zaman planlarımız ve teknik proje teslimatımız hakkında sıkça sorulan soruların yanıtları.",
+    de: "Hier finden Sie Antworten auf häufige Fragen zu Onboarding, Zeitplänen und technischer Projektabwicklung.",
+    fr: "Voici les réponses aux questions courantes sur l'intégration des clients, les délais et la livraison technique du projet.",
+    es: "Aquí encontrará respuestas a preguntas comunes sobre nuestra incorporación de clientes, plazos y entrega técnica de proyectos.",
+    it: "Ecco le risposte alle domande comuni sull'onboarding dei clienti, sulle tempistiche e sulla consegna tecnica del progetto.",
+    ar: "إليك إجابات الأسئلة الشائعة حول إعداد العملاء والجدول الزمني وتسليم المشاريع التقنية.",
+    ja: "クライアント登録、納期、開発プロジェクトの納品に関する一般的な質問への回答です。"
+  }
+};
+
+const getLabel = (key: keyof typeof labels) => {
+  return labels[key][locale] || labels[key]["en"];
+};
+
+const getSteps = () => {
+  return labels.steps[locale] || labels.steps.en;
+};
+---
+
+<PageLayout
+  title={seo.seoTitle || "Start Your IoT Project | WillowSoft"}
+  description={seo.metaDescription || "Start a connected hardware, software or platform project with WillowSoft."}
+  locale={locale}
+  dataPage="start-project"
+>
+  <main>
+    <section class="hero compact start-project-hero">
+      <canvas class="signal-canvas" data-density="42" data-color="24, 167, 255"></canvas>
+      <div class="services-hero-light" aria-hidden="true"></div>
+      <div class="hero-inner start-hero-grid">
+        <div class="start-hero-copy">
+          <p class="eyebrow reveal">{getVal("heroEyebrow") || "Start Project"}</p>
+          <h1 class="reveal delay-1">{getVal("heroTitle")}</h1>
+          <p class="reveal delay-2">{getVal("heroLead")}</p>
+          <div class="hero-ctas reveal delay-3">
+            <a class="btn btn-primary" href="#lead-form">Create Project Brief</a>
+            <a class="btn btn-secondary" href={`/${locale}/contact`}>General Contact</a>
+          </div>
+          <div class="start-hero-proofline reveal delay-3" aria-label="Project request focus">
+            <span>Technical scope</span>
+            <span>Layer planning</span>
+            <span>Engineering review</span>
+          </div>
+        </div>
+
+        <aside class="brief-overview-card reveal delay-2" aria-label="Project brief overview">
+          <p class="architecture-label">{getLabel("builderTitle")}</p>
+          <h2>{getLabel("builderTitle2")}</h2>
+          <div class="brief-route">
+            {getSteps().map((step: string, idx: number) => (
+              <span>
+                <strong>0{idx + 1}</strong> {step}
+              </span>
+            ))}
+          </div>
+          <div class="summary-metrics">
+            <div>
+              <strong data-company-fact="productsOnMarket">{companyFacts.productsOnMarket || "100+"}</strong>
+              <span>products on market</span>
+            </div>
+            <div>
+              <strong data-company-fact="happyClients">{companyFacts.happyClients || "41+"}</strong>
+              <span>happy clients</span>
+            </div>
+            <div>
+              <strong data-company-fact="officesWorldwide">{companyFacts.officesWorldwide || "2"}</strong>
+              <span>offices</span>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- Trusted By -->
+    <section class="section trusted-by-section">
+      <div class="section-inner">
+        <div class="trusted-by-row reveal">
+          <p class="trusted-by-label">Trusted by engineering and operations teams</p>
+          <div class="trusted-by-logos" aria-label="Customer logos">
+            <div class="trusted-logo"><img src="/assets/client-logos/honeywell.png" alt="Honeywell" loading="lazy" decoding="async" /></div>
+            <div class="trusted-logo"><img src="/assets/client-logos/slb.png" alt="SLB" loading="lazy" decoding="async" /></div>
+            <div class="trusted-logo"><img src="/assets/client-logos/beko.png" alt="Beko" loading="lazy" decoding="async" /></div>
+            <div class="trusted-logo"><img src="/assets/client-logos/aero.png" alt="Aero Healthcare" loading="lazy" decoding="async" /></div>
+            <div class="trusted-logo"><img src="/assets/client-logos/cocacola.png" alt="Coca-Cola" loading="lazy" decoding="async" /></div>
+            <div class="trusted-logo trusted-logo-text"><strong>AT&amp;T</strong></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Intake Section -->
+    <section class="section soft project-intake-section" id="lead-form" aria-labelledby="project-brief-title">
+      <div class="section-inner intake-layout">
+        <div class="intake-copy reveal">
+          <p class="eyebrow">{getVal("realityEyebrow") || "Project Brief"}</p>
+          <h2 class="page-title" id="project-brief-title">{getVal("realityTitle")}</h2>
+          <p class="section-lead">This form is intentionally more detailed than Contact. It helps WillowSoft understand whether you need one layer or an end-to-end connected product.</p>
+          
+          <div class="intake-route-card">
+            <div>
+              <span>{getLabel("useStartFor")}</span>
+              <strong>Scoped engineering requests</strong>
+              <p>{getLabel("useStartDesc")}</p>
+            </div>
+            <div>
+              <span>{getLabel("useContactFor")}</span>
+              <strong>General communication</strong>
+              <p>{getLabel("useContactDesc")}</p>
+            </div>
+          </div>
+          
+          <div class="intake-aside-card" aria-label="What happens after you submit">
+            <span>{getLabel("afterSubmitTitle")}</span>
+            <p>{getLabel("afterSubmitDesc")}</p>
+          </div>
+        </div>
+
+        <div class="reveal delay-1">
+          <StartProjectForm locale={locale} />
+        </div>
+      </div>
+    </section>
+
+    <!-- Steps Detail -->
+    <section class="section soft start-process-section">
+      <div class="section-inner">
+        <div class="section-head reveal">
+          <p class="eyebrow">{getVal("pathsEyebrow") || "After submission"}</p>
+          <h2 class="page-title">{getVal("pathsTitle")}</h2>
+          <p class="section-lead">{getVal("pathsLead")}</p>
+        </div>
+        <div class="process process-premium process-compact">
+          <div class="process-step reveal"><div class="step-dot">1</div><article class="card process-card"><h3>Review</h3><p>We review product layer, scope, timeline and current technical state.</p></article></div>
+          <div class="process-step reveal delay-1"><div class="step-dot">2</div><article class="card process-card"><h3>Clarify</h3><p>We ask for missing requirements, constraints, drawings, APIs or deployment goals.</p></article></div>
+          <div class="process-step reveal delay-2"><div class="step-dot">3</div><article class="card process-card"><h3>Call</h3><p>Engineering aligns on feasibility, risks, rough sequence and next deliverables.</p></article></div>
+          <div class="process-step reveal delay-3"><div class="step-dot">4</div><article class="card process-card"><h3>Plan</h3><p>You receive a practical direction for prototype, platform rebuild or full delivery.</p></article></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="section soft services-faq-section" id="faq">
+      <div class="section-inner">
+        <div class="section-head reveal center" style={{ marginBottom: "36px" }}>
+          <p class="eyebrow">{getLabel("faqEyebrow")}</p>
+          <h2 class="page-title">{getLabel("faqTitle")}</h2>
+          <p class="section-lead" style={{ maxWidth: "720px", marginLeft: "auto", marginRight: "auto" }}>
+            {getLabel("faqLead")}
+          </p>
+        </div>
+        <div class="reveal delay-1">
+          <FaqAccordion faqs={content.faqs || []} pageKey="start-project" locale={locale} />
+        </div>
+      </div>
+    </section>
+  </main>
+</PageLayout>

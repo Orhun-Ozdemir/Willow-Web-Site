@@ -1,0 +1,78 @@
+---
+import PageLayout from "@/layouts/PageLayout.astro";
+import NewsCard from "@/components/NewsCard.astro";
+import { loadContent } from "@/lib/content";
+import { localizedValue, locales, type Locale } from "@/lib/cms";
+
+export function getStaticPaths() {
+  return locales.map((locale) => ({ params: { locale } }));
+}
+
+const { locale } = Astro.params as { locale: Locale };
+const content = loadContent();
+const seo = content.pageSeo?.news?.[locale] || {};
+const pageContent = content.pageContent?.news || {};
+const getVal = (key: string) => localizedValue(pageContent[key], locale);
+
+const newsList = (content.news || []).sort((a: any, b: any) => {
+  const dateA = a.date ? new Date(a.date).getTime() : 0;
+  const dateB = b.date ? new Date(b.date).getTime() : 0;
+  return dateB - dateA;
+});
+
+const labels = {
+  backAdmin: { en: "Open Admin", tr: "Yönetici Panelini Aç", de: "Admin öffnen", fr: "Ouvrir l'admin", es: "Abrir admin", it: "Apri admin", ar: "افتح الإدارة", ja: "管理画面を開く" }
+};
+
+const getLabel = (key: keyof typeof labels) => {
+  return labels[key][locale] || labels[key]["en"];
+};
+---
+
+<PageLayout
+  title={seo.seoTitle || "News | WillowSoft"}
+  description={seo.metaDescription || "WillowSoft company updates, events, export news, and engineering updates."}
+  locale={locale}
+  dataPage="news"
+>
+  <main>
+    <section class="hero compact">
+      <div class="hero-media"><img src="/pdf-assets/p29_06_X111.jpg" alt="WillowSoft engineering updates" loading="lazy" decoding="async"/></div>
+      <canvas class="signal-canvas" data-density="34"></canvas>
+      <div class="hero-inner">
+        <p class="eyebrow reveal">{getVal("heroEyebrow")}</p>
+        <h1 class="reveal delay-1" set:html={getVal("heroTitle")} />
+        <p class="reveal delay-2">{getVal("heroLead")}</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-inner">
+        <div class="section-head reveal">
+          <p class="eyebrow">Latest Updates</p>
+          <h2>Proof that WillowSoft is active in the field.</h2>
+        </div>
+        <div class="grid grid-3">
+          {newsList.map((n: any, idx: number) => (
+            <NewsCard item={n} locale={locale} index={idx} />
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="section dark">
+      <canvas class="signal-canvas" data-density="26" data-color="215, 154, 43"></canvas>
+      <div class="section-inner split">
+        <div class="reveal">
+          <p class="eyebrow">Turn proof into pipeline</p>
+          <h2 class="page-title">Use news, events and product launches to drive qualified leads.</h2>
+        </div>
+        <div class="reveal delay-1">
+          <p class="section-lead">The admin panel can add new news items without touching code. Featured updates can later be surfaced on Home and Company pages.</p>
+          <p><a class="btn btn-primary" href={`/${locale}/admin`}>{getLabel("backAdmin")}</a></p>
+        </div>
+      </div>
+    </section>
+  </main>
+</PageLayout>

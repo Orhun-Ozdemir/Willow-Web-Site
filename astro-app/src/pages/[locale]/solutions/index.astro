@@ -1,0 +1,168 @@
+---
+import PageLayout from "@/layouts/PageLayout.astro";
+import SolutionCard from "@/components/SolutionCard.astro";
+import FaqAccordion from "@/components/FaqAccordion.astro";
+import { loadContent } from "@/lib/content";
+import { localizedValue, locales, type Locale } from "@/lib/cms";
+
+export function getStaticPaths() {
+  return locales.map((locale) => ({ params: { locale } }));
+}
+
+const { locale } = Astro.params as { locale: Locale };
+const content = loadContent();
+const seo = content.pageSeo?.solutions?.[locale] || {};
+const pageContent = content.pageContent?.solutions || {};
+const getVal = (key: string) => localizedValue(pageContent[key], locale);
+
+const solutions = (content.solutions || []).sort((a: any, b: any) => (a.sortOrder || 0) - (b.sortOrder || 0));
+
+const labels = {
+  useCases: { en: "Use Cases", tr: "Kullanım Alanları", de: "Anwendungsbereiche", fr: "Cas d'usage", es: "Casos de uso", it: "Casi d'uso", ar: "حالات الاستخدام", ja: "ユースケース" },
+  whyWillowSoft: { en: "Why WillowSoft", tr: "Neden WillowSoft", de: "Warum WillowSoft", fr: "Pourquoi WillowSoft", es: "Por qué WillowSoft", it: "Perché WillowSoft", ar: "لماذا WillowSoft", ja: "WillowSoftの強み" },
+  mapCase: { en: "Map Your Use Case", tr: "Kullanım Senaryonuzu Belirleyin", de: "Anwendung zuordnen", fr: "Cartographier votre usage", es: "Mapear su caso de uso", it: "Mappa il tuo caso", ar: "خطط لحالة استخدامك", ja: "ユースケースを相談する" },
+  faqEyebrow: { en: "Frequently asked", tr: "Sıkça sorulanlar", de: "Häufig gestellte Fragen", fr: "Questions fréquentes", es: "Preguntas frecuentes", it: "Domande frequenti", ar: "أسئلة مكررة", ja: "よくある質問" },
+  faqTitle: { en: "Questions about our solutions.", tr: "Çözümlerimiz hakkında sorular.", de: "Fragen zu unseren Lösungen.", fr: "Questions sur nos solutions.", es: "Preguntas sobre nuestras soluciones.", it: "Domande sulle nostre soluzioni.", ar: "أسئلة حول حلولنا.", ja: "ソリューションに関するご質問" },
+  faqLead: {
+    en: "Here are the answers to the most common questions about our IoT capabilities and deployments.",
+    tr: "IoT yeteneklerimiz ve kurulumlarımız hakkında en sık sorulan soruların yanıtları.",
+    de: "Hier finden Sie Antworten auf die häufigsten Fragen zu unseren IoT-Funktionen und -Bereitstellungen.",
+    fr: "Voici les réponses aux questions les plus courantes sur nos capacités IoT et nos déploiements.",
+    es: "Aquí encontrará respuestas a las preguntas más comunes sobre nuestras capacidades y despliegues de IoT.",
+    it: "Ecco le risposte alle domande più comuni sulle nostre capacità e installazioni IoT.",
+    ar: "إليك إجابات الأسئلة الأكثر شيوعًا حول قدرات إنترنت الأشياء وعمليات النشر لدينا.",
+    ja: "IoT機能と導入実績に関する最も一般的な質問への回答です。"
+  }
+};
+
+const getLabel = (key: keyof typeof labels) => {
+  return labels[key][locale] || labels[key]["en"];
+};
+---
+
+<PageLayout
+  title={seo.seoTitle || "Solutions | WillowSoft"}
+  description={seo.metaDescription || "Industry-specific IoT solutions."}
+  locale={locale}
+  dataPage="solutions"
+>
+  <main>
+    <!-- Hero -->
+    <section class="hero compact">
+      <div class="hero-media"><img src="/pdf-assets/p04_01_X9.jpg" alt="Industrial IoT concept" loading="lazy" decoding="async"/></div>
+      <canvas class="signal-canvas" data-density="38"></canvas>
+      <div class="hero-inner">
+        <p class="eyebrow reveal">{getVal("heroEyebrow")}</p>
+        <h1 class="reveal delay-1">{getVal("heroTitle")}</h1>
+        <p class="reveal delay-2">{getVal("heroLead")}</p>
+      </div>
+    </section>
+
+    <!-- Use Cases Grid -->
+    <section class="section solution-market-section">
+      <div class="section-inner">
+        <div class="section-head reveal product-headline">
+          <div>
+            <p class="eyebrow">{getLabel("useCases")}</p>
+            <h2>{getVal("useCasesTitle")}</h2>
+          </div>
+          <a class="btn btn-secondary btn-small" href={`/${locale}/start-project`}>{getLabel("mapCase")}</a>
+        </div>
+        <div class="solution-case-grid" data-cms-solutions>
+          {solutions.map((s: any, idx: number) => (
+            <SolutionCard solution={s} locale={locale} index={idx} />
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Selector Grid -->
+    <section class="section soft solution-selector-section">
+      <div class="section-inner">
+        <div class="section-head center reveal">
+          <p class="eyebrow">{getVal("whyEyebrow")}</p>
+          <h2>{getVal("whyTitle")}</h2>
+          <p class="section-lead">The strongest IoT projects do not start with “which sensor?” They start with what the user must see, decide, or automate.</p>
+        </div>
+        <div class="solution-selector-grid">
+          <article class="solution-selector-card reveal">
+            <span>Need visibility?</span>
+            <h3>Remote monitoring</h3>
+            <p>For assets that are hard to reach, distributed, or checked manually today.</p>
+          </article>
+          <article class="solution-selector-card reveal delay-1">
+            <span>Need action?</span>
+            <h3>Alerts and workflows</h3>
+            <p>For operations where threshold, motion, panic, door, level or pressure events require response.</p>
+          </article>
+          <article class="solution-selector-card reveal delay-2">
+            <span>Need integration?</span>
+            <h3>Data platform</h3>
+            <p>For telemetry that must feed ERP, reporting, customer portals, PostgreSQL or internal APIs.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Data Flow Timeline / How It Works -->
+    <section class="section dark">
+      <canvas class="signal-canvas" data-density="32" data-color="35, 168, 216"></canvas>
+      <div class="section-inner split">
+        <div class="reveal">
+          <p class="eyebrow">{getVal("howEyebrow")}</p>
+          <h2 class="page-title">{getVal("howTitle")}</h2>
+          <p class="section-lead">{getVal("howLead")}</p>
+        </div>
+        <div class="reveal delay-1">
+          <div class="tech-flow">
+            <div class="flow-row">
+              <div class="flow-node"><strong>Measure</strong><span>Level, pressure, air, motion, GPS.</span></div>
+              <div class="flow-node"><strong>Transmit</strong><span>LoRaWAN and low-power network paths.</span></div>
+              <div class="flow-node"><strong>Store</strong><span>Backend APIs and PostgreSQL.</span></div>
+              <div class="flow-node"><strong>Visualize</strong><span>Dashboards, maps, mobile apps.</span></div>
+              <div class="flow-node"><strong>Act</strong><span>Alerts, reports, and workflows.</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Why WillowSoft -->
+    <section class="section soft solutions-why-section">
+      <div class="section-inner">
+        <div class="section-head reveal">
+          <p class="eyebrow">{getLabel("whyWillowSoft")}</p>
+          <h2>Solutions are engineered around the site, not forced onto it.</h2>
+        </div>
+        <div class="grid grid-3">
+          <article class="card reveal">
+            <h3>Low-Power Expertise</h3>
+            <p>Battery life and data intervals are designed according to operational reality, not generic lab assumptions.</p>
+          </article>
+          <article class="card reveal delay-1">
+            <h3>RF-Aware Deployment</h3>
+            <p>Connectivity planning accounts for metal-heavy factories, distance, harsh weather, and gateway placement.</p>
+          </article>
+          <article class="card reveal delay-2">
+            <h3>Full Digital Layer</h3>
+            <p>Backend, database, dashboard, admin panel, mobile alerts, and reporting are designed with the device workflow.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="section soft services-faq-section" id="faq">
+      <div class="section-inner">
+        <div class="section-head reveal center" style={{ marginBottom: "36px" }}>
+          <p class="eyebrow">{getLabel("faqEyebrow")}</p>
+          <h2 class="page-title">{getLabel("faqTitle")}</h2>
+          <p class="section-lead" style={{ maxWidth: "720px", marginLeft: "auto", marginRight: "auto" }}>
+            {getLabel("faqLead")}
+          </p>
+        </div>
+        <FaqAccordion pageKey="solutions" faqs={content.faqs || []} locale={locale} />
+      </div>
+    </section>
+  </main>
+</PageLayout>
