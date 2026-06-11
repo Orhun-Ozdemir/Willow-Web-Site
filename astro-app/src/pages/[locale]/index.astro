@@ -45,7 +45,7 @@ const getLabel = (key: string) => labels[key]?.[locale] || labels[key]?.en || ke
   locale={locale}
   dataPage="home"
 >
-  <main>
+  <main id="main-content">
     <!-- Hero -->
     <section class="hero motion-hero">
       <div class="hero-media">
@@ -56,10 +56,10 @@ const getLabel = (key: string) => labels[key]?.[locale] || labels[key]?.en || ke
       <div class="hero-inner hero-layout">
         <div class="hero-copy">
           <p class="eyebrow reveal">{getVal("heroEyebrow")}</p>
-          <h1 class="reveal delay-1" set:html={getVal("heroTitle")} />
+          <h1 class="reveal delay-1" set:html={getVal("heroTitle") || "From <span class='serif-accent'>bare metal</span> to <span class='hw-display'>dashboard</span> — without fragmented vendors."} />
           <p class="reveal delay-2">{getVal("heroLead")}</p>
           <div class="hero-ctas reveal delay-3">
-            <a class="btn btn-primary" href={`/${locale}/start-project`}>{getLabel("startProject")}</a>
+            <a class="btn btn-primary" href={`/${locale}/start-project`}>{locale === "tr" ? "Projeni Anlat" : getLabel("startProject")}</a>
             <a class="btn btn-secondary" href={`/${locale}/services`}>{getLabel("exploreServices")}</a>
           </div>
           <div class="hero-proof reveal delay-4">

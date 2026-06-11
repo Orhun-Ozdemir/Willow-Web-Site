@@ -137,6 +137,26 @@ body {
   text-rendering: geometricPrecision;
 }
 
+.skip-link {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  z-index: 100;
+  padding: 10px 14px;
+  border-radius: 999px;
+  background: #fff;
+  color: var(--ink);
+  font-size: 0.86rem;
+  font-weight: 800;
+  box-shadow: 0 8px 24px rgba(19, 27, 46, 0.16);
+  transform: translateY(-160%);
+  transition: transform 180ms ease;
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
+
 img {
   display: block;
   max-width: 100%;
@@ -642,7 +662,7 @@ select {
 .hero.motion-hero p {
   max-width: 480px;
   margin: 14px 0 0;
-  color: var(--muted);
+  color: #2f3548;
   font-size: clamp(0.82rem, 1.1vw, 0.96rem);
   line-height: 1.6;
 }
@@ -658,6 +678,7 @@ select {
 .motion-hero .eyebrow {
   font-size: 0.72rem;
   margin-bottom: 10px;
+  color: #0c5f72;
 }
 
 .eyebrow {
@@ -803,7 +824,7 @@ select {
 .hero p {
   max-width: 720px;
   margin: 22px 0 0;
-  color: rgba(255, 255, 255, 0.84);
+  color: rgba(255, 255, 255, 0.92);
   font-size: clamp(1.02rem, 2vw, 1.25rem);
 }
 
@@ -812,6 +833,10 @@ select {
   flex-wrap: wrap;
   gap: 12px;
   margin-top: 32px;
+}
+
+.hero-ctas .btn-primary {
+  min-width: 164px;
 }
 
 .motion-hero .hero-ctas {

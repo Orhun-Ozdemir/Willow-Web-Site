@@ -29,6 +29,7 @@ const { title, description = "", canonical, locale = "en", dataPage } = Astro.pr
     {canonical && <link rel="canonical" href={canonical} />}
   </head>
   <body data-page={dataPage} class="min-h-full flex flex-col">
+    <a class="skip-link" href="#main-content">Ana içeriğe atla</a>
     <slot />
     <script is:inline>
     (function(){
