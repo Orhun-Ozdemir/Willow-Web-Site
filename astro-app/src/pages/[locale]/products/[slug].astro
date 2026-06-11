@@ -30,6 +30,7 @@ if (!rawProduct) {
 const product = localizeItem(rawProduct, locale);
 const seo = rawProduct.seo?.[locale] || {};
 const titleLower = (product.title || "").toLowerCase();
+const pickText = (value: any) => localizedValue(value, locale);
 
 // Category text mappings
 const categoryMap: Record<string, string> = {
@@ -38,7 +39,17 @@ const categoryMap: Record<string, string> = {
   tracking: "Use this device family to detect movement, access, safety events and asset state changes across distributed sites.",
   industrial: "Use this product to connect industrial equipment, Modbus devices and telemetry workflows into a unified platform."
 };
-const fitText = categoryMap[product.category] || "Use this product as part of a reliable connected product ecosystem.";
+const localizedFitText = {
+  en: categoryMap[product.category] || "Use this product as part of a reliable connected product ecosystem.",
+  tr: "Bu ürünü güvenilir bir bağlı ürün ekosisteminin parçası olarak konumlandırın.",
+  de: "Nutzen Sie dieses Produkt als Teil eines zuverlässigen vernetzten Produktsystems.",
+  fr: "Positionnez ce produit comme une brique d'un écosystème connecté fiable.",
+  es: "Use este producto como parte de un ecosistema conectado fiable.",
+  it: "Usa questo prodotto come parte di un ecosistema connesso affidabile.",
+  ar: "استخدم هذا المنتج كجزء من منظومة منتجات متصلة وموثوقة.",
+  ja: "この製品を信頼性の高い接続システムの一部として活用できます。",
+};
+const fitText = pickText(localizedFitText);
 
 const snapshotMap: Record<string, string> = {
   modules: "Embedded core for low-power device builds.",
@@ -46,7 +57,17 @@ const snapshotMap: Record<string, string> = {
   tracking: "Event detection for distributed operations.",
   industrial: "Industrial bridge for machine-side data."
 };
-const snapshotText = snapshotMap[product.category] || "Built for field telemetry.";
+const localizedSnapshotText = {
+  en: snapshotMap[product.category] || "Built for field telemetry.",
+  tr: "Saha telemetrisi için tasarlanmış teknik yapı.",
+  de: "Technische Basis für Feldtelemetrie.",
+  fr: "Base technique pour la télémétrie terrain.",
+  es: "Base técnica para telemetría de campo.",
+  it: "Base tecnica per la telemetria sul campo.",
+  ar: "بنية تقنية للقياس عن بعد في الميدان.",
+  ja: "現場テレメトリ向けの技術構成。",
+};
+const snapshotText = pickText(localizedSnapshotText);
 
 const byCategory: Record<string, any> = {
   modules: {
@@ -103,13 +124,41 @@ if (titleLower.includes("soil")) {
   decision.useTitle = "Agriculture and field research";
 }
 
+if (locale !== "en") {
+  const localizedDecision = {
+    useTitle: { tr: "Saha izleme ve bağlı ürün kullanımı", de: "Feldüberwachung und vernetzte Produktnutzung", fr: "Surveillance terrain et usage connecté", es: "Monitorización de campo y producto conectado", it: "Monitoraggio sul campo e prodotto connesso", ar: "مراقبة ميدانية واستخدام منتج متصل", ja: "現場監視と接続製品の活用" },
+    use: { tr: "Bu ürünü fiziksel dünyadan gelen verilerin güvenilir şekilde ölçülmesi, iletilmesi ve operasyonel kararlara dönüştürülmesi gereken yapılarda kullanın.", de: "Setzen Sie dieses Produkt ein, wenn physische Felddaten zuverlässig gemessen, übertragen und in operative Entscheidungen überführt werden müssen.", fr: "Utilisez ce produit lorsque les données physiques doivent être mesurées, transmises et transformées en décisions opérationnelles.", es: "Use este producto cuando los datos físicos deban medirse, transmitirse y convertirse en decisiones operativas.", it: "Usa questo prodotto quando i dati fisici devono essere misurati, trasmessi e trasformati in decisioni operative.", ar: "استخدم هذا المنتج عندما تحتاج بيانات العالم الحقيقي إلى القياس والإرسال والتحويل إلى قرارات تشغيلية.", ja: "現場データを計測し、送信し、運用判断につなげる必要がある構成で利用できます。" },
+    roleTitle: { tr: "Telemetri kaynağı", de: "Telemetriequelle", fr: "Source de télémétrie", es: "Fuente de telemetría", it: "Sorgente di telemetria", ar: "مصدر القياس عن بعد", ja: "テレメトリソース" },
+    role: { tr: "Cihaz katmanından gelen ölçüm ve olay verilerini dijital sisteme taşıyan saha sinyalidir.", de: "Es liefert Mess- und Ereignisdaten aus der Geräteebene in das digitale System.", fr: "Il transmet les mesures et événements du terrain vers le système numérique.", es: "Lleva mediciones y eventos desde la capa de dispositivo hacia el sistema digital.", it: "Porta misure ed eventi dal livello dispositivo al sistema digitale.", ar: "ينقل القياسات والأحداث من طبقة الجهاز إلى النظام الرقمي.", ja: "デバイス層の計測値やイベントをデジタルシステムへ送る現場信号です。" },
+    delivered: {
+      tr: ["Cihaz ve bağlantı yapılandırması", "Backend veri alımı ve PostgreSQL modeli", "Dashboard, mobil ve alarm iş akışı"],
+      de: ["Geräte- und Konnektivitätskonfiguration", "Backend-Ingestion und PostgreSQL-Modell", "Dashboard-, Mobile- und Alarm-Workflow"],
+      fr: ["Configuration dispositif et connectivité", "Ingestion backend et modèle PostgreSQL", "Dashboard, mobile et workflow d'alertes"],
+      es: ["Configuración de dispositivo y conectividad", "Ingesta backend y modelo PostgreSQL", "Dashboard, móvil y flujo de alertas"],
+      it: ["Configurazione dispositivo e connettività", "Ingestion backend e modello PostgreSQL", "Dashboard, mobile e flusso di avvisi"],
+      ar: ["إعداد الجهاز والاتصال", "استقبال البيانات في الخلفية ونموذج PostgreSQL", "لوحة تحكم وتطبيق جوال وسير عمل للتنبيهات"],
+      ja: ["デバイスと通信設定", "バックエンド取り込みとPostgreSQLモデル", "ダッシュボード、モバイル、アラート運用"],
+    },
+  };
+  decision.useTitle = pickText(localizedDecision.useTitle);
+  decision.use = pickText(localizedDecision.use);
+  decision.roleTitle = pickText(localizedDecision.roleTitle);
+  decision.role = pickText(localizedDecision.role);
+  decision.delivered = localizedDecision.delivered[locale] || localizedDecision.delivered.tr;
+}
+
 const galleryImages = Array.isArray(product.images) ? product.images.filter(Boolean) : (product.image ? [product.image] : []);
 
 // Technical sections
+const techBlockLabels = {
+  technicalSummary: { en: "Technical Summary", tr: "Teknik Özet", de: "Technische Zusammenfassung", fr: "Résumé technique", es: "Resumen técnico", it: "Sintesi tecnica", ar: "ملخص تقني", ja: "技術概要" },
+  useCases: { en: "Use Cases", tr: "Kullanım Senaryoları", de: "Anwendungsfälle", fr: "Cas d'usage", es: "Casos de uso", it: "Casi d'uso", ar: "حالات الاستخدام", ja: "ユースケース" },
+  specifications: { en: "Specifications", tr: "Teknik Özellikler", de: "Spezifikationen", fr: "Spécifications", es: "Especificaciones", it: "Specifiche", ar: "المواصفات", ja: "仕様" },
+};
 const techBlocks = [
-  { label: "Technical Summary", html: product.technicalSummary },
-  { label: "Use Cases", html: product.useCases },
-  { label: "Specifications", html: product.specifications }
+  { label: pickText(techBlockLabels.technicalSummary), html: product.technicalSummary },
+  { label: pickText(techBlockLabels.useCases), html: product.useCases },
+  { label: pickText(techBlockLabels.specifications), html: product.specifications }
 ].filter((block) => block.html && String(block.html).trim());
 
 // Schema.org Graph
@@ -219,7 +268,17 @@ const t = {
   startProject: { en: "Start Project", tr: "Projeyi Başlat", de: "Projekt starten", fr: "Démarrer le projet", es: "Iniciar proyecto", it: "Avvia progetto", ar: "بدء المشروع", ja: "プロジェクト相談" },
   contactSales: { en: "Contact Sales", tr: "Satışla İletişime Geçin", de: "Vertrieb kontaktieren", fr: "Contacter le service commercial", es: "Contactar a ventas", it: "Contatta le vendite", ar: "الاتصال بالمبيعات", ja: "営業チームに相談" },
   backToProducts: { en: "Back to Products", tr: "Ürünlere Dön", de: "Zurück zu Produkten", fr: "Retour aux Produkten", es: "Volver a productos", it: "Torna ai prodotti", ar: "العودة إلى المنتجات", ja: "製品一覧へ戻る" },
-  reqInfo: { en: "Request Information", tr: "Bilgi Talep Et", de: "Informationen anfordern", fr: "Demander des informations", es: "Solicitar información", it: "Richiedi informazioni", ar: "طلب معلومات", ja: "資料請求・お問い合わせ" }
+  reqInfo: { en: "Request Information", tr: "Bilgi Talep Et", de: "Informationen anfordern", fr: "Demander des informations", es: "Solicitar información", it: "Richiedi informazioni", ar: "طلب معلومات", ja: "資料請求・お問い合わせ" },
+  flowDevice: { en: "Device", tr: "Cihaz", de: "Gerät", fr: "Dispositif", es: "Dispositivo", it: "Dispositivo", ar: "الجهاز", ja: "デバイス" },
+  flowDeviceDesc: { en: "Sensing, enclosure, battery and RF behavior.", tr: "Ölçüm, muhafaza, pil ve RF davranışı.", de: "Messung, Gehäuse, Batterie und RF-Verhalten.", fr: "Mesure, boîtier, batterie et comportement RF.", es: "Medición, carcasa, batería y comportamiento RF.", it: "Misura, involucro, batteria e comportamento RF.", ar: "الاستشعار والغلاف والبطارية وسلوك RF.", ja: "センシング、筐体、バッテリー、RF特性。" },
+  flowNetwork: { en: "Network", tr: "Ağ", de: "Netzwerk", fr: "Réseau", es: "Red", it: "Rete", ar: "الشبكة", ja: "ネットワーク" },
+  flowNetworkDesc: { en: "LoRaWAN payloads and gateway planning.", tr: "LoRaWAN payload'ları ve gateway planlaması.", de: "LoRaWAN-Payloads und Gateway-Planung.", fr: "Payloads LoRaWAN et planification des passerelles.", es: "Payloads LoRaWAN y planificación de gateways.", it: "Payload LoRaWAN e pianificazione dei gateway.", ar: "حمولات LoRaWAN وتخطيط البوابات.", ja: "LoRaWAN payloadとgateway計画。" },
+  flowData: { en: "Data", tr: "Veri", de: "Daten", fr: "Données", es: "Datos", it: "Dati", ar: "البيانات", ja: "データ" },
+  flowDataDesc: { en: "API ingestion and PostgreSQL schema.", tr: "API veri alımı ve PostgreSQL şeması.", de: "API-Ingestion und PostgreSQL-Schema.", fr: "Ingestion API et schéma PostgreSQL.", es: "Ingesta API y esquema PostgreSQL.", it: "Ingestion API e schema PostgreSQL.", ar: "استقبال API ومخطط PostgreSQL.", ja: "API取り込みとPostgreSQLスキーマ。" },
+  flowInterface: { en: "Interface", tr: "Arayüz", de: "Schnittstelle", fr: "Interface", es: "Interfaz", it: "Interfaccia", ar: "الواجهة", ja: "インターフェース" },
+  flowInterfaceDesc: { en: "Dashboard, mobile app and admin panel.", tr: "Dashboard, mobil uygulama ve yönetim paneli.", de: "Dashboard, mobile App und Admin-Panel.", fr: "Dashboard, application mobile et panneau admin.", es: "Dashboard, app móvil y panel admin.", it: "Dashboard, app mobile e pannello admin.", ar: "لوحة تحكم وتطبيق جوال ولوحة إدارة.", ja: "ダッシュボード、モバイルアプリ、管理画面。" },
+  flowAction: { en: "Action", tr: "Aksiyon", de: "Aktion", fr: "Action", es: "Acción", it: "Azione", ar: "الإجراء", ja: "アクション" },
+  flowActionDesc: { en: "Alerts, reports, integrations and service workflows.", tr: "Uyarılar, raporlar, entegrasyonlar ve servis iş akışları.", de: "Alarme, Berichte, Integrationen und Service-Workflows.", fr: "Alertes, rapports, intégrations et workflows de service.", es: "Alertas, informes, integraciones y flujos de servicio.", it: "Avvisi, report, integrazioni e workflow di servizio.", ar: "تنبيهات وتقارير وتكاملات وسير عمل للخدمة.", ja: "アラート、レポート、連携、運用ワークフロー。" }
 };
 
 const getT = (key: keyof typeof t) => {
@@ -371,11 +430,11 @@ const getT = (key: keyof typeof t) => {
         </div>
         <div class="tech-flow product-tech-flow reveal delay-1">
           <div class="flow-row">
-            <div class="flow-node"><small>01</small><strong>Device</strong><span>Sensing, enclosure, battery and RF behavior.</span></div>
-            <div class="flow-node"><small>02</small><strong>Network</strong><span>LoRaWAN payloads and gateway planning.</span></div>
-            <div class="flow-node"><small>03</small><strong>Data</strong><span>API ingestion and PostgreSQL schema.</span></div>
-            <div class="flow-node"><small>04</small><strong>Interface</strong><span>Dashboard, mobile app and admin panel.</span></div>
-            <div class="flow-node"><small>05</small><strong>Action</strong><span>Alerts, reports, integrations and service workflows.</span></div>
+            <div class="flow-node"><small>01</small><strong>{getT("flowDevice")}</strong><span>{getT("flowDeviceDesc")}</span></div>
+            <div class="flow-node"><small>02</small><strong>{getT("flowNetwork")}</strong><span>{getT("flowNetworkDesc")}</span></div>
+            <div class="flow-node"><small>03</small><strong>{getT("flowData")}</strong><span>{getT("flowDataDesc")}</span></div>
+            <div class="flow-node"><small>04</small><strong>{getT("flowInterface")}</strong><span>{getT("flowInterfaceDesc")}</span></div>
+            <div class="flow-node"><small>05</small><strong>{getT("flowAction")}</strong><span>{getT("flowActionDesc")}</span></div>
           </div>
         </div>
       </div>

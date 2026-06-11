@@ -152,7 +152,7 @@ export default function SEOCenterPanel() {
                 <p className="text-[10px] font-bold text-gray-400 uppercase mb-3">Google Arama Önizleme</p>
                 <div className="space-y-1">
                   <p className="text-sky-400 text-base font-medium truncate">{seoData.seoTitle || "Sayfa Başlığı"}</p>
-                  <p className="text-emerald-600 text-xs truncate">willowsoft.com/{seoData.slug || selectedPage}</p>
+                  <p className="text-emerald-600 text-xs truncate">willowsoft.co/{seoData.slug || selectedPage}</p>
                   <p className="text-gray-500 text-xs line-clamp-2">{seoData.metaDescription || "Meta açıklama burada görünecek..."}</p>
                 </div>
               </div>
@@ -167,7 +167,7 @@ export default function SEOCenterPanel() {
                     </div>
                   )}
                   <div className="p-3 bg-white">
-                    <p className="text-xs text-gray-400 uppercase">willowsoft.com</p>
+                    <p className="text-xs text-gray-400 uppercase">willowsoft.co</p>
                     <p className="text-sm font-bold text-gray-800 truncate">{seoData.ogTitle || seoData.seoTitle || "Başlık"}</p>
                     <p className="text-xs text-gray-500 line-clamp-2">{seoData.ogDescription || seoData.metaDescription || "Açıklama"}</p>
                   </div>

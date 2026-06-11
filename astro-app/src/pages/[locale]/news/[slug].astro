@@ -50,6 +50,11 @@ const articleSchema = {
     },
   ],
 };
+
+const labels = {
+  backNews: { en: "News", tr: "Haberler", de: "Neuigkeiten", fr: "Actualités", es: "Noticias", it: "Notizie", ar: "الأخبار", ja: "ニュース" },
+};
+const getLabel = (key: keyof typeof labels) => labels[key][locale] || labels[key].en;
 ---
 
 <PageLayout
@@ -69,7 +74,7 @@ const articleSchema = {
     <article>
       <section class="hero compact">
         <div class="hero-inner">
-          <a href={`/${locale}/news`} class="back-link reveal">← News</a>
+          <a href={`/${locale}/news`} class="back-link reveal">← {getLabel("backNews")}</a>
           {article.category && <span class="eyebrow reveal">{article.category}</span>}
           <h1 class="reveal delay-1">{article.title}</h1>
           {article.date && <time class="reveal delay-2">{article.date}</time>}

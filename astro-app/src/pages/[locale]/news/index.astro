@@ -45,7 +45,13 @@ const newsSchema = {
 };
 
 const labels = {
-  backAdmin: { en: "Open Admin", tr: "Yönetici Panelini Aç", de: "Admin öffnen", fr: "Ouvrir l'admin", es: "Abrir admin", it: "Apri admin", ar: "افتح الإدارة", ja: "管理画面を開く" }
+  backAdmin: { en: "Open Admin", tr: "Yönetici Panelini Aç", de: "Admin öffnen", fr: "Ouvrir l'admin", es: "Abrir admin", it: "Apri admin", ar: "افتح الإدارة", ja: "管理画面を開く" },
+  heroAlt: { en: "WillowSoft engineering updates", tr: "WillowSoft mühendislik haberleri", de: "WillowSoft Engineering-Neuigkeiten", fr: "Actualités d'ingénierie WillowSoft", es: "Actualizaciones de ingeniería de WillowSoft", it: "Aggiornamenti tecnici WillowSoft", ar: "تحديثات WillowSoft الهندسية", ja: "WillowSoft エンジニアリングニュース" },
+  latestUpdates: { en: "Latest Updates", tr: "Son Güncellemeler", de: "Aktuelle Meldungen", fr: "Dernières actualités", es: "Últimas novedades", it: "Ultimi aggiornamenti", ar: "آخر التحديثات", ja: "最新情報" },
+  proofTitle: { en: "Proof that WillowSoft is active in the field.", tr: "WillowSoft'un sahada aktif olduğunu gösteren kanıtlar.", de: "Nachweise, dass WillowSoft im Feld aktiv ist.", fr: "La preuve que WillowSoft est actif sur le terrain.", es: "Pruebas de que WillowSoft está activo sobre el terreno.", it: "Prove concrete dell'attività di WillowSoft sul campo.", ar: "دليل على أن WillowSoft نشطة في الميدان.", ja: "WillowSoft が現場で活動していることを示す実績。" },
+  ctaEyebrow: { en: "Turn proof into pipeline", tr: "Kanıtı fırsat akışına dönüştür", de: "Nachweise in Anfragen verwandeln", fr: "Transformer la preuve en opportunités", es: "Convertir pruebas en oportunidades", it: "Trasforma le prove in opportunità", ar: "حوّل الدليل إلى فرص", ja: "実績を商談につなげる" },
+  ctaTitle: { en: "Use news, events and product launches to drive qualified leads.", tr: "Haberleri, etkinlikleri ve ürün lansmanlarını nitelikli taleplere dönüştürün.", de: "Nutzen Sie News, Events und Produktstarts für qualifizierte Anfragen.", fr: "Utilisez les actualités, événements et lancements produits pour générer des prospects qualifiés.", es: "Use noticias, eventos y lanzamientos de producto para generar clientes potenciales cualificados.", it: "Usa notizie, eventi e lanci di prodotto per generare lead qualificati.", ar: "استخدم الأخبار والفعاليات وإطلاق المنتجات لجذب عملاء محتملين مؤهلين.", ja: "ニュース、イベント、製品発表を有望な問い合わせにつなげます。" },
+  ctaLead: { en: "The admin panel can add new news items without touching code. Featured updates can later be surfaced on Home and Company pages.", tr: "Yönetici paneli kod yazmadan yeni haber ekleyebilir. Öne çıkan güncellemeler daha sonra Ana Sayfa ve Şirket sayfalarında gösterilebilir.", de: "Über das Admin-Panel lassen sich neue Meldungen ohne Codeänderung hinzufügen. Ausgewählte Updates können später auf Startseite und Unternehmensseite erscheinen.", fr: "Le panneau d'administration permet d'ajouter des actualités sans modifier le code. Les mises à jour importantes peuvent ensuite apparaître sur les pages Accueil et Entreprise.", es: "El panel de administración permite añadir noticias sin tocar código. Las novedades destacadas pueden mostrarse después en Inicio y Empresa.", it: "Il pannello admin permette di aggiungere news senza modificare il codice. Gli aggiornamenti in evidenza possono poi comparire in Home e nella pagina Azienda.", ar: "يمكن للوحة الإدارة إضافة أخبار جديدة دون تعديل الكود. ويمكن لاحقاً عرض التحديثات المميزة في الصفحة الرئيسية وصفحة الشركة.", ja: "管理画面からコードを触らずにニュースを追加できます。重要な更新は後でホームや会社情報ページにも表示できます。" }
 };
 
 const getLabel = (key: keyof typeof labels) => {
@@ -61,7 +67,7 @@ const getLabel = (key: keyof typeof labels) => {
 >
   <main>
     <section class="hero compact">
-      <div class="hero-media"><img src="/pdf-assets/p29_06_X111.jpg" alt="WillowSoft engineering updates" loading="lazy" decoding="async"/></div>
+      <div class="hero-media"><img src="/pdf-assets/p29_06_X111.jpg" alt={getLabel("heroAlt")} loading="lazy" decoding="async"/></div>
       <canvas class="signal-canvas" data-density="34"></canvas>
       <div class="hero-inner">
         <p class="eyebrow reveal">{getVal("heroEyebrow")}</p>
@@ -73,8 +79,8 @@ const getLabel = (key: keyof typeof labels) => {
     <section class="section">
       <div class="section-inner">
         <div class="section-head reveal">
-          <p class="eyebrow">Latest Updates</p>
-          <h2>Proof that WillowSoft is active in the field.</h2>
+          <p class="eyebrow">{getLabel("latestUpdates")}</p>
+          <h2>{getLabel("proofTitle")}</h2>
         </div>
         <div class="grid grid-3">
           {newsList.map((n: any, idx: number) => (
@@ -89,11 +95,11 @@ const getLabel = (key: keyof typeof labels) => {
       <canvas class="signal-canvas" data-density="26" data-color="215, 154, 43"></canvas>
       <div class="section-inner split">
         <div class="reveal">
-          <p class="eyebrow">Turn proof into pipeline</p>
-          <h2 class="page-title">Use news, events and product launches to drive qualified leads.</h2>
+          <p class="eyebrow">{getLabel("ctaEyebrow")}</p>
+          <h2 class="page-title">{getLabel("ctaTitle")}</h2>
         </div>
         <div class="reveal delay-1">
-          <p class="section-lead">The admin panel can add new news items without touching code. Featured updates can later be surfaced on Home and Company pages.</p>
+          <p class="section-lead">{getLabel("ctaLead")}</p>
           <p><a class="btn btn-primary" href={`/${locale}/admin`}>{getLabel("backAdmin")}</a></p>
         </div>
       </div>

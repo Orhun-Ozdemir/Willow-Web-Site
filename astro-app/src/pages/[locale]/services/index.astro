@@ -37,6 +37,9 @@ const labels = {
   capabilities: { en: "capabilities", tr: "kabiliyet", de: "Fähigkeiten", fr: "capacités", es: "capacidades", it: "funzionalità", ar: "قدرات", ja: "対応技術" },
   deliveryLayers: { en: "delivery layers", tr: "teslimat katmanı", de: "Lieferschichten", fr: "couches de livraison", es: "capas de entrega", it: "livelli di consegna", ar: "طبقات التسليم", ja: "提供レイヤー" },
   systemView: { en: "system view", tr: "sistem görünümü", de: "Systemansicht", fr: "vue système", es: "vista del sistema", it: "vista di sistema", ar: "عرض النظام", ja: "統合システムビュー" },
+  trustedByGlobal: { en: "Trusted by global teams", tr: "Küresel ekiplerin güvendiği yapı", de: "Vertrauen globaler Teams", fr: "Approuvé par des équipes mondiales", es: "Con la confianza de equipos globales", it: "Scelto da team globali", ar: "موثوق به من فرق عالمية", ja: "世界中のチームから信頼されています" },
+  customerLogos: { en: "Customer logos", tr: "Müşteri logoları", de: "Kundenlogos", fr: "Logos clients", es: "Logos de clientes", it: "Loghi clienti", ar: "شعارات العملاء", ja: "顧客ロゴ" },
+  exportCountries: { en: "+ 15 export countries", tr: "+ 15 ihracat ülkesi", de: "+ 15 Exportländer", fr: "+ 15 pays d'exportation", es: "+ 15 países de exportación", it: "+ 15 paesi di esportazione", ar: "+ 15 دولة تصدير", ja: "15か国以上への輸出実績" },
 
   serviceSystem: { en: "Service system", tr: "Hizmet sistemi", de: "Dienstleistungssystem", fr: "Système de services", es: "Sistema de servicios", it: "Sistema dei servizi", ar: "نظام الخدمة", ja: "サービス体系" },
   chooseLayer: { en: "Choose one layer, or build the whole stack.", tr: "İster tek bir katman seçin, ister tüm altyapıyı inşa edin.", de: "Wählen Sie eine Schicht oder bauen Sie den gesamten Stack.", fr: "Choisissez une couche ou construisez tout le stack.", es: "Elija una capa o construya todo el stack.", it: "Scegli un livello o costruisci l'intero stack.", ar: "اختر طبقة واحدة، أو ابني النظام بالكامل.", ja: "必要なレイヤーのみの開発、またはフルスタック開発のいずれにも対応。" },
@@ -51,6 +54,7 @@ const labels = {
     ja: "開発レイヤーごとに分類されており、デバイス開発、クラウド／データ、オペレーター画面、シミュレーションなど、WillowSoftの担当領域を明確に把握できます。"
   },
   startDiscovery: { en: "Start Discovery", tr: "Keşif Başlat", de: "Entdeckung starten", fr: "Démarrer la découverte", es: "Iniciar descubrimiento", it: "Avvia scoperta", ar: "ابدأ aşaması الاستكشاف", ja: "要件定義の相談をする" },
+  serviceCapacity: { en: "Service capacity", tr: "Hizmet kapasitesi", de: "Servicekapazität", fr: "Capacité de service", es: "Capacidad de servicio", it: "Capacità di servizio", ar: "قدرة الخدمة", ja: "サービス対応力" },
 
   deviceEng: { en: "Device engineering", tr: "Cihaz mühendisliği", de: "Geräteentwicklung", fr: "Ingénierie des dispositifs", es: "Ingeniería de dispositivos", it: "Ingegneria dei dispositivi", ar: "هندسة الأجهزة", ja: "デバイス開発" },
   deviceEngTitle: { en: "Hardware, firmware and connectivity.", tr: "Donanım, firmware ve bağlantı.", de: "Hardware, Firmware und Konnektivität.", fr: "Matériel, firmware et connectivité.", es: "Hardware, firmware y conectividad.", it: "Hardware, firmware e connettività.", ar: "العتاد، البرمجيات والاتصال.", ja: "ハードウェア、ファームウェア、接続性" },
@@ -65,6 +69,11 @@ const labels = {
     ja: "信頼性の高いセンシング、省電力設計、アンテナ調整、量産対応のファームウェアを必要とするハードウェア開発に。"
   },
   deviceOutput: { en: "PCB package, firmware source, RF notes and production handoff.", tr: "PCB paketi, firmware kaynağı, RF raporları ve üretim teslimi.", de: "PCB-Paket, Firmware-Quelle, RF-Hinweise und Produktionsübergabe.", fr: "Package PCB, source du firmware, notes RF et remise en production.", es: "Paquete de PCB, fuente de firmware, notas de RF y entrega de producción.", it: "Pacchetto PCB, sorgente firmware, note RF e consegna alla produzione.", ar: "حزمة PCB، مصدر البرمجيات، ملاحظات الـ RF وتسليم الإنتاج.", ja: "PCB設計データ、ファームウェアソースコード、アンテナ性能レポート、製造指示書" },
+  devicePackage: { en: "Device package", tr: "Cihaz paketi", de: "Gerätepaket", fr: "Package dispositif", es: "Paquete de dispositivo", it: "Pacchetto dispositivo", ar: "حزمة الجهاز", ja: "デバイスパッケージ" },
+  firmwarePackage: { en: "Firmware package", tr: "Firmware paketi", de: "Firmware-Paket", fr: "Package firmware", es: "Paquete de firmware", it: "Pacchetto firmware", ar: "حزمة البرمجيات", ja: "ファームウェアパッケージ" },
+  platformPackage: { en: "Platform package", tr: "Platform paketi", de: "Plattformpaket", fr: "Package plateforme", es: "Paquete de plataforma", it: "Pacchetto piattaforma", ar: "حزمة المنصة", ja: "プラットフォームパッケージ" },
+  interfacePackage: { en: "Interface package", tr: "Arayüz paketi", de: "Schnittstellenpaket", fr: "Package interface", es: "Paquete de interfaz", it: "Pacchetto interfaccia", ar: "حزمة الواجهة", ja: "インターフェースパッケージ" },
+  launchPackage: { en: "Launch package", tr: "Yayın paketi", de: "Launch-Paket", fr: "Package lancement", es: "Paquete de lanzamiento", it: "Pacchetto lancio", ar: "حزمة الإطلاق", ja: "ローンチパッケージ" },
 
   cloudData: { en: "Cloud & data", tr: "Bulut & veri", de: "Cloud & Daten", fr: "Cloud & données", es: "Nube y datos", it: "Cloud e dati", ar: "السحابة والبيانات", ja: "クラウド＆データ" },
   cloudDataTitle: { en: "Backend APIs and PostgreSQL architecture.", tr: "Backend API'leri ve PostgreSQL mimarisi.", de: "Backend-APIs und PostgreSQL-Architektur.", fr: "APIs backend et architecture PostgreSQL.", es: "APIs de backend y arquitectura de PostgreSQL.", it: "API di backend e architettura PostgreSQL.", ar: "واجهات برمجة التطبيقات الخلفية ومخطط PostgreSQL.", ja: "バックエンドAPIとPostgreSQL設計" },
@@ -283,7 +292,7 @@ const getLabel = (key: keyof typeof labels) => {
           <p class="eyebrow reveal">{getVal("heroEyebrow")}</p>
           <h1 class="reveal delay-1">{getVal("heroTitle")}</h1>
           <p class="reveal delay-2">{getVal("heroLead")}</p>
-          <div class="services-hero-meta reveal delay-3" role="list" aria-label="Service capacity">
+          <div class="services-hero-meta reveal delay-3" role="list" aria-label={getLabel("serviceCapacity")}>
             <span class="hero-meta-item" role="listitem">
               <strong data-company-fact="productsOnMarket">{companyFacts.productsOnMarket}</strong>
               <span>{getLabel("productsOnMarket")}</span>
@@ -349,15 +358,15 @@ const getLabel = (key: keyof typeof labels) => {
     <section class="section trusted-by-section">
       <div class="section-inner">
         <div class="trusted-by-row reveal">
-          <p class="trusted-by-label">Trusted by global teams</p>
-          <div class="trusted-by-logos" aria-label="Customer logos">
+          <p class="trusted-by-label">{getLabel("trustedByGlobal")}</p>
+          <div class="trusted-by-logos" aria-label={getLabel("customerLogos")}>
             {featuredClients.map((client: any) => (
               <div class="trusted-logo" title={client.name}>
                 {client.logo ? <img src={`/${client.logo}`} alt={client.name} loading="lazy" decoding="async" /> : <strong>{client.name}</strong>}
               </div>
             ))}
           </div>
-          <span class="trusted-by-pill">+ 15 export countries</span>
+          <span class="trusted-by-pill">{getLabel("exportCountries")}</span>
         </div>
       </div>
     </section>
@@ -449,23 +458,23 @@ const getLabel = (key: keyof typeof labels) => {
           </div>
           <div class="deliverable-ledger reveal delay-1">
             <div>
-              <span>Device package</span>
+              <span>{getLabel("devicePackage")}</span>
               <strong>{getLabel("devicePackageDesc")}</strong>
             </div>
             <div>
-              <span>Firmware package</span>
+              <span>{getLabel("firmwarePackage")}</span>
               <strong>{getLabel("firmwarePackageDesc")}</strong>
             </div>
             <div>
-              <span>Platform package</span>
+              <span>{getLabel("platformPackage")}</span>
               <strong>{getLabel("platformPackageDesc")}</strong>
             </div>
             <div>
-              <span>Interface package</span>
+              <span>{getLabel("interfacePackage")}</span>
               <strong>{getLabel("interfacePackageDesc")}</strong>
             </div>
             <div>
-              <span>Launch package</span>
+              <span>{getLabel("launchPackage")}</span>
               <strong>{getLabel("launchPackageDesc")}</strong>
             </div>
           </div>

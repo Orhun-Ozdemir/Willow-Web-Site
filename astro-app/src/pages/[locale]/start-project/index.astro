@@ -38,6 +38,30 @@ const labels = {
   useContactDesc: { en: "Office details, supplier communication, press, events or a short message without technical scope.", tr: "Ofis detayları, tedarikçi iletişimi, basın, etkinlikler veya teknik kapsam içermeyen kısa mesajlar.", de: "Bürodetails, Lieferantenkommunikation, Presse, Veranstaltungen oder eine kurze Nachricht ohne technischen Umfang.", fr: "Détails du bureau, communication avec les fournisseurs, presse, événements ou court message sans portée technique.", es: "Detalles de la oficina, comunicación con proveedores, prensa, eventos o un mensaje corto sin alcance técnico.", it: "Dettagli dell'ufficio, comunicazioni con i fornitori, stampa, eventi o un breve messaggio senza ambito tecnico.", ar: "تفاصيل المكتب، التواصل مع الموردين، الصحافة، الفعاليات، أو رسالة قصيرة دون نطاق تقني.", ja: "オフィス所在地、お取引先様からの連絡、プレス・メディア、イベント、その他開発要件のない一般的なメッセージ。" },
   afterSubmitTitle: { en: "After submit", tr: "Gönderdikten sonra", de: "Nach dem Absenden", fr: "Après l'envoi", es: "Después de enviar", it: "Dopo l'invio", ar: "بعد الإرسال", ja: "送信完了後の流れ" },
   afterSubmitDesc: { en: "We review the brief, identify missing requirements, then prepare the first technical conversation around feasibility, sequence and risk.", tr: "Özeti inceleriz, eksik gereksinimleri belirleriz ve ardından fizibilite, sıra ve risk etrafında ilk teknik görüşmeyi hazırlarız.", de: "Wir prüfen das Briefing, ermitteln fehlende Anforderungen und bereiten dann das erste technische Gespräch über Machbarkeit, Ablauf und Risiken vor.", fr: "Nous examinons le brief, identifions les exigences manquantes, puis préparons la première conversation technique sur la faisabilité, le calendrier et les risques.", es: "Revisamos el brief, identificamos requisitos faltantes y luego preparamos la primera conversación técnica sobre viabilidad, secuencia y riesgo.", it: "Esaminiamo il brief, idenfichiamo i requisiti mancanti, quindi prepariamo il primo colloquio tecnico su fattibilità, sequenza e rischi.", ar: "نراجع الملخص، ونحدد المتطلبات المفقودة، ثم نعد للمحادثة التقنية الأولى حول الجدوى والترتيب والمخاطر.", ja: "要件の確認を行い、追加情報が必要な点についてヒアリングの上、技術的な実現可能性・開発フェーズ・リスクなどを踏まえた初回面談を設定します。" },
+  createProjectBrief: { en: "Create Project Brief", tr: "Proje Özeti Oluştur", de: "Projektbriefing erstellen", fr: "Créer un brief projet", es: "Crear brief de proyecto", it: "Crea brief di progetto", ar: "إنشاء ملخص المشروع", ja: "プロジェクト概要を作成" },
+  generalContact: { en: "General Contact", tr: "Genel İletişim", de: "Allgemeiner Kontakt", fr: "Contact général", es: "Contacto general", it: "Contatto generale", ar: "تواصل عام", ja: "一般お問い合わせ" },
+  requestFocus: { en: "Project request focus", tr: "Proje talebi odağı", de: "Fokus der Projektanfrage", fr: "Focus de la demande projet", es: "Enfoque de la solicitud", it: "Focus della richiesta", ar: "تركيز طلب المشروع", ja: "相談内容の焦点" },
+  technicalScope: { en: "Technical scope", tr: "Teknik kapsam", de: "Technischer Umfang", fr: "Périmètre technique", es: "Alcance técnico", it: "Ambito tecnico", ar: "النطاق التقني", ja: "技術範囲" },
+  layerPlanning: { en: "Layer planning", tr: "Katman planlama", de: "Schichtenplanung", fr: "Planification des couches", es: "Planificación por capas", it: "Pianificazione livelli", ar: "تخطيط الطبقات", ja: "レイヤー設計" },
+  engineeringReview: { en: "Engineering review", tr: "Mühendislik incelemesi", de: "Engineering-Prüfung", fr: "Revue d'ingénierie", es: "Revisión de ingeniería", it: "Revisione tecnica", ar: "مراجعة هندسية", ja: "技術レビュー" },
+  productsOnMarket: { en: "products on market", tr: "piyasadaki ürün", de: "Produkte am Markt", fr: "produits sur le marché", es: "productos en mercado", it: "prodotti sul mercato", ar: "منتج في السوق", ja: "市場投入済み製品" },
+  happyClients: { en: "happy clients", tr: "mutlu müşteri", de: "zufriedene Kunden", fr: "clients satisfaits", es: "clientes satisfechos", it: "clienti soddisfatti", ar: "عميل سعيد", ja: "取引先企業" },
+  offices: { en: "offices", tr: "ofis", de: "Büros", fr: "bureaux", es: "oficinas", it: "uffici", ar: "مكاتب", ja: "拠点" },
+  trustedBy: { en: "Trusted by engineering and operations teams", tr: "Mühendislik ve operasyon ekiplerinin güvendiği yapı", de: "Vertrauen von Engineering- und Operationsteams", fr: "Approuvé par les équipes d'ingénierie et d'opérations", es: "Con la confianza de equipos de ingeniería y operaciones", it: "Scelto da team tecnici e operativi", ar: "موثوق به من فرق الهندسة والتشغيل", ja: "技術・運用チームから信頼されています" },
+  customerLogos: { en: "Customer logos", tr: "Müşteri logoları", de: "Kundenlogos", fr: "Logos clients", es: "Logos de clientes", it: "Loghi clienti", ar: "شعارات العملاء", ja: "顧客ロゴ" },
+  detailedFormLead: { en: "This form is intentionally more detailed than Contact. It helps WillowSoft understand whether you need one layer or an end-to-end connected product.", tr: "Bu form İletişim formundan özellikle daha detaylıdır. WillowSoft'un tek bir katmana mı yoksa uçtan uca bağlı bir ürüne mi ihtiyaç duyduğunuzu anlamasına yardımcı olur.", de: "Dieses Formular ist bewusst detaillierter als das Kontaktformular. Es hilft WillowSoft zu verstehen, ob Sie eine einzelne Schicht oder ein vollständiges vernetztes Produkt benötigen.", fr: "Ce formulaire est volontairement plus détaillé que Contact. Il aide WillowSoft à comprendre si vous avez besoin d'une couche ou d'un produit connecté complet.", es: "Este formulario es intencionalmente más detallado que Contacto. Ayuda a WillowSoft a entender si necesita una sola capa o un producto conectado de extremo a extremo.", it: "Questo modulo è volutamente più dettagliato del contatto generale. Aiuta WillowSoft a capire se serve un singolo livello o un prodotto connesso end-to-end.", ar: "هذا النموذج أكثر تفصيلاً من نموذج التواصل العام. يساعد WillowSoft على فهم ما إذا كنت تحتاج إلى طبقة واحدة أو منتج متصل متكامل.", ja: "このフォームは一般お問い合わせより詳しく設計されています。単一レイヤーの開発か、エンドツーエンドの接続製品かを把握するためのものです。" },
+  scopedEngineeringRequests: { en: "Scoped engineering requests", tr: "Kapsamı belirli mühendislik talepleri", de: "Abgegrenzte Engineering-Anfragen", fr: "Demandes d'ingénierie cadrées", es: "Solicitudes de ingeniería acotadas", it: "Richieste tecniche definite", ar: "طلبات هندسية محددة النطاق", ja: "範囲が明確な技術相談" },
+  generalCommunication: { en: "General communication", tr: "Genel iletişim", de: "Allgemeine Kommunikation", fr: "Communication générale", es: "Comunicación general", it: "Comunicazione generale", ar: "تواصل عام", ja: "一般連絡" },
+  afterSubmitAria: { en: "What happens after you submit", tr: "Gönderdikten sonra ne olur", de: "Was nach dem Absenden passiert", fr: "Ce qui se passe après l'envoi", es: "Qué sucede después de enviar", it: "Cosa succede dopo l'invio", ar: "ماذا يحدث بعد الإرسال", ja: "送信後の流れ" },
+  afterSubmission: { en: "After submission", tr: "Gönderimden sonra", de: "Nach dem Absenden", fr: "Après l'envoi", es: "Después del envío", it: "Dopo l'invio", ar: "بعد الإرسال", ja: "送信後" },
+  review: { en: "Review", tr: "İnceleme", de: "Prüfung", fr: "Examen", es: "Revisión", it: "Revisione", ar: "المراجعة", ja: "確認" },
+  reviewDesc: { en: "We review product layer, scope, timeline and current technical state.", tr: "Ürün katmanını, kapsamı, takvimi ve mevcut teknik durumu inceleriz.", de: "Wir prüfen Produktschicht, Umfang, Zeitplan und aktuellen technischen Stand.", fr: "Nous examinons la couche produit, le périmètre, le calendrier et l'état technique actuel.", es: "Revisamos la capa del producto, el alcance, el calendario y el estado técnico actual.", it: "Rivediamo livello di prodotto, ambito, tempistiche e stato tecnico attuale.", ar: "نراجع طبقة المنتج والنطاق والجدول الزمني والحالة التقنية الحالية.", ja: "製品レイヤー、範囲、スケジュール、現在の技術状態を確認します。" },
+  clarify: { en: "Clarify", tr: "Netleştirme", de: "Klären", fr: "Clarifier", es: "Aclarar", it: "Chiarire", ar: "التوضيح", ja: "明確化" },
+  clarifyDesc: { en: "We ask for missing requirements, constraints, drawings, APIs or deployment goals.", tr: "Eksik gereksinimleri, kısıtları, çizimleri, API'leri veya kurulum hedeflerini sorarız.", de: "Wir fragen fehlende Anforderungen, Einschränkungen, Zeichnungen, APIs oder Deployment-Ziele ab.", fr: "Nous demandons les exigences manquantes, contraintes, schémas, APIs ou objectifs de déploiement.", es: "Pedimos requisitos faltantes, restricciones, planos, APIs u objetivos de despliegue.", it: "Chiediamo requisiti mancanti, vincoli, disegni, API o obiettivi di installazione.", ar: "نطلب المتطلبات الناقصة والقيود والرسومات وواجهات API أو أهداف النشر.", ja: "不足要件、制約、図面、API、導入目標を確認します。" },
+  call: { en: "Call", tr: "Görüşme", de: "Gespräch", fr: "Appel", es: "Llamada", it: "Call", ar: "مكالمة", ja: "面談" },
+  callDesc: { en: "Engineering aligns on feasibility, risks, rough sequence and next deliverables.", tr: "Mühendislik ekibi fizibilite, riskler, genel sıra ve sonraki teslimatlar üzerinde hizalanır.", de: "Engineering stimmt Machbarkeit, Risiken, grobe Abfolge und nächste Lieferobjekte ab.", fr: "L'ingénierie aligne faisabilité, risques, séquence et prochains livrables.", es: "Ingeniería alinea viabilidad, riesgos, secuencia general y próximos entregables.", it: "Il team tecnico allinea fattibilità, rischi, sequenza e prossimi deliverable.", ar: "يوائم الفريق الهندسي الجدوى والمخاطر والتسلسل العام والتسليمات التالية.", ja: "実現性、リスク、進行順序、次の成果物を技術チームで整理します。" },
+  plan: { en: "Plan", tr: "Plan", de: "Plan", fr: "Plan", es: "Plan", it: "Piano", ar: "الخطة", ja: "計画" },
+  planDesc: { en: "You receive a practical direction for prototype, platform rebuild or full delivery.", tr: "Prototip, platform yeniden yapılandırması veya tam teslimat için uygulanabilir bir yön alırsınız.", de: "Sie erhalten eine praktische Richtung für Prototyp, Plattform-Rebuild oder vollständige Lieferung.", fr: "Vous recevez une direction concrète pour prototype, refonte plateforme ou livraison complète.", es: "Recibe una dirección práctica para prototipo, reconstrucción de plataforma o entrega completa.", it: "Ricevi una direzione pratica per prototipo, rebuild piattaforma o consegna completa.", ar: "تحصل على اتجاه عملي للنموذج الأولي أو إعادة بناء المنصة أو التسليم الكامل.", ja: "プロトタイプ、基盤再構築、フル開発に向けた現実的な方針を提示します。" },
   faqEyebrow: { en: "Frequently asked", tr: "Sıkça sorulanlar", de: "Häufig gestellte Fragen", fr: "Questions fréquentes", es: "Preguntas frecuentes", it: "Domande frequenti", ar: "أسئلة مكررة", ja: "よくある質問" },
   faqTitle: { en: "Questions about starting a project.", tr: "Projeye başlama ile ilgili sorular.", de: "Fragen zum Projektstart.", fr: "Questions sur le démarrage d'un projet.", es: "Preguntas sobre cómo iniciar un proyecto.", it: "Domande sull'avvio di un progetto.", ar: "أسئلة حول بدء مشروع.", ja: "プロジェクト開始に関するご質問" },
   faqLead: {
@@ -52,7 +76,9 @@ const labels = {
   }
 };
 
-const getLabel = (key: keyof typeof labels) => {
+type LabelKey = Exclude<keyof typeof labels, "steps">;
+
+const getLabel = (key: LabelKey) => {
   return labels[key][locale] || labels[key]["en"];
 };
 
@@ -76,13 +102,13 @@ const getSteps = () => {
           <h1 class="reveal delay-1">{getVal("heroTitle")}</h1>
           <p class="reveal delay-2">{getVal("heroLead")}</p>
           <div class="hero-ctas reveal delay-3">
-            <a class="btn btn-primary" href="#lead-form">Create Project Brief</a>
-            <a class="btn btn-secondary" href={`/${locale}/contact`}>General Contact</a>
+            <a class="btn btn-primary" href="#lead-form">{getLabel("createProjectBrief")}</a>
+            <a class="btn btn-secondary" href={`/${locale}/contact`}>{getLabel("generalContact")}</a>
           </div>
-          <div class="start-hero-proofline reveal delay-3" aria-label="Project request focus">
-            <span>Technical scope</span>
-            <span>Layer planning</span>
-            <span>Engineering review</span>
+          <div class="start-hero-proofline reveal delay-3" aria-label={getLabel("requestFocus")}>
+            <span>{getLabel("technicalScope")}</span>
+            <span>{getLabel("layerPlanning")}</span>
+            <span>{getLabel("engineeringReview")}</span>
           </div>
         </div>
 
@@ -99,15 +125,15 @@ const getSteps = () => {
           <div class="summary-metrics">
             <div>
               <strong data-company-fact="productsOnMarket">{companyFacts.productsOnMarket || "100+"}</strong>
-              <span>products on market</span>
+              <span>{getLabel("productsOnMarket")}</span>
             </div>
             <div>
               <strong data-company-fact="happyClients">{companyFacts.happyClients || "41+"}</strong>
-              <span>happy clients</span>
+              <span>{getLabel("happyClients")}</span>
             </div>
             <div>
               <strong data-company-fact="officesWorldwide">{companyFacts.officesWorldwide || "2"}</strong>
-              <span>offices</span>
+              <span>{getLabel("offices")}</span>
             </div>
           </div>
         </aside>
@@ -118,8 +144,8 @@ const getSteps = () => {
     <section class="section trusted-by-section">
       <div class="section-inner">
         <div class="trusted-by-row reveal">
-          <p class="trusted-by-label">Trusted by engineering and operations teams</p>
-          <div class="trusted-by-logos" aria-label="Customer logos">
+          <p class="trusted-by-label">{getLabel("trustedBy")}</p>
+          <div class="trusted-by-logos" aria-label={getLabel("customerLogos")}>
             <div class="trusted-logo"><img src="/assets/client-logos/honeywell.png" alt="Honeywell" loading="lazy" decoding="async" /></div>
             <div class="trusted-logo"><img src="/assets/client-logos/slb.png" alt="SLB" loading="lazy" decoding="async" /></div>
             <div class="trusted-logo"><img src="/assets/client-logos/beko.png" alt="Beko" loading="lazy" decoding="async" /></div>
@@ -137,22 +163,22 @@ const getSteps = () => {
         <div class="intake-copy reveal">
           <p class="eyebrow">{getVal("realityEyebrow") || "Project Brief"}</p>
           <h2 class="page-title" id="project-brief-title">{getVal("realityTitle")}</h2>
-          <p class="section-lead">This form is intentionally more detailed than Contact. It helps WillowSoft understand whether you need one layer or an end-to-end connected product.</p>
+          <p class="section-lead">{getLabel("detailedFormLead")}</p>
           
           <div class="intake-route-card">
             <div>
               <span>{getLabel("useStartFor")}</span>
-              <strong>Scoped engineering requests</strong>
+              <strong>{getLabel("scopedEngineeringRequests")}</strong>
               <p>{getLabel("useStartDesc")}</p>
             </div>
             <div>
               <span>{getLabel("useContactFor")}</span>
-              <strong>General communication</strong>
+              <strong>{getLabel("generalCommunication")}</strong>
               <p>{getLabel("useContactDesc")}</p>
             </div>
           </div>
           
-          <div class="intake-aside-card" aria-label="What happens after you submit">
+          <div class="intake-aside-card" aria-label={getLabel("afterSubmitAria")}>
             <span>{getLabel("afterSubmitTitle")}</span>
             <p>{getLabel("afterSubmitDesc")}</p>
           </div>
@@ -168,15 +194,15 @@ const getSteps = () => {
     <section class="section soft start-process-section">
       <div class="section-inner">
         <div class="section-head reveal">
-          <p class="eyebrow">{getVal("pathsEyebrow") || "After submission"}</p>
+          <p class="eyebrow">{getVal("pathsEyebrow") || getLabel("afterSubmission")}</p>
           <h2 class="page-title">{getVal("pathsTitle")}</h2>
           <p class="section-lead">{getVal("pathsLead")}</p>
         </div>
         <div class="process process-premium process-compact">
-          <div class="process-step reveal"><div class="step-dot">1</div><article class="card process-card"><h3>Review</h3><p>We review product layer, scope, timeline and current technical state.</p></article></div>
-          <div class="process-step reveal delay-1"><div class="step-dot">2</div><article class="card process-card"><h3>Clarify</h3><p>We ask for missing requirements, constraints, drawings, APIs or deployment goals.</p></article></div>
-          <div class="process-step reveal delay-2"><div class="step-dot">3</div><article class="card process-card"><h3>Call</h3><p>Engineering aligns on feasibility, risks, rough sequence and next deliverables.</p></article></div>
-          <div class="process-step reveal delay-3"><div class="step-dot">4</div><article class="card process-card"><h3>Plan</h3><p>You receive a practical direction for prototype, platform rebuild or full delivery.</p></article></div>
+          <div class="process-step reveal"><div class="step-dot">1</div><article class="card process-card"><h3>{getLabel("review")}</h3><p>{getLabel("reviewDesc")}</p></article></div>
+          <div class="process-step reveal delay-1"><div class="step-dot">2</div><article class="card process-card"><h3>{getLabel("clarify")}</h3><p>{getLabel("clarifyDesc")}</p></article></div>
+          <div class="process-step reveal delay-2"><div class="step-dot">3</div><article class="card process-card"><h3>{getLabel("call")}</h3><p>{getLabel("callDesc")}</p></article></div>
+          <div class="process-step reveal delay-3"><div class="step-dot">4</div><article class="card process-card"><h3>{getLabel("plan")}</h3><p>{getLabel("planDesc")}</p></article></div>
         </div>
       </div>
     </section>
