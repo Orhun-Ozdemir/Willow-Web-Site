@@ -10,6 +10,16 @@ interface Props {
 const { locale, currentPath } = Astro.props;
 
 const labels: Record<string, string> = { en: "EN", tr: "TR", de: "DE", fr: "FR", es: "ES", it: "IT", ar: "AR", ja: "JA" };
+const ctaLabels: Record<string, string> = {
+  en: "Start Project",
+  tr: "Projeyi Başlat",
+  de: "Projekt starten",
+  fr: "Démarrer le projet",
+  es: "Iniciar proyecto",
+  it: "Avvia progetto",
+  ar: "بدء المشروع",
+  ja: "プロジェクト相談",
+};
 
 const links = [
   { name: "Ana Sayfa", href: `/${locale}`, accent: "nav-accent-cyan" },
@@ -49,7 +59,7 @@ function isActive(href: string) {
           {link.name}
         </a>
       ))}
-      <a href={`/${locale}/start-project`} class="mobile-cta">Start Project</a>
+      <a href={`/${locale}/start-project`} class="mobile-cta">{ctaLabels[locale] || ctaLabels.en}</a>
     </div>
 
     <div class="nav-actions">
@@ -62,7 +72,7 @@ function isActive(href: string) {
         </select>
       </label>
 
-      <a href={`/${locale}/start-project`} class="btn btn-primary btn-small">Start Project</a>
+      <a href={`/${locale}/start-project`} class="btn btn-primary btn-small">{ctaLabels[locale] || ctaLabels.en}</a>
       <button class="menu-toggle" aria-expanded="false" aria-label="Open menu" id="menu-toggle">☰</button>
     </div>
   </nav>

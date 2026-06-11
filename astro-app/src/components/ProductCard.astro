@@ -13,6 +13,16 @@ const delay = index % 4 ? ` delay-${index % 4}` : "";
 const chips = (p.chips || []).slice(0, 3);
 const cutoutImage = p.cardImage || `/assets/product-cutouts/${p.id}.png`;
 const originalImage = p.image || cutoutImage;
+const detailsLabel: Record<string, string> = {
+  en: "View Details",
+  tr: "Detayları Gör",
+  de: "Details ansehen",
+  fr: "Voir les détails",
+  es: "Ver detalles",
+  it: "Vedi dettagli",
+  ar: "عرض التفاصيل",
+  ja: "詳細を見る",
+};
 ---
 
 <article class={`card product-card reveal${delay}`} data-category={p.category}>
@@ -29,7 +39,7 @@ const originalImage = p.image || cutoutImage;
     </div>
     <p class="mt-4">
       <a href={`/${locale}/products/${encodeURIComponent(p.slug || p.id)}`} class="btn btn-ghost btn-small">
-        View Details
+        {detailsLabel[locale] || detailsLabel.en}
       </a>
     </p>
   </div>

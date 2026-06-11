@@ -10,7 +10,7 @@ const { images, title } = Astro.props;
 {images && images.length > 1 && (
   <div class="product-gallery">
     <div class="product-gallery-main">
-      <img id="main-gallery-img" src={`/${images[0]}`.replace("//", "/")} alt={title} />
+      <img data-gallery-main src={`/${images[0]}`.replace("//", "/")} alt={title} />
     </div>
     <div class="product-gallery-thumbs">
       {images.map((src, idx) => (
@@ -18,6 +18,8 @@ const { images, title } = Astro.props;
           type="button"
           class={`product-gallery-thumb${idx === 0 ? " active" : ""}`}
           data-src={`/${src}`.replace("//", "/")}
+          aria-label={`${title} image ${idx + 1} of ${images.length}`}
+          aria-pressed={idx === 0 ? "true" : "false"}
         >
           <img src={`/${src}`.replace("//", "/")} alt="" loading="lazy" decoding="async" />
         </button>
@@ -30,13 +32,15 @@ const { images, title } = Astro.props;
   function setupGallery() {
     const galleries = document.querySelectorAll('.product-gallery');
     galleries.forEach(gallery => {
-      const mainImg = gallery.querySelector('#main-gallery-img') as HTMLImageElement;
+      const mainImg = gallery.querySelector('[data-gallery-main]') as HTMLImageElement;
       const thumbs = gallery.querySelectorAll('.product-gallery-thumb');
       
       thumbs.forEach(thumb => {
         thumb.addEventListener('click', () => {
           thumbs.forEach(t => t.classList.remove('active'));
+          thumbs.forEach(t => t.setAttribute('aria-pressed', 'false'));
           thumb.classList.add('active');
+          thumb.setAttribute('aria-pressed', 'true');
           const src = (thumb as HTMLButtonElement).dataset.src;
           if (src && mainImg) {
             mainImg.src = src;

@@ -4366,6 +4366,12 @@ body[data-page="products"] .product-card:hover img {
   color: rgba(255,255,255,.75);
 }
 
+.footer-bottom-link {
+  display: inline;
+  color: rgba(255,255,255,.40);
+  font-size: 0.78rem;
+}
+
 .footer-bottom-links {
   display: flex;
   gap: 18px;

@@ -13,6 +13,16 @@ const delay = index % 3 ? ` delay-${index % 3}` : "";
 const date = n.date
   ? new Date(`${n.date}T00:00:00`).toLocaleDateString(locale, { year: "numeric", month: "short", day: "numeric" })
   : "";
+const readLabel: Record<string, string> = {
+  en: "Read Update",
+  tr: "Haberi Oku",
+  de: "Update lesen",
+  fr: "Lire la mise à jour",
+  es: "Leer actualización",
+  it: "Leggi l'aggiornamento",
+  ar: "اقرأ التحديث",
+  ja: "更新を見る",
+};
 ---
 
 <article class={`card news-card reveal${delay}`}>
@@ -27,7 +37,7 @@ const date = n.date
     <p>{n.excerpt}</p>
     <p class="mt-4">
       <a href={`/${locale}/news/${encodeURIComponent(n.slug || n.id)}`} class="btn btn-ghost btn-small">
-        Read Update
+        {readLabel[locale] || readLabel.en}
       </a>
     </p>
   </div>
