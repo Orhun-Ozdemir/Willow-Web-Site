@@ -6,39 +6,75 @@ interface Props {
 }
 
 const { locale } = Astro.props;
+const labels = {
+  tagline: {
+    en: "Smart Embedded Connectivity & Industrial IoT.",
+    tr: "Akıllı gömülü bağlantı ve Endüstriyel IoT.",
+    de: "Intelligente Embedded-Konnektivität und Industrial IoT.",
+    fr: "Connectivité embarquée intelligente et IoT industriel.",
+    es: "Conectividad embebida inteligente e IoT industrial.",
+    it: "Connettività embedded intelligente e Industrial IoT.",
+    ar: "اتصال مدمج ذكي وإنترنت الأشياء الصناعي.",
+    ja: "スマートな組み込み接続と産業用IoT。",
+  },
+  offices: {
+    en: "Turkey & United Kingdom offices.",
+    tr: "Türkiye ve Birleşik Krallık ofisleri.",
+    de: "Büros in der Türkei und im Vereinigten Königreich.",
+    fr: "Bureaux en Turquie et au Royaume-Uni.",
+    es: "Oficinas en Turquía y Reino Unido.",
+    it: "Uffici in Turchia e nel Regno Unito.",
+    ar: "مكاتب في تركيا والمملكة المتحدة.",
+    ja: "トルコと英国に拠点があります。",
+  },
+  social: { en: "Social media links", tr: "Sosyal medya bağlantıları", de: "Social-Media-Links", fr: "Liens réseaux sociaux", es: "Enlaces de redes sociales", it: "Link social media", ar: "روابط وسائل التواصل الاجتماعي", ja: "ソーシャルメディアリンク" },
+  explore: { en: "Explore", tr: "Keşfet", de: "Entdecken", fr: "Explorer", es: "Explorar", it: "Esplora", ar: "استكشف", ja: "探す" },
+  companyGroup: { en: "Company", tr: "Şirket", de: "Unternehmen", fr: "Entreprise", es: "Empresa", it: "Azienda", ar: "الشركة", ja: "会社情報" },
+  contactGroup: { en: "Contact", tr: "İletişim", de: "Kontakt", fr: "Contact", es: "Contacto", it: "Contatti", ar: "اتصل بنا", ja: "お問い合わせ" },
+  solutions: { en: "Solutions", tr: "Çözümler", de: "Lösungen", fr: "Solutions", es: "Soluciones", it: "Soluzioni", ar: "الحلول", ja: "ソリューション" },
+  services: { en: "Services", tr: "Hizmetler", de: "Leistungen", fr: "Services", es: "Servicios", it: "Servizi", ar: "الخدمات", ja: "サービス" },
+  products: { en: "Products", tr: "Ürünler", de: "Produkte", fr: "Produits", es: "Productos", it: "Prodotti", ar: "المنتجات", ja: "製品" },
+  company: { en: "Company", tr: "Şirket", de: "Unternehmen", fr: "Entreprise", es: "Empresa", it: "Azienda", ar: "الشركة", ja: "会社情報" },
+  news: { en: "News", tr: "Haberler", de: "Neuigkeiten", fr: "Actualités", es: "Noticias", it: "Notizie", ar: "الأخبار", ja: "ニュース" },
+  glossary: { en: "Glossary", tr: "Sözlük", de: "Glossar", fr: "Glossaire", es: "Glosario", it: "Glossario", ar: "المصطلحات", ja: "用語集" },
+  contact: { en: "Contact", tr: "İletişim", de: "Kontakt", fr: "Contact", es: "Contacto", it: "Contatti", ar: "اتصل بنا", ja: "お問い合わせ" },
+  startProject: { en: "Start a Project", tr: "Proje Başlat", de: "Projekt starten", fr: "Démarrer un projet", es: "Iniciar un proyecto", it: "Avvia un progetto", ar: "ابدأ مشروعاً", ja: "プロジェクト相談" },
+  rights: { en: "All rights reserved.", tr: "Tüm hakları saklıdır.", de: "Alle Rechte vorbehalten.", fr: "Tous droits réservés.", es: "Todos los derechos reservados.", it: "Tutti i diritti riservati.", ar: "جميع الحقوق محفوظة.", ja: "無断転載を禁じます。" },
+};
+const getLabel = (key: keyof typeof labels) => labels[key][locale] || labels[key].en;
 ---
 
 <footer class="footer">
   <div class="footer-grid">
     <div>
       <h3>WillowSoft</h3>
-      <p>Smart Embedded Connectivity &amp; Industrial IoT.<br />Turkey &amp; United Kingdom offices.</p>
-      <div class="footer-social" aria-label="Social media links">
+      <p>{getLabel("tagline")}<br />{getLabel("offices")}</p>
+      <div class="footer-social" aria-label={getLabel("social")}>
         <a href="https://linkedin.com/company/willowsoft" aria-label="LinkedIn" rel="noopener noreferrer" target="_blank">in</a>
         <a href="https://github.com/willowsoft" aria-label="GitHub" rel="noopener noreferrer" target="_blank">gh</a>
         <a href="mailto:info@willowsoft.co" aria-label="Email">✉</a>
       </div>
     </div>
     <div>
-      <h3>Explore</h3>
-      <a href={`/${locale}/solutions`}>Solutions</a>
-      <a href={`/${locale}/services`}>Services</a>
-      <a href={`/${locale}/products`}>Products</a>
+      <h3>{getLabel("explore")}</h3>
+      <a href={`/${locale}/solutions`}>{getLabel("solutions")}</a>
+      <a href={`/${locale}/services`}>{getLabel("services")}</a>
+      <a href={`/${locale}/products`}>{getLabel("products")}</a>
     </div>
     <div>
-      <h3>Company</h3>
-      <a href={`/${locale}/company`}>Company</a>
-      <a href={`/${locale}/news`}>News</a>
-      <a href={`/${locale}/glossary`}>Glossary</a>
+      <h3>{getLabel("companyGroup")}</h3>
+      <a href={`/${locale}/company`}>{getLabel("company")}</a>
+      <a href={`/${locale}/news`}>{getLabel("news")}</a>
+      <a href={`/${locale}/glossary`}>{getLabel("glossary")}</a>
     </div>
     <div>
-      <h3>Contact</h3>
-      <a href={`/${locale}/contact`}>Contact</a>
-      <a href={`/${locale}/start-project`}>Start a Project</a>
+      <h3>{getLabel("contactGroup")}</h3>
+      <a href={`/${locale}/contact`}>{getLabel("contact")}</a>
+      <a href={`/${locale}/start-project`}>{getLabel("startProject")}</a>
       <a href="mailto:info@willowsoft.co">info@willowsoft.co</a>
     </div>
   </div>
   <div class="footer-bottom">
-    <span>© 2026 WillowSoft. All rights reserved.</span>
+    <span>© 2026 WillowSoft. {getLabel("rights")}</span>
   </div>
 </footer>

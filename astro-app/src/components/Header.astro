@@ -10,6 +10,18 @@ interface Props {
 const { locale, currentPath } = Astro.props;
 
 const labels: Record<string, string> = { en: "EN", tr: "TR", de: "DE", fr: "FR", es: "ES", it: "IT", ar: "AR", ja: "JA" };
+const navLabels = {
+  home: { en: "Home", tr: "Ana Sayfa", de: "Startseite", fr: "Accueil", es: "Inicio", it: "Home", ar: "الرئيسية", ja: "ホーム" },
+  solutions: { en: "Solutions", tr: "Çözümler", de: "Lösungen", fr: "Solutions", es: "Soluciones", it: "Soluzioni", ar: "الحلول", ja: "ソリューション" },
+  services: { en: "Services", tr: "Hizmetler", de: "Leistungen", fr: "Services", es: "Servicios", it: "Servizi", ar: "الخدمات", ja: "サービス" },
+  products: { en: "Products", tr: "Ürünler", de: "Produkte", fr: "Produits", es: "Productos", it: "Prodotti", ar: "المنتجات", ja: "製品" },
+  news: { en: "News", tr: "Haberler", de: "Neuigkeiten", fr: "Actualités", es: "Noticias", it: "Notizie", ar: "الأخبار", ja: "ニュース" },
+  company: { en: "Company", tr: "Şirket", de: "Unternehmen", fr: "Entreprise", es: "Empresa", it: "Azienda", ar: "الشركة", ja: "会社情報" },
+  contact: { en: "Contact", tr: "İletişim", de: "Kontakt", fr: "Contact", es: "Contacto", it: "Contatti", ar: "اتصل بنا", ja: "お問い合わせ" },
+  language: { en: "Language", tr: "Dil", de: "Sprache", fr: "Langue", es: "Idioma", it: "Lingua", ar: "اللغة", ja: "言語" },
+  openMenu: { en: "Open menu", tr: "Menüyü aç", de: "Menü öffnen", fr: "Ouvrir le menu", es: "Abrir menú", it: "Apri menu", ar: "افتح القائمة", ja: "メニューを開く" },
+  mainNavigation: { en: "Main navigation", tr: "Ana gezinme", de: "Hauptnavigation", fr: "Navigation principale", es: "Navegación principal", it: "Navigazione principale", ar: "التنقل الرئيسي", ja: "メインナビゲーション" },
+};
 const ctaLabels: Record<string, string> = {
   en: "Start Project",
   tr: "Projeyi Başlat",
@@ -21,14 +33,15 @@ const ctaLabels: Record<string, string> = {
   ja: "プロジェクト相談",
 };
 
+const getLabel = (key: keyof typeof navLabels) => navLabels[key][locale] || navLabels[key].en;
 const links = [
-  { name: "Ana Sayfa", href: `/${locale}`, accent: "nav-accent-cyan" },
-  { name: "Solutions", href: `/${locale}/solutions`, accent: "nav-accent-green" },
-  { name: "Services", href: `/${locale}/services`, accent: "nav-accent-cyan" },
-  { name: "Products", href: `/${locale}/products`, accent: "nav-accent-cyan" },
-  { name: "News", href: `/${locale}/news`, accent: "nav-accent-amber" },
-  { name: "Company", href: `/${locale}/company`, accent: "nav-accent-warm" },
-  { name: "Contact", href: `/${locale}/contact`, accent: "nav-accent-green" },
+  { name: getLabel("home"), href: `/${locale}`, accent: "nav-accent-cyan" },
+  { name: getLabel("solutions"), href: `/${locale}/solutions`, accent: "nav-accent-green" },
+  { name: getLabel("services"), href: `/${locale}/services`, accent: "nav-accent-cyan" },
+  { name: getLabel("products"), href: `/${locale}/products`, accent: "nav-accent-cyan" },
+  { name: getLabel("news"), href: `/${locale}/news`, accent: "nav-accent-amber" },
+  { name: getLabel("company"), href: `/${locale}/company`, accent: "nav-accent-warm" },
+  { name: getLabel("contact"), href: `/${locale}/contact`, accent: "nav-accent-green" },
 ];
 
 function isActive(href: string) {
@@ -38,7 +51,7 @@ function isActive(href: string) {
 ---
 
 <header class="site-header">
-  <nav class="nav" aria-label="Main navigation">
+  <nav class="nav" aria-label={getLabel("mainNavigation")}>
     <a href={`/${locale}`} class="brand">
       <span class="brand-mark" aria-hidden="true">
         <img src="/assets/willow-mark-transparent.png" alt="" decoding="async" />
@@ -64,8 +77,8 @@ function isActive(href: string) {
 
     <div class="nav-actions">
       <label class="language-switcher" data-language-switcher>
-        <span class="sr-only">Language</span>
-        <select aria-label="Language" id="locale-select">
+        <span class="sr-only">{getLabel("language")}</span>
+        <select aria-label={getLabel("language")} id="locale-select">
           {locales.map((loc) => (
             <option value={loc} selected={loc === locale}>{labels[loc]}</option>
           ))}
@@ -73,7 +86,7 @@ function isActive(href: string) {
       </label>
 
       <a href={`/${locale}/start-project`} class="btn btn-primary btn-small">{ctaLabels[locale] || ctaLabels.en}</a>
-      <button class="menu-toggle" aria-expanded="false" aria-label="Open menu" id="menu-toggle">☰</button>
+      <button class="menu-toggle" aria-expanded="false" aria-label={getLabel("openMenu")} id="menu-toggle">☰</button>
     </div>
   </nav>
 </header>
