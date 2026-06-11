@@ -158,7 +158,22 @@ const dir = locale === "ar" ? "rtl" : "ltr";
           var raf = 0, running = false;
           var density = Number(canvas.dataset.density || 36);
           var color = canvas.dataset.color || "35, 168, 216";
+          var isHeroCanvas = !!canvas.closest(".hero");
           var DIST_MAX_SQ = 150 * 150;
+
+          function clamp(value, min, max){
+            return Math.max(min, Math.min(max, value));
+          }
+
+          function createPoint(x, y, alpha){
+            return {
+              x: clamp(x, 0, width),
+              y: clamp(y, 0, height),
+              vx: (Math.random()-0.5)*0.18,
+              vy: (Math.random()-0.5)*0.18,
+              alpha: alpha
+            };
+          }
 
           function resize(){
             var rect = canvas.getBoundingClientRect();
@@ -174,12 +189,59 @@ const dir = locale === "ar" ? "rtl" : "ltr";
           }
           function build(){
             points = []; pulses = [];
-            for (var i = 0; i < density; i++) {
-              points.push({ x: Math.random()*width, y: Math.random()*height, vx: (Math.random()-0.5)*0.18, vy: (Math.random()-0.5)*0.18 });
+            if (isHeroCanvas) {
+              var coreCount = Math.max(8, Math.round(density * 0.58));
+              var trailCount = Math.max(5, Math.round(density * 0.30));
+              var ambientCount = Math.max(2, density - coreCount - trailCount);
+
+              for (var i = 0; i < coreCount; i++) {
+                points.push(createPoint(
+                  width * (0.56 + Math.random()*0.42),
+                  height * (0.14 + Math.random()*0.76),
+                  1
+                ));
+              }
+
+              for (var i = 0; i < trailCount; i++) {
+                var t = Math.random();
+                points.push(createPoint(
+                  width * (0.86 - 0.74*t) + (Math.random()-0.5) * width * 0.14,
+                  height * (0.56 - 0.42*t) + (Math.random()-0.5) * height * 0.16,
+                  0.52
+                ));
+              }
+
+              for (var i = 0; i < ambientCount; i++) {
+                points.push(createPoint(
+                  width * (0.06 + Math.random()*0.70),
+                  height * (0.08 + Math.random()*0.54),
+                  0.28
+                ));
+              }
+            } else {
+              for (var i = 0; i < density; i++) {
+                points.push(createPoint(Math.random()*width, Math.random()*height, 1));
+              }
             }
             for (var i = 0; i < Math.max(7, density/5); i++) {
               pulses.push({ from: Math.floor(Math.random()*points.length), to: Math.floor(Math.random()*points.length), t: Math.random(), speed: 0.003+Math.random()*0.006 });
             }
+          }
+          function drawConnections(minMidX, maxMidX, alpha){
+            ctx.beginPath();
+            ctx.strokeStyle = "rgba("+color+", "+alpha+")";
+            ctx.lineWidth = 1;
+            for (var i = 0; i < points.length; i++) {
+              for (var j = i+1; j < points.length; j++) {
+                var dx = points[i].x-points[j].x, dy = points[i].y-points[j].y;
+                var midX = (points[i].x + points[j].x) / 2;
+                if (midX >= minMidX && midX < maxMidX && dx*dx+dy*dy < DIST_MAX_SQ) {
+                  ctx.moveTo(points[i].x, points[i].y);
+                  ctx.lineTo(points[j].x, points[j].y);
+                }
+              }
+            }
+            ctx.stroke();
           }
           function draw(){
             if (!running || !ctx) return;
@@ -189,24 +251,27 @@ const dir = locale === "ar" ? "rtl" : "ltr";
               if (p.x < 0 || p.x > width) p.vx *= -1;
               if (p.y < 0 || p.y > height) p.vy *= -1;
             }
-            ctx.beginPath(); ctx.strokeStyle = "rgba("+color+", 0.15)"; ctx.lineWidth = 1;
-            for (var i = 0; i < points.length; i++) {
-              for (var j = i+1; j < points.length; j++) {
-                var dx = points[i].x-points[j].x, dy = points[i].y-points[j].y;
-                if (dx*dx+dy*dy < DIST_MAX_SQ) { ctx.moveTo(points[i].x, points[i].y); ctx.lineTo(points[j].x, points[j].y); }
-              }
+            if (isHeroCanvas) {
+              drawConnections(0, width * 0.46, 0.055);
+              drawConnections(width * 0.30, width + 1, 0.15);
+            } else {
+              drawConnections(0, width + 1, 0.15);
             }
-            ctx.stroke();
-            ctx.beginPath(); ctx.fillStyle = "rgba("+color+", 0.55)";
-            for (var i = 0; i < points.length; i++) { ctx.moveTo(points[i].x+2, points[i].y); ctx.arc(points[i].x, points[i].y, 2, 0, Math.PI*2); }
-            ctx.fill();
-            ctx.fillStyle = "rgba(255,255,255,0.82)";
+            for (var i = 0; i < points.length; i++) {
+              ctx.beginPath();
+              ctx.fillStyle = "rgba("+color+", "+(0.55 * points[i].alpha)+")";
+              ctx.arc(points[i].x, points[i].y, 1.4 + points[i].alpha * 0.7, 0, Math.PI*2);
+              ctx.fill();
+            }
             for (var k = 0; k < pulses.length; k++) {
               var pulse = pulses[k], a = points[pulse.from], b = points[pulse.to];
               if (!a || !b || pulse.from === pulse.to) continue;
               pulse.t += pulse.speed;
               if (pulse.t > 1) { pulse.from = Math.floor(Math.random()*points.length); pulse.to = Math.floor(Math.random()*points.length); pulse.t = 0; }
-              ctx.beginPath(); ctx.arc(a.x+(b.x-a.x)*pulse.t, a.y+(b.y-a.y)*pulse.t, 3, 0, Math.PI*2); ctx.fill();
+              ctx.beginPath();
+              ctx.fillStyle = "rgba(255,255,255,"+(0.82 * Math.min(a.alpha, b.alpha))+")";
+              ctx.arc(a.x+(b.x-a.x)*pulse.t, a.y+(b.y-a.y)*pulse.t, 3, 0, Math.PI*2);
+              ctx.fill();
             }
             raf = requestAnimationFrame(draw);
           }
@@ -266,13 +331,19 @@ const dir = locale === "ar" ? "rtl" : "ltr";
             "  float focus=smoothstep(1.22,0.08,length(center));",
             "  float rightField=smoothstep(mix(0.18,-0.45,sweep),mix(0.92,0.38,sweep),uv.x);",
             "  float topField=smoothstep(mix(1.0,1.6,sweep),mix(0.10,-0.3,sweep),uv.y);",
+            "  float trailCenterY=0.12+(uv.x-0.10)*0.58;",
+            "  float trailBand=1.0-smoothstep(0.03,0.26,abs(uv.y-trailCenterY));",
+            "  float trailFade=smoothstep(0.05,0.92,uv.x);",
+            "  float trailField=trailBand*mix(0.34,0.88,trailFade);",
+            "  float energyField=max(rightField,trailField*0.62);",
             "  vec3 col=uBase;",
             "  col=mix(col,uBloomA,wa*0.62); col=mix(col,uBloomB,wb*0.66);",
-            "  float energy=clamp((ribbon*0.85+smoothstep(0.42,0.98,b1*b2+0.2)*0.62)*rightField,0.0,1.0);",
-            "  float stage=clamp(focus*0.88+rightField*0.86+topField*0.34,0.0,1.0);",
+            "  float energy=clamp((ribbon*0.85+smoothstep(0.42,0.98,b1*b2+0.2)*0.62)*energyField,0.0,1.0);",
+            "  float stage=clamp(focus*0.78+rightField*0.80+trailField*0.44+topField*0.24,0.0,1.0);",
             "  col=mix(col,uAccent,energy*stage*0.58); col=mix(col,uElectric,ribbonA*stage*rightField*0.66);",
-            "  col=mix(col,uViolet,ribbonB*stage*rightField*0.42); col=mix(col,uWarm,ribbonC*stage*rightField*topField*0.36);",
-            "  col+=vec3(ribbon*0.22*stage); return col;",
+            "  col=mix(col,uElectric,ribbonA*stage*trailField*0.22);",
+            "  col=mix(col,uViolet,ribbonB*stage*energyField*0.42); col=mix(col,uWarm,ribbonC*stage*max(rightField,trailField*0.45)*topField*0.36);",
+            "  col+=vec3(ribbon*(0.22*rightField+0.10*trailField)*stage); return col;",
             "}",
             "void main(){",
             "  vec2 uv=gl_FragCoord.xy/uResolution.xy; float t=uTime*mix(1.0,0.0,uReduceMotion);",
@@ -280,7 +351,11 @@ const dir = locale === "ar" ? "rtl" : "ltr";
             "  float coord=dot(uv*11.0,dir); float flute=sin(coord*6.2831853+t*0.72); float refraction=flute*0.022;",
             "  vec2 displaced=uv+perp*refraction; float ca=0.014*(0.4+abs(flute));",
             "  vec3 r=scene(displaced+perp*ca,t); vec3 g=scene(displaced,t); vec3 b=scene(displaced-perp*ca,t);",
-            "  vec3 col=vec3(r.r,g.g,b.b); float highlight=pow(0.5+0.5*flute,16.0); col+=vec3(highlight*0.24);",
+            "  vec3 col=vec3(r.r,g.g,b.b); float highlight=pow(0.5+0.5*flute,16.0);",
+            "  float heroTrailY=0.12+(uv.x-0.10)*0.58;",
+            "  float heroTrail=(1.0-smoothstep(0.03,0.24,abs(uv.y-heroTrailY)))*mix(0.26,0.84,smoothstep(0.05,0.92,uv.x));",
+            "  float highlightField=max(smoothstep(0.24,0.82,uv.x),heroTrail*0.42);",
+            "  col+=vec3(highlight*0.24*highlightField);",
             "  vec2 c=uv-0.5; col*=1.0-dot(c,c)*0.08;",
             "  float grain=hash(gl_FragCoord.xy+t*73.0)-0.5; col+=grain*0.016;",
             "  gl_FragColor=vec4(col,1.0);",

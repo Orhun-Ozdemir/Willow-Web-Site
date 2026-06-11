@@ -608,9 +608,9 @@ select {
 }
 
 .motion-hero .hero-shader-canvas {
-  /* Transparent on left (text area), vivid on right (animation area) */
-  -webkit-mask-image: linear-gradient(90deg, transparent 0%, rgba(0,0,0,0.08) 34%, rgba(0,0,0,0.72) 52%, #000 72%);
-          mask-image: linear-gradient(90deg, transparent 0%, rgba(0,0,0,0.08) 34%, rgba(0,0,0,0.72) 52%, #000 72%);
+  /* Keep the right side vivid while allowing a lighter trail to reach the top-left. */
+  -webkit-mask-image: linear-gradient(90deg, rgba(0,0,0,0.14) 0%, rgba(0,0,0,0.10) 28%, rgba(0,0,0,0.56) 50%, #000 72%);
+          mask-image: linear-gradient(90deg, rgba(0,0,0,0.14) 0%, rgba(0,0,0,0.10) 28%, rgba(0,0,0,0.56) 50%, #000 72%);
 }
 
 .hero-inner,
