@@ -1,13 +1,240 @@
+import type { Metadata } from "next";
+import Link from "next/link";
+import { localizedValue, type Locale } from "@/lib/cms";
+import { fetchContentSync } from "@/lib/cms-server";
+
 interface PageProps {
   params: Promise<{ locale: string }>;
 }
 
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { locale } = await params;
+  const content = fetchContentSync();
+  const seo = content.pageSeo?.company?.[locale] || {};
+  return {
+    title: seo.seoTitle || "Company | WillowSoft",
+    description: seo.metaDescription || "About WillowSoft, a technology export champion.",
+    alternates: {
+      canonical: seo.canonical || `https://willowsoft.co/${locale}/company`,
+    },
+  };
+}
+
 export default async function CompanyPage({ params }: PageProps) {
   const { locale } = await params;
+  const content = fetchContentSync();
+  const pageContent = content.pageContent?.company || {};
+  const getVal = (key: string) => localizedValue(pageContent[key], locale as Locale);
+
+  const labels = {
+    teamBehindSystem: { en: "The team behind the system.", tr: "Sistemin arkasındaki ekip.", de: "Das Team hinter dem System.", fr: "L'équipe derrière le système.", es: "El equipo detrás del sistema.", it: "Il team dietro al sistema.", ar: "الفريق الذي يقف خلف النظام.", ja: "システムを支えるチーム。" },
+    teamDesc: {
+      en: "Founded in 2020, WillowSoft grew from an R&D-first engineering team into a globally recognized connected product company — recognized as a Technology Export Champion in 2023 with active deployments across 15+ countries.",
+      tr: "2020'de kurulan WillowSoft, Ar-Ge odaklı bir mühendislik ekibinden küresel düzeyde tanınan bir bağlı ürün şirketi haline geldi — 2023'te Teknoloji İhracat Şampiyonu seçilen şirketin ürünleri 15'ten fazla ülkede aktif olarak kullanılmaktadır.",
+      de: "Gegründet im Jahr 2020, entwickelte sich WillowSoft von einem F&E-orientierten Engineering-Team zu einem weltweit anerkannten Unternehmen für vernetzte Produkte – 2023 als Technologie-Export-Champion ausgezeichnet, mit aktiven Einsätzen in über 15 Ländern.",
+      fr: "Fondée en 2020, WillowSoft est passée d'une équipe d'ingénierie axée sur la R&D à une entreprise de produits connectés mondialement reconnue — désignée Championne de l'exportation technologique en 2023 avec des déploiements actifs dans plus de 15 pays.",
+      es: "Fundada en 2020, WillowSoft creció desde un equipo de ingeniería centrado en I+D hasta convertirse en una empresa de productos conectados reconocida mundialmente, siendo galardonada como Campeona de Exportación de Tecnología en 2023 con implementaciones activas en más de 15 países.",
+      it: "Fondata nel 2020, WillowSoft è cresciuta da team di progettazione focalizzato sulla R&S a azienda di prodotti connessi riconosciuta a livello globale — premiata come Campione dell'Esportazione Tecnologica nel 2023 con installazioni attive in oltre 15 paesi.",
+      ar: "تأسست WillowSoft في عام 2020، ونمت من فريق هندسي يركز على البحث والتطوير إلى شركة منتجات متصلة معترف بها عالميًا — تم تكريمها كبطل لتصدير التكنولوجيا في عام 2023 مع عمليات نشر نشطة في أكثر من 15 دولة.",
+      ja: "2020年に設立された WillowSoft は、研究 R&D 発想のエンジニアリング集団から、グローバル市場で実績を持つ IoT デバイスメーカーへと成長しました。2023年には技術輸出チャンピオンに選出され、現在15カ国以上でシステムが稼働しています。"
+    },
+
+    // Principles
+    productionFirstThinking: { en: "Production-First Thinking", tr: "Üretim Odaklı Düşünce", de: "Produktionsorientiertes Denken", fr: "Pensée axée sur la production", es: "Pensamiento centrado en la producción", it: "Progettazione orientata alla produzione", ar: "التفكير الموجه للإنتاج", ja: "量産を見据えた設計思想" },
+    productionFirstThinkingDesc: {
+      en: "Every design decision is evaluated against field reality — power budgets, enclosure constraints, RF environment, and manufacturing tolerances.",
+      tr: "Her tasarım kararı saha gerçeklerine göre değerlendirilir: güç bütçeleri, muhafaza kısıtlamaları, RF ortamı ve üretim toleransları.",
+      de: "Jede Designentscheidung wird an der Realität gemessen – Leistungsbudgets, Gehäuseeinschränkungen, RF-Umgebung und Fertigungstoleranzen.",
+      fr: "Chaque décision de conception est évaluée par rapport à la réalité du terrain : budgets énergétiques, contraintes de boîtier, environnement RF et tolérances de fabrication.",
+      es: "Cada decisión de diseño se evalúa frente a la realidad del campo: presupuestos de energía, restricciones de gabinete, entorno de RF y tolerancias de fabricación.",
+      it: "Ogni decisione di progettazione viene valutata rispetto alla realtà sul campo: consumi energetici, limiti di spazio, ambiente RF e tolleranze di fabbricazione.",
+      ar: "يتم تقييم كل قرار تصميم مقابل الواقع العملي — ميزانيات الطاقة، وقيود العلب، وبيئة الـ RF، وتفاوتات التصنيع.",
+      ja: "すべての設計判断は、消費電力、筐体の寸法制限、電波環境、量産時の製造誤差など、現場の実態に合わせて評価されます。"
+    },
+
+    fullStackOwnership: { en: "Full Stack Ownership", tr: "Uçtan Uca Sorumluluk", de: "Verantwortung für den gesamten Stack", fr: "Responsabilité de l'intégralité du stack", es: "Responsabilidad de todo el stack", it: "Responsabilità dell'intero stack", ar: "امتلاك النظام بالكامل", ja: "全開発レイヤーの内製化" },
+    fullStackOwnershipDesc: {
+      en: "We don't hand off. The same team that designs the hardware writes the firmware, builds the backend, and ships the interface. No translation loss between layers.",
+      tr: "İşi başkasına devretmeyiz. Donanımı tasarlayan aynı ekip, yazılımı yazar, backend'i kurar ve arayüzü teslim eder. Katmanlar arasında bilgi kaybı olmaz.",
+      de: "Wir übergeben die Arbeit nicht. Dasselbe Team, das die Hardware entwirft, schreibt die Firmware, baut das Backend und liefert die Schnittstelle. Kein Informationsverlust zwischen den Schichten.",
+      fr: "Nous ne sous-traitons pas. La même équipe qui conçoit le matériel écrit le firmware, construit le backend et livre l'interface. Aucune perte d'information entre les couches.",
+      es: "No subcontratamos. El mismo equipo que diseña el hardware escribe el firmware, construye el backend y entrega la interfaz. Sin pérdida de información entre capas.",
+      it: "Non esternalizziamo. Lo stesso team che progetta l'hardware scrive il firmware, sviluppa il backend e rilascia l'interfaccia. Nessuna perdita di informazioni tra i livelli.",
+      ar: "نحن لا نسلم العمل لطرف آخر. الفريق نفسه الذي يصمم الأجهزة يكتب البرامج، ويبني المنصة الخلفية، ويسلم الواجهة. لا يوجد فقدان للمعلومات بين الطبقات.",
+      ja: "私たちは下請けに丸投げしません。回路設計を行ったチームがそのままファームウェアを書き、バックエンドを構築し、UIを納品するため、仕様の伝達ロスがありません。"
+    },
+
+    longTermReliability: { en: "Long-Term Reliability", tr: "Uzun Vadeli Güvenilirlik", de: "Langfristige Zuverlässigkeit", fr: "Fiabilité à long terme", es: "Confiabilidad a largo plazo", it: "Affidabilità a lungo termine", ar: "الموثوقية على المدى الطويل", ja: "長期にわたる信頼性" },
+    longTermReliabilityDesc: {
+      en: "Systems we deploy are expected to operate for years without intervention. We engineer for that reality — not for the demo.",
+      tr: "Sahaya kurduğumuz sistemlerin müdahale edilmeden yıllarca çalışması beklenir. Biz demolar için değil, bu gerçeklik için mühendislik yapıyoruz.",
+      de: "Die von uns installierten Systeme sollen jahrelang ohne Eingriffe funktionieren. Wir entwickeln für diese Realität – nicht für die Demo.",
+      fr: "Les systèmes que nous déployons sont conçus pour fonctionner pendant des années sans intervention. Nous concevons pour cette réalité — pas pour la démo.",
+      es: "Se espera que los sistemas que implementamos funcionen durante años sin intervención. Diseñamos para esa realidad, no para la demostración.",
+      it: "I sistemi che installiamo sono progettati per funzionare per anni senza interventi. Progettiamo per questa realtà, non per una semplice demo.",
+      ar: "من المتوقع أن تعمل الأنظمة التي ننشرها لسنوات دون تدخل. نحن نهندس لهذا الواقع — وليس لمجرد العرض التجريبي.",
+      ja: "導入したシステムは、メンテナンスなしで何年も動作することが求められます。私たちはデモのためではなく、その厳しい現場現実に合わせて設計しています。"
+    },
+
+    // Timeline
+    year2020Title: { en: "2020: Foundation", tr: "2020: Kuruluş", de: "2020: Gründung", fr: "2020 : Fondation", es: "2020: Fundación", it: "2020: Fondazione", ar: "٢٠٢٠: التأسيس", ja: "2020年：設立" },
+    year2020Desc: { en: "WillowSoft was founded with a focus on R&D, embedded systems, and high-tech product development.", tr: "WillowSoft, Ar-Ge, gömülü sistemler ve yüksek teknoloji ürün geliştirmeye odaklanarak kuruldu.", de: "WillowSoft wurde mit dem Schwerpunkt auf F&E, eingebettete Systeme und High-Tech-Produktentwicklung gegründet.", fr: "WillowSoft a été fondée avec un accent sur la R&D, les systèmes embarqués et le développement de produits technologiques.", es: "WillowSoft se fundó con un enfoque en I+D, sistemas embebidos y desarrollo de productos de alta tecnología.", it: "WillowSoft è stata fondata focalizzandosi su R&S, sistemi embedded e sviluppo di prodotti ad alta tecnologia.", ar: "تأسست WillowSoft مع التركيز على البحث والتطوير والأنظمة المدمجة وتطوير المنتجات التقنية.", ja: "研究開発、組み込みシステム、先端テクノロジー開発を主軸に WillowSoft を設立。" },
+    
+    year2023Title: { en: "2021-2023: Export Growth", tr: "2021-2023: İhracat Büyümesi", de: "2021-2023: Exportwachstum", fr: "2021-2023 : Croissance des exportations", es: "2021-2023: Crecimiento de exportación", it: "2021-2023: Crescita dell'export", ar: "٢٠٢١-٢٠٢٣: نمو الصادرات", ja: "2021年〜2023年：輸出拡大" },
+    year2023Desc: { en: "The company achieved high-tech export milestones and was recognized as a Technology Export Champion.", tr: "Şirket, yüksek teknoloji ihracatında önemli kilometre taşlarına ulaştı ve Teknoloji İhracat Şampiyonu seçildi.", de: "Das Unternehmen erreichte wichtige Meilensteine beim Export von High-Tech-Produkten und wurde als Technologie-Export-Champion ausgezeichnet.", fr: "L'entreprise a franchi des étapes clés dans l'exportation de haute technologie et a été reconnue comme Championne de l'exportation technologique.", es: "La empresa logró hitos clave en la exportación de alta tecnología y fue galardonada como Campeona de Exportación de Tecnología.", it: "L'azienda ha raggiunto importanti traguardi nell'esportazione di tecnologia ed è stata premiata come Campione dell'Esportazione.", ar: "حققت الشركة إنجازات هامة في تصدير التكنولوجيا المتقدمة وتم تكريمها كبطل لتصدير التكنولوجيا.", ja: "高度な独自技術の輸出実績が評価され、テクノロジー輸出チャンピオンとして表彰。" },
+
+    year2025Title: { en: "2025: Global Scale", tr: "2025: Küresel Ölçek", de: "2025: Globale Skalierung", fr: "2025 : Échelle mondiale", es: "2025: Escala global", it: "2025: Scala globale", ar: "٢٠٢٥: التوسع العالمي", ja: "2025年：グローバル展開" },
+    year2025Desc: { en: "WillowSoft expanded its international presence with products and engineering projects across 15 countries.", tr: "WillowSoft, 15 ülkede aktif donanım ve mühendislik projeleri ile uluslararası varlığını genişletti.", de: "WillowSoft weitete seine internationale Präsenz mit Produkten und Engineering-Projekten in 15 Ländern aus.", fr: "WillowSoft a étendu sa présence internationale avec des produits et des projets d'ingénierie dans 15 pays.", es: "WillowSoft expandió su presencia internacional con productos y proyectos de ingeniería en 15 países.", it: "WillowSoft ha ampliato la sua presenza internazionale con prodotti e progetti di ingegneria in 15 paesi.", ar: "وسعت WillowSoft حضورها الدولي بمنتجات ومشاريع هندسية في ١٥ دولة.", ja: "世界15カ国で製品の導入と大規模なエンジニアリングプロジェクトを展開。" },
+
+    year2026Title: { en: "2026: Ecosystem Expansion", tr: "2026: Ekosistem Genişlemesi", de: "2026: Ökosystem-Erweiterung", fr: "2026 : Expansion de l'écosystème", es: "2026: Expansión del ecosistema", it: "2026: Espansione dell'ecosistema", ar: "٢٠٢٦: توسيع المنظومة", ja: "2026年：事業領域の拡張" },
+    year2026Desc: { en: "Expanded global operations with unified IoT stacks, 8 localized region rewrites, and AI search engine visibility across all key nodes.", tr: "Birleşik IoT altyapıları, 8 dilde yerelleştirme ve tüm kilit noktalarda yapay zeka arama motoru görünürlüğü ile küresel operasyonlarını genişletti.", de: "Ausweitung des weltweiten Betriebs mit einheitlichen IoT-Stacks, Lokalisierung in 8 Sprachen und KI-Sichtbarkeit an allen wichtigen Knoten.", fr: "Expansion des opérations mondiales avec des stacks IoT unifiés, localisation en 8 langues et visibilité IA sur tous les nœuds clés.", es: "Expansión de operaciones globales con stacks de IoT unificados, localización en 8 idiomas y visibilidad de IA en todos los nodos clave.", it: "Espansione delle attività globali con stack IoT unificati, localizzazione in 8 lingue e visibilità IA su tutti i nodi chiave.", ar: "توسيع العمليات العالمية بحزم إنترنت أشياء موحدة، والتعريب لـ ٨ لغات، والظهور في محركات بحث الذكاء الاصطناعي.", ja: "ハード・ソフト統合型IoTスタックの確立、8カ国語対応のグローバルサイト開設、各種検索エンジンの最適化を実施。" },
+
+    // Who we work with
+    industryEnergy: { en: "Industrial & Energy", tr: "Endüstri & Enerji", de: "Industrie & Energie", fr: "Industrie & Énergie", es: "Industria y energía", it: "Industria ed energia", ar: "الصناعة والطاقة", ja: "重工業・エネルギー" },
+    industryEnergyDesc: { en: "Companies like Honeywell and SLB work with WillowSoft on custom sensor nodes, Modbus integration layers, and field-deployed connected hardware for industrial environments.", tr: "Honeywell ve SLB gibi şirketler; özel sensör düğümleri, Modbus entegrasyon katmanları ve endüstriyel ortamlar için sahada konuşlandırılmış bağlı donanımlar konusunda WillowSoft ile çalışmaktadır.", de: "Unternehmen wie Honeywell und SLB arbeiten mit WillowSoft an kundenspezifischen Sensorknoten, Modbus-Integrationsschichten und praxistauglichen vernetzten Geräten für Industrieumgebungen.", fr: "Des entreprises comme Honeywell et SLB collaborent avec WillowSoft sur des nœuds de capteurs personnalisés, des couches d'intégration Modbus et du matériel connecté déployé sur le terrain pour les environnements industriels.", es: "Empresas como Honeywell y SLB trabajan con WillowSoft en nodos de sensores personalizados, capas de integración Modbus y hardware conectado implementado en el campo para entornos industriales.", it: "Aziende come Honeywell e SLB collaborano con WillowSoft per nodi sensori personalizzati, livelli di integrazione Modbus e hardware connesso installato in ambienti industriali.", ar: "تعمل شركات مثل Honeywell و SLB مع WillowSoft على عقد استشعار مخصصة، وطبقات تكامل Modbus، وأجهزة متصلة ميدانية للبيئات الصناعية.", ja: "HoneywellやSLBなどのグローバル企業が、カスタムセンサ端末、Modbus通信コンバータ、過酷な現場向けのデータ連携機器の開発でWillowSoftを採用。" },
+
+    consumerFmcg: { en: "Consumer & FMCG", tr: "Tüketici & Hızlı Tüketim", de: "Konsumgüter & FMCG", fr: "Consommation & FMCG", es: "Consumo y FMCG", it: "Consumo e FMCG", ar: "السلع الاستهلاكية", ja: "家電・消費財" },
+    consumerFmcgDesc: { en: "Brands including Beko and Coca-Cola have commissioned connected product firmware, backend data platforms, and mobile interfaces for consumer-facing IoT initiatives.", tr: "Beko ve Coca-Cola gibi markalar; tüketiciye yönelik IoT girişimleri için bağlı ürün yazılımları, backend veri platformları ve mobil arayüzler sipariş etmiştir.", de: "Marken wie Beko und Coca-Cola haben vernetzte Produkt-Firmware, Backend-Datenplattformen und mobile Schnittstellen für verbraucherorientierte IoT-Initiativen in Auftrag gegeben.", fr: "Des marques comme Beko et Coca-Cola ont commandé des firmwares de produits connectés, des plateformes de données backend et des interfaces mobiles pour des initiatives IoT grand public.", es: "Marcas como Beko y Coca-Cola han encargado firmware de productos conectados, plataformas de datos de backend y interfaces móviles para iniciativas de IoT orientadas al consumidor.", it: "Marchi come Beko e Coca-Cola hanno commissionato firmware per prodotti connessi, piattaforme dati backend e interfacce mobili per progetti IoT rivolti al consumatore.", ar: "كلفت علامات تجارية مثل Beko و Coca-Cola شركة WillowSoft ببرمجيات المنتجات المتصلة، ومنصات البيانات الخلفية، وواجهات الجوال لمبادرات إنترنت الأشياء الموجهة للمستهلكين.", ja: "BekoやCoca-Colaなどのブランドが、スマート家電や自販機等のコネクテッド製品のファームウェア、クラウドデータ基盤、モバイル画面の開発を委託。" },
+
+    healthcareTelecoms: { en: "Healthcare & Telecoms", tr: "Sağlık & Telekom", de: "Gesundheitswesen & Telekommunikation", fr: "Santé & Télécoms", es: "Salud y telecomunicaciones", it: "Sanità e telecomunicazioni", ar: "الرعاية الصحية والاتصالات", ja: "医療・通信" },
+    healthcareTelecomsDesc: { en: "Aero Healthcare and AT&T require the highest reliability standards. WillowSoft delivers embedded systems built for regulated environments and carrier-grade connectivity requirements.", tr: "Aero Healthcare ve AT&T en yüksek güvenilirlik standartlarını talep ediyor. WillowSoft, düzenlemeye tabi ortamlar ve operatör düzeyinde bağlantı gereksinimleri için gömülü sistemler sunmaktadır.", de: "Aero Healthcare und AT&T verlangen höchste Zuverlässigkeitsstandards. WillowSoft liefert eingebettete Systeme für regulierte Umgebungen und Konnektivitätsanforderungen auf Carrier-Niveau.", fr: "Aero Healthcare et AT&T exigent les normes de fiabilité les plus élevées. WillowSoft fournit des systèmes embarqués conçus pour des environnements réglementés et des exigences de connectivité de niveau opérateur.", es: "Aero Healthcare y AT&T exigen los más altos estándares de confiabilidad. WillowSoft ofrece sistemas embebidos creados para entornos regulados y requisitos de conectividad de nivel de operador.", it: "Aero Healthcare e AT&T richiedono i massimi standard di affidabilità. WillowSoft fornisce sistemi embedded adatti ad ambienti regolamentati e requisiti di connettività di livello carrier.", ar: "تتطلب Aero Healthcare و AT&T أعلى معايير الموثوقية. تقدم WillowSoft أنظمة مدمجة مبنية للبيئات الخاضعة للتنظيم ومتطلبات الاتصال على مستوى المشغلين.", ja: "高い信頼性基準が求められるAero HealthcareやAT&Tなどの企業に対し、法規制に適合した組み込み設計および通信キャリア品質の接続システムを提供。" },
+
+    getInTouch: { en: "Get in touch", tr: "İletişime Geçin", de: "Kontakt aufnehmen", fr: "Entrer en contact", es: "Ponerse en contacto", it: "Mettiti in contatto", ar: "اتصل بنا", ja: "お問い合わせ" },
+    talkToEngineering: { en: "Talk to Engineering", tr: "Mühendislerle Görüşün", de: "Mit Engineering sprechen", fr: "Parler à l'ingénierie", es: "Hablar con ingeniería", it: "Parla con il team", ar: "تحدث إلى الهندسة", ja: "技術チームへ相談" }
+  };
+
+  const getLabel = (key: keyof typeof labels) => {
+    return labels[key][locale as keyof (typeof labels)[typeof key]] || labels[key]["en"];
+  };
+
   return (
-    <main className="p-8">
-      <h1 className="text-2xl font-bold">Company Page</h1>
-      <p className="mt-2 text-gray-600">Locale: {locale}</p>
+    <main>
+      <section className="hero compact">
+        <div className="hero-media">
+          <img src="/pdf-assets/p28_01_X104.jpg" alt="WillowSoft office reception" loading="lazy" decoding="async" />
+        </div>
+        <canvas className="signal-canvas" data-density="30"></canvas>
+        <div className="hero-inner">
+          <p className="eyebrow reveal">{getVal("introEyebrow")}</p>
+          <h1 className="reveal delay-1">{getLabel("teamBehindSystem")}</h1>
+          <p className="reveal delay-2">{getLabel("teamDesc")}</p>
+        </div>
+      </section>
+
+      <section className="section">
+        <div className="section-inner split">
+          <div className="reveal">
+            <p className="eyebrow">{getVal("introEyebrow")}</p>
+            <h2 className="page-title">{getVal("introTitle")}</h2>
+          </div>
+          <div className="card reveal delay-1">
+            <p>{getVal("introLead")}</p>
+          </div>
+        </div>
+      </section>
+
+      <section className="section soft">
+        <div className="section-inner">
+          <div className="section-head reveal">
+            <p className="eyebrow">{getVal("principlesEyebrow")}</p>
+            <h2>{getVal("principlesTitle")}</h2>
+          </div>
+          <div className="grid grid-3">
+            <article className="card reveal">
+              <h3>{getLabel("productionFirstThinking")}</h3>
+              <p>{getLabel("productionFirstThinkingDesc")}</p>
+            </article>
+            <article className="card reveal delay-1">
+              <h3>{getLabel("fullStackOwnership")}</h3>
+              <p>{getLabel("fullStackOwnershipDesc")}</p>
+            </article>
+            <article className="card reveal delay-2">
+              <h3>{getLabel("longTermReliability")}</h3>
+              <p>{getLabel("longTermReliabilityDesc")}</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section className="section">
+        <div className="section-inner">
+          <div className="section-head reveal">
+            <p className="eyebrow">{getVal("historyEyebrow")}</p>
+            <h2>{getVal("historyTitle")}</h2>
+          </div>
+          <div className="process">
+            <div className="process-step reveal">
+              <div className="step-dot">20</div>
+              <article className="card">
+                <h3>{getLabel("year2020Title")}</h3>
+                <p>{getLabel("year2020Desc")}</p>
+              </article>
+            </div>
+            <div className="process-step reveal">
+              <div className="step-dot">23</div>
+              <article className="card">
+                <h3>{getLabel("year2023Title")}</h3>
+                <p>{getLabel("year2023Desc")}</p>
+              </article>
+            </div>
+            <div className="process-step reveal">
+              <div className="step-dot">25</div>
+              <article className="card">
+                <h3>{getLabel("year2025Title")}</h3>
+                <p>{getLabel("year2025Desc")}</p>
+              </article>
+            </div>
+            <div className="process-step reveal">
+              <div className="step-dot">26</div>
+              <article className="card">
+                <h3>{getLabel("year2026Title")}</h3>
+                <p>{getLabel("year2026Desc")}</p>
+              </article>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="section soft">
+        <div className="section-inner">
+          <div className="section-head reveal">
+            <p className="eyebrow">{getVal("workWithEyebrow")}</p>
+            <h2>{getVal("workWithTitle")}</h2>
+          </div>
+          <div className="grid grid-3">
+            <article className="card reveal">
+              <h3>{getLabel("industryEnergy")}</h3>
+              <p>{getLabel("industryEnergyDesc")}</p>
+            </article>
+            <article className="card reveal delay-1">
+              <h3>{getLabel("consumerFmcg")}</h3>
+              <p>{getLabel("consumerFmcgDesc")}</p>
+            </article>
+            <article className="card reveal delay-2">
+              <h3>{getLabel("healthcareTelecoms")}</h3>
+              <p>{getLabel("healthcareTelecomsDesc")}</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section className="section dark">
+        <canvas className="signal-canvas" data-density="26"></canvas>
+        <div className="section-inner split">
+          <div className="reveal">
+            <p className="eyebrow">{getVal("ctaEyebrow")}</p>
+            <h2 className="page-title">{getVal("ctaTitle")}</h2>
+          </div>
+          <div className="reveal delay-1">
+            <p className="section-lead">{getVal("ctaLead")}</p>
+            <p>
+              <Link className="btn btn-primary" href={`/${locale}/contact`}>
+                {getLabel("getInTouch")}
+              </Link>
+            </p>
+          </div>
+        </div>
+      </section>
     </main>
   );
 }

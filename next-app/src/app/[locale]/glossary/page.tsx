@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { fetchContentSync, localizeItem, localizedValue, type Locale } from "@/lib/cms";
+import { localizeItem, localizedValue, type Locale } from "@/lib/cms";
+import { fetchContentSync } from "@/lib/cms-server";
 
 interface PageProps {
   params: Promise<{ locale: string }>;
