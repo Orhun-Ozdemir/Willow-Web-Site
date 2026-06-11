@@ -256,6 +256,26 @@ select {
   font-weight: 700;
 }
 
+.nav-links .nav-accent-green:hover,
+.nav-links .nav-accent-green[aria-current="page"] { color: #2b6d2e; }
+.nav-links .nav-accent-green:hover::after,
+.nav-links .nav-accent-green[aria-current="page"]::after { background: #5ba65b; }
+
+.nav-links .nav-accent-cyan:hover,
+.nav-links .nav-accent-cyan[aria-current="page"] { color: #0e687e; }
+.nav-links .nav-accent-cyan:hover::after,
+.nav-links .nav-accent-cyan[aria-current="page"]::after { background: #1aa3c4; }
+
+.nav-links .nav-accent-amber:hover,
+.nav-links .nav-accent-amber[aria-current="page"] { color: #a06b0d; }
+.nav-links .nav-accent-amber:hover::after,
+.nav-links .nav-accent-amber[aria-current="page"]::after { background: #d79a2b; }
+
+.nav-links .nav-accent-warm:hover,
+.nav-links .nav-accent-warm[aria-current="page"] { color: #964a27; }
+.nav-links .nav-accent-warm:hover::after,
+.nav-links .nav-accent-warm[aria-current="page"]::after { background: #c97f5f; }
+
 .nav-actions {
   display: flex;
   align-items: center;
