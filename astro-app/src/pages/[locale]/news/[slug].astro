@@ -36,6 +36,7 @@ const seo = raw.seo?.[locale] || {};
   <main>
     <article>
       <section class="hero compact">
+      <span class="ghost-word" aria-hidden="true">STORY</span>
         <div class="hero-inner">
           <a href={`/${locale}/news`} class="back-link reveal">← News</a>
           {article.category && <span class="eyebrow reveal">{article.category}</span>}

@@ -1,5 +1,6 @@
 ---
 import "@/styles/globals.css";
+import { ClientRouter } from "astro:transitions";
 
 interface Props {
   title: string;
@@ -21,287 +22,27 @@ const { title, description = "", canonical, locale = "en", dataPage } = Astro.pr
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800;900&family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700;800;900&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800;900&family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap"
       rel="stylesheet"
     />
     <title>{title}</title>
     {description && <meta name="description" content={description} />}
     {canonical && <link rel="canonical" href={canonical} />}
+    <ClientRouter />
   </head>
   <body data-page={dataPage} class="min-h-full flex flex-col">
     <slot />
-    <script is:inline>
-    (function(){
-      const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    <script>
+      import { initMotion } from "@/scripts/site-motion";
+      import { initKineticMedia } from "@/scripts/kinetic-media";
+      import { initPcbScene } from "@/scripts/pcb-scene";
 
-      // 1. REVEAL ANIMATIONS
-      const allRevealSel = ".reveal, .reveal-left, .reveal-right, .reveal-scale";
-      const revealItems = document.querySelectorAll(allRevealSel);
-      if (revealItems.length > 0) {
-        if (reducedMotion) {
-          revealItems.forEach(function(item){ item.classList.add("visible"); });
-        } else {
-          const revealObserver = new IntersectionObserver(function(entries){
-            entries.forEach(function(entry){
-              if (entry.isIntersecting) {
-                entry.target.classList.add("visible");
-                revealObserver.unobserve(entry.target);
-              }
-            });
-          }, { threshold: 0.01, rootMargin: "120px 0px 120px 0px" });
-          revealItems.forEach(function(item){ revealObserver.observe(item); });
-          var vh = window.innerHeight;
-          revealItems.forEach(function(item){
-            var rect = item.getBoundingClientRect();
-            if (rect.top < vh && rect.bottom > 0) {
-              item.classList.add("visible");
-              revealObserver.unobserve(item);
-            }
-          });
-        }
-      }
-
-      // 2. COUNTER ANIMATIONS
-      var counters = document.querySelectorAll("[data-count], [data-company-fact]");
-      if (counters.length > 0) {
-        var animateCounter = function(el){
-          var target = 0, suffix = "";
-          if (el.dataset.count) {
-            target = Number(el.dataset.count || 0);
-            suffix = el.dataset.suffix || "";
-          } else {
-            var text = (el.textContent || "").trim();
-            var match = text.match(/^([\d.,]+)\s*(.*)$/);
-            if (!match) return;
-            target = parseFloat(match[1].replace(/,/g, ""));
-            suffix = match[2];
-          }
-          var duration = reducedMotion ? 1 : 1200;
-          var start = performance.now();
-          var tick = function(now){
-            var progress = Math.min((now - start) / duration, 1);
-            var eased = 1 - Math.pow(1 - progress, 3);
-            el.textContent = Math.round(target * eased).toLocaleString() + suffix;
-            if (progress < 1) requestAnimationFrame(tick);
-          };
-          requestAnimationFrame(tick);
-        };
-        var counterObserver = new IntersectionObserver(function(entries){
-          entries.forEach(function(entry){
-            if (entry.isIntersecting) {
-              animateCounter(entry.target);
-              counterObserver.unobserve(entry.target);
-            }
-          });
-        }, { threshold: 0.1 });
-        counters.forEach(function(c){ counterObserver.observe(c); });
-      }
-
-      // 3. SIGNAL CANVAS DYNAMICS
-      if (!reducedMotion) {
-        document.querySelectorAll(".signal-canvas").forEach(function(canvasEl){
-          var canvas = canvasEl;
-          var ctx = canvas.getContext("2d");
-          if (!ctx) return;
-          var width = 0, height = 0, points = [], pulses = [];
-          var raf = 0, running = false;
-          var density = Number(canvas.dataset.density || 36);
-          var color = canvas.dataset.color || "35, 168, 216";
-          var DIST_MAX_SQ = 150 * 150;
-
-          function resize(){
-            var rect = canvas.getBoundingClientRect();
-            var scale = Math.min(window.devicePixelRatio || 1, 2);
-            width = Math.max(1, Math.floor(rect.width));
-            height = Math.max(1, Math.floor(rect.height));
-            canvas.width = Math.floor(width * scale);
-            canvas.height = Math.floor(height * scale);
-            canvas.style.width = width + "px";
-            canvas.style.height = height + "px";
-            ctx.setTransform(scale, 0, 0, scale, 0, 0);
-            build();
-          }
-          function build(){
-            points = []; pulses = [];
-            for (var i = 0; i < density; i++) {
-              points.push({ x: Math.random()*width, y: Math.random()*height, vx: (Math.random()-0.5)*0.18, vy: (Math.random()-0.5)*0.18 });
-            }
-            for (var i = 0; i < Math.max(7, density/5); i++) {
-              pulses.push({ from: Math.floor(Math.random()*points.length), to: Math.floor(Math.random()*points.length), t: Math.random(), speed: 0.003+Math.random()*0.006 });
-            }
-          }
-          function draw(){
-            if (!running || !ctx) return;
-            ctx.clearRect(0, 0, width, height);
-            for (var i = 0; i < points.length; i++) {
-              var p = points[i]; p.x += p.vx; p.y += p.vy;
-              if (p.x < 0 || p.x > width) p.vx *= -1;
-              if (p.y < 0 || p.y > height) p.vy *= -1;
-            }
-            ctx.beginPath(); ctx.strokeStyle = "rgba("+color+", 0.15)"; ctx.lineWidth = 1;
-            for (var i = 0; i < points.length; i++) {
-              for (var j = i+1; j < points.length; j++) {
-                var dx = points[i].x-points[j].x, dy = points[i].y-points[j].y;
-                if (dx*dx+dy*dy < DIST_MAX_SQ) { ctx.moveTo(points[i].x, points[i].y); ctx.lineTo(points[j].x, points[j].y); }
-              }
-            }
-            ctx.stroke();
-            ctx.beginPath(); ctx.fillStyle = "rgba("+color+", 0.55)";
-            for (var i = 0; i < points.length; i++) { ctx.moveTo(points[i].x+2, points[i].y); ctx.arc(points[i].x, points[i].y, 2, 0, Math.PI*2); }
-            ctx.fill();
-            ctx.fillStyle = "rgba(255,255,255,0.82)";
-            for (var k = 0; k < pulses.length; k++) {
-              var pulse = pulses[k], a = points[pulse.from], b = points[pulse.to];
-              if (!a || !b || pulse.from === pulse.to) continue;
-              pulse.t += pulse.speed;
-              if (pulse.t > 1) { pulse.from = Math.floor(Math.random()*points.length); pulse.to = Math.floor(Math.random()*points.length); pulse.t = 0; }
-              ctx.beginPath(); ctx.arc(a.x+(b.x-a.x)*pulse.t, a.y+(b.y-a.y)*pulse.t, 3, 0, Math.PI*2); ctx.fill();
-            }
-            raf = requestAnimationFrame(draw);
-          }
-          resize();
-          window.addEventListener("resize", resize, { passive: true });
-          var canvasObs = new IntersectionObserver(function(entries){
-            entries.forEach(function(e){
-              if (e.isIntersecting) { if (!running) { running = true; draw(); } }
-              else { running = false; cancelAnimationFrame(raf); }
-            });
-          }, { threshold: 0.01 });
-          canvasObs.observe(canvas);
-        });
-      }
-
-      // 4. PROCESS STEPS
-      var steps = document.querySelectorAll(".process-step");
-      if (steps.length > 0) {
-        var processObs = new IntersectionObserver(function(entries){
-          entries.forEach(function(entry){ if (entry.isIntersecting) entry.target.classList.add("active"); });
-        }, { threshold: 0.35 });
-        steps.forEach(function(s){ processObs.observe(s); });
-      }
-
-      // 5. WEBGL HERO SHADER
-      var shaderCanvas = document.querySelector(".hero-shader-canvas");
-      if (shaderCanvas && !reducedMotion) {
-        var gl = shaderCanvas.getContext("webgl", { antialias: false, premultipliedAlpha: false }) || shaderCanvas.getContext("experimental-webgl");
-        if (gl) {
-          var vertSrc = "attribute vec2 aPos; void main(){ gl_Position = vec4(aPos, 0.0, 1.0); }";
-          var fragSrc = [
-            "precision highp float;",
-            "uniform vec2 uResolution; uniform float uTime; uniform float uReduceMotion;",
-            "uniform vec3 uBase, uBloomA, uBloomB, uAccent, uElectric, uViolet, uWarm;",
-            "float hash(vec2 p){ p=fract(p*vec2(123.34,456.21)); p+=dot(p,p+45.32); return fract(p.x*p.y); }",
-            "float noise(vec2 p){ vec2 i=floor(p); vec2 f=fract(p); vec2 u=f*f*(3.0-2.0*f); return mix(mix(hash(i),hash(i+vec2(1,0)),u.x),mix(hash(i+vec2(0,1)),hash(i+vec2(1,1)),u.x),u.y); }",
-            "float fbm(vec2 p){ float v=0.0; float a=0.55; for(int i=0;i<5;i++){ v+=a*noise(p); p=p*2.0+vec2(7.13,3.71); a*=0.5; } return v; }",
-            "vec3 scene(vec2 uv, float t){",
-            "  float aspect=uResolution.x/max(uResolution.y,1.0); vec2 p=uv*vec2(aspect,1.0);",
-            "  float sweep=0.5+0.5*sin(t*0.285);",
-            "  vec2 swirlCenter=vec2(aspect*mix(0.74,0.18,sweep),mix(0.22,0.82,sweep));",
-            "  vec2 center=p-swirlCenter; float dist=length(center);",
-            "  float spin=0.18*sin(t*0.55)+0.62*exp(-dist*1.45)+t*0.08;",
-            "  float cs=cos(spin); float sn=sin(spin); mat2 rot=mat2(cs,-sn,sn,cs);",
-            "  p=swirlCenter+rot*center;",
-            "  vec2 focusCenter=vec2(aspect*mix(0.68,0.24,sweep),mix(0.42,0.88,sweep));",
-            "  center=p-focusCenter;",
-            "  float b1=fbm(p*1.28+vec2(t*0.28,-t*0.20));",
-            "  float b2=fbm(p*1.86+vec2(-t*0.24,t*0.16)+4.7);",
-            "  float liquid=fbm(p*2.55+vec2(t*0.62,-t*0.42)+b1*1.9);",
-            "  float wa=smoothstep(0.42,0.95,b1); float wb=smoothstep(0.48,0.92,b2);",
-            "  float riverA=sin((p.x*4.15-p.y*2.9)+liquid*5.4+t*1.55);",
-            "  float riverB=sin((p.x*2.15+p.y*5.35)-b2*3.65-t*1.20);",
-            "  float riverC=sin((p.x*6.35-p.y*1.28)+b1*3.2+t*1.85);",
-            "  float ribbonA=smoothstep(0.48,0.98,riverA); float ribbonB=smoothstep(0.52,0.99,riverB); float ribbonC=smoothstep(0.62,0.998,riverC);",
-            "  float ribbon=ribbonA*0.85+ribbonB*0.58+ribbonC*0.44;",
-            "  float focus=smoothstep(1.22,0.08,length(center));",
-            "  float rightField=smoothstep(mix(0.18,-0.45,sweep),mix(0.92,0.38,sweep),uv.x);",
-            "  float topField=smoothstep(mix(1.0,1.6,sweep),mix(0.10,-0.3,sweep),uv.y);",
-            "  vec3 col=uBase;",
-            "  col=mix(col,uBloomA,wa*0.62); col=mix(col,uBloomB,wb*0.66);",
-            "  float energy=clamp((ribbon*0.85+smoothstep(0.42,0.98,b1*b2+0.2)*0.62)*rightField,0.0,1.0);",
-            "  float stage=clamp(focus*0.88+rightField*0.86+topField*0.34,0.0,1.0);",
-            "  col=mix(col,uAccent,energy*stage*0.58); col=mix(col,uElectric,ribbonA*stage*rightField*0.66);",
-            "  col=mix(col,uViolet,ribbonB*stage*rightField*0.42); col=mix(col,uWarm,ribbonC*stage*rightField*topField*0.36);",
-            "  col+=vec3(ribbon*0.22*stage); return col;",
-            "}",
-            "void main(){",
-            "  vec2 uv=gl_FragCoord.xy/uResolution.xy; float t=uTime*mix(1.0,0.0,uReduceMotion);",
-            "  float angle=radians(31.0); vec2 dir=vec2(cos(angle),sin(angle)); vec2 perp=vec2(-dir.y,dir.x);",
-            "  float coord=dot(uv*11.0,dir); float flute=sin(coord*6.2831853+t*0.72); float refraction=flute*0.022;",
-            "  vec2 displaced=uv+perp*refraction; float ca=0.014*(0.4+abs(flute));",
-            "  vec3 r=scene(displaced+perp*ca,t); vec3 g=scene(displaced,t); vec3 b=scene(displaced-perp*ca,t);",
-            "  vec3 col=vec3(r.r,g.g,b.b); float highlight=pow(0.5+0.5*flute,16.0); col+=vec3(highlight*0.24);",
-            "  vec2 c=uv-0.5; col*=1.0-dot(c,c)*0.08;",
-            "  float grain=hash(gl_FragCoord.xy+t*73.0)-0.5; col+=grain*0.016;",
-            "  gl_FragColor=vec4(col,1.0);",
-            "}"
-          ].join("\n");
-
-          var compile = function(type, src){
-            var sh = gl.createShader(type); if (!sh) return null;
-            gl.shaderSource(sh, src); gl.compileShader(sh);
-            if (!gl.getShaderParameter(sh, gl.COMPILE_STATUS)) { gl.deleteShader(sh); return null; }
-            return sh;
-          };
-          var vs = compile(gl.VERTEX_SHADER, vertSrc);
-          var fs = compile(gl.FRAGMENT_SHADER, fragSrc);
-          if (vs && fs) {
-            var prog = gl.createProgram();
-            if (prog) {
-              gl.attachShader(prog, vs); gl.attachShader(prog, fs); gl.linkProgram(prog);
-              if (gl.getProgramParameter(prog, gl.LINK_STATUS)) {
-                gl.useProgram(prog);
-                var buf = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, buf);
-                gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1,1,-1,-1,1,-1,1,1,-1,1,1]), gl.STATIC_DRAW);
-                var aPos = gl.getAttribLocation(prog, "aPos");
-                gl.enableVertexAttribArray(aPos); gl.vertexAttribPointer(aPos, 2, gl.FLOAT, false, 0, 0);
-
-                var uResolution = gl.getUniformLocation(prog, "uResolution");
-                var uTime = gl.getUniformLocation(prog, "uTime");
-                var uReduceMotion = gl.getUniformLocation(prog, "uReduceMotion");
-
-                var css = getComputedStyle(document.documentElement);
-                var readColor = function(name, fallback){
-                  var raw = css.getPropertyValue(name).trim() || fallback;
-                  var hex = raw.replace("#","");
-                  if (hex.length===3) hex=hex[0]+hex[0]+hex[1]+hex[1]+hex[2]+hex[2];
-                  return [parseInt(hex.substring(0,2),16)/255, parseInt(hex.substring(2,4),16)/255, parseInt(hex.substring(4,6),16)/255];
-                };
-                var pairs = [["uBase","--shader-base","#faf8ff"],["uBloomA","--shader-bloom-a","#dfe0ff"],["uBloomB","--shader-bloom-b","#bbc3ff"],["uAccent","--shader-accent","#2d3a8c"],["uElectric","--shader-electric","#18a7ff"],["uViolet","--shader-violet","#704dff"],["uWarm","--shader-warm","#ff6b3d"]];
-                pairs.forEach(function(p){ var c=readColor(p[1],p[2]); gl.uniform3f(gl.getUniformLocation(prog,p[0]),c[0],c[1],c[2]); });
-                gl.uniform1f(uReduceMotion, 0.0);
-
-                var localRunning = false, localRafId = 0, startTime = performance.now();
-                var resizeShader = function(){
-                  var dpr = Math.min(window.devicePixelRatio||1, 1.5);
-                  var w = shaderCanvas.clientWidth, h = shaderCanvas.clientHeight;
-                  if (w===0||h===0) return;
-                  shaderCanvas.width = Math.floor(w*dpr); shaderCanvas.height = Math.floor(h*dpr);
-                  gl.viewport(0,0,shaderCanvas.width,shaderCanvas.height);
-                  gl.uniform2f(uResolution, shaderCanvas.width, shaderCanvas.height);
-                };
-                window.addEventListener("resize", resizeShader, { passive: true });
-                resizeShader();
-                gl.uniform1f(uTime, 0.0); gl.drawArrays(gl.TRIANGLES, 0, 6);
-
-                var frame = function(){
-                  if (!localRunning) return;
-                  gl.uniform1f(uTime, (performance.now()-startTime)/1000);
-                  gl.drawArrays(gl.TRIANGLES, 0, 6);
-                  localRafId = requestAnimationFrame(frame);
-                };
-                var shaderObs = new IntersectionObserver(function(entries){
-                  entries.forEach(function(e){
-                    if (e.isIntersecting) { if (!localRunning) { localRunning=true; localRafId=requestAnimationFrame(frame); } }
-                    else { localRunning=false; cancelAnimationFrame(localRafId); }
-                  });
-                }, { threshold: 0.01 });
-                shaderObs.observe(shaderCanvas);
-              }
-            }
-          }
-        }
-      }
-    })();
+      document.addEventListener("astro:page-load", () => {
+        initMotion();
+        initKineticMedia();
+        initPcbScene();
+      });
     </script>
   </body>
 </html>
+

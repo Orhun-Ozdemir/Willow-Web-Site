@@ -241,10 +241,10 @@ const getT = (key: keyof typeof t) => {
     <script type="application/ld+json" set:html={JSON.stringify(graphSchema)} />
     
     <section class="hero compact">
+      <span class="ghost-word" aria-hidden="true">PRODUCT</span>
       <div class="hero-media">
         <img src={product.image ? `/${product.image}`.replace("//", "/") : "/assets/hero-industrial-iot.png"} alt={product.title} loading="lazy" decoding="async" />
       </div>
-      <canvas class="signal-canvas" data-density="36"></canvas>
       <div class="hero-inner">
         <p class="eyebrow reveal">{product.category || "Product"}</p>
         <h1 class="reveal delay-1">{product.title}</h1>

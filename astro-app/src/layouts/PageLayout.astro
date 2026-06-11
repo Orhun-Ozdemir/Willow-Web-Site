@@ -17,6 +17,10 @@ const { title, description, canonical, locale, dataPage } = Astro.props;
 
 <BaseLayout title={title} description={description} canonical={canonical} locale={locale} dataPage={dataPage}>
   <Header locale={locale} currentPath={Astro.url.pathname} />
-  <slot />
-  <Footer locale={locale} />
+  <div id="smooth-wrapper">
+    <div id="smooth-content">
+      <slot />
+      <Footer locale={locale} />
+    </div>
+  </div>
 </BaseLayout>

@@ -49,8 +49,8 @@ const getLabel = (key: keyof typeof labels) => {
   <main>
     <!-- Hero -->
     <section class="hero compact">
+      <span class="ghost-word" aria-hidden="true">SOLUTIONS</span>
       <div class="hero-media"><img src="/pdf-assets/p04_01_X9.jpg" alt="Industrial IoT concept" loading="lazy" decoding="async"/></div>
-      <canvas class="signal-canvas" data-density="38"></canvas>
       <div class="hero-inner">
         <p class="eyebrow reveal">{getVal("heroEyebrow")}</p>
         <h1 class="reveal delay-1">{getVal("heroTitle")}</h1>
@@ -106,7 +106,6 @@ const getLabel = (key: keyof typeof labels) => {
 
     <!-- Data Flow Timeline / How It Works -->
     <section class="section dark">
-      <canvas class="signal-canvas" data-density="32" data-color="35, 168, 216"></canvas>
       <div class="section-inner split">
         <div class="reveal">
           <p class="eyebrow">{getVal("howEyebrow")}</p>

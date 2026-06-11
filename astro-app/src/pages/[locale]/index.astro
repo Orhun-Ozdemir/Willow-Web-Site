@@ -1,9 +1,7 @@
 ---
 import PageLayout from "@/layouts/PageLayout.astro";
-import ProductCard from "@/components/ProductCard.astro";
-import NewsCard from "@/components/NewsCard.astro";
 import { loadContent } from "@/lib/content";
-import { localizedValue, locales, type Locale } from "@/lib/cms";
+import { localizedValue, localizeItem, locales, type Locale } from "@/lib/cms";
 
 export function getStaticPaths() {
   return locales.map((locale) => ({ params: { locale } }));
@@ -17,8 +15,13 @@ const seo = content.pageSeo?.home?.[locale] || {};
 
 const getVal = (key: string) => localizedValue(pageContent[key], locale);
 
-const featuredProducts = (content.products || []).filter((p: any) => p.featured).slice(0, 4);
-const latestNews = (content.news || []).slice(0, 3);
+const featuredProducts = (content.products || [])
+  .filter((p: any) => p.featured)
+  .slice(0, 4)
+  .map((p: any) => localizeItem(p, locale));
+const latestNews = (content.news || []).slice(0, 3).map((n: any) => localizeItem(n, locale));
+const featureNews = latestNews[0];
+const sideNews = latestNews.slice(1);
 const featuredClients = (content.clients || [])
   .filter((c: any) => c.featured)
   .sort((a: any, b: any) => (a.sortOrder || 0) - (b.sortOrder || 0));
@@ -46,68 +49,102 @@ const getLabel = (key: string) => labels[key]?.[locale] || labels[key]?.en || ke
   dataPage="home"
 >
   <main>
-    <!-- Hero -->
-    <section class="hero motion-hero">
-      <div class="hero-media">
-        <img src="/assets/hero-industrial-iot.png" alt="Industrial IoT hardware on a lab bench" loading="lazy" decoding="async" />
-      </div>
-      <canvas class="hero-shader-canvas" aria-hidden="true" style="position:absolute;inset:0;pointer-events:none;"></canvas>
-      <canvas class="signal-canvas" data-density="42" data-color="75, 87, 170"></canvas>
-      <div class="hero-inner hero-layout">
-        <div class="hero-copy">
+    <!-- Hero — kinetic type -->
+    <section class="hero kinetic-hero">
+      <span class="ghost-word" aria-hidden="true">ENGINEERING</span>
+      <div class="hero-inner hero-grid">
+        <div class="hero-copy-col">
           <p class="eyebrow reveal">{getVal("heroEyebrow")}</p>
-          <h1 class="reveal delay-1" set:html={getVal("heroTitle")} />
-          <p class="reveal delay-2">{getVal("heroLead")}</p>
-          <div class="hero-ctas reveal delay-3">
-            <a class="btn btn-primary" href={`/${locale}/start-project`}>{getLabel("startProject")}</a>
-            <a class="btn btn-secondary" href={`/${locale}/services`}>{getLabel("exploreServices")}</a>
-          </div>
-          <div class="hero-proof reveal delay-4">
-            <div class="proof-item">
-              <strong data-company-fact="productsOnMarket">{companyFacts.productsOnMarket}</strong>
-              <span>{getLabel("productsOnMarket")}</span>
-            </div>
-            <div class="proof-item">
-              <strong data-company-fact="happyClients">{companyFacts.happyClients}</strong>
-              <span>{getLabel("happyClients")}</span>
-            </div>
-            <div class="proof-item">
-              <strong>2020</strong>
-              <span>{getLabel("founded")}</span>
-            </div>
-            <div class="proof-item">
-              <strong data-company-fact="officesWorldwide">{companyFacts.officesWorldwide}</strong>
-              <span>{getLabel("officesWorldwide")}</span>
+          <h1 class="kinetic-title" set:html={getVal("heroTitle")} />
+          <div class="hero-foot">
+            <p class="hero-lead reveal delay-2">{getVal("heroLead")}</p>
+            <div class="hero-ctas reveal delay-3">
+              <a class="btn btn-primary" href={`/${locale}/start-project`}>{getLabel("startProject")}</a>
+              <a class="btn btn-secondary" href={`/${locale}/services`}>{getLabel("exploreServices")}</a>
             </div>
           </div>
         </div>
-
-        <aside class="hero-product-stage reveal delay-2" aria-label="WillowSoft hardware showcase">
-          <div class="product-spotlight"></div>
-          <article class="floating-product product-one" style="--delay:0ms">
-            <figure><img src="/pdf-assets/p06_01_X13.jpg" alt="WillowBee LoRaWAN module" loading="lazy" decoding="async" /></figure>
-            <div><strong>WillowBee</strong><span>Compact LoRaWAN MCU module</span></div>
-          </article>
-          <article class="floating-product product-two" style="--delay:180ms">
-            <figure><img src="/pdf-assets/p08_01_X22.jpg" alt="WillowAir sensor" loading="lazy" decoding="async" /></figure>
-            <div><strong>WillowAir</strong><span>Indoor air quality monitoring</span></div>
-          </article>
-          <article class="floating-product product-three" style="--delay:360ms">
-            <figure><img src="/pdf-assets/p14_01_X50.jpg" alt="WillowMod sensor" loading="lazy" decoding="async" /></figure>
-            <div><strong>WillowMod</strong><span>Wireless Modbus integration</span></div>
-          </article>
-        </aside>
+        <div class="pcb-stage" aria-label="WillowSoft embedded board, 3D">
+          <canvas class="pcb-canvas" aria-hidden="true"></canvas>
+          <span class="fig-note pcb-note">FIG. 00 — WILLOWBEE BOARD / SIGNALS LIVE</span>
+        </div>
       </div>
     </section>
 
-    <!-- Service Rail -->
-    <section class="section tight">
+    <!-- Capability marquee -->
+    <div class="marquee marquee-dark" data-speed="30" aria-hidden="true">
+      <div class="marquee-track">
+        {[0, 1].map(() => (
+          <span class="marquee-group">
+            <span>Embedded Systems</span><i>/</i>
+            <span>LoRaWAN</span><i>/</i>
+            <span>Firmware &amp; OTA</span><i>/</i>
+            <span>IoT Platforms</span><i>/</i>
+            <span>Dashboards</span><i>/</i>
+            <span>Mobile &amp; VR</span><i>/</i>
+          </span>
+        ))}
+      </div>
+    </div>
+
+    <!-- Hero media band — Three.js liquid distortion -->
+    <section class="hero-media-band kinetic-media" aria-label="WillowSoft engineering bench">
+      <img src="/assets/hero-industrial-iot.png" alt="Industrial IoT hardware on a lab bench" decoding="async" />
+      <span class="fig-note">FIG. 01 — ENGINEERING BENCH / WILLOWBEE · WILLOWAIR · WILLOWMOD</span>
+    </section>
+
+    <!-- Proof strip -->
+    <section class="section tight proof-strip">
       <div class="section-inner">
-        <div class="service-rail reveal">
-          <article><span class="service-number">01</span><h3>Embedded</h3><p>Hardware, firmware, RF and low-power architecture.</p></article>
-          <article><span class="service-number">02</span><h3>Platform</h3><p>Backend APIs, PostgreSQL, dashboards and admin panels.</p></article>
-          <article><span class="service-number">03</span><h3>Interfaces</h3><p>Mobile apps, web portals and product websites.</p></article>
-          <article><span class="service-number">04</span><h3>Simulation</h3><p>VR training, product demos and digital twin views.</p></article>
+        <div class="hero-proof">
+          <div class="proof-item reveal">
+            <strong data-company-fact="productsOnMarket">{companyFacts.productsOnMarket}</strong>
+            <span>{getLabel("productsOnMarket")}</span>
+          </div>
+          <div class="proof-item reveal delay-1">
+            <strong data-company-fact="happyClients">{companyFacts.happyClients}</strong>
+            <span>{getLabel("happyClients")}</span>
+          </div>
+          <div class="proof-item reveal delay-2">
+            <strong>2020</strong>
+            <span>{getLabel("founded")}</span>
+          </div>
+          <div class="proof-item reveal delay-3">
+            <strong data-company-fact="officesWorldwide">{companyFacts.officesWorldwide}</strong>
+            <span>{getLabel("officesWorldwide")}</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Services — editorial ledger -->
+    <section class="section ledger-section">
+      <div class="section-inner">
+        <div class="ledger">
+          <a class="ledger-row" href={`/${locale}/services`}>
+            <span class="ledger-index">01</span>
+            <span class="ledger-title">Embedded</span>
+            <span class="ledger-desc">Hardware, firmware, RF and low-power architecture.</span>
+            <span class="ledger-arrow" aria-hidden="true">↗</span>
+          </a>
+          <a class="ledger-row" href={`/${locale}/services`}>
+            <span class="ledger-index">02</span>
+            <span class="ledger-title">Platform</span>
+            <span class="ledger-desc">Backend APIs, PostgreSQL, dashboards and admin panels.</span>
+            <span class="ledger-arrow" aria-hidden="true">↗</span>
+          </a>
+          <a class="ledger-row" href={`/${locale}/services`}>
+            <span class="ledger-index">03</span>
+            <span class="ledger-title">Interfaces</span>
+            <span class="ledger-desc">Mobile apps, web portals and product websites.</span>
+            <span class="ledger-arrow" aria-hidden="true">↗</span>
+          </a>
+          <a class="ledger-row" href={`/${locale}/services`}>
+            <span class="ledger-index">04</span>
+            <span class="ledger-title">Simulation</span>
+            <span class="ledger-desc">VR training, product demos and digital twin views.</span>
+            <span class="ledger-arrow" aria-hidden="true">↗</span>
+          </a>
         </div>
       </div>
     </section>
@@ -123,81 +160,142 @@ const getLabel = (key: string) => labels[key]?.[locale] || labels[key]?.en || ke
             <span>Industrial Automation</span><span>MedTech</span><span>Energy</span><span>Telecom</span><span>Smart Logistics</span>
           </div>
         </div>
-        <div class="trust-stage reveal-right delay-1">
-          <div class="trust-mark"><img src="/pdf-assets/p01_01_X0.jpg" alt="WillowSoft mark" loading="lazy" decoding="async" /></div>
-          <div class="logo-cloud" data-cms-clients>
-            {featuredClients.map((client: any, idx: number) => {
-              const depths = [18, 54, 28, 42, 12, 66, 36, 24];
-              const z = depths[idx % depths.length];
-              const delay = idx * 130;
-              return (
-                <div class="logo-tile" style={`--z:${z}px;--delay:${delay}ms`} title={client.name}>
+      </div>
+      <div class="marquee logo-marquee" data-speed="36" data-cms-clients>
+        <div class="marquee-track">
+          {[0, 1].map(() => (
+            <span class="marquee-group">
+              {featuredClients.map((client: any) => (
+                <span class="logo-tile" title={client.name}>
                   {client.logo ? <img src={`/${client.logo}`} alt={client.name} loading="lazy" decoding="async" /> : <strong>{client.name}</strong>}
-                </div>
-              );
-            })}
-          </div>
+                </span>
+              ))}
+            </span>
+          ))}
         </div>
       </div>
     </section>
 
-    <!-- Ecosystem -->
-    <section class="section dark ecosystem-section">
-      <canvas class="signal-canvas" data-density="34" data-color="91, 166, 91"></canvas>
-      <div class="section-inner">
-        <div class="section-head center reveal">
-          <p class="eyebrow">{getVal("ecosystemEyebrow")}</p>
-          <h2 set:html={getVal("ecosystemTitle")} />
-          <p class="section-lead">Each layer is planned against the next one, so field telemetry becomes useful operational software instead of isolated device data.</p>
-        </div>
-        <div class="tech-flow reveal delay-1">
-          <div class="flow-row">
-            <div class="flow-node"><small>01</small><strong>Hardware</strong><span>Custom PCB, sensors, power architecture.</span></div>
-            <div class="flow-node"><small>02</small><strong>Firmware</strong><span>RTOS, OTA, protocols, low-power logic.</span></div>
-            <div class="flow-node"><small>03</small><strong>Connectivity</strong><span>LoRaWAN, BLE, Wi-Fi, RF optimization.</span></div>
-            <div class="flow-node"><small>04</small><strong>Backend</strong><span>APIs, PostgreSQL, auth, integrations.</span></div>
-            <div class="flow-node"><small>05</small><strong>Interfaces</strong><span>Mobile apps, dashboards, admin panels, VR.</span></div>
+    <!-- Ecosystem — sticky stack theatre -->
+    <section class="stack-section" id="ecosystem">
+      <div class="section-inner stack-head reveal">
+        <p class="eyebrow">{getVal("ecosystemEyebrow")}</p>
+        <h2 set:html={getVal("ecosystemTitle")} />
+        <p class="section-lead">Each layer is planned against the next one, so field telemetry becomes useful operational software instead of isolated device data.</p>
+      </div>
+      <div class="stack-panels">
+        <article class="stack-panel stack-navy">
+          <div class="stack-panel-inner">
+            <span class="stack-index">01</span>
+            <h3>Hardware</h3>
+            <p>Custom PCB, sensors, power architecture.</p>
           </div>
-        </div>
+        </article>
+        <article class="stack-panel stack-paper">
+          <div class="stack-panel-inner">
+            <span class="stack-index">02</span>
+            <h3>Firmware</h3>
+            <p>RTOS, OTA, protocols, low-power logic.</p>
+          </div>
+        </article>
+        <article class="stack-panel stack-cyan">
+          <div class="stack-panel-inner">
+            <span class="stack-index">03</span>
+            <h3>Connectivity</h3>
+            <p>LoRaWAN, BLE, Wi-Fi, RF optimization.</p>
+          </div>
+        </article>
+        <article class="stack-panel stack-amber">
+          <div class="stack-panel-inner">
+            <span class="stack-index">04</span>
+            <h3>Backend</h3>
+            <p>APIs, PostgreSQL, auth, integrations.</p>
+          </div>
+        </article>
+        <article class="stack-panel stack-deep">
+          <div class="stack-panel-inner">
+            <span class="stack-index">05</span>
+            <h3>Interfaces</h3>
+            <p>Mobile apps, dashboards, admin panels, VR.</p>
+          </div>
+        </article>
       </div>
     </section>
 
-    <!-- Featured Products -->
-    <section class="section home-products">
-      <div class="section-inner">
-        <div class="section-head reveal product-headline">
+    <!-- Featured Products — pinned horizontal gallery -->
+    <section class="hgallery" data-cms-featured-products>
+      <div class="hgallery-pin">
+        <div class="section-inner hgallery-head reveal">
           <div>
             <p class="eyebrow">{getVal("productsEyebrow")}</p>
             <h2 set:html={getVal("productsTitle")} />
           </div>
           <a class="btn btn-secondary btn-small" href={`/${locale}/products`}>{getLabel("viewProducts")}</a>
         </div>
-        <div class="grid grid-4" data-cms-featured-products>
+        <div class="hgallery-track">
           {featuredProducts.map((p: any, idx: number) => (
-            <ProductCard product={p} locale={locale} index={idx} />
+            <article class="hplate">
+              <span class="hplate-index" aria-hidden="true">0{idx + 1}</span>
+              <figure>
+                <img src={p.cardImage || `/assets/product-cutouts/${p.id}.png`} alt={p.title} loading="lazy" decoding="async" />
+              </figure>
+              <div class="hplate-body">
+                <h3>{p.title}</h3>
+                <p>{p.shortDescription}</p>
+                <a class="hplate-link" href={`/${locale}/products/${encodeURIComponent(p.slug || p.id)}`}>
+                  Explore <span aria-hidden="true">↗</span>
+                </a>
+              </div>
+            </article>
           ))}
+          <article class="hplate hplate-cta">
+            <a href={`/${locale}/products`}>
+              <span>{getLabel("viewProducts")}</span>
+              <span aria-hidden="true">↗</span>
+            </a>
+          </article>
         </div>
       </div>
     </section>
 
-    <!-- Industries -->
+    <!-- Industries — editorial index -->
     <section class="section soft industries-section">
       <div class="section-inner">
-        <div class="section-head center reveal">
+        <div class="section-head reveal">
           <p class="eyebrow">{getVal("industriesEyebrow")}</p>
           <h2 set:html={getVal("industriesTitle")} />
         </div>
-        <div class="industry-lanes">
-          <article class="industry-lane reveal"><div class="industry-lane-icon" aria-hidden="true">🏙️</div><h3>Smart Infrastructure</h3><p>Flood levels, water tanks, smart lighting and public utility monitoring.</p></article>
-          <article class="industry-lane reveal delay-1"><div class="industry-lane-icon" aria-hidden="true">⚙️</div><h3>Industrial Monitoring</h3><p>Machine data, Modbus devices, factories, warehouses and energy systems.</p></article>
-          <article class="industry-lane reveal delay-2"><div class="industry-lane-icon" aria-hidden="true">🩺</div><h3>MedTech &amp; Healthcare</h3><p>Low-power sensor nodes for environmental and patient-adjacent monitoring.</p></article>
-          <article class="industry-lane reveal delay-3"><div class="industry-lane-icon" aria-hidden="true">📦</div><h3>Logistics &amp; Telecoms</h3><p>Asset tracking, GNSS, and field-connected devices for mobile operations.</p></article>
+        <div class="ledger ledger-compact">
+          <a class="ledger-row" href={`/${locale}/solutions`}>
+            <span class="ledger-index">A</span>
+            <span class="ledger-title">Smart <em class="hw-serif">Infrastructure</em></span>
+            <span class="ledger-desc">Flood levels, water tanks, smart lighting and public utility monitoring.</span>
+            <span class="ledger-arrow" aria-hidden="true">↗</span>
+          </a>
+          <a class="ledger-row" href={`/${locale}/solutions`}>
+            <span class="ledger-index">B</span>
+            <span class="ledger-title">Industrial <em class="hw-serif">Monitoring</em></span>
+            <span class="ledger-desc">Machine data, Modbus devices, factories, warehouses and energy systems.</span>
+            <span class="ledger-arrow" aria-hidden="true">↗</span>
+          </a>
+          <a class="ledger-row" href={`/${locale}/solutions`}>
+            <span class="ledger-index">C</span>
+            <span class="ledger-title">MedTech &amp; <em class="hw-serif">Healthcare</em></span>
+            <span class="ledger-desc">Low-power sensor nodes for environmental and patient-adjacent monitoring.</span>
+            <span class="ledger-arrow" aria-hidden="true">↗</span>
+          </a>
+          <a class="ledger-row" href={`/${locale}/solutions`}>
+            <span class="ledger-index">D</span>
+            <span class="ledger-title">Logistics &amp; <em class="hw-serif">Telecoms</em></span>
+            <span class="ledger-desc">Asset tracking, GNSS, and field-connected devices for mobile operations.</span>
+            <span class="ledger-arrow" aria-hidden="true">↗</span>
+          </a>
         </div>
       </div>
     </section>
 
-    <!-- News -->
-    <section class="section proof-section">
+    <!-- News — editorial spread -->
+    <section class="section news-spread-section" data-cms-news>
       <div class="section-inner">
         <div class="section-head reveal product-headline">
           <div>
@@ -206,17 +304,37 @@ const getLabel = (key: string) => labels[key]?.[locale] || labels[key]?.en || ke
           </div>
           <a class="btn btn-secondary btn-small" href={`/${locale}/news`}>{getLabel("viewNews")}</a>
         </div>
-        <div class="grid grid-3" data-cms-news>
-          {latestNews.map((n: any, idx: number) => (
-            <NewsCard item={n} locale={locale} index={idx} />
-          ))}
+        <div class="news-spread">
+          {featureNews && (
+            <a class="news-feature reveal" href={`/${locale}/news/${encodeURIComponent(featureNews.slug || featureNews.id)}`}>
+              {featureNews.image && (
+                <figure class="kinetic-media">
+                  <img src={featureNews.image} alt={featureNews.title} loading="lazy" decoding="async" />
+                </figure>
+              )}
+              <div class="news-feature-body">
+                <span class="news-meta">{featureNews.category}{featureNews.date ? ` — ${featureNews.date}` : ""}</span>
+                <h3>{featureNews.title}</h3>
+                <p>{featureNews.excerpt}</p>
+              </div>
+            </a>
+          )}
+          <div class="news-side ledger ledger-compact">
+            {sideNews.map((n: any) => (
+              <a class="ledger-row" href={`/${locale}/news/${encodeURIComponent(n.slug || n.id)}`}>
+                <span class="ledger-index news-meta">{n.date || n.category}</span>
+                <span class="ledger-title">{n.title}</span>
+                <span class="ledger-arrow" aria-hidden="true">↗</span>
+              </a>
+            ))}
+          </div>
         </div>
       </div>
     </section>
 
     <!-- Final CTA -->
     <section class="section dark final-cta">
-      <canvas class="signal-canvas" data-density="26" data-color="215, 154, 43"></canvas>
+      <span class="ghost-word" aria-hidden="true">BUILD</span>
       <div class="section-inner split">
         <div class="reveal">
           <p class="eyebrow">{getVal("ctaEyebrow")}</p>

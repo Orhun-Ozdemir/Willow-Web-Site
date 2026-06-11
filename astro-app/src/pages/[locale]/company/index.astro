@@ -189,10 +189,10 @@ const getLabel = (key: keyof typeof labels) => {
   <main>
     <!-- Hero Section -->
     <section class="hero compact">
+      <span class="ghost-word" aria-hidden="true">COMPANY</span>
       <div class="hero-media">
         <img src="/pdf-assets/p28_01_X104.jpg" alt="WillowSoft office reception" loading="lazy" decoding="async" />
       </div>
-      <canvas class="signal-canvas" data-density="30"></canvas>
       <div class="hero-inner">
         <p class="eyebrow reveal">{getVal("heroEyebrow")}</p>
         <h1 class="reveal delay-1" set:html={getLabel("teamBehindSystem")} />
@@ -303,7 +303,6 @@ const getLabel = (key: keyof typeof labels) => {
 
     <!-- Final CTA Section -->
     <section class="section dark">
-      <canvas class="signal-canvas" data-density="26"></canvas>
       <div class="section-inner split">
         <div class="reveal">
           <p class="eyebrow">{getVal("ctaEyebrow")}</p>
