@@ -2,6 +2,7 @@
 import "@/styles/globals.css";
 import { OG_LOCALE_MAP, SITE_NAME, type Alternate } from "@/lib/seo";
 import type { Locale } from "@/lib/cms";
+import { resolveAsset } from "@/lib/cms";
 
 interface Props {
   title: string;
@@ -48,7 +49,7 @@ const dir = locale === "ar" ? "rtl" : "ltr";
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/svg+xml" href={`${import.meta.env.BASE_URL}assets/favicon.svg`} />
+    <link rel="icon" type="image/svg+xml" href={resolveAsset("/assets/favicon.svg")} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link

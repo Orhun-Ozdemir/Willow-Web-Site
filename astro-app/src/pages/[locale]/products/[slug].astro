@@ -226,7 +226,7 @@ const dynamicFacts = [
   { label: dynamicLabel("communicationRange"), value: product.communicationRange || product.communication_range }
 ].filter((fact) => fact.value);
 const productApplications = Array.isArray(product.applications) ? product.applications.filter(Boolean) : [];
-const dynamicSpecGroups = normalizeSpecGroups(product);
+const dynamicSpecGroups = normalizeSpecGroups(product); console.log("dynamicSpecGroups:", JSON.stringify(dynamicSpecGroups));
 
 const productAiIntro = pickText({
   en: `${product.title} is a WillowSoft ${product.category || "IoT"} product for connected field telemetry.`,
@@ -434,7 +434,7 @@ const getT = (key: keyof typeof t) => {
       <canvas class="signal-canvas" data-density="36"></canvas>
       <div class="hero-inner">
         <p class="eyebrow reveal">{product.category || "Product"}</p>
-        <h1 class="reveal delay-1">{product.title}</h1>
+        <h1 class="reveal delay-1">MODIFIED {product.title}</h1>
         <p class="reveal delay-2">{product.shortDescription}</p>
         <div class="hero-ctas reveal delay-3">
           <a class="btn btn-primary" href={`/${locale}/contact?product=${encodeURIComponent(slug)}`}>{getT("reqInfo")}</a>

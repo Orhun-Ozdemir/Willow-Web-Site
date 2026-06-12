@@ -67,7 +67,7 @@ const t = (key: keyof typeof labels) => labels[key][locale] || labels[key].en;
 ---
 
 {answer && (
-  <aside class="ai-overview-container reveal" aria-label={t("title")}>
+  <aside class="ai-overview-container reveal sr-only" aria-label={t("title")}>
     <div class="ai-overview-header">
       <span class="ai-overview-icon" aria-hidden="true">✦</span>
       <strong class="ai-overview-title">{t("title")}</strong>
