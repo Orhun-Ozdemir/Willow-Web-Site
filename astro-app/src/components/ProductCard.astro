@@ -27,7 +27,7 @@ const detailsLabel: Record<string, string> = {
 
 <article class={`card product-card reveal${delay}`} data-category={p.category}>
   <figure>
-    <img src={cutoutImage} alt={p.title} loading="lazy" decoding="async" />
+    <img src={cutoutImage} alt={p.title} loading="lazy" decoding="async" onerror="this.onerror=null; this.src='/assets/willow-mark-transparent.png'; this.style.opacity='0.15';" />
   </figure>
   <div class="product-body">
     <h3>{p.title}</h3>

@@ -539,6 +539,10 @@
                 <span class="field-helper">Ürün listesinde kart üstünde görünecek özet metin.</span>
                 <textarea data-field="shortDescription">${esc(product.shortDescription)}</textarea>
               </label>
+              <label style="display: flex; align-items: center; gap: 8px; grid-column: span 2; cursor: pointer; user-select: none;">
+                <input type="checkbox" data-field="visible" ${product.visible !== false ? "checked" : ""} style="width: auto; margin: 0;" />
+                <span style="font-weight: 600; color: var(--admin-ink);">Sitede Göster (Yayında / Visible)</span>
+              </label>
             </div>
 
             ${richTextField({ collection: "products", index, field: "technicalSummary", value: product.technicalSummary, label: "Teknik Özet", helper: "Ürün detay sayfasında gösterilir. Başlık ve liste için araç çubuğunu kullanın." })}
@@ -2944,6 +2948,7 @@
       title: "Yeni Ürün Başlığı",
       slug: "yeni-urun-linki",
       category: "environment",
+      visible: true,
       image: "pdf-assets/p06_01_X13.jpg",
       images: [],
       shortDescription: "Yeni ürün açıklaması yazın.",
@@ -3154,7 +3159,7 @@
       const field = target.dataset.field;
       const localizedField = target.dataset.localizedField;
       if (field) {
-        let value = target.value;
+        let value = target.type === "checkbox" ? target.checked : target.value;
         if (field === "chips") {
           value = value.split(",").map((chip) => chip.trim()).filter(Boolean);
         } else if (field === "applications") {

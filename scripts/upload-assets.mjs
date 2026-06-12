@@ -66,7 +66,7 @@ async function uploadDirectory(bucketName, dirPath, prefix = '') {
 }
 
 async function run() {
-  const publicDir = path.join(__dirname, '../astro-app/public');
+  const publicDir = path.join(__dirname, '../next-app/public');
   
   await uploadDirectory('assets', path.join(publicDir, 'assets'), 'assets');
   await uploadDirectory('assets', path.join(publicDir, 'pdf-assets'), 'pdf-assets');

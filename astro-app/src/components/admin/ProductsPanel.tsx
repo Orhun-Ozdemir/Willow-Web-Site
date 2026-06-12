@@ -50,7 +50,7 @@ export default function ProductsPanel() {
     const id = `product-${Date.now()}`;
     setContent((c: any) => ({
       ...c,
-      products: [...(c.products || []), { id, title: "Yeni Ürün", slug: id, category: "modules", featured: false, shortDescription: "", localized: {} }],
+      products: [...(c.products || []), { id, title: "Yeni Ürün", slug: id, category: "modules", featured: false, shortDescription: "", visible: true, localized: {} }],
     }));
     setEditIdx(products.length);
   };
@@ -80,6 +80,7 @@ export default function ProductsPanel() {
           <FormField label="Kategori" type="select" value={p.category || "modules"} onChange={(v) => updateProduct(editIdx, "category", v)} options={CATEGORIES} />
           <FormField label="Görsel Yolu" value={p.image || ""} onChange={(v) => updateProduct(editIdx, "image", v)} placeholder="/assets/products/..." />
           <FormField label="Öne Çıkan" type="select" value={p.featured ? "true" : "false"} onChange={(v) => updateProduct(editIdx, "featured", v === "true")} options={[{ value: "true", label: "Evet" }, { value: "false", label: "Hayır" }]} />
+          <FormField label="Sitede Göster (Yayında)" type="select" value={p.visible !== false ? "true" : "false"} onChange={(v) => updateProduct(editIdx, "visible", v === "true")} options={[{ value: "true", label: "Evet" }, { value: "false", label: "Hayır" }]} />
           <div className="col-span-2">
             <FormField label="Kısa Açıklama" type="textarea" value={p.shortDescription || ""} onChange={(v) => updateProduct(editIdx, "shortDescription", v)} rows={2} />
           </div>
@@ -111,7 +112,7 @@ export default function ProductsPanel() {
           <div key={p.id} className="p-4 flex items-center justify-between hover:bg-gray-100/40 transition">
             <div>
               <p className="font-bold text-gray-800">{p.title}</p>
-              <p className="text-xs text-gray-400">ID: {p.id} • Kategori: {p.category} {p.featured && "• Öne Çıkan"}</p>
+              <p className="text-xs text-gray-400">ID: {p.id} • Kategori: {p.category} {p.featured && "• Öne Çıkan"} {p.visible === false ? "• 🔴 Taslak" : "• 🟢 Yayında"}</p>
             </div>
             <button onClick={() => setEditIdx(idx)} className="px-3 py-1 bg-gray-100 hover:bg-gray-200 text-xs font-semibold rounded transition">Düzenle</button>
           </div>

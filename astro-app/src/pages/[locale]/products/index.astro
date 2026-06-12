@@ -17,7 +17,7 @@ const pageContent = content.pageContent?.products || {};
 const companyFacts = content.companyFacts || {};
 const getVal = (key: string) => localizedValue(pageContent[key], locale);
 
-const productsList = content.products || [];
+const productsList = (content.products || []).filter((p: any) => p.visible !== false);
 const productsFallbackFaqs = fallbackFaqsForPage("products", locale);
 const productsFaqItems = faqItemsForPage(content.faqs || [], "products", locale, productsFallbackFaqs);
 const aiAnswer = aiAnswerForPage(content, "products", locale, seoProps.description);

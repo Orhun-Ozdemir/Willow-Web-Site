@@ -14,7 +14,7 @@ const { locale, slug } = Astro.params as { locale: Locale; slug: string };
 const content = await loadContent();
 const rawProduct = (content.products || []).find((p: any) => p.slug === slug || p.id === slug);
 
-if (!rawProduct) {
+if (!rawProduct || rawProduct.visible === false) {
   return Astro.redirect(`/${locale}/products`);
 }
 
@@ -300,7 +300,7 @@ const categoryLabels: Record<string, Record<Locale, string>> = {
     ar: "وحدات LoRaWAN",
     ja: "LoRaWANモジュール",
   },
-  sensors: {
+  environment: {
     en: "LoRaWAN Sensors",
     tr: "LoRaWAN Sensörleri",
     de: "LoRaWAN-Sensoren",
@@ -645,7 +645,7 @@ const getT = (key: keyof typeof t) => {
       <div class="ws-hero-inner section-inner">
         <div class="ws-hero-left">
           <div class="ws-hero-image-card">
-            <img src={product.image ? `/${product.image}`.replace("//", "/") : "/assets/hero-industrial-iot.png"} alt={product.title} class="ws-hero-img" />
+            <img src={product.image ? `/${product.image}`.replace("//", "/") : "/assets/hero-industrial-iot.png"} alt={product.title} class="ws-hero-img" onerror="this.onerror=null; this.src='/assets/hero-industrial-iot.png';" />
           </div>
         </div>
         <div class="ws-hero-right">

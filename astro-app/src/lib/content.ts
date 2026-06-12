@@ -1,6 +1,7 @@
 import { getPublicClient, getServiceClient, hasSupabaseEnv } from "./supabase";
 import fs from "node:fs";
 import path from "node:path";
+import localSiteData from "../../../data/site-data.json";
 
 const dataFile = path.join(process.cwd(), "../data/site-data.json");
 
@@ -15,8 +16,9 @@ export async function loadContent(): Promise<any> {
   if (!hasSupabaseEnv) {
     try {
       return JSON.parse(fs.readFileSync(dataFile, "utf8"));
-    } catch {
-      return {};
+    } catch (err: any) {
+      console.warn("Failed to read local dataFile, using bundled fallback:", err.message);
+      return localSiteData || {};
     }
   }
 
@@ -48,6 +50,12 @@ export async function loadContent(): Promise<any> {
     supabase.from("company_facts").select("data").eq("id", 1).single(),
     supabase.from("site_meta").select("data").eq("id", 1).single()
   ]);
+
+  // If Supabase returned no products or failed, fall back to the bundled site-data JSON.
+  if ((!prods || prods.length === 0) && localSiteData) {
+    console.warn("Supabase returned no products or failed. Falling back to local site-data.");
+    return localSiteData;
+  }
 
   const mapCollection = (rows: any[] | null) =>
     (rows || []).map(r => ({ ...r.data, id: r.id, localized: r.localized || {} }));
