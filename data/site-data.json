@@ -326,7 +326,7 @@
       "type": "LoRaWAN Wireless Module",
       "batteryLife": null,
       "communicationRange": null,
-      "applications": null,
+      "applications": [],
       "specifications": {
         "protocol": "LoRaWAN 1.1.0",
         "mcu": "STM32WL Cortex-M4",
@@ -369,14 +369,62 @@
       "batteryLife": "up to 10 years",
       "communicationRange": "up to 15 km",
       "applications": [
-        "Manhole flooding monitoring",
-        "Water tank level monitoring",
-        "Snow level measurement",
-        "Wastewater level monitoring",
-        "Cereal and grain storage level monitoring",
-        "Industrial liquid level monitoring",
-        "Flood prevention systems",
-        "Stormwater drainage monitoring"
+        {
+          "id": "manhole-flooding-monitoring-1",
+          "label": "Manhole flooding monitoring",
+          "icon": "water",
+          "description": "",
+          "visible": true
+        },
+        {
+          "id": "water-tank-level-monitoring-2",
+          "label": "Water tank level monitoring",
+          "icon": "water",
+          "description": "",
+          "visible": true
+        },
+        {
+          "id": "snow-level-measurement-3",
+          "label": "Snow level measurement",
+          "icon": "water",
+          "description": "",
+          "visible": true
+        },
+        {
+          "id": "wastewater-level-monitoring-4",
+          "label": "Wastewater level monitoring",
+          "icon": "water",
+          "description": "",
+          "visible": true
+        },
+        {
+          "id": "cereal-and-grain-storage-level-monitoring-5",
+          "label": "Cereal and grain storage level monitoring",
+          "icon": "water",
+          "description": "",
+          "visible": true
+        },
+        {
+          "id": "industrial-liquid-level-monitoring-6",
+          "label": "Industrial liquid level monitoring",
+          "icon": "water",
+          "description": "",
+          "visible": true
+        },
+        {
+          "id": "flood-prevention-systems-7",
+          "label": "Flood prevention systems",
+          "icon": "water",
+          "description": "",
+          "visible": true
+        },
+        {
+          "id": "stormwater-drainage-monitoring-8",
+          "label": "Stormwater drainage monitoring",
+          "icon": "water",
+          "description": "",
+          "visible": true
+        }
       ],
       "specifications": {
         "protocol": "LoRaWAN 868/915 MHz",
@@ -387,9 +435,27 @@
         "sensor_holder": "Galvanized",
         "measurement_range": "up to 7.5 meters",
         "reported_parameters": [
-          "Target distance (liquid, snow, etc.)",
-          "Sensor temperature",
-          "Battery level"
+          {
+            "id": "target-distance-liquid-snow-etc-1",
+            "label": "Target distance (liquid, snow, etc.)",
+            "icon": "location",
+            "description": "",
+            "visible": true
+          },
+          {
+            "id": "sensor-temperature-2",
+            "label": "Sensor temperature",
+            "icon": "thermo",
+            "description": "",
+            "visible": true
+          },
+          {
+            "id": "battery-level-3",
+            "label": "Battery level",
+            "icon": "battery",
+            "description": "",
+            "visible": true
+          }
         ]
       },
       "visible": true,
@@ -416,14 +482,62 @@
       "batteryLife": "up to 10 years",
       "communicationRange": "up to 15 km",
       "applications": [
-        "Homes and residential buildings",
-        "Offices and commercial buildings",
-        "Factories and industrial facilities",
-        "Warehouses and logistics centers",
-        "Greenhouses and controlled environments",
-        "Schools and universities",
-        "Hospitals and healthcare facilities",
-        "Hotels and hospitality buildings"
+        {
+          "id": "homes-and-residential-buildings-1",
+          "label": "Homes and residential buildings",
+          "icon": "building",
+          "description": "",
+          "visible": true
+        },
+        {
+          "id": "offices-and-commercial-buildings-2",
+          "label": "Offices and commercial buildings",
+          "icon": "building",
+          "description": "",
+          "visible": true
+        },
+        {
+          "id": "factories-and-industrial-facilities-3",
+          "label": "Factories and industrial facilities",
+          "icon": "gear",
+          "description": "",
+          "visible": true
+        },
+        {
+          "id": "warehouses-and-logistics-centers-4",
+          "label": "Warehouses and logistics centers",
+          "icon": "check",
+          "description": "",
+          "visible": true
+        },
+        {
+          "id": "greenhouses-and-controlled-environments-5",
+          "label": "Greenhouses and controlled environments",
+          "icon": "sprout",
+          "description": "",
+          "visible": true
+        },
+        {
+          "id": "schools-and-universities-6",
+          "label": "Schools and universities",
+          "icon": "check",
+          "description": "",
+          "visible": true
+        },
+        {
+          "id": "hospitals-and-healthcare-facilities-7",
+          "label": "Hospitals and healthcare facilities",
+          "icon": "carShield",
+          "description": "",
+          "visible": true
+        },
+        {
+          "id": "hotels-and-hospitality-buildings-8",
+          "label": "Hotels and hospitality buildings",
+          "icon": "building",
+          "description": "",
+          "visible": true
+        }
       ],
       "specifications": {
         "protocol": "LoRaWAN 868/915 MHz",
@@ -436,10 +550,34 @@
           "LoRaWAN downlink support"
         ],
         "reported_parameters": [
-          "TVOC (Total Volatile Organic Compounds)",
-          "eCO2 (equivalent CO2)",
-          "Sensor temperature",
-          "Battery level"
+          {
+            "id": "tvoc-total-volatile-organic-compounds-1",
+            "label": "TVOC (Total Volatile Organic Compounds)",
+            "icon": "check",
+            "description": "",
+            "visible": true
+          },
+          {
+            "id": "eco2-equivalent-co2-2",
+            "label": "eCO2 (equivalent CO2)",
+            "icon": "cloud",
+            "description": "",
+            "visible": true
+          },
+          {
+            "id": "sensor-temperature-3",
+            "label": "Sensor temperature",
+            "icon": "thermo",
+            "description": "",
+            "visible": true
+          },
+          {
+            "id": "battery-level-4",
+            "label": "Battery level",
+            "icon": "battery",
+            "description": "",
+            "visible": true
+          }
         ]
       },
       "visible": true,
@@ -466,11 +604,41 @@
       "batteryLife": "up to 10 years",
       "communicationRange": "up to 15 km",
       "applications": [
-        "Vehicle tracking",
-        "Asset and object tracking",
-        "Route logging and trip analysis",
-        "Fleet monitoring and management",
-        "Logistics and supply chain tracking"
+        {
+          "id": "vehicle-tracking-1",
+          "label": "Vehicle tracking",
+          "icon": "carShield",
+          "description": "",
+          "visible": true
+        },
+        {
+          "id": "asset-and-object-tracking-2",
+          "label": "Asset and object tracking",
+          "icon": "check",
+          "description": "",
+          "visible": true
+        },
+        {
+          "id": "route-logging-and-trip-analysis-3",
+          "label": "Route logging and trip analysis",
+          "icon": "check",
+          "description": "",
+          "visible": true
+        },
+        {
+          "id": "fleet-monitoring-and-management-4",
+          "label": "Fleet monitoring and management",
+          "icon": "carShield",
+          "description": "",
+          "visible": true
+        },
+        {
+          "id": "logistics-and-supply-chain-tracking-5",
+          "label": "Logistics and supply chain tracking",
+          "icon": "check",
+          "description": "",
+          "visible": true
+        }
       ],
       "specifications": {
         "protocol": "LoRaWAN 868/915 MHz",
@@ -483,11 +651,41 @@
           "LoRaWAN downlink support"
         ],
         "reported_parameters": [
-          "Latitude and longitude",
-          "Elevation",
-          "Speed",
-          "Battery level",
-          "Device temperature"
+          {
+            "id": "latitude-and-longitude-1",
+            "label": "Latitude and longitude",
+            "icon": "check",
+            "description": "",
+            "visible": true
+          },
+          {
+            "id": "elevation-2",
+            "label": "Elevation",
+            "icon": "check",
+            "description": "",
+            "visible": true
+          },
+          {
+            "id": "speed-3",
+            "label": "Speed",
+            "icon": "check",
+            "description": "",
+            "visible": true
+          },
+          {
+            "id": "battery-level-4",
+            "label": "Battery level",
+            "icon": "battery",
+            "description": "",
+            "visible": true
+          },
+          {
+            "id": "device-temperature-5",
+            "label": "Device temperature",
+            "icon": "thermo",
+            "description": "",
+            "visible": true
+          }
         ]
       },
       "visible": true,
@@ -514,12 +712,48 @@
       "batteryLife": "up to 10 years",
       "communicationRange": "up to 15 km",
       "applications": [
-        "Offices",
-        "Homes",
-        "Warehouses",
-        "Airports",
-        "Industrial Facilities",
-        "Other Buildings & Sites"
+        {
+          "id": "offices-1",
+          "label": "Offices",
+          "icon": "check",
+          "description": "",
+          "visible": true
+        },
+        {
+          "id": "homes-2",
+          "label": "Homes",
+          "icon": "check",
+          "description": "",
+          "visible": true
+        },
+        {
+          "id": "warehouses-3",
+          "label": "Warehouses",
+          "icon": "check",
+          "description": "",
+          "visible": true
+        },
+        {
+          "id": "airports-4",
+          "label": "Airports",
+          "icon": "check",
+          "description": "",
+          "visible": true
+        },
+        {
+          "id": "industrial-facilities-5",
+          "label": "Industrial Facilities",
+          "icon": "gear",
+          "description": "",
+          "visible": true
+        },
+        {
+          "id": "other-buildings-sites-6",
+          "label": "Other Buildings & Sites",
+          "icon": "building",
+          "description": "",
+          "visible": true
+        }
       ],
       "specifications": {
         "protocol": "LoRaWAN 868/915 MHz",
@@ -555,14 +789,62 @@
       "batteryLife": "up to 10 years",
       "communicationRange": "up to 15 km",
       "applications": [
-        "Laboratory Doors",
-        "Warehouse Doors",
-        "Server Room Doors",
-        "Electrical Panel Room Doors",
-        "Executive Room Doors",
-        "Security Room Doors",
-        "Cabinets and Drawers",
-        "Remote monitoring window openings/closings"
+        {
+          "id": "laboratory-doors-1",
+          "label": "Laboratory Doors",
+          "icon": "check",
+          "description": "",
+          "visible": true
+        },
+        {
+          "id": "warehouse-doors-2",
+          "label": "Warehouse Doors",
+          "icon": "check",
+          "description": "",
+          "visible": true
+        },
+        {
+          "id": "server-room-doors-3",
+          "label": "Server Room Doors",
+          "icon": "check",
+          "description": "",
+          "visible": true
+        },
+        {
+          "id": "electrical-panel-room-doors-4",
+          "label": "Electrical Panel Room Doors",
+          "icon": "check",
+          "description": "",
+          "visible": true
+        },
+        {
+          "id": "executive-room-doors-5",
+          "label": "Executive Room Doors",
+          "icon": "check",
+          "description": "",
+          "visible": true
+        },
+        {
+          "id": "security-room-doors-6",
+          "label": "Security Room Doors",
+          "icon": "shield",
+          "description": "",
+          "visible": true
+        },
+        {
+          "id": "cabinets-and-drawers-7",
+          "label": "Cabinets and Drawers",
+          "icon": "check",
+          "description": "",
+          "visible": true
+        },
+        {
+          "id": "remote-monitoring-window-openings-closings-8",
+          "label": "Remote monitoring window openings/closings",
+          "icon": "check",
+          "description": "",
+          "visible": true
+        }
       ],
       "specifications": {
         "protocol": "LoRaWAN 868/915 MHz",
@@ -599,13 +881,55 @@
       "batteryLife": "up to 5 years",
       "communicationRange": "up to 15 km",
       "applications": [
-        "Automobile Security Systems",
-        "Buildings and Infrastructure",
-        "Railway and Highway Tunnels",
-        "Mining and Geotechnical Monitoring",
-        "Handheld Devices",
-        "Gaming and Pointing Devices",
-        "Industrial Machinery"
+        {
+          "id": "automobile-security-systems-1",
+          "label": "Automobile Security Systems",
+          "icon": "carShield",
+          "description": "",
+          "visible": true
+        },
+        {
+          "id": "buildings-and-infrastructure-2",
+          "label": "Buildings and Infrastructure",
+          "icon": "building",
+          "description": "",
+          "visible": true
+        },
+        {
+          "id": "railway-and-highway-tunnels-3",
+          "label": "Railway and Highway Tunnels",
+          "icon": "tunnel",
+          "description": "",
+          "visible": true
+        },
+        {
+          "id": "mining-and-geotechnical-monitoring-4",
+          "label": "Mining and Geotechnical Monitoring",
+          "icon": "mountain",
+          "description": "",
+          "visible": true
+        },
+        {
+          "id": "handheld-devices-5",
+          "label": "Handheld Devices",
+          "icon": "mobile",
+          "description": "",
+          "visible": true
+        },
+        {
+          "id": "gaming-and-pointing-devices-6",
+          "label": "Gaming and Pointing Devices",
+          "icon": "gamepad",
+          "description": "",
+          "visible": true
+        },
+        {
+          "id": "industrial-machinery-7",
+          "label": "Industrial Machinery",
+          "icon": "gear",
+          "description": "",
+          "visible": true
+        }
       ],
       "specifications": {
         "protocol": "LoRaWAN 868/915 MHz",
@@ -617,9 +941,27 @@
           "Configurable instant status notifications"
         ],
         "reported_parameters": [
-          "Acceleration on X, Y, Z axes",
-          "Sensor temperature",
-          "Battery level"
+          {
+            "id": "acceleration-on-x-y-z-axes-1",
+            "label": "Acceleration on X, Y, Z axes",
+            "icon": "activity",
+            "description": "",
+            "visible": true
+          },
+          {
+            "id": "sensor-temperature-2",
+            "label": "Sensor temperature",
+            "icon": "thermo",
+            "description": "",
+            "visible": true
+          },
+          {
+            "id": "battery-level-3",
+            "label": "Battery level",
+            "icon": "battery",
+            "description": "",
+            "visible": true
+          }
         ]
       },
       "visible": true,
@@ -646,12 +988,48 @@
       "batteryLife": "up to 10 years",
       "communicationRange": "up to 15 km",
       "applications": [
-        "Homes",
-        "Factories",
-        "Warehouses",
-        "Offices",
-        "Indoor and Outdoor Sites",
-        "Greenhouses"
+        {
+          "id": "homes-1",
+          "label": "Homes",
+          "icon": "check",
+          "description": "",
+          "visible": true
+        },
+        {
+          "id": "factories-2",
+          "label": "Factories",
+          "icon": "check",
+          "description": "",
+          "visible": true
+        },
+        {
+          "id": "warehouses-3",
+          "label": "Warehouses",
+          "icon": "check",
+          "description": "",
+          "visible": true
+        },
+        {
+          "id": "offices-4",
+          "label": "Offices",
+          "icon": "check",
+          "description": "",
+          "visible": true
+        },
+        {
+          "id": "indoor-and-outdoor-sites-5",
+          "label": "Indoor and Outdoor Sites",
+          "icon": "check",
+          "description": "",
+          "visible": true
+        },
+        {
+          "id": "greenhouses-6",
+          "label": "Greenhouses",
+          "icon": "sprout",
+          "description": "",
+          "visible": true
+        }
       ],
       "specifications": {
         "protocol": "LoRaWAN 868/915 MHz",
@@ -688,13 +1066,55 @@
       "batteryLife": "up to 10 years",
       "communicationRange": "up to 15 km",
       "applications": [
-        "Industrial Facilities",
-        "Factories",
-        "Warehouses",
-        "Greenhouses",
-        "Energy Monitoring Systems",
-        "PLC Applications",
-        "Gas and Water Metering"
+        {
+          "id": "industrial-facilities-1",
+          "label": "Industrial Facilities",
+          "icon": "gear",
+          "description": "",
+          "visible": true
+        },
+        {
+          "id": "factories-2",
+          "label": "Factories",
+          "icon": "check",
+          "description": "",
+          "visible": true
+        },
+        {
+          "id": "warehouses-3",
+          "label": "Warehouses",
+          "icon": "check",
+          "description": "",
+          "visible": true
+        },
+        {
+          "id": "greenhouses-4",
+          "label": "Greenhouses",
+          "icon": "sprout",
+          "description": "",
+          "visible": true
+        },
+        {
+          "id": "energy-monitoring-systems-5",
+          "label": "Energy Monitoring Systems",
+          "icon": "check",
+          "description": "",
+          "visible": true
+        },
+        {
+          "id": "plc-applications-6",
+          "label": "PLC Applications",
+          "icon": "check",
+          "description": "",
+          "visible": true
+        },
+        {
+          "id": "gas-and-water-metering-7",
+          "label": "Gas and Water Metering",
+          "icon": "water",
+          "description": "",
+          "visible": true
+        }
       ],
       "specifications": {
         "protocol": "LoRaWAN 868/915 MHz",
@@ -734,11 +1154,41 @@
       "batteryLife": "up to 10 years",
       "communicationRange": "up to 15 km",
       "applications": [
-        "Smart Farming Applications",
-        "Gardens",
-        "Greenhouses",
-        "Food Industry Facilities",
-        "Farms"
+        {
+          "id": "smart-farming-applications-1",
+          "label": "Smart Farming Applications",
+          "icon": "sprout",
+          "description": "",
+          "visible": true
+        },
+        {
+          "id": "gardens-2",
+          "label": "Gardens",
+          "icon": "check",
+          "description": "",
+          "visible": true
+        },
+        {
+          "id": "greenhouses-3",
+          "label": "Greenhouses",
+          "icon": "sprout",
+          "description": "",
+          "visible": true
+        },
+        {
+          "id": "food-industry-facilities-4",
+          "label": "Food Industry Facilities",
+          "icon": "check",
+          "description": "",
+          "visible": true
+        },
+        {
+          "id": "farms-5",
+          "label": "Farms",
+          "icon": "sprout",
+          "description": "",
+          "visible": true
+        }
       ],
       "specifications": {
         "protocol": "LoRaWAN 868/915 MHz",
@@ -752,10 +1202,34 @@
           "Soil moisture sensing range up to 30 m radius"
         ],
         "reported_parameters": [
-          "Soil moisture",
-          "Soil temperature",
-          "Battery level",
-          "Sensor internal temperature"
+          {
+            "id": "soil-moisture-1",
+            "label": "Soil moisture",
+            "icon": "sprout",
+            "description": "",
+            "visible": true
+          },
+          {
+            "id": "soil-temperature-2",
+            "label": "Soil temperature",
+            "icon": "thermo",
+            "description": "",
+            "visible": true
+          },
+          {
+            "id": "battery-level-3",
+            "label": "Battery level",
+            "icon": "battery",
+            "description": "",
+            "visible": true
+          },
+          {
+            "id": "sensor-internal-temperature-4",
+            "label": "Sensor internal temperature",
+            "icon": "thermo",
+            "description": "",
+            "visible": true
+          }
         ]
       },
       "visible": true,
@@ -782,13 +1256,55 @@
       "batteryLife": "up to 10 years",
       "communicationRange": "up to 15 km",
       "applications": [
-        "Pipeline Pressure Monitoring",
-        "Water Tank Pressure",
-        "Wastewater Level Monitoring",
-        "Industrial Liquid Pressure Systems",
-        "Chemical Processing Plants",
-        "Hydraulic Systems",
-        "Irrigation Systems"
+        {
+          "id": "pipeline-pressure-monitoring-1",
+          "label": "Pipeline Pressure Monitoring",
+          "icon": "check",
+          "description": "",
+          "visible": true
+        },
+        {
+          "id": "water-tank-pressure-2",
+          "label": "Water Tank Pressure",
+          "icon": "water",
+          "description": "",
+          "visible": true
+        },
+        {
+          "id": "wastewater-level-monitoring-3",
+          "label": "Wastewater Level Monitoring",
+          "icon": "water",
+          "description": "",
+          "visible": true
+        },
+        {
+          "id": "industrial-liquid-pressure-systems-4",
+          "label": "Industrial Liquid Pressure Systems",
+          "icon": "water",
+          "description": "",
+          "visible": true
+        },
+        {
+          "id": "chemical-processing-plants-5",
+          "label": "Chemical Processing Plants",
+          "icon": "check",
+          "description": "",
+          "visible": true
+        },
+        {
+          "id": "hydraulic-systems-6",
+          "label": "Hydraulic Systems",
+          "icon": "check",
+          "description": "",
+          "visible": true
+        },
+        {
+          "id": "irrigation-systems-7",
+          "label": "Irrigation Systems",
+          "icon": "check",
+          "description": "",
+          "visible": true
+        }
       ],
       "specifications": {
         "protocol": "LoRaWAN 868/915 MHz",
@@ -802,8 +1318,20 @@
           "Configurable instant status notifications"
         ],
         "reported_parameters": [
-          "Pipeline pressure level",
-          "Tank pressure level"
+          {
+            "id": "pipeline-pressure-level-1",
+            "label": "Pipeline pressure level",
+            "icon": "location",
+            "description": "",
+            "visible": true
+          },
+          {
+            "id": "tank-pressure-level-2",
+            "label": "Tank pressure level",
+            "icon": "location",
+            "description": "",
+            "visible": true
+          }
         ]
       },
       "visible": true,
@@ -830,12 +1358,48 @@
       "batteryLife": "up to 10 years",
       "communicationRange": "up to 15 km",
       "applications": [
-        "Weather Stations",
-        "Airports",
-        "Ports and Harbors",
-        "Skyscrapers",
-        "Industrial Sites",
-        "Farms"
+        {
+          "id": "weather-stations-1",
+          "label": "Weather Stations",
+          "icon": "check",
+          "description": "",
+          "visible": true
+        },
+        {
+          "id": "airports-2",
+          "label": "Airports",
+          "icon": "check",
+          "description": "",
+          "visible": true
+        },
+        {
+          "id": "ports-and-harbors-3",
+          "label": "Ports and Harbors",
+          "icon": "check",
+          "description": "",
+          "visible": true
+        },
+        {
+          "id": "skyscrapers-4",
+          "label": "Skyscrapers",
+          "icon": "check",
+          "description": "",
+          "visible": true
+        },
+        {
+          "id": "industrial-sites-5",
+          "label": "Industrial Sites",
+          "icon": "gear",
+          "description": "",
+          "visible": true
+        },
+        {
+          "id": "farms-6",
+          "label": "Farms",
+          "icon": "sprout",
+          "description": "",
+          "visible": true
+        }
       ],
       "specifications": {
         "protocol": "LoRaWAN 868/915 MHz",

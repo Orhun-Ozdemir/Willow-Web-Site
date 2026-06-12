@@ -440,7 +440,7 @@ select {
 }
 
 .motion-hero {
-  min-height: clamp(340px, 46svh, 500px);
+  min-height: clamp(300px, 40svh, 440px);
   background: var(--surface);
   color: var(--ink);
 }
@@ -595,7 +595,7 @@ select {
 .motion-hero .hero-inner {
   align-content: center;
   justify-content: start;
-  padding: 104px 0 84px;
+  padding: 84px 48px 64px;
 }
 
 .motion-hero .hero-layout {
@@ -4707,11 +4707,11 @@ body[data-page="products"] .product-card:hover img {
   }
 
   .motion-hero {
-    min-height: 480px;
+    min-height: 400px;
   }
 
   .motion-hero .hero-inner {
-    padding: 100px 0 40px;
+    padding: 80px 24px 30px;
   }
 
   .motion-hero h1 {
