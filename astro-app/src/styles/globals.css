@@ -625,7 +625,7 @@ select {
   min-height: inherit;
   display: grid;
   align-content: center;
-  padding: 132px 0 76px;
+  padding: 132px 48px 76px;
 }
 
 .hero-layout {
@@ -637,7 +637,7 @@ select {
 .motion-hero .hero-inner {
   align-content: center;
   justify-content: start;
-  padding: 104px 0 84px;
+  padding: 104px 48px 84px;
 }
 
 .motion-hero .hero-layout {
@@ -2302,7 +2302,7 @@ select {
   place-items: center;
   margin: 0;
   padding: 20px;
-  background: #f1f5f8;
+  background: #ffffff;
 }
 
 .product-card img {
@@ -2489,39 +2489,15 @@ body[data-page="products"] .product-card figure {
   isolation: isolate;
   min-height: 292px;
   padding: 24px;
-  background:
-    linear-gradient(rgba(19, 33, 117, 0.035) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(19, 33, 117, 0.035) 1px, transparent 1px),
-    radial-gradient(ellipse at 50% 78%, rgba(19, 33, 117, 0.08), transparent 24%),
-    linear-gradient(180deg, #ffffff, #f3f6ff);
-  background-size: 24px 24px, 24px 24px, auto, auto;
+  background: #ffffff;
 }
 
 body[data-page="products"] .product-card figure::before {
-  content: "";
-  position: absolute;
-  inset: 18px;
-  z-index: 0;
-  border: 1px solid rgba(255, 255, 255, 0.72);
-  border-radius: 18px;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.32), transparent);
-  mask-image: radial-gradient(circle at 50% 48%, black 0 55%, transparent 78%);
-  pointer-events: none;
+  display: none;
 }
 
 body[data-page="products"] .product-card figure::after {
-  content: "";
-  position: absolute;
-  left: 50%;
-  bottom: 26px;
-  z-index: 0;
-  width: 48%;
-  height: 18px;
-  border-radius: 999px;
-  background: radial-gradient(ellipse, rgba(19, 33, 117, 0.14), transparent 72%);
-  filter: blur(8px);
-  transform: translateX(-50%);
-  pointer-events: none;
+  display: none;
 }
 
 body[data-page="products"] .product-card img {
@@ -4792,7 +4768,7 @@ body[data-page="products"] .product-card:hover img {
   }
 
   .motion-hero .hero-inner {
-    padding: 100px 0 40px;
+    padding: 100px 24px 40px;
   }
 
   .motion-hero h1 {
