@@ -12,6 +12,7 @@ interface HeaderProps {
 export default function Header({ locale }: HeaderProps) {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
+  const safeLocale = (locale || "en") as Locale;
 
   const locales = ["en", "tr", "de", "fr", "es", "it", "ar", "ja"] as const;
   const labels: Record<Locale, string> = {
@@ -26,18 +27,18 @@ export default function Header({ locale }: HeaderProps) {
   };
 
   const links = [
-    { name: "Ana Sayfa", href: `/${locale}`, accent: "nav-accent-cyan" },
-    { name: "Solutions", href: `/${locale}/solutions`, accent: "nav-accent-green" },
-    { name: "Services", href: `/${locale}/services`, accent: "nav-accent-cyan" },
-    { name: "Products", href: `/${locale}/products`, accent: "nav-accent-cyan" },
-    { name: "News", href: `/${locale}/news`, accent: "nav-accent-amber" },
-    { name: "Company", href: `/${locale}/company`, accent: "nav-accent-warm" },
-    { name: "Contact", href: `/${locale}/contact`, accent: "nav-accent-green" },
+    { name: "Ana Sayfa", href: `/${safeLocale}`, accent: "nav-accent-cyan" },
+    { name: "Solutions", href: `/${safeLocale}/solutions`, accent: "nav-accent-green" },
+    { name: "Services", href: `/${safeLocale}/services`, accent: "nav-accent-cyan" },
+    { name: "Products", href: `/${safeLocale}/products`, accent: "nav-accent-cyan" },
+    { name: "News", href: `/${safeLocale}/news`, accent: "nav-accent-amber" },
+    { name: "Company", href: `/${safeLocale}/company`, accent: "nav-accent-warm" },
+    { name: "Contact", href: `/${safeLocale}/contact`, accent: "nav-accent-green" },
   ];
 
   // Helper to check if link is active
   const isActive = (href: string) => {
-    if (href === `/${locale}`) {
+    if (href === `/${safeLocale}`) {
       return pathname === href;
     }
     return pathname.startsWith(href);
@@ -58,7 +59,7 @@ export default function Header({ locale }: HeaderProps) {
   return (
     <header className="site-header">
       <nav className="nav" aria-label="Main navigation">
-        <Link href={`/${locale}`} className="brand">
+        <Link href={`/${safeLocale}`} className="brand">
           <span className="brand-mark" aria-hidden="true">
             <img src="/assets/willow-mark-transparent.png" alt="" decoding="async" />
           </span>
@@ -80,8 +81,8 @@ export default function Header({ locale }: HeaderProps) {
               {link.name}
             </Link>
           ))}
-          <Link
-            href={`/${locale}/start-project`}
+            <Link
+            href={`/${safeLocale}/start-project`}
             className="mobile-cta"
             onClick={() => setIsOpen(false)}
           >
@@ -92,7 +93,7 @@ export default function Header({ locale }: HeaderProps) {
         <div className="nav-actions">
           <label className="language-switcher" data-language-switcher="">
             <span className="sr-only">Language</span>
-            <select aria-label="Language" value={locale} onChange={handleLanguageChange}>
+            <select aria-label="Language" value={safeLocale} onChange={handleLanguageChange}>
               {locales.map((item) => (
                 <option key={item} value={item}>
                   {labels[item]}
@@ -101,7 +102,7 @@ export default function Header({ locale }: HeaderProps) {
             </select>
           </label>
 
-          <Link href={`/${locale}/start-project`} className="btn btn-primary btn-small">
+          <Link href={`/${safeLocale}/start-project`} className="btn btn-primary btn-small">
             Start Project
           </Link>
           <button
@@ -117,4 +118,3 @@ export default function Header({ locale }: HeaderProps) {
     </header>
   );
 }
-

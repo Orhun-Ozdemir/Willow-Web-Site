@@ -9,6 +9,7 @@ interface NewsCardProps {
 
 export default function NewsCard({ item, locale, index }: NewsCardProps) {
   const n = localizeItem(item, locale);
+  const safeLocale = (locale || "en") as Locale;
   const delay = index % 3 ? ` delay-${index % 3}` : "";
   const date = n.date
     ? new Date(`${n.date}T00:00:00`).toLocaleDateString(locale, {
@@ -30,7 +31,7 @@ export default function NewsCard({ item, locale, index }: NewsCardProps) {
         <h3>{n.title}</h3>
         <p>{n.excerpt}</p>
         <p className="mt-4">
-          <Link href={`/${locale}/news/${encodeURIComponent(n.slug || n.id)}`} className="btn btn-ghost btn-small">
+          <Link href={`/${safeLocale}/news/${encodeURIComponent(n.slug || n.id)}`} className="btn btn-ghost btn-small">
             Read Update
           </Link>
         </p>

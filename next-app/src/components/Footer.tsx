@@ -6,6 +6,7 @@ interface FooterProps {
 }
 
 export default function Footer({ locale }: FooterProps) {
+  const safeLocale = (locale || "en") as Locale;
   return (
     <footer className="footer">
       <div className="footer-grid">
@@ -20,20 +21,20 @@ export default function Footer({ locale }: FooterProps) {
         </div>
         <div>
           <h3>Explore</h3>
-          <Link href={`/${locale}/solutions`}>Solutions</Link>
-          <Link href={`/${locale}/services`}>Services</Link>
-          <Link href={`/${locale}/products`}>Products</Link>
+          <Link href={`/${safeLocale}/solutions`}>Solutions</Link>
+          <Link href={`/${safeLocale}/services`}>Services</Link>
+          <Link href={`/${safeLocale}/products`}>Products</Link>
         </div>
         <div>
           <h3>Company</h3>
-          <Link href={`/${locale}/company`}>Company</Link>
-          <Link href={`/${locale}/news`}>News</Link>
-          <Link href={`/${locale}/glossary`}>Glossary</Link>
+          <Link href={`/${safeLocale}/company`}>Company</Link>
+          <Link href={`/${safeLocale}/news`}>News</Link>
+          <Link href={`/${safeLocale}/glossary`}>Glossary</Link>
         </div>
         <div>
           <h3>Contact</h3>
-          <Link href={`/${locale}/contact`}>Contact</Link>
-          <Link href={`/${locale}/start-project`}>Start a Project</Link>
+          <Link href={`/${safeLocale}/contact`}>Contact</Link>
+          <Link href={`/${safeLocale}/start-project`}>Start a Project</Link>
           <a href="mailto:info@willowsoft.co">info@willowsoft.co</a>
         </div>
       </div>

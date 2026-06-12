@@ -11,6 +11,7 @@ interface ProductCardProps {
 
 export default function ProductCard({ product, locale, index }: ProductCardProps) {
   const p = localizeItem(product, locale);
+  const safeLocale = (locale || "en") as Locale;
   const delay = index % 4 ? ` delay-${index % 4}` : "";
   const chips = (p.chips || []).slice(0, 3);
   const cutoutImage = p.cardImage || `/assets/product-cutouts/${p.id}.png`;
@@ -38,7 +39,7 @@ export default function ProductCard({ product, locale, index }: ProductCardProps
           ))}
         </div>
         <p className="mt-4">
-          <Link href={`/${locale}/products/${encodeURIComponent(p.slug || p.id)}`} className="btn btn-ghost btn-small">
+          <Link href={`/${safeLocale}/products/${encodeURIComponent(p.slug || p.id)}`} className="btn btn-ghost btn-small">
             View Details
           </Link>
         </p>
