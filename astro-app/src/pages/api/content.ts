@@ -6,7 +6,7 @@ export const prerender = false;
 
 export const GET: APIRoute = async () => {
   try {
-    const data = loadContent();
+    const data = await loadContent();
     return new Response(JSON.stringify(data), {
       status: 200,
       headers: { "Content-Type": "application/json" },
@@ -30,7 +30,7 @@ export const PUT: APIRoute = async ({ request }) => {
 
   try {
     const body = await request.json();
-    saveContent(body);
+    await saveContent(body);
     return new Response(JSON.stringify({ ok: true, content: body }), {
       status: 200,
       headers: { "Content-Type": "application/json" },

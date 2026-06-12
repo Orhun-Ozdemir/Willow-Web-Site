@@ -3,7 +3,11 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "start": "node server.mjs",
-    "dev": "node server.mjs"
+    "start": "npm run start --prefix astro-app",
+    "dev": "npm run dev --prefix astro-app",
+    "build": "npm run build --prefix astro-app"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.108.1"
   }
 }

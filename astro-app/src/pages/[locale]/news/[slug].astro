@@ -4,23 +4,14 @@ import { loadContent } from "@/lib/content";
 import { localizedValue, localizeItem, locales, type Locale } from "@/lib/cms";
 import { buildAlternates, DEFAULT_OG_IMAGE, ORGANIZATION_SCHEMA, WEBSITE_SCHEMA, SITE_ORIGIN } from "@/lib/seo";
 
-export function getStaticPaths() {
-  const content = loadContent();
-  const news = content.news || [];
-  const paths: any[] = [];
-  for (const locale of locales) {
-    for (const item of news) {
-      const slug = localizedValue(item.slug, locale) || item.slug?.en || item.id;
-      paths.push({ params: { locale, slug }, props: { newsId: item.id } });
-    }
-  }
-  return paths;
-}
+export const prerender = false;
 
 const { locale, slug } = Astro.params as { locale: Locale; slug: string };
-const { newsId } = Astro.props;
-const content = loadContent();
-const raw = (content.news || []).find((n: any) => n.id === newsId);
+const content = await loadContent();
+const raw = (content.news || []).find((n: any) => {
+  const localSlug = localizedValue(n.slug, locale) || n.slug?.en || n.id;
+  return localSlug === slug || n.id === slug;
+});
 
 if (!raw) return Astro.redirect(`/${locale}/news`);
 

@@ -7,23 +7,11 @@ import { localizedValue, localizeItem, locales, type Locale } from "@/lib/cms";
 import { buildAlternates, DEFAULT_OG_IMAGE, ORGANIZATION_SCHEMA, WEBSITE_SCHEMA, SITE_ORIGIN } from "@/lib/seo";
 import { aiMetaForPage, appendSchemaNodes, faqSchemaNode, stripHtml, type AiFaqItem } from "@/lib/ai-search";
 
-export function getStaticPaths() {
-  const content = loadContent();
-  const products = content.products || [];
-  const paths: any[] = [];
-  for (const locale of locales) {
-    for (const product of products) {
-      const slug = product.slug || product.id;
-      paths.push({ params: { locale, slug }, props: { productId: product.id } });
-    }
-  }
-  return paths;
-}
+export const prerender = false;
 
 const { locale, slug } = Astro.params as { locale: Locale; slug: string };
-const { productId } = Astro.props;
-const content = loadContent();
-const rawProduct = (content.products || []).find((p: any) => p.id === productId);
+const content = await loadContent();
+const rawProduct = (content.products || []).find((p: any) => p.slug === slug || p.id === slug);
 
 if (!rawProduct) {
   return Astro.redirect(`/${locale}/products`);

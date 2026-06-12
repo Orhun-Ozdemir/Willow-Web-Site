@@ -26,8 +26,8 @@ interface UrlEntry {
 const escapeXml = (value: string) =>
   value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 
-export const GET: APIRoute = () => {
-  const content = loadContent();
+export const GET: APIRoute = async () => {
+  const content = await loadContent();
   const lastmod = content.meta?.updatedAt ? String(content.meta.updatedAt).slice(0, 10) : undefined;
   const entries: UrlEntry[] = [];
 

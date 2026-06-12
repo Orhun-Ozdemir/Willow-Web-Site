@@ -7,12 +7,10 @@ import { pageSeo, webPageNode, ORGANIZATION_SCHEMA, WEBSITE_SCHEMA } from "@/lib
 import { localizedValue, locales, type Locale } from "@/lib/cms";
 import { aiAnswerForPage, aiMetaForPage, appendSchemaNodes, fallbackFaqsForPage, faqItemsForPage, faqSchemaNode } from "@/lib/ai-search";
 
-export function getStaticPaths() {
-  return locales.map((locale) => ({ params: { locale } }));
-}
+export const prerender = false;
 
 const { locale } = Astro.params as { locale: Locale };
-const content = loadContent();
+const content = await loadContent();
 const seoProps = pageSeo(content, "services", locale, "/services", "Services | WillowSoft", "Embedded systems & Industrial IoT services.");
 const pageContent = content.pageContent?.services || {};
 const companyFacts = content.companyFacts || {};

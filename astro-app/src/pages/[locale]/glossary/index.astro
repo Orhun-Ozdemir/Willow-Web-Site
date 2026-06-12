@@ -4,12 +4,10 @@ import { loadContent } from "@/lib/content";
 import { pageSeo } from "@/lib/seo";
 import { localizeItem, localizedValue, locales, type Locale } from "@/lib/cms";
 
-export function getStaticPaths() {
-  return locales.map((locale) => ({ params: { locale } }));
-}
+export const prerender = false;
 
 const { locale } = Astro.params as { locale: Locale };
-const content = loadContent();
+const content = await loadContent();
 const pageContent = content.pageContent?.glossary || {};
 const glossaryList = content.glossary || [];
 const seoProps = pageSeo(content, "glossary", locale, "/glossary", "IoT & LoRaWAN Glossary | WillowSoft", "Plain-English definitions of LoRaWAN, Modbus RTU, Industrial IoT, embedded systems, MCU, IP67, edge computing and other terms used by WillowSoft engineering.");

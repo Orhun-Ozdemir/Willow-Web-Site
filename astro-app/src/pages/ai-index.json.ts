@@ -18,8 +18,8 @@ const staticPages = [
 
 const urlFor = (locale: Locale, path: string) => `${SITE_ORIGIN}/${locale}${path}`;
 
-export const GET: APIRoute = () => {
-  const content = loadContent();
+export const GET: APIRoute = async () => {
+  const content = await loadContent();
   const updatedAt = content.meta?.updatedAt || new Date().toISOString();
 
   const pages = locales.flatMap((locale) =>

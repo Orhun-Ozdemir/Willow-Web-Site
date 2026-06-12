@@ -14,7 +14,7 @@ export default defineConfig({
         base: "/Willow-Web-Site/",
       }),
   publicDir: "../next-app/public",
-  output: "static",
+  output: "server",
   adapter: isVercel ? vercel() : node({ mode: "standalone" }),
   integrations: [react()],
   vite: {

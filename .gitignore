@@ -3,6 +3,14 @@
 Thumbs.db
 *.log
 
+# Secrets — never commit real env files
+.env
+.env.*
+!.env.example
+astro-app/.env
+astro-app/.env.*
+!astro-app/.env.example
+
 # Editor
 .vscode/
 .idea/
