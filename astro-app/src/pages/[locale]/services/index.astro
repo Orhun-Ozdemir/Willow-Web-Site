@@ -516,7 +516,7 @@ const getLabel = (key: keyof typeof labels) => {
           {/* Case Study 1 */}
           <article class="split reveal" style={{ alignItems: "stretch" }}>
             <div class="split-media" style={{ position: "relative", display: "flex", flexDirection: "column", justifyContent: "center", background: "rgba(255,255,255,0.8)", border: "1px solid var(--line)", overflow: "hidden", borderRadius: "var(--radius)", boxShadow: "var(--shadow)" }}>
-              <img src="/assets/client-logos/slb.png" alt="SLB" style={{ maxHeight: "44px", width: "auto", objectFit: "contain", margin: "40px auto 20px", opacity: 0.85 }} />
+              <img src={`${import.meta.env.BASE_URL}assets/client-logos/slb.png`} alt="SLB" style={{ maxHeight: "44px", width: "auto", objectFit: "contain", margin: "40px auto 20px", opacity: 0.85 }} />
               <div class="case-stats" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "10px", padding: "20px", background: "rgba(240, 245, 255, 0.5)", borderTop: "1px solid var(--line)", textAlign: "center" }}>
                 <div><strong style={{ display: "block", fontSize: "1.85rem", color: "var(--accent)", fontFamily: "var(--font-display)" }}>-32%</strong><span style={{ fontSize: "0.74rem", color: "var(--muted)", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.02em" }}>{getLabel("maintenanceCosts")}</span></div>
                 <div><strong style={{ display: "block", fontSize: "1.85rem", color: "var(--accent)", fontFamily: "var(--font-display)" }}>99.6%</strong><span style={{ fontSize: "0.74rem", color: "var(--muted)", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.02em" }}>{getLabel("networkUptime")}</span></div>
@@ -537,7 +537,7 @@ const getLabel = (key: keyof typeof labels) => {
           {/* Case Study 2 */}
           <article class="split reveal" style={{ alignItems: "stretch" }}>
             <div class="split-media" style={{ position: "relative", display: "flex", flexDirection: "column", justifyContent: "center", background: "rgba(255,255,255,0.8)", border: "1px solid var(--line)", overflow: "hidden", borderRadius: "var(--radius)", boxShadow: "var(--shadow)" }}>
-              <img src="/assets/client-logos/cocacola.png" alt="Coca-Cola" style={{ maxHeight: "44px", width: "auto", objectFit: "contain", margin: "40px auto 20px", opacity: 0.85 }} />
+              <img src={`${import.meta.env.BASE_URL}assets/client-logos/cocacola.png`} alt="Coca-Cola" style={{ maxHeight: "44px", width: "auto", objectFit: "contain", margin: "40px auto 20px", opacity: 0.85 }} />
               <div class="case-stats" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "10px", padding: "20px", background: "rgba(240, 245, 255, 0.5)", borderTop: "1px solid var(--line)", textAlign: "center" }}>
                 <div><strong style={{ display: "block", fontSize: "1.85rem", color: "var(--accent)", fontFamily: "var(--font-display)" }}>0%</strong><span style={{ fontSize: "0.74rem", color: "var(--muted)", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.02em" }}>{getLabel("spoilageIncidents")}</span></div>
                 <div><strong style={{ display: "block", fontSize: "1.85rem", color: "var(--accent)", fontFamily: "var(--font-display)" }}>5 Yrs</strong><span style={{ fontSize: "0.74rem", color: "var(--muted)", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.02em" }}>{getLabel("batteryLife")}</span></div>

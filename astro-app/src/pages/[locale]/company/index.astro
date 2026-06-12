@@ -200,7 +200,7 @@ const getLabel = (key: keyof typeof labels) => {
     <!-- Hero Section -->
     <section class="hero compact">
       <div class="hero-media">
-        <img src="/pdf-assets/p28_01_X104.jpg" alt="WillowSoft office reception" loading="lazy" decoding="async" />
+        <img src={`${import.meta.env.BASE_URL}pdf-assets/p28_01_X104.jpg`} alt="WillowSoft office reception" loading="lazy" decoding="async" />
       </div>
       <canvas class="signal-canvas" data-density="30"></canvas>
       <div class="hero-inner">

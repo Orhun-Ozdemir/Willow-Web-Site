@@ -43,7 +43,7 @@ export default function AdminLogin() {
       <div className="w-full max-w-md space-y-0">
         <div className="flex flex-col items-center pb-8">
           <div className="w-24 h-24 rounded-2xl bg-white/10 backdrop-blur-lg border border-white/20 flex items-center justify-center shadow-2xl mb-5">
-            <img src="/assets/willow-mark-transparent.png" alt="WillowSoft" className="w-16 h-16 object-contain drop-shadow-lg" />
+            <img src={`${import.meta.env.BASE_URL}assets/willow-mark-transparent.png`} alt="WillowSoft" className="w-16 h-16 object-contain drop-shadow-lg" />
           </div>
           <h1 className="text-2xl font-extrabold tracking-tight text-white" style={{ fontFamily: "var(--font-display)" }}>
             WILLOWSOFT

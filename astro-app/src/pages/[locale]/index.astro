@@ -146,7 +146,7 @@ const homeSchema = appendSchemaNodes({
     <!-- Hero -->
     <section class="hero motion-hero">
       <div class="hero-media">
-        <img src="/assets/hero-industrial-iot.png" alt="Industrial IoT hardware on a lab bench" loading="lazy" decoding="async" />
+        <img src={`${import.meta.env.BASE_URL}assets/hero-industrial-iot.png`} alt="Industrial IoT hardware on a lab bench" loading="lazy" decoding="async" />
       </div>
       <canvas class="hero-shader-canvas" aria-hidden="true" style="position:absolute;inset:0;pointer-events:none;"></canvas>
       <canvas class="signal-canvas" data-density="42" data-color="75, 87, 170"></canvas>
@@ -182,15 +182,15 @@ const homeSchema = appendSchemaNodes({
         <aside class="hero-product-stage reveal delay-2" aria-label="WillowSoft hardware showcase">
           <div class="product-spotlight"></div>
           <article class="floating-product product-one" style="--delay:0ms">
-            <figure><img src="/pdf-assets/p06_01_X13.jpg" alt="WillowBee LoRaWAN module" loading="lazy" decoding="async" /></figure>
+            <figure><img src={`${import.meta.env.BASE_URL}pdf-assets/p06_01_X13.jpg`} alt="WillowBee LoRaWAN module" loading="lazy" decoding="async" /></figure>
             <div><strong>WillowBee</strong><span>Compact LoRaWAN MCU module</span></div>
           </article>
           <article class="floating-product product-two" style="--delay:180ms">
-            <figure><img src="/pdf-assets/p08_01_X22.jpg" alt="WillowAir sensor" loading="lazy" decoding="async" /></figure>
+            <figure><img src={`${import.meta.env.BASE_URL}pdf-assets/p08_01_X22.jpg`} alt="WillowAir sensor" loading="lazy" decoding="async" /></figure>
             <div><strong>WillowAir</strong><span>Indoor air quality monitoring</span></div>
           </article>
           <article class="floating-product product-three" style="--delay:360ms">
-            <figure><img src="/pdf-assets/p14_01_X50.jpg" alt="WillowMod sensor" loading="lazy" decoding="async" /></figure>
+            <figure><img src={`${import.meta.env.BASE_URL}pdf-assets/p14_01_X50.jpg`} alt="WillowMod sensor" loading="lazy" decoding="async" /></figure>
             <div><strong>WillowMod</strong><span>Wireless Modbus integration</span></div>
           </article>
         </aside>
@@ -221,7 +221,7 @@ const homeSchema = appendSchemaNodes({
           </div>
         </div>
         <div class="trust-stage reveal-right delay-1">
-          <div class="trust-mark"><img src="/pdf-assets/p01_01_X0.jpg" alt="WillowSoft mark" loading="lazy" decoding="async" /></div>
+          <div class="trust-mark"><img src={`${import.meta.env.BASE_URL}pdf-assets/p01_01_X0.jpg`} alt="WillowSoft mark" loading="lazy" decoding="async" /></div>
           <div class="logo-cloud" data-cms-clients>
             {featuredClients.map((client: any, idx: number) => {
               const depths = [18, 54, 28, 42, 12, 66, 36, 24];

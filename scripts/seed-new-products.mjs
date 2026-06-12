@@ -591,7 +591,7 @@ async function run() {
     
     // We try to find if a product with this slug already exists to preserve image or override it
     let { data: existing } = await supabase
-      .from('site_content')
+      .from('page_content')
       .select('*')
       .eq('type', 'products')
       .eq('slug', slug)
@@ -645,13 +645,13 @@ async function run() {
     if (existing) {
       console.log(`Updating existing product: ${slug}`);
       await supabase
-        .from('site_content')
+        .from('page_content')
         .update(payload)
         .eq('id', existing.id);
     } else {
       console.log(`Inserting new product: ${slug}`);
       await supabase
-        .from('site_content')
+        .from('page_content')
         .insert(payload);
     }
   }

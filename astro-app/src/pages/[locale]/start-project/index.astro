@@ -165,11 +165,11 @@ const getSteps = () => {
         <div class="trusted-by-row reveal">
           <p class="trusted-by-label">{getLabel("trustedBy")}</p>
           <div class="trusted-by-logos" aria-label={getLabel("customerLogos")}>
-            <div class="trusted-logo"><img src="/assets/client-logos/honeywell.png" alt="Honeywell" loading="lazy" decoding="async" /></div>
-            <div class="trusted-logo"><img src="/assets/client-logos/slb.png" alt="SLB" loading="lazy" decoding="async" /></div>
-            <div class="trusted-logo"><img src="/assets/client-logos/beko.png" alt="Beko" loading="lazy" decoding="async" /></div>
-            <div class="trusted-logo"><img src="/assets/client-logos/aero.png" alt="Aero Healthcare" loading="lazy" decoding="async" /></div>
-            <div class="trusted-logo"><img src="/assets/client-logos/cocacola.png" alt="Coca-Cola" loading="lazy" decoding="async" /></div>
+            <div class="trusted-logo"><img src={`${import.meta.env.BASE_URL}assets/client-logos/honeywell.png`} alt="Honeywell" loading="lazy" decoding="async" /></div>
+            <div class="trusted-logo"><img src={`${import.meta.env.BASE_URL}assets/client-logos/slb.png`} alt="SLB" loading="lazy" decoding="async" /></div>
+            <div class="trusted-logo"><img src={`${import.meta.env.BASE_URL}assets/client-logos/beko.png`} alt="Beko" loading="lazy" decoding="async" /></div>
+            <div class="trusted-logo"><img src={`${import.meta.env.BASE_URL}assets/client-logos/aero.png`} alt="Aero Healthcare" loading="lazy" decoding="async" /></div>
+            <div class="trusted-logo"><img src={`${import.meta.env.BASE_URL}assets/client-logos/cocacola.png`} alt="Coca-Cola" loading="lazy" decoding="async" /></div>
             <div class="trusted-logo trusted-logo-text"><strong>AT&amp;T</strong></div>
           </div>
         </div>

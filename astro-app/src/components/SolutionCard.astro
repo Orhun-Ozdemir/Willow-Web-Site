@@ -1,5 +1,5 @@
 ---
-import { localizeItem, type Locale } from "@/lib/cms";
+import { localizeItem, resolveAsset, type Locale } from "@/lib/cms";
 
 interface Props {
   solution: any;
@@ -18,7 +18,7 @@ const bullets = Array.isArray(s.bullets)
 <article class={`solution-case-card reveal${delay}`} data-solution={s.slug || s.id}>
   {s.image && (
     <figure>
-      <img src={s.image} alt={s.headline || s.title} loading="lazy" decoding="async" />
+      <img src={resolveAsset(s.image)} alt={s.headline || s.title} loading="lazy" decoding="async" />
     </figure>
   )}
   <div class="solution-case-body">

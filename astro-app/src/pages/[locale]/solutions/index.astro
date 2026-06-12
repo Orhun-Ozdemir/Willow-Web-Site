@@ -5,7 +5,7 @@ import FaqAccordion from "@/components/FaqAccordion.astro";
 import AIAnswerBlock from "@/components/AIAnswerBlock.astro";
 import { loadContent } from "@/lib/content";
 import { pageSeo, webPageNode, ORGANIZATION_SCHEMA, WEBSITE_SCHEMA } from "@/lib/seo";
-import { localizedValue, locales, type Locale } from "@/lib/cms";
+import { localizedValue, resolveAsset, locales, type Locale } from "@/lib/cms";
 import { aiAnswerForPage, aiMetaForPage, appendSchemaNodes, fallbackFaqsForPage, faqItemsForPage, faqSchemaNode } from "@/lib/ai-search";
 
 export const prerender = false;
@@ -62,7 +62,7 @@ const getLabel = (key: keyof typeof labels) => {
   <main>
     <!-- Hero -->
     <section class="hero compact">
-      <div class="hero-media"><img src="/pdf-assets/p04_01_X9.jpg" alt="Industrial IoT concept" loading="lazy" decoding="async"/></div>
+      <div class="hero-media"><img src={resolveAsset("/pdf-assets/p04_01_X9.jpg")} alt="Industrial IoT concept" loading="lazy" decoding="async"/></div>
       <canvas class="signal-canvas" data-density="38"></canvas>
       <div class="hero-inner">
         <p class="eyebrow reveal">{getVal("heroEyebrow")}</p>

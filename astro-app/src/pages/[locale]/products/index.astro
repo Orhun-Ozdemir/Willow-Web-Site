@@ -179,7 +179,7 @@ const getLabel = (key: keyof typeof labels) => {
         </div>
         <aside class="product-hero-showcase reveal delay-2" aria-label="Featured WillowSoft hardware">
           <div class="product-showcase-stage">
-            <img src="/assets/product-cutouts/willowbee-lorawan-module.png" alt="WillowBee LoRaWAN module" loading="lazy" decoding="async" />
+            <img src={`${import.meta.env.BASE_URL}assets/product-cutouts/willowbee-lorawan-module.png`} alt="WillowBee LoRaWAN module" loading="lazy" decoding="async" />
           </div>
           <div class="product-showcase-copy">
             <p class="architecture-label">{getLabel("featuredHardware")}</p>

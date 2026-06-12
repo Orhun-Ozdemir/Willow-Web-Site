@@ -65,7 +65,7 @@ const getLabel = (key: keyof typeof labels) => {
 >
   <main>
     <section class="hero compact">
-      <div class="hero-media"><img src="/pdf-assets/p29_06_X111.jpg" alt={getLabel("heroAlt")} loading="lazy" decoding="async"/></div>
+      <div class="hero-media"><img src={`${import.meta.env.BASE_URL}pdf-assets/p29_06_X111.jpg`} alt={getLabel("heroAlt")} loading="lazy" decoding="async"/></div>
       <canvas class="signal-canvas" data-density="34"></canvas>
       <div class="hero-inner">
         <p class="eyebrow reveal">{getVal("heroEyebrow")}</p>
