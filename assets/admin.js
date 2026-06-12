@@ -116,7 +116,22 @@
     setSaveState("dirty");
   }
 
+  function setLoadNotice(message = "", mode = "info") {
+    const notice = qs("[data-admin-load-notice]");
+    if (!notice) return;
+    if (!message) {
+      notice.hidden = true;
+      notice.textContent = "";
+      notice.dataset.mode = "";
+      return;
+    }
+    notice.hidden = false;
+    notice.dataset.mode = mode;
+    notice.textContent = message;
+  }
+
   async function saveContent() {
+    if (!state.content) return;
     state.content.meta = {
       ...(state.content.meta || {}),
       updatedAt: new Date().toISOString()
@@ -141,11 +156,18 @@
       ok = false;
     }
 
-    setSaveState("saved");
     const button = qs("[data-save-content]");
-    const original = button.textContent;
-    button.textContent = ok ? "Kaydedildi ✓" : "Taslak kaydedildi";
-    setTimeout(() => { button.textContent = original; }, 1400);
+    const original = button?.textContent || "Değişiklikleri Kaydet";
+    if (ok) {
+      window.localStorage.removeItem("willowsoft-content-draft");
+      setSaveState("saved");
+    } else {
+      setSaveState("dirty");
+    }
+    if (button) {
+      button.textContent = ok ? "Kaydedildi ✓" : "Taslak kaydedildi";
+      setTimeout(() => { button.textContent = original; }, 1400);
+    }
   }
 
   function activateTab(tabName) {
@@ -158,10 +180,14 @@
       switcher.style.display = showSwitcher ? "flex" : "none";
     }
 
-    if (tabName === "translation-health") {
+    if (tabName === "analytics") {
+      loadAnalytics();
+    } else if (tabName === "messages") {
+      loadLeads();
+    } else if (tabName === "translation-health") {
       renderTranslationHealth();
     } else if (tabName === "leads-kanban") {
-      renderLeadsKanban();
+      loadLeads();
     } else if (tabName === "system-backups") {
       renderSystemBackups();
     } else if (tabName === "seo-center") {
@@ -197,6 +223,12 @@
 
   function locales() {
     return state.content?.meta?.locales || ["en", "tr", "de", "fr", "es", "it", "ar", "ja"];
+  }
+
+  function hasValue(value) {
+    if (Array.isArray(value)) return value.length > 0;
+    if (value && typeof value === "object") return Object.keys(value).length > 0;
+    return String(value ?? "").trim().length > 0;
   }
 
   const COLLECTION_STATE_KEY = {
@@ -310,6 +342,101 @@
     `;
   }
 
+  function linesToText(value) {
+    return Array.isArray(value) ? value.join("\n") : String(value || "");
+  }
+
+  function splitLines(value) {
+    return String(value || "").split(/\r?\n/).map((line) => line.trim()).filter(Boolean);
+  }
+
+  function ensureProductModel(product) {
+    if (!product) return;
+    if (!Array.isArray(product.images)) product.images = product.image ? [product.image] : [];
+    if (!Array.isArray(product.applications)) product.applications = [];
+    if (!Array.isArray(product.specGroups)) {
+      product.specGroups = [];
+    }
+  }
+
+  function productSpecGroupsEditor(product, index) {
+    ensureProductModel(product);
+    const groups = product.specGroups || [];
+    return `
+      <details class="admin-card admin-editor-card admin-dynamic-product-model" open>
+        <summary class="admin-card-top">
+          <span>Dinamik Ürün Modeli</span>
+          <small>Ürün tipine göre sınırsız teknik alan, liste ve grup ekleyin.</small>
+        </summary>
+        <div class="admin-dynamic-product-body">
+          <div class="admin-form-grid">
+            <label>Ürün Tipi / Model Sınıfı
+              <span class="field-helper">Örn: LoRaWAN Ultrasonic Distance/Level Sensor</span>
+              <input data-field="type" value="${esc(product.type || "")}" />
+            </label>
+            <label>Batarya Ömrü
+              <span class="field-helper">Örn: up to 10 years</span>
+              <input data-field="batteryLife" value="${esc(product.batteryLife || product.battery_life || "")}" />
+            </label>
+            <label>İletişim Menzili
+              <span class="field-helper">Örn: up to 15 km</span>
+              <input data-field="communicationRange" value="${esc(product.communicationRange || product.communication_range || "")}" />
+            </label>
+            <label class="span-2">Uygulama Alanları
+              <span class="field-helper">Her satıra bir kullanım alanı yazın. Ürün detay sayfasında liste olarak gösterilir.</span>
+              <textarea data-field="applications" rows="5">${esc(linesToText(product.applications))}</textarea>
+            </label>
+          </div>
+
+          <div class="admin-spec-groups" data-spec-groups="${index}">
+            ${groups.map((group, groupIndex) => `
+              <article class="admin-spec-group" data-spec-group="${groupIndex}">
+                <div class="admin-spec-group-head">
+                  <label>Grup Başlığı
+                    <input data-spec-group-title data-product-index="${index}" data-group-index="${groupIndex}" value="${esc(group.title || "")}" placeholder="Örn: Connectivity, Sensor Specs, Power" />
+                  </label>
+                  <button type="button" class="admin-icon-btn admin-icon-btn-danger" data-spec-remove-group="${groupIndex}" data-product-index="${index}" aria-label="Grubu sil">Sil</button>
+                </div>
+
+                <div class="admin-spec-subhead">
+                  <strong>Key / Value Özellikleri</strong>
+                  <button type="button" class="btn btn-secondary btn-small" data-spec-add-row="${groupIndex}" data-product-index="${index}">+ Özellik Satırı</button>
+                </div>
+                <div class="admin-spec-row-list">
+                  ${(group.rows || []).map((row, rowIndex) => `
+                    <div class="admin-spec-row" data-spec-row="${rowIndex}">
+                      <input data-spec-row-label data-product-index="${index}" data-group-index="${groupIndex}" data-row-index="${rowIndex}" value="${esc(row.label || "")}" placeholder="Alan adı: Protocol" />
+                      <input data-spec-row-value data-product-index="${index}" data-group-index="${groupIndex}" data-row-index="${rowIndex}" value="${esc(row.value || "")}" placeholder="Değer: LoRaWAN 868/915 MHz" />
+                      <button type="button" class="admin-icon-btn admin-icon-btn-danger" data-spec-remove-row="${rowIndex}" data-group-index="${groupIndex}" data-product-index="${index}" aria-label="Satırı sil">Sil</button>
+                    </div>
+                  `).join("") || `<p class="admin-spec-empty">Henüz key/value satırı yok.</p>`}
+                </div>
+
+                <div class="admin-spec-subhead">
+                  <strong>Liste Alanları</strong>
+                  <button type="button" class="btn btn-secondary btn-small" data-spec-add-list="${groupIndex}" data-product-index="${index}">+ Liste Alanı</button>
+                </div>
+                <div class="admin-spec-list-list">
+                  ${(group.lists || []).map((list, listIndex) => `
+                    <div class="admin-spec-list-editor" data-spec-list="${listIndex}">
+                      <div class="admin-spec-row">
+                        <input data-spec-list-title data-product-index="${index}" data-group-index="${groupIndex}" data-list-index="${listIndex}" value="${esc(list.title || "")}" placeholder="Liste başlığı: Features" />
+                        <button type="button" class="admin-icon-btn admin-icon-btn-danger" data-spec-remove-list="${listIndex}" data-group-index="${groupIndex}" data-product-index="${index}" aria-label="Listeyi sil">Sil</button>
+                      </div>
+                      <textarea data-spec-list-items data-product-index="${index}" data-group-index="${groupIndex}" data-list-index="${listIndex}" rows="4" placeholder="Her satıra bir madde yazın">${esc(linesToText(list.items))}</textarea>
+                    </div>
+                  `).join("") || `<p class="admin-spec-empty">Henüz liste alanı yok.</p>`}
+                </div>
+              </article>
+            `).join("") || `<p class="admin-spec-empty">Bu ürüne özel teknik grup yok. Aşağıdan grup ekleyin.</p>`}
+          </div>
+
+          <button type="button" class="btn btn-primary btn-small" data-spec-add-group="${index}">+ Teknik Grup Ekle</button>
+        </div>
+      </details>
+    `;
+  }
+
   // Lightweight rich-text field (no dependency). Outputs HTML into state via handleInput.
   function richTextField({ collection, index, field, locale = "", value = "", label = "", helper = "" }) {
     return `
@@ -334,7 +461,7 @@
   function productGridCard(product, index) {
     const imgUrl = product.image ? (product.image.startsWith("http") ? product.image : "/" + product.image) : "";
     const chips = Array.isArray(product.chips) ? product.chips.slice(0, 3) : [];
-    const transCount = locales().filter(l => l !== "en").filter(l => (product.localized?.[l]?.title || "").trim()).length;
+    const transCount = locales().filter(l => l !== "en").filter(l => hasValue(product.localized?.[l]?.title)).length;
     const totalLangs = locales().filter(l => l !== "en").length;
     return `
       <article class="admin-product-grid-card" data-product-grid-card="${index}">
@@ -348,7 +475,10 @@
           <strong class="admin-product-grid-title">${esc(product.title || "Yeni Ürün")}</strong>
           <span class="admin-product-grid-cat">${esc(product.category || "—")}</span>
           ${chips.length ? `<div class="admin-product-grid-chips">${chips.map(c => `<span class="admin-product-grid-chip">${esc(c)}</span>`).join("")}</div>` : ""}
-          <span class="admin-product-grid-lang" title="Çeviri durumu">${transCount}/${totalLangs} dil</span>
+          <div class="admin-product-grid-actions">
+            <span class="admin-product-grid-lang" title="Çeviri durumu">${transCount}/${totalLangs} dil</span>
+            <button type="button" class="btn btn-secondary btn-small" data-edit-product="${index}">Düzenle</button>
+          </div>
         </div>
       </article>
     `;
@@ -356,7 +486,9 @@
 
   /* ---- Full product editor (shown after click) ---- */
   function productEditor(product, index) {
+    ensureProductModel(product);
     const imgUrl = product.image ? (product.image.startsWith("http") ? product.image : "/" + product.image) : "";
+    const specificationsHtml = typeof product.specifications === "string" ? product.specifications : "";
     return `
       <div class="admin-product-edit-view" data-product-index="${index}">
         <div class="admin-product-edit-header">
@@ -411,7 +543,8 @@
 
             ${richTextField({ collection: "products", index, field: "technicalSummary", value: product.technicalSummary, label: "Teknik Özet", helper: "Ürün detay sayfasında gösterilir. Başlık ve liste için araç çubuğunu kullanın." })}
             ${richTextField({ collection: "products", index, field: "useCases", value: product.useCases, label: "Kullanım Alanları" })}
-            ${richTextField({ collection: "products", index, field: "specifications", value: product.specifications, label: "Teknik Özellikler" })}
+            ${richTextField({ collection: "products", index, field: "specifications", value: specificationsHtml, label: "Teknik Özellikler" })}
+            ${productSpecGroupsEditor(product, index)}
 
             <details class="admin-card admin-editor-card" style="margin-top: 24px; border: 1px solid var(--admin-border); background: var(--admin-bg-light);">
               <summary class="admin-card-top" style="cursor: pointer; padding: 14px 20px; font-weight: 600; display: flex; justify-content: space-between; align-items: center;">
@@ -690,8 +823,13 @@
     } else {
       // Grid view
       root.innerHTML = products.length
-        ? `<div class="admin-product-grid">${products.map(productGridCard).join("")}</div>`
-        : `<p style="color:var(--admin-muted);padding:24px;">Henüz ürün eklenmemiş.</p>`;
+        ? `
+          <div class="admin-helper-card">
+            Ürün yazılarını değiştirmek için kartın üstüne veya <strong>Düzenle</strong> butonuna tıklayın. Açılan ekranda başlık, açıklama, teknik özet, görseller, AI cevapları ve çeviriler düzenlenir.
+          </div>
+          <div class="admin-product-grid">${products.map(productGridCard).join("")}</div>
+        `
+        : `<article class="admin-helper-card is-empty">Henüz ürün eklenmemiş. Yeni içerik girmek için sağ üstteki <strong>Yeni Ürün Ekle</strong> butonunu kullanın.</article>`;
     }
   }
 
@@ -850,7 +988,7 @@
             <div class="admin-card admin-translation-accordion" data-page-content="${esc(pageKey)}" style="padding: 0; overflow: hidden; border: 1px solid var(--admin-border); margin-bottom: 16px;">
               <div class="admin-trans-locale-tabs" style="border-bottom: 1px solid var(--admin-border); background: var(--admin-surface); padding: 12px 20px 0 20px; overflow-x: auto;">
                 ${SUPPORTED_LOCALES.map((locale) => {
-                  const filledCount = Object.values(page).filter(v => v[locale]?.trim()).length;
+                  const filledCount = Object.values(page).filter(v => hasValue(v?.[locale])).length;
                   const totalCount = Object.keys(page).length;
                   const isActive = locale === activeLocale;
                   return `
@@ -917,11 +1055,11 @@
                     <span class="admin-seo-score-circle admin-seo-score-circle-${locScore.level}">${locScore.score}</span>
                     <div>
                       <div class="admin-seo-score-title">${locScore.level === 'good' ? 'SEO İyi Durumda' : locScore.level === 'ok' ? 'İyileştirilebilir' : 'Dikkat Gerekiyor'}</div>
-                      <div class="admin-seo-score-sub">${locScore.checks.filter(c => c.ok).length}/${locScore.checks.length} kontrol geçildi</div>
+                      <div class="admin-seo-score-sub">${locScore.seoChecks.filter(c => c.ok).length}/${locScore.seoChecks.length} kontrol geçildi</div>
                     </div>
                   </div>
                   <div class="admin-seo-checklist">
-                    ${locScore.checks.map(c => `
+                    ${locScore.seoChecks.map(c => `
                       <div class="admin-seo-check-item">
                         <span class="admin-seo-check-dot" style="background: ${c.ok ? '#10b981' : c.warn ? '#f59e0b' : '#ef4444'}"></span>
                         <span>${c.label}</span>
@@ -1109,7 +1247,7 @@
           const totalFields = Object.keys(page).length;
           
           const progressHtml = SUPPORTED_LOCALES.filter(l => l !== "en").map(loc => {
-            const filled = Object.values(page).filter(v => v[loc]?.trim()).length;
+            const filled = Object.values(page).filter(v => hasValue(v?.[loc])).length;
             const pct = Math.round((filled / totalFields) * 100) || 0;
             const color = pct === 100 ? "#10b981" : pct > 0 ? "#f59e0b" : "#ef4444";
             return `
@@ -1135,6 +1273,7 @@
                   ${progressHtml}
                 </div>
               </div>
+              <button type="button" class="btn btn-secondary btn-small admin-page-edit-btn" data-edit-page="${esc(pageKey)}">Yazıları Düzenle</button>
             </div>
           `;
         }).join("")}
@@ -1702,7 +1841,7 @@
       <div class="admin-faq-editor-row" style="margin-bottom:16px; border: 1px solid var(--admin-border); padding: 12px; border-radius: 6px; background: var(--admin-surface);">
         <div class="admin-faq-editor-row-header" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
           <span class="admin-faq-editor-num" style="font-weight:600; color:var(--admin-muted);">Soru #${idx + 1} (${locale.toUpperCase()})</span>
-          <button type="button" class="admin-faq-delete-btn admin-product-faq-delete-btn" data-product-faq-delete-idx="${idx}" data-product-idx="${prodIdx}" data-product-faq-locale="${locale}" style="background:none; border:none; color:var(--admin-red); cursor:pointer;">Sil</button>
+          <button type="button" class="admin-faq-delete-btn admin-product-faq-delete-btn" data-product-faq-delete-idx="${idx}" data-product-idx="${prodIdx}" data-product-faq-locale="${locale}" style="background:none; border:none; color:var(--admin-danger); cursor:pointer;">Sil</button>
         </div>
         <input type="text" class="admin-input admin-product-faq-input" data-product-faq-field="question" data-product-faq-idx="${idx}" data-product-idx="${prodIdx}" data-product-faq-locale="${locale}" value="${esc(qa.question || '')}" placeholder="Kullanıcı sorusu (örn: WillowBee pil ömrü nedir?)" style="width:100%; margin-bottom:8px;" />
         <textarea class="admin-textarea admin-product-faq-input" rows="2" data-product-faq-field="answer" data-product-faq-idx="${idx}" data-product-idx="${prodIdx}" data-product-faq-locale="${locale}" placeholder="Kısa ve net cevap yazın..." style="width:100%; resize:vertical;">${esc(qa.answer || '')}</textarea>
@@ -2170,11 +2309,15 @@
   function renderAnalytics() {
     const root = qs("[data-admin-analytics]");
     if (!root) return;
-    const summary = state.analytics?.summary;
-    if (!summary) {
-      root.innerHTML = `<article class="admin-card"><p>Henüz veri toplanmadı. Sitede gezinerek veri üretilmesini sağlayabilirsiniz.</p></article>`;
-      return;
-    }
+    const summary = state.analytics?.summary || {
+      totalEvents: 0,
+      uniqueVisitors: 0,
+      averageDurationMs: 0,
+      topCountries: [],
+      topPages: [],
+      byType: {},
+      latest: []
+    };
 
     const typeItems = Object.entries(summary.byType || {})
       .sort((a, b) => b[1] - a[1])
@@ -2477,7 +2620,7 @@
       Object.entries(page).forEach(([fieldKey, vals]) => {
         components.pages.total++;
         list.forEach(l => {
-          if (vals?.[l]?.trim()) {
+          if (hasValue(vals?.[l])) {
             components.pages.localized[l]++;
           }
         });
@@ -2490,7 +2633,7 @@
       productKeys.forEach(k => {
         components.products.total++;
         list.forEach(l => {
-          if (p.localized?.[l]?.[k]?.trim()) {
+          if (hasValue(p.localized?.[l]?.[k])) {
             components.products.localized[l]++;
           }
         });
@@ -2503,7 +2646,7 @@
       newsKeys.forEach(k => {
         components.news.total++;
         list.forEach(l => {
-          if (n.localized?.[l]?.[k]?.trim()) {
+          if (hasValue(n.localized?.[l]?.[k])) {
             components.news.localized[l]++;
           }
         });
@@ -2516,7 +2659,7 @@
       solKeys.forEach(k => {
         components.solutions.total++;
         list.forEach(l => {
-          if (s.localized?.[l]?.[k]?.trim() || (k === "bullets" && s.localized?.[l]?.bullets?.length)) {
+          if (hasValue(s.localized?.[l]?.[k])) {
             components.solutions.localized[l]++;
           }
         });
@@ -2529,7 +2672,7 @@
       faqKeys.forEach(k => {
         components.faqs.total++;
         list.forEach(l => {
-          if (f.localized?.[l]?.[k]?.trim()) {
+          if (hasValue(f.localized?.[l]?.[k])) {
             components.faqs.localized[l]++;
           }
         });
@@ -2542,7 +2685,7 @@
       clientKeys.forEach(k => {
         components.clients.total++;
         list.forEach(l => {
-          if (c.localized?.[l]?.[k]?.trim()) {
+          if (hasValue(c.localized?.[l]?.[k])) {
             components.clients.localized[l]++;
           }
         });
@@ -2554,7 +2697,7 @@
     uiKeys.forEach(k => {
       components.ui.total++;
       list.forEach(l => {
-        if (uiTranslations[l]?.[k]?.trim()) {
+        if (hasValue(uiTranslations[l]?.[k])) {
           components.ui.localized[l]++;
         }
       });
@@ -2810,6 +2953,17 @@
       chips: ["LoRaWAN"],
       featured: false,
       detailUrl: "",
+      type: "",
+      batteryLife: "",
+      communicationRange: "",
+      applications: [],
+      specGroups: [
+        {
+          title: "Connectivity",
+          rows: [{ label: "Protocol", value: "LoRaWAN 868/915 MHz" }],
+          lists: [{ title: "Features", items: ["Over-the-air configuration"] }]
+        }
+      ],
       aiShortAnswer: "",
       author: "WillowSoft İçerik Ekibi",
       reviewedBy: "",
@@ -2931,6 +3085,38 @@
     const target = event.target;
     if (!state.content) return;
 
+    if (target.matches && (
+      target.matches("[data-spec-group-title]") ||
+      target.matches("[data-spec-row-label]") ||
+      target.matches("[data-spec-row-value]") ||
+      target.matches("[data-spec-list-title]") ||
+      target.matches("[data-spec-list-items]")
+    )) {
+      const product = state.content.products?.[Number(target.dataset.productIndex)];
+      if (!product) return;
+      ensureProductModel(product);
+      const group = product.specGroups[Number(target.dataset.groupIndex)];
+      if (!group) return;
+      if (target.matches("[data-spec-group-title]")) {
+        group.title = target.value;
+      } else if (target.matches("[data-spec-row-label]") || target.matches("[data-spec-row-value]")) {
+        if (!Array.isArray(group.rows)) group.rows = [];
+        const rowIndex = Number(target.dataset.rowIndex);
+        if (!group.rows[rowIndex]) group.rows[rowIndex] = { label: "", value: "" };
+        group.rows[rowIndex][target.matches("[data-spec-row-label]") ? "label" : "value"] = target.value;
+      } else if (target.matches("[data-spec-list-title]") || target.matches("[data-spec-list-items]")) {
+        if (!Array.isArray(group.lists)) group.lists = [];
+        const listIndex = Number(target.dataset.listIndex);
+        if (!group.lists[listIndex]) group.lists[listIndex] = { title: "", items: [] };
+        if (target.matches("[data-spec-list-title]")) {
+          group.lists[listIndex].title = target.value;
+        } else {
+          group.lists[listIndex].items = splitLines(target.value);
+        }
+      }
+      return;
+    }
+
     // 0a. Rich-text editors (contenteditable) — self-routing via data attrs
     if (target.matches && target.matches("[data-rte]")) {
       const coll = target.dataset.rteCollection;
@@ -2971,6 +3157,8 @@
         let value = target.value;
         if (field === "chips") {
           value = value.split(",").map((chip) => chip.trim()).filter(Boolean);
+        } else if (field === "applications") {
+          value = splitLines(value);
         }
         state.content.products[index][field] = value;
         
@@ -3292,9 +3480,9 @@
     qsa("[data-admin-tab]").forEach((button) => {
       button.addEventListener("click", () => activateTab(button.dataset.adminTab));
     });
-    qs("[data-save-content]").addEventListener("click", saveContent);
-    qs("[data-admin-logout]").addEventListener("click", logout);
-    qs("[data-admin-login-form]").addEventListener("submit", login);
+    qs("[data-save-content]")?.addEventListener("click", saveContent);
+    qs("[data-admin-logout]")?.addEventListener("click", logout);
+    qs("[data-admin-login-form]")?.addEventListener("submit", login);
     const addProductBtn = qs("[data-add-product]");
     if (addProductBtn) addProductBtn.addEventListener("click", addProduct);
     const addNewsBtn = qs("[data-add-news]");
@@ -3307,8 +3495,8 @@
     const addFaqBtn = qs("[data-add-faq]");
     if (addFaqBtn) addFaqBtn.addEventListener("click", addFaq);
     
-    qs("[data-refresh-leads]").addEventListener("click", loadLeads);
-    qs("[data-refresh-analytics]").addEventListener("click", loadAnalytics);
+    qsa("[data-refresh-leads]").forEach((button) => button.addEventListener("click", loadLeads));
+    qsa("[data-refresh-analytics]").forEach((button) => button.addEventListener("click", loadAnalytics));
 
     document.addEventListener("input", handleInput);
     document.addEventListener("change", handleInput);
@@ -3564,7 +3752,7 @@
       }
 
       // --- AI FAQ Add ---
-      const addFaqBtn = event.target.closest(".admin-faq-add-btn");
+      const addFaqBtn = event.target.closest(".admin-faq-add-btn:not(.admin-product-faq-add-btn)");
       if (addFaqBtn) {
         event.preventDefault();
         event.stopPropagation();
@@ -3586,7 +3774,7 @@
       }
 
       // --- AI FAQ Delete ---
-      const deleteFaqBtn = event.target.closest(".admin-faq-delete-btn");
+      const deleteFaqBtn = event.target.closest(".admin-faq-delete-btn:not(.admin-product-faq-delete-btn)");
       if (deleteFaqBtn) {
         event.preventDefault();
         event.stopPropagation();
@@ -3599,6 +3787,8 @@
           markDirty();
           renderFAQListForPage(pageKey, locale);
           refreshPageSEOReviews(pageKey, locale);
+        }
+        return;
       }
 
       // --- Product AI FAQ Tab switch ---
@@ -3695,7 +3885,51 @@
         downloadAnchorNode.remove();
         return;
       }
+
+      const specAddGroup = event.target.closest("[data-spec-add-group]");
+      const specRemoveGroup = event.target.closest("[data-spec-remove-group]");
+      const specAddRow = event.target.closest("[data-spec-add-row]");
+      const specRemoveRow = event.target.closest("[data-spec-remove-row]");
+      const specAddList = event.target.closest("[data-spec-add-list]");
+      const specRemoveList = event.target.closest("[data-spec-remove-list]");
+      if (specAddGroup || specRemoveGroup || specAddRow || specRemoveRow || specAddList || specRemoveList) {
+        event.preventDefault();
+        const btn = specAddGroup || specRemoveGroup || specAddRow || specRemoveRow || specAddList || specRemoveList;
+        const product = state.content.products?.[Number(btn.dataset.productIndex || btn.dataset.specAddGroup)];
+        if (!product) return;
+        ensureProductModel(product);
+        if (specAddGroup) {
+          product.specGroups.push({ title: "New Technical Group", rows: [{ label: "", value: "" }], lists: [] });
+        } else if (specRemoveGroup) {
+          product.specGroups.splice(Number(specRemoveGroup.dataset.specRemoveGroup), 1);
+        } else {
+          const group = product.specGroups[Number(btn.dataset.groupIndex || btn.dataset.specAddRow || btn.dataset.specAddList)];
+          if (!group) return;
+          if (specAddRow) {
+            if (!Array.isArray(group.rows)) group.rows = [];
+            group.rows.push({ label: "", value: "" });
+          } else if (specRemoveRow) {
+            if (Array.isArray(group.rows)) group.rows.splice(Number(specRemoveRow.dataset.specRemoveRow), 1);
+          } else if (specAddList) {
+            if (!Array.isArray(group.lists)) group.lists = [];
+            group.lists.push({ title: "New List", items: [""] });
+          } else if (specRemoveList) {
+            if (Array.isArray(group.lists)) group.lists.splice(Number(specRemoveList.dataset.specRemoveList), 1);
+          }
+        }
+        renderProducts();
+        markDirty();
+        return;
+      }
+
       // --- Product grid card click → open editor ---
+      const editProductBtn = event.target.closest("[data-edit-product]");
+      if (editProductBtn) {
+        event.preventDefault();
+        openProductEdit(Number(editProductBtn.dataset.editProduct));
+        return;
+      }
+
       const gridCard = event.target.closest("[data-product-grid-card]");
       if (gridCard && !event.target.closest("button")) {
         openProductEdit(Number(gridCard.dataset.productGridCard));
@@ -3709,6 +3943,13 @@
       }
 
       // --- Page grid card click → open editor ---
+      const editPageBtn = event.target.closest("[data-edit-page]");
+      if (editPageBtn) {
+        event.preventDefault();
+        openPageEdit(editPageBtn.dataset.editPage);
+        return;
+      }
+
       const pageGridCard = event.target.closest("[data-page-grid-card]");
       if (pageGridCard && !event.target.closest("button")) {
         openPageEdit(pageGridCard.dataset.pageGridCard);
@@ -3901,7 +4142,19 @@
   }
 
   async function loadAdminData() {
-    state.content = await window.WillowCMS.fetchContent();
+    setLoadNotice("İçerik verileri yükleniyor...");
+    try {
+      state.content = await window.WillowCMS.fetchContent();
+    } catch (error) {
+      state.content = null;
+      setLoadNotice(
+        "İçerik verileri yüklenemedi. Admin panelini doğrudan dosya olarak açmayın; terminalde npm run dev çalıştırıp http://localhost:4173/admin adresinden açın.",
+        "error"
+      );
+      console.error("Admin content load failed", error);
+      return;
+    }
+    setLoadNotice("");
     
     if (!state.editLocale) {
       const nonEn = locales().filter(l => l !== "en");

@@ -943,7 +943,9 @@ async function handleApi(req, res, pathname) {
 
   if (pathname === "/api/login" && req.method === "POST") {
     const body = await readBody(req);
-    if ((body.username || "admin") !== adminUser || body.password !== adminPassword) {
+    const username = String(body.username || "").trim();
+    const password = String(body.password || "");
+    if (username !== adminUser || password !== adminPassword) {
       return sendJson(res, 401, { ok: false, error: "Invalid admin credentials" });
     }
     const token = crypto.randomBytes(32).toString("hex");

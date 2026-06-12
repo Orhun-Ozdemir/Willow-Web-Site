@@ -13,14 +13,14 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="assets/styles.css" />
-    <link rel="stylesheet" href="assets/admin.css" />
+    <link rel="stylesheet" href="assets/admin.css?v=20260612-admin-edit" />
   </head>
   <body class="admin-body">
     <section class="admin-login" data-admin-login>
       <form class="admin-login-card" data-admin-login-form>
         <p class="eyebrow">WillowSoft Admin</p>
         <h1>Sign in to manage content.</h1>
-        <label>Username<input name="username" value="admin" autocomplete="username" /></label>
+        <label>Username<input name="username" autocomplete="username" required /></label>
         <label>Password<input name="password" type="password" autocomplete="current-password" required /></label>
         <p class="admin-login-error" data-admin-login-error></p>
         <button class="btn btn-primary" type="submit">Sign In</button>
@@ -130,6 +130,7 @@
         </header>
 
         <div class="admin-locale-bar" data-admin-locale-switcher></div>
+        <div class="admin-load-notice" data-admin-load-notice hidden></div>
 
         <section class="admin-panel active" data-panel="overview">
           <div class="admin-grid" data-admin-overview></div>
@@ -279,6 +280,6 @@
     </main>
 
     <script src="assets/cms.js"></script>
-    <script src="assets/admin.js"></script>
+    <script src="assets/admin.js?v=20260612-admin-edit"></script>
   </body>
 </html>

@@ -158,10 +158,87 @@ const techBlockLabels = {
   specifications: { en: "Specifications", tr: "Teknik Özellikler", de: "Spezifikationen", fr: "Spécifications", es: "Especificaciones", it: "Specifiche", ar: "المواصفات", ja: "仕様" },
 };
 const techBlocks = [
-  { label: pickText(techBlockLabels.technicalSummary), html: product.technicalSummary },
-  { label: pickText(techBlockLabels.useCases), html: product.useCases },
-  { label: pickText(techBlockLabels.specifications), html: product.specifications }
+  { label: pickText(techBlockLabels.technicalSummary), html: typeof product.technicalSummary === "string" ? product.technicalSummary : "" },
+  { label: pickText(techBlockLabels.useCases), html: typeof product.useCases === "string" ? product.useCases : "" },
+  { label: pickText(techBlockLabels.specifications), html: typeof product.specifications === "string" ? product.specifications : "" }
 ].filter((block) => block.html && String(block.html).trim());
+
+const dynamicLabels = {
+  productModel: { en: "Product Model", tr: "Ürün Modeli", de: "Produktmodell", fr: "Modèle produit", es: "Modelo de producto", it: "Modello prodotto", ar: "نموذج المنتج", ja: "製品モデル" },
+  productType: { en: "Product Type", tr: "Ürün Tipi", de: "Produkttyp", fr: "Type de produit", es: "Tipo de producto", it: "Tipo di prodotto", ar: "نوع المنتج", ja: "製品タイプ" },
+  batteryLife: { en: "Battery Life", tr: "Batarya Ömrü", de: "Batterielaufzeit", fr: "Autonomie", es: "Duración de batería", it: "Durata batteria", ar: "عمر البطارية", ja: "バッテリー寿命" },
+  communicationRange: { en: "Communication Range", tr: "İletişim Menzili", de: "Kommunikationsreichweite", fr: "Portée de communication", es: "Alcance de comunicación", it: "Portata comunicazione", ar: "مدى الاتصال", ja: "通信範囲" },
+  applications: { en: "Applications", tr: "Uygulama Alanları", de: "Anwendungen", fr: "Applications", es: "Aplicaciones", it: "Applicazioni", ar: "التطبيقات", ja: "用途" },
+  whereUsed: { en: "Where this product is used.", tr: "Bu ürünün kullanıldığı alanlar.", de: "Wo dieses Produkt eingesetzt wird.", fr: "Où ce produit est utilisé.", es: "Dónde se utiliza este producto.", it: "Dove viene usato questo prodotto.", ar: "أين يُستخدم هذا المنتج.", ja: "この製品が使われる場所" },
+  technicalGroup: { en: "Technical Group", tr: "Teknik Grup", de: "Technische Gruppe", fr: "Groupe technique", es: "Grupo técnico", it: "Gruppo tecnico", ar: "مجموعة تقنية", ja: "技術グループ" },
+  specifications: { en: "Specifications", tr: "Teknik Özellikler", de: "Spezifikationen", fr: "Spécifications", es: "Especificaciones", it: "Specifiche", ar: "المواصفات", ja: "仕様" },
+};
+const dynamicLabel = (key: keyof typeof dynamicLabels) => pickText(dynamicLabels[key]);
+const labelizeKey = (key: string) => String(key || "")
+  .replace(/[_-]+/g, " ")
+  .replace(/\b\w/g, (char) => char.toUpperCase());
+const stringifySpecValue = (value: any) => {
+  if (value == null) return "";
+  if (typeof value === "object") return JSON.stringify(value);
+  return String(value);
+};
+const normalizeSpecGroups = (item: any) => {
+  const groups = Array.isArray(item.specGroups) ? item.specGroups : [];
+  const normalized = groups.map((group: any) => ({
+    title: group.title || "Technical Details",
+    rows: Array.isArray(group.rows) ? group.rows.filter((row: any) => row?.label || row?.value) : [],
+    lists: Array.isArray(group.lists) ? group.lists.map((list: any) => ({
+      title: list.title || "Highlights",
+      items: Array.isArray(list.items) ? list.items.filter(Boolean) : []
+    })).filter((list: any) => list.items.length) : []
+  })).filter((group: any) => group.rows.length || group.lists.length);
+  if (normalized.length) return normalized;
+
+  if (!item.specifications || typeof item.specifications !== "object" || Array.isArray(item.specifications)) {
+    return [];
+  }
+
+  const rootRows: any[] = [];
+  const rootLists: any[] = [];
+  const objectGroups: any[] = [];
+
+  Object.entries(item.specifications).forEach(([key, value]: [string, any]) => {
+    if (value == null || value === "") return;
+    if (Array.isArray(value)) {
+      const items = value.map(stringifySpecValue).filter(Boolean);
+      if (items.length) rootLists.push({ title: labelizeKey(key), items });
+      return;
+    }
+    if (typeof value === "object") {
+      const rows: any[] = [];
+      const lists: any[] = [];
+      Object.entries(value).forEach(([nestedKey, nestedValue]: [string, any]) => {
+        if (nestedValue == null || nestedValue === "") return;
+        if (Array.isArray(nestedValue)) {
+          const items = nestedValue.map(stringifySpecValue).filter(Boolean);
+          if (items.length) lists.push({ title: labelizeKey(nestedKey), items });
+        } else {
+          rows.push({ label: labelizeKey(nestedKey), value: stringifySpecValue(nestedValue) });
+        }
+      });
+      if (rows.length || lists.length) objectGroups.push({ title: labelizeKey(key), rows, lists });
+      return;
+    }
+    rootRows.push({ label: labelizeKey(key), value: String(value) });
+  });
+
+  return [
+    ...(rootRows.length || rootLists.length ? [{ title: dynamicLabel("specifications") || "Specifications", rows: rootRows, lists: rootLists }] : []),
+    ...objectGroups
+  ];
+};
+const dynamicFacts = [
+  { label: dynamicLabel("productType"), value: product.type },
+  { label: dynamicLabel("batteryLife"), value: product.batteryLife || product.battery_life },
+  { label: dynamicLabel("communicationRange"), value: product.communicationRange || product.communication_range }
+].filter((fact) => fact.value);
+const productApplications = Array.isArray(product.applications) ? product.applications.filter(Boolean) : [];
+const dynamicSpecGroups = normalizeSpecGroups(product);
 
 const productAiIntro = pickText({
   en: `${product.title} is a WillowSoft ${product.category || "IoT"} product for connected field telemetry.`,
@@ -423,13 +500,63 @@ const getT = (key: keyof typeof t) => {
     )}
 
     <!-- Tech sections -->
-    {techBlocks.length > 0 && (
+    {(techBlocks.length > 0 || dynamicFacts.length > 0 || productApplications.length > 0 || dynamicSpecGroups.length > 0) && (
       <section class="section soft product-tech-section">
         <div class="section-inner">
           {techBlocks.map((block) => (
             <article class="product-tech-block" style={{ marginBottom: "40px" }}>
               <h2 class="page-title">{block.label}</h2>
               <div class="rich-content" set:html={block.html} />
+            </article>
+          ))}
+          {dynamicFacts.length > 0 && (
+            <article class="product-dynamic-card product-dynamic-card-highlight">
+              <p class="eyebrow">{dynamicLabel("productModel")}</p>
+              <div class="product-dynamic-facts">
+                {dynamicFacts.map((fact) => (
+                  <div>
+                    <span>{fact.label}</span>
+                    <strong>{fact.value}</strong>
+                  </div>
+                ))}
+              </div>
+            </article>
+          )}
+          {productApplications.length > 0 && (
+            <article class="product-dynamic-card">
+              <p class="eyebrow">{dynamicLabel("applications")}</p>
+              <h2 class="page-title">{dynamicLabel("whereUsed")}</h2>
+              <ul class="product-dynamic-list">
+                {productApplications.map((item: string) => (
+                  <li>{item}</li>
+                ))}
+              </ul>
+            </article>
+          )}
+          {dynamicSpecGroups.map((group: any) => (
+            <article class="product-dynamic-card">
+              <p class="eyebrow">{dynamicLabel("technicalGroup")}</p>
+              <h2 class="page-title">{group.title}</h2>
+              {group.rows.length > 0 && (
+                <dl class="product-dynamic-specs">
+                  {group.rows.map((row: any) => (
+                    <div>
+                      <dt>{row.label || "Field"}</dt>
+                      <dd>{row.value || ""}</dd>
+                    </div>
+                  ))}
+                </dl>
+              )}
+              {group.lists.map((list: any) => (
+                <div class="product-dynamic-sublist">
+                  <h3>{list.title}</h3>
+                  <ul>
+                    {list.items.map((item: string) => (
+                      <li>{item}</li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
             </article>
           ))}
         </div>

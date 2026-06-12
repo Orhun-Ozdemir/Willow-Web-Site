@@ -220,6 +220,120 @@
     return decision;
   }
 
+  function labelizeKey(key) {
+    return String(key || "")
+      .replace(/[_-]+/g, " ")
+      .replace(/\b\w/g, (char) => char.toUpperCase());
+  }
+
+  function normalizeSpecGroups(product) {
+    const groups = Array.isArray(product.specGroups) ? product.specGroups : [];
+    const normalized = groups.map((group) => ({
+      title: group.title || "Technical Details",
+      rows: Array.isArray(group.rows) ? group.rows.filter((row) => row?.label || row?.value) : [],
+      lists: Array.isArray(group.lists) ? group.lists.map((list) => ({
+        title: list.title || "Highlights",
+        items: Array.isArray(list.items) ? list.items.filter(Boolean) : []
+      })).filter((list) => list.items.length) : []
+    })).filter((group) => group.rows.length || group.lists.length);
+    if (normalized.length) return normalized;
+
+    if (!product.specifications || typeof product.specifications !== "object" || Array.isArray(product.specifications)) {
+      return [];
+    }
+
+    const rootRows = [];
+    const rootLists = [];
+    const objectGroups = [];
+
+    Object.entries(product.specifications).forEach(([key, value]) => {
+      if (value == null || value === "") return;
+      if (Array.isArray(value)) {
+        const items = value.map((item) => typeof item === "object" ? JSON.stringify(item) : String(item)).filter(Boolean);
+        if (items.length) rootLists.push({ title: labelizeKey(key), items });
+        return;
+      }
+      if (typeof value === "object") {
+        const rows = [];
+        const lists = [];
+        Object.entries(value).forEach(([nestedKey, nestedValue]) => {
+          if (nestedValue == null || nestedValue === "") return;
+          if (Array.isArray(nestedValue)) {
+            const items = nestedValue.map((item) => typeof item === "object" ? JSON.stringify(item) : String(item)).filter(Boolean);
+            if (items.length) lists.push({ title: labelizeKey(nestedKey), items });
+          } else if (typeof nestedValue === "object") {
+            rows.push({ label: labelizeKey(nestedKey), value: JSON.stringify(nestedValue) });
+          } else {
+            rows.push({ label: labelizeKey(nestedKey), value: String(nestedValue) });
+          }
+        });
+        if (rows.length || lists.length) objectGroups.push({ title: labelizeKey(key), rows, lists });
+        return;
+      }
+      rootRows.push({ label: labelizeKey(key), value: String(value) });
+    });
+
+    return [
+      ...(rootRows.length || rootLists.length ? [{ title: "Specifications", rows: rootRows, lists: rootLists }] : []),
+      ...objectGroups
+    ];
+  }
+
+  function productDynamicBlocks(product) {
+    const blocks = [];
+    const facts = [
+      ["Product Type", product.type],
+      ["Battery Life", product.batteryLife || product.battery_life],
+      ["Communication Range", product.communicationRange || product.communication_range]
+    ].filter(([, value]) => value);
+
+    if (facts.length) {
+      blocks.push(`
+        <article class="product-dynamic-card product-dynamic-card-highlight">
+          <p class="eyebrow">Product Model</p>
+          <div class="product-dynamic-facts">
+            ${facts.map(([label, value]) => `<div><span>${esc(label)}</span><strong>${esc(value)}</strong></div>`).join("")}
+          </div>
+        </article>
+      `);
+    }
+
+    const applications = Array.isArray(product.applications) ? product.applications.filter(Boolean) : [];
+    if (applications.length) {
+      blocks.push(`
+        <article class="product-dynamic-card">
+          <p class="eyebrow">Applications</p>
+          <h2 class="page-title">Where this product is used.</h2>
+          <ul class="product-dynamic-list">
+            ${applications.map((item) => `<li>${esc(item)}</li>`).join("")}
+          </ul>
+        </article>
+      `);
+    }
+
+    normalizeSpecGroups(product).forEach((group) => {
+      blocks.push(`
+        <article class="product-dynamic-card">
+          <p class="eyebrow">Technical Group</p>
+          <h2 class="page-title">${esc(group.title)}</h2>
+          ${group.rows.length ? `
+            <dl class="product-dynamic-specs">
+              ${group.rows.map((row) => `<div><dt>${esc(row.label || "Field")}</dt><dd>${esc(row.value || "")}</dd></div>`).join("")}
+            </dl>
+          ` : ""}
+          ${group.lists.map((list) => `
+            <div class="product-dynamic-sublist">
+              <h3>${esc(list.title)}</h3>
+              <ul>${list.items.map((item) => `<li>${esc(item)}</li>`).join("")}</ul>
+            </div>
+          `).join("")}
+        </article>
+      `);
+    });
+
+    return blocks;
+  }
+
   function renderProduct(product) {
     product = window.WillowCMS.localizeItem(product);
     document.title = `${product.title} | WillowSoft`;
@@ -300,12 +414,13 @@
         ["Use Cases", product.useCases],
         ["Specifications", product.specifications]
       ].filter(([, html]) => html && String(html).trim());
-      if (blocks.length) {
+      const dynamicBlocks = productDynamicBlocks(product);
+      if (blocks.length || dynamicBlocks.length) {
         techRoot.innerHTML = blocks.map(([label, html]) => `
           <article class="product-tech-block">
             <h2 class="page-title">${esc(label)}</h2>
             <div class="rich-content">${html}</div>
-          </article>`).join("");
+          </article>`).join("") + dynamicBlocks.join("");
         if (techSection) techSection.hidden = false;
       } else if (techSection) {
         techSection.hidden = true;

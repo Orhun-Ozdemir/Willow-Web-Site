@@ -7675,6 +7675,84 @@ body[data-page="home"] .ownership-section .eyebrow::before {
 
 .product-tech-section .section-inner { display: grid; gap: 40px; }
 .product-tech-block .page-title { margin: 0 0 14px; }
+.product-dynamic-card {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.72);
+  box-shadow: 0 18px 50px rgba(6, 24, 44, 0.06);
+  padding: clamp(22px, 4vw, 34px);
+}
+.product-dynamic-card .page-title {
+  margin: 0 0 18px;
+}
+.product-dynamic-card-highlight {
+  background:
+    radial-gradient(circle at top right, rgba(26, 163, 196, 0.14), transparent 34%),
+    linear-gradient(135deg, rgba(19, 33, 117, 0.06), rgba(255, 255, 255, 0.88));
+}
+.product-dynamic-facts {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+.product-dynamic-facts div,
+.product-dynamic-specs div {
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.8);
+  padding: 14px;
+}
+.product-dynamic-facts span,
+.product-dynamic-specs dt {
+  display: block;
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.product-dynamic-facts strong,
+.product-dynamic-specs dd {
+  display: block;
+  margin: 6px 0 0;
+  color: var(--ink);
+  font-weight: 850;
+}
+.product-dynamic-specs {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin: 0;
+}
+.product-dynamic-specs dd {
+  margin-left: 0;
+}
+.product-dynamic-list,
+.product-dynamic-sublist ul {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.product-dynamic-list li,
+.product-dynamic-sublist li {
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.78);
+  color: var(--ink);
+  padding: 10px 14px;
+  font-weight: 750;
+}
+.product-dynamic-sublist {
+  margin-top: 20px;
+}
+.product-dynamic-sublist h3 {
+  margin: 0 0 12px;
+  font-family: var(--font-display, sans-serif);
+  color: var(--ink);
+}
 .rich-content { color: var(--muted); line-height: 1.7; font-size: 1.02rem; max-width: 760px; }
 .rich-content h3 {
   margin: 1.4em 0 0.5em;
@@ -7693,6 +7771,12 @@ body[data-page="home"] .ownership-section .eyebrow::before {
 
 @media (max-width: 720px) {
   .product-gallery-main { aspect-ratio: 4 / 3; }
+  .product-dynamic-facts,
+  .product-dynamic-specs,
+  .product-dynamic-list,
+  .product-dynamic-sublist ul {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* ============================================================
