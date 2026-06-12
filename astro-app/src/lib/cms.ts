@@ -40,3 +40,17 @@ export function localizeItem(item: any, locale: Locale): any {
   });
   return next;
 }
+
+export function resolveAsset(path: string | undefined): string {
+  if (!path) return '';
+  
+  if (path.startsWith('http')) return path;
+
+  const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL || '';
+  
+  // Clean up leading slashes
+  const cleanPath = path.startsWith('/') ? path.substring(1) : path;
+  
+  // Return absolute URL pointing to our 'assets' bucket
+  return `${supabaseUrl}/storage/v1/object/public/assets/${cleanPath}`;
+}
