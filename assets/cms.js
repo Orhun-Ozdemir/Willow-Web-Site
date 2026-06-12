@@ -417,82 +417,92 @@
     const seoData = content.pageSeo?.[pageKey]?.[locale];
     if (!seoData) return;
 
+    const isAdminPreview = window.self !== window.top || location.pathname.includes("admin.html") || location.search.includes("preview=true");
+
     // 1. Render AI Overview Box
-    if (seoData.aiShortAnswer) {
-      const existing = document.querySelector(".ai-overview-container");
+    const existing = document.querySelector(".ai-overview-container");
+    if (existing && existing.dataset.serverRendered === "true" && !isAdminPreview) {
+      // Keep server-rendered version
+    } else {
       if (existing) existing.remove();
 
-      const aiContainer = document.createElement("div");
-      aiContainer.className = "ai-overview-container";
+      if (seoData.aiShortAnswer) {
+        const aiContainer = document.createElement("div");
+        aiContainer.className = "ai-overview-container";
 
-      let eeatHtml = "";
-      if (seoData.author || seoData.reviewedBy || seoData.expertiseNote || seoData.lastUpdated) {
-        eeatHtml = `
-          <div class="ai-overview-eeat">
-            ${seoData.author ? `<div class="ai-overview-eeat-item"><span class="ai-overview-eeat-icon">✍️</span><span class="ai-overview-eeat-label">Yazar:</span><span class="ai-overview-eeat-val">${escapeHtml(seoData.author)}</span></div>` : ""}
-            ${seoData.reviewedBy ? `<div class="ai-overview-eeat-item"><span class="ai-overview-eeat-icon">🛡️</span><span class="ai-overview-eeat-label">İnceleyen:</span><span class="ai-overview-eeat-val">${escapeHtml(seoData.reviewedBy)}</span></div>` : ""}
-            ${seoData.expertiseNote ? `<div class="ai-overview-eeat-item"><span class="ai-overview-eeat-icon">💡</span><span class="ai-overview-eeat-label">Uzmanlık:</span><span class="ai-overview-eeat-val">${escapeHtml(seoData.expertiseNote)}</span></div>` : ""}
-            ${seoData.lastUpdated ? `<div class="ai-overview-eeat-item"><span class="ai-overview-eeat-icon">📅</span><span class="ai-overview-eeat-label">Güncelleme:</span><span class="ai-overview-eeat-val">${escapeHtml(seoData.lastUpdated)}</span></div>` : ""}
+        let eeatHtml = "";
+        if (seoData.author || seoData.reviewedBy || seoData.expertiseNote || seoData.lastUpdated) {
+          eeatHtml = `
+            <div class="ai-overview-eeat">
+              ${seoData.author ? `<div class="ai-overview-eeat-item"><span class="ai-overview-eeat-icon">✍️</span><span class="ai-overview-eeat-label">Yazar:</span><span class="ai-overview-eeat-val">${escapeHtml(seoData.author)}</span></div>` : ""}
+              ${seoData.reviewedBy ? `<div class="ai-overview-eeat-item"><span class="ai-overview-eeat-icon">🛡️</span><span class="ai-overview-eeat-label">İnceleyen:</span><span class="ai-overview-eeat-val">${escapeHtml(seoData.reviewedBy)}</span></div>` : ""}
+              ${seoData.expertiseNote ? `<div class="ai-overview-eeat-item"><span class="ai-overview-eeat-icon">💡</span><span class="ai-overview-eeat-label">Uzmanlık:</span><span class="ai-overview-eeat-val">${escapeHtml(seoData.expertiseNote)}</span></div>` : ""}
+              ${seoData.lastUpdated ? `<div class="ai-overview-eeat-item"><span class="ai-overview-eeat-icon">📅</span><span class="ai-overview-eeat-label">Güncelleme:</span><span class="ai-overview-eeat-val">${escapeHtml(seoData.lastUpdated)}</span></div>` : ""}
+            </div>
+          `;
+        }
+
+        aiContainer.innerHTML = `
+          <div class="ai-overview-header">
+            <svg class="ai-overview-icon" viewBox="0 0 24 24">
+              <path d="M12 2L14.8 8.6L22 9.2L16.5 14L18.2 21L12 17.2L5.8 21L7.5 14L2 9.2L9.2 8.6L12 2Z" />
+            </svg>
+            <span class="ai-overview-title">Google AI Overview (SGE) Özeti</span>
+            <span class="ai-overview-badge">AI Doğrulanmış</span>
           </div>
+          <p class="ai-overview-text">${escapeHtml(seoData.aiShortAnswer)}</p>
+          ${eeatHtml}
         `;
-      }
 
-      aiContainer.innerHTML = `
-        <div class="ai-overview-header">
-          <svg class="ai-overview-icon" viewBox="0 0 24 24">
-            <path d="M12 2L14.8 8.6L22 9.2L16.5 14L18.2 21L12 17.2L5.8 21L7.5 14L2 9.2L9.2 8.6L12 2Z" />
-          </svg>
-          <span class="ai-overview-title">Google AI Overview (SGE) Özeti</span>
-          <span class="ai-overview-badge">AI Doğrulanmış</span>
-        </div>
-        <p class="ai-overview-text">${escapeHtml(seoData.aiShortAnswer)}</p>
-        ${eeatHtml}
-      `;
-
-      const hero = document.querySelector(".motion-hero, .hero");
-      if (hero) {
-        hero.parentNode.insertBefore(aiContainer, hero.nextSibling);
-      } else {
-        const main = document.querySelector("main") || document.body;
-        main.insertBefore(aiContainer, main.firstChild);
+        const hero = document.querySelector(".motion-hero, .hero");
+        if (hero) {
+          hero.parentNode.insertBefore(aiContainer, hero.nextSibling);
+        } else {
+          const main = document.querySelector("main") || document.body;
+          main.insertBefore(aiContainer, main.firstChild);
+        }
       }
     }
 
     // 2. Render Page-Specific AI FAQs Accordion
-    if (Array.isArray(seoData.aiFAQ) && seoData.aiFAQ.length > 0) {
-      const existingFaq = document.querySelector(".dynamic-faq-section");
+    const existingFaq = document.querySelector(".dynamic-faq-section");
+    if (existingFaq && existingFaq.dataset.serverRendered === "true" && !isAdminPreview) {
+      // Keep server-rendered version
+    } else {
       if (existingFaq) existingFaq.remove();
 
-      const faqSection = document.createElement("section");
-      faqSection.className = "dynamic-faq-section services-faq-section";
+      if (Array.isArray(seoData.aiFAQ) && seoData.aiFAQ.length > 0) {
+        const faqSection = document.createElement("section");
+        faqSection.className = "dynamic-faq-section services-faq-section";
 
-      const faqItemsHtml = seoData.aiFAQ.map((qa) => `
-        <details class="faq-item">
-          <summary>
-            <span class="faq-q">${escapeHtml(qa.question)}</span>
-            <span class="faq-toggle" aria-hidden="true"></span>
-          </summary>
-          <p>${escapeHtml(qa.answer).replace(/\r?\n/g, "<br>")}</p>
-        </details>
-      `).join("");
+        const faqItemsHtml = seoData.aiFAQ.map((qa) => `
+          <details class="faq-item">
+            <summary>
+              <span class="faq-q">${escapeHtml(qa.question)}</span>
+              <span class="faq-toggle" aria-hidden="true"></span>
+            </summary>
+            <p>${escapeHtml(qa.answer).replace(/\r?\n/g, "<br>")}</p>
+          </details>
+        `).join("");
 
-      faqSection.innerHTML = `
-        <div class="dynamic-faq-inner">
-          <div class="section-head">
-            <span class="eyebrow">Sıkça Sorulan Sorular</span>
-            <h2>Yapay Zeka &amp; Detaylar</h2>
+        faqSection.innerHTML = `
+          <div class="dynamic-faq-inner">
+            <div class="section-head">
+              <span class="eyebrow">Sıkça Sorulan Sorular</span>
+              <h2>Yapay Zeka &amp; Detaylar</h2>
+            </div>
+            <div class="faq-list">
+              ${faqItemsHtml}
+            </div>
           </div>
-          <div class="faq-list">
-            ${faqItemsHtml}
-          </div>
-        </div>
-      `;
+        `;
 
-      const footer = document.querySelector("footer, .footer, .final-cta");
-      if (footer) {
-        footer.parentNode.insertBefore(faqSection, footer);
-      } else {
-        document.body.appendChild(faqSection);
+        const footer = document.querySelector("footer, .footer, .final-cta");
+        if (footer) {
+          footer.parentNode.insertBefore(faqSection, footer);
+        } else {
+          document.body.appendChild(faqSection);
+        }
       }
     }
   }

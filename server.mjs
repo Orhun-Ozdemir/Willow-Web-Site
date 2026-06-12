@@ -9,6 +9,7 @@ const root = path.dirname(fileURLToPath(import.meta.url));
 const dataFile = path.join(root, "data", "site-data.json");
 const leadsFile = path.join(root, "data", "leads.json");
 const eventsFile = path.join(root, "data", "events.json");
+const botEventsFile = path.join(root, "data", "bot-events.json");
 const port = Number(process.env.PORT || 4173);
 const siteUrl = (process.env.SITE_URL || "https://willowsoft.co").replace(/\/$/, "");
 const adminUser = process.env.ADMIN_USER || "admin";
@@ -59,6 +60,46 @@ async function readJson(file, fallback) {
 
 async function writeJson(file, value) {
   await writeFile(file, `${JSON.stringify(value, null, 2)}\n`, "utf8");
+}
+
+const aiBots = [
+  { name: "GPTBot (OpenAI Training)", pattern: /GPTBot/i },
+  { name: "OAI-SearchBot (OpenAI Search)", pattern: /OAI-SearchBot/i },
+  { name: "ChatGPT-User (OpenAI User)", pattern: /ChatGPT-User/i },
+  { name: "ClaudeBot (Anthropic Training)", pattern: /ClaudeBot/i },
+  { name: "Claude-Web (Anthropic User)", pattern: /Claude-Web|Claude-SearchBot/i },
+  { name: "Google-Extended (Google Gemini)", pattern: /Google-Extended/i },
+  { name: "Applebot-Extended (Apple Intelligence)", pattern: /Applebot-Extended/i },
+  { name: "PerplexityBot (Perplexity)", pattern: /PerplexityBot/i },
+  { name: "Meta-ExternalAgent (Meta Llama)", pattern: /Meta-ExternalAgent/i },
+  { name: "Bytespider (ByteDance)", pattern: /Bytespider/i },
+  { name: "CCBot (Common Crawl)", pattern: /CCBot/i },
+  { name: "cohere-ai (Cohere)", pattern: /cohere-ai/i },
+  { name: "Amazonbot (Amazon)", pattern: /Amazonbot/i }
+];
+
+async function logBotAccess(req, pathname) {
+  const userAgent = req.headers["user-agent"] || "";
+  if (!userAgent) return;
+
+  const matchedBot = aiBots.find(bot => bot.pattern.test(userAgent));
+  if (!matchedBot) return;
+
+  try {
+    const botEvents = await readJson(botEventsFile, []);
+    const newEvent = {
+      id: crypto.randomUUID(),
+      botName: matchedBot.name,
+      path: pathname,
+      userAgent: userAgent.slice(0, 250),
+      ipHint: getClientIp(req).replace(/(\d+\.\d+\.\d+)\.\d+$/, "$1.x"),
+      createdAt: new Date().toISOString()
+    };
+    botEvents.unshift(newEvent);
+    await writeJson(botEventsFile, botEvents.slice(0, 1000));
+  } catch (err) {
+    console.error("Failed to log bot access", err);
+  }
 }
 
 async function readBody(req) {
@@ -331,9 +372,10 @@ function escapeHtml(value) {
 function slugContext(pathname) {
   const parts = pathname.split("/").filter(Boolean);
   const first = parts[0];
+  const locale = locales.has(first) ? first : "en";
   const rest = locales.has(first) ? parts.slice(1) : parts;
-  if (rest[0] === "products" && rest[1]) return { type: "product", slug: rest[1] };
-  if (rest[0] === "news" && rest[1]) return { type: "news", slug: rest[1] };
+  if (rest[0] === "products" && rest[1]) return { type: "product", slug: rest[1], locale };
+  if (rest[0] === "news" && rest[1]) return { type: "news", slug: rest[1], locale };
   return null;
 }
 
@@ -384,6 +426,28 @@ async function enrichPageHtml(html, pageKey, locale) {
     "description": description,
     "url": canonical
   };
+
+  if (seoData.author) {
+    mainEntity.author = { "@type": "Person", "name": seoData.author };
+  }
+  if (seoData.reviewedBy) {
+    mainEntity.reviewedBy = { "@type": "Person", "name": seoData.reviewedBy };
+  }
+  if (seoData.lastUpdated) {
+    mainEntity.dateModified = seoData.lastUpdated;
+  }
+  if (seoData.expertiseNote || seoData.sources || seoData.companyCompetency) {
+    mainEntity.mentions = [];
+    if (seoData.expertiseNote) {
+      mainEntity.mentions.push({ "@type": "CreativeWork", "name": "Expertise Note", "text": seoData.expertiseNote });
+    }
+    if (seoData.sources) {
+      mainEntity.mentions.push({ "@type": "CreativeWork", "name": "Sources & References", "text": seoData.sources });
+    }
+    if (seoData.companyCompetency) {
+      mainEntity.mentions.push({ "@type": "CreativeWork", "name": "Company Competency", "text": seoData.companyCompetency });
+    }
+  }
 
   if (seoData.schemaType === "FAQPage" && Array.isArray(seoData.aiFAQ)) {
     mainEntity.mainEntity = seoData.aiFAQ.map(qa => ({
@@ -481,6 +545,77 @@ async function enrichPageHtml(html, pageKey, locale) {
   // Inject meta + schema before </head>
   html = html.replace("</head>", `    ${meta}\n  </head>`);
 
+  // Pre-render AI Overview Box
+  if (seoData.aiShortAnswer) {
+    let eeatHtml = "";
+    if (seoData.author || seoData.reviewedBy || seoData.expertiseNote || seoData.lastUpdated) {
+      eeatHtml = `
+        <div class="ai-overview-eeat">
+          ${seoData.author ? `<div class="ai-overview-eeat-item"><span class="ai-overview-eeat-icon">✍️</span><span class="ai-overview-eeat-label">Yazar:</span><span class="ai-overview-eeat-val">${escapeHtml(seoData.author)}</span></div>` : ""}
+          ${seoData.reviewedBy ? `<div class="ai-overview-eeat-item"><span class="ai-overview-eeat-icon">🛡️</span><span class="ai-overview-eeat-label">İnceleyen:</span><span class="ai-overview-eeat-val">${escapeHtml(seoData.reviewedBy)}</span></div>` : ""}
+          ${seoData.expertiseNote ? `<div class="ai-overview-eeat-item"><span class="ai-overview-eeat-icon">💡</span><span class="ai-overview-eeat-label">Uzmanlık:</span><span class="ai-overview-eeat-val">${escapeHtml(seoData.expertiseNote)}</span></div>` : ""}
+          ${seoData.lastUpdated ? `<div class="ai-overview-eeat-item"><span class="ai-overview-eeat-icon">📅</span><span class="ai-overview-eeat-label">Güncelleme:</span><span class="ai-overview-eeat-val">${escapeHtml(seoData.lastUpdated)}</span></div>` : ""}
+        </div>
+      `;
+    }
+
+    const aiOverviewHtml = `
+      <div class="ai-overview-container" data-server-rendered="true">
+        <div class="ai-overview-header">
+          <svg class="ai-overview-icon" viewBox="0 0 24 24">
+            <path d="M12 2L14.8 8.6L22 9.2L16.5 14L18.2 21L12 17.2L5.8 21L7.5 14L2 9.2L9.2 8.6L12 2Z" />
+          </svg>
+          <span class="ai-overview-title">Google AI Overview (SGE) Özeti</span>
+          <span class="ai-overview-badge">AI Doğrulanmış</span>
+        </div>
+        <p class="ai-overview-text">${escapeHtml(seoData.aiShortAnswer)}</p>
+        ${eeatHtml}
+      </div>
+    `;
+
+    const mainMatch = html.match(/<main[^>]*>/i);
+    if (mainMatch) {
+      const mainIndex = mainMatch.index;
+      const sectionEndIndex = html.indexOf("</section>", mainIndex);
+      if (sectionEndIndex !== -1) {
+        const insertPos = sectionEndIndex + "</section>".length;
+        html = html.slice(0, insertPos) + "\n    " + aiOverviewHtml + html.slice(insertPos);
+      }
+    }
+  }
+
+  // Pre-render Page-Specific AI FAQs Accordion
+  if (Array.isArray(seoData.aiFAQ) && seoData.aiFAQ.length > 0) {
+    const faqItemsHtml = seoData.aiFAQ.map((qa) => `
+      <details class="faq-item">
+        <summary>
+          <span class="faq-q">${escapeHtml(qa.question)}</span>
+          <span class="faq-toggle" aria-hidden="true"></span>
+        </summary>
+        <p>${escapeHtml(qa.answer).replace(/\r?\n/g, "<br>")}</p>
+      </details>
+    `).join("");
+
+    const faqSectionHtml = `
+      <section class="dynamic-faq-section services-faq-section" data-server-rendered="true">
+        <div class="dynamic-faq-inner">
+          <div class="section-head">
+            <span class="eyebrow">Sıkça Sorulan Sorular</span>
+            <h2>Yapay Zeka &amp; Detaylar</h2>
+          </div>
+          <div class="faq-list">
+            ${faqItemsHtml}
+          </div>
+        </div>
+      </section>
+    `;
+
+    const footerIndex = html.indexOf("<footer");
+    if (footerIndex !== -1) {
+      html = html.slice(0, footerIndex) + faqSectionHtml + "\n    " + html.slice(footerIndex);
+    }
+  }
+
   return html;
 }
 
@@ -492,25 +627,33 @@ async function enrichSlugHtml(html, ctx) {
   );
   if (!item) return html;
 
-  const baseTitle = item.title || "WillowSoft";
-  const description = item.shortDescription || item.excerpt || "";
+  const locale = ctx.locale || "en";
+  const localized = item.localized?.[locale] || {};
+  const localizedItem = { ...item };
+  Object.entries(localized).forEach(([key, value]) => {
+    if (value === "" || value === undefined || value === null) return;
+    localizedItem[key] = value;
+  });
+
+  const baseTitle = localizedItem.title || "WillowSoft";
+  const description = localizedItem.shortDescription || localizedItem.excerpt || "";
   const image = item.image
     ? `${siteUrl}/${String(item.image).replace(/^\/+/, "")}`
     : `${siteUrl}/assets/hero-industrial-iot.png`;
   const collectionPath = ctx.type === "product" ? "products" : "news";
-  const canonical = `${siteUrl}/en/${collectionPath}/${item.slug || item.id}`;
+  const canonical = `${siteUrl}/${locale}/${collectionPath}/${item.slug || item.id}`;
   const ogType = ctx.type === "product" ? "product" : "article";
 
   const orgRef = `${siteUrl}/#org`;
   const breadcrumb = {
     "@type": "BreadcrumbList",
     itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Home", item: `${siteUrl}/en` },
+      { "@type": "ListItem", position: 1, name: "Home", item: `${siteUrl}/${locale}` },
       {
         "@type": "ListItem",
         position: 2,
         name: ctx.type === "product" ? "Products" : "News",
-        item: `${siteUrl}/en/${collectionPath}`,
+        item: `${siteUrl}/${locale}/${collectionPath}`,
       },
       { "@type": "ListItem", position: 3, name: baseTitle },
     ],
@@ -535,6 +678,26 @@ async function enrichSlugHtml(html, ctx) {
         url: canonical,
       },
     };
+
+    // Inject Product E-E-A-T Schema
+    if (localizedItem.author) {
+      mainEntity.author = { "@type": "Person", "name": localizedItem.author };
+    }
+    if (localizedItem.reviewedBy) {
+      mainEntity.reviewedBy = { "@type": "Person", "name": localizedItem.reviewedBy };
+    }
+    if (localizedItem.lastUpdated) {
+      mainEntity.dateModified = localizedItem.lastUpdated;
+    }
+    if (localizedItem.expertiseNote || localizedItem.sources) {
+      mainEntity.mentions = [];
+      if (localizedItem.expertiseNote) {
+        mainEntity.mentions.push({ "@type": "CreativeWork", "name": "Expertise Note", "text": localizedItem.expertiseNote });
+      }
+      if (localizedItem.sources) {
+        mainEntity.mentions.push({ "@type": "CreativeWork", "name": "Sources & References", "text": localizedItem.sources });
+      }
+    }
   } else {
     mainEntity = {
       "@type": "NewsArticle",
@@ -565,6 +728,21 @@ async function enrichSlugHtml(html, ctx) {
     ],
   };
 
+  // Inject FAQPage Schema if FAQs exist
+  if (Array.isArray(localizedItem.aiFAQ) && localizedItem.aiFAQ.length > 0) {
+    ldGraph["@graph"].push({
+      "@type": "FAQPage",
+      "mainEntity": localizedItem.aiFAQ.map(qa => ({
+        "@type": "Question",
+        "name": qa.question,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": qa.answer
+        }
+      }))
+    });
+  }
+
   const ldScript = `<script type="application/ld+json" data-ssr="true">${JSON.stringify(
     ldGraph
   )}</script>`;
@@ -575,7 +753,7 @@ async function enrichSlugHtml(html, ctx) {
       (loc) =>
         `<link rel="alternate" hreflang="${loc}" href="${siteUrl}/${loc}/${collectionPath}/${item.slug || item.id}" />`
     ),
-    `<link rel="alternate" hreflang="x-default" href="${canonical}" />`,
+    `<link rel="alternate" hreflang="x-default" href="${siteUrl}/en/${collectionPath}/${item.slug || item.id}" />`,
     `<meta property="og:type" content="${ogType}" />`,
     `<meta property="og:url" content="${canonical}" />`,
     `<meta property="og:title" content="${escapeHtml(baseTitle + " | WillowSoft")}" />`,
@@ -607,6 +785,77 @@ async function enrichSlugHtml(html, ctx) {
   }
   // Inject meta + schema before </head>
   html = html.replace("</head>", `    ${meta}\n  </head>`);
+
+  // Pre-render AI Overview Box
+  if (localizedItem.aiShortAnswer) {
+    let eeatHtml = "";
+    if (localizedItem.author || localizedItem.reviewedBy || localizedItem.expertiseNote || localizedItem.lastUpdated) {
+      eeatHtml = `
+        <div class="ai-overview-eeat">
+          ${localizedItem.author ? `<div class="ai-overview-eeat-item"><span class="ai-overview-eeat-icon">✍️</span><span class="ai-overview-eeat-label">Yazar:</span><span class="ai-overview-eeat-val">${escapeHtml(localizedItem.author)}</span></div>` : ""}
+          ${localizedItem.reviewedBy ? `<div class="ai-overview-eeat-item"><span class="ai-overview-eeat-icon">🛡️</span><span class="ai-overview-eeat-label">İnceleyen:</span><span class="ai-overview-eeat-val">${escapeHtml(localizedItem.reviewedBy)}</span></div>` : ""}
+          ${localizedItem.expertiseNote ? `<div class="ai-overview-eeat-item"><span class="ai-overview-eeat-icon">💡</span><span class="ai-overview-eeat-label">Uzmanlık:</span><span class="ai-overview-eeat-val">${escapeHtml(localizedItem.expertiseNote)}</span></div>` : ""}
+          ${localizedItem.lastUpdated ? `<div class="ai-overview-eeat-item"><span class="ai-overview-eeat-icon">📅</span><span class="ai-overview-eeat-label">Güncelleme:</span><span class="ai-overview-eeat-val">${escapeHtml(localizedItem.lastUpdated)}</span></div>` : ""}
+        </div>
+      `;
+    }
+
+    const aiOverviewHtml = `
+      <div class="ai-overview-container" data-server-rendered="true">
+        <div class="ai-overview-header">
+          <svg class="ai-overview-icon" viewBox="0 0 24 24">
+            <path d="M12 2L14.8 8.6L22 9.2L16.5 14L18.2 21L12 17.2L5.8 21L7.5 14L2 9.2L9.2 8.6L12 2Z" />
+          </svg>
+          <span class="ai-overview-title">Google AI Overview (SGE) Özeti</span>
+          <span class="ai-overview-badge">AI Doğrulanmış</span>
+        </div>
+        <p class="ai-overview-text">${escapeHtml(localizedItem.aiShortAnswer)}</p>
+        ${eeatHtml}
+      </div>
+    `;
+
+    const mainMatch = html.match(/<main[^>]*>/i);
+    if (mainMatch) {
+      const mainIndex = mainMatch.index;
+      const sectionEndIndex = html.indexOf("</section>", mainIndex);
+      if (sectionEndIndex !== -1) {
+        const insertPos = sectionEndIndex + "</section>".length;
+        html = html.slice(0, insertPos) + "\n    " + aiOverviewHtml + html.slice(insertPos);
+      }
+    }
+  }
+
+  // Pre-render Page-Specific AI FAQs Accordion
+  if (Array.isArray(localizedItem.aiFAQ) && localizedItem.aiFAQ.length > 0) {
+    const faqItemsHtml = localizedItem.aiFAQ.map((qa) => `
+      <details class="faq-item">
+        <summary>
+          <span class="faq-q">${escapeHtml(qa.question)}</span>
+          <span class="faq-toggle" aria-hidden="true"></span>
+        </summary>
+        <p>${escapeHtml(qa.answer).replace(/\r?\n/g, "<br>")}</p>
+      </details>
+    `).join("");
+
+    const faqSectionHtml = `
+      <section class="dynamic-faq-section services-faq-section" data-server-rendered="true">
+        <div class="dynamic-faq-inner">
+          <div class="section-head">
+            <span class="eyebrow">Sıkça Sorulan Sorular</span>
+            <h2>Yapay Zeka &amp; Detaylar</h2>
+          </div>
+          <div class="faq-list">
+            ${faqItemsHtml}
+          </div>
+        </div>
+      </section>
+    `;
+
+    const footerIndex = html.indexOf("<footer");
+    if (footerIndex !== -1) {
+      html = html.slice(0, footerIndex) + faqSectionHtml + "\n    " + html.slice(footerIndex);
+    }
+  }
 
   return html;
 }
@@ -732,6 +981,12 @@ async function handleApi(req, res, pathname) {
     return sendJson(res, 200, { ok: true, events, summary: summarizeEvents(events) });
   }
 
+  if (pathname === "/api/bot-events" && req.method === "GET") {
+    if (!requireAdmin(req, res)) return;
+    const botEvents = await readJson(botEventsFile, []);
+    return sendJson(res, 200, botEvents);
+  }
+
   if (pathname === "/api/content" && req.method === "PUT") {
     if (!requireAdmin(req, res)) return;
     const body = await readBody(req);
@@ -797,6 +1052,7 @@ async function handleApi(req, res, pathname) {
 const server = createServer(async (req, res) => {
   try {
     const { pathname } = new URL(req.url, `http://${req.headers.host}`);
+    logBotAccess(req, pathname).catch(err => console.error("logBotAccess failed", err));
     if (pathname === "/sitemap.xml") return sendText(res, 200, await generateSitemap(), "application/xml; charset=utf-8");
     if (pathname === "/llms-full.txt") return sendText(res, 200, await generateLlmsFull());
     if (pathname.startsWith("/api/")) return await handleApi(req, res, pathname);

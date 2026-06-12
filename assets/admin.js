@@ -412,6 +412,59 @@
             ${richTextField({ collection: "products", index, field: "technicalSummary", value: product.technicalSummary, label: "Teknik Özet", helper: "Ürün detay sayfasında gösterilir. Başlık ve liste için araç çubuğunu kullanın." })}
             ${richTextField({ collection: "products", index, field: "useCases", value: product.useCases, label: "Kullanım Alanları" })}
             ${richTextField({ collection: "products", index, field: "specifications", value: product.specifications, label: "Teknik Özellikler" })}
+
+            <details class="admin-card admin-editor-card" style="margin-top: 24px; border: 1px solid var(--admin-border); background: var(--admin-bg-light);">
+              <summary class="admin-card-top" style="cursor: pointer; padding: 14px 20px; font-weight: 600; display: flex; justify-content: space-between; align-items: center;">
+                <span>🤖 Yapay Zeka (AI / SGE) &amp; E-E-A-T Ayarları</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+              </summary>
+              <div style="padding: 20px; display: flex; flex-direction: column; gap: 16px;">
+                <div class="admin-form-grid" style="grid-template-columns: 1fr 1fr; gap: 16px;">
+                  <label class="span-2">AI Overview Kısa Cevap (SGE)
+                    <span class="field-helper">Yapay zekanın bu ürün için doğrudan özetleyebileceği 1-2 cümlelik net açıklama.</span>
+                    <textarea data-field="aiShortAnswer" rows="3">${esc(product.aiShortAnswer || "")}</textarea>
+                  </label>
+                  <label>Yazar / Editör
+                    <span class="field-helper">İçeriği yazan yetkin kişi veya ekip.</span>
+                    <input data-field="author" value="${esc(product.author || "")}" />
+                  </label>
+                  <label>Kontrol Eden (Reviewer)
+                    <span class="field-helper">İçeriği doğrulayan teknik uzman.</span>
+                    <input data-field="reviewedBy" value="${esc(product.reviewedBy || "")}" />
+                  </label>
+                  <label class="span-2">Uzmanlık Notu
+                    <span class="field-helper">Ürünün arkasındaki mühendislik ve saha tecrübesi kanıtı.</span>
+                    <input data-field="expertiseNote" value="${esc(product.expertiseNote || "")}" />
+                  </label>
+                  <label class="span-2">Kaynaklar / Referanslar
+                    <span class="field-helper">Standartlar, kılavuzlar veya veri sayfaları.</span>
+                    <textarea data-field="sources" rows="2">${esc(product.sources || "")}</textarea>
+                  </label>
+                  <label>Son Güncelleme
+                    <span class="field-helper">Ürün teknik bilgilerinin en son güncellendiği tarih.</span>
+                    <input type="date" data-field="lastUpdated" value="${esc(product.lastUpdated || "")}" />
+                  </label>
+                </div>
+              </div>
+            </details>
+
+            <details class="admin-card admin-editor-card" style="margin-top: 24px; border: 1px solid var(--admin-border); background: var(--admin-bg-light);">
+              <summary class="admin-card-top" style="cursor: pointer; padding: 14px 20px; font-weight: 600; display: flex; justify-content: space-between; align-items: center;">
+                <span>❓ AI Soru-Cevap Blokları (AI FAQs)</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+              </summary>
+              <div style="padding: 20px;">
+                <div class="admin-trans-locale-tabs" style="margin-bottom: 16px; border-bottom: 1px solid var(--admin-border); padding-bottom: 8px;">
+                  ${["en", "tr", "de", "fr", "it", "es", "ar", "ja"].map((loc) => {
+                    const activeClass = loc === "en" ? "active" : "";
+                    return `<button type="button" class="admin-trans-locale-tab ${activeClass}" data-product-faq-tab-locale="${loc}" data-product-index="${index}">${loc.toUpperCase()}</button>`;
+                  }).join("")}
+                </div>
+                <div id="admin-product-faq-editor-${index}" data-active-faq-locale="en">
+                  <!-- FAQ list will be rendered dynamically by JS -->
+                </div>
+              </div>
+            </details>
           </div>
         </div>
 
@@ -422,7 +475,12 @@
           { key: "chips", label: "Etiketler (Virgülle ayrılmış)" },
           { key: "technicalSummary", label: "Teknik Özet", type: "rich" },
           { key: "useCases", label: "Kullanım Alanları", type: "rich" },
-          { key: "specifications", label: "Teknik Özellikler", type: "rich" }
+          { key: "specifications", label: "Teknik Özellikler", type: "rich" },
+          { key: "aiShortAnswer", label: "AI Kısa Cevap", type: "textarea" },
+          { key: "author", label: "Yazar / Editör" },
+          { key: "reviewedBy", label: "İnceleyen / Teknik Uzman" },
+          { key: "expertiseNote", label: "Uzmanlık Notu" },
+          { key: "sources", label: "Kaynaklar / Referanslar", type: "textarea" }
         ])}
       </div>
     `;
@@ -628,6 +686,7 @@
     if (state.editingProduct !== null && state.editingProduct !== undefined && products[state.editingProduct]) {
       // Single-product edit view
       root.innerHTML = productEditor(products[state.editingProduct], state.editingProduct);
+      renderFAQListForProduct(state.editingProduct, "en");
     } else {
       // Grid view
       root.innerHTML = products.length
@@ -1625,6 +1684,40 @@
     `;
   }
 
+  function renderFAQListForProduct(prodIdx, locale) {
+    const container = document.getElementById(`admin-product-faq-editor-${prodIdx}`);
+    if (!container) return;
+
+    container.dataset.activeFaqLocale = locale;
+
+    const product = state.content.products[prodIdx] || {};
+    let faqList;
+    if (locale === "en") {
+      faqList = product.aiFAQ || [];
+    } else {
+      faqList = product.localized?.[locale]?.aiFAQ || [];
+    }
+
+    const rows = faqList.map((qa, idx) => `
+      <div class="admin-faq-editor-row" style="margin-bottom:16px; border: 1px solid var(--admin-border); padding: 12px; border-radius: 6px; background: var(--admin-surface);">
+        <div class="admin-faq-editor-row-header" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+          <span class="admin-faq-editor-num" style="font-weight:600; color:var(--admin-muted);">Soru #${idx + 1} (${locale.toUpperCase()})</span>
+          <button type="button" class="admin-faq-delete-btn admin-product-faq-delete-btn" data-product-faq-delete-idx="${idx}" data-product-idx="${prodIdx}" data-product-faq-locale="${locale}" style="background:none; border:none; color:var(--admin-red); cursor:pointer;">Sil</button>
+        </div>
+        <input type="text" class="admin-input admin-product-faq-input" data-product-faq-field="question" data-product-faq-idx="${idx}" data-product-idx="${prodIdx}" data-product-faq-locale="${locale}" value="${esc(qa.question || '')}" placeholder="Kullanıcı sorusu (örn: WillowBee pil ömrü nedir?)" style="width:100%; margin-bottom:8px;" />
+        <textarea class="admin-textarea admin-product-faq-input" rows="2" data-product-faq-field="answer" data-product-faq-idx="${idx}" data-product-idx="${prodIdx}" data-product-faq-locale="${locale}" placeholder="Kısa ve net cevap yazın..." style="width:100%; resize:vertical;">${esc(qa.answer || '')}</textarea>
+      </div>
+    `).join("");
+
+    const addBtn = `
+      <button type="button" class="admin-faq-add-btn admin-product-faq-add-btn" data-product-faq-add-idx="${prodIdx}" data-product-faq-locale="${locale}">
+        ➕ Yeni Soru-Cevap Ekle (${locale.toUpperCase()})
+      </button>
+    `;
+
+    container.innerHTML = rows + addBtn;
+  }
+
   function renderSEOCenter() {
     const root = qs('[data-admin-seo-center]');
     if (!root || !state.content) return;
@@ -2037,6 +2130,14 @@
     } catch {
       state.analytics = null;
     }
+
+    try {
+      const botResponse = await fetch("/api/bot-events", { cache: "no-store" });
+      state.botEvents = botResponse.ok ? await botResponse.json() : [];
+    } catch {
+      state.botEvents = [];
+    }
+
     renderAnalytics();
     renderTranslationHealth();
     renderOverview();
@@ -2195,6 +2296,74 @@
           `).join("") || "<p style='padding: 20px;'>Kayıt bulunamadı.</p>"}
         </div>
       </article>
+
+      <style>
+        .aeo-event-table-header, .aeo-event-table-row {
+          display: grid;
+          grid-template-columns: 160px 220px 220px 1fr;
+          align-items: center;
+          padding: 10px 16px !important;
+          font-size: 0.8rem;
+        }
+        .aeo-event-table-header {
+          background: #f8fafc !important;
+          border-top: none !important;
+          font-weight: 700 !important;
+          color: var(--admin-ink) !important;
+          text-transform: uppercase;
+          font-size: 0.7rem;
+          letter-spacing: 0.05em;
+        }
+        .aeo-event-table-row {
+          border-top: 1px solid var(--admin-border);
+        }
+        .aeo-event-table-row:nth-child(even) {
+          background: #f8faff;
+        }
+      </style>
+      
+      <div class="admin-analytics-grid" style="margin-top: 24px; border-top: 1px solid var(--admin-border); padding-top: 24px;">
+        <article class="admin-card" style="grid-column: span 1;">
+          <h3>AI Arama Görünürlüğü (AEO)</h3>
+          <p style="font-size:0.8rem; color:var(--admin-muted); margin-bottom:16px;">Sitenizin yapay zeka arama motorları (Gemini, SearchGPT, Perplexity vb.) tarafından taranma durumunu gösterir. Siteniz şu an tüm AI botlarına açık durumdadır.</p>
+          <div class="admin-metric-list">
+            ${(() => {
+              const botEvents = state.botEvents || [];
+              const botCounts = {};
+              botEvents.forEach(e => {
+                botCounts[e.botName] = (botCounts[e.botName] || 0) + 1;
+              });
+              const items = Object.entries(botCounts).sort((a, b) => b[1] - a[1]);
+              return items.map(([name, count]) => `
+                <div style="border-top: 1px solid var(--admin-border); padding: 8px 0; display: flex; justify-content: space-between; align-items: center;">
+                  <span style="font-family:'Space Grotesk',sans-serif; color:var(--admin-ink); font-size:0.82rem;">${esc(name)}</span>
+                  <strong style="background:var(--admin-accent-soft); color:#0e687e; font-family:'Space Grotesk',sans-serif; font-size:0.75rem; padding:2px 8px; border-radius:6px; font-weight:700;">${count} tarama</strong>
+                </div>
+              `).join("") || '<p style="color:var(--admin-muted); font-size:0.8rem; padding: 10px 0;">AI bot taraması henüz gerçekleşmedi.</p>';
+            })()}
+          </div>
+        </article>
+
+        <article class="admin-card" style="grid-column: span 2;">
+          <h3>Canlı Yapay Zeka Bot Tarama Logları (AEO Tracker)</h3>
+          <div class="admin-event-table" style="max-height: 400px; overflow-y: auto;">
+            <div class="aeo-event-table-header">
+              <span>Zaman</span>
+              <span>Bot Adı</span>
+              <span>Taranan Yol</span>
+              <span>User-Agent Sinyali</span>
+            </div>
+            ${(state.botEvents || []).slice(0, 20).map((e) => `
+              <div class="aeo-event-table-row">
+                <span>${esc(new Date(e.createdAt).toLocaleString())}</span>
+                <strong style="color: #132175;">${esc(e.botName)}</strong>
+                <span>${esc(e.path || "/")}</span>
+                <span title="${esc(e.userAgent)}" style="color:var(--admin-muted); font-size:0.75rem; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${esc(e.userAgent)}</span>
+              </div>
+            `).join("") || "<p style='padding: 20px; color:var(--admin-muted); text-align:center;'>Henüz AI bot tarama kaydı yok.</p>"}
+          </div>
+        </article>
+      </div>
     `;
   }
 
@@ -2641,6 +2810,13 @@
       chips: ["LoRaWAN"],
       featured: false,
       detailUrl: "",
+      aiShortAnswer: "",
+      author: "WillowSoft İçerik Ekibi",
+      reviewedBy: "",
+      expertiseNote: "",
+      lastUpdated: new Date().toISOString().slice(0, 10),
+      sources: "",
+      aiFAQ: [],
       localized: Object.fromEntries(locales().filter((locale) => locale !== "en").map((locale) => [locale, {
         title: "",
         category: "",
@@ -2648,7 +2824,13 @@
         chips: "",
         technicalSummary: "",
         useCases: "",
-        specifications: ""
+        specifications: "",
+        aiShortAnswer: "",
+        author: "",
+        reviewedBy: "",
+        expertiseNote: "",
+        sources: "",
+        aiFAQ: []
       }]))
     });
     markDirty();
@@ -3232,6 +3414,32 @@
         refreshPageSEOReviews(pageKey, loc);
       }
 
+      // Product AI FAQ Input Sync
+      if (target.matches(".admin-product-faq-input")) {
+        const prodIdx = Number(target.dataset.productIdx);
+        const faqIdx = Number(target.dataset.productFaqIdx);
+        const loc = target.dataset.productFaqLocale;
+        const field = target.dataset.productFaqField;
+        
+        let product = state.content.products[prodIdx];
+        if (product) {
+          let targetFaqList;
+          if (loc === "en") {
+            if (!Array.isArray(product.aiFAQ)) product.aiFAQ = [];
+            targetFaqList = product.aiFAQ;
+          } else {
+            if (!product.localized) product.localized = {};
+            if (!product.localized[loc]) product.localized[loc] = {};
+            if (!Array.isArray(product.localized[loc].aiFAQ)) product.localized[loc].aiFAQ = [];
+            targetFaqList = product.localized[loc].aiFAQ;
+          }
+          
+          if (!targetFaqList[faqIdx]) targetFaqList[faqIdx] = {};
+          targetFaqList[faqIdx][field] = target.value;
+          markDirty();
+        }
+      }
+
       if (state.content && target.closest && target.closest(".admin-main")) {
         markDirty();
         
@@ -3391,6 +3599,71 @@
           markDirty();
           renderFAQListForPage(pageKey, locale);
           refreshPageSEOReviews(pageKey, locale);
+      }
+
+      // --- Product AI FAQ Tab switch ---
+      const prodFaqTabBtn = event.target.closest("[data-product-faq-tab-locale]");
+      if (prodFaqTabBtn) {
+        event.preventDefault();
+        event.stopPropagation();
+        const loc = prodFaqTabBtn.dataset.productFaqTabLocale;
+        const prodIdx = Number(prodFaqTabBtn.dataset.productIndex);
+        prodFaqTabBtn.parentElement.querySelectorAll("[data-product-faq-tab-locale]").forEach(btn => {
+          btn.classList.toggle("active", btn === prodFaqTabBtn);
+        });
+        renderFAQListForProduct(prodIdx, loc);
+        return;
+      }
+
+      // --- Product AI FAQ Add ---
+      const prodFaqAddBtn = event.target.closest(".admin-product-faq-add-btn");
+      if (prodFaqAddBtn) {
+        event.preventDefault();
+        event.stopPropagation();
+        const prodIdx = Number(prodFaqAddBtn.dataset.productFaqAddIdx);
+        const loc = prodFaqAddBtn.dataset.productFaqLocale;
+        
+        let product = state.content.products[prodIdx];
+        if (product) {
+          let targetFaqList;
+          if (loc === "en") {
+            if (!Array.isArray(product.aiFAQ)) product.aiFAQ = [];
+            targetFaqList = product.aiFAQ;
+          } else {
+            if (!product.localized) product.localized = {};
+            if (!product.localized[loc]) product.localized[loc] = {};
+            if (!Array.isArray(product.localized[loc].aiFAQ)) product.localized[loc].aiFAQ = [];
+            targetFaqList = product.localized[loc].aiFAQ;
+          }
+          targetFaqList.push({ question: "", answer: "" });
+          markDirty();
+          renderFAQListForProduct(prodIdx, loc);
+        }
+        return;
+      }
+
+      // --- Product AI FAQ Delete ---
+      const prodFaqDeleteBtn = event.target.closest(".admin-product-faq-delete-btn");
+      if (prodFaqDeleteBtn) {
+        event.preventDefault();
+        event.stopPropagation();
+        const prodIdx = Number(prodFaqDeleteBtn.dataset.productIdx);
+        const idx = Number(prodFaqDeleteBtn.dataset.productFaqDeleteIdx);
+        const loc = prodFaqDeleteBtn.dataset.productFaqLocale;
+        
+        let product = state.content.products[prodIdx];
+        if (product) {
+          let targetFaqList;
+          if (loc === "en") {
+            targetFaqList = product.aiFAQ;
+          } else {
+            targetFaqList = product.localized?.[loc]?.aiFAQ;
+          }
+          if (Array.isArray(targetFaqList)) {
+            targetFaqList.splice(idx, 1);
+            markDirty();
+            renderFAQListForProduct(prodIdx, loc);
+          }
         }
         return;
       }

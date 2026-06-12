@@ -23,6 +23,11 @@ Allow: /
 Disallow: /admin
 Disallow: /api/
 
+User-agent: Claude-SearchBot
+Allow: /
+Disallow: /admin
+Disallow: /api/
+
 User-agent: anthropic-ai
 Allow: /
 Disallow: /admin

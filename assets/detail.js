@@ -15,6 +15,12 @@
   }
 
   function injectSchema(extra) {
+    const isAdminPreview = window.self !== window.top || location.pathname.includes("admin.html") || location.search.includes("preview=true");
+    const existingSsr = document.querySelector('script[data-ssr="true"]');
+    if (existingSsr && !isAdminPreview) {
+      return; // Skip client-side injection to avoid duplicate schema tags on public/crawled views
+    }
+
     // Remove any prior dynamic injection so re-renders stay clean
     document
       .querySelectorAll('script[data-dynamic-schema="true"]')
