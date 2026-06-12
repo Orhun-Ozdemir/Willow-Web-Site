@@ -7,6 +7,7 @@ import { localizedValue, localizeItem, locales, type Locale } from "@/lib/cms";
 import { buildAlternates, DEFAULT_OG_IMAGE, ORGANIZATION_SCHEMA, WEBSITE_SCHEMA, SITE_ORIGIN } from "@/lib/seo";
 import { aiMetaForPage, appendSchemaNodes, faqSchemaNode, stripHtml, type AiFaqItem } from "@/lib/ai-search";
 import { getProductExtras } from "@/lib/product-extras";
+import { applicationIconForText, buildSpecificationGroups, canonicalizeProduct, iconKeyForText, normalizeStringList, PRODUCT_ICON_SVG } from "@/lib/product-model";
 
 export const prerender = false;
 
@@ -18,7 +19,7 @@ if (!rawProduct || rawProduct.visible === false) {
   return Astro.redirect(`/${locale}/products`);
 }
 
-const product = localizeItem(rawProduct, locale);
+const product = localizeItem(canonicalizeProduct(rawProduct), locale);
 const seo = rawProduct.seo?.[locale] || {};
 const titleLower = (product.title || "").toLowerCase();
 const pickText = (value: any) => localizedValue(value, locale);
@@ -139,6 +140,7 @@ if (locale !== "en") {
 }
 
 const galleryImages = Array.isArray(product.images) ? product.images.filter(Boolean) : [];
+const detailBlocks = Array.isArray(product.detailBlocks) ? product.detailBlocks.filter((block: any) => block && block.visible !== false) : [];
 
 // Technical sections
 const techBlockLabels = {
@@ -163,71 +165,15 @@ const dynamicLabels = {
   specifications: { en: "Specifications", tr: "Teknik Özellikler", de: "Spezifikationen", fr: "Spécifications", es: "Especificaciones", it: "Specifiche", ar: "المواصفات", ja: "仕様" },
 };
 const dynamicLabel = (key: keyof typeof dynamicLabels) => pickText(dynamicLabels[key]);
-const labelizeKey = (key: string) => String(key || "")
-  .replace(/[_-]+/g, " ")
-  .replace(/\b\w/g, (char) => char.toUpperCase());
-const stringifySpecValue = (value: any) => {
-  if (value == null) return "";
-  if (typeof value === "object") return JSON.stringify(value);
-  return String(value);
-};
-const normalizeSpecGroups = (item: any) => {
-  const groups = Array.isArray(item.specGroups) ? item.specGroups : [];
-  const normalized = groups.map((group: any) => ({
-    title: group.title || "Technical Details",
-    rows: Array.isArray(group.rows) ? group.rows.filter((row: any) => row?.label || row?.value) : [],
-    lists: Array.isArray(group.lists) ? group.lists.map((list: any) => ({
-      title: list.title || "Highlights",
-      items: Array.isArray(list.items) ? list.items.filter(Boolean) : []
-    })).filter((list: any) => list.items.length) : []
-  })).filter((group: any) => group.rows.length || group.lists.length);
-  if (normalized.length) return normalized;
-
-  if (!item.specifications || typeof item.specifications !== "object" || Array.isArray(item.specifications)) {
-    return [];
-  }
-
-  const rootRows: any[] = [];
-  const rootLists: any[] = [];
-  const objectGroups: any[] = [];
-
-  Object.entries(item.specifications).forEach(([key, value]: [string, any]) => {
-    if (value == null || value === "") return;
-    if (Array.isArray(value)) {
-      const items = value.map(stringifySpecValue).filter(Boolean);
-      if (items.length) rootLists.push({ title: labelizeKey(key), items });
-      return;
-    }
-    if (typeof value === "object") {
-      const rows: any[] = [];
-      const lists: any[] = [];
-      Object.entries(value).forEach(([nestedKey, nestedValue]: [string, any]) => {
-        if (nestedValue == null || nestedValue === "") return;
-        if (Array.isArray(nestedValue)) {
-          const items = nestedValue.map(stringifySpecValue).filter(Boolean);
-          if (items.length) lists.push({ title: labelizeKey(nestedKey), items });
-        } else {
-          rows.push({ label: labelizeKey(nestedKey), value: stringifySpecValue(nestedValue) });
-        }
-      });
-      if (rows.length || lists.length) objectGroups.push({ title: labelizeKey(key), rows, lists });
-      return;
-    }
-    rootRows.push({ label: labelizeKey(key), value: String(value) });
-  });
-
-  return [
-    ...(rootRows.length || rootLists.length ? [{ title: dynamicLabel("specifications") || "Specifications", rows: rootRows, lists: rootLists }] : []),
-    ...objectGroups
-  ];
-};
 const dynamicFacts = [
   { label: dynamicLabel("productType"), value: product.type },
   { label: dynamicLabel("batteryLife"), value: product.batteryLife || product.battery_life },
   { label: dynamicLabel("communicationRange"), value: product.communicationRange || product.communication_range }
 ].filter((fact) => fact.value);
 const productApplications = Array.isArray(product.applications) ? product.applications.filter(Boolean) : [];
-const dynamicSpecGroups = normalizeSpecGroups(product); console.log("dynamicSpecGroups:", JSON.stringify(dynamicSpecGroups));
+const reportedParameters = normalizeStringList((specObject as any)?.reported_parameters || (specObject as any)?.reportedParameters);
+const structuredSpecGroups = buildSpecificationGroups(product.specifications);
+const extraSpecGroups = structuredSpecGroups.slice(1);
 
 const productAiIntro = pickText({
   en: `${product.title} is a WillowSoft ${product.category || "IoT"} product for connected field telemetry.`,
@@ -376,24 +322,25 @@ function wsSpecLabel(key: string, locale: Locale) {
 }
 
 const WS_HIGHLIGHT_KEYS = [
-  { keys: ["communicationRange", "communication_range"], label: { en: "Communication range", tr: "İletişim Menzili", de: "Kommunikationsreichweite", fr: "Portée", es: "Alcance", it: "Portata", ar: "مدى الاتصال", ja: "通信範囲" } },
-  { keys: ["batteryLife", "battery_life"], label: { en: "Battery life", tr: "Pil Ömrü", de: "Batterielaufzeit", fr: "Autonomie de batterie", es: "Duración de baterıa", it: "Durata batteria", ar: "عمر البطارية", ja: "バッテリー寿命" } },
-  { keys: ["rfOutputPower", "rf_output_power"], label: { en: "RF output power", tr: "RF Çıkış Gücü", de: "RF-Ausgangsleistung", fr: "Puissance de sortie RF", es: "Potencia de salida RF", it: "Potenza di uscita RF", ar: "طاقة خرج RF", ja: "RF出力" } },
-  { keys: ["operatingTemperature", "operating_temperature"], label: { en: "Operating temp", tr: "Çalışma Sıcaklığı", de: "Betriebstemperatur", fr: "Temp de fonctionnement", es: "Temperatura de funcionamiento", it: "Temp operativa", ar: "درجة حرارة التشغيل", ja: "動作温度" } },
-  { keys: ["wirelessProtocol", "wireless_protocol", "protocol"], label: { en: "Protocol", tr: "Protokol", de: "Protokoll", fr: "Protocole", es: "Protocolo", it: "Protocollo", ar: "البروتوكول", ja: "プロトコル" } },
-  { keys: ["sensingRadius", "sensing_radius"], label: { en: "Sensing radius", tr: "Algılama Yarıçapı", de: "Erfassungsradius", fr: "Rayon de détection", es: "Radio de detección", it: "Raggio di rilevamento", ar: "نصف قطر الاستشعار", ja: "検知範囲" } },
-  { keys: ["warranty"], label: { en: "Warranty", tr: "Garanti", de: "Garantie", fr: "Garantie", es: "Garantía", it: "Garanzia", ar: "الضمان", ja: "保証" } }
+  { keys: ["communicationRange", "communication_range"], icon: "signal", label: { en: "Communication range", tr: "İletişim Menzili", de: "Kommunikationsreichweite", fr: "Portée", es: "Alcance", it: "Portata", ar: "مدى الاتصال", ja: "通信範囲" } },
+  { keys: ["batteryLife", "battery_life"], icon: "battery", label: { en: "Battery life", tr: "Pil Ömrü", de: "Batterielaufzeit", fr: "Autonomie de batterie", es: "Duración de baterıa", it: "Durata batteria", ar: "عمر البطارية", ja: "バッテリー寿命" } },
+  { keys: ["rfOutputPower", "rf_output_power"], icon: "radio", label: { en: "RF output power", tr: "RF Çıkış Gücü", de: "RF-Ausgangsleistung", fr: "Puissance de sortie RF", es: "Potencia de salida RF", it: "Potenza di uscita RF", ar: "طاقة خرج RF", ja: "RF出力" } },
+  { keys: ["operatingTemperature", "operating_temperature"], icon: "thermo", label: { en: "Operating temp", tr: "Çalışma Sıcaklığı", de: "Betriebstemperatur", fr: "Temp de fonctionnement", es: "Temperatura de funcionamiento", it: "Temp operativa", ar: "درجة حرارة التشغيل", ja: "動作温度" } },
+  { keys: ["wirelessProtocol", "wireless_protocol", "protocol"], icon: "radio", label: { en: "Protocol", tr: "Protokol", de: "Protokoll", fr: "Protocole", es: "Protocolo", it: "Protocollo", ar: "البروتوكول", ja: "プロトコル" } },
+  { keys: ["sensingRadius", "sensing_radius"], icon: "location", label: { en: "Sensing radius", tr: "Algılama Yarıçapı", de: "Erfassungsradius", fr: "Rayon de détection", es: "Radio de detección", it: "Raggio di rilevamento", ar: "نصف قطر الاستشعار", ja: "検知範囲" } },
+  { keys: ["warranty"], icon: "shield", label: { en: "Warranty", tr: "Garanti", de: "Garantie", fr: "Garantie", es: "Garantía", it: "Garanzia", ar: "الضمان", ja: "保証" } }
 ];
 
 function getProductHighlights(p: any, locale: string) {
   const s = p.specifications || {};
-  const highlights: { value: string; label: string }[] = [];
+  const highlights: { value: string; label: string; icon: string }[] = [];
   for (const item of WS_HIGHLIGHT_KEYS) {
     const foundKey = item.keys.find(k => s[k] !== undefined);
     if (foundKey) {
       highlights.push({
         value: String(s[foundKey]),
-        label: item.label[locale as keyof typeof item.label] || item.label.en
+        label: item.label[locale as keyof typeof item.label] || item.label.en,
+        icon: item.icon
       });
     }
   }
@@ -401,8 +348,9 @@ function getProductHighlights(p: any, locale: string) {
 }
 
 const highlights = getProductHighlights(product, locale);
-const specEntries = Object.entries(product.specifications || {}).filter(([k]) => k !== 'features');
-const keyFeatures = (product.specifications as any)?.features || [];
+const specObject = product.specifications && typeof product.specifications === "object" && !Array.isArray(product.specifications) ? product.specifications : {};
+const specEntries = Object.entries(specObject).filter(([k]) => k !== "features" && k !== "reported_parameters" && k !== "reportedParameters");
+const keyFeatures = (specObject as any)?.features || [];
 
 const extras = getProductExtras(rawProduct.id || rawProduct.slug || slug);
 
@@ -421,6 +369,20 @@ const apps = extras?.applications?.map(a => ({
 const paramsKicker = extras?.parametersKicker?.[locale] || extras?.parametersKicker?.en || "";
 const paramsTitle = extras?.parametersTitle?.[locale] || extras?.parametersTitle?.en || "";
 const appsNote = extras?.applicationsNote?.[locale] || extras?.applicationsNote?.en || "";
+const applicationCards = productApplications.length
+  ? productApplications.map((application: string) => ({
+      icon: applicationIconForText(application),
+      name: application,
+      desc: ""
+    }))
+  : apps;
+const reportedParameterCards = reportedParameters.length
+  ? reportedParameters.map((param: string) => ({
+      icon: iconKeyForText(param),
+      name: param,
+      desc: ""
+    }))
+  : [];
 
 function translateWarranty(warranty: string, locale: Locale): string {
   if (!warranty) return "";
@@ -467,6 +429,7 @@ const localizedFaq = (locale === "tr" && product.aiFAQ)
 
 
 const ICONS: Record<string, string> = {
+  ...PRODUCT_ICON_SVG,
   check: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><polyline points="20 6 9 17 4 12"></polyline></svg>`,
   download: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>`,
   mount: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect><rect x="9" y="9" width="6" height="6"></rect><line x1="9" y1="1" x2="9" y2="4"></line><line x1="15" y1="1" x2="15" y2="4"></line><line x1="9" y1="20" x2="9" y2="23"></line><line x1="15" y1="20" x2="15" y2="23"></line><line x1="20" y1="9" x2="23" y2="9"></line><line x1="20" y1="15" x2="23" y2="15"></line><line x1="1" y1="9" x2="4" y2="9"></line><line x1="1" y1="15" x2="4" y2="15"></line></svg>`,
@@ -669,6 +632,16 @@ const getT = (key: keyof typeof t) => {
               ))}
             </div>
           )}
+          {dynamicFacts.length > 0 && (
+            <div class="ws-fact-row">
+              {dynamicFacts.map((fact: any) => (
+                <div class="ws-fact-pill">
+                  <span class="ws-fact-label">{fact.label}</span>
+                  <strong class="ws-fact-value">{fact.value}</strong>
+                </div>
+              ))}
+            </div>
+          )}
           <div class="ws-hero-ctas">
             <a class="ws-btn ws-btn-primary" href={`/${locale}/contact?product=${encodeURIComponent(slug)}`}>{getT("requestQuote")}</a>
             {product.datasheet_url || product.datasheet ? (
@@ -699,8 +672,13 @@ const getT = (key: keyof typeof t) => {
           <div class="ws-stats-band">
             {highlights.map((hl, i) => (
               <div class="ws-stat-col" style={i > 0 ? `border-left: 1px solid rgba(255,255,255,0.14)` : ""}>
-                <b class="ws-stat-val">{hl.value}</b>
-                <span class="ws-stat-lbl">{hl.label}</span>
+                <span class="ws-stat-icon">
+                  <Fragment set:html={ICONS[hl.icon] || ICONS.check} />
+                </span>
+                <div class="ws-stat-copy">
+                  <b class="ws-stat-val">{hl.value}</b>
+                  <span class="ws-stat-lbl">{hl.label}</span>
+                </div>
               </div>
             ))}
           </div>
@@ -770,6 +748,74 @@ const getT = (key: keyof typeof t) => {
       </div>
     </section>
 
+    {extraSpecGroups.length > 0 && (
+      <section class="ws-capabilities-section">
+        <div class="section-inner">
+          <div class="ws-section-header">
+            <span class="ws-kicker">{getT("specifications")}</span>
+            <h2 class="ws-h2">{locale === "tr" ? "Ek teknik bloklar" : "Additional technical blocks"}</h2>
+          </div>
+          <div class="ws-capabilities-grid">
+            {extraSpecGroups.map((group: any) => (
+              <article class="ws-capability-card">
+                <div class="ws-capability-iconbox">
+                  <Fragment set:html={ICONS.gear || ICONS.check} />
+                </div>
+                <b class="ws-capability-name">{group.title}</b>
+                {group.rows.length > 0 && (
+                  <div class="ws-specs-list" style="margin-top: 8px;">
+                    {group.rows.map((row: any) => (
+                      <div class="ws-spec-row">
+                        <dt class="ws-spec-dt">{row.label}</dt>
+                        <dd class="ws-spec-dd">{row.value}</dd>
+                      </div>
+                    ))}
+                  </div>
+                )}
+                {group.lists.length > 0 && (
+                  <ul class="ws-features-bullets" style="margin-top: 12px;">
+                    {group.lists.flatMap((list: any) => list.items).map((item: string) => (
+                      <li>{item}</li>
+                    ))}
+                  </ul>
+                )}
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+    )}
+
+    {detailBlocks.length > 0 && (
+      <section class="ws-capabilities-section">
+        <div class="section-inner">
+          <div class="ws-section-header">
+            <span class="ws-kicker">{locale === "tr" ? "Özel bloklar" : "Custom Blocks"}</span>
+            <h2 class="ws-h2">{locale === "tr" ? "Ürüne özel anlatım blokları" : "Product-specific content blocks"}</h2>
+          </div>
+          <div class="ws-capabilities-grid">
+            {detailBlocks.map((block: any) => (
+              <article class="ws-capability-card">
+                <div class="ws-capability-iconbox">
+                  <Fragment set:html={ICONS[block.icon] || ICONS.stack || ICONS.check} />
+                </div>
+                {block.kicker && <p class="ws-kicker" style="margin-bottom: 6px;">{block.kicker}</p>}
+                {block.title && <b class="ws-capability-name">{block.title}</b>}
+                {block.body && <div class="ws-capability-desc" set:html={block.body}></div>}
+                {Array.isArray(block.items) && block.items.length > 0 && (
+                  <ul class="ws-features-bullets" style="margin-top: 12px;">
+                    {block.items.map((item: string) => (
+                      <li>{item}</li>
+                    ))}
+                  </ul>
+                )}
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+    )}
+
     <!-- Capabilities Section -->
     {params.length > 0 && (
       <section class="ws-capabilities-section">
@@ -789,30 +835,54 @@ const getT = (key: keyof typeof t) => {
               </div>
             ))}
           </div>
+      </div>
+    </section>
+  )}
+
+  {reportedParameterCards.length > 0 && (
+    <section class="ws-capabilities-section">
+      <div class="section-inner">
+        <div class="ws-section-header">
+          <span class="ws-kicker">{getT("specifications")}</span>
+          <h2 class="ws-h2">{locale === "tr" ? "Raporlanan parametreler" : "Reported Parameters"}</h2>
         </div>
-      </section>
-    )}
+        <div class="ws-capabilities-grid">
+          {reportedParameterCards.map((x) => (
+            <div class="ws-capability-card">
+              <div class="ws-capability-iconbox">
+                <Fragment set:html={ICONS[x.icon] || ICONS.check} />
+              </div>
+              <b class="ws-capability-name">{x.name}</b>
+              <p class="ws-capability-desc">{x.desc || (locale === "tr" ? "Sahadan raporlanan değer" : "Field-reported value")}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
 
     <!-- Applications Section -->
-    {apps.length > 0 && (
+    {applicationCards.length > 0 && (
       <section class="ws-applications-section">
         <div class="section-inner" style="display: contents;">
           <div class="ws-apps-left">
             <span class="ws-kicker">{getT("applications")}</span>
             <h2 class="ws-h2">{locale === 'tr' ? "Nerede Çalışır" : "Where it works"}</h2>
-            {appsNote && (
-              <p class="ws-apps-note">{appsNote}</p>
+            {(appsNote || productApplications.length > 0) && (
+              <p class="ws-apps-note">
+                {appsNote || (locale === "tr" ? "Bu ürünün en çok kullanıldığı alanlar" : "Typical application areas for this product")}
+              </p>
             )}
           </div>
           <div class="ws-apps-right-grid">
-            {apps.map(a => (
+            {applicationCards.map(a => (
               <div class="ws-app-card">
                 <div class="ws-app-iconbox">
                   <Fragment set:html={ICONS[a.icon] || ICONS.check} />
                 </div>
                 <div class="ws-app-content">
                   <b class="ws-app-name">{a.name}</b>
-                  <p class="ws-app-desc">{a.desc}</p>
+                  <p class="ws-app-desc">{a.desc || (locale === "tr" ? "Uygulama alanı" : "Application area")}</p>
                 </div>
               </div>
             ))}
@@ -930,23 +1000,27 @@ const getT = (key: keyof typeof t) => {
     }
   }
   .ws-hero-image-card {
-    padding: 16px;
-    border-radius: 20px;
-    background: var(--panel);
+    padding: 20px;
+    border-radius: 28px;
+    background:
+      radial-gradient(circle at 50% 12%, rgba(var(--accent-rgb), 0.08), transparent 38%),
+      linear-gradient(180deg, rgba(255,255,255,0.96), rgba(241,244,251,0.96));
     border: 1px solid rgba(var(--accent-rgb), 0.12);
-    box-shadow: var(--shadow);
+    box-shadow: 0 28px 70px rgba(19, 33, 117, 0.08);
   }
   .ws-hero-img {
     width: 100%;
     height: auto;
-    max-height: 480px;
-    object-fit: cover;
-    border-radius: 14px;
+    aspect-ratio: 4 / 5;
+    max-height: 560px;
+    object-fit: contain;
+    border-radius: 18px;
+    background: linear-gradient(180deg, #fdfefe, #f3f6fb);
   }
   .ws-hero-right {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 18px;
   }
   .ws-hero-meta {
     display: flex;
@@ -990,6 +1064,39 @@ const getT = (key: keyof typeof t) => {
     color: var(--muted);
     max-width: 580px;
     margin: 0;
+  }
+  .ws-fact-row {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+    margin-top: 4px;
+  }
+  @media (max-width: 720px) {
+    .ws-fact-row {
+      grid-template-columns: 1fr;
+    }
+  }
+  .ws-fact-pill {
+    border-radius: 18px;
+    padding: 14px 16px;
+    background: linear-gradient(180deg, rgba(19, 33, 117, 0.04), rgba(19, 33, 117, 0.02));
+    border: 1px solid rgba(var(--accent-rgb), 0.12);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .ws-fact-label {
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .ws-fact-value {
+    font-size: 0.98rem;
+    line-height: 1.35;
+    color: var(--ink);
+    font-weight: 800;
   }
   .ws-chip-row {
     display: flex;
@@ -1072,40 +1179,59 @@ const getT = (key: keyof typeof t) => {
   }
   .ws-stats-band {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    padding: 38px 20px;
-    border-radius: 20px;
-    background: linear-gradient(135deg, var(--deep), #1b2e8c);
-    box-shadow: 0 20px 50px rgba(19, 33, 117, 0.12);
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    padding: 28px 18px;
+    border-radius: 26px;
+    background:
+      linear-gradient(90deg, rgba(255,255,255,0.06), rgba(255,255,255,0)),
+      linear-gradient(135deg, #0c1f70 0%, #1637a8 48%, #1b53cc 100%);
+    box-shadow: 0 24px 60px rgba(19, 33, 117, 0.16);
+    overflow: hidden;
   }
   .ws-stat-col {
-    padding: 0 34px;
+    padding: 10px 28px;
     display: flex;
-    flex-direction: column;
-    gap: 4px;
+    align-items: center;
+    gap: 16px;
+    min-height: 96px;
   }
   @media (max-width: 768px) {
     .ws-stat-col {
       border-left: none !important;
       border-bottom: 1px solid rgba(255,255,255,0.1);
-      padding: 20px 0;
-      align-items: center;
-      text-align: center;
+      padding: 18px 0;
+      justify-content: center;
+      text-align: left;
     }
     .ws-stat-col:last-child {
       border-bottom: none;
     }
   }
+  .ws-stat-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: rgba(255,255,255,0.12);
+    color: #fff;
+    flex-shrink: 0;
+  }
+  .ws-stat-copy {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
   .ws-stat-val {
-    font-size: 1.85rem;
+    font-size: 1.55rem;
     line-height: 1.2;
     color: #fff;
     font-weight: 800;
     font-family: var(--font-display);
   }
   .ws-stat-lbl {
-    font-size: 0.9rem;
-    color: rgba(255, 255, 255, 0.65);
+    font-size: 0.84rem;
+    color: rgba(255, 255, 255, 0.72);
     font-weight: 600;
   }
 
@@ -1126,11 +1252,11 @@ const getT = (key: keyof typeof t) => {
     }
   }
   .ws-specs-card {
-    padding: 38px 44px;
-    border-radius: 20px;
+    padding: 34px 38px;
+    border-radius: 24px;
     background: var(--panel);
     border: 1px solid rgba(var(--accent-rgb), 0.08);
-    box-shadow: var(--shadow);
+    box-shadow: 0 18px 45px rgba(15, 27, 80, 0.06);
   }
   @media (max-width: 480px) {
     .ws-specs-card {
@@ -1151,10 +1277,10 @@ const getT = (key: keyof typeof t) => {
     margin: 0;
   }
   .ws-specs-iconbox {
-    width: 40px;
-    height: 40px;
+    width: 44px;
+    height: 44px;
     border-radius: 50%;
-    background: var(--accent-soft);
+    background: linear-gradient(180deg, rgba(var(--accent-rgb), 0.10), rgba(var(--accent-rgb), 0.06));
     color: var(--accent-text);
     display: grid;
     place-items: center;
@@ -1164,7 +1290,7 @@ const getT = (key: keyof typeof t) => {
   }
   .ws-spec-row {
     display: grid;
-    grid-template-columns: 200px 1fr;
+    grid-template-columns: minmax(180px, 240px) 1fr;
     padding: 14px 0;
     border-bottom: 1px solid rgba(var(--accent-rgb), 0.08);
   }
@@ -1251,8 +1377,8 @@ const getT = (key: keyof typeof t) => {
     display: flex;
     align-items: center;
     gap: 14px;
-    background: #e8edf8;
-    border-radius: 16px;
+    background: linear-gradient(180deg, #edf2ff, #e3eafc);
+    border-radius: 18px;
     padding: 18px 22px;
     margin-top: 8px;
   }
@@ -1294,10 +1420,10 @@ const getT = (key: keyof typeof t) => {
   }
   .ws-capability-card {
     padding: 24px;
-    border-radius: 16px;
+    border-radius: 20px;
     background: var(--panel);
-    border: 1px solid rgba(var(--accent-rgb), 0.06);
-    box-shadow: 0 4px 18px rgba(0,0,0,0.02);
+    border: 1px solid rgba(var(--accent-rgb), 0.07);
+    box-shadow: 0 10px 28px rgba(0,0,0,0.03);
     display: flex;
     flex-direction: column;
     gap: 12px;
@@ -1307,10 +1433,10 @@ const getT = (key: keyof typeof t) => {
     transform: translateY(-4px);
   }
   .ws-capability-iconbox {
-    width: 44px;
-    height: 44px;
-    border-radius: 12px;
-    background: var(--accent-soft);
+    width: 46px;
+    height: 46px;
+    border-radius: 14px;
+    background: linear-gradient(180deg, rgba(var(--accent-rgb), 0.10), rgba(var(--accent-rgb), 0.06));
     color: var(--accent-text);
     display: grid;
     place-items: center;
@@ -1362,10 +1488,10 @@ const getT = (key: keyof typeof t) => {
   }
   .ws-app-card {
     padding: 20px 22px;
-    border-radius: 16px;
+    border-radius: 20px;
     background: var(--panel);
     border: 1px solid rgba(var(--accent-rgb), 0.06);
-    box-shadow: 0 4px 18px rgba(0,0,0,0.02);
+    box-shadow: 0 10px 24px rgba(0,0,0,0.03);
     display: flex;
     align-items: center;
     gap: 16px;
@@ -1375,10 +1501,10 @@ const getT = (key: keyof typeof t) => {
     transform: translateY(-2px);
   }
   .ws-app-iconbox {
-    width: 44px;
-    height: 44px;
-    border-radius: 12px;
-    background: #e3f2ea;
+    width: 46px;
+    height: 46px;
+    border-radius: 14px;
+    background: linear-gradient(180deg, rgba(52, 138, 93, 0.12), rgba(52, 138, 93, 0.06));
     color: var(--green);
     display: grid;
     place-items: center;
@@ -1503,11 +1629,11 @@ const getT = (key: keyof typeof t) => {
     gap: 18px;
   }
   .ws-gallery-card {
-    border-radius: 16px;
+    border-radius: 20px;
     overflow: hidden;
     aspect-ratio: 16 / 10;
     border: 1px solid rgba(var(--accent-rgb), 0.08);
-    box-shadow: var(--shadow);
+    box-shadow: 0 18px 40px rgba(0,0,0,0.05);
   }
   .ws-gallery-img {
     width: 100%;
@@ -1525,9 +1651,9 @@ const getT = (key: keyof typeof t) => {
     border-top: 1px solid rgba(var(--accent-rgb), 0.08);
   }
   .ws-quote-band-inner {
-    padding: 44px 48px;
-    border-radius: 24px;
-    background: linear-gradient(135deg, #f4f7fc, #e9edf8);
+    padding: 42px 48px;
+    border-radius: 28px;
+    background: linear-gradient(135deg, #f8fbff, #eef3fb 52%, #e6ecf7 100%);
     border: 1.5px solid rgba(var(--accent-rgb), 0.08);
     display: flex;
     align-items: center;

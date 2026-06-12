@@ -4,7 +4,11 @@ import { useState } from "react";
 import { type Locale } from "@/lib/cms";
 import { useAdmin } from "./AdminContext";
 import FormField from "./FormField";
+import ListEditorField from "./ListEditorField";
+import JsonEditorField from "./JsonEditorField";
+import DetailBlocksEditor from "./DetailBlocksEditor";
 import TranslationEditor from "./TranslationEditor";
+import { canonicalizeProduct } from "@/lib/product-model";
 
 const PRODUCT_FIELDS = [
   { key: "title", label: "Ürün Adı" },
@@ -13,6 +17,7 @@ const PRODUCT_FIELDS = [
   { key: "technicalSummary", label: "Teknik Özet", type: "textarea" as const, rows: 4 },
   { key: "useCases", label: "Kullanım Alanları", type: "textarea" as const, rows: 4 },
   { key: "specifications", label: "Teknik Özellikler", type: "textarea" as const, rows: 4 },
+  { key: "applications", label: "Applications", type: "textarea" as const, rows: 4 },
 ];
 
 const CATEGORIES = [
@@ -36,6 +41,14 @@ export default function ProductsPanel() {
     });
   };
 
+  const updateProductFields = (idx: number, fields: Record<string, any>) => {
+    setContent((c: any) => {
+      const list = [...c.products];
+      list[idx] = { ...list[idx], ...fields };
+      return { ...c, products: list };
+    });
+  };
+
   const updateLocalized = (idx: number, locale: Locale, fieldKey: string, value: string) => {
     setContent((c: any) => {
       const list = [...c.products];
@@ -50,7 +63,24 @@ export default function ProductsPanel() {
     const id = `product-${Date.now()}`;
     setContent((c: any) => ({
       ...c,
-      products: [...(c.products || []), { id, title: "Yeni Ürün", slug: id, category: "modules", featured: false, shortDescription: "", visible: true, localized: {} }],
+      products: [...(c.products || []), canonicalizeProduct({
+        id,
+        title: "Yeni Ürün",
+        slug: id,
+        category: "modules",
+        featured: false,
+        shortDescription: "",
+        image: "",
+        images: [],
+        datasheet: "",
+        datasheet_url: "",
+        visible: true,
+        chips: [],
+        applications: [],
+        specifications: {},
+        detailBlocks: [],
+        localized: {},
+      })],
     }));
     setEditIdx(products.length);
   };
@@ -79,6 +109,16 @@ export default function ProductsPanel() {
           <FormField label="Ürün Adı" value={p.title || ""} onChange={(v) => updateProduct(editIdx, "title", v)} />
           <FormField label="Kategori" type="select" value={p.category || "modules"} onChange={(v) => updateProduct(editIdx, "category", v)} options={CATEGORIES} />
           <FormField label="Görsel Yolu" value={p.image || ""} onChange={(v) => updateProduct(editIdx, "image", v)} placeholder="/assets/products/..." />
+          <div className="col-span-2">
+            <ListEditorField
+              label="Çoklu Görseller"
+              value={Array.isArray(p.images) ? p.images : []}
+              onChange={(items) => updateProduct(editIdx, "images", items)}
+              helper="Bir satıra bir görsel yolu. İlk görsel kapak olur."
+              placeholder="assets/product-cutouts/willowtilt.png"
+            />
+          </div>
+          <FormField label="Datasheet URL" value={p.datasheet_url || p.datasheet || ""} onChange={(v) => updateProductFields(editIdx, { datasheet_url: v, datasheet: v })} placeholder="/assets/datasheets/..." />
           <FormField label="Öne Çıkan" type="select" value={p.featured ? "true" : "false"} onChange={(v) => updateProduct(editIdx, "featured", v === "true")} options={[{ value: "true", label: "Evet" }, { value: "false", label: "Hayır" }]} />
           <FormField label="Sitede Göster (Yayında)" type="select" value={p.visible !== false ? "true" : "false"} onChange={(v) => updateProduct(editIdx, "visible", v === "true")} options={[{ value: "true", label: "Evet" }, { value: "false", label: "Hayır" }]} />
           <div className="col-span-2">
@@ -86,6 +126,34 @@ export default function ProductsPanel() {
           </div>
           <div className="col-span-2">
             <FormField label="Etiketler (virgülle ayırın)" value={(p.chips || []).join(", ")} onChange={(v) => updateProduct(editIdx, "chips", v.split(",").map((s: string) => s.trim()).filter(Boolean))} hint="Ör: IoT, SCADA, Modbus" />
+          </div>
+          <FormField label="Type" value={p.type || ""} onChange={(v) => updateProduct(editIdx, "type", v)} placeholder="Outdoor IP67 LoRaWAN Tilt Sensor" />
+          <FormField label="Battery Life" value={p.batteryLife || p.battery_life || ""} onChange={(v) => updateProductFields(editIdx, { batteryLife: v, battery_life: v })} placeholder="up to 5 years" />
+          <FormField label="Communication Range" value={p.communicationRange || p.communication_range || ""} onChange={(v) => updateProductFields(editIdx, { communicationRange: v, communication_range: v })} placeholder="up to 15 km" />
+          <div className="col-span-2">
+            <ListEditorField
+              label="Applications"
+              value={Array.isArray(p.applications) ? p.applications : []}
+              onChange={(items) => updateProduct(editIdx, "applications", items)}
+              helper="Bir satıra bir uygulama alanı."
+              placeholder="Buildings and Infrastructure"
+            />
+          </div>
+          <div className="col-span-2">
+            <JsonEditorField
+              label="Specifications (JSON)"
+              value={p.specifications || {}}
+              onChange={(val) => updateProduct(editIdx, "specifications", val || {})}
+              helper={'Object olarak kaydedilir. Örnek: { "protocol": "LoRaWAN 868/915 MHz" }'}
+              rows={10}
+            />
+          </div>
+          <div className="col-span-2">
+            <DetailBlocksEditor
+              value={Array.isArray(p.detailBlocks) ? p.detailBlocks : []}
+              onChange={(val) => updateProduct(editIdx, "detailBlocks", val)}
+              helper="Ek açıklama blokları, ikonlu card'lar ve liste blokları için kullan."
+            />
           </div>
         </div>
 

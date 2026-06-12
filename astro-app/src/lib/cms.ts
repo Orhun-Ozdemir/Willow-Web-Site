@@ -26,7 +26,7 @@ export function localizedValue(map: any, locale: Locale): string {
 
 export function normalizeLocalizedList(value: any): string[] {
   if (Array.isArray(value)) return value;
-  if (typeof value === "string") return value.split(",").map((item) => item.trim()).filter(Boolean);
+  if (typeof value === "string") return value.split(/[\n,]+/g).map((item) => item.trim()).filter(Boolean);
   return [];
 }
 
@@ -36,7 +36,7 @@ export function localizeItem(item: any, locale: Locale): any {
   const next = { ...item };
   Object.entries(localized).forEach(([key, value]) => {
     if (value === "" || value === undefined || value === null) return;
-    next[key] = key === "chips" || key === "deliverables" ? normalizeLocalizedList(value) : value;
+    next[key] = key === "chips" || key === "deliverables" || key === "applications" ? normalizeLocalizedList(value) : value;
   });
   return next;
 }

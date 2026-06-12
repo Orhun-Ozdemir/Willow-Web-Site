@@ -1,4 +1,5 @@
 import { getPublicClient, getServiceClient, hasSupabaseEnv } from "./supabase";
+import { canonicalizeProduct } from "./product-model";
 import fs from "node:fs";
 import path from "node:path";
 import localSiteData from "../../../data/site-data.json";
@@ -9,16 +10,26 @@ let cachedContent: any = null;
 let lastFetchTime = 0;
 const TTL_MS = 60000; // 60 seconds cache
 
+function normalizeContentShape(content: any) {
+  if (!content) return content;
+  return {
+    ...content,
+    products: Array.isArray(content.products)
+      ? content.products.map((product: any) => canonicalizeProduct(product))
+      : [],
+  };
+}
+
 /**
  * Loads content from Supabase. Fallbacks to local JSON if no Supabase env is found.
  */
 export async function loadContent(): Promise<any> {
   if (!hasSupabaseEnv) {
     try {
-      return JSON.parse(fs.readFileSync(dataFile, "utf8"));
+      return normalizeContentShape(JSON.parse(fs.readFileSync(dataFile, "utf8")));
     } catch (err: any) {
       console.warn("Failed to read local dataFile, using bundled fallback:", err.message);
-      return localSiteData || {};
+      return normalizeContentShape(localSiteData || {});
     }
   }
 
@@ -54,11 +65,11 @@ export async function loadContent(): Promise<any> {
   // If Supabase returned no products or failed, fall back to the bundled site-data JSON.
   if ((!prods || prods.length === 0) && localSiteData) {
     console.warn("Supabase returned no products or failed. Falling back to local site-data.");
-    return localSiteData;
+    return normalizeContentShape(localSiteData);
   }
 
   const mapCollection = (rows: any[] | null) =>
-    (rows || []).map(r => ({ ...r.data, id: r.id, localized: r.localized || {} }));
+    (rows || []).map(r => canonicalizeProduct({ ...r.data, id: r.id, localized: r.localized || {} }));
 
   const mapSingleton = (rows: any[] | null, key: string) => {
     const obj: Record<string, any> = {};
