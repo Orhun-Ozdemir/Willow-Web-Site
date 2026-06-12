@@ -5,7 +5,6 @@ import path from "node:path";
 import localSiteData from "../../../data/site-data.json";
 
 const dataFile = path.join(process.cwd(), "../data/site-data.json");
-const allowLocalFallback = import.meta.env.DEV;
 
 let cachedContent: any = null;
 let lastFetchTime = 0;
@@ -22,14 +21,10 @@ function normalizeContentShape(content: any) {
 }
 
 /**
- * Loads content from Supabase. Local JSON fallback is only allowed in development.
+ * Loads content from Supabase. Fallbacks to local JSON if no Supabase env is found.
  */
 export async function loadContent(): Promise<any> {
   if (!hasSupabaseEnv) {
-    if (!allowLocalFallback) {
-      console.warn("Supabase env is missing in production mode; returning empty content instead of local fallback.");
-      return normalizeContentShape({});
-    }
     try {
       return normalizeContentShape(JSON.parse(fs.readFileSync(dataFile, "utf8")));
     } catch (err: any) {
@@ -67,9 +62,9 @@ export async function loadContent(): Promise<any> {
     supabase.from("site_meta").select("data").eq("id", 1).single()
   ]);
 
-  // Never fall back to old local JSON in production.
-  if ((!prods || prods.length === 0) && allowLocalFallback && localSiteData) {
-    console.warn("Supabase returned no products or failed. Falling back to local site-data in development only.");
+  // If Supabase returned no products or failed, fall back to the bundled site-data JSON.
+  if ((!prods || prods.length === 0) && localSiteData) {
+    console.warn("Supabase returned no products or failed. Falling back to local site-data.");
     return normalizeContentShape(localSiteData);
   }
 
@@ -108,9 +103,6 @@ export async function loadContent(): Promise<any> {
  */
 export async function saveContent(data: any): Promise<void> {
   if (!hasSupabaseEnv) {
-    if (!allowLocalFallback) {
-      throw new Error("SUPABASE_URL and SUPABASE_ANON_KEY are required in production to save content.");
-    }
     data.meta = { ...(data.meta || {}), updatedAt: new Date().toISOString() };
     fs.writeFileSync(dataFile, JSON.stringify(data, null, 2) + "\n", "utf8");
     cachedContent = data;
