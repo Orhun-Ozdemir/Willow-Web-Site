@@ -1,13 +1,12 @@
 ---
 import PageLayout from "@/layouts/PageLayout.astro";
-import ProductGallery from "@/components/ProductGallery.astro";
 import AIAnswerBlock from "@/components/AIAnswerBlock.astro";
 import { loadContent } from "@/lib/content";
 import { localizedValue, localizeItem, locales, resolveLocale, type Locale } from "@/lib/cms";
 import { buildAlternates, DEFAULT_OG_IMAGE, ORGANIZATION_SCHEMA, WEBSITE_SCHEMA, SITE_ORIGIN } from "@/lib/seo";
 import { aiMetaForPage, appendSchemaNodes, faqSchemaNode, stripHtml, type AiFaqItem } from "@/lib/ai-search";
 import { getProductExtras } from "@/lib/product-extras";
-import { applicationIconForText, buildSpecificationGroups, canonicalizeProduct, iconKeyForText, normalizeProductSlug, normalizeStringList, productSlugCandidates, PRODUCT_ICON_SVG } from "@/lib/product-model";
+import { applicationIconForText, buildSpecificationGroups, canonicalizeProduct, iconKeyForText, normalizeAssetPath, normalizeProductSlug, normalizeStringList, productSlugCandidates, PRODUCT_ICON_SVG } from "@/lib/product-model";
 
 export const prerender = false;
 
@@ -25,6 +24,25 @@ const product = localizeItem(canonicalizeProduct(rawProduct), locale);
 const seo = rawProduct.seo?.[locale] || {};
 const titleLower = (product.title || "").toLowerCase();
 const pickText = (value: any) => localizedValue(value, locale);
+const heroImages = Array.from(
+  new Set(
+    [
+      product.image,
+      ...(Array.isArray(product.images) ? product.images : []),
+    ]
+      .map(normalizeAssetPath)
+      .filter(Boolean),
+  ),
+);
+const heroImage = heroImages[0] || product.image;
+const productAssetUrl = (path: any, fallback = "assets/hero-industrial-iot.png") => {
+  const normalized = normalizeAssetPath(path) || normalizeAssetPath(fallback);
+  if (/^(https?:)?\/\//i.test(normalized) || normalized.startsWith("data:")) return normalized;
+  return `${import.meta.env.BASE_URL}${normalized}`;
+};
+const heroImageUrl = productAssetUrl(heroImage);
+const fallbackHeroImageUrl = productAssetUrl("assets/hero-industrial-iot.png");
+const heroImageItems = heroImages.map((imgUrl) => productAssetUrl(imgUrl));
 
 // Category text mappings
 const categoryMap: Record<string, string> = {
@@ -141,7 +159,6 @@ if (locale !== "en") {
   decision.delivered = localizedDecision.delivered[locale] || localizedDecision.delivered.tr;
 }
 
-const galleryImages = Array.isArray(product.images) ? product.images.filter(Boolean) : [];
 const detailBlocks = Array.isArray(product.detailBlocks) ? product.detailBlocks.filter((block: any) => block && block.visible !== false) : [];
 
 // Technical sections
@@ -610,7 +627,30 @@ const getT = (key: keyof typeof t) => {
       <div class="ws-hero-inner section-inner">
         <div class="ws-hero-left">
           <div class="ws-hero-image-card">
-            <img src={product.image ? `/${product.image}`.replace("//", "/") : "/assets/hero-industrial-iot.png"} alt={product.title} class="ws-hero-img" onerror="this.onerror=null; this.src='/assets/hero-industrial-iot.png';" />
+            <img
+              src={heroImageUrl}
+              alt={product.title}
+              class="ws-hero-img"
+              data-product-main-image
+              data-fallback-src={fallbackHeroImageUrl}
+              onerror="this.onerror=null; this.src=this.dataset.fallbackSrc;"
+            />
+            {heroImageItems.length > 1 && (
+              <div class="ws-hero-thumbs" aria-label={`${product.title} images`}>
+                {heroImageItems.map((imgUrl: string, index: number) => (
+                  <button
+                    class={`ws-hero-thumb${index === 0 ? " is-active" : ""}`}
+                    type="button"
+                    data-product-thumb
+                    data-src={imgUrl}
+                    aria-label={`${product.title} image ${index + 1}`}
+                    aria-pressed={index === 0 ? "true" : "false"}
+                  >
+                    <img src={imgUrl} alt="" loading="lazy" decoding="async" />
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
         </div>
         <div class="ws-hero-right">
@@ -924,23 +964,6 @@ const getT = (key: keyof typeof t) => {
       </section>
     )}
 
-    <!-- Gallery Section -->
-    {galleryImages.length > 0 && (
-      <section class="ws-gallery-section">
-        <div class="ws-section-header section-inner">
-          <span class="ws-kicker">{getT("inTheField")}</span>
-          <h2 class="ws-h2">{getT("inTheFieldDesc")}</h2>
-        </div>
-        <div class="ws-gallery-grid section-inner">
-          {galleryImages.slice(0, 3).map((imgUrl: string, i: number) => (
-            <div class="ws-gallery-card">
-              <img src={`/${imgUrl}`.replace("//", "/")} alt={`${product.title} gallery ${i + 1}`} class="ws-gallery-img" />
-            </div>
-          ))}
-        </div>
-      </section>
-    )}
-
     <!-- Quote Band Section -->
     <section class="ws-quote-band-section">
       <div class="ws-quote-band-inner section-inner">
@@ -956,6 +979,34 @@ const getT = (key: keyof typeof t) => {
     </section>
   </main>
 </PageLayout>
+
+<script>
+  function setupProductThumbs() {
+    document.querySelectorAll(".ws-hero-image-card").forEach((card) => {
+      const mainImage = card.querySelector("[data-product-main-image]") as HTMLImageElement | null;
+      const thumbs = Array.from(card.querySelectorAll("[data-product-thumb]")) as HTMLButtonElement[];
+      if (!mainImage || thumbs.length < 2) return;
+
+      thumbs.forEach((thumb) => {
+        if (thumb.dataset.thumbReady === "true") return;
+        thumb.dataset.thumbReady = "true";
+        thumb.addEventListener("click", () => {
+          const nextSrc = thumb.dataset.src;
+          if (!nextSrc || mainImage.src.endsWith(nextSrc)) return;
+          mainImage.src = nextSrc;
+          thumbs.forEach((item) => {
+            const active = item === thumb;
+            item.classList.toggle("is-active", active);
+            item.setAttribute("aria-pressed", String(active));
+          });
+        });
+      });
+    });
+  }
+
+  setupProductThumbs();
+  document.addEventListener("astro:after-swap", setupProductThumbs);
+</script>
 
 <style>
   /* Base reset & typography within page scope */
@@ -986,13 +1037,13 @@ const getT = (key: keyof typeof t) => {
   /* Hero Section */
   .ws-hero-section {
     position: relative;
-    padding: 32px 0 64px;
+    padding: 28px 0 48px;
     overflow: hidden;
   }
   .ws-hero-inner {
     display: grid;
-    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.3fr);
-    gap: 64px;
+    grid-template-columns: minmax(280px, 0.92fr) minmax(0, 1.18fr);
+    gap: clamp(32px, 5vw, 56px);
     align-items: center;
   }
   @media (max-width: 1024px) {
@@ -1002,22 +1053,52 @@ const getT = (key: keyof typeof t) => {
     }
   }
   .ws-hero-image-card {
-    padding: 20px;
-    border-radius: 28px;
-    background:
-      radial-gradient(circle at 50% 12%, rgba(var(--accent-rgb), 0.08), transparent 38%),
-      linear-gradient(180deg, rgba(255,255,255,0.96), rgba(241,244,251,0.96));
+    padding: clamp(18px, 3vw, 32px);
+    border-radius: 20px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(248,250,254,0.98));
     border: 1px solid rgba(var(--accent-rgb), 0.12);
-    box-shadow: 0 28px 70px rgba(19, 33, 117, 0.08);
+    box-shadow: 0 18px 44px rgba(19, 33, 117, 0.07);
   }
   .ws-hero-img {
     width: 100%;
     height: auto;
-    aspect-ratio: 4 / 5;
-    max-height: 560px;
+    aspect-ratio: 1 / 1;
+    max-height: 430px;
     object-fit: contain;
-    border-radius: 18px;
-    background: linear-gradient(180deg, #fdfefe, #f3f6fb);
+    border-radius: 14px;
+    background: #fff;
+  }
+  .ws-hero-thumbs {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(72px, 1fr));
+    gap: 12px;
+    margin-top: 18px;
+  }
+  .ws-hero-thumb {
+    display: grid;
+    place-items: center;
+    min-height: 74px;
+    aspect-ratio: 1.2 / 1;
+    padding: 8px;
+    border-radius: 10px;
+    border: 1px solid rgba(var(--accent-rgb), 0.12);
+    background: #fff;
+    cursor: pointer;
+    transition: border-color 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease;
+  }
+  .ws-hero-thumb:hover,
+  .ws-hero-thumb.is-active {
+    border-color: rgba(var(--accent-rgb), 0.72);
+    box-shadow: 0 8px 20px rgba(19, 33, 117, 0.10);
+  }
+  .ws-hero-thumb:hover {
+    transform: translateY(-1px);
+  }
+  .ws-hero-thumb img {
+    width: 100%;
+    height: 100%;
+    max-height: 72px;
+    object-fit: contain;
   }
   .ws-hero-right {
     display: flex;
@@ -1054,14 +1135,14 @@ const getT = (key: keyof typeof t) => {
   }
   .ws-h1 {
     font-family: var(--font-display);
-    font-size: clamp(2.5rem, 4vw, 3.8rem);
+    font-size: clamp(2.2rem, 3.3vw, 3.35rem);
     font-weight: 800;
     line-height: 1.1;
     color: var(--ink);
     margin: 0;
   }
   .ws-lead {
-    font-size: clamp(0.96rem, 1.1vw, 1.1rem);
+    font-size: clamp(0.95rem, 1vw, 1.05rem);
     line-height: 1.6;
     color: var(--muted);
     max-width: 580px;
@@ -1079,8 +1160,8 @@ const getT = (key: keyof typeof t) => {
     }
   }
   .ws-fact-pill {
-    border-radius: 18px;
-    padding: 14px 16px;
+    border-radius: 14px;
+    padding: 12px 14px;
     background: linear-gradient(180deg, rgba(19, 33, 117, 0.04), rgba(19, 33, 117, 0.02));
     border: 1px solid rgba(var(--accent-rgb), 0.12);
     display: flex;
@@ -1146,6 +1227,11 @@ const getT = (key: keyof typeof t) => {
     cursor: pointer;
     transition: transform 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
   }
+  .ws-btn :global(svg) {
+    width: 20px;
+    height: 20px;
+    flex: 0 0 20px;
+  }
   .ws-btn:hover {
     transform: translateY(-2px);
   }
@@ -1177,25 +1263,25 @@ const getT = (key: keyof typeof t) => {
 
   /* Stats Band Section */
   .ws-stats-section {
-    padding: 0 0 32px;
+    padding: 0 0 28px;
   }
   .ws-stats-band {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    padding: 28px 18px;
-    border-radius: 26px;
+    padding: 20px 16px;
+    border-radius: 18px;
     background:
       linear-gradient(90deg, rgba(255,255,255,0.06), rgba(255,255,255,0)),
       linear-gradient(135deg, #0c1f70 0%, #1637a8 48%, #1b53cc 100%);
-    box-shadow: 0 24px 60px rgba(19, 33, 117, 0.16);
+    box-shadow: 0 18px 44px rgba(19, 33, 117, 0.14);
     overflow: hidden;
   }
   .ws-stat-col {
-    padding: 10px 28px;
+    padding: 8px 24px;
     display: flex;
     align-items: center;
     gap: 16px;
-    min-height: 96px;
+    min-height: 78px;
   }
   @media (max-width: 768px) {
     .ws-stat-col {
@@ -1210,8 +1296,8 @@ const getT = (key: keyof typeof t) => {
     }
   }
   .ws-stat-icon {
-    width: 52px;
-    height: 52px;
+    width: 42px;
+    height: 42px;
     border-radius: 50%;
     display: grid;
     place-items: center;
@@ -1225,7 +1311,7 @@ const getT = (key: keyof typeof t) => {
     gap: 3px;
   }
   .ws-stat-val {
-    font-size: 1.55rem;
+    font-size: 1.28rem;
     line-height: 1.2;
     color: #fff;
     font-weight: 800;
@@ -1239,12 +1325,12 @@ const getT = (key: keyof typeof t) => {
 
   /* Specs Section */
   .ws-specs-section {
-    padding: 48px 0;
+    padding: 36px 0 42px;
   }
   .ws-specs-grid {
     display: grid;
-    grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
-    gap: 56px;
+    grid-template-columns: minmax(0, 1.16fr) minmax(280px, 0.84fr);
+    gap: clamp(28px, 4vw, 44px);
     align-items: start;
   }
   @media (max-width: 960px) {
@@ -1254,11 +1340,11 @@ const getT = (key: keyof typeof t) => {
     }
   }
   .ws-specs-card {
-    padding: 34px 38px;
-    border-radius: 24px;
+    padding: 28px 30px;
+    border-radius: 18px;
     background: var(--panel);
     border: 1px solid rgba(var(--accent-rgb), 0.08);
-    box-shadow: 0 18px 45px rgba(15, 27, 80, 0.06);
+    box-shadow: 0 12px 32px rgba(15, 27, 80, 0.05);
   }
   @media (max-width: 480px) {
     .ws-specs-card {
@@ -1273,14 +1359,14 @@ const getT = (key: keyof typeof t) => {
   }
   .ws-specs-h3 {
     font-family: var(--font-display);
-    font-size: 1.45rem;
+    font-size: 1.28rem;
     font-weight: 800;
     color: var(--ink);
     margin: 0;
   }
   .ws-specs-iconbox {
-    width: 44px;
-    height: 44px;
+    width: 38px;
+    height: 38px;
     border-radius: 50%;
     background: linear-gradient(180deg, rgba(var(--accent-rgb), 0.10), rgba(var(--accent-rgb), 0.06));
     color: var(--accent-text);
@@ -1293,7 +1379,7 @@ const getT = (key: keyof typeof t) => {
   .ws-spec-row {
     display: grid;
     grid-template-columns: minmax(180px, 240px) 1fr;
-    padding: 14px 0;
+    padding: 12px 0;
     border-bottom: 1px solid rgba(var(--accent-rgb), 0.08);
   }
   @media (max-width: 600px) {
@@ -1325,6 +1411,11 @@ const getT = (key: keyof typeof t) => {
     font-weight: 700;
     font-size: 0.94rem;
   }
+  .ws-specs-download-link :global(svg) {
+    width: 18px;
+    height: 18px;
+    flex: 0 0 18px;
+  }
   .ws-specs-download-link a {
     text-decoration: underline;
     text-underline-offset: 3px;
@@ -1343,7 +1434,7 @@ const getT = (key: keyof typeof t) => {
   }
   .ws-h2-small {
     font-family: var(--font-display);
-    font-size: 2.1rem;
+    font-size: clamp(1.5rem, 2.2vw, 1.9rem);
     font-weight: 800;
     line-height: 1.15;
     color: var(--ink);
@@ -1380,8 +1471,8 @@ const getT = (key: keyof typeof t) => {
     align-items: center;
     gap: 14px;
     background: linear-gradient(180deg, #edf2ff, #e3eafc);
-    border-radius: 18px;
-    padding: 18px 22px;
+    border-radius: 14px;
+    padding: 16px 18px;
     margin-top: 8px;
   }
   .ws-stack-infobox-icon {
@@ -1399,18 +1490,18 @@ const getT = (key: keyof typeof t) => {
 
   /* Capabilities Section */
   .ws-capabilities-section {
-    padding: 48px 0;
+    padding: 38px 0;
     border-top: 1px solid rgba(var(--accent-rgb), 0.08);
   }
   .ws-section-header {
     display: flex;
     flex-direction: column;
     gap: 8px;
-    margin-bottom: 32px;
+    margin-bottom: 24px;
   }
   .ws-h2 {
     font-family: var(--font-display);
-    font-size: 2.3rem;
+    font-size: clamp(1.65rem, 2.6vw, 2.05rem);
     font-weight: 800;
     color: var(--ink);
     margin: 0;
@@ -1421,8 +1512,8 @@ const getT = (key: keyof typeof t) => {
     gap: 16px;
   }
   .ws-capability-card {
-    padding: 24px;
-    border-radius: 20px;
+    padding: 20px;
+    border-radius: 14px;
     background: var(--panel);
     border: 1px solid rgba(var(--accent-rgb), 0.07);
     box-shadow: 0 10px 28px rgba(0,0,0,0.03);
@@ -1435,9 +1526,9 @@ const getT = (key: keyof typeof t) => {
     transform: translateY(-4px);
   }
   .ws-capability-iconbox {
-    width: 46px;
-    height: 46px;
-    border-radius: 14px;
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
     background: linear-gradient(180deg, rgba(var(--accent-rgb), 0.10), rgba(var(--accent-rgb), 0.06));
     color: var(--accent-text);
     display: grid;
@@ -1458,11 +1549,11 @@ const getT = (key: keyof typeof t) => {
 
   /* Applications Section */
   .ws-applications-section {
-    padding: 48px 0;
+    padding: 38px 0;
     border-top: 1px solid rgba(var(--accent-rgb), 0.08);
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(0, 1.8fr);
-    gap: 64px;
+    gap: clamp(28px, 5vw, 56px);
     align-items: start;
   }
   @media (max-width: 960px) {
@@ -1485,12 +1576,12 @@ const getT = (key: keyof typeof t) => {
   }
   .ws-apps-right-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
     gap: 14px;
   }
   .ws-app-card {
-    padding: 20px 22px;
-    border-radius: 20px;
+    padding: 16px 18px;
+    border-radius: 14px;
     background: var(--panel);
     border: 1px solid rgba(var(--accent-rgb), 0.06);
     box-shadow: 0 10px 24px rgba(0,0,0,0.03);
@@ -1503,9 +1594,9 @@ const getT = (key: keyof typeof t) => {
     transform: translateY(-2px);
   }
   .ws-app-iconbox {
-    width: 46px;
-    height: 46px;
-    border-radius: 14px;
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
     background: linear-gradient(180deg, rgba(52, 138, 93, 0.12), rgba(52, 138, 93, 0.06));
     color: var(--green);
     display: grid;
@@ -1620,41 +1711,14 @@ const getT = (key: keyof typeof t) => {
     font-weight: 600;
   }
 
-  /* Gallery Section */
-  .ws-gallery-section {
-    padding: 48px 0 64px;
-    border-top: 1px solid rgba(var(--accent-rgb), 0.08);
-  }
-  .ws-gallery-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 18px;
-  }
-  .ws-gallery-card {
-    border-radius: 20px;
-    overflow: hidden;
-    aspect-ratio: 16 / 10;
-    border: 1px solid rgba(var(--accent-rgb), 0.08);
-    box-shadow: 0 18px 40px rgba(0,0,0,0.05);
-  }
-  .ws-gallery-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.35s ease;
-  }
-  .ws-gallery-card:hover .ws-gallery-img {
-    transform: scale(1.05);
-  }
-
   /* Quote Band Section */
   .ws-quote-band-section {
-    padding: 48px 0 64px;
+    padding: 38px 0 56px;
     border-top: 1px solid rgba(var(--accent-rgb), 0.08);
   }
   .ws-quote-band-inner {
-    padding: 42px 48px;
-    border-radius: 28px;
+    padding: 30px 34px;
+    border-radius: 18px;
     background: linear-gradient(135deg, #f8fbff, #eef3fb 52%, #e6ecf7 100%);
     border: 1.5px solid rgba(var(--accent-rgb), 0.08);
     display: flex;
@@ -1678,7 +1742,7 @@ const getT = (key: keyof typeof t) => {
   }
   .ws-h2-quote {
     font-family: var(--font-display);
-    font-size: 1.95rem;
+    font-size: clamp(1.35rem, 2.1vw, 1.75rem);
     font-weight: 800;
     color: var(--ink);
     margin: 0;

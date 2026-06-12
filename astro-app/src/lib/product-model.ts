@@ -77,6 +77,22 @@ export function normalizeStringList(value: any): string[] {
   return [];
 }
 
+export function normalizeAssetList(value: any): string[] {
+  const parsed = parseMaybeJson(value);
+  const pickAsset = (item: any) => {
+    if (typeof item === "string") return item;
+    if (item && typeof item === "object") {
+      return item.url || item.src || item.image || item.path || item.href || "";
+    }
+    return "";
+  };
+
+  if (Array.isArray(parsed)) {
+    return parsed.map(pickAsset).map(normalizeAssetPath).filter(Boolean);
+  }
+  return normalizeStringList(parsed).map(normalizeAssetPath).filter(Boolean);
+}
+
 export function normalizeLocalizedMap(value: any): any {
   return value && typeof value === "object" && !Array.isArray(value) ? value : {};
 }
@@ -148,8 +164,8 @@ export function canonicalizeProduct(raw: any) {
   const name = String(raw?.title || raw?.name || raw?.slug || raw?.id || "Product").trim();
   const category = normalizeProductCategory(raw?.category);
   const image = normalizeAssetPath(raw?.image);
-  const images = normalizeStringList(raw?.images);
-  const normalizedImages = images.length ? images.map(normalizeAssetPath).filter(Boolean) : image ? [image] : [];
+  const images = normalizeAssetList(raw?.images || raw?.galleryImages || raw?.gallery);
+  const normalizedImages = images.length ? images : image ? [image] : [];
   const detailBlocks = normalizeProductDetailBlocks(raw?.detailBlocks || raw?.blocks);
   const specifications = normalizeProductSpecifications(raw?.specifications);
   const chips = normalizeStringList(raw?.chips);
