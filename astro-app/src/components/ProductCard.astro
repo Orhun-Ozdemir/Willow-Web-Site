@@ -31,16 +31,16 @@ const detailsLabel: Record<string, string> = {
   </figure>
   <div class="product-body">
     <h3>{p.title}</h3>
-    <p>{p.shortDescription}</p>
+    <p class="product-description">{p.shortDescription}</p>
     <div class="chip-row">
       {chips.map((chip: string) => (
         <span class="chip">{chip}</span>
       ))}
     </div>
-    <p class="mt-4">
+    <div class="product-actions">
       <a href={`/${locale}/products/${encodeURIComponent(p.slug || p.id)}`} class="btn btn-ghost btn-small">
         {detailsLabel[locale] || detailsLabel.en}
       </a>
-    </p>
+    </div>
   </div>
 </article>
