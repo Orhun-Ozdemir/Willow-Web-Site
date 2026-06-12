@@ -173,6 +173,7 @@ const dynamicFacts = [
   { label: dynamicLabel("communicationRange"), value: product.communicationRange || product.communication_range }
 ].filter((fact) => fact.value);
 const productApplications = Array.isArray(product.applications) ? product.applications.filter(Boolean) : [];
+const specObject = product.specifications && typeof product.specifications === "object" && !Array.isArray(product.specifications) ? product.specifications : {};
 const reportedParameters = normalizeStringList((specObject as any)?.reported_parameters || (specObject as any)?.reportedParameters);
 const structuredSpecGroups = buildSpecificationGroups(product.specifications);
 const extraSpecGroups = structuredSpecGroups.slice(1);
@@ -350,7 +351,6 @@ function getProductHighlights(p: any, locale: string) {
 }
 
 const highlights = getProductHighlights(product, locale);
-const specObject = product.specifications && typeof product.specifications === "object" && !Array.isArray(product.specifications) ? product.specifications : {};
 const specEntries = Object.entries(specObject).filter(([k]) => k !== "features" && k !== "reported_parameters" && k !== "reportedParameters");
 const keyFeatures = (specObject as any)?.features || [];
 
