@@ -2,9 +2,11 @@
 import PageLayout from "@/layouts/PageLayout.astro";
 import ProductCard from "@/components/ProductCard.astro";
 import FaqAccordion from "@/components/FaqAccordion.astro";
+import AIAnswerBlock from "@/components/AIAnswerBlock.astro";
 import { loadContent } from "@/lib/content";
 import { pageSeo, webPageNode, ORGANIZATION_SCHEMA, WEBSITE_SCHEMA, SITE_ORIGIN } from "@/lib/seo";
 import { localizedValue, locales, type Locale } from "@/lib/cms";
+import { aiAnswerForPage, aiMetaForPage, appendSchemaNodes, fallbackFaqsForPage, faqItemsForPage, faqSchemaNode } from "@/lib/ai-search";
 
 export function getStaticPaths() {
   return locales.map((locale) => ({ params: { locale } }));
@@ -18,9 +20,13 @@ const companyFacts = content.companyFacts || {};
 const getVal = (key: string) => localizedValue(pageContent[key], locale);
 
 const productsList = content.products || [];
+const productsFallbackFaqs = fallbackFaqsForPage("products", locale);
+const productsFaqItems = faqItemsForPage(content.faqs || [], "products", locale, productsFallbackFaqs);
+const aiAnswer = aiAnswerForPage(content, "products", locale, seoProps.description);
+const aiMeta = aiMetaForPage(content, "products", locale);
 
 const productsItemListId = `${seoProps.canonical}#itemlist`;
-const productsSchema = {
+const productsSchema = appendSchemaNodes({
   "@context": "https://schema.org",
   "@graph": [
     ORGANIZATION_SCHEMA,
@@ -40,7 +46,7 @@ const productsSchema = {
       })),
     },
   ],
-};
+}, [faqSchemaNode(seoProps.canonical, productsFaqItems)]);
 
 const labels = {
   productsOnMarket: { en: "Products on Market", tr: "Piyasadaki Ürünler", de: "Produkte am Markt", fr: "Produits sur le marché", es: "Productos en el mercado", it: "Prodotti sul mercato", ar: "منتجات في السوق", ja: "市場実績製品" },
@@ -189,6 +195,7 @@ const getLabel = (key: keyof typeof labels) => {
     <!-- Proof section -->
     <section class="section product-proof-section">
       <div class="section-inner">
+        <AIAnswerBlock answer={aiAnswer} locale={locale} meta={aiMeta} />
         <div class="product-proof-grid">
           <article class="proof-stat-card reveal">
             <span>{getLabel("rangeLabel")}</span>
@@ -252,7 +259,7 @@ const getLabel = (key: keyof typeof labels) => {
             {getLabel("faqLead")}
           </p>
         </div>
-        <FaqAccordion faqs={content.faqs || []} pageKey="products" locale={locale} />
+        <FaqAccordion faqs={content.faqs || []} pageKey="products" locale={locale} fallbackFaqs={productsFallbackFaqs} />
       </div>
     </section>
   </main>

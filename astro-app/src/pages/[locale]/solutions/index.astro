@@ -2,9 +2,11 @@
 import PageLayout from "@/layouts/PageLayout.astro";
 import SolutionCard from "@/components/SolutionCard.astro";
 import FaqAccordion from "@/components/FaqAccordion.astro";
+import AIAnswerBlock from "@/components/AIAnswerBlock.astro";
 import { loadContent } from "@/lib/content";
-import { pageSeo } from "@/lib/seo";
+import { pageSeo, webPageNode, ORGANIZATION_SCHEMA, WEBSITE_SCHEMA } from "@/lib/seo";
 import { localizedValue, locales, type Locale } from "@/lib/cms";
+import { aiAnswerForPage, aiMetaForPage, appendSchemaNodes, fallbackFaqsForPage, faqItemsForPage, faqSchemaNode } from "@/lib/ai-search";
 
 export function getStaticPaths() {
   return locales.map((locale) => ({ params: { locale } }));
@@ -15,8 +17,20 @@ const content = loadContent();
 const seoProps = pageSeo(content, "solutions", locale, "/solutions", "Solutions | WillowSoft", "Industry-specific IoT solutions.");
 const pageContent = content.pageContent?.solutions || {};
 const getVal = (key: string) => localizedValue(pageContent[key], locale);
+const solutionsFallbackFaqs = fallbackFaqsForPage("solutions", locale);
+const solutionsFaqItems = faqItemsForPage(content.faqs || [], "solutions", locale, solutionsFallbackFaqs);
+const aiAnswer = aiAnswerForPage(content, "solutions", locale, seoProps.description);
+const aiMeta = aiMetaForPage(content, "solutions", locale);
 
 const solutions = (content.solutions || []).sort((a: any, b: any) => (a.sortOrder || 0) - (b.sortOrder || 0));
+const solutionsSchema = appendSchemaNodes({
+  "@context": "https://schema.org",
+  "@graph": [
+    ORGANIZATION_SCHEMA,
+    WEBSITE_SCHEMA,
+    webPageNode("CollectionPage", seoProps.canonical, seoProps.title, seoProps.description, locale),
+  ],
+}, [faqSchemaNode(seoProps.canonical, solutionsFaqItems)]);
 
 const labels = {
   useCases: { en: "Use Cases", tr: "Kullanım Alanları", de: "Anwendungsbereiche", fr: "Cas d'usage", es: "Casos de uso", it: "Casi d'uso", ar: "حالات الاستخدام", ja: "ユースケース" },
@@ -43,6 +57,7 @@ const getLabel = (key: keyof typeof labels) => {
 
 <PageLayout
   {...seoProps}
+  schema={solutionsSchema}
   locale={locale}
   dataPage="solutions"
 >
@@ -55,6 +70,12 @@ const getLabel = (key: keyof typeof labels) => {
         <p class="eyebrow reveal">{getVal("heroEyebrow")}</p>
         <h1 class="reveal delay-1">{getVal("heroTitle")}</h1>
         <p class="reveal delay-2">{getVal("heroLead")}</p>
+      </div>
+    </section>
+
+    <section class="section tight">
+      <div class="section-inner">
+        <AIAnswerBlock answer={aiAnswer} locale={locale} meta={aiMeta} />
       </div>
     </section>
 

@@ -2,9 +2,12 @@
 import PageLayout from "@/layouts/PageLayout.astro";
 import ProductCard from "@/components/ProductCard.astro";
 import NewsCard from "@/components/NewsCard.astro";
+import FaqAccordion from "@/components/FaqAccordion.astro";
+import AIAnswerBlock from "@/components/AIAnswerBlock.astro";
 import { loadContent } from "@/lib/content";
 import { pageSeo, ORGANIZATION_SCHEMA, WEBSITE_SCHEMA } from "@/lib/seo";
 import { localizedValue, locales, type Locale } from "@/lib/cms";
+import { aiAnswerForPage, aiMetaForPage, appendSchemaNodes, fallbackFaqsForPage, faqItemsForPage, faqSchemaNode } from "@/lib/ai-search";
 
 export function getStaticPaths() {
   return locales.map((locale) => ({ params: { locale } }));
@@ -17,6 +20,10 @@ const companyFacts = content.companyFacts || {};
 const seoProps = pageSeo(content, "home", locale, "", "WillowSoft | Embedded Hardware & Industrial IoT Engineering", "Embedded hardware and Industrial IoT engineering.");
 
 const getVal = (key: string) => localizedValue(pageContent[key], locale);
+const homeFallbackFaqs = fallbackFaqsForPage("home", locale);
+const homeFaqItems = faqItemsForPage(content.faqs || [], "home", locale, homeFallbackFaqs);
+const aiAnswer = aiAnswerForPage(content, "home", locale, seoProps.description);
+const aiMeta = aiMetaForPage(content, "home", locale);
 
 const featuredProducts = (content.products || []).filter((p: any) => p.featured).slice(0, 4);
 const latestNews = (content.news || []).slice(0, 3);
@@ -125,10 +132,10 @@ const industryLanes: { icon: string; title: L10n; desc: L10n }[] = [
   },
 ];
 
-const homeSchema = {
+const homeSchema = appendSchemaNodes({
   "@context": "https://schema.org",
   "@graph": [ORGANIZATION_SCHEMA, WEBSITE_SCHEMA],
-};
+}, [faqSchemaNode(seoProps.canonical, homeFaqItems)]);
 ---
 
 <PageLayout
@@ -195,6 +202,7 @@ const homeSchema = {
     <!-- Service Rail -->
     <section class="section tight">
       <div class="section-inner">
+        <AIAnswerBlock answer={aiAnswer} locale={locale} meta={aiMeta} />
         <div class="service-rail reveal">
           {serviceRail.map((item, idx) => (
             <article><span class="service-number">{String(idx + 1).padStart(2, "0")}</span><h3>{loc(item.title)}</h3><p>{loc(item.desc)}</p></article>
@@ -303,6 +311,17 @@ const homeSchema = {
     </section>
 
     <!-- Final CTA -->
+    <section class="section soft services-faq-section" id="faq">
+      <div class="section-inner">
+        <div class="section-head reveal center" style={{ marginBottom: "36px" }}>
+          <p class="eyebrow">FAQ</p>
+          <h2 class="page-title">WillowSoft FAQ</h2>
+          <p class="section-lead" style={{ maxWidth: "720px", marginLeft: "auto", marginRight: "auto" }}>{aiAnswer}</p>
+        </div>
+        <FaqAccordion faqs={content.faqs || []} pageKey="home" locale={locale} fallbackFaqs={homeFallbackFaqs} />
+      </div>
+    </section>
+
     <section class="section dark final-cta">
       <canvas class="signal-canvas" data-density="26" data-color="215, 154, 43"></canvas>
       <div class="section-inner split">

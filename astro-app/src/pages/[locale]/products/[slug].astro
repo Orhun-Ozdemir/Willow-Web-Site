@@ -1,9 +1,11 @@
 ---
 import PageLayout from "@/layouts/PageLayout.astro";
 import ProductGallery from "@/components/ProductGallery.astro";
+import AIAnswerBlock from "@/components/AIAnswerBlock.astro";
 import { loadContent } from "@/lib/content";
 import { localizedValue, localizeItem, locales, type Locale } from "@/lib/cms";
 import { buildAlternates, DEFAULT_OG_IMAGE, ORGANIZATION_SCHEMA, WEBSITE_SCHEMA, SITE_ORIGIN } from "@/lib/seo";
+import { aiMetaForPage, appendSchemaNodes, faqSchemaNode, stripHtml, type AiFaqItem } from "@/lib/ai-search";
 
 export function getStaticPaths() {
   const content = loadContent();
@@ -161,8 +163,68 @@ const techBlocks = [
   { label: pickText(techBlockLabels.specifications), html: product.specifications }
 ].filter((block) => block.html && String(block.html).trim());
 
+const productAiIntro = pickText({
+  en: `${product.title} is a WillowSoft ${product.category || "IoT"} product for connected field telemetry.`,
+  tr: `${product.title}, bağlı saha telemetrisi için geliştirilen bir WillowSoft ${product.category || "IoT"} ürünüdür.`,
+  de: `${product.title} ist ein WillowSoft-${product.category || "IoT"}-Produkt für vernetzte Feldtelemetrie.`,
+  fr: `${product.title} est un produit WillowSoft ${product.category || "IoT"} pour la télémétrie terrain connectée.`,
+  es: `${product.title} es un producto WillowSoft ${product.category || "IoT"} para telemetría de campo conectada.`,
+  it: `${product.title} è un prodotto WillowSoft ${product.category || "IoT"} per la telemetria connessa sul campo.`,
+  ar: `${product.title} هو منتج ${product.category || "IoT"} من WillowSoft للقياس الميداني المتصل.`,
+  ja: `${product.title} は、接続された現場テレメトリ向けの WillowSoft ${product.category || "IoT"} 製品です。`,
+});
+const productAiAnswer = stripHtml(`${productAiIntro} ${product.shortDescription || ""} ${decision.use || ""}`);
+const productFaqLabels = {
+  useQuestion: {
+    en: `What is ${product.title} used for?`,
+    tr: `${product.title} ne için kullanılır?`,
+    de: `Wofür wird ${product.title} verwendet?`,
+    fr: `À quoi sert ${product.title} ?`,
+    es: `¿Para qué se utiliza ${product.title}?`,
+    it: `A cosa serve ${product.title}?`,
+    ar: `ما استخدام ${product.title}؟`,
+    ja: `${product.title} は何に使いますか？`,
+  },
+  integrationQuestion: {
+    en: `Can ${product.title} be integrated with software platforms?`,
+    tr: `${product.title} yazılım platformlarıyla entegre edilebilir mi?`,
+    de: `Kann ${product.title} in Softwareplattformen integriert werden?`,
+    fr: `${product.title} peut-il être intégré à des plateformes logicielles ?`,
+    es: `¿Puede ${product.title} integrarse con plataformas de software?`,
+    it: `${product.title} può essere integrato con piattaforme software?`,
+    ar: `هل يمكن دمج ${product.title} مع منصات برمجية؟`,
+    ja: `${product.title} はソフトウェア基盤と連携できますか？`,
+  },
+  selectionQuestion: {
+    en: `When should a buyer choose ${product.title}?`,
+    tr: `Bir alıcı ${product.title} ürününü ne zaman seçmeli?`,
+    de: `Wann sollte ein Käufer ${product.title} wählen?`,
+    fr: `Quand choisir ${product.title} ?`,
+    es: `¿Cuándo debería elegirse ${product.title}?`,
+    it: `Quando scegliere ${product.title}?`,
+    ar: `متى يجب اختيار ${product.title}؟`,
+    ja: `${product.title} はどのような場合に選ぶべきですか？`,
+  },
+  integrationAnswer: {
+    en: "It can be used as part of a complete WillowSoft hardware, firmware, backend and dashboard stack.",
+    tr: "Eksiksiz bir WillowSoft donanım, firmware, backend ve dashboard yığınının parçası olarak kullanılabilir.",
+    de: "Es kann als Teil eines vollständigen WillowSoft-Stacks aus Hardware, Firmware, Backend und Dashboard genutzt werden.",
+    fr: "Il peut être utilisé dans une pile WillowSoft complète avec matériel, firmware, backend et tableau de bord.",
+    es: "Puede usarse como parte de un stack completo de WillowSoft con hardware, firmware, backend y dashboard.",
+    it: "Può essere usato come parte di uno stack WillowSoft completo con hardware, firmware, backend e dashboard.",
+    ar: "يمكن استخدامه ضمن حزمة WillowSoft متكاملة تشمل العتاد والبرمجيات الثابتة والخلفية ولوحة التحكم.",
+    ja: "WillowSoft のハードウェア、ファームウェア、バックエンド、ダッシュボードを含む統合スタックの一部として利用できます。",
+  },
+};
+const productFaqItems: AiFaqItem[] = [
+  { question: pickText(productFaqLabels.useQuestion), answer: stripHtml(decision.use) },
+  { question: pickText(productFaqLabels.integrationQuestion), answer: stripHtml(pickText(productFaqLabels.integrationAnswer)) },
+  { question: pickText(productFaqLabels.selectionQuestion), answer: stripHtml(fitText) },
+].filter((item) => item.question && item.answer);
+const productAiMeta = aiMetaForPage(content, "products", locale);
+
 // Schema.org Graph
-const graphSchema = {
+const graphSchema = appendSchemaNodes({
   "@context": "https://schema.org",
   "@graph": [
     ORGANIZATION_SCHEMA,
@@ -193,7 +255,7 @@ const graphSchema = {
       }
     }
   ]
-};
+}, [faqSchemaNode(`${SITE_ORIGIN}/${locale}/products/${slug}`, productFaqItems)]);
 
 // Localized UI Labels
 const t = {
@@ -313,6 +375,12 @@ const getT = (key: keyof typeof t) => {
           <a class="btn btn-primary" href={`/${locale}/contact?product=${encodeURIComponent(slug)}`}>{getT("reqInfo")}</a>
           <a class="btn btn-secondary" href={`/${locale}/products`}>{getT("backToProducts")}</a>
         </div>
+      </div>
+    </section>
+
+    <section class="section tight">
+      <div class="section-inner">
+        <AIAnswerBlock answer={productAiAnswer} locale={locale} meta={productAiMeta} />
       </div>
     </section>
 
@@ -441,6 +509,29 @@ const getT = (key: keyof typeof t) => {
     </section>
 
     <!-- Quote band -->
+    <section class="section soft services-faq-section" id="faq">
+      <div class="section-inner">
+        <div class="section-head reveal center" style={{ marginBottom: "36px" }}>
+          <p class="eyebrow">FAQ</p>
+          <h2 class="page-title">{product.title} FAQ</h2>
+          <p class="section-lead" style={{ maxWidth: "720px", marginLeft: "auto", marginRight: "auto" }}>
+            {stripHtml(fitText)}
+          </p>
+        </div>
+        <div class="faq-list reveal delay-1">
+          {productFaqItems.map((faq) => (
+            <details class="faq-item">
+              <summary>
+                <span class="faq-q">{faq.question}</span>
+                <span class="faq-toggle" aria-hidden="true"></span>
+              </summary>
+              <p>{faq.answer}</p>
+            </details>
+          ))}
+        </div>
+      </div>
+    </section>
+
     <section class="section product-quote-band">
       <div class="section-inner product-quote-inner reveal">
         <div>

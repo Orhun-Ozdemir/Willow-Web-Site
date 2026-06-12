@@ -1,0 +1,98 @@
+---
+import type { Locale } from "@/lib/cms";
+import type { AiAnswerMeta } from "@/lib/ai-search";
+
+interface Props {
+  answer: string;
+  locale: Locale;
+  meta?: AiAnswerMeta;
+}
+
+const { answer, locale, meta = {} } = Astro.props;
+
+const labels = {
+  title: {
+    en: "Direct answer",
+    tr: "Kısa cevap",
+    de: "Direkte Antwort",
+    fr: "Réponse directe",
+    es: "Respuesta directa",
+    it: "Risposta diretta",
+    ar: "إجابة مباشرة",
+    ja: "要約回答",
+  },
+  badge: {
+    en: "AI-search ready",
+    tr: "AI aramaya hazır",
+    de: "Für KI-Suche optimiert",
+    fr: "Prêt pour la recherche IA",
+    es: "Listo para búsqueda IA",
+    it: "Pronto per ricerca AI",
+    ar: "جاهز لبحث الذكاء الاصطناعي",
+    ja: "AI検索向け",
+  },
+  reviewed: {
+    en: "Reviewed by",
+    tr: "İnceleyen",
+    de: "Geprüft von",
+    fr: "Relu par",
+    es: "Revisado por",
+    it: "Revisionato da",
+    ar: "راجعه",
+    ja: "確認者",
+  },
+  updated: {
+    en: "Updated",
+    tr: "Güncellendi",
+    de: "Aktualisiert",
+    fr: "Mis à jour",
+    es: "Actualizado",
+    it: "Aggiornato",
+    ar: "آخر تحديث",
+    ja: "更新日",
+  },
+  source: {
+    en: "Source",
+    tr: "Kaynak",
+    de: "Quelle",
+    fr: "Source",
+    es: "Fuente",
+    it: "Fonte",
+    ar: "المصدر",
+    ja: "情報源",
+  },
+};
+
+const t = (key: keyof typeof labels) => labels[key][locale] || labels[key].en;
+---
+
+{answer && (
+  <aside class="ai-overview-container reveal" aria-label={t("title")}>
+    <div class="ai-overview-header">
+      <span class="ai-overview-icon" aria-hidden="true">✦</span>
+      <strong class="ai-overview-title">{t("title")}</strong>
+      <span class="ai-overview-badge">{t("badge")}</span>
+    </div>
+    <p class="ai-overview-text">{answer}</p>
+    <div class="ai-overview-eeat" aria-label="Content verification">
+      {meta.reviewedBy && (
+        <span class="ai-overview-eeat-item">
+          <span class="ai-overview-eeat-label">{t("reviewed")}:</span>
+          <span class="ai-overview-eeat-val">{meta.reviewedBy}</span>
+        </span>
+      )}
+      {meta.updatedAt && (
+        <span class="ai-overview-eeat-item">
+          <span class="ai-overview-eeat-label">{t("updated")}:</span>
+          <time class="ai-overview-eeat-val" datetime={meta.updatedAt}>{meta.updatedAt}</time>
+        </span>
+      )}
+      {meta.sourceLabel && (
+        <span class="ai-overview-eeat-item">
+          <span class="ai-overview-eeat-label">{t("source")}:</span>
+          <span class="ai-overview-eeat-val">{meta.sourceLabel}</span>
+        </span>
+      )}
+    </div>
+  </aside>
+)}

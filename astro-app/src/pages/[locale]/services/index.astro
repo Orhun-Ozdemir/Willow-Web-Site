@@ -1,9 +1,11 @@
 ---
 import PageLayout from "@/layouts/PageLayout.astro";
 import FaqAccordion from "@/components/FaqAccordion.astro";
+import AIAnswerBlock from "@/components/AIAnswerBlock.astro";
 import { loadContent } from "@/lib/content";
-import { pageSeo } from "@/lib/seo";
+import { pageSeo, webPageNode, ORGANIZATION_SCHEMA, WEBSITE_SCHEMA } from "@/lib/seo";
 import { localizedValue, locales, type Locale } from "@/lib/cms";
+import { aiAnswerForPage, aiMetaForPage, appendSchemaNodes, fallbackFaqsForPage, faqItemsForPage, faqSchemaNode } from "@/lib/ai-search";
 
 export function getStaticPaths() {
   return locales.map((locale) => ({ params: { locale } }));
@@ -15,6 +17,18 @@ const seoProps = pageSeo(content, "services", locale, "/services", "Services | W
 const pageContent = content.pageContent?.services || {};
 const companyFacts = content.companyFacts || {};
 const getVal = (key: string) => localizedValue(pageContent[key], locale);
+const servicesFallbackFaqs = fallbackFaqsForPage("services", locale);
+const servicesFaqItems = faqItemsForPage(content.faqs || [], "services", locale, servicesFallbackFaqs);
+const aiAnswer = aiAnswerForPage(content, "services", locale, seoProps.description);
+const aiMeta = aiMetaForPage(content, "services", locale);
+const servicesSchema = appendSchemaNodes({
+  "@context": "https://schema.org",
+  "@graph": [
+    ORGANIZATION_SCHEMA,
+    WEBSITE_SCHEMA,
+    webPageNode("WebPage", seoProps.canonical, seoProps.title, seoProps.description, locale),
+  ],
+}, [faqSchemaNode(seoProps.canonical, servicesFaqItems)]);
 
 const featuredClients = (content.clients || [])
   .filter((c: any) => c.featured)
@@ -279,6 +293,7 @@ const getLabel = (key: keyof typeof labels) => {
 
 <PageLayout
   {...seoProps}
+  schema={servicesSchema}
   locale={locale}
   dataPage="services"
 >
@@ -351,6 +366,12 @@ const getLabel = (key: keyof typeof labels) => {
             </div>
           </div>
         </div>
+      </div>
+    </section>
+
+    <section class="section tight">
+      <div class="section-inner">
+        <AIAnswerBlock answer={aiAnswer} locale={locale} meta={aiMeta} />
       </div>
     </section>
 

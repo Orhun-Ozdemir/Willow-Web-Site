@@ -5,13 +5,19 @@ interface Props {
   pageKey: string;
   faqs: any[];
   locale: Locale;
+  fallbackFaqs?: { question: string; answer: string }[];
 }
 
-const { pageKey, faqs, locale } = Astro.props;
+const { pageKey, faqs, locale, fallbackFaqs = [] } = Astro.props;
 
 const filteredFaqs = (faqs || [])
   .filter((f: any) => f.page === pageKey)
   .sort((a: any, b: any) => (a.sortOrder || 0) - (b.sortOrder || 0));
+
+const fallbackItems = fallbackFaqs.map((faq) => ({
+  question: faq.question,
+  answer: faq.answer,
+}));
 ---
 
 <div class="faq-list reveal delay-1">
@@ -28,4 +34,13 @@ const filteredFaqs = (faqs || [])
       </details>
     );
   })}
+  {filteredFaqs.length === 0 && fallbackItems.map((faq) => (
+    <details class="faq-item">
+      <summary>
+        <span class="faq-q">{faq.question}</span>
+        <span class="faq-toggle" aria-hidden="true"></span>
+      </summary>
+      <p>{faq.answer}</p>
+    </details>
+  ))}
 </div>

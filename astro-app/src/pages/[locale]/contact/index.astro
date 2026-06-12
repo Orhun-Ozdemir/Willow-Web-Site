@@ -2,9 +2,11 @@
 import PageLayout from "@/layouts/PageLayout.astro";
 import ContactForm from "@/components/ContactForm.astro";
 import FaqAccordion from "@/components/FaqAccordion.astro";
+import AIAnswerBlock from "@/components/AIAnswerBlock.astro";
 import { loadContent } from "@/lib/content";
 import { pageSeo, webPageNode, ORGANIZATION_SCHEMA, WEBSITE_SCHEMA, SITE_ORIGIN } from "@/lib/seo";
 import { localizedValue, locales, type Locale } from "@/lib/cms";
+import { aiAnswerForPage, aiMetaForPage, appendSchemaNodes, fallbackFaqsForPage, faqItemsForPage, faqSchemaNode } from "@/lib/ai-search";
 
 export function getStaticPaths() {
   return locales.map((locale) => ({ params: { locale } }));
@@ -13,7 +15,11 @@ export function getStaticPaths() {
 const { locale } = Astro.params as { locale: Locale };
 const content = loadContent();
 const seoProps = pageSeo(content, "contact", locale, "/contact", "Contact | WillowSoft", "Contact WillowSoft for IoT hardware, backend, PostgreSQL, and software development projects.");
-const contactSchema = {
+const contactFallbackFaqs = fallbackFaqsForPage("contact", locale);
+const contactFaqItems = faqItemsForPage(content.faqs || [], "contact", locale, contactFallbackFaqs);
+const aiAnswer = aiAnswerForPage(content, "contact", locale, seoProps.description);
+const aiMeta = aiMetaForPage(content, "contact", locale);
+const contactSchema = appendSchemaNodes({
   "@context": "https://schema.org",
   "@graph": [
     ORGANIZATION_SCHEMA,
@@ -23,7 +29,7 @@ const contactSchema = {
       mainEntity: { "@id": `${SITE_ORIGIN}/#org` },
     },
   ],
-};
+}, [faqSchemaNode(seoProps.canonical, contactFaqItems)]);
 const pageContent = content.pageContent?.contact || {};
 const getVal = (key: string) => localizedValue(pageContent[key], locale);
 
@@ -96,6 +102,12 @@ const getLabel = (key: keyof typeof labels) => {
       </div>
     </section>
 
+    <section class="section tight">
+      <div class="section-inner">
+        <AIAnswerBlock answer={aiAnswer} locale={locale} meta={aiMeta} />
+      </div>
+    </section>
+
     <!-- FAQ -->
     <section class="section soft services-faq-section" id="faq">
       <div class="section-inner">
@@ -107,7 +119,7 @@ const getLabel = (key: keyof typeof labels) => {
           </p>
         </div>
         <div class="reveal delay-1">
-          <FaqAccordion faqs={content.faqs || []} pageKey="contact" locale={locale} />
+          <FaqAccordion faqs={content.faqs || []} pageKey="contact" locale={locale} fallbackFaqs={contactFallbackFaqs} />
         </div>
       </div>
     </section>

@@ -2,9 +2,11 @@
 import PageLayout from "@/layouts/PageLayout.astro";
 import StartProjectForm from "@/components/StartProjectForm.astro";
 import FaqAccordion from "@/components/FaqAccordion.astro";
+import AIAnswerBlock from "@/components/AIAnswerBlock.astro";
 import { loadContent } from "@/lib/content";
-import { pageSeo } from "@/lib/seo";
+import { pageSeo, webPageNode, ORGANIZATION_SCHEMA, WEBSITE_SCHEMA } from "@/lib/seo";
 import { localizedValue, locales, type Locale } from "@/lib/cms";
+import { aiAnswerForPage, aiMetaForPage, appendSchemaNodes, fallbackFaqsForPage, faqItemsForPage, faqSchemaNode } from "@/lib/ai-search";
 
 export function getStaticPaths() {
   return locales.map((locale) => ({ params: { locale } }));
@@ -15,6 +17,18 @@ const content = loadContent();
 const seoProps = pageSeo(content, "startProject", locale, "/start-project", "Start Your IoT Project | WillowSoft", "Start a connected hardware, software or platform project with WillowSoft.");
 const pageContent = content.pageContent?.startProject || {};
 const getVal = (key: string) => localizedValue(pageContent[key], locale);
+const startFallbackFaqs = fallbackFaqsForPage("start-project", locale);
+const startFaqItems = faqItemsForPage(content.faqs || [], "start-project", locale, startFallbackFaqs);
+const aiAnswer = aiAnswerForPage(content, "startProject", locale, seoProps.description);
+const aiMeta = aiMetaForPage(content, "startProject", locale);
+const startProjectSchema = appendSchemaNodes({
+  "@context": "https://schema.org",
+  "@graph": [
+    ORGANIZATION_SCHEMA,
+    WEBSITE_SCHEMA,
+    webPageNode("WebPage", seoProps.canonical, seoProps.title, seoProps.description, locale),
+  ],
+}, [faqSchemaNode(seoProps.canonical, startFaqItems)]);
 
 const companyFacts = content.companyFacts || {};
 
@@ -89,6 +103,7 @@ const getSteps = () => {
 
 <PageLayout
   {...seoProps}
+  schema={startProjectSchema}
   locale={locale}
   dataPage="start-project"
 >
@@ -137,6 +152,12 @@ const getSteps = () => {
             </div>
           </div>
         </aside>
+      </div>
+    </section>
+
+    <section class="section tight">
+      <div class="section-inner">
+        <AIAnswerBlock answer={aiAnswer} locale={locale} meta={aiMeta} />
       </div>
     </section>
 
@@ -218,7 +239,7 @@ const getSteps = () => {
           </p>
         </div>
         <div class="reveal delay-1">
-          <FaqAccordion faqs={content.faqs || []} pageKey="start-project" locale={locale} />
+          <FaqAccordion faqs={content.faqs || []} pageKey="start-project" locale={locale} fallbackFaqs={startFallbackFaqs} />
         </div>
       </div>
     </section>
