@@ -6,6 +6,7 @@ import { loadContent } from "@/lib/content";
 import { localizedValue, localizeItem, locales, type Locale } from "@/lib/cms";
 import { buildAlternates, DEFAULT_OG_IMAGE, ORGANIZATION_SCHEMA, WEBSITE_SCHEMA, SITE_ORIGIN } from "@/lib/seo";
 import { aiMetaForPage, appendSchemaNodes, faqSchemaNode, stripHtml, type AiFaqItem } from "@/lib/ai-search";
+import { getProductExtras } from "@/lib/product-extras";
 
 export const prerender = false;
 
@@ -286,7 +287,156 @@ const productFaqItems: AiFaqItem[] = [
   { question: pickText(productFaqLabels.integrationQuestion), answer: stripHtml(pickText(productFaqLabels.integrationAnswer)) },
   { question: pickText(productFaqLabels.selectionQuestion), answer: stripHtml(fitText) },
 ].filter((item) => item.question && item.answer);
-const productAiMeta = aiMetaForPage(content, "products", locale);
+
+// Category display names localized
+const categoryLabels: Record<string, Record<Locale, string>> = {
+  modules: {
+    en: "LoRaWAN Modules",
+    tr: "LoRaWAN Modülleri",
+    de: "LoRaWAN-Module",
+    fr: "Modules LoRaWAN",
+    es: "Módulos LoRaWAN",
+    it: "Moduli LoRaWAN",
+    ar: "وحدات LoRaWAN",
+    ja: "LoRaWANモジュール",
+  },
+  sensors: {
+    en: "LoRaWAN Sensors",
+    tr: "LoRaWAN Sensörleri",
+    de: "LoRaWAN-Sensoren",
+    fr: "Capteurs LoRaWAN",
+    es: "Sensores LoRaWAN",
+    it: "Sensori LoRaWAN",
+    ar: "أجهزة استشعار LoRaWAN",
+    ja: "LoRaWANセンサー",
+  },
+  tracking: {
+    en: "LoRaWAN Tracking",
+    tr: "LoRaWAN Takip Cihazları",
+    de: "LoRaWAN-Tracking",
+    fr: "Suivi LoRaWAN",
+    es: "Seguimiento LoRaWAN",
+    it: "Tracciamento LoRaWAN",
+    ar: "تتبع LoRaWAN",
+    ja: "LoRaWANトラッキング",
+  },
+  industrial: {
+    en: "LoRaWAN Industrial",
+    tr: "LoRaWAN Endüstriyel",
+    de: "LoRaWAN-Industriell",
+    fr: "Industriel LoRaWAN",
+    es: "Industrial LoRaWAN",
+    it: "Industriale LoRaWAN",
+    ar: "LoRaWAN الصناعية",
+    ja: "LoRaWAN産業用",
+  }
+};
+
+const WS_SPEC_LABELS: Record<string, Record<string, string>> = {
+  mcu: { en: "MCU", tr: "MCU", de: "MCU", fr: "MCU", es: "MCU", it: "MCU", ar: "وحدة MCU", ja: "MCU" },
+  protocol: { en: "Protocol", tr: "Protokol", de: "Protokoll", fr: "Protocole", es: "Protocolo", it: "Protocollo", ar: "البروتوكول", ja: "プロトコル" },
+  warranty: { en: "Warranty", tr: "Garanti", de: "Garantie", fr: "Garantie", es: "Garantía", it: "Garanzia", ar: "الضمان", ja: "保証" },
+  gpioPins: { en: "GPIO pins", tr: "GPIO pinleri", de: "GPIO-Pins", fr: "Broches GPIO", es: "Pines GPIO", it: "Pin GPIO", ar: "دبابيس GPIO", ja: "GPIOピン" },
+  gpio_pins: { en: "GPIO pins", tr: "GPIO pinleri", de: "GPIO-Pins", fr: "Broches GPIO", es: "Pines GPIO", it: "Pin GPIO", ar: "دبابيس GPIO", ja: "GPIOピン" },
+  dimensions: { en: "Dimensions", tr: "Boyutlar", de: "Abmessungen", fr: "Dimensions", es: "Dimensiones", it: "Dimensioni", ar: "الأبعاد", ja: "寸法" },
+  flashMemory: { en: "Flash memory", tr: "Flash hafıza", de: "Flash-Speicher", fr: "Mémoire Flash", es: "Memoria Flash", it: "Memoria Flash", ar: "ذاكرة الفلاش", ja: "フラッシュメモリ" },
+  flash_memory: { en: "Flash memory", tr: "Flash hafıza", de: "Flash-Speicher", fr: "Mémoire Flash", es: "Memoria Flash", it: "Memoria Flash", ar: "ذاكرة الفلاش", ja: "フラッシュメモリ" },
+  powerSupport: { en: "Power supply", tr: "Güç kaynağı", de: "Stromversorgung", fr: "Alimentation", es: "Fuente de alimentación", it: "Alimentatore", ar: "مزود الطاقة", ja: "電源仕様" },
+  power_support: { en: "Power supply", tr: "Güç kaynağı", de: "Stromversorgung", fr: "Alimentation", es: "Fuente de alimentación", it: "Alimentatore", ar: "مزود الطاقة", ja: "電源仕様" },
+  regionSupport: { en: "Region support", tr: "Bölge desteği", de: "Regionen-Support", fr: "Support régional", es: "Soporte regional", it: "Supporto regionale", ar: "دعم المنطقة", ja: "対応地域" },
+  region_support: { en: "Region support", tr: "Bölge desteği", de: "Regionen-Support", fr: "Support régional", es: "Soporte regional", it: "Supporto regionale", ar: "دعم المنطقة", ja: "対応地域" },
+  rfOutputPower: { en: "RF output power", tr: "RF çıkış gücü", de: "RF-Ausgangsleistung", fr: "Puissance de sortie RF", es: "Potencia de salida RF", it: "Potenza di uscita RF", ar: "طاقة خرج RF", ja: "RF出力" },
+  rf_output_power: { en: "RF output power", tr: "RF çıkış gücü", de: "RF-Ausgangsleistung", fr: "Puissance de sortie RF", es: "Potencia de salida RF", it: "Potenza di uscita RF", ar: "طاقة خرج RF", ja: "RF出力" },
+  operatingTemperature: { en: "Operating temp", tr: "Çalışma sıcaklığı", de: "Betriebstemperatur", fr: "Temp de fonctionnement", es: "Temp de fonctionnement", it: "Temp operativa", ar: "درجة حرارة التشغيل", ja: "動作温度" },
+  operating_temperature: { en: "Operating temp", tr: "Çalışma sıcaklığı", de: "Betriebstemperatur", fr: "Temp de fonctionnement", es: "Temp de fonctionnement", it: "Temp operativa", ar: "درجة حرارة التشغيل", ja: "動作温度" },
+  wirelessProtocol: { en: "Wireless protocol", tr: "Kablosuz protokol", de: "Drahtloses Protokoll", fr: "Protocole sans fil", es: "Protocolo inalámbrico", it: "Protocollo wireless", ar: "البروتوكول اللاسلكي", ja: "無線プロトコル" },
+  wireless_protocol: { en: "Wireless protocol", tr: "Kablosuz protokol", de: "Drahtloses Protokoll", fr: "Protocole sans fil", es: "Protocolo inalámbrico", it: "Protocollo wireless", ar: "البروتوكول اللاسلكي", ja: "無線プロトコル" },
+  communicationRange: { en: "Communication range", tr: "İletişim menzili", de: "Kommunikationsreichweite", fr: "Portée", es: "Alcance", it: "Portata", ar: "مدى الاتصال", ja: "通信距離" },
+  communication_range: { en: "Communication range", tr: "İletişim menzili", de: "Kommunikationsreichweite", fr: "Portée", es: "Alcance", it: "Portata", ar: "مدى الاتصال", ja: "通信距離" },
+  batteryLife: { en: "Battery life", tr: "Pil ömrü", de: "Batterielaufzeit", fr: "Autonomie de batterie", es: "Duración de baterıa", it: "Durata batteria", ar: "عمر البطارية", ja: "バッテリー寿命" },
+  battery_life: { en: "Battery life", tr: "Pil ömrü", de: "Batterielaufzeit", fr: "Autonomie de batterie", es: "Duración de baterıa", it: "Durata batteria", ar: "عمر البطارية", ja: "バッテリー寿命" },
+  power: { en: "Power", tr: "Güç", de: "Leistung", fr: "Puissance", es: "Potencia", it: "Potenza", ar: "الطاقة", ja: "電力" },
+  enclosure: { en: "Enclosure", tr: "Muhafaza", de: "Gehäuse", fr: "Boîtier", es: "Carcasa", it: "Involucro", ar: "الغلاف", ja: "筐体" },
+  sensingRadius: { en: "Sensing radius", tr: "Algılama yarıçapı", de: "Erfassungsradius", fr: "Rayon de détection", es: "Radio de detección", it: "Raggio di rilevamento", ar: "نصف قطر الاستشعار", ja: "検知範囲" },
+  sensing_radius: { en: "Sensing radius", tr: "Algılama yarıçapı", de: "Erfassungsradius", fr: "Rayon de détection", es: "Radio de detección", it: "Raggio di rilevamento", ar: "نصف قطر الاستشعار", ja: "検知範囲" },
+  reportedParameters: { en: "Reported parameters", tr: "Raporlanan parametreler", de: "Berichtete Parameter", fr: "Paramètres rapportés", es: "Parámetros reportados", it: "Parametri riportati", ar: "المعلمات المبلغ عنها", ja: "レポートパラメータ" },
+  reported_parameters: { en: "Reported parameters", tr: "Raporlanan parametreler", de: "Berichtete Parameter", fr: "Paramètres rapportés", es: "Parámetros reportados", it: "Parametri riportati", ar: "المعلمات المبلغ عنها", ja: "レポートパラメータ" },
+};
+
+function wsSpecLabel(key: string, locale: Locale) {
+  if (WS_SPEC_LABELS[key]) {
+    return WS_SPEC_LABELS[key][locale] || WS_SPEC_LABELS[key]["en"];
+  }
+  const words = key
+    .replace(/[_-]+/g, " ")
+    .replace(/([A-Z])/g, " $1")
+    .trim()
+    .toLowerCase();
+  return words.charAt(0).toUpperCase() + words.slice(1);
+}
+
+const WS_HIGHLIGHT_KEYS = [
+  { keys: ["communicationRange", "communication_range"], label: { en: "Communication range", tr: "İletişim Menzili", de: "Kommunikationsreichweite", fr: "Portée", es: "Alcance", it: "Portata", ar: "مدى الاتصال", ja: "通信範囲" } },
+  { keys: ["batteryLife", "battery_life"], label: { en: "Battery life", tr: "Pil Ömrü", de: "Batterielaufzeit", fr: "Autonomie de batterie", es: "Duración de baterıa", it: "Durata batteria", ar: "عمر البطارية", ja: "バッテリー寿命" } },
+  { keys: ["rfOutputPower", "rf_output_power"], label: { en: "RF output power", tr: "RF Çıkış Gücü", de: "RF-Ausgangsleistung", fr: "Puissance de sortie RF", es: "Potencia de salida RF", it: "Potenza di uscita RF", ar: "طاقة خرج RF", ja: "RF出力" } },
+  { keys: ["operatingTemperature", "operating_temperature"], label: { en: "Operating temp", tr: "Çalışma Sıcaklığı", de: "Betriebstemperatur", fr: "Temp de fonctionnement", es: "Temperatura de funcionamiento", it: "Temp operativa", ar: "درجة حرارة التشغيل", ja: "動作温度" } },
+  { keys: ["wirelessProtocol", "wireless_protocol", "protocol"], label: { en: "Protocol", tr: "Protokol", de: "Protokoll", fr: "Protocole", es: "Protocolo", it: "Protocollo", ar: "البروتوكول", ja: "プロトコル" } },
+  { keys: ["sensingRadius", "sensing_radius"], label: { en: "Sensing radius", tr: "Algılama Yarıçapı", de: "Erfassungsradius", fr: "Rayon de détection", es: "Radio de detección", it: "Raggio di rilevamento", ar: "نصف قطر الاستشعار", ja: "検知範囲" } },
+  { keys: ["warranty"], label: { en: "Warranty", tr: "Garanti", de: "Garantie", fr: "Garantie", es: "Garantía", it: "Garanzia", ar: "الضمان", ja: "保証" } }
+];
+
+function getProductHighlights(p: any, locale: string) {
+  const s = p.specifications || {};
+  const highlights: { value: string; label: string }[] = [];
+  for (const item of WS_HIGHLIGHT_KEYS) {
+    const foundKey = item.keys.find(k => s[k] !== undefined);
+    if (foundKey) {
+      highlights.push({
+        value: String(s[foundKey]),
+        label: item.label[locale as keyof typeof item.label] || item.label.en
+      });
+    }
+  }
+  return highlights.slice(0, 4);
+}
+
+const highlights = getProductHighlights(product, locale);
+const specEntries = Object.entries(product.specifications || {}).filter(([k]) => k !== 'features');
+const keyFeatures = (product.specifications as any)?.features || [];
+
+const extras = getProductExtras(rawProduct.id || rawProduct.slug || slug);
+
+const params = extras?.parameters?.map(p => ({
+  icon: p.icon,
+  name: p.name[locale] || p.name.en,
+  desc: p.desc[locale] || p.desc.en
+})) || [];
+
+const apps = extras?.applications?.map(a => ({
+  icon: a.icon,
+  name: a.name[locale] || a.name.en,
+  desc: a.desc[locale] || a.desc.en
+})) || [];
+
+const paramsKicker = extras?.parametersKicker?.[locale] || extras?.parametersKicker?.en || "";
+const paramsTitle = extras?.parametersTitle?.[locale] || extras?.parametersTitle?.en || "";
+const appsNote = extras?.applicationsNote?.[locale] || extras?.applicationsNote?.en || "";
+
+const ICONS: Record<string, string> = {
+  check: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><polyline points="20 6 9 17 4 12"></polyline></svg>`,
+  download: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>`,
+  mount: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect><rect x="9" y="9" width="6" height="6"></rect><line x1="9" y1="1" x2="9" y2="4"></line><line x1="15" y1="1" x2="15" y2="4"></line><line x1="9" y1="20" x2="9" y2="23"></line><line x1="15" y1="20" x2="15" y2="23"></line><line x1="20" y1="9" x2="23" y2="9"></line><line x1="20" y1="15" x2="23" y2="15"></line><line x1="1" y1="9" x2="4" y2="9"></line><line x1="1" y1="15" x2="4" y2="15"></line></svg>`,
+  radio: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><circle cx="12" cy="12" r="2"></circle><path d="M16.24 7.76a6 6 0 0 1 0 8.49m-8.48-.01a6 6 0 0 1 0-8.49m11.31-2.82a10 10 0 0 1 0 14.14m-14.14 0a10 10 0 0 1 0-14.14"></path></svg>`,
+  droplet: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path></svg>`,
+  thermo: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"></path></svg>`,
+  battery: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><rect x="1" y="6" width="18" height="12" rx="2" ry="2"></rect><line x1="23" y1="11" x2="23" y2="13"></line></svg>`,
+  cloud: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"></path></svg>`,
+  sprout: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><path d="M2 22c1.25-3.87 3.75-7 7-7h5c3.25 0 5.75 3.13 7 7"></path><path d="M12 15V9"></path><path d="M12 9c0-2.21-1.79-4-4-4S4 6.79 4 9s1.79 4 4 4h4"></path><path d="M12 9c0-2.21 1.79-4 4-4s4 1.79 4 4-1.79 4-4 4h-4"></path></svg>`,
+  leaf: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 3.5 2 5.5a7 7 0 0 1-10 12.5z"></path><path d="M19 2c-2.26 4.33-5.27 7.14-8 10"></path></svg>`,
+  greenhouse: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><path d="M3 21h18"></path><path d="M3 21v-8a9 9 0 0 1 18 0v8"></path><path d="M9 21v-4a3 3 0 0 1 6 0v4"></path><line x1="3" y1="13" x2="21" y2="13"></line><line x1="12" y1="4" x2="12" y2="13"></line></svg>`,
+  factory: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><path d="M17 18.5V21H3V3l4 3 4-3 4 3h2a2 2 0 0 1 2 2v3"></path><path d="M17 11.5a2.5 2.5 0 0 1 5 0V18a2 2 0 0 1-2 2h-3"></path><path d="M20 6h2"></path></svg>`,
+  barn: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><path d="M3 21h18"></path><path d="M4 21V10l8-6 8 6v11"></path><path d="M9 21v-6a3 3 0 0 1 6 0v6"></path><path d="M4 10h16"></path></svg>`
+};
 
 // Schema.org Graph
 const graphSchema = appendSchemaNodes({
@@ -332,9 +482,9 @@ const t = {
     tr: "Bu ürünü eksiksiz bir WillowSoft donanım, gömülü yazılım, arka plan ve kontrol paneli yığınının parçası olarak kullanın.",
     de: "Nutzen Sie dieses Produkt als Teil eines vollständigen WillowSoft-Hardware-, Firmware-, Backend- und Dashboard-Stacks.",
     fr: "Utilisez ce produit dans le cadre d'une pile complète de matériel, de micrologiciel, de backend et de tableau de bord WillowSoft.",
-    es: "Utilice este producto como parte de una pila completa de hardware, firmware, backend y panel de control de WillowSoft.",
+    es: "Utilice este product como parte de una pila completa de hardware, firmware, backend y panel de control de WillowSoft.",
     it: "Utilizza questo prodotto come parte di uno stack completo WillowSoft di hardware, firmware, backend e dashboard.",
-    ar: "استخدم هذا CNBC كجزء من أجهزة وبرامج مدمجة ولوحة تحكم متكاملة من WillowSoft.",
+    ar: "استخدم هذا كجزء من أجهزة وبرامج مدمجة ولوحة تحكم متكاملة من WillowSoft.",
     ja: "無線デバイス、デバイスファームウェア、クラウドバックエンド、およびダッシュボードを含む統合システムとして導入できます。"
   },
   gallery: { en: "Gallery", tr: "Galeri", de: "Galerie", fr: "Galerie", es: "Galería", it: "Galleria", ar: "معرض الصور", ja: "製品ギャラリー" },
@@ -346,7 +496,7 @@ const t = {
     de: "Kann als eigenständiges Produkt oder als Teil eines vollständig vernetzten Systems bewertet werden.",
     fr: "Peut être évalué comme un produit autonome ou dans le cadre d'un système connecté complet.",
     es: "Puede evaluarse como un producto independiente o como parte de un sistema conectado completo.",
-    it: "Può essere valutato come prodotto autonomo o come parte di un sistema connesso completo.",
+    it: "Può essere valutato come prodotto autonomo o como parte di un sistema connesso completo.",
     ar: "يمكن تقييمه كمنتج مستقل أو كجزء من نظام متصل متكامل.",
     ja: "スタンドアロンのハードウェアとして、または統合されたエンドツーエンドのシステムとして評価可能です。"
   },
@@ -365,10 +515,10 @@ const t = {
     tr: "İlgili gömülü yazılım, arka plan, PostgreSQL, web/yönetim ve mobil katmanlar WillowSoft tarafından teslim edilebilir.",
     de: "Zugehörige Firmware, Backends, PostgreSQL, Web/Admin- und mobile Schichten können von WillowSoft geliefert werden.",
     fr: "Les couches de micrologiciel, de backend, de PostgreSQL, de site web/d'administration et de mobile associées peuvent être fournies par WillowSoft.",
-    es: "Las capas de firmware, backend, PostgreSQL, web/administración y móvil relacionadas pueden ser entregadas por WillowSoft.",
+    es: "Las capas de firmware, backend, PostgreSQL, web/administración y móvil relacionadas können von WillowSoft geliefert werden.",
     it: "I relativi livelli di firmware, backend, PostgreSQL, portale web/amministratore e app mobile possono essere forniti da WillowSoft.",
     ar: "يمكن لـ WillowSoft تقديم البرامج المدمجة ذات الصلة، والخلفية، وقاعدة بيانات PostgreSQL، وطبقات الويب/الإدارة والجوال.",
-    ja: "対応するファームウェア、APIサーバー、PostgreSQLデータベース、Web管理画面、モバイルアプリの全レイヤーをWillowSoftが開発提供します。"
+    ja: "対応するファームウェア、APIサーバー、PostgreSQLデータベース、Web管理画面、モバイルアプリ of, Web/Yönetim ve Mobil katmanlar WillowSoft tarafından sunulabilir."
   },
   buyerChecklist: { en: "Buyer Checklist", tr: "Alıcı Kontrol Listesi", de: "Käufer-Checkliste", fr: "Liste de contrôle de l'acheteur", es: "Lista de verificación del comprador", it: "Checklist per l'acquisto", ar: "قائمة التحقق للمشتري", ja: "導入計画チェックリスト" },
   buyerTitle: { en: "What this product helps you decide before deployment.", tr: "Kurulumdan önce bu ürünün karar vermenize yardımcı olduğu konular.", de: "Was dieses Produkt Ihnen vor der Bereitstellung zu entscheiden hilft.", fr: "Ce que ce produit vous aide à décider avant le déploiement.", es: "Lo que este producto le ayuda a decidir antes de la implementación.", it: "Cosa ti aiuta a decidere questo prodotto prima dell'installazione.", ar: "ما يساعدك هذا المنتج على قراره قبل عملية النشر.", ja: "導入前に検討すべき要素" },
@@ -384,12 +534,12 @@ const t = {
     tr: "WillowSoft ürünleri, eksiksiz bir operasyonel sistemin parçası olarak sunulduğunda en güçlü yönlerini ortaya koyar: sensör, bağlantı, arka uç, veritabanı, kontrol paneli, mobil ve uyarı.",
     de: "WillowSoft-Produkte sind am stärksten, wenn sie als Teil eines vollständigen Betriebssystems präsentiert werden: Sensor, Konnektivität, Backend, Datenbank, Dashboard, Mobile und Alarmierung.",
     fr: "Les produits WillowSoft sont les plus performants lorsqu'ils sont présentés comme faisant partie d'un système opérationnel complet : capteur, connectivité, backend, base de données, tableau de bord, mobile et alerte.",
-    es: "Los productos de WillowSoft son más fuertes cuando se presentan como parte de un sistema operativo completo: sensor, conectividad, backend, base de datos, panel de control, móvil y alertas.",
-    it: "I prodotti WillowSoft offrono il massimo valore quando presentati come parte di un sistema operativo completo: sensore, connettività, backend, database, dashboard, app mobile e avvisi.",
+    es: "Los productos de WillowSoft son más fuertes cuando se presentan como parte de un sistema operativo completo: sensor, conectividad, backend, base de datos, panel de control, móvil ve alerts.",
+    it: "I prodotti WillowSoft offrono il massimo valore quando presentati como parte di un sistema operativo completo: sensore, connettività, backend, database, dashboard, app mobile e avvisi.",
     ar: "تكون منتجات WillowSoft في أقوى حالاتها عندما تُقدم كجزء من نظام تشغيلي متكامل: المستشعر، والاتصال، والخلفية، وقاعدة البيانات، ولوحة التحكم، والجوال، والتنبيهات.",
     ja: "WillowSoftのデバイスは、センサー、ネットワーク、サーバー、データベース、ダッシュボード、モバイル通知までを網羅した統合システムの一部として導入することで、最大の効果を発揮します。"
   },
-  needInProject: { en: "Need this in a project?", tr: "Projelerinizde buna mı ihtiyacınız var?", de: "Benötigen Sie dies in einem Projekt?", fr: "Besoin de cela dans un projet ?", es: "¿Necesita esto en un proyecto?", it: "Ti serve in un progetto?", ar: "هل تحتاج هذا في مشروعك؟", ja: "プロジェクトへの導入をご検討中ですか？" },
+  needInProject: { en: "Need this in a project?", tr: "Projelerinizde buna mı ihtiyacınız var?", de: "Benötigen Sie dies in einem Projekt?", fr: "Besoin de cela dans un projet ?", es: "¿Necesita esto en un proyecto?", it: "Ti serve in un progetto?", ar: "هل تحتاج هذا في مشروعك؟", ja: "プロジェクトへの導入をご検討中ですか؟" },
   askProductFit: { en: "Ask for product fit, integration path and deployment scope.", tr: "Ürün uyumu, entegrasyon yolu ve kurulum kapsamı hakkında bilgi isteyin.", de: "Fragen Sie nach Produktpassung, Integrationspfad und Bereitstellungsumfang.", fr: "Demandez l'adéquation du produit, le parcours d'intégration et la portée du déploiement.", es: "Pregunte por la idoneidad del producto, la ruta de integración y el alcance de la implementación.", it: "Chiedi informazioni sulla compatibilità del prodotto, il percorso di integrazione e l'ambito dell'installazione.", ar: "اسأل عن مدى ملاءمة المنتج ومسار الربط ونطاق النشر.", ja: "製品の適合性、既存システムとの連携方法、および導入規模についてお問い合わせください。"
   },
   startProject: { en: "Start Project", tr: "Projeyi Başlat", de: "Projekt starten", fr: "Démarrer le projet", es: "Iniciar proyecto", it: "Avvia progetto", ar: "بدء المشروع", ja: "プロジェクト相談" },
@@ -397,15 +547,24 @@ const t = {
   backToProducts: { en: "Back to Products", tr: "Ürünlere Dön", de: "Zurück zu Produkten", fr: "Retour aux Produkten", es: "Volver a productos", it: "Torna ai prodotti", ar: "العودة إلى المنتجات", ja: "製品一覧へ戻る" },
   reqInfo: { en: "Request Information", tr: "Bilgi Talep Et", de: "Informationen anfordern", fr: "Demander des informations", es: "Solicitar información", it: "Richiedi informazioni", ar: "طلب معلومات", ja: "資料請求・お問い合わせ" },
   flowDevice: { en: "Device", tr: "Cihaz", de: "Gerät", fr: "Dispositif", es: "Dispositivo", it: "Dispositivo", ar: "الجهاز", ja: "デバイス" },
-  flowDeviceDesc: { en: "Sensing, enclosure, battery and RF behavior.", tr: "Ölçüm, muhafaza, pil ve RF davranışı.", de: "Messung, Gehäuse, Batterie und RF-Verhalten.", fr: "Mesure, boîtier, batterie et comportement RF.", es: "Medición, carcasa, batería y comportamiento RF.", it: "Misura, involucro, batteria e comportamento RF.", ar: "الاستشعار والغلاف والبطارية وسلوك RF.", ja: "センシング、筐体、バッテリー、RF特性。" },
-  flowNetwork: { en: "Network", tr: "Ağ", de: "Netzwerk", fr: "Réseau", es: "Red", it: "Rete", ar: "الشبكة", ja: "ネットワーク" },
   flowNetworkDesc: { en: "LoRaWAN payloads and gateway planning.", tr: "LoRaWAN payload'ları ve gateway planlaması.", de: "LoRaWAN-Payloads und Gateway-Planung.", fr: "Payloads LoRaWAN et planification des passerelles.", es: "Payloads LoRaWAN y planificación de gateways.", it: "Payload LoRaWAN e pianificazione dei gateway.", ar: "حمولات LoRaWAN وتخطيط البوابات.", ja: "LoRaWAN payloadとgateway計画。" },
   flowData: { en: "Data", tr: "Veri", de: "Daten", fr: "Données", es: "Datos", it: "Dati", ar: "البيانات", ja: "データ" },
   flowDataDesc: { en: "API ingestion and PostgreSQL schema.", tr: "API veri alımı ve PostgreSQL şeması.", de: "API-Ingestion und PostgreSQL-Schema.", fr: "Ingestion API et schéma PostgreSQL.", es: "Ingesta API y esquema PostgreSQL.", it: "Ingestion API e schema PostgreSQL.", ar: "استقبال API ومخطط PostgreSQL.", ja: "API取り込みとPostgreSQLスキーマ。" },
   flowInterface: { en: "Interface", tr: "Arayüz", de: "Schnittstelle", fr: "Interface", es: "Interfaz", it: "Interfaccia", ar: "الواجهة", ja: "インターフェース" },
   flowInterfaceDesc: { en: "Dashboard, mobile app and admin panel.", tr: "Dashboard, mobil uygulama ve yönetim paneli.", de: "Dashboard, mobile App und Admin-Panel.", fr: "Dashboard, application mobile et panneau admin.", es: "Dashboard, app móvil y panel admin.", it: "Dashboard, app mobile e pannello admin.", ar: "لوحة تحكم وتطبيق جوال ولوحة إدارة.", ja: "ダッシュボード、モバイルアプリ、管理画面。" },
   flowAction: { en: "Action", tr: "Aksiyon", de: "Aktion", fr: "Action", es: "Acción", it: "Azione", ar: "الإجراء", ja: "アクション" },
-  flowActionDesc: { en: "Alerts, reports, integrations and service workflows.", tr: "Uyarılar, raporlar, entegrasyonlar ve servis iş akışları.", de: "Alarme, Berichte, Integrationen und Service-Workflows.", fr: "Alertes, rapports, intégrations et workflows de service.", es: "Alertas, informes, integraciones y flujos de servicio.", it: "Avvisi, report, integrazioni e workflow di servizio.", ar: "تنبيهات وتقارير وتكاملات وسير عمل للخدمة.", ja: "アラート、レポート、連携、運用ワークフロー。" }
+  flowActionDesc: { en: "Alerts, reports, integrations and service workflows.", tr: "Uyarılar, raporlar, entegrasyonlar ve servis iş akışları.", de: "Alarme, Berichte, Integrationen und Service-Workflows.", fr: "Alertes, rapports, intégrations et workflows de service.", es: "Alertas, informes, integraciones y flujos de servicio.", it: "Avvisi, report, integrazioni e workflow di servizio.", ar: "تنبيهات وتقارير وتكاملات وسير عمل للخدمة.", ja: "アラート、レポート、連携、運用ワークフロー。" },
+  productsBreadcrumb: { en: "Products", tr: "Ürünler", de: "Produkte", fr: "Produits", es: "Productos", it: "Prodotti", ar: "المنتجات", ja: "製品一覧" },
+  requestQuote: { en: "Request a quote", tr: "Teklif isteyin", de: "Angebot anfordern", fr: "Demander un devis", es: "Solicitar cotización", it: "Richiedi un preventivo", ar: "طلب عرض سعر", ja: "見積もりを依頼" },
+  downloadDatasheet: { en: "Download datasheet", tr: "Veri sayfasını indir", de: "Datenblatt herunterladen", fr: "Télécharger la fiche technique", es: "Descargar ficha técnica", it: "Scarica la scheda tecnica", ar: "تنزيل ورقة البيانات", ja: "データシートをダウンロード" },
+  specifications: { en: "Specifications", tr: "Teknik Özellikler", de: "Spezifikationen", fr: "Spécifications", es: "Especificaciones", it: "Specifiche", ar: "المواصفات", ja: "仕様" },
+  keyFeatures: { en: "Key features", tr: "Öne çıkan özellikler", de: "Wichtige Eigenschaften", fr: "Caractéristiques principales", es: "Características clave", it: "Caratteristiche chiave", ar: "الميزات الرئيسية", ja: "主な特長" },
+  capabilities: { en: "Capabilities", tr: "Yetenekler", de: "Fähigkeiten", fr: "Capacités", es: "Capacidades", it: "Funzionalità", ar: "القدرات", ja: "機能" },
+  applications: { en: "Applications", tr: "Uygulama Alanları", de: "Anwendungen", fr: "Applications", es: "Aplicaciones", it: "Applicazioni", ar: "التطبيقات", ja: "用途" },
+  faqSubtitle: { en: "Can't find your answer? Our engineers reply within one business day.", tr: "Aradığınız cevabı bulamadınız mı? Mühendislerimiz bir iş günü içinde yanıt verir.", de: "Keine Antwort gefunden? Unsere Ingenieure antworten innerhalb eines Werktages.", fr: "Vous ne trouvez pas votre réponse ? Nos ingénieurs répondent sous un jour ouvrable.", es: "¿No encuentra la respuesta? Nuestros ingenieros responden en un día hábil.", it: "Non trovi la risposta? I nostri ingegneri rispondono entro un giorno lavorativo.", ar: "لم تجد إجابتك؟ يجيب مهندسونا خلال يوم عمل واحد.", ja: "ご不明な点はございますか？ 技術スタッフ bir iş günü içinde yanıt verir." },
+  askQuestion: { en: "Ask a question", tr: "Soru sorun", de: "Frage stellen", fr: "Poser une question", es: "Hacer una pregunta", it: "Fai una domanda", ar: "طرح سؤال", ja: "質問する" },
+  inTheField: { en: "In the field", tr: "Sahada", de: "Im Feldeinsatz", fr: "Sur le terrain", es: "En el campo", it: "Sul campo", ar: "في الميدان", ja: "現場導入実績" },
+  inTheFieldDesc: { en: "Deployed where decisions are made.", tr: "Kararların alındığı yerlerde kuruldu.", de: "Dort im Einsatz, wo Entscheidungen getroffen werden.", fr: "Déployé là où les décisions sont prises.", es: "Implementado donde se toman las decisiones.", it: "Installato dove si prendono le decisioni.", ar: "نُشرت حيث تُتخذ القرارات.", ja: "意思決定が行われる現場での運用実績。" }
 };
 
 const getT = (key: keyof typeof t) => {
@@ -426,238 +585,948 @@ const getT = (key: keyof typeof t) => {
   dataPage="product-detail"
 >
   <main>
-
-    <section class="hero compact">
-      <div class="hero-media">
-        <img src={product.image ? `/${product.image}`.replace("//", "/") : "/assets/hero-industrial-iot.png"} alt={product.title} loading="lazy" decoding="async" />
+    <div class="section-inner">
+      <div class="ws-breadcrumbs">
+        <a href={`/${locale}/products`}>{getT("productsBreadcrumb")}</a>
+        <span class="separator">/</span>
+        <a href={`/${locale}/products?category=${product.category}`}>{categoryLabels[product.category]?.[locale] || product.category}</a>
+        <span class="separator">/</span>
+        <span class="current">{product.title}</span>
       </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="ws-hero-section">
       <canvas class="signal-canvas" data-density="36"></canvas>
-      <div class="hero-inner">
-        <p class="eyebrow reveal">{product.category || "Product"}</p>
-        <h1 class="reveal delay-1">MODIFIED {product.title}</h1>
-        <p class="reveal delay-2">{product.shortDescription}</p>
-        <div class="hero-ctas reveal delay-3">
-          <a class="btn btn-primary" href={`/${locale}/contact?product=${encodeURIComponent(slug)}`}>{getT("reqInfo")}</a>
-          <a class="btn btn-secondary" href={`/${locale}/products`}>{getT("backToProducts")}</a>
+      <div class="ws-hero-inner section-inner">
+        <div class="ws-hero-left">
+          <div class="ws-hero-image-card">
+            <img src={product.image ? `/${product.image}`.replace("//", "/") : "/assets/hero-industrial-iot.png"} alt={product.title} class="ws-hero-img" />
+          </div>
+        </div>
+        <div class="ws-hero-right">
+          <div class="ws-hero-meta">
+            <span class="ws-kicker">{categoryLabels[product.category]?.[locale] || product.category}</span>
+            {product.featured && (
+              <span class="ws-featured-badge">
+                ★ {locale === 'tr' ? 'ÖNE ÇIKAN' : locale === 'de' ? 'HIGHLIGHT' : 'FEATURED'}
+              </span>
+            )}
+          </div>
+          <h1 class="ws-h1">{product.title}</h1>
+          <p class="ws-lead">{product.aiShortAnswer || product.shortDescription}</p>
+          {product.chips && product.chips.length > 0 && (
+            <div class="ws-chip-row">
+              {product.chips.map((chip: string) => (
+                <span class="ws-chip">
+                  <Fragment set:html={ICONS.check} />
+                  {chip}
+                </span>
+              ))}
+            </div>
+          )}
+          <div class="ws-hero-ctas">
+            <a class="ws-btn ws-btn-primary" href={`/${locale}/contact?product=${encodeURIComponent(slug)}`}>{getT("requestQuote")}</a>
+            {product.datasheet_url || product.datasheet ? (
+              <a class="ws-btn ws-btn-secondary" href={product.datasheet_url || product.datasheet} target="_blank" rel="noopener noreferrer">
+                <Fragment set:html={ICONS.download} />
+                <span>{getT("downloadDatasheet")}</span>
+              </a>
+            ) : (
+              <a class="ws-btn ws-btn-secondary" href={`/${locale}/contact?product=${encodeURIComponent(slug)}&type=datasheet`}>
+                <Fragment set:html={ICONS.download} />
+                <span>{getT("downloadDatasheet")}</span>
+              </a>
+            )}
+          </div>
+          {product.specifications?.warranty && (
+            <p class="ws-warranty-text">
+              {locale === 'tr' ? `${product.specifications.warranty} garantili.` :
+               locale === 'de' ? `Unterstützt durch ${product.specifications.warranty} Garantie.` :
+               `Backed by a ${product.specifications.warranty} warranty.`}
+            </p>
+          )}
         </div>
       </div>
     </section>
 
-    <section class="section tight">
-      <div class="section-inner">
-        <AIAnswerBlock answer={productAiAnswer} locale={locale} meta={productAiMeta} />
-      </div>
-    </section>
-
-    <!-- Bento Snapshot -->
-    <section class="section">
-      <div class="section-inner bento">
-        <article class="card accent reveal">
-          <p class="eyebrow">{getT("technicalSnapshot")}</p>
-          <h2 class="page-title">{snapshotText}</h2>
-          <div class="mini-spec-grid">
-            {(product.chips || []).slice(0, 3).map((chip: string) => (
-              <div class="mini-spec">
-                <strong>{chip}</strong>
-                <span>{getT("capability")}</span>
+    <!-- Stats Band Section -->
+    {highlights.length > 0 && (
+      <section class="ws-stats-section">
+        <div class="section-inner">
+          <div class="ws-stats-band">
+            {highlights.map((hl, i) => (
+              <div class="ws-stat-col" style={i > 0 ? `border-left: 1px solid rgba(255,255,255,0.14)` : ""}>
+                <b class="ws-stat-val">{hl.value}</b>
+                <span class="ws-stat-lbl">{hl.label}</span>
               </div>
             ))}
           </div>
-        </article>
-        <article
-          class="card visual-card reveal delay-1"
-          style={product.image ? `background-image: url('/${product.image}')` : ""}
-        >
-          <h3>{getT("readyText")}</h3>
-          <p>{getT("readyDesc")}</p>
-        </article>
-      </div>
-    </section>
-
-    <!-- Gallery Section -->
-    {galleryImages.length > 1 && (
-      <section class="section product-gallery-section">
-        <div class="section-inner">
-          <div class="section-head">
-            <p class="eyebrow">{getT("gallery")}</p>
-            <h2 class="page-title">{getT("gallery")}</h2>
-          </div>
-          <ProductGallery images={galleryImages} title={product.title} />
         </div>
       </section>
     )}
 
-    <!-- Tech sections -->
-    {(techBlocks.length > 0 || dynamicFacts.length > 0 || productApplications.length > 0 || dynamicSpecGroups.length > 0) && (
-      <section class="section soft product-tech-section">
-        <div class="section-inner">
-          {techBlocks.map((block) => (
-            <article class="product-tech-block" style={{ marginBottom: "40px" }}>
-              <h2 class="page-title">{block.label}</h2>
-              <div class="rich-content" set:html={block.html} />
-            </article>
-          ))}
-          {dynamicFacts.length > 0 && (
-            <article class="product-dynamic-card product-dynamic-card-highlight">
-              <p class="eyebrow">{dynamicLabel("productModel")}</p>
-              <div class="product-dynamic-facts">
-                {dynamicFacts.map((fact) => (
-                  <div>
-                    <span>{fact.label}</span>
-                    <strong>{fact.value}</strong>
-                  </div>
-                ))}
+    <!-- Specifications & Key Features Section -->
+    <section class="ws-specs-section">
+      <div class="ws-specs-grid section-inner">
+        <div class="ws-specs-left">
+          <div class="ws-specs-card">
+            <div class="ws-specs-header">
+              <h3 class="ws-specs-h3">{getT("specifications")}</h3>
+              <div class="ws-specs-iconbox">
+                <Fragment set:html={ICONS.mount} />
               </div>
-            </article>
-          )}
-          {productApplications.length > 0 && (
-            <article class="product-dynamic-card">
-              <p class="eyebrow">{dynamicLabel("applications")}</p>
-              <h2 class="page-title">{dynamicLabel("whereUsed")}</h2>
-              <ul class="product-dynamic-list">
-                {productApplications.map((item: string) => (
-                  <li>{item}</li>
-                ))}
-              </ul>
-            </article>
-          )}
-          {dynamicSpecGroups.map((group: any) => (
-            <article class="product-dynamic-card">
-              <p class="eyebrow">{dynamicLabel("technicalGroup")}</p>
-              <h2 class="page-title">{group.title}</h2>
-              {group.rows.length > 0 && (
-                <dl class="product-dynamic-specs">
-                  {group.rows.map((row: any) => (
-                    <div>
-                      <dt>{row.label || "Field"}</dt>
-                      <dd>{row.value || ""}</dd>
-                    </div>
-                  ))}
-                </dl>
-              )}
-              {group.lists.map((list: any) => (
-                <div class="product-dynamic-sublist">
-                  <h3>{list.title}</h3>
-                  <ul>
-                    {list.items.map((item: string) => (
-                      <li>{item}</li>
-                    ))}
-                  </ul>
+            </div>
+            <dl class="ws-specs-list">
+              {specEntries.map(([k, v]) => (
+                <div class="ws-spec-row">
+                  <dt class="ws-spec-dt">{wsSpecLabel(k, locale)}</dt>
+                  <dd class="ws-spec-dd">{v}</dd>
                 </div>
               ))}
-            </article>
+            </dl>
+            <div class="ws-specs-download-link">
+              <Fragment set:html={ICONS.download} />
+              {product.datasheet_url || product.datasheet ? (
+                <a href={product.datasheet_url || product.datasheet} target="_blank" rel="noopener noreferrer">
+                  {getT("downloadDatasheet")} (PDF)
+                </a>
+              ) : (
+                <a href={`/${locale}/contact?product=${encodeURIComponent(slug)}&type=datasheet`}>
+                  {getT("downloadDatasheet")} (PDF)
+                </a>
+              )}
+            </div>
+          </div>
+        </div>
+
+        <div class="ws-specs-right-sticky">
+          <span class="ws-kicker">{getT("keyFeatures")}</span>
+          <h2 class="ws-h2-small">
+            {locale === 'tr' ? "Saha için tasarlandı, üretime hazır." :
+             locale === 'de' ? "Für den Feldeinsatz konzipiert, bereit für die Produktion." :
+             "Designed for the field, ready for production."}
+          </h2>
+          {keyFeatures.length > 0 && (
+            <ul class="ws-features-bullets">
+              {keyFeatures.map((f: string) => (
+                <li>{f}</li>
+              ))}
+            </ul>
+          )}
+          <div class="ws-stack-infobox">
+            <span class="ws-stack-infobox-icon">
+              <Fragment set:html={ICONS.radio} />
+            </span>
+            <p class="ws-stack-infobox-text">
+              {locale === 'tr' ? "Eksiksiz WillowSoft altyapısının bir parçası — donanım, gömülü yazılım, backend ve kontrol panelleri tek bir ekipten." :
+               locale === 'de' ? "Teil des kompletten WillowSoft-Stacks — Hardware, Firmware, Backend und Dashboards aus einer Hand." :
+               "Part of the complete WillowSoft stack — hardware, firmware, backend and dashboards from one team."}
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Capabilities Section -->
+    {params.length > 0 && (
+      <section class="ws-capabilities-section">
+        <div class="section-inner">
+          <div class="ws-section-header">
+            <span class="ws-kicker">{paramsKicker || getT("capabilities")}</span>
+            <h2 class="ws-h2">{paramsTitle || (locale === 'tr' ? "Neler Yapar" : "What it does.")}</h2>
+          </div>
+          <div class="ws-capabilities-grid">
+            {params.map(x => (
+              <div class="ws-capability-card">
+                <div class="ws-capability-iconbox">
+                  <Fragment set:html={ICONS[x.icon] || ICONS.check} />
+                </div>
+                <b class="ws-capability-name">{x.name}</b>
+                <p class="ws-capability-desc">{x.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    )}
+
+    <!-- Applications Section -->
+    {apps.length > 0 && (
+      <section class="ws-applications-section">
+        <div class="section-inner" style="display: contents;">
+          <div class="ws-apps-left">
+            <span class="ws-kicker">{getT("applications")}</span>
+            <h2 class="ws-h2">{locale === 'tr' ? "Nerede Çalışır" : "Where it works"}</h2>
+            {appsNote && (
+              <p class="ws-apps-note">{appsNote}</p>
+            )}
+          </div>
+          <div class="ws-apps-right-grid">
+            {apps.map(a => (
+              <div class="ws-app-card">
+                <div class="ws-app-iconbox">
+                  <Fragment set:html={ICONS[a.icon] || ICONS.check} />
+                </div>
+                <div class="ws-app-content">
+                  <b class="ws-app-name">{a.name}</b>
+                  <p class="ws-app-desc">{a.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    )}
+
+    <!-- FAQ Accordion Section -->
+    {product.aiFAQ && product.aiFAQ.length > 0 && (
+      <section class="ws-faq-section" id="faq">
+        <div class="section-inner" style="display: contents;">
+          <div class="ws-faq-left">
+            <span class="ws-kicker">FAQ</span>
+            <h2 class="ws-h2">{locale === 'tr' ? "Sıkça sorulan sorular" : "Frequently asked questions"}</h2>
+            <p class="ws-faq-subtitle">{getT("faqSubtitle")}</p>
+            <a class="ws-btn ws-btn-secondary" href={`/${locale}/contact?product=${encodeURIComponent(slug)}&type=question`}>
+              {getT("askQuestion")}
+            </a>
+          </div>
+          <div class="ws-faq-right-list">
+            {product.aiFAQ.map((f: any) => (
+              <details class="ws-faq-details">
+                <summary class="ws-faq-summary">
+                  <span class="ws-faq-question">{f.question}</span>
+                  <span class="ws-faq-arrow">
+                    <svg viewBox="0 0 16 10" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M2 2l6 6 6-6" /></svg>
+                  </span>
+                </summary>
+                <div class="ws-faq-answer-wrapper">
+                  <p class="ws-faq-answer">{f.answer}</p>
+                </div>
+              </details>
+            ))}
+          </div>
+        </div>
+      </section>
+    )}
+
+    <!-- Gallery Section -->
+    {galleryImages.length > 0 && (
+      <section class="ws-gallery-section">
+        <div class="ws-section-header section-inner">
+          <span class="ws-kicker">{getT("inTheField")}</span>
+          <h2 class="ws-h2">{getT("inTheFieldDesc")}</h2>
+        </div>
+        <div class="ws-gallery-grid section-inner">
+          {galleryImages.slice(0, 3).map((imgUrl: string, i: number) => (
+            <div class="ws-gallery-card">
+              <img src={`/${imgUrl}`.replace("//", "/")} alt={`${product.title} gallery ${i + 1}`} class="ws-gallery-img" />
+            </div>
           ))}
         </div>
       </section>
     )}
 
-    <!-- Where it fits -->
-    <section class="section soft">
-      <div class="section-inner split">
-        <div class="reveal">
-          <p class="eyebrow">{getT("whereFits")}</p>
-          <h2 class="page-title">{getT("fitsTitle")}</h2>
+    <!-- Quote Band Section -->
+    <section class="ws-quote-band-section">
+      <div class="ws-quote-band-inner section-inner">
+        <div class="ws-quote-band-left">
+          <span class="ws-kicker">{getT("needInProject")}</span>
+          <h2 class="ws-h2-quote">{getT("askProductFit")}</h2>
         </div>
-        <div class="reveal delay-1">
-          <p class="section-lead">{fitText}</p>
-          <ul class="spec-list">
-            <li>{getT("fitsLi1")}</li>
-            <li>{getT("fitsLi2")}</li>
-            <li>{getT("fitsLi3")}</li>
-          </ul>
-        </div>
-      </div>
-    </section>
-
-    <!-- Buyer Checklist -->
-    <section class="section product-decision-section">
-      <div class="section-inner">
-        <div class="section-head reveal product-headline">
-          <div>
-            <p class="eyebrow">{getT("buyerChecklist")}</p>
-            <h2>{getT("buyerTitle")}</h2>
-          </div>
-          <a class="btn btn-secondary btn-small" href={`/${locale}/start-project`}>{getT("planDeployment")}</a>
-        </div>
-        <div class="product-decision-grid">
-          <article class="product-decision-card reveal">
-            <span>{getT("useCase")}</span>
-            <h3>{decision.useTitle}</h3>
-            <p>{decision.use}</p>
-          </article>
-          <article class="product-decision-card reveal delay-1">
-            <span>{getT("systemRole")}</span>
-            <h3>{decision.roleTitle}</h3>
-            <p>{decision.role}</p>
-          </article>
-          <article class="product-decision-card reveal delay-2">
-            <span>{getT("deliveredWith")}</span>
-            <h3>{getT("hwSwPath")}</h3>
-            <ul>
-              {decision.delivered.map((item: string) => (
-                <li>{item}</li>
-              ))}
-            </ul>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <!-- System Architecture -->
-    <section class="section soft product-system-section">
-      <div class="section-inner split">
-        <div class="reveal">
-          <p class="eyebrow">{getT("sysArch")}</p>
-          <h2 class="page-title">{getT("sysTitle")}</h2>
-          <p class="section-lead">{getT("sysDesc")}</p>
-        </div>
-        <div class="tech-flow product-tech-flow reveal delay-1">
-          <div class="flow-row">
-            <div class="flow-node"><small>01</small><strong>{getT("flowDevice")}</strong><span>{getT("flowDeviceDesc")}</span></div>
-            <div class="flow-node"><small>02</small><strong>{getT("flowNetwork")}</strong><span>{getT("flowNetworkDesc")}</span></div>
-            <div class="flow-node"><small>03</small><strong>{getT("flowData")}</strong><span>{getT("flowDataDesc")}</span></div>
-            <div class="flow-node"><small>04</small><strong>{getT("flowInterface")}</strong><span>{getT("flowInterfaceDesc")}</span></div>
-            <div class="flow-node"><small>05</small><strong>{getT("flowAction")}</strong><span>{getT("flowActionDesc")}</span></div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Quote band -->
-    <section class="section soft services-faq-section" id="faq">
-      <div class="section-inner">
-        <div class="section-head reveal center" style={{ marginBottom: "36px" }}>
-          <p class="eyebrow">FAQ</p>
-          <h2 class="page-title">{product.title} FAQ</h2>
-          <p class="section-lead" style={{ maxWidth: "720px", marginLeft: "auto", marginRight: "auto" }}>
-            {stripHtml(fitText)}
-          </p>
-        </div>
-        <div class="faq-list reveal delay-1">
-          {productFaqItems.map((faq) => (
-            <details class="faq-item">
-              <summary>
-                <span class="faq-q">{faq.question}</span>
-                <span class="faq-toggle" aria-hidden="true"></span>
-              </summary>
-              <p>{faq.answer}</p>
-            </details>
-          ))}
-        </div>
-      </div>
-    </section>
-
-    <section class="section product-quote-band">
-      <div class="section-inner product-quote-inner reveal">
-        <div>
-          <p class="eyebrow">{getT("needInProject")}</p>
-          <h2 class="page-title">{getT("askProductFit")}</h2>
-        </div>
-        <div class="product-quote-actions">
-          <a class="btn btn-primary" href={`/${locale}/start-project?product=${encodeURIComponent(slug)}`}>{getT("startProject")}</a>
-          <a class="btn btn-secondary" href={`/${locale}/contact?product=${encodeURIComponent(slug)}`}>{getT("contactSales")}</a>
+        <div class="ws-quote-band-right-actions">
+          <a class="ws-btn ws-btn-primary" href={`/${locale}/start-project?product=${encodeURIComponent(slug)}`}>{getT("startProject")}</a>
+          <a class="ws-btn ws-btn-secondary" href={`/${locale}/contact?product=${encodeURIComponent(slug)}`}>{getT("contactSales")}</a>
         </div>
       </div>
     </section>
   </main>
 </PageLayout>
+
+<style>
+  /* Base reset & typography within page scope */
+  .ws-breadcrumbs {
+    padding: 32px 0 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--muted);
+  }
+  .ws-breadcrumbs a {
+    color: var(--muted);
+    transition: color 0.2s ease;
+  }
+  .ws-breadcrumbs a:hover {
+    color: var(--accent-text);
+  }
+  .ws-breadcrumbs .separator {
+    opacity: 0.45;
+  }
+  .ws-breadcrumbs .current {
+    color: var(--ink);
+    font-weight: 800;
+  }
+
+  /* Hero Section */
+  .ws-hero-section {
+    position: relative;
+    padding: 32px 0 64px;
+    overflow: hidden;
+  }
+  .ws-hero-inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.3fr);
+    gap: 64px;
+    align-items: center;
+  }
+  @media (max-width: 1024px) {
+    .ws-hero-inner {
+      grid-template-columns: 1fr;
+      gap: 40px;
+    }
+  }
+  .ws-hero-image-card {
+    padding: 16px;
+    border-radius: 20px;
+    background: var(--panel);
+    border: 1px solid rgba(var(--accent-rgb), 0.12);
+    box-shadow: var(--shadow);
+  }
+  .ws-hero-img {
+    width: 100%;
+    height: auto;
+    max-height: 480px;
+    object-fit: cover;
+    border-radius: 14px;
+  }
+  .ws-hero-right {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .ws-hero-meta {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .ws-kicker {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--accent-text);
+    font-size: 0.82rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  .ws-featured-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #fff7e8;
+    border: 1px solid #f0dfb8;
+    color: #9a7224;
+    border-radius: 999px;
+    padding: 4px 12px;
+    font-size: 0.74rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+  }
+  .ws-h1 {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 4vw, 3.8rem);
+    font-weight: 800;
+    line-height: 1.1;
+    color: var(--ink);
+    margin: 0;
+  }
+  .ws-lead {
+    font-size: clamp(0.96rem, 1.1vw, 1.1rem);
+    line-height: 1.6;
+    color: var(--muted);
+    max-width: 580px;
+    margin: 0;
+  }
+  .ws-chip-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .ws-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 6px 14px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--ink);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+  }
+  .ws-chip :global(svg) {
+    color: var(--green);
+    flex-shrink: 0;
+    width: 16px;
+    height: 16px;
+  }
+  .ws-hero-ctas {
+    display: flex;
+    gap: 14px;
+    margin-top: 8px;
+  }
+  @media (max-width: 480px) {
+    .ws-hero-ctas {
+      flex-direction: column;
+    }
+  }
+  .ws-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 24px;
+    border-radius: var(--radius);
+    font-weight: 700;
+    font-size: 0.94rem;
+    cursor: pointer;
+    transition: transform 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+  }
+  .ws-btn:hover {
+    transform: translateY(-2px);
+  }
+  .ws-btn-primary {
+    background: var(--blue);
+    color: #fff;
+    border: 1px solid transparent;
+    box-shadow: 0 4px 14px rgba(19, 33, 117, 0.18);
+  }
+  .ws-btn-primary:hover {
+    background: #0c1a6e;
+    box-shadow: 0 6px 20px rgba(19, 33, 117, 0.26);
+  }
+  .ws-btn-secondary {
+    border: 1px solid rgba(var(--accent-rgb), 0.36);
+    background: var(--accent-soft);
+    color: var(--accent-text);
+  }
+  .ws-btn-secondary:hover {
+    border-color: rgba(var(--accent-rgb), 0.62);
+    background: rgba(var(--accent-rgb), 0.14);
+  }
+  .ws-warranty-text {
+    font-size: 0.88rem;
+    color: var(--muted);
+    font-weight: 600;
+    margin: 4px 0 0;
+  }
+
+  /* Stats Band Section */
+  .ws-stats-section {
+    padding: 0 0 32px;
+  }
+  .ws-stats-band {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    padding: 38px 20px;
+    border-radius: 20px;
+    background: linear-gradient(135deg, var(--deep), #1b2e8c);
+    box-shadow: 0 20px 50px rgba(19, 33, 117, 0.12);
+  }
+  .ws-stat-col {
+    padding: 0 34px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  @media (max-width: 768px) {
+    .ws-stat-col {
+      border-left: none !important;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      padding: 20px 0;
+      align-items: center;
+      text-align: center;
+    }
+    .ws-stat-col:last-child {
+      border-bottom: none;
+    }
+  }
+  .ws-stat-val {
+    font-size: 1.85rem;
+    line-height: 1.2;
+    color: #fff;
+    font-weight: 800;
+    font-family: var(--font-display);
+  }
+  .ws-stat-lbl {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.65);
+    font-weight: 600;
+  }
+
+  /* Specs Section */
+  .ws-specs-section {
+    padding: 48px 0;
+  }
+  .ws-specs-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+    gap: 56px;
+    align-items: start;
+  }
+  @media (max-width: 960px) {
+    .ws-specs-grid {
+      grid-template-columns: 1fr;
+      gap: 48px;
+    }
+  }
+  .ws-specs-card {
+    padding: 38px 44px;
+    border-radius: 20px;
+    background: var(--panel);
+    border: 1px solid rgba(var(--accent-rgb), 0.08);
+    box-shadow: var(--shadow);
+  }
+  @media (max-width: 480px) {
+    .ws-specs-card {
+      padding: 24px;
+    }
+  }
+  .ws-specs-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+  }
+  .ws-specs-h3 {
+    font-family: var(--font-display);
+    font-size: 1.45rem;
+    font-weight: 800;
+    color: var(--ink);
+    margin: 0;
+  }
+  .ws-specs-iconbox {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--accent-soft);
+    color: var(--accent-text);
+    display: grid;
+    place-items: center;
+  }
+  .ws-specs-list {
+    margin: 0;
+  }
+  .ws-spec-row {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    padding: 14px 0;
+    border-bottom: 1px solid rgba(var(--accent-rgb), 0.08);
+  }
+  @media (max-width: 600px) {
+    .ws-spec-row {
+      grid-template-columns: 1fr;
+      gap: 4px;
+    }
+  }
+  .ws-spec-row:last-child {
+    border-bottom: none;
+  }
+  .ws-spec-dt {
+    font-weight: 700;
+    font-size: 0.92rem;
+    color: var(--muted);
+  }
+  .ws-spec-dd {
+    font-weight: 600;
+    font-size: 0.92rem;
+    color: var(--ink);
+    margin: 0;
+  }
+  .ws-specs-download-link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 24px;
+    color: var(--accent-text);
+    font-weight: 700;
+    font-size: 0.94rem;
+  }
+  .ws-specs-download-link a {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    transition: opacity 0.2s ease;
+  }
+  .ws-specs-download-link a:hover {
+    opacity: 0.8;
+  }
+
+  .ws-specs-right-sticky {
+    position: sticky;
+    top: 96px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .ws-h2-small {
+    font-family: var(--font-display);
+    font-size: 2.1rem;
+    font-weight: 800;
+    line-height: 1.15;
+    color: var(--ink);
+    margin: 0;
+  }
+  .ws-features-bullets {
+    list-style: none;
+    padding: 0;
+    margin: 4px 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .ws-features-bullets li {
+    position: relative;
+    padding-left: 24px;
+    font-size: 0.96rem;
+    line-height: 1.5;
+    color: var(--muted);
+    font-weight: 600;
+  }
+  .ws-features-bullets li::before {
+    position: absolute;
+    left: 0;
+    top: 5px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+    content: "";
+  }
+  .ws-stack-infobox {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: #e8edf8;
+    border-radius: 16px;
+    padding: 18px 22px;
+    margin-top: 8px;
+  }
+  .ws-stack-infobox-icon {
+    display: inline-flex;
+    color: var(--blue);
+    flex-shrink: 0;
+  }
+  .ws-stack-infobox-text {
+    font-size: 0.92rem;
+    line-height: 1.5;
+    color: #33405e;
+    font-weight: 600;
+    margin: 0;
+  }
+
+  /* Capabilities Section */
+  .ws-capabilities-section {
+    padding: 48px 0;
+    border-top: 1px solid rgba(var(--accent-rgb), 0.08);
+  }
+  .ws-section-header {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 32px;
+  }
+  .ws-h2 {
+    font-family: var(--font-display);
+    font-size: 2.3rem;
+    font-weight: 800;
+    color: var(--ink);
+    margin: 0;
+  }
+  .ws-capabilities-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+  }
+  .ws-capability-card {
+    padding: 24px;
+    border-radius: 16px;
+    background: var(--panel);
+    border: 1px solid rgba(var(--accent-rgb), 0.06);
+    box-shadow: 0 4px 18px rgba(0,0,0,0.02);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    transition: transform 0.2s ease;
+  }
+  .ws-capability-card:hover {
+    transform: translateY(-4px);
+  }
+  .ws-capability-iconbox {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: var(--accent-soft);
+    color: var(--accent-text);
+    display: grid;
+    place-items: center;
+  }
+  .ws-capability-name {
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: var(--ink);
+  }
+  .ws-capability-desc {
+    font-size: 0.88rem;
+    line-height: 1.5;
+    color: var(--muted);
+    margin: 0;
+    font-weight: 600;
+  }
+
+  /* Applications Section */
+  .ws-applications-section {
+    padding: 48px 0;
+    border-top: 1px solid rgba(var(--accent-rgb), 0.08);
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.8fr);
+    gap: 64px;
+    align-items: start;
+  }
+  @media (max-width: 960px) {
+    .ws-applications-section {
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+  }
+  .ws-apps-left {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .ws-apps-note {
+    font-size: 0.98rem;
+    line-height: 1.6;
+    color: var(--muted);
+    margin: 0;
+    font-weight: 600;
+  }
+  .ws-apps-right-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 14px;
+  }
+  .ws-app-card {
+    padding: 20px 22px;
+    border-radius: 16px;
+    background: var(--panel);
+    border: 1px solid rgba(var(--accent-rgb), 0.06);
+    box-shadow: 0 4px 18px rgba(0,0,0,0.02);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    transition: transform 0.2s ease;
+  }
+  .ws-app-card:hover {
+    transform: translateY(-2px);
+  }
+  .ws-app-iconbox {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: #e3f2ea;
+    color: var(--green);
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+  }
+  .ws-app-content {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .ws-app-name {
+    font-size: 1rem;
+    font-weight: 800;
+    color: var(--ink);
+  }
+  .ws-app-desc {
+    font-size: 0.84rem;
+    line-height: 1.45;
+    color: var(--muted);
+    margin: 0;
+    font-weight: 600;
+  }
+
+  /* FAQ Accordion Section */
+  .ws-faq-section {
+    padding: 48px 0;
+    border-top: 1px solid rgba(var(--accent-rgb), 0.08);
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.8fr);
+    gap: 64px;
+    align-items: start;
+  }
+  @media (max-width: 960px) {
+    .ws-faq-section {
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+  }
+  .ws-faq-left {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .ws-faq-subtitle {
+    font-size: 0.98rem;
+    line-height: 1.6;
+    color: var(--muted);
+    margin: 0;
+    font-weight: 600;
+  }
+  .ws-faq-left .ws-btn {
+    align-self: flex-start;
+    margin-top: 8px;
+  }
+  .ws-faq-right-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .ws-faq-details {
+    border-radius: 16px;
+    background: var(--panel);
+    border: 1.5px solid rgba(var(--accent-rgb), 0.06);
+    box-shadow: 0 4px 18px rgba(0,0,0,0.015);
+    overflow: hidden;
+    transition: border-color 0.25s ease;
+  }
+  .ws-faq-details[open] {
+    border-color: #c6d0e6;
+  }
+  .ws-faq-summary {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 22px 26px;
+    cursor: pointer;
+    font-weight: 800;
+    color: var(--ink);
+  }
+  .ws-faq-summary::-webkit-details-marker {
+    display: none;
+  }
+  .ws-faq-question {
+    font-size: 1.05rem;
+    line-height: 1.4;
+  }
+  .ws-faq-arrow {
+    display: inline-flex;
+    color: var(--accent-text);
+    transition: transform 0.25s ease;
+    flex-shrink: 0;
+  }
+  .ws-faq-arrow :global(svg) {
+    width: 14px;
+    height: 14px;
+  }
+  .ws-faq-details[open] .ws-faq-arrow {
+    transform: rotate(180deg);
+  }
+  .ws-faq-answer-wrapper {
+    padding: 0 26px 24px;
+  }
+  .ws-faq-answer {
+    font-size: 0.96rem;
+    line-height: 1.6;
+    color: var(--muted);
+    margin: 0;
+    max-width: 680px;
+    font-weight: 600;
+  }
+
+  /* Gallery Section */
+  .ws-gallery-section {
+    padding: 48px 0 64px;
+    border-top: 1px solid rgba(var(--accent-rgb), 0.08);
+  }
+  .ws-gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 18px;
+  }
+  .ws-gallery-card {
+    border-radius: 16px;
+    overflow: hidden;
+    aspect-ratio: 16 / 10;
+    border: 1px solid rgba(var(--accent-rgb), 0.08);
+    box-shadow: var(--shadow);
+  }
+  .ws-gallery-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.35s ease;
+  }
+  .ws-gallery-card:hover .ws-gallery-img {
+    transform: scale(1.05);
+  }
+
+  /* Quote Band Section */
+  .ws-quote-band-section {
+    padding: 48px 0 64px;
+    border-top: 1px solid rgba(var(--accent-rgb), 0.08);
+  }
+  .ws-quote-band-inner {
+    padding: 44px 48px;
+    border-radius: 24px;
+    background: linear-gradient(135deg, #f4f7fc, #e9edf8);
+    border: 1.5px solid rgba(var(--accent-rgb), 0.08);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 40px;
+  }
+  @media (max-width: 860px) {
+    .ws-quote-band-inner {
+      flex-direction: column;
+      align-items: stretch;
+      padding: 32px 28px;
+      gap: 24px;
+      text-align: center;
+    }
+  }
+  .ws-quote-band-left {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .ws-h2-quote {
+    font-family: var(--font-display);
+    font-size: 1.95rem;
+    font-weight: 800;
+    color: var(--ink);
+    margin: 0;
+    line-height: 1.25;
+  }
+  .ws-quote-band-right-actions {
+    display: flex;
+    gap: 12px;
+    flex-shrink: 0;
+  }
+  @media (max-width: 860px) {
+    .ws-quote-band-right-actions {
+      justify-content: center;
+    }
+  }
+  @media (max-width: 480px) {
+    .ws-quote-band-right-actions {
+      flex-direction: column;
+    }
+  }
+</style>
