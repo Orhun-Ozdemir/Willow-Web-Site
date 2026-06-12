@@ -422,6 +422,50 @@ const paramsKicker = extras?.parametersKicker?.[locale] || extras?.parametersKic
 const paramsTitle = extras?.parametersTitle?.[locale] || extras?.parametersTitle?.en || "";
 const appsNote = extras?.applicationsNote?.[locale] || extras?.applicationsNote?.en || "";
 
+function translateWarranty(warranty: string, locale: Locale): string {
+  if (!warranty) return "";
+  const match = warranty.match(/^(\d+)\s*years?$/i);
+  if (match) {
+    const years = match[1];
+    const translations: Record<Locale, string> = {
+      en: `${years} years`,
+      tr: `${years} yıl`,
+      de: `${years} Jahre`,
+      fr: `${years} ans`,
+      es: `${years} años`,
+      it: `${years} anni`,
+      ar: `${years} سنوات`,
+      ja: `${years}年間`
+    };
+    return translations[locale] || `${years} years`;
+  }
+  return warranty;
+}
+
+function getWarrantySentence(warranty: string, locale: Locale): string {
+  const transWarranty = translateWarranty(warranty, locale);
+  const sentences: Record<Locale, string> = {
+    en: `Backed by a ${transWarranty} warranty.`,
+    tr: `${transWarranty} garanti ile desteklenmektedir.`,
+    de: `Unterstützt durch eine ${transWarranty} Garantie.`,
+    fr: `Bénéficie d'une garantie de ${transWarranty}.`,
+    es: `Respaldado por una garantía de ${transWarranty}.`,
+    it: `Supportato da una garanzia di ${transWarranty}.`,
+    ar: `مشمول بضمان لمدة ${transWarranty}.`,
+    ja: `${transWarranty}の保証付き。`
+  };
+  return sentences[locale] || sentences.en;
+}
+
+const displayShortAnswer = (locale === "tr" && product.aiShortAnswer)
+  ? product.aiShortAnswer
+  : (rawProduct.localized?.[locale]?.aiShortAnswer || product.shortDescription);
+
+const localizedFaq = (locale === "tr" && product.aiFAQ)
+  ? product.aiFAQ
+  : (rawProduct.localized?.[locale]?.aiFAQ && rawProduct.localized?.[locale]?.aiFAQ.length > 0 ? rawProduct.localized?.[locale]?.aiFAQ : []);
+
+
 const ICONS: Record<string, string> = {
   check: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><polyline points="20 6 9 17 4 12"></polyline></svg>`,
   download: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>`,
@@ -614,7 +658,7 @@ const getT = (key: keyof typeof t) => {
             )}
           </div>
           <h1 class="ws-h1">{product.title}</h1>
-          <p class="ws-lead">{product.aiShortAnswer || product.shortDescription}</p>
+          <p class="ws-lead">{displayShortAnswer}</p>
           {product.chips && product.chips.length > 0 && (
             <div class="ws-chip-row">
               {product.chips.map((chip: string) => (
@@ -641,9 +685,7 @@ const getT = (key: keyof typeof t) => {
           </div>
           {product.specifications?.warranty && (
             <p class="ws-warranty-text">
-              {locale === 'tr' ? `${product.specifications.warranty} garantili.` :
-               locale === 'de' ? `Unterstützt durch ${product.specifications.warranty} Garantie.` :
-               `Backed by a ${product.specifications.warranty} warranty.`}
+              {getWarrantySentence(product.specifications.warranty, locale)}
             </p>
           )}
         </div>
@@ -780,7 +822,7 @@ const getT = (key: keyof typeof t) => {
     )}
 
     <!-- FAQ Accordion Section -->
-    {product.aiFAQ && product.aiFAQ.length > 0 && (
+    {localizedFaq && localizedFaq.length > 0 && (
       <section class="ws-faq-section" id="faq">
         <div class="section-inner" style="display: contents;">
           <div class="ws-faq-left">
@@ -792,7 +834,7 @@ const getT = (key: keyof typeof t) => {
             </a>
           </div>
           <div class="ws-faq-right-list">
-            {product.aiFAQ.map((f: any) => (
+            {localizedFaq.map((f: any) => (
               <details class="ws-faq-details">
                 <summary class="ws-faq-summary">
                   <span class="ws-faq-question">{f.question}</span>
