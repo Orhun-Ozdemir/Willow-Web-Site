@@ -369,7 +369,7 @@ function getProductHighlights(p: any, locale: string) {
 
 const highlights = getProductHighlights(product, locale);
 const specEntries = Object.entries(specObject).filter(([k]) => k !== "features" && k !== "reported_parameters" && k !== "reportedParameters");
-const keyFeatures = (specObject as any)?.features || [];
+const keyFeatures = normalizeStringList((specObject as any)?.features);
 
 const extras = getProductExtras(rawProduct.id || rawProduct.slug || slug);
 
@@ -762,30 +762,52 @@ const getT = (key: keyof typeof t) => {
           </div>
         </div>
 
-        <div class="ws-specs-right-sticky">
-          <span class="ws-kicker">{getT("keyFeatures")}</span>
-          <h2 class="ws-h2-small">
-            {locale === 'tr' ? "Saha için tasarlandı, üretime hazır." :
-             locale === 'de' ? "Für den Feldeinsatz konzipiert, bereit für die Produktion." :
-             "Designed for the field, ready for production."}
-          </h2>
-          {keyFeatures.length > 0 && (
-            <ul class="ws-features-bullets">
-              {keyFeatures.map((f: string) => (
-                <li>{f}</li>
-              ))}
-            </ul>
+        <div class="ws-specs-side-stack">
+          <article class="ws-side-card">
+            <div class="ws-side-card-heading">
+              <span class="ws-side-card-icon">
+                <Fragment set:html={ICONS.star || ICONS.check} />
+              </span>
+              <h3>{getT("keyFeatures")}</h3>
+            </div>
+            {keyFeatures.length > 0 ? (
+              <ul class="ws-icon-list">
+                {keyFeatures.map((f: string) => (
+                  <li>
+                    <span class="ws-list-check"><Fragment set:html={ICONS.check} /></span>
+                    <span>{f}</span>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p class="ws-side-card-copy">
+                {locale === 'tr' ? "Saha kullanımı ve üretim entegrasyonu için sade, güvenilir bir yapı." :
+                 locale === 'de' ? "Eine einfache und zuverlässige Struktur für Feldeinsatz und Produktionsintegration." :
+                 "A compact, reliable setup for field use and production integration."}
+              </p>
+            )}
+          </article>
+
+          {reportedParameterCards.length > 0 && (
+            <article class="ws-side-card">
+              <div class="ws-side-card-heading">
+                <span class="ws-side-card-icon">
+                  <Fragment set:html={ICONS.activity || ICONS.check} />
+                </span>
+                <h3>{locale === "tr" ? "Raporlanan Parametreler" : "Reported Parameters"}</h3>
+              </div>
+              <ul class="ws-parameter-list">
+                {reportedParameterCards.map((x) => (
+                  <li>
+                    <span class="ws-parameter-icon">
+                      <Fragment set:html={ICONS[x.icon] || ICONS.check} />
+                    </span>
+                    <span>{x.name}</span>
+                  </li>
+                ))}
+              </ul>
+            </article>
           )}
-          <div class="ws-stack-infobox">
-            <span class="ws-stack-infobox-icon">
-              <Fragment set:html={ICONS.radio} />
-            </span>
-            <p class="ws-stack-infobox-text">
-              {locale === 'tr' ? "Eksiksiz WillowSoft altyapısının bir parçası — donanım, gömülü yazılım, backend ve kontrol panelleri tek bir ekipten." :
-               locale === 'de' ? "Teil des kompletten WillowSoft-Stacks — Hardware, Firmware, Backend und Dashboards aus einer Hand." :
-               "Part of the complete WillowSoft stack — hardware, firmware, backend and dashboards from one team."}
-            </p>
-          </div>
         </div>
       </div>
     </section>
@@ -881,54 +903,30 @@ const getT = (key: keyof typeof t) => {
     </section>
   )}
 
-  {reportedParameterCards.length > 0 && (
-    <section class="ws-capabilities-section">
-      <div class="section-inner">
-        <div class="ws-section-header">
-          <span class="ws-kicker">{getT("specifications")}</span>
-          <h2 class="ws-h2">{locale === "tr" ? "Raporlanan parametreler" : "Reported Parameters"}</h2>
-        </div>
-        <div class="ws-capabilities-grid">
-          {reportedParameterCards.map((x) => (
-            <div class="ws-capability-card">
-              <div class="ws-capability-iconbox">
-                <Fragment set:html={ICONS[x.icon] || ICONS.check} />
-              </div>
-              <b class="ws-capability-name">{x.name}</b>
-              <p class="ws-capability-desc">{x.desc || (locale === "tr" ? "Sahadan raporlanan değer" : "Field-reported value")}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  )}
-
     <!-- Applications Section -->
     {applicationCards.length > 0 && (
       <section class="ws-applications-section">
-        <div class="section-inner" style="display: contents;">
-          <div class="ws-apps-left">
-            <span class="ws-kicker">{getT("applications")}</span>
-            <h2 class="ws-h2">{locale === 'tr' ? "Nerede Çalışır" : "Where it works"}</h2>
-            {(appsNote || productApplications.length > 0) && (
-              <p class="ws-apps-note">
-                {appsNote || (locale === "tr" ? "Bu ürünün en çok kullanıldığı alanlar" : "Typical application areas for this product")}
-              </p>
-            )}
-          </div>
-          <div class="ws-apps-right-grid">
-            {applicationCards.map(a => (
-              <div class="ws-app-card">
-                <div class="ws-app-iconbox">
-                  <Fragment set:html={ICONS[a.icon] || ICONS.check} />
-                </div>
-                <div class="ws-app-content">
-                  <b class="ws-app-name">{a.name}</b>
-                  <p class="ws-app-desc">{a.desc || (locale === "tr" ? "Uygulama alanı" : "Application area")}</p>
-                </div>
+        <div class="section-inner">
+          <article class="ws-applications-card">
+            <div class="ws-applications-heading">
+              <span class="ws-applications-heading-icon">
+                <Fragment set:html={ICONS.stack || ICONS.check} />
+              </span>
+              <div>
+                <h2>{getT("applications")}</h2>
               </div>
-            ))}
-          </div>
+            </div>
+            <div class="ws-app-strip">
+              {applicationCards.map(a => (
+                <div class="ws-app-strip-item">
+                  <span class="ws-app-strip-icon">
+                    <Fragment set:html={ICONS[a.icon] || ICONS.check} />
+                  </span>
+                  <b>{a.name}</b>
+                </div>
+              ))}
+            </div>
+          </article>
         </div>
       </section>
     )}
@@ -1037,7 +1035,7 @@ const getT = (key: keyof typeof t) => {
   /* Hero Section */
   .ws-hero-section {
     position: relative;
-    padding: 28px 0 48px;
+    padding: 24px 0 42px;
     overflow: hidden;
   }
   .ws-hero-inner {
@@ -1053,11 +1051,11 @@ const getT = (key: keyof typeof t) => {
     }
   }
   .ws-hero-image-card {
-    padding: clamp(18px, 3vw, 32px);
-    border-radius: 20px;
+    padding: clamp(16px, 2.4vw, 26px);
+    border-radius: 14px;
     background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(248,250,254,0.98));
     border: 1px solid rgba(var(--accent-rgb), 0.12);
-    box-shadow: 0 18px 44px rgba(19, 33, 117, 0.07);
+    box-shadow: 0 14px 34px rgba(19, 33, 117, 0.06);
   }
   .ws-hero-img {
     width: 100%;
@@ -1065,7 +1063,7 @@ const getT = (key: keyof typeof t) => {
     aspect-ratio: 1 / 1;
     max-height: 430px;
     object-fit: contain;
-    border-radius: 14px;
+    border-radius: 12px;
     background: #fff;
   }
   .ws-hero-thumbs {
@@ -1080,7 +1078,7 @@ const getT = (key: keyof typeof t) => {
     min-height: 74px;
     aspect-ratio: 1.2 / 1;
     padding: 8px;
-    border-radius: 10px;
+    border-radius: 9px;
     border: 1px solid rgba(var(--accent-rgb), 0.12);
     background: #fff;
     cursor: pointer;
@@ -1269,7 +1267,7 @@ const getT = (key: keyof typeof t) => {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     padding: 20px 16px;
-    border-radius: 18px;
+    border-radius: 14px;
     background:
       linear-gradient(90deg, rgba(255,255,255,0.06), rgba(255,255,255,0)),
       linear-gradient(135deg, #0c1f70 0%, #1637a8 48%, #1b53cc 100%);
@@ -1325,7 +1323,7 @@ const getT = (key: keyof typeof t) => {
 
   /* Specs Section */
   .ws-specs-section {
-    padding: 36px 0 42px;
+    padding: 32px 0 36px;
   }
   .ws-specs-grid {
     display: grid;
@@ -1340,8 +1338,8 @@ const getT = (key: keyof typeof t) => {
     }
   }
   .ws-specs-card {
-    padding: 28px 30px;
-    border-radius: 18px;
+    padding: 24px 26px;
+    border-radius: 14px;
     background: var(--panel);
     border: 1px solid rgba(var(--accent-rgb), 0.08);
     box-shadow: 0 12px 32px rgba(15, 27, 80, 0.05);
@@ -1355,7 +1353,7 @@ const getT = (key: keyof typeof t) => {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 24px;
+    margin-bottom: 18px;
   }
   .ws-specs-h3 {
     font-family: var(--font-display);
@@ -1365,9 +1363,9 @@ const getT = (key: keyof typeof t) => {
     margin: 0;
   }
   .ws-specs-iconbox {
-    width: 38px;
-    height: 38px;
-    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    border-radius: 11px;
     background: linear-gradient(180deg, rgba(var(--accent-rgb), 0.10), rgba(var(--accent-rgb), 0.06));
     color: var(--accent-text);
     display: grid;
@@ -1425,20 +1423,103 @@ const getT = (key: keyof typeof t) => {
     opacity: 0.8;
   }
 
-  .ws-specs-right-sticky {
-    position: sticky;
-    top: 96px;
+  .ws-specs-side-stack {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 16px;
   }
-  .ws-h2-small {
+  .ws-side-card {
+    padding: 22px 24px;
+    border-radius: 14px;
+    background: var(--panel);
+    border: 1px solid rgba(var(--accent-rgb), 0.08);
+    box-shadow: 0 12px 30px rgba(15, 27, 80, 0.045);
+  }
+  .ws-side-card-heading {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  .ws-side-card-heading h3 {
     font-family: var(--font-display);
-    font-size: clamp(1.5rem, 2.2vw, 1.9rem);
+    font-size: 1.18rem;
+    line-height: 1.2;
     font-weight: 800;
-    line-height: 1.15;
     color: var(--ink);
     margin: 0;
+  }
+  .ws-side-card-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: grid;
+    place-items: center;
+    color: var(--accent-text);
+    background: linear-gradient(180deg, rgba(var(--accent-rgb), 0.10), rgba(var(--accent-rgb), 0.05));
+    flex: 0 0 36px;
+  }
+  .ws-side-card-icon :global(svg) {
+    width: 20px;
+    height: 20px;
+  }
+  .ws-side-card-copy {
+    margin: 0;
+    font-size: 0.92rem;
+    line-height: 1.55;
+    color: var(--muted);
+    font-weight: 600;
+  }
+  .ws-icon-list,
+  .ws-parameter-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+  }
+  .ws-icon-list {
+    gap: 12px;
+  }
+  .ws-icon-list li,
+  .ws-parameter-list li {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    color: var(--ink);
+    font-size: 0.94rem;
+    line-height: 1.45;
+    font-weight: 600;
+  }
+  .ws-list-check {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    color: #fff;
+    background: var(--accent);
+    flex: 0 0 18px;
+  }
+  .ws-list-check :global(svg) {
+    width: 11px;
+    height: 11px;
+    stroke-width: 3;
+  }
+  .ws-parameter-list {
+    gap: 11px;
+  }
+  .ws-parameter-icon {
+    width: 24px;
+    height: 24px;
+    display: grid;
+    place-items: center;
+    color: var(--accent-text);
+    flex: 0 0 24px;
+  }
+  .ws-parameter-icon :global(svg) {
+    width: 22px;
+    height: 22px;
   }
   .ws-features-bullets {
     list-style: none;
@@ -1549,76 +1630,101 @@ const getT = (key: keyof typeof t) => {
 
   /* Applications Section */
   .ws-applications-section {
-    padding: 38px 0;
+    padding: 32px 0 36px;
     border-top: 1px solid rgba(var(--accent-rgb), 0.08);
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1.8fr);
-    gap: clamp(28px, 5vw, 56px);
-    align-items: start;
   }
-  @media (max-width: 960px) {
-    .ws-applications-section {
-      grid-template-columns: 1fr;
-      gap: 32px;
-    }
-  }
-  .ws-apps-left {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-  }
-  .ws-apps-note {
-    font-size: 0.98rem;
-    line-height: 1.6;
-    color: var(--muted);
-    margin: 0;
-    font-weight: 600;
-  }
-  .ws-apps-right-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 14px;
-  }
-  .ws-app-card {
-    padding: 16px 18px;
+  .ws-applications-card {
+    padding: 18px 22px;
     border-radius: 14px;
     background: var(--panel);
-    border: 1px solid rgba(var(--accent-rgb), 0.06);
-    box-shadow: 0 10px 24px rgba(0,0,0,0.03);
+    border: 1px solid rgba(var(--accent-rgb), 0.08);
+    box-shadow: 0 12px 30px rgba(15, 27, 80, 0.045);
+  }
+  .ws-applications-heading {
     display: flex;
     align-items: center;
     gap: 16px;
-    transition: transform 0.2s ease;
+    margin-bottom: 14px;
   }
-  .ws-app-card:hover {
-    transform: translateY(-2px);
-  }
-  .ws-app-iconbox {
-    width: 40px;
-    height: 40px;
-    border-radius: 12px;
-    background: linear-gradient(180deg, rgba(52, 138, 93, 0.12), rgba(52, 138, 93, 0.06));
-    color: var(--green);
+  .ws-applications-heading-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
     display: grid;
     place-items: center;
-    flex-shrink: 0;
+    color: var(--accent-text);
+    background: linear-gradient(180deg, rgba(var(--accent-rgb), 0.10), rgba(var(--accent-rgb), 0.05));
+    flex: 0 0 36px;
   }
-  .ws-app-content {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
+  .ws-applications-heading-icon :global(svg) {
+    width: 21px;
+    height: 21px;
   }
-  .ws-app-name {
-    font-size: 1rem;
+  .ws-applications-heading h2 {
+    font-family: var(--font-display);
+    font-size: clamp(1.16rem, 1.8vw, 1.38rem);
     font-weight: 800;
     color: var(--ink);
+    margin: 0;
   }
-  .ws-app-desc {
-    font-size: 0.84rem;
+  .ws-applications-heading p {
+    font-size: 0.9rem;
     line-height: 1.45;
     color: var(--muted);
-    margin: 0;
+    margin: 4px 0 0;
     font-weight: 600;
+  }
+  .ws-app-strip {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(112px, 1fr));
+    align-items: stretch;
+  }
+  .ws-app-strip-item {
+    min-height: 78px;
+    padding: 5px 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    text-align: center;
+  }
+  .ws-app-strip-item + .ws-app-strip-item {
+    border-left: 1px solid rgba(var(--accent-rgb), 0.10);
+  }
+  .ws-app-strip-icon {
+    width: 32px;
+    height: 32px;
+    display: grid;
+    place-items: center;
+    color: var(--accent-text);
+  }
+  .ws-app-strip-icon :global(svg) {
+    width: 26px;
+    height: 26px;
+    stroke-width: 1.8;
+  }
+  .ws-app-strip-item b {
+    max-width: 132px;
+    font-size: 0.8rem;
+    line-height: 1.25;
+    font-weight: 700;
+    color: var(--ink);
+  }
+  @media (max-width: 820px) {
+    .ws-applications-card {
+      padding: 22px 18px;
+    }
+    .ws-app-strip {
+      display: flex;
+      overflow-x: auto;
+      padding-bottom: 6px;
+      scroll-snap-type: x proximity;
+    }
+    .ws-app-strip-item {
+      min-width: 132px;
+      scroll-snap-align: start;
+    }
   }
 
   /* FAQ Accordion Section */

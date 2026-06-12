@@ -21,6 +21,13 @@ export const PRODUCT_ICON_KEYS = [
   "stack",
   "signal",
   "activity",
+  "star",
+  "car",
+  "building",
+  "tunnel",
+  "mobile",
+  "gamepad",
+  "water",
 ] as const;
 
 export const PRODUCT_ICON_SVG: Record<string, string> = {
@@ -44,6 +51,13 @@ export const PRODUCT_ICON_SVG: Record<string, string> = {
   stack: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><path d="M12 3l9 5-9 5-9-5 9-5z"></path><path d="M3 13l9 5 9-5"></path><path d="M3 18l9 5 9-5"></path></svg>`,
   signal: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><path d="M4 20v-2"></path><path d="M8 20v-6"></path><path d="M12 20V8"></path><path d="M16 20v-4"></path><path d="M20 20v-10"></path></svg>`,
   activity: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><path d="M3 12h4l3-8 4 16 2-8h5"></path></svg>`,
+  star: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><path d="M12 3.5l2.65 5.36 5.92.86-4.28 4.17 1.01 5.9L12 17l-5.3 2.79 1.01-5.9-4.28-4.17 5.92-.86L12 3.5z"></path></svg>`,
+  car: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><path d="M4 13l1.7-5.1A3 3 0 0 1 8.55 6h6.9a3 3 0 0 1 2.85 1.9L20 13"></path><path d="M3 13h18v5a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2H8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-5z"></path><path d="M7 15h.01"></path><path d="M17 15h.01"></path></svg>`,
+  building: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><path d="M4 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16"></path><path d="M16 8h2a2 2 0 0 1 2 2v11"></path><path d="M8 7h4"></path><path d="M8 11h4"></path><path d="M8 15h4"></path><path d="M3 21h18"></path></svg>`,
+  tunnel: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><path d="M4 21V11a8 8 0 0 1 16 0v10"></path><path d="M8 21V11a4 4 0 0 1 8 0v10"></path><path d="M3 21h18"></path><path d="M9 16h6"></path></svg>`,
+  mobile: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><rect x="7" y="2" width="10" height="20" rx="2"></rect><path d="M11 18h2"></path></svg>`,
+  gamepad: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><path d="M7 15h-1.5a3.5 3.5 0 0 1 0-7H7l2 2h6l2-2h1.5a3.5 3.5 0 0 1 0 7H17l-2-2H9l-2 2z"></path><path d="M7 11h4"></path><path d="M9 9v4"></path><path d="M16.5 10.5h.01"></path><path d="M18.5 12.5h.01"></path></svg>`,
+  water: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><path d="M3 17c3 0 3-2 6-2s3 2 6 2 3-2 6-2"></path><path d="M3 21c3 0 3-2 6-2s3 2 6 2 3-2 6-2"></path><path d="M12 3l4 5a5 5 0 1 1-8 0l4-5z"></path></svg>`,
 };
 
 export interface ProductDetailBlock {
@@ -297,13 +311,17 @@ export function iconKeyForText(value: string): string {
 export function applicationIconForText(value: string): string {
   const text = String(value || "");
   if (!text) return "check";
+  if (containsAny(text, ["automobile", "vehicle", "car", "fleet"])) return "car";
   if (containsAny(text, ["security", "safety", "panic"])) return "shield";
-  if (containsAny(text, ["building", "infrastructure", "facility"])) return "factory";
-  if (containsAny(text, ["railway", "tunnel", "road", "highway", "roadway"])) return "map";
+  if (containsAny(text, ["building", "infrastructure", "facility"])) return "building";
+  if (containsAny(text, ["railway", "tunnel", "road", "highway", "roadway"])) return "tunnel";
   if (containsAny(text, ["mine", "geotechnical"])) return "mount";
-  if (containsAny(text, ["handheld", "gaming", "pointing"])) return "radio";
+  if (containsAny(text, ["handheld", "mobile", "phone", "portable"])) return "mobile";
+  if (containsAny(text, ["gaming", "pointing", "controller"])) return "gamepad";
+  if (containsAny(text, ["water", "liquid", "tank", "wastewater", "stormwater", "flood", "manhole", "snow", "level"])) return "water";
+  if (containsAny(text, ["grain", "storage", "cereal"])) return "barn";
   if (containsAny(text, ["agriculture", "farm", "field", "crop", "greenhouse"])) return "sprout";
-  if (containsAny(text, ["industrial", "machinery", "machine"])) return "factory";
+  if (containsAny(text, ["industrial", "machinery", "machine"])) return "gear";
   return "check";
 }
 
