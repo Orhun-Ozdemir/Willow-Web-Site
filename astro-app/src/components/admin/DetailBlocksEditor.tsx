@@ -3,7 +3,8 @@
 import { useEffect, useState } from "react";
 import FormField from "./FormField";
 import ListEditorField from "./ListEditorField";
-import { blockIconOptions, type ProductDetailBlock } from "@/lib/product-model";
+import { type ProductDetailBlock } from "@/lib/product-model";
+import IconPicker from "./IconPicker";
 
 interface DetailBlocksEditorProps {
   value: ProductDetailBlock[];
@@ -97,13 +98,7 @@ export default function DetailBlocksEditor({ value, onChange, helper }: DetailBl
                 onChange={(v) => setBlock(idx, { type: v as ProductDetailBlock["type"] })}
                 options={BLOCK_TYPES}
               />
-              <FormField
-                label="Icon"
-                type="select"
-                value={block.icon || "stack"}
-                onChange={(v) => setBlock(idx, { icon: v })}
-                options={blockIconOptions()}
-              />
+              <IconPicker value={block.icon || "stack"} onChange={(icon) => setBlock(idx, { icon })} />
               <FormField
                 label="Title"
                 value={block.title || ""}

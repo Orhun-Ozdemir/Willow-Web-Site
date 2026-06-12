@@ -22,12 +22,15 @@ export const PRODUCT_ICON_KEYS = [
   "signal",
   "activity",
   "star",
+  "carShield",
   "car",
   "building",
   "tunnel",
+  "mountain",
   "mobile",
   "gamepad",
   "water",
+  "clipboardCheck",
 ] as const;
 
 export const PRODUCT_ICON_SVG: Record<string, string> = {
@@ -52,13 +55,24 @@ export const PRODUCT_ICON_SVG: Record<string, string> = {
   signal: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><path d="M4 20v-2"></path><path d="M8 20v-6"></path><path d="M12 20V8"></path><path d="M16 20v-4"></path><path d="M20 20v-10"></path></svg>`,
   activity: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><path d="M3 12h4l3-8 4 16 2-8h5"></path></svg>`,
   star: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><path d="M12 3.5l2.65 5.36 5.92.86-4.28 4.17 1.01 5.9L12 17l-5.3 2.79 1.01-5.9-4.28-4.17 5.92-.86L12 3.5z"></path></svg>`,
-  car: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><path d="M4 13l1.7-5.1A3 3 0 0 1 8.55 6h6.9a3 3 0 0 1 2.85 1.9L20 13"></path><path d="M3 13h18v5a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2H8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-5z"></path><path d="M7 15h.01"></path><path d="M17 15h.01"></path></svg>`,
-  building: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><path d="M4 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16"></path><path d="M16 8h2a2 2 0 0 1 2 2v11"></path><path d="M8 7h4"></path><path d="M8 11h4"></path><path d="M8 15h4"></path><path d="M3 21h18"></path></svg>`,
-  tunnel: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><path d="M4 21V11a8 8 0 0 1 16 0v10"></path><path d="M8 21V11a4 4 0 0 1 8 0v10"></path><path d="M3 21h18"></path><path d="M9 16h6"></path></svg>`,
-  mobile: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><rect x="7" y="2" width="10" height="20" rx="2"></rect><path d="M11 18h2"></path></svg>`,
-  gamepad: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><path d="M7 15h-1.5a3.5 3.5 0 0 1 0-7H7l2 2h6l2-2h1.5a3.5 3.5 0 0 1 0 7H17l-2-2H9l-2 2z"></path><path d="M7 11h4"></path><path d="M9 9v4"></path><path d="M16.5 10.5h.01"></path><path d="M18.5 12.5h.01"></path></svg>`,
+  carShield: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><path d="M3.6 13.2 5.1 8.7A2.8 2.8 0 0 1 7.8 6.8h5.8"></path><path d="M3 13.2h13.2v4.2H8.1a2 2 0 0 1-3.9 0H3v-4.2z"></path><path d="M6.5 15.3h.01"></path><path d="M13.8 15.3h.01"></path><path d="M18.1 4.2 21 5.5v2.2c0 2.4-1.25 4.15-2.9 4.65-1.65-.5-2.9-2.25-2.9-4.65V5.5l2.9-1.3z"></path><path d="m16.95 8 1 1 1.55-2"></path></svg>`,
+  car: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><path d="M4 13l1.7-5.1A3 3 0 0 1 8.55 6h6.9a3 3 0 0 1 2.85 1.9L20 13"></path><path d="M3 13h18v5a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2H8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-5z"></path><path d="M7 15h.01"></path><path d="M17 15h.01"></path></svg>`,
+  building: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><path d="M4.5 21V6.5a2 2 0 0 1 2-2h6.8a2 2 0 0 1 2 2V21"></path><path d="M15.3 9h2.8a2 2 0 0 1 2 2v10"></path><path d="M8 8.5h3.6"></path><path d="M8 12h3.6"></path><path d="M8 15.5h3.6"></path><path d="M3 21h18"></path></svg>`,
+  tunnel: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><path d="M4 21V11.2a8 8 0 0 1 16 0V21"></path><path d="M7.7 21v-9.6a4.3 4.3 0 0 1 8.6 0V21"></path><path d="M3 21h18"></path><path d="M9.5 16.4h5"></path><path d="M10.5 12.7h3"></path></svg>`,
+  mountain: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><path d="m3 20 6.6-11 4.1 6.4L16.2 12 21 20H3z"></path><path d="m8.2 11.3 2.2 1.8 1.6-2"></path><path d="M15.3 13.4 17 15"></path></svg>`,
+  mobile: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><rect x="7.25" y="2.5" width="9.5" height="19" rx="2.2"></rect><path d="M10.4 5.6h3.2"></path><path d="M11 18.1h2"></path></svg>`,
+  gamepad: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><path d="M7.1 15.3H5.8a3.8 3.8 0 0 1 0-7.6h1.6l2 2.1h5.2l2-2.1h1.6a3.8 3.8 0 0 1 0 7.6h-1.3l-2.1-2.1H9.2l-2.1 2.1z"></path><path d="M7.2 11.5h3.2"></path><path d="M8.8 9.9v3.2"></path><path d="M16.6 10.6h.01"></path><path d="M18.4 12.4h.01"></path></svg>`,
   water: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><path d="M3 17c3 0 3-2 6-2s3 2 6 2 3-2 6-2"></path><path d="M3 21c3 0 3-2 6-2s3 2 6 2 3-2 6-2"></path><path d="M12 3l4 5a5 5 0 1 1-8 0l4-5z"></path></svg>`,
+  clipboardCheck: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><path d="M9 4.5h6"></path><path d="M9.5 3h5a1.5 1.5 0 0 1 1.5 1.5V6H8V4.5A1.5 1.5 0 0 1 9.5 3z"></path><path d="M16 5h1.5A2.5 2.5 0 0 1 20 7.5v11A2.5 2.5 0 0 1 17.5 21h-11A2.5 2.5 0 0 1 4 18.5v-11A2.5 2.5 0 0 1 6.5 5H8"></path><path d="m8.4 13.2 2.2 2.2 5-5"></path></svg>`,
 };
+
+export interface ProductIconItem {
+  id?: string;
+  label: string;
+  icon?: string;
+  description?: string;
+  visible?: boolean;
+}
 
 export interface ProductDetailBlock {
   id: string;
@@ -80,7 +94,14 @@ export function normalizeAssetPath(path: any): string {
 
 export function normalizeStringList(value: any): string[] {
   if (Array.isArray(value)) {
-    return value.map((item) => String(item).trim()).filter(Boolean);
+    return value
+      .map((item) => {
+        if (typeof item === "string") return item;
+        if (item && typeof item === "object") return item.label || item.name || item.title || item.value || item.text || "";
+        return "";
+      })
+      .map((item) => String(item).trim())
+      .filter(Boolean);
   }
   if (typeof value === "string") {
     return value
@@ -89,6 +110,44 @@ export function normalizeStringList(value: any): string[] {
       .filter(Boolean);
   }
   return [];
+}
+
+export function normalizeProductIconItems(
+  value: any,
+  fallbackIconForText: (value: string) => string = iconKeyForText,
+  options: { includeHidden?: boolean } = {},
+): ProductIconItem[] {
+  const parsed = parseMaybeJson(value);
+  const items = Array.isArray(parsed) ? parsed : normalizeStringList(parsed);
+
+  return items
+    .map((item: any, index: number) => {
+      if (typeof item === "string") {
+        const label = item.trim();
+        return {
+          id: toId(`${label || "item"}-${index + 1}`),
+          label,
+          icon: fallbackIconForText(label),
+          description: "",
+          visible: true,
+        };
+      }
+
+      if (!item || typeof item !== "object") return null;
+
+      const label = String(item.label || item.name || item.title || item.value || item.text || "").trim();
+      if (!label) return null;
+
+      const icon = String(item.icon || "").trim() || fallbackIconForText(label);
+      return {
+        id: String(item.id || toId(`${label}-${index + 1}`)),
+        label,
+        icon,
+        description: String(item.description || item.desc || item.body || "").trim(),
+        visible: item.visible !== false,
+      };
+    })
+    .filter((item): item is ProductIconItem => Boolean(item && (options.includeHidden || item.visible !== false)));
 }
 
 export function normalizeAssetList(value: any): string[] {
@@ -183,7 +242,7 @@ export function canonicalizeProduct(raw: any) {
   const detailBlocks = normalizeProductDetailBlocks(raw?.detailBlocks || raw?.blocks);
   const specifications = normalizeProductSpecifications(raw?.specifications);
   const chips = normalizeStringList(raw?.chips);
-  const applications = normalizeStringList(raw?.applications);
+  const applications = normalizeProductIconItems(raw?.applications, applicationIconForText);
 
   return {
     ...raw,
@@ -311,11 +370,11 @@ export function iconKeyForText(value: string): string {
 export function applicationIconForText(value: string): string {
   const text = String(value || "");
   if (!text) return "check";
-  if (containsAny(text, ["automobile", "vehicle", "car", "fleet"])) return "car";
+  if (containsAny(text, ["automobile", "vehicle", "car", "fleet"])) return "carShield";
   if (containsAny(text, ["security", "safety", "panic"])) return "shield";
   if (containsAny(text, ["building", "infrastructure", "facility"])) return "building";
   if (containsAny(text, ["railway", "tunnel", "road", "highway", "roadway"])) return "tunnel";
-  if (containsAny(text, ["mine", "geotechnical"])) return "mount";
+  if (containsAny(text, ["mine", "mining", "geotechnical"])) return "mountain";
   if (containsAny(text, ["handheld", "mobile", "phone", "portable"])) return "mobile";
   if (containsAny(text, ["gaming", "pointing", "controller"])) return "gamepad";
   if (containsAny(text, ["water", "liquid", "tank", "wastewater", "stormwater", "flood", "manhole", "snow", "level"])) return "water";
@@ -326,5 +385,20 @@ export function applicationIconForText(value: string): string {
 }
 
 export function blockIconOptions() {
-  return PRODUCT_ICON_KEYS.map((value) => ({ value, label: value.replace(/\b\w/g, (char) => char.toUpperCase()) }));
+  return productIconOptions().map(({ value, label }) => ({ value, label }));
+}
+
+function readableIconLabel(value: string) {
+  return value
+    .replace(/([a-z])([A-Z])/g, "$1 $2")
+    .replace(/[_-]+/g, " ")
+    .replace(/\b\w/g, (char) => char.toUpperCase());
+}
+
+export function productIconOptions() {
+  return PRODUCT_ICON_KEYS.map((value) => ({
+    value,
+    label: readableIconLabel(value),
+    svg: PRODUCT_ICON_SVG[value],
+  }));
 }

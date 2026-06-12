@@ -7,8 +7,9 @@ import FormField from "./FormField";
 import ListEditorField from "./ListEditorField";
 import JsonEditorField from "./JsonEditorField";
 import DetailBlocksEditor from "./DetailBlocksEditor";
+import IconListEditor from "./IconListEditor";
 import TranslationEditor from "./TranslationEditor";
-import { canonicalizeProduct } from "@/lib/product-model";
+import { applicationIconForText, canonicalizeProduct, iconKeyForText } from "@/lib/product-model";
 
 const PRODUCT_FIELDS = [
   { key: "title", label: "Ürün Adı" },
@@ -93,6 +94,13 @@ export default function ProductsPanel() {
 
   if (editIdx !== null && products[editIdx]) {
     const p = products[editIdx];
+    const specifications = p.specifications && typeof p.specifications === "object" && !Array.isArray(p.specifications) ? p.specifications : {};
+    const updateSpecificationField = (key: string, value: any) => {
+      const next = { ...specifications, [key]: value };
+      if (key === "reported_parameters") delete next.reportedParameters;
+      updateProduct(editIdx, "specifications", next);
+    };
+
     return (
       <div className="bg-white border border-gray-200 rounded-xl p-6 space-y-5">
         <div className="flex items-center justify-between border-b border-gray-200 pb-4">
@@ -131,18 +139,31 @@ export default function ProductsPanel() {
           <FormField label="Battery Life" value={p.batteryLife || p.battery_life || ""} onChange={(v) => updateProductFields(editIdx, { batteryLife: v, battery_life: v })} placeholder="up to 5 years" />
           <FormField label="Communication Range" value={p.communicationRange || p.communication_range || ""} onChange={(v) => updateProductFields(editIdx, { communicationRange: v, communication_range: v })} placeholder="up to 15 km" />
           <div className="col-span-2">
-            <ListEditorField
+            <IconListEditor
               label="Applications"
               value={Array.isArray(p.applications) ? p.applications : []}
               onChange={(items) => updateProduct(editIdx, "applications", items)}
-              helper="Bir satıra bir uygulama alanı."
+              inferIcon={applicationIconForText}
+              addLabel="Application"
+              helper="Ürün detayındaki Applications ikon şeridini yönetir. Sıralama burada belirlenir."
               placeholder="Buildings and Infrastructure"
+            />
+          </div>
+          <div className="col-span-2">
+            <IconListEditor
+              label="Reported Parameters"
+              value={Array.isArray(specifications.reported_parameters) ? specifications.reported_parameters : specifications.reportedParameters || []}
+              onChange={(items) => updateSpecificationField("reported_parameters", items)}
+              inferIcon={iconKeyForText}
+              addLabel="Parameter"
+              helper="Ürün detayındaki kompakt Reported Parameters kartını yönetir."
+              placeholder="Sensor temperature"
             />
           </div>
           <div className="col-span-2">
             <JsonEditorField
               label="Specifications (JSON)"
-              value={p.specifications || {}}
+              value={specifications}
               onChange={(val) => updateProduct(editIdx, "specifications", val || {})}
               helper={'Object olarak kaydedilir. Örnek: { "protocol": "LoRaWAN 868/915 MHz" }'}
               rows={10}

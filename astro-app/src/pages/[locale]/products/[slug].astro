@@ -6,7 +6,7 @@ import { localizedValue, localizeItem, locales, resolveLocale, type Locale } fro
 import { buildAlternates, DEFAULT_OG_IMAGE, ORGANIZATION_SCHEMA, WEBSITE_SCHEMA, SITE_ORIGIN } from "@/lib/seo";
 import { aiMetaForPage, appendSchemaNodes, faqSchemaNode, stripHtml, type AiFaqItem } from "@/lib/ai-search";
 import { getProductExtras } from "@/lib/product-extras";
-import { applicationIconForText, buildSpecificationGroups, canonicalizeProduct, iconKeyForText, normalizeAssetPath, normalizeProductSlug, normalizeStringList, productSlugCandidates, PRODUCT_ICON_SVG } from "@/lib/product-model";
+import { applicationIconForText, buildSpecificationGroups, canonicalizeProduct, iconKeyForText, normalizeAssetPath, normalizeProductIconItems, normalizeProductSlug, normalizeStringList, productSlugCandidates, PRODUCT_ICON_SVG } from "@/lib/product-model";
 
 export const prerender = false;
 
@@ -189,9 +189,9 @@ const dynamicFacts = [
   { label: dynamicLabel("batteryLife"), value: product.batteryLife || product.battery_life },
   { label: dynamicLabel("communicationRange"), value: product.communicationRange || product.communication_range }
 ].filter((fact) => fact.value);
-const productApplications = Array.isArray(product.applications) ? product.applications.filter(Boolean) : [];
+const productApplications = normalizeProductIconItems(product.applications, applicationIconForText);
 const specObject = product.specifications && typeof product.specifications === "object" && !Array.isArray(product.specifications) ? product.specifications : {};
-const reportedParameters = normalizeStringList((specObject as any)?.reported_parameters || (specObject as any)?.reportedParameters);
+const reportedParameters = normalizeProductIconItems((specObject as any)?.reported_parameters || (specObject as any)?.reportedParameters, iconKeyForText);
 const structuredSpecGroups = buildSpecificationGroups(product.specifications);
 const extraSpecGroups = structuredSpecGroups.slice(1);
 
@@ -389,17 +389,17 @@ const paramsKicker = extras?.parametersKicker?.[locale] || extras?.parametersKic
 const paramsTitle = extras?.parametersTitle?.[locale] || extras?.parametersTitle?.en || "";
 const appsNote = extras?.applicationsNote?.[locale] || extras?.applicationsNote?.en || "";
 const applicationCards = productApplications.length
-  ? productApplications.map((application: string) => ({
-      icon: applicationIconForText(application),
-      name: application,
-      desc: ""
+  ? productApplications.map((application) => ({
+      icon: application.icon || applicationIconForText(application.label),
+      name: application.label,
+      desc: application.description || ""
     }))
   : apps;
 const reportedParameterCards = reportedParameters.length
-  ? reportedParameters.map((param: string) => ({
-      icon: iconKeyForText(param),
-      name: param,
-      desc: ""
+  ? reportedParameters.map((param) => ({
+      icon: param.icon || iconKeyForText(param.label),
+      name: param.label,
+      desc: param.description || ""
     }))
   : [];
 
@@ -966,8 +966,13 @@ const getT = (key: keyof typeof t) => {
     <section class="ws-quote-band-section">
       <div class="ws-quote-band-inner section-inner">
         <div class="ws-quote-band-left">
-          <span class="ws-kicker">{getT("needInProject")}</span>
-          <h2 class="ws-h2-quote">{getT("askProductFit")}</h2>
+          <span class="ws-quote-band-icon">
+            <Fragment set:html={ICONS.clipboardCheck || ICONS.check} />
+          </span>
+          <div class="ws-quote-band-copy">
+            <span class="ws-kicker">{getT("needInProject")}</span>
+            <h2 class="ws-h2-quote">{getT("askProductFit")}</h2>
+          </div>
         </div>
         <div class="ws-quote-band-right-actions">
           <a class="ws-btn ws-btn-primary" href={`/${locale}/start-project?product=${encodeURIComponent(slug)}`}>{getT("startProject")}</a>
@@ -1843,8 +1848,32 @@ const getT = (key: keyof typeof t) => {
   }
   .ws-quote-band-left {
     display: flex;
+    align-items: center;
+    gap: 18px;
+    min-width: 0;
+  }
+  .ws-quote-band-icon {
+    width: 54px;
+    height: 54px;
+    border-radius: 13px;
+    display: grid;
+    place-items: center;
+    color: #fff;
+    background:
+      radial-gradient(circle at 28% 24%, rgba(255,255,255,0.24), transparent 32%),
+      linear-gradient(135deg, #0c2f9f 0%, #0a247c 100%);
+    box-shadow: 0 14px 26px rgba(19, 33, 117, 0.16);
+    flex: 0 0 54px;
+  }
+  .ws-quote-band-icon :global(svg) {
+    width: 28px;
+    height: 28px;
+  }
+  .ws-quote-band-copy {
+    display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 7px;
+    min-width: 0;
   }
   .ws-h2-quote {
     font-family: var(--font-display);
@@ -1860,6 +1889,10 @@ const getT = (key: keyof typeof t) => {
     flex-shrink: 0;
   }
   @media (max-width: 860px) {
+    .ws-quote-band-left {
+      flex-direction: column;
+      align-items: center;
+    }
     .ws-quote-band-right-actions {
       justify-content: center;
     }
