@@ -316,7 +316,7 @@
       "title": "WillowBee",
       "slug": "willowbee",
       "category": "modules",
-      "image": "",
+      "image": "assets/product-cutouts/willowbee.png",
       "shortDescription": "Industrial-grade LoRaWAN-enabled MCU module for low-power sensor end-nodes and embedded applications. Based on STM32WL Cortex-M4, integrates MCU and LoRa radio on a single chip.",
       "chips": [
         "LoRaWAN 1.1.0"
@@ -444,7 +444,7 @@
       "title": "WillowGPS",
       "slug": "willowgps",
       "category": "tracking",
-      "image": "",
+      "image": "assets/product-cutouts/willowgps.png",
       "shortDescription": "Measures latitude, longitude, elevation, speed. Integrated LoRa and GPS antennas for compact deployment.",
       "chips": [
         "LoRaWAN 868/915",
@@ -575,7 +575,7 @@
         "15 km",
         "5 years"
       ],
-      "featured": false,
+      "featured": true,
       "detailUrl": "/en/products/willowtilt",
       "type": "Outdoor IP67 LoRaWAN Tilt Sensor",
       "batteryLife": "up to 5 years",
@@ -619,7 +619,7 @@
         "15 km",
         "10 years"
       ],
-      "featured": false,
+      "featured": true,
       "detailUrl": "/en/products/willowtemp",
       "type": "LoRaWAN Temperature and Humidity Sensor",
       "batteryLife": "up to 10 years",
@@ -701,7 +701,7 @@
         "15 km",
         "10 years"
       ],
-      "featured": true,
+      "featured": false,
       "detailUrl": "/en/products/willowmos",
       "type": "Outdoor LoRaWAN Soil Moisture Sensor",
       "batteryLife": "up to 10 years",
@@ -784,7 +784,7 @@
       "title": "WillowAne",
       "slug": "willowane",
       "category": "environment",
-      "image": "",
+      "image": "assets/product-cutouts/willowane.png",
       "shortDescription": "Measures wind speed in outdoor environments. Designed for harsh conditions.",
       "chips": [
         "LoRaWAN 868/915",
@@ -959,7 +959,7 @@
       "title": "Modbus Bridge",
       "slug": "modbus-bridge",
       "category": "industrial",
-      "image": "",
+      "image": "assets/product-cutouts/modbus-bridge.png",
       "shortDescription": "Reads up to 120 different Modbus tags and transmits data over LoRaWAN. Up to 10 years battery life (5 min interval). Over-the-air configuration.",
       "chips": [
         "10 years"
@@ -1140,7 +1140,7 @@
       "title": "Soil Temperature Moisture Sensor",
       "slug": "soil-temperature-moisture-sensor",
       "category": "environment",
-      "image": "",
+      "image": "assets/product-cutouts/soil-temperature-moisture-sensor.png",
       "shortDescription": "Measures soil temperature and moisture. Battery life: up to 3 years (5 min interval) or up to 10 years (30 min interval). Over-the-air configuration.",
       "chips": [
         "3-10 years"

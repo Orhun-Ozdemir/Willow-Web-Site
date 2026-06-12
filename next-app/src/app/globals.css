@@ -2249,14 +2249,13 @@ select {
 .home-products .product-card figure {
   position: relative;
   overflow: hidden;
-  background:
-    radial-gradient(circle at 72% 18%, rgba(var(--accent-rgb),.20), transparent 32%),
-    radial-gradient(circle at 28% 78%, rgba(112,77,255,.12), transparent 32%),
-    linear-gradient(180deg, #fff, #eef3ff);
+  background: #ffffff;
 }
 
+.home-products .product-card figure::after {
+  display: none;
+}
 
-.home-products .product-card figure::after,
 .news-card figure::after {
   position: absolute;
   inset: -34% -56%;

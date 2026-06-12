@@ -16,13 +16,8 @@ if (!supabaseUrl || !supabaseKey) {
 
 const supabase = createClient(supabaseUrl, supabaseKey);
 
-const cutouts = [
-  'willowsens.png',
-  'willowsonic.png',
-  'willowpre.png',
-  'willowtemp.png',
-  'willowtilt.png'
-];
+const dirPath = path.join(__dirname, '../next-app/public/assets/product-cutouts');
+const cutouts = fs.readdirSync(dirPath).filter(file => file.endsWith('.png'));
 
 async function run() {
   const dirPath = path.join(__dirname, '../next-app/public/assets/product-cutouts');
