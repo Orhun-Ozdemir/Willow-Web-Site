@@ -2,7 +2,7 @@
 import BaseLayout from "./BaseLayout.astro";
 import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
-import type { Locale } from "@/lib/cms";
+import { resolveLocale, type Locale } from "@/lib/cms";
 import type { Alternate } from "@/lib/seo";
 
 interface Props {
@@ -20,7 +20,7 @@ interface Props {
   schema?: object | object[];
 }
 
-const { locale } = Astro.props;
+const locale = resolveLocale(Astro.props.locale, Astro.url.pathname);
 ---
 
 <BaseLayout {...Astro.props}>

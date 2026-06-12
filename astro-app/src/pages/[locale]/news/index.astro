@@ -3,11 +3,11 @@ import PageLayout from "@/layouts/PageLayout.astro";
 import NewsCard from "@/components/NewsCard.astro";
 import { loadContent } from "@/lib/content";
 import { pageSeo, webPageNode, ORGANIZATION_SCHEMA, WEBSITE_SCHEMA, SITE_ORIGIN } from "@/lib/seo";
-import { localizedValue, locales, type Locale } from "@/lib/cms";
+import { localizedValue, locales, resolveLocale, type Locale } from "@/lib/cms";
 
 export const prerender = false;
 
-const { locale } = Astro.params as { locale: Locale };
+const locale = resolveLocale(Astro.params.locale, Astro.url.pathname);
 const content = await loadContent();
 const seoProps = pageSeo(content, "news", locale, "/news", "News | WillowSoft", "WillowSoft company updates, events, export news, and engineering updates.");
 const pageContent = content.pageContent?.news || {};

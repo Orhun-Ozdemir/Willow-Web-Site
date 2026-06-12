@@ -1,16 +1,20 @@
 ---
 import PageLayout from "@/layouts/PageLayout.astro";
 import { loadContent } from "@/lib/content";
-import { localizedValue, localizeItem, locales, type Locale } from "@/lib/cms";
+import { localizedValue, localizeItem, locales, resolveLocale, type Locale } from "@/lib/cms";
 import { buildAlternates, DEFAULT_OG_IMAGE, ORGANIZATION_SCHEMA, WEBSITE_SCHEMA, SITE_ORIGIN } from "@/lib/seo";
+import { normalizeProductSlug } from "@/lib/product-model";
 
 export const prerender = false;
 
-const { locale, slug } = Astro.params as { locale: Locale; slug: string };
+const locale = resolveLocale(Astro.params.locale, Astro.url.pathname);
+const { slug } = Astro.params as { slug: string };
 const content = await loadContent();
+const normalizedSlug = normalizeProductSlug(slug);
+const normalizeRouteSlug = (value: any) => normalizeProductSlug(value);
 const raw = (content.news || []).find((n: any) => {
-  const localSlug = localizedValue(n.slug, locale) || n.slug?.en || n.id;
-  return localSlug === slug || n.id === slug;
+  const localSlug = normalizeRouteSlug(localizedValue(n.slug, locale) || n.slug?.en || n.id);
+  return localSlug === normalizedSlug || normalizeRouteSlug(n.id) === normalizedSlug;
 });
 
 if (!raw) return Astro.redirect(`/${locale}/news`);

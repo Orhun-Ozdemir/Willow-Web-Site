@@ -1,11 +1,11 @@
 ---
-import type { Locale } from "@/lib/cms";
+import { resolveLocale, type Locale } from "@/lib/cms";
 
 interface Props {
   locale: Locale;
 }
 
-const { locale } = Astro.props;
+const locale = resolveLocale(Astro.props.locale, Astro.url.pathname);
 const labels = {
   tagline: {
     en: "Smart Embedded Connectivity & Industrial IoT.",

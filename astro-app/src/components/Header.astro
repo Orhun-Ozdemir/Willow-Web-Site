@@ -1,13 +1,14 @@
 ---
 import type { Locale } from "@/lib/cms";
-import { locales } from "@/lib/cms";
+import { locales, resolveLocale } from "@/lib/cms";
 
 interface Props {
   locale: Locale;
   currentPath: string;
 }
 
-const { locale, currentPath } = Astro.props;
+const locale = resolveLocale(Astro.props.locale, Astro.url.pathname);
+const currentPath = Astro.props.currentPath || Astro.url.pathname;
 
 const labels: Record<string, string> = { en: "EN", tr: "TR", de: "DE", fr: "FR", es: "ES", it: "IT", ar: "AR", ja: "JA" };
 const navLabels = {

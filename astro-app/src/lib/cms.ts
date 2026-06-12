@@ -18,6 +18,12 @@ export function currentLocale(pathname: string): Locale {
   return locales.includes(first) ? first : "en";
 }
 
+export function resolveLocale(value: any, pathname?: string): Locale {
+  if (typeof value === "string" && locales.includes(value as Locale)) return value as Locale;
+  if (pathname) return currentLocale(pathname);
+  return "en";
+}
+
 export function localizedValue(map: any, locale: Locale): string {
   if (!map) return "";
   if (typeof map === "string") return map;

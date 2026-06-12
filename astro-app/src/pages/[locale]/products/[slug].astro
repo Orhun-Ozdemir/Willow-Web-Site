@@ -3,17 +3,18 @@ import PageLayout from "@/layouts/PageLayout.astro";
 import ProductGallery from "@/components/ProductGallery.astro";
 import AIAnswerBlock from "@/components/AIAnswerBlock.astro";
 import { loadContent } from "@/lib/content";
-import { localizedValue, localizeItem, locales, type Locale } from "@/lib/cms";
+import { localizedValue, localizeItem, locales, resolveLocale, type Locale } from "@/lib/cms";
 import { buildAlternates, DEFAULT_OG_IMAGE, ORGANIZATION_SCHEMA, WEBSITE_SCHEMA, SITE_ORIGIN } from "@/lib/seo";
 import { aiMetaForPage, appendSchemaNodes, faqSchemaNode, stripHtml, type AiFaqItem } from "@/lib/ai-search";
 import { getProductExtras } from "@/lib/product-extras";
-import { applicationIconForText, buildSpecificationGroups, canonicalizeProduct, iconKeyForText, normalizeStringList, productSlugCandidates, PRODUCT_ICON_SVG } from "@/lib/product-model";
+import { applicationIconForText, buildSpecificationGroups, canonicalizeProduct, iconKeyForText, normalizeProductSlug, normalizeStringList, productSlugCandidates, PRODUCT_ICON_SVG } from "@/lib/product-model";
 
 export const prerender = false;
 
-const { locale, slug } = Astro.params as { locale: Locale; slug: string };
+const locale = resolveLocale(Astro.params.locale, Astro.url.pathname);
+const { slug } = Astro.params as { slug: string };
 const content = await loadContent();
-const normalizedSlug = String(slug || "").toLowerCase();
+const normalizedSlug = normalizeProductSlug(slug);
 const rawProduct = (content.products || []).find((p: any) => productSlugCandidates(p).includes(normalizedSlug));
 
 if (!rawProduct || rawProduct.visible === false) {

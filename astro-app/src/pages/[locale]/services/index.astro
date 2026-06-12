@@ -4,12 +4,12 @@ import FaqAccordion from "@/components/FaqAccordion.astro";
 import AIAnswerBlock from "@/components/AIAnswerBlock.astro";
 import { loadContent } from "@/lib/content";
 import { pageSeo, webPageNode, ORGANIZATION_SCHEMA, WEBSITE_SCHEMA } from "@/lib/seo";
-import { localizedValue, locales, type Locale } from "@/lib/cms";
+import { localizedValue, locales, resolveLocale, type Locale } from "@/lib/cms";
 import { aiAnswerForPage, aiMetaForPage, appendSchemaNodes, fallbackFaqsForPage, faqItemsForPage, faqSchemaNode } from "@/lib/ai-search";
 
 export const prerender = false;
 
-const { locale } = Astro.params as { locale: Locale };
+const locale = resolveLocale(Astro.params.locale, Astro.url.pathname);
 const content = await loadContent();
 const seoProps = pageSeo(content, "services", locale, "/services", "Services | WillowSoft", "Embedded systems & Industrial IoT services.");
 const pageContent = content.pageContent?.services || {};

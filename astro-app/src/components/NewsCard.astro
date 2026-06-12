@@ -1,5 +1,5 @@
 ---
-import { localizeItem, type Locale } from "@/lib/cms";
+import { localizeItem, resolveLocale, type Locale } from "@/lib/cms";
 
 interface Props {
   item: any;
@@ -7,7 +7,8 @@ interface Props {
   index: number;
 }
 
-const { item, locale, index } = Astro.props;
+const { item, index } = Astro.props;
+const locale = resolveLocale(Astro.props.locale, Astro.url.pathname);
 const n = localizeItem(item, locale);
 const delay = index % 3 ? ` delay-${index % 3}` : "";
 const date = n.date
