@@ -112,6 +112,14 @@ function toId(seed: any): string {
     .replace(/^-+|-+$/g, "") || `product-${Date.now()}`;
 }
 
+export function normalizeProductSlug(value: any): string {
+  return String(value || "")
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
 export function normalizeProductDetailBlocks(value: any): ProductDetailBlock[] {
   const blocks = parseMaybeJson(value);
   if (!Array.isArray(blocks)) return [];
@@ -176,6 +184,32 @@ export function canonicalizeProduct(raw: any) {
     sort_order: raw?.sort_order ?? raw?.sortOrder ?? 0,
     localized: normalizeLocalizedMap(raw?.localized),
   };
+}
+
+export function productSlugCandidates(product: any): string[] {
+  const candidates = new Set<string>();
+  const add = (value: any) => {
+    const slug = normalizeProductSlug(value);
+    if (slug) candidates.add(slug);
+  };
+
+  add(product?.slug);
+  add(product?.id);
+  add(product?.detailUrl);
+  add(product?.title);
+  add(product?.name);
+
+  if (typeof product?.localized === "object" && product.localized) {
+    Object.values(product.localized).forEach((entry: any) => {
+      if (!entry || typeof entry !== "object") return;
+      add(entry.slug);
+      add(entry.title);
+      add(entry.name);
+      add(entry.detailUrl);
+    });
+  }
+
+  return Array.from(candidates);
 }
 
 export function specLabelFromKey(key: string): string {
