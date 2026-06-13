@@ -1,50 +1,31 @@
 import crypto from "node:crypto";
-import { getServiceClient } from "./supabase";
+import { getPublicClient } from "./supabase";
 
 const sessionTtlMs = 1000 * 60 * 60 * 12;
 
-export const adminUser = import.meta.env.ADMIN_USER || "admin";
-export const adminPassword = import.meta.env.ADMIN_PASSWORD || "willow-admin-2026";
+const adminUser = (typeof process !== "undefined" ? process.env?.ADMIN_USER : undefined) || import.meta.env.ADMIN_USER || "admin";
+const adminPassword = (typeof process !== "undefined" ? process.env?.ADMIN_PASSWORD : undefined) || import.meta.env.ADMIN_PASSWORD || "willow-admin-2026";
 
 const secret =
   (typeof process !== "undefined" ? process.env?.SESSION_SECRET : undefined) ||
   import.meta.env.SESSION_SECRET ||
-  import.meta.env.ADMIN_PASSWORD ||
   "willow-session-secret-dev-only";
-
-// ── Password hashing (PBKDF2, no external deps) ──────────────────────────────
-
-export function hashPassword(password: string, salt?: string): string {
-  const s = salt || crypto.randomBytes(16).toString("hex");
-  const hash = crypto.pbkdf2Sync(password, s, 100_000, 64, "sha512").toString("hex");
-  return `pbkdf2:${s}:${hash}`;
-}
-
-export function verifyPassword(password: string, stored: string): boolean {
-  if (!stored.startsWith("pbkdf2:")) return false;
-  const [, salt] = stored.split(":");
-  return hashPassword(password, salt) === stored;
-}
 
 // ── Credential check ──────────────────────────────────────────────────────────
 
 export async function verifyCredentials(username: string, password: string): Promise<boolean> {
   try {
-    const sb = getServiceClient();
-    const { data } = await sb
-      .from("admin_users")
-      .select("password_hash, active")
-      .eq("username", username)
-      .single();
-
-    if (data && data.active) {
-      return verifyPassword(password, data.password_hash);
-    }
+    const sb = getPublicClient();
+    const { data, error } = await sb.rpc("verify_admin_login", {
+      p_username: username,
+      p_password: password,
+    });
+    if (!error && data && data.length > 0) return true;
   } catch {
-    // Supabase unavailable — fall through to env var fallback
+    // fall through to env var fallback
   }
 
-  // Bootstrap fallback: allow env-var credentials even when table is empty
+  // Fallback: env-var credentials
   return username === adminUser && password === adminPassword;
 }
 
