@@ -106,7 +106,7 @@ body[data-page="news-detail"] {
 
   /* Variant C Custom Variables */
   --ws-navy-950: #070d19;
-  --ws-teal: #14b8a6;
+  --ws-teal: var(--cyan);
   --ws-blue: #132175;
   --ws-ink: #131b2e;
   --ws-line: #cbd5e1;
@@ -8140,6 +8140,17 @@ body[data-page="company"] .ws-lead {
 }
 
 /* ---- Company page (Variant C) layout ---- */
+/* Unify all accent moments on one cool brand colour (eyebrow + serif accent) */
+body[data-page="company"] .eyebrow {
+  color: var(--ws-teal);
+}
+body[data-page="company"] .eyebrow::before {
+  background: var(--ws-teal);
+}
+body[data-page="company"] .serif-accent {
+  color: var(--ws-teal);
+}
+
 body[data-page="company"] .company-container {
   width: min(var(--max), calc(100% - 48px));
   margin-inline: auto;
