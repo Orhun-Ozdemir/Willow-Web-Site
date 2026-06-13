@@ -1,5 +1,5 @@
 import type { APIRoute } from "astro";
-import { loadContent, saveContent } from "@/lib/content";
+import { loadContent, saveContent, saveContentSection } from "@/lib/content";
 import { getSession } from "@/lib/auth";
 
 export const prerender = false;
@@ -29,8 +29,16 @@ export const PUT: APIRoute = async ({ request }) => {
   }
 
   try {
+    const url = new URL(request.url);
+    const section = url.searchParams.get("section");
     const body = await request.json();
-    await saveContent(body);
+
+    if (section) {
+      await saveContentSection(section, body);
+    } else {
+      await saveContent(body);
+    }
+
     return new Response(JSON.stringify({ ok: true, content: body }), {
       status: 200,
       headers: { "Content-Type": "application/json" },

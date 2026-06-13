@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useState, useEffect, useCallback, type ReactNode } from "react";
+import { createContext, useContext, useState, useEffect, useCallback, useMemo, type ReactNode } from "react";
 
 
 interface AdminContextValue {
@@ -29,9 +29,9 @@ export function useAdmin() {
 export function AdminProvider({ children }: { children: ReactNode }) {
   const [session, setSession] = useState<any>(null);
   const [content, setContentRaw] = useState<any>(null);
+  const [initialContent, setInitialContent] = useState<any>(null);
   const [leads, setLeads] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [isDirty, setIsDirty] = useState(false);
   const [saving, setSaving] = useState(false);
   const [saveMessage, setSaveMessage] = useState("");
   
@@ -50,6 +50,7 @@ export function AdminProvider({ children }: { children: ReactNode }) {
         const contentRes = await fetch("/api/content");
         const contentData = await contentRes.json();
         setContentRaw(contentData);
+        setInitialContent(JSON.parse(JSON.stringify(contentData)));
 
         const leadsRes = await fetch("/api/leads");
         const leadsData = await leadsRes.json();
@@ -65,35 +66,76 @@ export function AdminProvider({ children }: { children: ReactNode }) {
 
   const setContent = useCallback((updater: (prev: any) => any) => {
     setContentRaw((prev: any) => {
-      const next = updater(prev);
-      setIsDirty(true);
-      return next;
+      return updater(prev);
     });
   }, []);
 
+  const isDirty = useMemo(() => {
+    if (!initialContent || !content) return false;
+    const keys = [
+      "products", "news", "services", "solutions", "clients", 
+      "faqs", "glossary", "pageContent", "pageSeo", "translations", 
+      "companyFacts", "meta"
+    ];
+    return keys.some(key => JSON.stringify(initialContent[key]) !== JSON.stringify(content[key]));
+  }, [initialContent, content]);
+
   const saveContent = useCallback(async () => {
+    if (!initialContent || !content) return;
+
+    const keys = [
+      "products", "news", "services", "solutions", "clients", 
+      "faqs", "glossary", "pageContent", "pageSeo", "translations", 
+      "companyFacts", "meta"
+    ];
+    const dirtyKeys = keys.filter(key => JSON.stringify(initialContent[key]) !== JSON.stringify(content[key]));
+
+    if (dirtyKeys.length === 0) return;
+
     setSaving(true);
     setSaveMessage("");
+
+    const keyLabels: Record<string, string> = {
+      products: "Ürünler",
+      news: "Haberler",
+      services: "Hizmetler",
+      solutions: "Çözümler",
+      clients: "Müşteriler",
+      faqs: "Sıkça Sorulan Sorular",
+      glossary: "Sözlük",
+      pageContent: "Sayfa İçeriği",
+      pageSeo: "SEO Ayarları",
+      translations: "Çeviriler",
+      companyFacts: "Şirket Bilgileri",
+      meta: "Site Ayarları"
+    };
+
     try {
-      const res = await fetch("/api/content", {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(content),
-      });
-      if (res.ok) {
-        setIsDirty(false);
-        setSaveMessage("Tüm değişiklikler kaydedildi ✓");
-      } else {
-        const err = await res.json();
-        setSaveMessage(`Hata: ${err.error || "Kayıt başarısız"}`);
+      for (const key of dirtyKeys) {
+        const label = keyLabels[key] || key;
+        setSaveMessage(`${label} kaydediliyor...`);
+
+        const res = await fetch(`/api/content?section=${key}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(content[key]),
+        });
+
+        if (!res.ok) {
+          const err = await res.json();
+          throw new Error(`[${label}] ${err.error || "Kayıt başarısız"}`);
+        }
       }
-    } catch {
-      setSaveMessage("Kayıt başarısız. Ağ hatası.");
+
+      setInitialContent(JSON.parse(JSON.stringify(content)));
+      setSaveMessage("Tüm değişiklikler kaydedildi ✓");
+    } catch (err: any) {
+      setSaveMessage(`Hata: ${err.message || "Kayıt sırasında bir hata oluştu"}`);
     } finally {
       setSaving(false);
-      setTimeout(() => setSaveMessage(""), 3000);
+      setTimeout(() => setSaveMessage(""), 4000);
     }
-  }, [content]);
+  }, [initialContent, content]);
 
   const updateLeadStatus = useCallback(async (leadId: string, status: string) => {
     try {

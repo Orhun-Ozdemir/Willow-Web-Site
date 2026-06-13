@@ -142,7 +142,7 @@ export async function saveContent(data: any): Promise<void> {
   // Helper to sync a singleton map table
   const syncSingleton = async (table: string, keyName: string, mapData: any) => {
     const { data: current } = await supabase.from(table).select(keyName);
-    const currentKeys = new Set((current || []).map(r => r[keyName]));
+    const currentKeys = new Set((current || []).map(r => (r as any)[keyName]));
 
     const rows = Object.entries(mapData || {}).map(([k, v]) => {
       currentKeys.delete(k);
@@ -175,4 +175,112 @@ export async function saveContent(data: any): Promise<void> {
   // Bust cache
   cachedContent = data;
   lastFetchTime = Date.now();
+}
+
+/**
+ * Saves a single section of the content.
+ */
+export async function saveContentSection(section: string, sectionData: any): Promise<void> {
+  if (!hasSupabaseEnv) {
+    let fullData: any = {};
+    try {
+      fullData = JSON.parse(fs.readFileSync(dataFile, "utf8"));
+    } catch (err: any) {
+      console.warn("Failed to read local dataFile, using bundled fallback:", err.message);
+      fullData = { ...localSiteData };
+    }
+
+    fullData[section] = sectionData;
+    fullData.meta = { ...(fullData.meta || {}), updatedAt: new Date().toISOString() };
+
+    fs.writeFileSync(dataFile, JSON.stringify(fullData, null, 2) + "\n", "utf8");
+    cachedContent = fullData;
+    lastFetchTime = Date.now();
+    return;
+  }
+
+  const supabase = getServiceClient();
+
+  const extractLocal = (item: any) => {
+    const { localized, ...rest } = item;
+    return { data: rest, localized: localized || {} };
+  };
+
+  const syncCollection = async (table: string, items: any[]) => {
+    const { data: current } = await supabase.from(table).select("id");
+    const currentIds = new Set((current || []).map(r => r.id));
+
+    const rows = (items || []).map(it => {
+      currentIds.delete(it.id);
+      return { id: it.id, ...extractLocal(it) };
+    });
+    if (rows.length > 0) {
+      await supabase.from(table).upsert(rows);
+    }
+    if (currentIds.size > 0) {
+      await supabase.from(table).delete().in("id", Array.from(currentIds));
+    }
+  };
+
+  const syncSingleton = async (table: string, keyName: string, mapData: any) => {
+    const { data: current } = await supabase.from(table).select(keyName);
+    const currentKeys = new Set((current || []).map(r => (r as any)[keyName]));
+
+    const rows = Object.entries(mapData || {}).map(([k, v]) => {
+      currentKeys.delete(k);
+      return { [keyName]: k, data: v };
+    });
+
+    if (rows.length > 0) {
+      await supabase.from(table).upsert(rows);
+    }
+    if (currentKeys.size > 0) {
+      await supabase.from(table).delete().in(keyName, Array.from(currentKeys));
+    }
+  };
+
+  switch (section) {
+    case "products":
+      await syncCollection("products", sectionData);
+      break;
+    case "news":
+      await syncCollection("news", sectionData);
+      break;
+    case "services":
+      await syncCollection("services", sectionData);
+      break;
+    case "solutions":
+      await syncCollection("solutions", sectionData);
+      break;
+    case "clients":
+      await syncCollection("clients", sectionData);
+      break;
+    case "faqs":
+      await syncCollection("faqs", sectionData);
+      break;
+    case "glossary":
+      await syncCollection("glossary", sectionData);
+      break;
+    case "pageContent":
+      await syncSingleton("page_content", "page", sectionData);
+      break;
+    case "pageSeo":
+      await syncSingleton("page_seo", "page", sectionData);
+      break;
+    case "translations":
+      await syncSingleton("translations", "locale", sectionData);
+      break;
+    case "companyFacts":
+      await supabase.from("company_facts").upsert({ id: 1, data: sectionData || {} });
+      break;
+    case "meta":
+      await supabase.from("site_meta").upsert({ id: 1, data: sectionData || {} });
+      break;
+    default:
+      throw new Error(`Unknown section: ${section}`);
+  }
+
+  // Bust cache to force fresh load next time
+  cachedContent = null;
+  lastFetchTime = 0;
 }
