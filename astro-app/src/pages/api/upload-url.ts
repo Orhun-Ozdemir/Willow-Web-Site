@@ -41,22 +41,30 @@ export const GET: APIRoute = async ({ request }) => {
     });
   }
 
-  const supabase = getServiceClient();
-  const { data, error } = await supabase.storage
-    .from("assets")
-    .createSignedUploadUrl(storagePath);
+  try {
+    const supabase = getServiceClient();
+    const { data, error } = await supabase.storage
+      .from("assets")
+      .createSignedUploadUrl(storagePath);
 
-  if (error || !data) {
-    return new Response(JSON.stringify({ ok: false, error: error?.message || "Failed to create signed URL" }), {
+    if (error || !data) {
+      return new Response(JSON.stringify({ ok: false, error: error?.message || "Failed to create signed URL" }), {
+        status: 500,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
+
+    const publicUrl = `${SUPABASE_URL}/storage/v1/object/public/assets/${storagePath}`;
+
+    return new Response(JSON.stringify({ ok: true, signedUrl: data.signedUrl, token: data.token, publicUrl }), {
+      status: 200,
+      headers: { "Content-Type": "application/json" },
+    });
+  } catch (err: any) {
+    console.error("upload-url error:", err);
+    return new Response(JSON.stringify({ ok: false, error: err?.message || "Server error" }), {
       status: 500,
       headers: { "Content-Type": "application/json" },
     });
   }
-
-  const publicUrl = `${SUPABASE_URL}/storage/v1/object/public/assets/${storagePath}`;
-
-  return new Response(JSON.stringify({ ok: true, signedUrl: data.signedUrl, token: data.token, publicUrl }), {
-    status: 200,
-    headers: { "Content-Type": "application/json" },
-  });
 };

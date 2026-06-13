@@ -6,7 +6,11 @@ const sessionTtlMs = 1000 * 60 * 60 * 12;
 export const adminUser = import.meta.env.ADMIN_USER || "admin";
 export const adminPassword = import.meta.env.ADMIN_PASSWORD || "willow-admin-2026";
 
-const secret = import.meta.env.ADMIN_PASSWORD || "willow-admin-2026-dev-only";
+const secret =
+  (typeof process !== "undefined" ? process.env?.SESSION_SECRET : undefined) ||
+  import.meta.env.SESSION_SECRET ||
+  import.meta.env.ADMIN_PASSWORD ||
+  "willow-session-secret-dev-only";
 
 // ── Password hashing (PBKDF2, no external deps) ──────────────────────────────
 
