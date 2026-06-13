@@ -8196,7 +8196,20 @@ body[data-page="company"] .company-stat-mobile-break {
 
 /* Hero */
 body[data-page="company"] .company-hero-c {
-  --company-hero-top-safe: 96px;
+  --company-hero-top-safe: 84px;
+}
+
+/* Soft signal bloom on the right so the image-less hero reads intentional */
+body[data-page="company"] .company-hero-c::after {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  top: -12%;
+  right: -8%;
+  width: 58%;
+  height: 124%;
+  background: radial-gradient(closest-side, rgba(26, 163, 196, 0.20), transparent 72%);
+  pointer-events: none;
 }
 
 body[data-page="company"] .hero-inner-c {
@@ -8204,8 +8217,8 @@ body[data-page="company"] .hero-inner-c {
   margin-inline: auto;
   padding: var(--company-hero-top-safe) 0 72px;
   display: grid;
-  min-height: 520px;
-  grid-template-columns: minmax(0, 780px);
+  min-height: 460px;
+  grid-template-columns: minmax(0, 760px);
   gap: 0;
   align-content: center;
   align-items: start;
@@ -8227,7 +8240,7 @@ body[data-page="company"] .company-hero-img-wrap {
 }
 
 body[data-page="company"] .company-hero-signal {
-  opacity: 0.24;
+  opacity: 0.42;
   mix-blend-mode: screen;
 }
 
