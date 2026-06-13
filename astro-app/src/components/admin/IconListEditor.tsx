@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { normalizeProductIconItems, type ProductIconItem } from "@/lib/product-model";
 import FormField from "./FormField";
 import IconPicker from "./IconPicker";
@@ -36,12 +36,18 @@ export default function IconListEditor({
   placeholder = "Application area",
 }: IconListEditorProps) {
   const [items, setItems] = useState<ProductIconItem[]>(() => normalizeProductIconItems(value, inferIcon, { includeHidden: true }));
+  const internalChange = useRef(false);
 
   useEffect(() => {
+    if (internalChange.current) {
+      internalChange.current = false;
+      return;
+    }
     setItems(normalizeProductIconItems(value, inferIcon, { includeHidden: true }));
   }, [value, inferIcon]);
 
   const commit = (next: ProductIconItem[]) => {
+    internalChange.current = true;
     setItems(next);
     onChange(
       next

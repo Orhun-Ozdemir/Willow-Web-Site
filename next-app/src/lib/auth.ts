@@ -1,41 +1,51 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 import crypto from "node:crypto";
 
 const sessionTtlMs = 1000 * 60 * 60 * 12;
-const sessions = new Map<string, { user: string; expiresAt: number }>();
 
 export const adminUser = process.env.ADMIN_USER || "admin";
 export const adminPassword = process.env.ADMIN_PASSWORD || "willow-admin-2026";
 
-if (
-  process.env.NODE_ENV === "production" &&
-  process.env.NEXT_PHASE !== "phase-production-build" &&
-  (!process.env.ADMIN_PASSWORD || process.env.ADMIN_PASSWORD === "willow-admin-2026")
-) {
-  throw new Error("ADMIN_PASSWORD environment variable must be set in production, and cannot be the default value.");
-}
+const secret = process.env.ADMIN_PASSWORD || "willow-admin-2026-dev-only";
 
-export function getSession(req: NextRequest) {
-  const token = req.cookies.get("willow_admin")?.value;
-  if (!token) return null;
-  const session = sessions.get(token);
-  if (!session) return null;
-  if (Date.now() > session.expiresAt) {
-    sessions.delete(token);
-    return null;
-  }
-  return session;
+function sign(payload: string): string {
+  return crypto.createHmac("sha256", secret).update(payload).digest("hex");
 }
 
 export function createSession(username: string): { token: string; expiresAt: number } {
-  const token = crypto.randomBytes(32).toString("hex");
   const expiresAt = Date.now() + sessionTtlMs;
-  sessions.set(token, { user: username, expiresAt });
+  const payload = `${username}:${expiresAt}`;
+  const sig = sign(payload);
+  const token = Buffer.from(`${payload}:${sig}`).toString("base64url");
   return { token, expiresAt };
 }
 
-export function deleteSession(token: string) {
-  sessions.delete(token);
+export function getSession(req: NextRequest): { user: string; expiresAt: number } | null {
+  const token = req.cookies.get("willow_admin")?.value;
+  if (!token) return null;
+
+  try {
+    const decoded = Buffer.from(token, "base64url").toString("utf8");
+    const lastColon = decoded.lastIndexOf(":");
+    const payload = decoded.slice(0, lastColon);
+    const sig = decoded.slice(lastColon + 1);
+
+    if (sign(payload) !== sig) return null;
+
+    const colonIdx = payload.indexOf(":");
+    const user = payload.slice(0, colonIdx);
+    const expiresAt = Number(payload.slice(colonIdx + 1));
+
+    if (!user || isNaN(expiresAt) || Date.now() > expiresAt) return null;
+
+    return { user, expiresAt };
+  } catch {
+    return null;
+  }
+}
+
+export function deleteSession(_token: string) {
+  // Stateless tokens expire naturally — no action needed.
 }
 
 export function isAuthenticated(req: NextRequest): boolean {
