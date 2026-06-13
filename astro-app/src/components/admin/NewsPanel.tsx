@@ -204,6 +204,7 @@ export default function NewsPanel() {
     }));
 
     setEditIdx(news.length);
+    setOpenSections({ basics: true });
   };
 
   const deleteNews = (idx: number) => {
@@ -544,7 +545,7 @@ export default function NewsPanel() {
 
                     <button
                       type="button"
-                      onClick={() => setEditIdx(idx)}
+                      onClick={() => { setEditIdx(idx); setOpenSections({ basics: true }); }}
                       className="ws-edit-button"
                     >
                       Düzenle
