@@ -3,6 +3,7 @@
 import { useState } from "react";
 
 export default function AdminLogin() {
+  const [username, setUsername] = useState("admin");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
@@ -17,7 +18,7 @@ export default function AdminLogin() {
       const res = await fetch("/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username: "admin", password }),
+        body: JSON.stringify({ username, password }),
       });
 
       const data = await res.json();
@@ -61,7 +62,14 @@ export default function AdminLogin() {
           <form onSubmit={handleLogin} className="space-y-4">
             <div className="space-y-1.5">
               <label className="text-xs font-semibold uppercase text-gray-400 tracking-wide">Kullanıcı Adı</label>
-              <input type="text" disabled value="admin" className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-gray-400 cursor-not-allowed outline-none text-sm" />
+              <input
+                type="text"
+                required
+                placeholder="admin"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                className="w-full px-4 py-3 bg-gray-50 border border-gray-200 focus:border-[#132175] focus:ring-2 focus:ring-[#132175]/10 rounded-xl text-[#131b2e] outline-none transition text-sm"
+              />
             </div>
 
             <div className="space-y-1.5">
@@ -78,7 +86,7 @@ export default function AdminLogin() {
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 focus:outline-none"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 z-10 flex items-center justify-center text-gray-400 hover:text-gray-600 focus:outline-none"
                 >
                   {showPassword ? (
                     <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>

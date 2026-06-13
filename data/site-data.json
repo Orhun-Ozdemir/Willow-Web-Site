@@ -828,7 +828,7 @@
         {
           "id": "cereal-and-grain-storage-level-monitoring-5",
           "label": "Cereal and grain storage level monitoring",
-          "icon": "water",
+          "icon": "barn",
           "description": "",
           "visible": true
         },
@@ -927,14 +927,14 @@
         {
           "id": "factories-and-industrial-facilities-3",
           "label": "Factories and industrial facilities",
-          "icon": "gear",
+          "icon": "factory",
           "description": "",
           "visible": true
         },
         {
           "id": "warehouses-and-logistics-centers-4",
           "label": "Warehouses and logistics centers",
-          "icon": "check",
+          "icon": "barn",
           "description": "",
           "visible": true
         },
@@ -948,14 +948,14 @@
         {
           "id": "schools-and-universities-6",
           "label": "Schools and universities",
-          "icon": "check",
+          "icon": "building",
           "description": "",
           "visible": true
         },
         {
           "id": "hospitals-and-healthcare-facilities-7",
           "label": "Hospitals and healthcare facilities",
-          "icon": "carShield",
+          "icon": "activity",
           "description": "",
           "visible": true
         },
@@ -981,7 +981,7 @@
           {
             "id": "tvoc-total-volatile-organic-compounds-1",
             "label": "TVOC (Total Volatile Organic Compounds)",
-            "icon": "check",
+            "icon": "leaf",
             "description": "",
             "visible": true
           },
@@ -1042,14 +1042,14 @@
         {
           "id": "asset-and-object-tracking-2",
           "label": "Asset and object tracking",
-          "icon": "check",
+          "icon": "location",
           "description": "",
           "visible": true
         },
         {
           "id": "route-logging-and-trip-analysis-3",
           "label": "Route logging and trip analysis",
-          "icon": "check",
+          "icon": "map",
           "description": "",
           "visible": true
         },
@@ -1063,7 +1063,7 @@
         {
           "id": "logistics-and-supply-chain-tracking-5",
           "label": "Logistics and supply chain tracking",
-          "icon": "check",
+          "icon": "map",
           "description": "",
           "visible": true
         }
@@ -1082,21 +1082,21 @@
           {
             "id": "latitude-and-longitude-1",
             "label": "Latitude and longitude",
-            "icon": "check",
+            "icon": "location",
             "description": "",
             "visible": true
           },
           {
             "id": "elevation-2",
             "label": "Elevation",
-            "icon": "check",
+            "icon": "mountain",
             "description": "",
             "visible": true
           },
           {
             "id": "speed-3",
             "label": "Speed",
-            "icon": "check",
+            "icon": "activity",
             "description": "",
             "visible": true
           },
@@ -1143,35 +1143,35 @@
         {
           "id": "offices-1",
           "label": "Offices",
-          "icon": "check",
+          "icon": "building",
           "description": "",
           "visible": true
         },
         {
           "id": "homes-2",
           "label": "Homes",
-          "icon": "check",
+          "icon": "building",
           "description": "",
           "visible": true
         },
         {
           "id": "warehouses-3",
           "label": "Warehouses",
-          "icon": "check",
+          "icon": "barn",
           "description": "",
           "visible": true
         },
         {
           "id": "airports-4",
           "label": "Airports",
-          "icon": "check",
+          "icon": "building",
           "description": "",
           "visible": true
         },
         {
           "id": "industrial-facilities-5",
           "label": "Industrial Facilities",
-          "icon": "gear",
+          "icon": "factory",
           "description": "",
           "visible": true
         },
@@ -1220,35 +1220,35 @@
         {
           "id": "laboratory-doors-1",
           "label": "Laboratory Doors",
-          "icon": "check",
+          "icon": "building",
           "description": "",
           "visible": true
         },
         {
           "id": "warehouse-doors-2",
           "label": "Warehouse Doors",
-          "icon": "check",
+          "icon": "barn",
           "description": "",
           "visible": true
         },
         {
           "id": "server-room-doors-3",
           "label": "Server Room Doors",
-          "icon": "check",
+          "icon": "stack",
           "description": "",
           "visible": true
         },
         {
           "id": "electrical-panel-room-doors-4",
           "label": "Electrical Panel Room Doors",
-          "icon": "check",
+          "icon": "gear",
           "description": "",
           "visible": true
         },
         {
           "id": "executive-room-doors-5",
           "label": "Executive Room Doors",
-          "icon": "check",
+          "icon": "building",
           "description": "",
           "visible": true
         },
@@ -1262,14 +1262,14 @@
         {
           "id": "cabinets-and-drawers-7",
           "label": "Cabinets and Drawers",
-          "icon": "check",
+          "icon": "mount",
           "description": "",
           "visible": true
         },
         {
           "id": "remote-monitoring-window-openings-closings-8",
           "label": "Remote monitoring window openings/closings",
-          "icon": "check",
+          "icon": "shield",
           "description": "",
           "visible": true
         }
@@ -1419,35 +1419,35 @@
         {
           "id": "homes-1",
           "label": "Homes",
-          "icon": "check",
+          "icon": "building",
           "description": "",
           "visible": true
         },
         {
           "id": "factories-2",
           "label": "Factories",
-          "icon": "check",
+          "icon": "factory",
           "description": "",
           "visible": true
         },
         {
           "id": "warehouses-3",
           "label": "Warehouses",
-          "icon": "check",
+          "icon": "barn",
           "description": "",
           "visible": true
         },
         {
           "id": "offices-4",
           "label": "Offices",
-          "icon": "check",
+          "icon": "building",
           "description": "",
           "visible": true
         },
         {
           "id": "indoor-and-outdoor-sites-5",
           "label": "Indoor and Outdoor Sites",
-          "icon": "check",
+          "icon": "map",
           "description": "",
           "visible": true
         },
@@ -1497,21 +1497,21 @@
         {
           "id": "industrial-facilities-1",
           "label": "Industrial Facilities",
-          "icon": "gear",
+          "icon": "factory",
           "description": "",
           "visible": true
         },
         {
           "id": "factories-2",
           "label": "Factories",
-          "icon": "check",
+          "icon": "factory",
           "description": "",
           "visible": true
         },
         {
           "id": "warehouses-3",
           "label": "Warehouses",
-          "icon": "check",
+          "icon": "barn",
           "description": "",
           "visible": true
         },
@@ -1525,14 +1525,14 @@
         {
           "id": "energy-monitoring-systems-5",
           "label": "Energy Monitoring Systems",
-          "icon": "check",
+          "icon": "activity",
           "description": "",
           "visible": true
         },
         {
           "id": "plc-applications-6",
           "label": "PLC Applications",
-          "icon": "check",
+          "icon": "gear",
           "description": "",
           "visible": true
         },
@@ -1592,7 +1592,7 @@
         {
           "id": "gardens-2",
           "label": "Gardens",
-          "icon": "check",
+          "icon": "leaf",
           "description": "",
           "visible": true
         },
@@ -1606,7 +1606,7 @@
         {
           "id": "food-industry-facilities-4",
           "label": "Food Industry Facilities",
-          "icon": "check",
+          "icon": "factory",
           "description": "",
           "visible": true
         },
@@ -1633,7 +1633,7 @@
           {
             "id": "soil-moisture-1",
             "label": "Soil moisture",
-            "icon": "sprout",
+            "icon": "droplet",
             "description": "",
             "visible": true
           },
@@ -1687,7 +1687,7 @@
         {
           "id": "pipeline-pressure-monitoring-1",
           "label": "Pipeline Pressure Monitoring",
-          "icon": "check",
+          "icon": "activity",
           "description": "",
           "visible": true
         },
@@ -1715,21 +1715,21 @@
         {
           "id": "chemical-processing-plants-5",
           "label": "Chemical Processing Plants",
-          "icon": "check",
+          "icon": "factory",
           "description": "",
           "visible": true
         },
         {
           "id": "hydraulic-systems-6",
           "label": "Hydraulic Systems",
-          "icon": "check",
+          "icon": "gear",
           "description": "",
           "visible": true
         },
         {
           "id": "irrigation-systems-7",
           "label": "Irrigation Systems",
-          "icon": "check",
+          "icon": "sprout",
           "description": "",
           "visible": true
         }
@@ -1749,14 +1749,14 @@
           {
             "id": "pipeline-pressure-level-1",
             "label": "Pipeline pressure level",
-            "icon": "location",
+            "icon": "activity",
             "description": "",
             "visible": true
           },
           {
             "id": "tank-pressure-level-2",
             "label": "Tank pressure level",
-            "icon": "location",
+            "icon": "activity",
             "description": "",
             "visible": true
           }
@@ -1789,35 +1789,35 @@
         {
           "id": "weather-stations-1",
           "label": "Weather Stations",
-          "icon": "check",
+          "icon": "cloud",
           "description": "",
           "visible": true
         },
         {
           "id": "airports-2",
           "label": "Airports",
-          "icon": "check",
+          "icon": "building",
           "description": "",
           "visible": true
         },
         {
           "id": "ports-and-harbors-3",
           "label": "Ports and Harbors",
-          "icon": "check",
+          "icon": "water",
           "description": "",
           "visible": true
         },
         {
           "id": "skyscrapers-4",
           "label": "Skyscrapers",
-          "icon": "check",
+          "icon": "building",
           "description": "",
           "visible": true
         },
         {
           "id": "industrial-sites-5",
           "label": "Industrial Sites",
-          "icon": "gear",
+          "icon": "factory",
           "description": "",
           "visible": true
         },
