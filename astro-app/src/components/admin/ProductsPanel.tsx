@@ -116,7 +116,7 @@ export default function ProductsPanel() {
           <FormField label="Slug" value={p.slug || ""} onChange={(v) => updateProduct(editIdx, "slug", v)} />
           <FormField label="Ürün Adı" value={p.title || ""} onChange={(v) => updateProduct(editIdx, "title", v)} />
           <FormField label="Kategori" type="select" value={p.category || "modules"} onChange={(v) => updateProduct(editIdx, "category", v)} options={CATEGORIES} />
-          <FormField label="Görsel Yolu" value={p.image || ""} onChange={(v) => updateProduct(editIdx, "image", v)} placeholder="/assets/products/..." />
+          <FormField label="Görsel Yolu" type="image" value={p.image || ""} onChange={(v) => updateProduct(editIdx, "image", v)} placeholder="assets/products/..." />
           <div className="col-span-2">
             <ListEditorField
               label="Çoklu Görseller"
@@ -192,20 +192,74 @@ export default function ProductsPanel() {
 
   return (
     <div className="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-lg">
-      <div className="p-4 border-b border-gray-200 flex justify-between items-center">
-        <h3 className="font-bold text-sm">Ürün Kataloğu</h3>
-        <button onClick={addProduct} className="px-3 py-1.5 bg-[#132175] hover:bg-[#0e1a5e] text-white rounded text-xs font-bold">+ Yeni Ürün</button>
+      <div className="p-4 border-b border-gray-200 flex justify-between items-center bg-gray-50/50">
+        <h3 className="font-bold text-sm text-[#131b2e]">Ürün Kataloğu</h3>
+        <button onClick={addProduct} className="px-3 py-1.5 bg-[#132175] hover:bg-[#0e1a5e] text-white rounded text-xs font-bold transition duration-150 shadow-sm">+ Yeni Ürün</button>
       </div>
-      <div className="divide-y divide-gray-100">
-        {products.map((p: any, idx: number) => (
-          <div key={p.id} className="p-4 flex items-center justify-between hover:bg-gray-100/40 transition">
-            <div>
-              <p className="font-bold text-gray-800">{p.title}</p>
-              <p className="text-xs text-gray-400">ID: {p.id} • Kategori: {p.category} {p.featured && "• Öne Çıkan"} {p.visible === false ? "• 🔴 Taslak" : "• 🟢 Yayında"}</p>
+      
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-6 bg-gray-50/30">
+        {products.map((p: any, idx: number) => {
+          const previewUrl = p.image ? (
+            /^(https?:)?\/\//i.test(p.image) || p.image.startsWith("data:")
+              ? p.image
+              : `${import.meta.env.BASE_URL || "/"}${p.image.replace(/^\/+/, "")}`
+          ) : "";
+          
+          const imageName = p.image ? p.image.split("/").pop() : "Görsel Yok";
+
+          return (
+            <div key={p.id} className="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition duration-200 flex flex-col justify-between">
+              <div>
+                <div className="h-40 bg-white border-b border-gray-100 flex items-center justify-center p-4 relative group">
+                  {previewUrl ? (
+                    <img
+                      src={previewUrl}
+                      alt={p.title}
+                      className="h-full max-w-full object-contain group-hover:scale-105 transition duration-200"
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).src = "/assets/willow-mark-transparent.png";
+                        (e.target as HTMLImageElement).style.opacity = "0.2";
+                      }}
+                    />
+                  ) : (
+                    <div className="w-16 h-16 rounded-xl bg-gray-50 border border-dashed border-gray-200 flex items-center justify-center text-gray-300">
+                      Görsel Yok
+                    </div>
+                  )}
+                  <div className="absolute top-2 right-2">
+                    <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${
+                      p.visible !== false ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"
+                    }`}>
+                      {p.visible !== false ? "🟢 Yayında" : "🔴 Taslak"}
+                    </span>
+                  </div>
+                </div>
+                <div className="p-4 space-y-1">
+                  <h4 className="font-bold text-gray-800 text-sm">{p.title}</h4>
+                  <p className="text-[10px] text-gray-400 font-mono truncate" title={p.image || ""}>
+                    Dosya: {imageName}
+                  </p>
+                  <p className="text-xs text-gray-500 line-clamp-2 min-h-[2rem]">{p.shortDescription || "Açıklama girilmemiş."}</p>
+                </div>
+              </div>
+              
+              <div className="p-4 pt-0 flex justify-between items-center border-t border-gray-100/60 mt-3">
+                <span className="text-[10px] uppercase font-bold text-[#132175] tracking-wider px-2 py-0.5 bg-[#132175]/5 rounded">
+                  {p.category || "Genel"}
+                </span>
+                <button
+                  onClick={() => setEditIdx(idx)}
+                  className="px-3 py-1.5 bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs font-bold rounded transition duration-150"
+                >
+                  Düzenle
+                </button>
+              </div>
             </div>
-            <button onClick={() => setEditIdx(idx)} className="px-3 py-1 bg-gray-100 hover:bg-gray-200 text-xs font-semibold rounded transition">Düzenle</button>
-          </div>
-        ))}
+          );
+        })}
+        {products.length === 0 && (
+          <div className="col-span-full py-12 text-center text-gray-400 text-sm">Katalogda henüz ürün bulunmuyor.</div>
+        )}
       </div>
     </div>
   );

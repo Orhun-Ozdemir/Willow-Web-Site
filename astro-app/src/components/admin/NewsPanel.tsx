@@ -69,7 +69,7 @@ export default function NewsPanel() {
           <FormField label="Slug" value={n.slug || ""} onChange={(v) => updateNews(editIdx, "slug", v)} />
           <FormField label="Tarih" type="date" value={n.date || ""} onChange={(v) => updateNews(editIdx, "date", v)} />
           <FormField label="Kategori" value={n.category || ""} onChange={(v) => updateNews(editIdx, "category", v)} placeholder="case-study, update..." />
-          <FormField label="Görsel Yolu" value={n.image || ""} onChange={(v) => updateNews(editIdx, "image", v)} placeholder="/assets/news/..." />
+          <FormField label="Görsel Yolu" type="image" value={n.image || ""} onChange={(v) => updateNews(editIdx, "image", v)} placeholder="assets/news/..." />
           <div />
           <div className="col-span-2">
             <FormField label="Özet" type="textarea" value={n.excerpt || ""} onChange={(v) => updateNews(editIdx, "excerpt", v)} rows={2} />

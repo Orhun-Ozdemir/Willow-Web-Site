@@ -378,9 +378,10 @@ export default function CompanyPanel() {
                     />
                     <FormField
                       label="Görsel Dosya Yolu"
+                      type="image"
                       value={member.image || ""}
                       onChange={(v) => updateTeamMember(editingTeamIdx, "image", v)}
-                      placeholder="/assets/team/..."
+                      placeholder="assets/team/..."
                     />
                     <div className="col-span-2">
                       <FormField
@@ -614,9 +615,10 @@ export default function CompanyPanel() {
                     />
                     <FormField
                       label="Görsel Dosya Yolu"
+                      type="image"
                       value={office.image || ""}
                       onChange={(v) => updateOffice(editingOfficeIdx, "image", v)}
-                      placeholder="/assets/offices/..."
+                      placeholder="assets/offices/..."
                     />
                     <div className="col-span-2">
                       <FormField
