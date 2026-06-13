@@ -458,6 +458,20 @@
           }
         }
       }
+    ],
+    "socialLinks": [
+      {
+        "id": "linkedin",
+        "platform": "LinkedIn",
+        "url": "https://linkedin.com/company/willowsoft",
+        "enabled": true
+      },
+      {
+        "id": "github",
+        "platform": "GitHub",
+        "url": "https://github.com/willowsoft",
+        "enabled": true
+      }
     ]
   },
   "clients": [

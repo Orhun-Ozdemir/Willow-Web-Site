@@ -432,5 +432,19 @@ const dir = locale === "ar" ? "rtl" : "ltr";
       }
     })();
     </script>
+  {/* Tawk.to Live Chat — PUBLIC_TAWK_PROPERTY_ID .env'de tanımlıysa yüklenir */}
+  {import.meta.env.PUBLIC_TAWK_PROPERTY_ID && (
+    <script is:inline define:vars={{ tawkPropertyId: import.meta.env.PUBLIC_TAWK_PROPERTY_ID, tawkWidgetId: import.meta.env.PUBLIC_TAWK_WIDGET_ID || "default" }}>
+      var Tawk_API = Tawk_API || {}, Tawk_LoadStart = new Date();
+      (function(){
+        var s1 = document.createElement("script"), s0 = document.getElementsByTagName("script")[0];
+        s1.async = true;
+        s1.src = "https://embed.tawk.to/" + tawkPropertyId + "/" + tawkWidgetId;
+        s1.charset = "UTF-8";
+        s1.setAttribute("crossorigin", "*");
+        s0.parentNode.insertBefore(s1, s0);
+      })();
+    </script>
+  )}
   </body>
 </html>

@@ -180,10 +180,27 @@ const getSvg = (name: string, size = 20) => {
             {getFactVal("aboutHeadline")}
           </h2>
           <ul class="ws-bullets" style="margin-top: 4px;">
-            <li>{locale === 'tr' ? 'Yıllarca müdahalesiz çalışma için optimize edilmiş düşük güç tüketimli mimari' : 'Low-power architecture optimized for years of unattended operation'}</li>
-            <li>{locale === 'tr' ? 'Her türlü kutu, RF ve güç kısıtlaması için özel donanım tasarımı' : 'Custom hardware design for every enclosure, RF and power constraint'}</li>
-            <li>{locale === 'tr' ? 'Kendi bünyemizde geliştirilen bulut ve arayüz katmanları — entegrasyon borcu yok' : 'Backend, cloud and interface layers built in-house — no integration debt'}</li>
-            <li>{locale === 'tr' ? 'Üretime hazır: ilk prototipten sertifikalı, üretilmiş ürüne kadar' : 'Production-ready: from first prototype to certified, manufactured product'}</li>
+            {(() => {
+              const bullets = getFactList("aboutBullets");
+              if (bullets && bullets.length > 0) {
+                return bullets.map((b: any) => {
+                  const item = localizeItem(b, locale);
+                  return <li>{item.text || b.text}</li>;
+                });
+              }
+              // Fallback hardcoded
+              return locale === 'tr' ? [
+                <li>Yıllarca müdahalesiz çalışma için optimize edilmiş düşük güç tüketimli mimari</li>,
+                <li>Her türlü kutu, RF ve güç kısıtlaması için özel donanım tasarımı</li>,
+                <li>Kendi bünyemizde geliştirilen bulut ve arayüz katmanları — entegrasyon borcu yok</li>,
+                <li>Üretime hazır: ilk prototipten sertifikalı, üretilmiş ürüne kadar</li>,
+              ] : [
+                <li>Low-power architecture optimized for years of unattended operation</li>,
+                <li>Custom hardware design for every enclosure, RF and power constraint</li>,
+                <li>Backend, cloud and interface layers built in-house — no integration debt</li>,
+                <li>Production-ready: from first prototype to certified, manufactured product</li>,
+              ];
+            })()}
           </ul>
         </div>
         <div style="display: flex; flex-direction: column; gap: 18px; padding-top: 8px;">
@@ -386,16 +403,12 @@ const getSvg = (name: string, size = 20) => {
     <section class="company-section bg-soft company-industries-section">
       <div class="company-container company-industries-layout">
         <div class="company-industries-copy">
-            <span class="eyebrow">{locale === 'tr' ? 'Birlikte Çalıştıklarımız' : 'Who we work with'}</span>
-            <h2 class="ws-h2" style="margin-top: 18px;">
-              {locale === 'tr'
-                ? <>Küresel ekipler WillowSoft'a tek bir nedenle güvenir: Sonuç <span class="serif-accent">üretiriz</span>.</>
-                : <>Global teams trust WillowSoft for one reason: we <span class="serif-accent">deliver</span>.</>}
-            </h2>
+            <span class="eyebrow">{getVal("industriesEyebrow") || (locale === 'tr' ? 'Birlikte Çalıştıklarımız' : 'Who we work with')}</span>
+            <h2 class="ws-h2" style="margin-top: 18px;" set:html={getVal("industriesTitle") || (locale === 'tr' ? 'Küresel ekipler WillowSoft\'a tek bir nedenle güvenir: Sonuç <span class="serif-accent">üretiriz</span>.' : 'Global teams trust WillowSoft for one reason: we <span class="serif-accent">deliver</span>.')} />
           <p class="ws-lead">
-            {locale === 'tr'
+            {getVal("industriesLead") || (locale === 'tr'
               ? 'Fortune 500 endüstriyel devlerinden hızlı tüketim markalarına kadar — güvenilirliğin isteğe bağlı olmadığı zorlu çalışma koşulları.'
-              : 'From Fortune 500 industrials to fast-moving consumer brands — demanding environments where reliability is not optional.'}
+              : 'From Fortune 500 industrials to fast-moving consumer brands — demanding environments where reliability is not optional.')}
           </p>
         </div>
         <div class="company-industry-proof-list">

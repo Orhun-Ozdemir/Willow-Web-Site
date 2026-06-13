@@ -1,11 +1,16 @@
 ---
 import { resolveLocale, type Locale } from "@/lib/cms";
+import { loadContent } from "@/lib/content";
+import { getSocialSvg } from "@/lib/social-icons";
 
 interface Props {
   locale: Locale;
 }
 
 const locale = resolveLocale(Astro.props.locale, Astro.url.pathname);
+const content = await loadContent();
+const socialLinks: { id: string; platform: string; url: string; enabled: boolean }[] =
+  (content?.companyFacts?.socialLinks || []).filter((s: any) => s.enabled && s.url);
 const labels = {
   tagline: {
     en: "Smart Embedded Connectivity & Industrial IoT.",
@@ -42,6 +47,7 @@ const labels = {
   rights: { en: "All rights reserved.", tr: "Tüm hakları saklıdır.", de: "Alle Rechte vorbehalten.", fr: "Tous droits réservés.", es: "Todos los derechos reservados.", it: "Tutti i diritti riservati.", ar: "جميع الحقوق محفوظة.", ja: "無断転載を禁じます。" },
 };
 const getLabel = (key: keyof typeof labels) => labels[key][locale] || labels[key].en;
+
 ---
 
 <footer class="footer">
@@ -50,9 +56,14 @@ const getLabel = (key: keyof typeof labels) => labels[key][locale] || labels[key
       <h3>WillowSoft</h3>
       <p>{getLabel("tagline")}<br />{getLabel("offices")}</p>
       <div class="footer-social" aria-label={getLabel("social")}>
-        <a href="https://linkedin.com/company/willowsoft" aria-label="LinkedIn" rel="noopener noreferrer" target="_blank">in</a>
-        <a href="https://github.com/willowsoft" aria-label="GitHub" rel="noopener noreferrer" target="_blank">gh</a>
-        <a href="mailto:info@willowsoft.co" aria-label="Email">✉</a>
+        {socialLinks.length > 0 ? socialLinks.map((s) => (
+          <a href={s.url} aria-label={s.platform} rel="noopener noreferrer" target="_blank" set:html={getSocialSvg(s.platform)} />
+        )) : (
+          <>
+            <a href="https://linkedin.com/company/willowsoft" aria-label="LinkedIn" rel="noopener noreferrer" target="_blank" set:html={getSocialSvg("linkedin")} />
+            <a href="https://github.com/willowsoft" aria-label="GitHub" rel="noopener noreferrer" target="_blank" set:html={getSocialSvg("github")} />
+          </>
+        )}
       </div>
     </div>
     <div>
