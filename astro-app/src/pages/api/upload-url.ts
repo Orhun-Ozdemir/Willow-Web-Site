@@ -28,6 +28,14 @@ export const GET: APIRoute = async ({ request }) => {
   const SUPABASE_URL = process.env.SUPABASE_URL || process.env.PUBLIC_SUPABASE_URL || "";
   const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || "";
 
+  const keyOk = SUPABASE_SERVICE_ROLE_KEY.startsWith("eyJ") && SUPABASE_SERVICE_ROLE_KEY.split(".").length === 3;
+  console.log("upload-url env check", {
+    hasUrl: !!SUPABASE_URL,
+    keyLength: SUPABASE_SERVICE_ROLE_KEY.length,
+    keyStart: SUPABASE_SERVICE_ROLE_KEY.slice(0, 6),
+    keyValidFormat: keyOk,
+  });
+
   if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) {
     console.error("upload-url: missing env vars", { hasUrl: !!SUPABASE_URL, hasKey: !!SUPABASE_SERVICE_ROLE_KEY });
     return new Response(JSON.stringify({ ok: false, error: "Storage not configured" }), {
