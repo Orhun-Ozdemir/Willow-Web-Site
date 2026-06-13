@@ -6,7 +6,7 @@ import { useAdmin } from "./AdminContext";
 import FormField from "./FormField";
 import TranslationEditor from "./TranslationEditor";
 
-type SubTab = "general" | "team" | "timeline" | "offices";
+type SubTab = "general" | "team" | "timeline" | "offices" | "expertise";
 
 const GENERAL_FIELDS = [
   { key: "heroSub", label: "Hero Alt Metin", type: "textarea" as const, rows: 3 },
@@ -31,6 +31,11 @@ const OFFICE_TRANSLATION_FIELDS = [
   { key: "address", label: "Adres", type: "textarea" as const, rows: 3 },
 ];
 
+const EXPERTISE_TRANSLATION_FIELDS = [
+  { key: "label", label: "Başlık" },
+  { key: "note", label: "Alt Not" },
+];
+
 const getNextSortOrder = (items: any[]) => {
   const maxSortOrder = Math.max(
     0,
@@ -50,10 +55,13 @@ export default function CompanyPanel() {
   const [editingTimelineIdx, setEditingTimelineIdx] = useState<number | null>(null);
   const [editingOfficeIdx, setEditingOfficeIdx] = useState<number | null>(null);
 
+  const [editingExpertiseIdx, setEditingExpertiseIdx] = useState<number | null>(null);
+
   const facts = content?.companyFacts || {};
   const team = facts.team || [];
   const timeline = facts.timeline || [];
   const officesList = facts.officesList || [];
+  const expertiseList: any[] = facts.expertise || [];
 
   // General Field Updates
   const updateGeneralField = (key: string, value: string) => {
@@ -228,12 +236,49 @@ export default function CompanyPanel() {
     setEditingOfficeIdx(null);
   };
 
+  // Expertise helpers
+  const addExpertise = () => {
+    const newItem = { id: `exp-${Date.now()}`, label: "Yeni Uzmanlık", note: "Alt başlık", icon: "check", sortOrder: getNextSortOrder(expertiseList), localized: {} };
+    setContent((c: any) => ({ ...c, companyFacts: { ...c.companyFacts, expertise: [...(c.companyFacts?.expertise || []), newItem] } }));
+    setEditingExpertiseIdx(expertiseList.length);
+  };
+
+  const updateExpertise = (idx: number, key: string, value: any) => {
+    setContent((c: any) => {
+      const list = [...(c.companyFacts?.expertise || [])];
+      list[idx] = { ...list[idx], [key]: value };
+      return { ...c, companyFacts: { ...c.companyFacts, expertise: list } };
+    });
+  };
+
+  const updateExpertiseLocalized = (idx: number, locale: Locale, fieldKey: string, value: string) => {
+    setContent((c: any) => {
+      const list = [...(c.companyFacts?.expertise || [])];
+      const item = { ...list[idx] };
+      const localized = { ...item.localized, [locale]: { ...(item.localized?.[locale] || {}), [fieldKey]: value } };
+      list[idx] = { ...item, localized };
+      return { ...c, companyFacts: { ...c.companyFacts, expertise: list } };
+    });
+  };
+
+  const deleteExpertise = (idx: number) => {
+    if (!confirm("Bu uzmanlık alanını silmek istediğinize emin misiniz?")) return;
+    setContent((c: any) => {
+      const list = (c.companyFacts?.expertise || []).filter((_: any, i: number) => i !== idx);
+      return { ...c, companyFacts: { ...c.companyFacts, expertise: list } };
+    });
+    setEditingExpertiseIdx(null);
+  };
+
+  const sortedExpertise = [...expertiseList].sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
+
   return (
     <div className="space-y-6">
       {/* Sub-tabs header */}
       <div className="flex gap-2 border-b border-gray-200 pb-px">
         {[
           { key: "general", label: "Genel Sayfa Metinleri" },
+          { key: "expertise", label: "Uzmanlık Alanları" },
           { key: "team", label: "Ekibimiz" },
           { key: "timeline", label: "Zaman Tüneli" },
           { key: "offices", label: "Ofislerimiz" },
@@ -554,6 +599,73 @@ export default function CompanyPanel() {
                   })}
                 {timeline.length === 0 && (
                   <div className="p-8 text-center text-gray-400 text-sm">Henüz zaman tüneli adımı eklenmemiş.</div>
+                )}
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* 5. Expertise Tab */}
+      {activeSubTab === "expertise" && (
+        <div className="space-y-4">
+          <div className="bg-blue-50 border border-blue-100 rounded-xl px-4 py-3 text-sm text-blue-700">
+            "Core Expertise" bölümündeki uzmanlık alanları. Her birinin Türkçe ve diğer dil çevirileri ayrıca girilebilir.
+          </div>
+
+          {editingExpertiseIdx !== null && expertiseList[editingExpertiseIdx] ? (() => {
+            const exp = expertiseList[editingExpertiseIdx];
+            return (
+              <div className="bg-white border border-gray-200 rounded-xl p-6 space-y-5">
+                <div className="flex items-center justify-between border-b border-gray-200 pb-4">
+                  <h3 className="font-bold text-sm">{exp.label}</h3>
+                  <div className="flex gap-2">
+                    <button onClick={() => deleteExpertise(editingExpertiseIdx)} className="px-3 py-1.5 bg-red-950 hover:bg-red-900 text-red-400 rounded text-xs font-semibold">Sil</button>
+                    <button onClick={() => setEditingExpertiseIdx(null)} className="px-3 py-1.5 bg-gray-100 hover:bg-gray-200 rounded text-xs font-semibold">← Listeye Dön</button>
+                  </div>
+                </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <FormField label="Başlık (EN)" value={exp.label || ""} onChange={(v) => updateExpertise(editingExpertiseIdx, "label", v)} />
+                  <FormField label="Alt Not (EN)" value={exp.note || ""} onChange={(v) => updateExpertise(editingExpertiseIdx, "note", v)} hint="Örn: Custom PCB & RF" />
+                  <FormField label="İkon" value={exp.icon || "check"} onChange={(v) => updateExpertise(editingExpertiseIdx, "icon", v)} hint="check, cpu, server, terminal, phone, gear, database, globe, shield, water, mail, pin" />
+                  <FormField label="Sıra Numarası" type="number" value={String(exp.sortOrder || 0)} onChange={(v) => updateExpertise(editingExpertiseIdx, "sortOrder", parseInt(v) || 0)} />
+                </div>
+                <div className="border-t border-gray-200 pt-4">
+                  <h4 className="text-xs font-bold text-gray-700 mb-3">Çeviriler</h4>
+                  <TranslationEditor
+                    item={exp}
+                    fields={EXPERTISE_TRANSLATION_FIELDS}
+                    onChange={(locale, key, val) => updateExpertiseLocalized(editingExpertiseIdx, locale, key, val)}
+                  />
+                </div>
+              </div>
+            );
+          })() : (
+            <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
+              <div className="p-4 border-b border-gray-200 flex justify-between items-center">
+                <h3 className="font-bold text-sm">Uzmanlık Alanları ({sortedExpertise.length})</h3>
+                <button onClick={addExpertise} className="px-3 py-1.5 bg-[#132175] hover:bg-[#0e1a5e] text-white rounded text-xs font-bold">+ Yeni Ekle</button>
+              </div>
+              <div className="divide-y divide-gray-100">
+                {sortedExpertise.map((exp: any) => {
+                  const origIdx = expertiseList.findIndex((x: any) => x.id === exp.id);
+                  return (
+                    <div key={exp.id} className="p-4 flex items-center justify-between hover:bg-gray-50 transition">
+                      <div className="flex items-center gap-3">
+                        <span className="w-8 h-8 rounded-lg bg-[#132175]/8 text-[#132175] flex items-center justify-center text-xs font-black">
+                          {String((sortedExpertise.indexOf(exp)) + 1).padStart(2, "0")}
+                        </span>
+                        <div>
+                          <p className="font-bold text-sm text-gray-800">{exp.label}</p>
+                          <p className="text-xs text-gray-400">{exp.note}</p>
+                        </div>
+                      </div>
+                      <button onClick={() => setEditingExpertiseIdx(origIdx)} className="px-3 py-1 bg-gray-100 hover:bg-gray-200 text-xs font-semibold rounded transition">Düzenle</button>
+                    </div>
+                  );
+                })}
+                {sortedExpertise.length === 0 && (
+                  <div className="p-8 text-center text-gray-400 text-sm">Henüz uzmanlık alanı eklenmemiş.</div>
                 )}
               </div>
             </div>

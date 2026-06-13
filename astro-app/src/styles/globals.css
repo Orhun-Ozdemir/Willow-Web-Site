@@ -2491,8 +2491,7 @@ select {
 body[data-page="products"] .product-card {
   grid-template-rows: 292px auto;
   border-color: rgba(198, 206, 230, 0.86);
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(248, 250, 255, 0.92));
+  background: #ffffff;
   box-shadow: 0 18px 54px rgba(16, 31, 92, 0.065);
 }
 

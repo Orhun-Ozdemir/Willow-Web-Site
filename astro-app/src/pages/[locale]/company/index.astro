@@ -49,11 +49,12 @@ const cleanCmsValue = (value: any): any => {
 };
 
 const getFactVal = (key: string) => {
+  // Always check localized first so translations override the default EN value
+  const localized = companyFacts.localized?.[locale]?.[key];
+  if (localized) return cleanCmsValue(localized);
   const map = companyFacts[key];
   if (!map) return "";
-  if (typeof map === "string") return cleanCmsValue(map);
-  const localized = companyFacts.localized?.[locale]?.[key];
-  return cleanCmsValue(localized || map || "");
+  return cleanCmsValue(map);
 };
 
 const getFactList = (key: string) => {
@@ -355,29 +356,28 @@ const getSvg = (name: string, size = 20) => {
     <section class="company-section company-expertise-c">
       <div class="company-container company-expertise-layout">
         <div class="company-expertise-copy">
-            <span class="eyebrow">{locale === 'tr' ? 'Uzmanlık Alanlarımız' : 'Core expertise'}</span>
-            <h2 class="ws-h2" style="margin-top: 18px;">
-              {locale === 'tr'
-                ? <>Asıl <span class="serif-accent">iyi</span> olduğumuz işler.</>
-                : <>What we are actually <span class="serif-accent">good</span> at.</>}
-            </h2>
+            <span class="eyebrow">{getVal("expertiseEyebrow") || (locale === 'tr' ? 'Uzmanlık Alanlarımız' : 'Core expertise')}</span>
+            <h2 class="ws-h2" style="margin-top: 18px;" set:html={getVal("expertiseTitle") || (locale === 'tr' ? 'Asıl <span class="serif-accent">iyi</span> olduğumuz işler.' : 'What we are actually <span class="serif-accent">good</span> at.')} />
           <p class="ws-lead">
-            {locale === 'tr'
+            {getVal("expertiseLead") || (locale === 'tr'
               ? 'Silikondan buluta kadar tüm IoT ürün yaşam döngüsünü kapsayan altı temel uzmanlık katmanı.'
-              : 'Six deep competencies covering the entire IoT product lifecycle — from silicon to cloud.'}
+              : 'Six deep competencies covering the entire IoT product lifecycle — from silicon to cloud.')}
           </p>
         </div>
         <div class="company-capability-panel">
-          {(getFactList("expertise") || []).map((e: any, i: number) => (
-            <div class="company-capability-row">
-              <span class="company-capability-number">{String(i + 1).padStart(2, "0")}</span>
-              <div class="ws-icbox" set:html={getSvg(e.icon, 24)} />
-              <div class="company-capability-copy">
-                <b>{e.label}</b>
-                <span>{e.note}</span>
+          {sortByOrder(getFactList("expertise") || []).map((e: any, i: number) => {
+            const exp = localizeItem(e, locale);
+            return (
+              <div class="company-capability-row">
+                <span class="company-capability-number">{String(i + 1).padStart(2, "0")}</span>
+                <div class="ws-icbox" set:html={getSvg(exp.icon || e.icon, 24)} />
+                <div class="company-capability-copy">
+                  <b>{exp.label || e.label}</b>
+                  <span>{exp.note || e.note}</span>
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>
