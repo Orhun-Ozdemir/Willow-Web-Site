@@ -3,8 +3,63 @@
 import { useState } from "react";
 import { locales, type Locale } from "@/lib/cms";
 import { useAdmin } from "./AdminContext";
-import FormField from "./FormField";
 import LocaleTabs from "./LocaleTabs";
+
+// ── Known companyFacts fields with human-readable metadata ──────────────────
+const KNOWN_FACTS: { key: string; label: string; hint: string; type?: "text" | "textarea" }[] = [
+  { key: "productsOnMarket", label: "Piyasadaki Ürün Sayısı", hint: "Ana sayfa ve ürünler sayfasında istatistik olarak görünür. Örn: 120+" },
+  { key: "happyClients",     label: "Memnun Müşteri Sayısı",  hint: "Ana sayfada istatistik olarak görünür. Örn: 200+" },
+  { key: "officesWorldwide", label: "Dünya Geneli Ofis Sayısı", hint: "Ana sayfada istatistik olarak görünür. Örn: 5" },
+  { key: "email",            label: "E-posta Adresi",         hint: "İletişim sayfasında ve proje başlatma formunda görünür." },
+  { key: "turkeyPhone",      label: "Türkiye Telefon",        hint: "İletişim sayfasında tıklanabilir telefon numarası olarak görünür. Örn: +90 212 000 00 00" },
+  { key: "turkeyOfficeAddress", label: "Türkiye Ofis Adresi", hint: "İletişim sayfasında Türkiye ofis adresi olarak görünür.", type: "textarea" },
+  { key: "ukOfficeAddress",  label: "İngiltere Ofis Adresi",  hint: "İletişim sayfasında UK ofis adresi olarak görünür.", type: "textarea" },
+];
+
+// ── UI string key labels ─────────────────────────────────────────────────────
+const UI_KEY_LABELS: Record<string, string> = {
+  requestQuote:        "Teklif İste (buton)",
+  downloadDatasheet:   "Veri Sayfasını İndir (buton)",
+  contactUs:           "İletişime Geç (buton)",
+  learnMore:           "Daha Fazla Bilgi (link)",
+  viewAll:             "Tümünü Gör (link)",
+  backToList:          "Listeye Dön",
+  submitForm:          "Formu Gönder (buton)",
+  readMore:            "Devamını Oku (link)",
+  ourProducts:         "Ürünlerimiz (başlık)",
+  ourSolutions:        "Çözümlerimiz (başlık)",
+  latestNews:          "Son Haberler (başlık)",
+  ourClients:          "Müşterilerimiz (başlık)",
+  faqTitle:            "SSS Başlığı",
+  contactTitle:        "İletişim Başlığı",
+  startProject:        "Proje Başlat (buton/link)",
+};
+
+function FactField({
+  label, hint, value, onChange, type = "text",
+}: { label: string; hint: string; value: string; onChange: (v: string) => void; type?: "text" | "textarea" }) {
+  return (
+    <div className="space-y-1">
+      <label className="block text-sm font-semibold text-gray-800">{label}</label>
+      <p className="text-xs text-gray-400">{hint}</p>
+      {type === "textarea" ? (
+        <textarea
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          rows={2}
+          className="w-full p-2.5 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-800 outline-none focus:border-[#1aa3c4] resize-none"
+        />
+      ) : (
+        <input
+          type="text"
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          className="w-full p-2.5 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-800 outline-none focus:border-[#1aa3c4]"
+        />
+      )}
+    </div>
+  );
+}
 
 export default function SettingsPanel() {
   const { content, setContent } = useAdmin();
@@ -14,28 +69,15 @@ export default function SettingsPanel() {
   const facts = content?.companyFacts || {};
   const translations = content?.translations || {};
   const uiStrings = translations[uiLocale] || {};
-  const uiKeys = Object.keys(uiStrings).sort();
+
+  // English reference for context
+  const enStrings = translations["en"] || {};
+
+  const knownKeys = KNOWN_FACTS.map((f) => f.key);
+  const unknownFactKeys = Object.keys(facts).filter((k) => !knownKeys.includes(k) && k !== "localized").sort();
 
   const updateFact = (key: string, value: string) => {
-    setContent((c: any) => ({
-      ...c,
-      companyFacts: { ...c.companyFacts, [key]: value },
-    }));
-  };
-
-  const addFact = () => {
-    const key = prompt("Yeni alan adı (ör: employees):");
-    if (!key?.trim()) return;
-    updateFact(key.trim(), "");
-  };
-
-  const deleteFact = (key: string) => {
-    if (!confirm(`"${key}" alanını silmek istediğinize emin misiniz?`)) return;
-    setContent((c: any) => {
-      const f = { ...c.companyFacts };
-      delete f[key];
-      return { ...c, companyFacts: f };
-    });
+    setContent((c: any) => ({ ...c, companyFacts: { ...c.companyFacts, [key]: value } }));
   };
 
   const updateUIString = (key: string, value: string) => {
@@ -46,84 +88,131 @@ export default function SettingsPanel() {
     });
   };
 
-  const factKeys = Object.keys(facts).sort();
+  // All UI string keys sorted: known first, then rest
+  const allUiKeys = Object.keys(enStrings).sort();
+  const knownUiKeys = allUiKeys.filter((k) => UI_KEY_LABELS[k]);
+  const otherUiKeys = allUiKeys.filter((k) => !UI_KEY_LABELS[k]);
 
   return (
     <div className="space-y-4">
-      <div className="flex gap-1 border-b border-gray-200 pb-1">
-        <button onClick={() => setSubTab("facts")} className={`px-3 py-1.5 rounded-t text-xs font-bold transition ${subTab === "facts" ? "bg-gray-100 text-[#132175]" : "text-gray-400 hover:text-gray-700"}`}>
-          Şirket Bilgileri
+      {/* Tab switcher */}
+      <div className="flex gap-2 border-b border-gray-200 pb-0">
+        <button
+          onClick={() => setSubTab("facts")}
+          className={`px-4 py-2.5 text-sm font-semibold border-b-2 transition -mb-px ${subTab === "facts" ? "border-[#132175] text-[#132175]" : "border-transparent text-gray-400 hover:text-gray-700"}`}
+        >
+          📍 İletişim & İstatistikler
         </button>
-        <button onClick={() => setSubTab("ui")} className={`px-3 py-1.5 rounded-t text-xs font-bold transition ${subTab === "ui" ? "bg-gray-100 text-[#132175]" : "text-gray-400 hover:text-gray-700"}`}>
-          UI Çeviri Metinleri
+        <button
+          onClick={() => setSubTab("ui")}
+          className={`px-4 py-2.5 text-sm font-semibold border-b-2 transition -mb-px ${subTab === "ui" ? "border-[#132175] text-[#132175]" : "border-transparent text-gray-400 hover:text-gray-700"}`}
+        >
+          🔤 Buton & Arayüz Metinleri
         </button>
       </div>
 
+      {/* ── Company Facts ── */}
       {subTab === "facts" && (
-        <div className="bg-white border border-gray-200 rounded-xl p-5 space-y-4">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-bold text-gray-800">Şirket Bilgileri</p>
-              <p className="text-xs text-gray-400 mt-0.5">Hakkımızda / Şirket sayfasında görünen istatistikler — kuruluş yılı, çalışan sayısı, proje sayısı vb. Anahtar adı sitenin bu değere nasıl ulaştığını belirler.</p>
-            </div>
-            <button onClick={addFact} className="px-2 py-1 bg-[#132175] hover:bg-[#0e1a5e] text-white rounded text-[10px] font-bold shrink-0 ml-4">+ Ekle</button>
+        <div className="space-y-4">
+          <div className="bg-blue-50 border border-blue-100 rounded-xl p-4 text-sm text-blue-700">
+            Bu alandaki bilgiler sitenin <strong>ana sayfa, iletişim ve ürünler</strong> sayfalarında otomatik olarak kullanılır. Değiştirip kaydedin, site güncellensin.
           </div>
-          <div className="space-y-3">
-            {factKeys.map((key) => {
-              const val = facts[key];
-              const isObject = typeof val === "object" && val !== null;
-              return (
-                <div key={key} className="grid grid-cols-[200px_1fr_auto] gap-3 items-start">
-                  <div className="text-xs font-mono text-gray-500 pt-2 truncate" title={key}>{key}</div>
-                  {isObject ? (
-                    <textarea
-                      value={JSON.stringify(val, null, 2)}
-                      onChange={(e) => {
-                        try { updateFact(key, JSON.parse(e.target.value)); } catch { /* ignore parse errors while typing */ }
-                      }}
-                      rows={3}
-                      className="w-full p-2 bg-gray-50 border border-gray-200 rounded text-gray-800 text-xs outline-none focus:border-[#1aa3c4] font-mono"
-                    />
-                  ) : (
+
+          <div className="bg-white border border-gray-200 rounded-xl p-5 space-y-5">
+            {KNOWN_FACTS.map((f) => (
+              <FactField
+                key={f.key}
+                label={f.label}
+                hint={f.hint}
+                type={f.type}
+                value={String(facts[f.key] ?? "")}
+                onChange={(v) => updateFact(f.key, v)}
+              />
+            ))}
+          </div>
+
+          {/* Unknown keys — advanced section */}
+          {unknownFactKeys.length > 0 && (
+            <details className="bg-white border border-gray-200 rounded-xl overflow-hidden">
+              <summary className="p-4 text-xs font-bold text-gray-400 uppercase cursor-pointer hover:bg-gray-50 select-none">
+                Gelişmiş — Diğer Alanlar ({unknownFactKeys.length})
+              </summary>
+              <div className="p-4 pt-0 space-y-3">
+                {unknownFactKeys.map((key) => (
+                  <div key={key} className="grid grid-cols-[180px_1fr] gap-3 items-center">
+                    <span className="text-[11px] font-mono text-gray-400 truncate" title={key}>{key}</span>
                     <input
                       type="text"
-                      value={String(val ?? "")}
+                      value={String(facts[key] ?? "")}
                       onChange={(e) => updateFact(key, e.target.value)}
-                      className="w-full p-2 bg-gray-50 border border-gray-200 rounded text-gray-800 text-xs outline-none focus:border-[#1aa3c4]"
+                      className="w-full p-2 bg-gray-50 border border-gray-200 rounded text-sm text-gray-700 outline-none focus:border-[#1aa3c4]"
                     />
-                  )}
-                  <button onClick={() => deleteFact(key)} className="p-2 text-red-400 hover:text-red-300 text-xs font-bold">✕</button>
-                </div>
-              );
-            })}
-            {factKeys.length === 0 && <p className="text-sm text-gray-400">Henüz şirket bilgisi yok.</p>}
-          </div>
+                  </div>
+                ))}
+              </div>
+            </details>
+          )}
         </div>
       )}
 
+      {/* ── UI Strings ── */}
       {subTab === "ui" && (
-        <div className="bg-white border border-gray-200 rounded-xl p-5 space-y-4">
-          <div>
-            <p className="text-sm font-bold text-gray-800 mb-0.5">UI Çeviri Metinleri</p>
-            <p className="text-xs text-gray-400">Sitedeki buton etiketleri, başlıklar ve sabit metinler — "İletişime Geç", "Daha Fazla Oku", "Veri sayfasını indir" gibi. Her dil için ayrı ayrı düzenlenebilir. Bu alanlar sayfa içerikleriyle değil, site arayüzüyle ilgilidir.</p>
+        <div className="space-y-4">
+          <div className="bg-blue-50 border border-blue-100 rounded-xl p-4 text-sm text-blue-700">
+            Sitedeki <strong>butonlar, linkler ve sabit başlıklar</strong> her dil için ayrı ayrı burada düzenlenir. Soldaki metin İngilizce referanstır.
           </div>
-          <div className="flex items-center justify-between">
+
+          <div className="bg-white border border-gray-200 rounded-xl p-5 space-y-4">
             <LocaleTabs active={uiLocale} onChange={setUiLocale} />
-            <span className="text-xs text-gray-400">{uiKeys.length} anahtar</span>
-          </div>
-          <div className="space-y-2 max-h-[600px] overflow-y-auto">
-            {uiKeys.map((key) => (
-              <div key={key} className="grid grid-cols-[240px_1fr] gap-3 items-center">
-                <div className="text-[11px] font-mono text-gray-400 truncate" title={key}>{key}</div>
-                <input
-                  type="text"
-                  value={uiStrings[key] || ""}
-                  onChange={(e) => updateUIString(key, e.target.value)}
-                  className="w-full p-1.5 bg-gray-50 border border-gray-200 rounded text-gray-800 text-xs outline-none focus:border-[#1aa3c4]"
-                />
+
+            {/* Known keys with labels */}
+            {knownUiKeys.length > 0 && (
+              <div className="space-y-3">
+                {knownUiKeys.map((key) => (
+                  <div key={key} className="space-y-1">
+                    <label className="block text-sm font-semibold text-gray-800">{UI_KEY_LABELS[key]}</label>
+                    <div className="grid grid-cols-2 gap-2">
+                      <div className="p-2 bg-gray-50 border border-gray-100 rounded text-sm text-gray-400 truncate">
+                        {enStrings[key] || <span className="italic">—</span>}
+                      </div>
+                      <input
+                        type="text"
+                        value={uiStrings[key] || ""}
+                        onChange={(e) => updateUIString(key, e.target.value)}
+                        placeholder={enStrings[key] || "Çeviri girin..."}
+                        className={`w-full p-2 border rounded text-sm outline-none focus:border-[#1aa3c4] ${!uiStrings[key] ? "border-red-200 bg-red-50" : "border-gray-200 bg-gray-50 text-gray-800"}`}
+                      />
+                    </div>
+                  </div>
+                ))}
               </div>
-            ))}
-            {uiKeys.length === 0 && <p className="text-sm text-gray-400">Bu dilde UI çeviri metni bulunamadı.</p>}
+            )}
+
+            {/* Other keys — collapsed */}
+            {otherUiKeys.length > 0 && (
+              <details className="border-t border-gray-100 pt-4">
+                <summary className="text-xs font-bold text-gray-400 uppercase cursor-pointer select-none hover:text-gray-600">
+                  Diğer Metinler ({otherUiKeys.length})
+                </summary>
+                <div className="mt-3 space-y-2 max-h-72 overflow-y-auto">
+                  {otherUiKeys.map((key) => (
+                    <div key={key} className="grid grid-cols-[1fr_1fr] gap-2 items-center">
+                      <div className="space-y-0.5">
+                        <p className="text-[10px] font-mono text-gray-300 truncate">{key}</p>
+                        <p className="text-xs text-gray-400 truncate">{enStrings[key] || "—"}</p>
+                      </div>
+                      <input
+                        type="text"
+                        value={uiStrings[key] || ""}
+                        onChange={(e) => updateUIString(key, e.target.value)}
+                        placeholder={enStrings[key] || ""}
+                        className="w-full p-1.5 bg-gray-50 border border-gray-200 rounded text-xs text-gray-800 outline-none focus:border-[#1aa3c4]"
+                      />
+                    </div>
+                  ))}
+                </div>
+              </details>
+            )}
           </div>
         </div>
       )}
