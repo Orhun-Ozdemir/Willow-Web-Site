@@ -56,12 +56,15 @@ export default function SolutionsPanel() {
   if (editIdx !== null && solutions[editIdx]) {
     const s = solutions[editIdx];
     return (
-      <div className="bg-white border border-gray-200 rounded-xl p-6 space-y-5">
+      <div className="space-y-4">
+        <button type="button" onClick={() => setEditIdx(null)} className="ws-back-button">
+          ← Listeye Dön
+        </button>
+        <div className="bg-white border border-gray-200 rounded-xl p-6 space-y-5">
         <div className="flex items-center justify-between border-b border-gray-200 pb-4">
           <h3 className="font-bold">Çözüm Düzenle: {s.title}</h3>
           <div className="flex gap-2">
             <button onClick={() => deleteSolution(editIdx)} className="px-3 py-1.5 bg-red-950 hover:bg-red-900 text-red-400 rounded text-xs font-semibold">Sil</button>
-            <button onClick={() => setEditIdx(null)} className="px-3 py-1.5 bg-gray-100 hover:bg-gray-200 rounded text-xs font-semibold">Listeye Dön</button>
           </div>
         </div>
         <div className="grid grid-cols-2 gap-4">
@@ -92,6 +95,7 @@ export default function SolutionsPanel() {
           <h4 className="text-sm font-bold text-gray-700 mb-3">Çeviriler</h4>
           <TranslationEditor item={s} fields={SOLUTION_FIELDS} onChange={(locale, key, val) => updateLocalized(editIdx, locale, key, val)} />
         </div>
+      </div>
       </div>
     );
   }

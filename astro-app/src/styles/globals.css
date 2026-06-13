@@ -9790,14 +9790,23 @@ body[data-page="company"] .company-cta-inner {
 }
 
 .ws-back-button {
-  border: none;
-  background: transparent;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid #e5e7eb;
+  background: #ffffff;
   color: #132175;
   font-size: 13px;
-  font-weight: 800;
+  font-weight: 700;
   cursor: pointer;
-  padding: 0;
-  margin-bottom: 12px;
+  padding: 8px 14px;
+  border-radius: 10px;
+  margin-bottom: 16px;
+  transition: background 120ms, border-color 120ms;
+}
+.ws-back-button:hover {
+  background: #f0f4ff;
+  border-color: #132175;
 }
 
 .ws-edit-actions {
