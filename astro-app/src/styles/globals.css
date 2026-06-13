@@ -8138,3 +8138,176 @@ body[data-page="company"] .ws-lead {
   color: var(--ws-body);
   margin: 0;
 }
+
+/* ---- Company page (Variant C) layout ---- */
+body[data-page="company"] .company-container {
+  width: min(var(--max), calc(100% - 48px));
+  margin-inline: auto;
+}
+
+body[data-page="company"] .company-section {
+  padding: 80px 0;
+}
+
+body[data-page="company"] .bg-soft {
+  background: #f4f6fb;
+}
+
+/* Hero */
+body[data-page="company"] .hero-inner-c {
+  width: min(var(--max), calc(100% - 48px));
+  margin-inline: auto;
+  padding: 64px 0 84px;
+  display: grid;
+  grid-template-columns: 1fr 520px;
+  gap: 60px;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+}
+
+body[data-page="company"] .company-hero-img-wrap {
+  border-radius: 20px;
+  overflow: hidden;
+  height: 520px;
+  box-shadow: 0 30px 70px rgba(7, 13, 25, 0.45);
+}
+
+/* Two-column content blocks */
+body[data-page="company"] .company-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: start;
+}
+
+/* Section heads: heading left, lead/chips right */
+body[data-page="company"] .company-grid-principles-head,
+body[data-page="company"] .company-grid-expertise-head,
+body[data-page="company"] .company-grid-industries-head {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  align-items: end;
+  margin-bottom: 40px;
+}
+
+body[data-page="company"] .company-grid-timeline-head {
+  display: grid;
+  grid-template-columns: 360px 1fr;
+  gap: 64px;
+  margin-bottom: 48px;
+}
+
+body[data-page="company"] .company-grid-team {
+  display: grid;
+  grid-template-columns: 360px 1fr;
+  gap: 60px;
+  align-items: start;
+}
+
+/* Timeline */
+body[data-page="company"] .timeline-container-scroll {
+  position: relative;
+}
+
+body[data-page="company"] .timeline-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  position: relative;
+}
+
+body[data-page="company"] .timeline-line {
+  position: absolute;
+  top: 26px;
+  left: 32px;
+  right: 32px;
+  height: 3px;
+  background: linear-gradient(to right, var(--ws-blue), var(--ws-teal));
+  border-radius: 2px;
+  z-index: 0;
+}
+
+body[data-page="company"] .timeline-item {
+  position: relative;
+  padding-top: 60px;
+}
+
+body[data-page="company"] .timeline-dot {
+  position: absolute;
+  top: 14px;
+  left: 32px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 4px solid var(--ws-bg);
+  z-index: 1;
+}
+
+/* Photo placeholders (team / offices) shown before an image is set */
+body[data-page="company"] .ws-placeholder-avatar,
+body[data-page="company"] .ws-placeholder-office {
+  background:
+    radial-gradient(120% 120% at 30% 20%, rgba(20, 184, 166, 0.16), transparent 60%),
+    linear-gradient(140deg, #e7ecf5, #d4dcec);
+}
+
+/* Final CTA */
+body[data-page="company"] .company-cta-inner {
+  padding: 76px 80px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 48px;
+  align-items: center;
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 1080px) {
+  body[data-page="company"] .timeline-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 28px;
+  }
+  body[data-page="company"] .timeline-line {
+    display: none;
+  }
+}
+
+@media (max-width: 900px) {
+  body[data-page="company"] .company-section {
+    padding: 56px 0;
+  }
+  body[data-page="company"] .hero-inner-c {
+    grid-template-columns: 1fr;
+    gap: 36px;
+    padding: 48px 0 56px;
+  }
+  body[data-page="company"] .company-hero-img-wrap {
+    height: 320px;
+    order: -1;
+  }
+  body[data-page="company"] .company-grid-2,
+  body[data-page="company"] .company-grid-team,
+  body[data-page="company"] .company-grid-timeline-head,
+  body[data-page="company"] .company-grid-principles-head,
+  body[data-page="company"] .company-grid-expertise-head,
+  body[data-page="company"] .company-grid-industries-head {
+    grid-template-columns: 1fr;
+    gap: 28px;
+    align-items: start;
+  }
+  body[data-page="company"] .company-cta-inner {
+    grid-template-columns: 1fr;
+    gap: 28px;
+    padding: 48px 32px;
+  }
+}
+
+@media (max-width: 560px) {
+  body[data-page="company"] .timeline-grid {
+    grid-template-columns: 1fr;
+  }
+  body[data-page="company"] .company-cta-inner {
+    padding: 40px 24px;
+  }
+}
