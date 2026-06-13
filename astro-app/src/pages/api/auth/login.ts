@@ -10,6 +10,11 @@ export const POST: APIRoute = async ({ request }) => {
     const password = String(body.password || "");
 
     const ok = await verifyCredentials(username, password);
+    console.log("login attempt", { username, ok,
+      supabaseUrl: (process.env.SUPABASE_URL || "").slice(0, 30),
+      hasAnonKey: !!process.env.SUPABASE_ANON_KEY,
+      hasAdminPassword: !!process.env.ADMIN_PASSWORD,
+    });
     if (!ok) {
       return new Response(JSON.stringify({ ok: false, error: "Invalid admin credentials" }), {
         status: 401,
