@@ -10400,3 +10400,311 @@ body[data-page="company"] .company-cta-inner {
     grid-template-columns: 1fr;
   }
 }
+
+/* ---- Admin: Image field (FormField type="image") ---- */
+.ws-imgfield {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.ws-imgfield-preview {
+  position: relative;
+  width: 100%;
+  height: 160px;
+  border-radius: 14px;
+  border: 1.5px dashed #dfe3ea;
+  background: #f8fafc;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 160ms ease;
+}
+
+.ws-imgfield-preview:has(.ws-imgfield-img) {
+  border-style: solid;
+  border-color: #e5e7eb;
+  background: #ffffff;
+}
+
+.ws-imgfield-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 12px;
+}
+
+.ws-imgfield-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  color: #cbd5e1;
+}
+
+.ws-imgfield-empty span {
+  font-size: 12px;
+  font-weight: 600;
+  color: #94a3b8;
+}
+
+.ws-imgfield-clear {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 26px;
+  height: 26px;
+  border-radius: 999px;
+  border: none;
+  background: rgba(15, 23, 42, 0.55);
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 800;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  transition: background 140ms ease;
+}
+
+.ws-imgfield-clear:hover {
+  background: rgba(185, 28, 28, 0.82);
+}
+
+.ws-imgfield-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.ws-imgfield-input {
+  flex: 1;
+  height: 42px;
+  border-radius: 12px;
+  border: 1px solid #dfe3ea;
+  background: #f8fafc;
+  color: #111827;
+  font-size: 13px;
+  padding: 0 12px;
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color 160ms ease, background 160ms ease;
+  font-family: monospace;
+}
+
+.ws-imgfield-input:focus {
+  border-color: #132175;
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(19, 33, 117, 0.09);
+}
+
+.ws-imgfield-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 42px;
+  padding: 0 14px;
+  border-radius: 12px;
+  background: #132175;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: background 160ms ease;
+}
+
+.ws-imgfield-btn:hover {
+  background: #0e1a5e;
+}
+
+.ws-imgfield-btn.loading {
+  background: #6b7280;
+  cursor: not-allowed;
+}
+
+.ws-imgfield-file {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+.ws-imgfield-spinner {
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  animation: ws-spin 0.7s linear infinite;
+}
+
+@keyframes ws-spin {
+  to { transform: rotate(360deg); }
+}
+
+.ws-imgfield-error {
+  color: #b91c1c;
+  font-size: 12px;
+  font-weight: 600;
+  margin: 0;
+}
+
+/* ---- Admin: Gallery field (ListEditorField with image previews) ---- */
+.ws-gallery-field {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.ws-gallery-field-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.ws-gallery-field-head label {
+  color: #374151;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.ws-gallery-field-head span {
+  color: #9ca3af;
+  font-size: 11px;
+  font-weight: 700;
+  font-family: monospace;
+}
+
+.ws-gallery-thumbs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.ws-gallery-thumb {
+  position: relative;
+  width: 72px;
+  height: 72px;
+  border-radius: 10px;
+  border: 1px solid #e5e7eb;
+  background: #f8fafc;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.ws-gallery-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 4px;
+}
+
+.ws-gallery-thumb-remove {
+  position: absolute;
+  top: 3px;
+  right: 3px;
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  border: none;
+  background: rgba(15, 23, 42, 0.6);
+  color: #fff;
+  font-size: 9px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+.ws-gallery-thumb-remove:hover {
+  background: rgba(185, 28, 28, 0.82);
+}
+
+.ws-gallery-thumb-add {
+  width: 72px;
+  height: 72px;
+  border-radius: 10px;
+  border: 1.5px dashed #dfe3ea;
+  background: #f8fafc;
+  color: #94a3b8;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  font-size: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: border-color 140ms, color 140ms;
+  position: relative;
+}
+
+.ws-gallery-thumb-add:hover {
+  border-color: #132175;
+  color: #132175;
+}
+
+.ws-gallery-thumb-add input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.ws-gallery-input-row {
+  display: flex;
+  gap: 8px;
+}
+
+.ws-gallery-input-row input {
+  flex: 1;
+  height: 40px;
+  border-radius: 12px;
+  border: 1px solid #dfe3ea;
+  background: #f8fafc;
+  color: #111827;
+  font-size: 13px;
+  padding: 0 12px;
+  outline: none;
+  box-sizing: border-box;
+  font-family: monospace;
+  transition: border-color 160ms ease;
+}
+
+.ws-gallery-input-row input:focus {
+  border-color: #132175;
+  background: #ffffff;
+}
+
+.ws-gallery-input-row button {
+  height: 40px;
+  padding: 0 14px;
+  border-radius: 12px;
+  border: none;
+  background: #132175;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 160ms;
+}
+
+.ws-gallery-input-row button:hover {
+  background: #0e1a5e;
+}
+
+.ws-gallery-helper {
+  color: #9ca3af;
+  font-size: 12px;
+  margin: 0;
+}

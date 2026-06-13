@@ -91,41 +91,68 @@ export default function FormField({
       </div>
 
       {type === "image" ? (
-        <div className="space-y-2">
-          {value && (
-            <div className="relative w-32 h-32 border border-gray-200 rounded-lg overflow-hidden bg-gray-50 flex items-center justify-center">
+        <div className="ws-imgfield">
+          {/* Preview area */}
+          <div className="ws-imgfield-preview">
+            {value ? (
               <img
                 src={getPreviewUrl(value)}
                 alt="Önizleme"
-                className="w-full h-full object-contain"
+                className="ws-imgfield-img"
                 onError={(e) => {
                   (e.target as HTMLImageElement).src = "/assets/willow-mark-transparent.png";
-                  (e.target as HTMLImageElement).style.opacity = "0.2";
+                  (e.target as HTMLImageElement).style.opacity = "0.18";
                 }}
               />
-            </div>
-          )}
-          <div className="flex items-center gap-2">
+            ) : (
+              <div className="ws-imgfield-empty">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/>
+                </svg>
+                <span>Görsel yok</span>
+              </div>
+            )}
+            {value && (
+              <button
+                type="button"
+                className="ws-imgfield-clear"
+                onClick={() => onChange("")}
+                title="Görseli kaldır"
+              >
+                ✕
+              </button>
+            )}
+          </div>
+
+          {/* Path input + upload button */}
+          <div className="ws-imgfield-row">
             <input
               type="text"
               value={value || ""}
               onChange={(e) => onChange(e.target.value)}
-              placeholder={placeholder || "Görsel yolu veya URL girin"}
-              className={`${inputCls} flex-1`}
+              placeholder={placeholder || "assets/... veya https://..."}
+              className="ws-imgfield-input"
               readOnly={readOnly}
             />
-            <label className="cursor-pointer px-3 py-2 bg-[#132175] hover:bg-[#0e1a5e] text-white rounded text-xs font-bold select-none shrink-0 transition duration-150">
-              {uploading ? "Yükleniyor..." : "Görsel Seç / Yükle"}
+            <label className={`ws-imgfield-btn${uploading ? " loading" : ""}`}>
+              {uploading ? (
+                <span className="ws-imgfield-spinner" />
+              ) : (
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/>
+                </svg>
+              )}
+              {uploading ? "Yükleniyor…" : "Yükle"}
               <input
                 type="file"
                 accept="image/*"
                 onChange={handleFileChange}
                 disabled={uploading || readOnly}
-                className="hidden"
+                className="ws-imgfield-file"
               />
             </label>
           </div>
-          {uploadError && <p className="text-[10px] text-red-500 font-medium mt-1">{uploadError}</p>}
+          {uploadError && <p className="ws-imgfield-error">{uploadError}</p>}
         </div>
       ) : type === "textarea" ? (
         <textarea

@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import { type Locale } from "@/lib/cms";
 import { useAdmin } from "./AdminContext";
 import FormField from "./FormField";
@@ -79,6 +79,7 @@ export default function NewsPanel() {
   const { content, setContent } = useAdmin();
 
   const [editIdx, setEditIdx] = useState<number | null>(null);
+  const [openSections, setOpenSections] = useState<Record<string, boolean>>({ basics: true });
   const [search, setSearch] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("all");
   const [statusFilter, setStatusFilter] = useState<StatusFilter>("all");
@@ -216,119 +217,132 @@ export default function NewsPanel() {
     setEditIdx(null);
   };
 
+  const toggleSection = (key: string) => setOpenSections((p) => ({ ...p, [key]: !p[key] }));
+
   if (editIdx !== null && news[editIdx]) {
     const n = news[editIdx];
     const status = getNewsStatus(n);
-    const imageSrc = getAssetSrc(n.image);
+
+    const SectionTrigger = ({ sKey, icon, label, hint }: { sKey: string; icon: React.ReactNode; label: string; hint: string }) => (
+      <button type="button" className="ws-prod-section-trigger" onClick={() => toggleSection(sKey)}>
+        <div className="ws-prod-section-trigger-left">
+          <span className="ws-prod-section-icon">{icon}</span>
+          <span className="ws-prod-section-label">
+            <strong>{label}</strong>
+            <span>{hint}</span>
+          </span>
+        </div>
+        <span className={`ws-prod-section-chevron ${openSections[sKey] ? "open" : ""}`}>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round">
+            <polyline points="6 9 12 15 18 9" />
+          </svg>
+        </span>
+      </button>
+    );
 
     return (
       <div className="ws-news-page">
-        <div className="ws-news-edit-header">
+        {/* Header */}
+        <div className="ws-prod-edit-header">
           <div>
-            <button
-              type="button"
-              onClick={() => setEditIdx(null)}
-              className="ws-back-button"
-            >
+            <button type="button" onClick={() => setEditIdx(null)} className="ws-back-button">
               ← Haber listesine dön
             </button>
-
-            <h3>Haber Düzenle</h3>
-            <p>Haber bilgileri, görsel, içerik ve çeviri alanlarını düzenleyin.</p>
+            <h3>{n.title || "Haber Düzenle"}</h3>
+            <p>Aşağıdaki bölümleri açıp kapayarak düzenleyin.</p>
           </div>
-
-          <div className="ws-edit-actions">
-            <span
-              className={
-                status === "Hazır"
-                  ? "ws-status ws-status-ready"
-                  : "ws-status ws-status-missing"
-              }
-            >
+          <div className="ws-prod-edit-actions">
+            <span className={`ws-status ${status === "Hazır" ? "ws-status-ready" : "ws-status-missing"}`}>
               {status}
             </span>
-
-            <button
-              type="button"
-              onClick={() => deleteNews(editIdx)}
-              className="ws-delete-button"
-            >
-              Sil
-            </button>
+            <button type="button" onClick={() => deleteNews(editIdx)} className="ws-delete-button">Sil</button>
           </div>
         </div>
 
-        <div className="ws-edit-layout">
-          <div className="ws-edit-main">
-            <section className="ws-section-card">
-              <div className="ws-section-title">
-                <h4>Temel Bilgiler</h4>
-                <p>Liste kartında ve detay sayfasında kullanılan ana bilgiler.</p>
-              </div>
+        {/* Accordion */}
+        <div className="ws-prod-accordion">
 
-              <div className="ws-form-grid">
-                <FormField
-                  label="Başlık"
-                  value={n.title || ""}
-                  onChange={(v) => updateNews(editIdx, "title", v)}
-                  placeholder="Haber başlığını girin"
-                />
-
-                <div className="ws-custom-field">
-                  <div className="ws-field-top">
-                    <label>Slug</label>
-                    <button
-                      type="button"
-                      onClick={() =>
-                        updateNews(editIdx, "slug", slugify(n.title || ""))
-                      }
-                    >
-                      Başlıktan üret
-                    </button>
-                  </div>
-
-                  <input
-                    value={n.slug || ""}
-                    onChange={(e) =>
-                      updateNews(editIdx, "slug", e.target.value)
-                    }
-                    placeholder="haber-slug"
-                  />
-                </div>
-
-                <FormField
-                  label="Tarih"
-                  type="date"
-                  value={n.date || ""}
-                  onChange={(v) => updateNews(editIdx, "date", v)}
-                />
-
-                <FormField
-                  label="Kategori"
-                  value={n.category || ""}
-                  onChange={(v) => updateNews(editIdx, "category", v)}
-                  placeholder="case-study, update, company..."
-                />
-
-                <div className="ws-form-full">
+          {/* ① Temel Bilgiler */}
+          <div className="ws-prod-section">
+            <SectionTrigger
+              sKey="basics"
+              label="Temel Bilgiler"
+              hint="Başlık, slug, tarih, kategori"
+              icon={<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>}
+            />
+            {openSections.basics && (
+              <div className="ws-prod-section-body">
+                <div className="ws-prod-field-row">
                   <FormField
-                    label="Görsel Yolu"
-                    type="image"
-                    value={n.image || ""}
-                    onChange={(v) => updateNews(editIdx, "image", v)}
-                    placeholder="assets/news/example.webp"
+                    label="Başlık"
+                    value={n.title || ""}
+                    onChange={(v) => updateNews(editIdx, "title", v)}
+                    placeholder="Haber başlığını girin"
+                  />
+                  <div className="ws-custom-field">
+                    <div className="ws-field-top">
+                      <label>Slug</label>
+                      <button type="button" onClick={() => updateNews(editIdx, "slug", slugify(n.title || ""))}>
+                        Başlıktan üret
+                      </button>
+                    </div>
+                    <input
+                      value={n.slug || ""}
+                      onChange={(e) => updateNews(editIdx, "slug", e.target.value)}
+                      placeholder="haber-slug"
+                      className="ws-imgfield-input"
+                    />
+                  </div>
+                </div>
+                <div className="ws-prod-field-row">
+                  <FormField
+                    label="Tarih"
+                    type="date"
+                    value={n.date || ""}
+                    onChange={(v) => updateNews(editIdx, "date", v)}
+                  />
+                  <FormField
+                    label="Kategori"
+                    value={n.category || ""}
+                    onChange={(v) => updateNews(editIdx, "category", v)}
+                    placeholder="case-study, update, company..."
                   />
                 </div>
               </div>
-            </section>
+            )}
+          </div>
 
-            <section className="ws-section-card">
-              <div className="ws-section-title">
-                <h4>İçerik</h4>
-                <p>Özet kartlarda, içerik ise haber detay sayfasında kullanılır.</p>
+          {/* ② Görsel */}
+          <div className="ws-prod-section">
+            <SectionTrigger
+              sKey="media"
+              label="Görsel"
+              hint="Haber kapak görseli"
+              icon={<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>}
+            />
+            {openSections.media && (
+              <div className="ws-prod-section-body">
+                <FormField
+                  label="Kapak Görseli"
+                  type="image"
+                  value={n.image || ""}
+                  onChange={(v) => updateNews(editIdx, "image", v)}
+                  placeholder="assets/news/example.webp"
+                />
               </div>
+            )}
+          </div>
 
-              <div className="ws-form-stack">
+          {/* ③ İçerik */}
+          <div className="ws-prod-section">
+            <SectionTrigger
+              sKey="content"
+              label="İçerik"
+              hint="Özet ve HTML içerik"
+              icon={<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"><line x1="17" y1="10" x2="3" y2="10"/><line x1="21" y1="6" x2="3" y2="6"/><line x1="21" y1="14" x2="3" y2="14"/><line x1="17" y1="18" x2="3" y2="18"/></svg>}
+            />
+            {openSections.content && (
+              <div className="ws-prod-section-body">
                 <FormField
                   label="Özet"
                   type="textarea"
@@ -337,91 +351,57 @@ export default function NewsPanel() {
                   rows={3}
                   placeholder="Haberin kısa açıklamasını girin"
                 />
-
                 <FormField
-                  label="İçerik HTML"
+                  label="İçerik (HTML)"
                   type="textarea"
                   value={n.content || ""}
                   onChange={(v) => updateNews(editIdx, "content", v)}
-                  rows={9}
+                  rows={10}
                   placeholder="<p>Haber içeriği...</p>"
                 />
               </div>
-            </section>
-
-            <section className="ws-section-card">
-              <div className="ws-section-title">
-                <h4>Çeviriler</h4>
-                <p>Çoklu dil destekli haber metinlerini buradan düzenleyin.</p>
-              </div>
-
-              <TranslationEditor
-                item={n}
-                fields={NEWS_FIELDS}
-                onChange={(locale, key, val) =>
-                  updateLocalized(editIdx, locale, key, val)
-                }
-              />
-            </section>
+            )}
           </div>
 
-          <aside className="ws-edit-side">
-            <section className="ws-section-card">
-              <h4 className="ws-preview-title">Haber Ön İzleme</h4>
+          {/* ④ Çeviriler */}
+          <div className="ws-prod-section">
+            <SectionTrigger
+              sKey="translations"
+              label="Çeviriler"
+              hint={`${getTranslationCount(n)} dil mevcut`}
+              icon={<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>}
+            />
+            {openSections.translations && (
+              <div className="ws-prod-section-body">
+                <TranslationEditor
+                  item={n}
+                  fields={NEWS_FIELDS}
+                  onChange={(locale, key, val) => updateLocalized(editIdx, locale, key, val)}
+                />
+              </div>
+            )}
+          </div>
 
-              <div className="ws-preview-card">
-                <div className="ws-preview-image">
-                  {imageSrc ? (
-                    <img
-                      src={imageSrc}
-                      alt={n.title || "News image"}
-                      onError={(e) => {
-                        e.currentTarget.style.display = "none";
-                      }}
-                    />
-                  ) : (
-                    <span>Görsel Yok</span>
-                  )}
-                </div>
-
-                <div className="ws-preview-body">
-                  <div className="ws-preview-meta">
-                    <span>{n.category || "Kategori yok"}</span>
-                    <small>{n.date || "-"}</small>
-                  </div>
-
-                  <h5>{n.title || "Haber başlığı"}</h5>
-                  <p>{n.excerpt || "Haber özeti burada görünecek."}</p>
+          {/* ⑤ Durum */}
+          <div className="ws-prod-section">
+            <SectionTrigger
+              sKey="status"
+              label="İçerik Durumu"
+              hint="Slug, görsel, çeviri özeti"
+              icon={<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>}
+            />
+            {openSections.status && (
+              <div className="ws-prod-section-body">
+                <div className="ws-info-list">
+                  <div><span>Durum</span><strong>{status}</strong></div>
+                  <div><span>Çeviri</span><strong>{getTranslationCount(n)} dil</strong></div>
+                  <div><span>Slug</span><strong>{n.slug || "-"}</strong></div>
+                  <div><span>Görsel</span><strong>{n.image ? "Var" : "Yok"}</strong></div>
                 </div>
               </div>
-            </section>
+            )}
+          </div>
 
-            <section className="ws-section-card">
-              <h4 className="ws-preview-title">İçerik Durumu</h4>
-
-              <div className="ws-info-list">
-                <div>
-                  <span>Durum</span>
-                  <strong>{status}</strong>
-                </div>
-
-                <div>
-                  <span>Çeviri</span>
-                  <strong>{getTranslationCount(n)} dil</strong>
-                </div>
-
-                <div>
-                  <span>Slug</span>
-                  <strong>{n.slug || "-"}</strong>
-                </div>
-
-                <div>
-                  <span>Görsel</span>
-                  <strong>{n.image ? "Var" : "Yok"}</strong>
-                </div>
-              </div>
-            </section>
-          </aside>
         </div>
       </div>
     );
