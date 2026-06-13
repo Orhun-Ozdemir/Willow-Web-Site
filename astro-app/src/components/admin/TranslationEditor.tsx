@@ -4,6 +4,39 @@ import { useState } from "react";
 import { locales, type Locale } from "@/lib/cms";
 import LocaleTabs from "./LocaleTabs";
 
+function TextPreview({ text }: { text: string }) {
+  if (!text.trim()) return <p className="text-gray-300 italic text-sm">Boş</p>;
+
+  const lines = text.split("\n");
+  const nodes: React.ReactNode[] = [];
+  let bulletBuf: string[] = [];
+
+  const flushBullets = () => {
+    if (bulletBuf.length === 0) return;
+    nodes.push(
+      <ul key={`ul-${nodes.length}`} className="list-disc list-inside space-y-0.5 text-sm text-gray-700 my-1">
+        {bulletBuf.map((b, i) => <li key={i}>{b}</li>)}
+      </ul>
+    );
+    bulletBuf = [];
+  };
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    if (/^[-•*]\s+/.test(line)) {
+      bulletBuf.push(line.replace(/^[-•*]\s+/, ""));
+    } else if (line.trim() === "") {
+      flushBullets();
+      nodes.push(<div key={`br-${i}`} className="h-2" />);
+    } else {
+      flushBullets();
+      nodes.push(<p key={`p-${i}`} className="text-sm text-gray-700 leading-relaxed">{line}</p>);
+    }
+  }
+  flushBullets();
+  return <div className="space-y-0.5">{nodes}</div>;
+}
+
 interface TranslationField {
   key: string;
   label: string;
@@ -102,6 +135,46 @@ function ArrayItemsField({
   );
 }
 
+function TextareaWithPreview({
+  value, onChange: onChangeProp, rows, placeholder, className, readOnly,
+}: {
+  value: string; onChange?: (v: string) => void; rows?: number;
+  placeholder?: string; className?: string; readOnly?: boolean;
+}) {
+  const [preview, setPreview] = useState(false);
+  return (
+    <div>
+      <div className="flex gap-1 mb-1">
+        <button
+          type="button"
+          onClick={() => setPreview(false)}
+          className={`px-2 py-0.5 text-[10px] font-bold rounded transition ${!preview ? "bg-[#132175] text-white" : "bg-gray-100 text-gray-400 hover:text-gray-600"}`}
+        >Düzenle</button>
+        <button
+          type="button"
+          onClick={() => setPreview(true)}
+          className={`px-2 py-0.5 text-[10px] font-bold rounded transition ${preview ? "bg-[#132175] text-white" : "bg-gray-100 text-gray-400 hover:text-gray-600"}`}
+        >Önizle</button>
+      </div>
+      {preview ? (
+        <div className={`min-h-[${(rows || 3) * 24}px] p-2 border border-gray-200 rounded bg-white`}>
+          <TextPreview text={value} />
+        </div>
+      ) : readOnly ? (
+        <div className={`p-2 border rounded text-sm min-h-[38px] whitespace-pre-wrap ${className}`}>{value || <span className="italic text-gray-300">Boş</span>}</div>
+      ) : (
+        <textarea
+          value={value}
+          onChange={(e) => onChangeProp?.(e.target.value)}
+          rows={rows || 3}
+          placeholder={placeholder}
+          className={className}
+        />
+      )}
+    </div>
+  );
+}
+
 export default function TranslationEditor({ item, fields, sourceLang = "en", onChange }: TranslationEditorProps) {
   const [activeLang, setActiveLang] = useState<Locale>(sourceLang);
 
@@ -169,9 +242,9 @@ export default function TranslationEditor({ item, fields, sourceLang = "en", onC
               <div key={f.key}>
                 <label className="block text-xs font-bold uppercase text-gray-500 mb-1">{f.label}</label>
                 {f.type === "textarea" ? (
-                  <textarea
+                  <TextareaWithPreview
                     value={fieldValueToText(sourceData[f.key])}
-                    onChange={(e) => onChange(sourceLang, f.key, e.target.value)}
+                    onChange={(v) => onChange(sourceLang, f.key, v)}
                     rows={f.rows || 3}
                     className="w-full p-2 bg-gray-50 border border-gray-200 rounded text-sm text-gray-800 outline-none focus:border-[#1aa3c4]"
                   />
@@ -193,21 +266,30 @@ export default function TranslationEditor({ item, fields, sourceLang = "en", onC
                 <label className="block text-[10px] font-bold uppercase text-gray-400 mb-1">
                   {f.label} <span className="normal-case font-normal text-gray-300">({sourceLang.toUpperCase()} kaynak)</span>
                 </label>
-                <div className="p-2 bg-gray-50 border border-gray-200/50 rounded text-gray-400 text-sm min-h-[38px] whitespace-pre-wrap">
-                  {fieldValueToText(sourceData[f.key]) || <span className="italic text-gray-300">Boş</span>}
-                </div>
+                {f.type === "textarea" ? (
+                  <TextareaWithPreview
+                    value={fieldValueToText(sourceData[f.key])}
+                    rows={f.rows || 3}
+                    readOnly
+                    className="bg-gray-50 border-gray-200/50 text-gray-400"
+                  />
+                ) : (
+                  <div className="p-2 bg-gray-50 border border-gray-200/50 rounded text-gray-400 text-sm min-h-[38px] whitespace-pre-wrap">
+                    {fieldValueToText(sourceData[f.key]) || <span className="italic text-gray-300">Boş</span>}
+                  </div>
+                )}
               </div>
               <div>
                 <label className={`block text-[10px] font-bold uppercase mb-1 ${isMissing ? "text-red-500" : "text-[#132175]/70"}`}>
                   {f.label} <span className="normal-case font-normal">({activeLang.toUpperCase()} çeviri{isMissing ? " — EKSİK" : ""})</span>
                 </label>
                 {f.type === "textarea" ? (
-                  <textarea
+                  <TextareaWithPreview
                     value={fieldValueToText(targetData[f.key])}
-                    onChange={(e) => onChange(activeLang, f.key, e.target.value)}
+                    onChange={(v) => onChange(activeLang, f.key, v)}
                     rows={f.rows || 3}
-                    className={inputCls}
                     placeholder={`${sourceLang.toUpperCase()} dilinden çevirin...`}
+                    className={inputCls}
                   />
                 ) : (
                   <input
