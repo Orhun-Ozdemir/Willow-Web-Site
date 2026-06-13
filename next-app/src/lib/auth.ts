@@ -3,10 +3,7 @@ import crypto from "node:crypto";
 
 const sessionTtlMs = 1000 * 60 * 60 * 12;
 
-export const adminUser = process.env.ADMIN_USER || "admin";
-export const adminPassword = process.env.ADMIN_PASSWORD || "willow-admin-2026";
-
-const secret = process.env.ADMIN_PASSWORD || "willow-admin-2026-dev-only";
+const secret = process.env.SESSION_SECRET || "willow-session-secret-dev-only";
 
 function sign(payload: string): string {
   return crypto.createHmac("sha256", secret).update(payload).digest("hex");
