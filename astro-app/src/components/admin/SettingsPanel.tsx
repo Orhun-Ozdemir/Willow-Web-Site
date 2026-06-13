@@ -62,8 +62,11 @@ export default function SettingsPanel() {
       {subTab === "facts" && (
         <div className="bg-white border border-gray-200 rounded-xl p-5 space-y-4">
           <div className="flex items-center justify-between">
-            <p className="text-xs font-bold text-gray-500 uppercase">Company Facts (companyFacts)</p>
-            <button onClick={addFact} className="px-2 py-1 bg-[#132175] hover:bg-[#0e1a5e] text-white rounded text-[10px] font-bold">+ Ekle</button>
+            <div>
+              <p className="text-sm font-bold text-gray-800">Şirket Bilgileri</p>
+              <p className="text-xs text-gray-400 mt-0.5">Hakkımızda / Şirket sayfasında görünen istatistikler — kuruluş yılı, çalışan sayısı, proje sayısı vb. Anahtar adı sitenin bu değere nasıl ulaştığını belirler.</p>
+            </div>
+            <button onClick={addFact} className="px-2 py-1 bg-[#132175] hover:bg-[#0e1a5e] text-white rounded text-[10px] font-bold shrink-0 ml-4">+ Ekle</button>
           </div>
           <div className="space-y-3">
             {factKeys.map((key) => {
@@ -100,6 +103,10 @@ export default function SettingsPanel() {
 
       {subTab === "ui" && (
         <div className="bg-white border border-gray-200 rounded-xl p-5 space-y-4">
+          <div>
+            <p className="text-sm font-bold text-gray-800 mb-0.5">UI Çeviri Metinleri</p>
+            <p className="text-xs text-gray-400">Sitedeki buton etiketleri, başlıklar ve sabit metinler — "İletişime Geç", "Daha Fazla Oku", "Veri sayfasını indir" gibi. Her dil için ayrı ayrı düzenlenebilir. Bu alanlar sayfa içerikleriyle değil, site arayüzüyle ilgilidir.</p>
+          </div>
           <div className="flex items-center justify-between">
             <LocaleTabs active={uiLocale} onChange={setUiLocale} />
             <span className="text-xs text-gray-400">{uiKeys.length} anahtar</span>

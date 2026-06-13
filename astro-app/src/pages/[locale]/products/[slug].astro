@@ -686,13 +686,8 @@ const getT = (key: keyof typeof t) => {
           )}
           <div class="ws-hero-ctas">
             <a class="ws-btn ws-btn-primary" href={`/${locale}/contact?product=${encodeURIComponent(slug)}`}>{getT("requestQuote")}</a>
-            {product.datasheet_url || product.datasheet ? (
+            {(product.datasheet_url || product.datasheet) && (
               <a class="ws-btn ws-btn-secondary" href={product.datasheet_url || product.datasheet} target="_blank" rel="noopener noreferrer">
-                <Fragment set:html={ICONS.download} />
-                <span>{getT("downloadDatasheet")}</span>
-              </a>
-            ) : (
-              <a class="ws-btn ws-btn-secondary" href={`/${locale}/contact?product=${encodeURIComponent(slug)}&type=datasheet`}>
                 <Fragment set:html={ICONS.download} />
                 <span>{getT("downloadDatasheet")}</span>
               </a>
@@ -747,18 +742,14 @@ const getT = (key: keyof typeof t) => {
                 </div>
               ))}
             </dl>
-            <div class="ws-specs-download-link">
-              <Fragment set:html={ICONS.download} />
-              {product.datasheet_url || product.datasheet ? (
+            {(product.datasheet_url || product.datasheet) && (
+              <div class="ws-specs-download-link">
+                <Fragment set:html={ICONS.download} />
                 <a href={product.datasheet_url || product.datasheet} target="_blank" rel="noopener noreferrer">
                   {getT("downloadDatasheet")} (PDF)
                 </a>
-              ) : (
-                <a href={`/${locale}/contact?product=${encodeURIComponent(slug)}&type=datasheet`}>
-                  {getT("downloadDatasheet")} (PDF)
-                </a>
-              )}
-            </div>
+              </div>
+            )}
           </div>
         </div>
 
