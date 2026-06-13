@@ -1,20 +1,24 @@
 import type { APIRoute } from "astro";
-import { adminUser, adminPassword, createSession } from "@/lib/auth";
+import { verifyCredentials, createSession } from "@/lib/auth";
 
 export const prerender = false;
 
 export const POST: APIRoute = async ({ request }) => {
   try {
     const body = await request.json();
-    if ((body.username || "admin") !== adminUser || body.password !== adminPassword) {
+    const username = String(body.username || "").trim();
+    const password = String(body.password || "");
+
+    const ok = await verifyCredentials(username, password);
+    if (!ok) {
       return new Response(JSON.stringify({ ok: false, error: "Invalid admin credentials" }), {
         status: 401,
         headers: { "Content-Type": "application/json" },
       });
     }
 
-    const { token } = createSession(adminUser);
-    return new Response(JSON.stringify({ ok: true, user: { name: adminUser } }), {
+    const { token } = createSession(username);
+    return new Response(JSON.stringify({ ok: true, user: { name: username } }), {
       status: 200,
       headers: {
         "Content-Type": "application/json",

@@ -17,12 +17,13 @@ import TranslationHealthPanel from "./TranslationHealthPanel";
 import SettingsPanel from "./SettingsPanel";
 import BackupsPanel from "./BackupsPanel";
 import CompanyPanel from "./CompanyPanel";
+import UsersPanel from "./UsersPanel";
 
 type Tab =
   | "overview" | "leads" | "kanban"
   | "products" | "news" | "faqs" | "solutions" | "clients" | "company"
   | "seo" | "translations" | "health"
-  | "settings" | "backups";
+  | "settings" | "backups" | "users";
 
 const ICON_PATHS: Record<Tab, string> = {
   overview: "M4 5a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H5a1 1 0 01-1-1V5zm10 0a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1V5zM4 15a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H5a1 1 0 01-1-1v-4zm10 0a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1v-4z",
@@ -39,6 +40,7 @@ const ICON_PATHS: Record<Tab, string> = {
   settings: "M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z M15 12a3 3 0 11-6 0 3 3 0 016 0z",
   backups: "M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4",
   company: "M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4",
+  users: "M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z",
 };
 
 function TabIcon({ tab }: { tab: Tab }) {
@@ -82,6 +84,7 @@ const TABS: { section: string; items: { key: Tab; label: string }[] }[] = [
     items: [
       { key: "settings", label: "Ayarlar" },
       { key: "backups", label: "Yedekleme" },
+      { key: "users", label: "Kullanıcılar" },
     ],
   },
 ];
@@ -200,6 +203,7 @@ export default function AdminShell() {
           {activeTab === "settings" && <SettingsPanel />}
           {activeTab === "backups" && <BackupsPanel />}
           {activeTab === "company" && <CompanyPanel />}
+          {activeTab === "users" && <UsersPanel />}
         </div>
       </main>
     </div>
