@@ -10,6 +10,7 @@ const DEFAULT_LOCALE: Locale = "en";
 function isExemptFromLocale(pathname: string): boolean {
   const first = pathname.split("/").filter(Boolean)[0]?.toLowerCase() ?? "";
   if (first === "admin") return true;
+  if (first === "api") return true;
   if (pathname.startsWith("/_")) return true;
   if (pathname.startsWith("/assets")) return true;
   if (pathname.startsWith("/storage")) return true;
