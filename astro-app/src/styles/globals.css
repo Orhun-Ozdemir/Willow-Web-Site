@@ -8117,23 +8117,25 @@ body[data-page="company"] .ws-icbox {
 
 body[data-page="company"] .ws-h2 {
   font-family: var(--font-display);
-  font-weight: 800;
-  letter-spacing: -0.025em;
-  line-height: 1.1;
+  font-size: clamp(1.5rem, 2.3vw, 1.95rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.14;
   color: var(--ws-ink);
   margin: 0;
 }
 
 body[data-page="company"] .ws-h3 {
   font-family: var(--font-display);
-  font-weight: 800;
-  letter-spacing: -0.025em;
+  font-size: 1.12rem;
+  font-weight: 700;
+  letter-spacing: -0.015em;
   color: var(--ws-ink);
   margin: 0;
 }
 
 body[data-page="company"] .ws-lead {
-  font-size: 18px;
+  font-size: 15.5px;
   line-height: 1.65;
   color: var(--ws-body);
   margin: 0;
@@ -8165,7 +8167,7 @@ body[data-page="company"] .bg-soft {
 }
 
 body[data-page="company"] .company-stats-wrap {
-  margin-top: 0 !important;
+  margin-top: -54px !important;
 }
 
 body[data-page="company"] .company-stats-wrap .ws-card {
@@ -8383,8 +8385,8 @@ body[data-page="company"] .company-proof-chip {
 
 body[data-page="company"] .company-proof-chip span {
   color: var(--ws-ink);
-  font-size: 14.5px;
-  font-weight: 800;
+  font-size: 14px;
+  font-weight: 600;
   line-height: 1.35;
 }
 
@@ -8421,7 +8423,7 @@ body[data-page="company"] .company-principle-top > span {
 }
 
 body[data-page="company"] .company-principle-card h3 {
-  font-size: 20px;
+  font-size: 17px;
 }
 
 body[data-page="company"] .company-principle-card p {
@@ -8459,18 +8461,19 @@ body[data-page="company"] .company-capability-panel {
 body[data-page="company"] .company-capability-row {
   position: relative;
   display: grid;
-  grid-template-columns: 66px 54px minmax(0, 1fr);
+  grid-template-columns: 54px 46px minmax(0, 1fr);
   gap: 18px;
   align-items: center;
-  min-height: 104px;
-  padding: 24px 0;
+  min-height: 92px;
+  padding: 22px 0 22px 24px;
   border-bottom: 1px solid var(--ws-line);
 }
 
 body[data-page="company"] .company-capability-row::before {
   position: absolute;
-  inset: 0 auto 0 0;
-  width: 2px;
+  inset: 10px auto 10px 0;
+  width: 3px;
+  border-radius: 2px;
   background: linear-gradient(to bottom, var(--ws-blue), var(--ws-teal));
   transform: scaleY(0);
   transform-origin: top;
@@ -8485,24 +8488,24 @@ body[data-page="company"] .company-capability-row:hover::before {
 body[data-page="company"] .company-capability-number {
   color: rgba(19, 33, 117, 0.22);
   font-family: var(--font-display);
-  font-size: 36px;
-  font-weight: 800;
+  font-size: 28px;
+  font-weight: 700;
   line-height: 1;
 }
 
 body[data-page="company"] .company-capability-copy b {
   display: block;
   color: var(--ws-ink);
-  font-size: 18px;
-  font-weight: 850;
+  font-size: 16px;
+  font-weight: 700;
 }
 
 body[data-page="company"] .company-capability-copy span {
   display: block;
-  margin-top: 5px;
+  margin-top: 4px;
   color: var(--ws-muted);
-  font-size: 13.5px;
-  font-weight: 650;
+  font-size: 13px;
+  font-weight: 500;
 }
 
 body[data-page="company"] .company-industries-layout {
@@ -8550,8 +8553,8 @@ body[data-page="company"] .company-industry-proof:hover::after {
 body[data-page="company"] .company-industry-index {
   color: rgba(19, 33, 117, 0.22);
   font-family: var(--font-display);
-  font-size: 34px;
-  font-weight: 800;
+  font-size: 28px;
+  font-weight: 700;
   line-height: 1;
 }
 
@@ -8567,8 +8570,8 @@ body[data-page="company"] .company-industry-icon {
 body[data-page="company"] .company-industry-body b {
   display: block;
   color: var(--ws-ink);
-  font-size: 19px;
-  font-weight: 850;
+  font-size: 17px;
+  font-weight: 700;
   line-height: 1.25;
 }
 
@@ -8576,9 +8579,9 @@ body[data-page="company"] .company-industry-body span {
   display: block;
   margin-top: 6px;
   color: var(--ws-muted);
-  font-size: 12.5px;
-  font-weight: 800;
-  letter-spacing: 0.04em;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
 }
 
@@ -8616,10 +8619,10 @@ body[data-page="company"] .company-team-avatar {
 
 body[data-page="company"] .company-team-initials {
   font-family: var(--font-display);
-  font-size: clamp(2.75rem, 6vw, 3.5rem);
-  font-weight: 800;
+  font-size: clamp(2.5rem, 5.5vw, 3.25rem);
+  font-weight: 700;
   color: var(--ws-blue);
-  opacity: 0.32;
+  opacity: 0.28;
   letter-spacing: 0;
 }
 
@@ -8643,8 +8646,8 @@ body[data-page="company"] .company-team-body {
 
 body[data-page="company"] .company-team-body b {
   color: var(--ws-ink);
-  font-size: 20px;
-  font-weight: 800;
+  font-size: 17px;
+  font-weight: 700;
   line-height: 1.2;
 }
 
@@ -8779,16 +8782,16 @@ body[data-page="company"] .timeline-year {
   display: block;
   margin-bottom: 8px;
   color: var(--ws-blue);
-  font-size: 16px;
-  font-weight: 800;
+  font-size: 14px;
+  font-weight: 700;
 }
 
 body[data-page="company"] .timeline-title {
   display: block;
   margin-bottom: 8px;
   color: var(--ws-ink);
-  font-size: 17px;
-  font-weight: 800;
+  font-size: 16px;
+  font-weight: 700;
   line-height: 1.3;
 }
 

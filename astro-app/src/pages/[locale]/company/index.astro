@@ -133,10 +133,10 @@ const getSvg = (name: string, size = 20) => {
       <div class="hero-inner-c">
         <div style="display: flex; flex-direction: column; gap: 28px;">
           <span class="eyebrow" style="color: var(--ws-teal);">{locale === 'tr' ? 'WillowSoft Hakkında' : 'About WillowSoft'}</span>
-          <h1 style="font-size: clamp(2.5rem, 5vw, 4.5rem); font-weight: 800; letter-spacing: -.035em; line-height: 0.96; color: #fff; margin: 0;">
+          <h1 style="font-size: clamp(2.1rem, 4.2vw, 3.4rem); font-weight: 700; letter-spacing: -.03em; line-height: 1.02; color: #fff; margin: 0;">
             Smart <span class="serif-accent" style="color: var(--ws-teal); font-size: 1.05em;">Teams.</span><br/>Resilient Systems.
           </h1>
-          <p style="font-size: 18.5px; line-height: 1.65; color: rgba(255,255,255,.62); max-width: 520px; margin: 0;">
+          <p style="font-size: 16px; line-height: 1.68; color: rgba(255,255,255,.62); max-width: 520px; margin: 0;">
             {getFactVal("heroSub")}
           </p>
           
@@ -186,7 +186,7 @@ const getSvg = (name: string, size = 20) => {
           </ul>
         </div>
         <div style="display: flex; flex-direction: column; gap: 18px; padding-top: 8px;">
-          <p style="font-size: 18px; line-height: 1.72; color: var(--ws-body); margin: 0;">
+          <p style="font-size: 16px; line-height: 1.72; color: var(--ws-body); margin: 0;">
             {getFactVal("aboutSub")}
           </p>
           <div style="display: flex; flex-wrap: wrap; gap: 9px; margin-top: 4px;">
@@ -203,13 +203,13 @@ const getSvg = (name: string, size = 20) => {
       <div class="company-container company-grid-2" style="gap: 20px;">
         <div style="background: linear-gradient(140deg, #1e1b4b, #132175); border-radius: 22px; padding: 56px 60px; display: flex; flex-direction: column; gap: 20px; color: #ffffff;">
           <span style="font-size: 12px; font-weight: 800; letter-spacing: .18em; text-transform: uppercase; color: var(--ws-teal);">MISSION</span>
-          <p style="font-size: 26px; font-weight: 800; line-height: 1.34; margin: 0; text-wrap: balance;">
+          <p style="font-size: 19px; font-weight: 600; line-height: 1.5; margin: 0; text-wrap: balance;">
             "{getFactVal("mission")}"
           </p>
         </div>
         <div style="background: #f4f6fb; border: 1.5px solid var(--ws-line); border-radius: 22px; padding: 56px 60px; display: flex; flex-direction: column; gap: 20px;">
           <span style="font-size: 12px; font-weight: 800; letter-spacing: .18em; text-transform: uppercase; color: var(--ws-blue);">VISION</span>
-          <p style="font-size: 26px; font-weight: 800; line-height: 1.34; color: var(--ws-ink); margin: 0; text-wrap: balance;">
+          <p style="font-size: 19px; font-weight: 600; line-height: 1.5; color: var(--ws-ink); margin: 0; text-wrap: balance;">
             "{getFactVal("vision")}"
           </p>
         </div>
@@ -221,7 +221,7 @@ const getSvg = (name: string, size = 20) => {
       <div class="company-container company-grid-team">
         <div>
           <span class="eyebrow">{locale === 'tr' ? 'Ekibimiz' : 'The team'}</span>
-          <h2 class="ws-h2" style="margin-top: 18px; font-size: 42px;">
+          <h2 class="ws-h2" style="margin-top: 18px;">
             {locale === 'tr'
               ? <>Mühendisliğin arkasındaki <span class="serif-accent">insanlar</span>.</>
               : <>Meet the people behind the <span class="serif-accent">engineering</span>.</>}
@@ -258,7 +258,7 @@ const getSvg = (name: string, size = 20) => {
         <div class="company-grid-principles-head">
           <div>
             <span class="eyebrow">{locale === 'tr' ? 'Nasıl Çalışırız' : 'How we work'}</span>
-            <h2 class="ws-h2" style="margin-top: 18px; font-size: 42px;">
+            <h2 class="ws-h2" style="margin-top: 18px;">
               {locale === 'tr'
                 ? <>Taviz vermediğimiz mühendislik <span class="serif-accent">ilkeleri</span>.</>
                 : <>Engineering principles we don't <span class="serif-accent">compromise</span> on.</>}
@@ -297,7 +297,7 @@ const getSvg = (name: string, size = 20) => {
         <div class="company-grid-timeline-head">
           <div>
             <span class="eyebrow">{locale === 'tr' ? 'Şirket Geçmişi' : 'Company history'}</span>
-            <h2 class="ws-h2" style="margin-top: 18px; font-size: 42px;">
+            <h2 class="ws-h2" style="margin-top: 18px;">
               {locale === 'tr'
                 ? <>Ar-Ge köklerinden <span class="serif-accent">küresel</span> dağıtıma.</>
                 : <>From R&D roots to <span class="serif-accent">global</span> deployment.</>}
@@ -356,7 +356,7 @@ const getSvg = (name: string, size = 20) => {
       <div class="company-container company-expertise-layout">
         <div class="company-expertise-copy">
             <span class="eyebrow">{locale === 'tr' ? 'Uzmanlık Alanlarımız' : 'Core expertise'}</span>
-            <h2 class="ws-h2" style="margin-top: 18px; font-size: 42px;">
+            <h2 class="ws-h2" style="margin-top: 18px;">
               {locale === 'tr'
                 ? <>Asıl <span class="serif-accent">iyi</span> olduğumuz işler.</>
                 : <>What we are actually <span class="serif-accent">good</span> at.</>}
@@ -387,7 +387,7 @@ const getSvg = (name: string, size = 20) => {
       <div class="company-container company-industries-layout">
         <div class="company-industries-copy">
             <span class="eyebrow">{locale === 'tr' ? 'Birlikte Çalıştıklarımız' : 'Who we work with'}</span>
-            <h2 class="ws-h2" style="margin-top: 18px; font-size: 42px;">
+            <h2 class="ws-h2" style="margin-top: 18px;">
               {locale === 'tr'
                 ? <>Küresel ekipler WillowSoft'a tek bir nedenle güvenir: Sonuç <span class="serif-accent">üretiriz</span>.</>
                 : <>Global teams trust WillowSoft for one reason: we <span class="serif-accent">deliver</span>.</>}
@@ -421,7 +421,7 @@ const getSvg = (name: string, size = 20) => {
     <section class="company-section company-offices-c">
       <div class="company-container">
         <span class="eyebrow">{locale === 'tr' ? 'Küresel Varlık' : 'Global presence'}</span>
-        <h2 class="ws-h2" style="margin-top: 18px; margin-bottom: 36px; font-size: 42px;">
+        <h2 class="ws-h2" style="margin-top: 18px; margin-bottom: 36px;">
           {locale === 'tr'
             ? <>İki ofis. <span class="serif-accent">Tek</span> ekip.</>
             : <>Two offices. <span class="serif-accent">One</span> team.</>}
@@ -445,7 +445,7 @@ const getSvg = (name: string, size = 20) => {
                 <div class="company-office-body">
                   <div style="display: flex; align-items: center; gap: 12px;">
                     <div class="ws-icbox" style="flex: 0 0 auto; color: var(--ws-teal);" set:html={getSvg('pin', 22)} />
-                    <b style="font-size: 22px; font-weight: 800; color: var(--ws-ink);">{office.country}</b>
+                    <b style="font-size: 18px; font-weight: 700; color: var(--ws-ink);">{office.country}</b>
                   </div>
                   <div style="display: flex; flex-direction: column; gap: 10px; font-size: 15px; color: var(--ws-body); font-weight: 600;">
                     {office.phone && <span style="display: flex; align-items: center; gap: 10px;"><span style="display: inline-flex; color: var(--ws-muted); flex: 0 0 auto;" set:html={getSvg('phone', 16)} />{office.phone}</span>}
@@ -465,12 +465,12 @@ const getSvg = (name: string, size = 20) => {
       <div class="company-container company-cta-inner" style="background: linear-gradient(135deg, var(--ws-hero-1), var(--ws-hero-2)); border-radius: 24px; color: #ffffff;">
         <div>
           <span class="eyebrow" style="color: var(--ws-teal);">{locale === 'tr' ? 'Bizimle Çalışın' : 'Work with us'}</span>
-          <h2 style="font-size: clamp(2rem, 4vw, 3.25rem); font-weight: 800; color: #fff; letter-spacing: -.025em; line-height: 1.06; margin-top: 18px; max-width: 680px; text-wrap: balance;">
+          <h2 style="font-size: clamp(1.7rem, 3.2vw, 2.6rem); font-weight: 700; color: #fff; letter-spacing: -.02em; line-height: 1.1; margin-top: 18px; max-width: 680px; text-wrap: balance;">
             {locale === 'tr'
               ? <>Uçtan uca tüm <span class="serif-accent">katmanları</span> yöneten bir ekiple çalışmaya hazır mısınız?</>
               : <>Ready to build with a team that owns the <span class="serif-accent">full stack</span>?</>}
           </h2>
-          <p style="font-size: 18px; line-height: 1.65; color: rgba(255,255,255,.68); margin-top: 16px; max-width: 520px;">
+          <p style="font-size: 16px; line-height: 1.65; color: rgba(255,255,255,.68); margin-top: 16px; max-width: 520px;">
             {locale === 'tr' ? 'Ne üretmek istediğinizi bize anlatın. Size mühendislik yaklaşımımızı sunalım.' : "Tell us what you're building. We'll tell you how we'd approach it."}
           </p>
           <div style="display: flex; flex-direction: column; gap: 11px; margin-top: 28px; font-size: 15px; color: rgba(255,255,255,.7); font-weight: 600;">
