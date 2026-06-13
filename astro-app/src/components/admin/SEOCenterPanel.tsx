@@ -202,7 +202,7 @@ export default function SEOCenterPanel() {
                       placeholder="Soru"
                       value={faq.q || ""}
                       onChange={(e) => {
-                        const list = [...seoData.aiFAQ];
+                        const list = [...(seoData.aiFAQ || [])];
                         list[i] = { ...list[i], q: e.target.value };
                         updateSEO("aiFAQ", list);
                       }}
@@ -213,7 +213,7 @@ export default function SEOCenterPanel() {
                       placeholder="Cevap"
                       value={faq.a || ""}
                       onChange={(e) => {
-                        const list = [...seoData.aiFAQ];
+                        const list = [...(seoData.aiFAQ || [])];
                         list[i] = { ...list[i], a: e.target.value };
                         updateSEO("aiFAQ", list);
                       }}
@@ -221,7 +221,7 @@ export default function SEOCenterPanel() {
                     />
                     <button
                       onClick={() => {
-                        const list = seoData.aiFAQ.filter((_: any, j: number) => j !== i);
+                        const list = (seoData.aiFAQ || []).filter((_: any, j: number) => j !== i);
                         updateSEO("aiFAQ", list);
                       }}
                       className="p-2 text-red-400 hover:text-red-300 text-xs font-bold"

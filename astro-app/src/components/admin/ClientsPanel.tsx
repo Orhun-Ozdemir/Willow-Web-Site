@@ -15,6 +15,7 @@ const CLIENT_FIELDS = [
 export default function ClientsPanel() {
   const { content, setContent } = useAdmin();
   const [editIdx, setEditIdx] = useState<number | null>(null);
+  const [imgErrors, setImgErrors] = useState<Set<string>>(new Set());
 
   const clients = content?.clients || [];
 
@@ -94,8 +95,13 @@ export default function ClientsPanel() {
         {clients.map((cl: any, idx: number) => (
           <div key={cl.id} className="bg-white border border-gray-200 rounded-xl p-4 flex flex-col items-center text-center hover:border-gray-300 transition cursor-pointer" onClick={() => setEditIdx(idx)}>
             <div className="w-20 h-20 bg-gray-100 rounded-lg flex items-center justify-center mb-3 overflow-hidden">
-              {cl.logo ? (
-                <img src={cl.logo} alt={cl.name} className="w-full h-full object-contain p-2" onError={(e) => { (e.target as HTMLImageElement).replaceWith(document.createTextNode(cl.name?.[0] || '?')) }} />
+              {cl.logo && !imgErrors.has(cl.id) ? (
+                <img
+                  src={cl.logo}
+                  alt={cl.name}
+                  className="w-full h-full object-contain p-2"
+                  onError={() => setImgErrors((prev) => new Set(prev).add(cl.id))}
+                />
               ) : (
                 <span className="text-2xl font-bold text-gray-400">{cl.name?.[0] || "?"}</span>
               )}

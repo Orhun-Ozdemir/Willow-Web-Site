@@ -3,10 +3,16 @@
 import { useState } from "react";
 import { useAdmin } from "./AdminContext";
 
+function getDraftTs() {
+  return typeof window !== "undefined" ? localStorage.getItem("willowsoft-draft-ts") : null;
+}
+
 export default function BackupsPanel() {
   const { content, setContent } = useAdmin();
   const [uploadMessage, setUploadMessage] = useState("");
   const [draftInfo, setDraftInfo] = useState<string | null>(null);
+  const [hasDraft, setHasDraft] = useState(() => typeof window !== "undefined" && !!localStorage.getItem("willowsoft-draft"));
+  const [draftTs, setDraftTs] = useState<string | null>(getDraftTs);
 
   const handleDownload = () => {
     const blob = new Blob([JSON.stringify(content, null, 2)], { type: "application/json" });
@@ -44,9 +50,12 @@ export default function BackupsPanel() {
 
   const saveDraft = () => {
     try {
+      const ts = new Date().toISOString();
       localStorage.setItem("willowsoft-draft", JSON.stringify(content));
-      localStorage.setItem("willowsoft-draft-ts", new Date().toISOString());
-      setDraftInfo("Taslak kaydedildi: " + new Date().toLocaleString("tr-TR"));
+      localStorage.setItem("willowsoft-draft-ts", ts);
+      setHasDraft(true);
+      setDraftTs(ts);
+      setDraftInfo("Taslak kaydedildi: " + new Date(ts).toLocaleString("tr-TR"));
     } catch {
       setDraftInfo("localStorage hatası — taslak kaydedilemedi.");
     }
@@ -71,11 +80,10 @@ export default function BackupsPanel() {
   const clearDraft = () => {
     localStorage.removeItem("willowsoft-draft");
     localStorage.removeItem("willowsoft-draft-ts");
+    setHasDraft(false);
+    setDraftTs(null);
     setDraftInfo("Taslak silindi.");
   };
-
-  const hasDraft = typeof window !== "undefined" && !!localStorage.getItem("willowsoft-draft");
-  const draftTs = typeof window !== "undefined" ? localStorage.getItem("willowsoft-draft-ts") : null;
 
   return (
     <div className="space-y-6 max-w-2xl">
