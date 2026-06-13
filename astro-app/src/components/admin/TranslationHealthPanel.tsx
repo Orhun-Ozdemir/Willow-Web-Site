@@ -68,7 +68,17 @@ function countPageSeo(pageSeo: any): Record<string, { filled: number; total: num
   return result;
 }
 
-export default function TranslationHealthPanel() {
+const ROW_TO_TAB: Record<string, string> = {
+  "Sayfa SEO": "seo",
+  "Sayfa İçerik": "translations",
+  "Ürünler": "products",
+  "Haberler": "news",
+  "Çözümler": "solutions",
+  "SSS": "faqs",
+  "Müşteriler": "clients",
+};
+
+export default function TranslationHealthPanel({ onNavigate }: { onNavigate?: (tab: string) => void }) {
   const { content } = useAdmin();
 
   const rows: CoverageRow[] = useMemo(() => {
@@ -139,9 +149,25 @@ export default function TranslationHealthPanel() {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100">
-              {rows.map((row) => (
-                <tr key={row.label} className="hover:bg-gray-100/30">
-                  <td className="p-3 font-medium text-gray-800">{row.label}</td>
+              {rows.map((row) => {
+                const targetTab = ROW_TO_TAB[row.label];
+                const clickable = !!(targetTab && onNavigate);
+                return (
+                <tr
+                  key={row.label}
+                  onClick={() => clickable && onNavigate!(targetTab)}
+                  className={`hover:bg-gray-100/30 transition ${clickable ? "cursor-pointer hover:bg-[#132175]/5" : ""}`}
+                >
+                  <td className="p-3 font-medium text-gray-800">
+                    <div className="flex items-center gap-2">
+                      {row.label}
+                      {clickable && (
+                        <svg className="w-3.5 h-3.5 text-gray-300 group-hover:text-[#132175]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                        </svg>
+                      )}
+                    </div>
+                  </td>
                   {locales.map((loc) => {
                     const { filled, total } = row.byLocale[loc] || { filled: 0, total: 0 };
                     const p = pct(filled, total);
@@ -153,7 +179,8 @@ export default function TranslationHealthPanel() {
                     );
                   })}
                 </tr>
-              ))}
+                );
+              })}
             </tbody>
           </table>
         </div>

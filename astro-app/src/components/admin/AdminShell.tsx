@@ -199,7 +199,7 @@ export default function AdminShell() {
           {activeTab === "clients" && <ClientsPanel />}
           {activeTab === "seo" && <SEOCenterPanel />}
           {activeTab === "translations" && <PageContentPanel />}
-          {activeTab === "health" && <TranslationHealthPanel />}
+          {activeTab === "health" && <TranslationHealthPanel onNavigate={(tab) => setActiveTab(tab as Tab)} />}
           {activeTab === "settings" && <SettingsPanel />}
           {activeTab === "backups" && <BackupsPanel />}
           {activeTab === "company" && <CompanyPanel />}

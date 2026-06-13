@@ -36,6 +36,10 @@ function fieldValueToText(value: any) {
   return String(value);
 }
 
+function isEmpty(value: any): boolean {
+  return fieldValueToText(value).trim().length === 0;
+}
+
 function ArrayItemsField({
   field, item, sourceLang, activeLang, sourceData, targetData, onChange,
 }: {
@@ -69,6 +73,7 @@ function ArrayItemsField({
     <div className="space-y-2">
       {sourceArray.map((srcItem: any, idx: number) => {
         const srcLabel = typeof srcItem === "string" ? srcItem : (srcItem?.label || srcItem?.name || "");
+        const isMissing = activeLang !== sourceLang && !translatedArray[idx]?.trim();
         return (
           <div key={idx} className={activeLang === sourceLang ? "" : "grid grid-cols-2 gap-2 items-center"}>
             {activeLang !== sourceLang && (
@@ -82,7 +87,13 @@ function ArrayItemsField({
               onChange={(e) => updateItem(idx, e.target.value)}
               readOnly={activeLang === sourceLang}
               placeholder={activeLang === sourceLang ? "" : `${srcLabel} (${activeLang.toUpperCase()})`}
-              className={`w-full p-2 border rounded text-sm outline-none focus:border-[#1aa3c4] ${activeLang === sourceLang ? "bg-gray-50 border-gray-200/50 text-gray-400" : "bg-gray-50 border-gray-200 text-gray-800"}`}
+              className={`w-full p-2 border rounded text-sm outline-none focus:border-[#1aa3c4] ${
+                activeLang === sourceLang
+                  ? "bg-gray-50 border-gray-200/50 text-gray-400"
+                  : isMissing
+                    ? "bg-red-50 border-red-300 text-gray-800"
+                    : "bg-gray-50 border-gray-200 text-gray-800"
+              }`}
             />
           </div>
         );
@@ -94,18 +105,38 @@ function ArrayItemsField({
 export default function TranslationEditor({ item, fields, sourceLang = "en", onChange }: TranslationEditorProps) {
   const [activeLang, setActiveLang] = useState<Locale>(sourceLang);
 
+  // Count missing fields per locale (excluding source lang)
+  const missingCountMap: Record<string, number> = {};
   const filledMap: Record<string, boolean> = {};
   for (const loc of locales) {
-    const locData = item?.localized?.[loc];
-    filledMap[loc] = locData ? fields.some((f) => fieldValueToText(locData[f.key]).trim().length > 0) : false;
+    const locData = item?.localized?.[loc] || {};
+    if (loc === sourceLang) {
+      filledMap[loc] = fields.some((f) => fieldValueToText(locData[f.key]).trim().length > 0);
+      missingCountMap[loc] = 0;
+    } else {
+      const missing = fields.filter((f) => isEmpty(locData[f.key])).length;
+      missingCountMap[loc] = missing;
+      filledMap[loc] = missing < fields.length;
+    }
   }
 
   const sourceData = item?.localized?.[sourceLang] || {};
   const targetData = item?.localized?.[activeLang] || {};
 
+  const totalMissing = activeLang !== sourceLang
+    ? fields.filter((f) => isEmpty(targetData[f.key])).length
+    : 0;
+
   return (
     <div className="space-y-3">
-      <LocaleTabs active={activeLang} onChange={setActiveLang} filledMap={filledMap} />
+      <div className="flex items-center justify-between gap-3">
+        <LocaleTabs active={activeLang} onChange={setActiveLang} filledMap={filledMap} missingCountMap={missingCountMap} />
+        {totalMissing > 0 && (
+          <span className="text-[11px] font-bold text-red-500 bg-red-50 border border-red-200 rounded px-2 py-0.5">
+            {totalMissing} alan eksik
+          </span>
+        )}
+      </div>
 
       <div className="space-y-3">
         {fields.map((f) => {
@@ -128,6 +159,11 @@ export default function TranslationEditor({ item, fields, sourceLang = "en", onC
             );
           }
 
+          const isMissing = activeLang !== sourceLang && isEmpty(targetData[f.key]);
+          const inputCls = `w-full p-2 border rounded text-sm text-gray-800 outline-none focus:border-[#1aa3c4] ${
+            isMissing ? "bg-red-50 border-red-300" : "bg-gray-50 border-gray-200"
+          }`;
+
           if (activeLang === sourceLang) {
             return (
               <div key={f.key}>
@@ -137,14 +173,14 @@ export default function TranslationEditor({ item, fields, sourceLang = "en", onC
                     value={fieldValueToText(sourceData[f.key])}
                     onChange={(e) => onChange(sourceLang, f.key, e.target.value)}
                     rows={f.rows || 3}
-                    className="w-full p-2 bg-gray-50 border border-gray-200 rounded text-gray-800 outline-none focus:border-[#1aa3c4]"
+                    className="w-full p-2 bg-gray-50 border border-gray-200 rounded text-sm text-gray-800 outline-none focus:border-[#1aa3c4]"
                   />
                 ) : (
                   <input
                     type="text"
                     value={fieldValueToText(sourceData[f.key])}
                     onChange={(e) => onChange(sourceLang, f.key, e.target.value)}
-                    className="w-full p-2 bg-gray-50 border border-gray-200 rounded text-gray-800 outline-none focus:border-[#1aa3c4]"
+                    className="w-full p-2 bg-gray-50 border border-gray-200 rounded text-sm text-gray-800 outline-none focus:border-[#1aa3c4]"
                   />
                 )}
               </div>
@@ -155,29 +191,31 @@ export default function TranslationEditor({ item, fields, sourceLang = "en", onC
             <div key={f.key} className="grid grid-cols-2 gap-3">
               <div>
                 <label className="block text-[10px] font-bold uppercase text-gray-400 mb-1">
-                  {f.label} ({sourceLang.toUpperCase()} — kaynak)
+                  {f.label} <span className="normal-case font-normal text-gray-300">({sourceLang.toUpperCase()} kaynak)</span>
                 </label>
-                <div className="p-2 bg-gray-50 border border-gray-200/50 rounded text-gray-400 text-sm min-h-[38px]">
-                  {fieldValueToText(sourceData[f.key]) || "—"}
+                <div className="p-2 bg-gray-50 border border-gray-200/50 rounded text-gray-400 text-sm min-h-[38px] whitespace-pre-wrap">
+                  {fieldValueToText(sourceData[f.key]) || <span className="italic text-gray-300">Boş</span>}
                 </div>
               </div>
               <div>
-                <label className="block text-[10px] font-bold uppercase text-[#132175]/70 mb-1">
-                  {f.label} ({activeLang.toUpperCase()} — çeviri)
+                <label className={`block text-[10px] font-bold uppercase mb-1 ${isMissing ? "text-red-500" : "text-[#132175]/70"}`}>
+                  {f.label} <span className="normal-case font-normal">({activeLang.toUpperCase()} çeviri{isMissing ? " — EKSİK" : ""})</span>
                 </label>
                 {f.type === "textarea" ? (
                   <textarea
                     value={fieldValueToText(targetData[f.key])}
                     onChange={(e) => onChange(activeLang, f.key, e.target.value)}
                     rows={f.rows || 3}
-                    className="w-full p-2 bg-gray-50 border border-gray-200 rounded text-gray-800 outline-none focus:border-[#1aa3c4]"
+                    className={inputCls}
+                    placeholder={`${sourceLang.toUpperCase()} dilinden çevirin...`}
                   />
                 ) : (
                   <input
                     type="text"
                     value={fieldValueToText(targetData[f.key])}
                     onChange={(e) => onChange(activeLang, f.key, e.target.value)}
-                    className="w-full p-2 bg-gray-50 border border-gray-200 rounded text-gray-800 outline-none focus:border-[#1aa3c4]"
+                    className={inputCls}
+                    placeholder={`${sourceLang.toUpperCase()} dilinden çevirin...`}
                   />
                 )}
               </div>

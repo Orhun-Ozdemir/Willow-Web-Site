@@ -6,25 +6,28 @@ interface LocaleTabsProps {
   active: Locale;
   onChange: (locale: Locale) => void;
   filledMap?: Record<string, boolean>;
+  missingCountMap?: Record<string, number>;
 }
 
 const FLAG: Record<string, string> = {
   en: "EN", tr: "TR", de: "DE", fr: "FR", es: "ES", it: "IT", ar: "AR", ja: "JA",
 };
 
-export default function LocaleTabs({ active, onChange, filledMap }: LocaleTabsProps) {
+export default function LocaleTabs({ active, onChange, filledMap, missingCountMap }: LocaleTabsProps) {
   const filledCount = filledMap ? Object.values(filledMap).filter(Boolean).length : 0;
 
   return (
     <div className="flex items-center gap-1 flex-wrap">
       {locales.map((loc) => {
         const isFilled = filledMap?.[loc];
+        const missing = missingCountMap?.[loc] ?? 0;
+        const isActive = active === loc;
         return (
           <button
             key={loc}
             onClick={() => onChange(loc)}
-            className={`px-2.5 py-1 rounded text-[11px] font-bold transition ${
-              active === loc
+            className={`relative px-2.5 py-1 rounded text-[11px] font-bold transition ${
+              isActive
                 ? "bg-[#132175] text-white"
                 : isFilled
                   ? "bg-gray-200 text-gray-800"
@@ -32,6 +35,11 @@ export default function LocaleTabs({ active, onChange, filledMap }: LocaleTabsPr
             }`}
           >
             {FLAG[loc]}
+            {missing > 0 && !isActive && (
+              <span className="absolute -top-1.5 -right-1.5 min-w-[14px] h-[14px] bg-red-500 text-white text-[9px] font-black rounded-full flex items-center justify-center px-0.5 leading-none">
+                {missing}
+              </span>
+            )}
           </button>
         );
       })}
