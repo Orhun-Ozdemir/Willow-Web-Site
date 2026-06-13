@@ -19,6 +19,7 @@ const PRODUCT_FIELDS = [
   { key: "useCases", label: "Kullanım Alanları", type: "textarea" as const, rows: 4 },
   { key: "specifications", label: "Teknik Özellikler", type: "textarea" as const, rows: 4 },
   { key: "applications", label: "Applications (her öğe ayrı)", type: "array-items" as const, sourceArrayKey: "applications" },
+  { key: "chips", label: "Etiketler / Chips (her öğe ayrı)", type: "array-items" as const, sourceArrayKey: "chips" },
 ];
 
 const CATEGORIES = [

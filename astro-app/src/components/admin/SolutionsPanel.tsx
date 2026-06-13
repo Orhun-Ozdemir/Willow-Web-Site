@@ -42,7 +42,7 @@ export default function SolutionsPanel() {
     const id = `solution-${Date.now()}`;
     setContent((c: any) => ({
       ...c,
-      solutions: [...(c.solutions || []), { id, title: "Yeni Çözüm", slug: id, category: "", featured: false, headline: "", summary: "", localized: {} }],
+      solutions: [...(c.solutions || []), { id, title: "Yeni Çözüm", slug: id, category: "", featured: false, headline: "", summary: "", bullets: "", localized: {} }],
     }));
     setEditIdx(solutions.length);
   };
@@ -76,6 +76,16 @@ export default function SolutionsPanel() {
           </div>
           <div className="col-span-2">
             <FormField label="Özet" type="textarea" value={s.summary || ""} onChange={(v) => updateSolution(editIdx, "summary", v)} rows={3} />
+          </div>
+          <div className="col-span-2">
+            <FormField
+              label="Madde İşaretleri (satır başına 1)"
+              type="textarea"
+              value={Array.isArray(s.bullets) ? s.bullets.join("\n") : (s.bullets || "")}
+              onChange={(v) => updateSolution(editIdx, "bullets", v)}
+              rows={5}
+              hint="Her satıra bir madde yazın. Çeviriler sekmesinden diğer dillere çevrilebilir."
+            />
           </div>
         </div>
         <div className="border-t border-gray-200 pt-4">

@@ -76,9 +76,10 @@ export default function CompanyPanel() {
       const facts = { ...(c.companyFacts || {}) };
       const localized = { ...(facts.localized || {}) };
       const localeData = { ...(localized[locale] || {}) };
-      
+
+      // aboutTags arrives as "\n"-joined string from TranslationEditor (fieldValueToText joins with \n)
       const parsedVal = key === "aboutTags"
-        ? value.split(",").map((t: string) => t.trim()).filter(Boolean)
+        ? value.split("\n").map((t: string) => t.trim()).filter(Boolean)
         : value;
 
       localeData[key] = parsedVal;
