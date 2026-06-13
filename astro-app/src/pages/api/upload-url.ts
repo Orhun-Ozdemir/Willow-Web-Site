@@ -1,5 +1,5 @@
 import type { APIRoute } from "astro";
-import { getServiceClient, hasSupabaseEnv, SUPABASE_URL } from "@/lib/supabase";
+import { createClient } from "@supabase/supabase-js";
 import { getSession } from "@/lib/auth";
 import path from "node:path";
 
@@ -25,6 +25,17 @@ export const GET: APIRoute = async ({ request }) => {
     });
   }
 
+  const SUPABASE_URL = process.env.SUPABASE_URL || process.env.PUBLIC_SUPABASE_URL || "";
+  const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || "";
+
+  if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) {
+    console.error("upload-url: missing env vars", { hasUrl: !!SUPABASE_URL, hasKey: !!SUPABASE_SERVICE_ROLE_KEY });
+    return new Response(JSON.stringify({ ok: false, error: "Storage not configured" }), {
+      status: 500,
+      headers: { "Content-Type": "application/json" },
+    });
+  }
+
   const extension = path.extname(filename).toLowerCase();
   const baseName = path.basename(filename, path.extname(filename))
     .toLowerCase()
@@ -34,20 +45,17 @@ export const GET: APIRoute = async ({ request }) => {
   const storedFilename = `${baseName}-${Date.now()}${extension}`;
   const storagePath = `${folder}/${storedFilename}`;
 
-  if (!hasSupabaseEnv) {
-    return new Response(JSON.stringify({ ok: false, error: "Storage not configured" }), {
-      status: 500,
-      headers: { "Content-Type": "application/json" },
-    });
-  }
-
   try {
-    const supabase = getServiceClient();
+    const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, {
+      auth: { persistSession: false, autoRefreshToken: false },
+    });
+
     const { data, error } = await supabase.storage
       .from("assets")
       .createSignedUploadUrl(storagePath);
 
     if (error || !data) {
+      console.error("upload-url createSignedUploadUrl error:", error);
       return new Response(JSON.stringify({ ok: false, error: error?.message || "Failed to create signed URL" }), {
         status: 500,
         headers: { "Content-Type": "application/json" },
