@@ -92,7 +92,7 @@ export default function PageContentPanel() {
                   <textarea
                     value={sourceVal}
                     onChange={(e) => updateField(key, sourceLang, e.target.value)}
-                    rows={sourceVal.length > 100 ? 3 : 1}
+                    rows={Math.max(sourceVal.length, targetVal.length) > 100 ? 3 : 1}
                     className="w-full p-2 bg-gray-50 border border-gray-200 rounded text-gray-800 outline-none focus:border-[#1aa3c4] text-sm"
                   />
                 ) : (
@@ -108,7 +108,7 @@ export default function PageContentPanel() {
                       <textarea
                         value={targetVal}
                         onChange={(e) => updateField(key, locale, e.target.value)}
-                        rows={sourceVal.length > 100 ? 3 : 1}
+                        rows={Math.max(sourceVal.length, targetVal.length) > 100 ? 3 : 1}
                         className="w-full p-2 bg-gray-50 border border-gray-200 rounded text-gray-800 outline-none focus:border-[#1aa3c4] text-sm"
                       />
                     </div>
