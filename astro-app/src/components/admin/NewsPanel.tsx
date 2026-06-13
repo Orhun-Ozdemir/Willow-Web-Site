@@ -14,6 +14,7 @@ const NEWS_FIELDS = [
 ];
 
 type SortType = "newest" | "oldest" | "title";
+type StatusFilter = "all" | "ready" | "missing";
 
 type NewsItem = {
   id?: string;
@@ -44,7 +45,11 @@ function slugify(value: string): string {
 function getAssetSrc(path?: string): string {
   if (!path) return "";
 
-  if (path.startsWith("http://") || path.startsWith("https://")) {
+  if (
+    path.startsWith("http://") ||
+    path.startsWith("https://") ||
+    path.startsWith("data:")
+  ) {
     return path;
   }
 
@@ -64,9 +69,14 @@ function getNewsStatus(item: NewsItem): "Hazır" | "Eksik" {
     Boolean(item.title?.trim()) &&
     Boolean(item.slug?.trim()) &&
     Boolean(item.date?.trim()) &&
-    Boolean(item.excerpt?.trim());
+    Boolean(item.excerpt?.trim()) &&
+    Boolean(item.content?.trim());
 
   return hasRequiredContent ? "Hazır" : "Eksik";
+}
+
+function getDisplayDate(date?: string): string {
+  return date || "-";
 }
 
 export default function NewsPanel() {
@@ -75,6 +85,7 @@ export default function NewsPanel() {
   const [editIdx, setEditIdx] = useState<number | null>(null);
   const [search, setSearch] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("all");
+  const [statusFilter, setStatusFilter] = useState<StatusFilter>("all");
   const [sortBy, setSortBy] = useState<SortType>("newest");
 
   const news: NewsItem[] = content?.news || [];
@@ -90,28 +101,44 @@ export default function NewsPanel() {
     return Array.from(new Set(values));
   }, [news]);
 
+  const readyCount = useMemo(() => {
+    return news.filter((item) => getNewsStatus(item) === "Hazır").length;
+  }, [news]);
+
+  const missingCount = useMemo(() => {
+    return news.filter((item) => getNewsStatus(item) === "Eksik").length;
+  }, [news]);
+
   const filteredNews = useMemo(() => {
     const query = search.trim().toLowerCase();
 
     return news
       .map((item, idx) => ({ item, idx }))
       .filter(({ item }) => {
-        const title = String(item.title || "").toLowerCase();
-        const slug = String(item.slug || "").toLowerCase();
-        const category = String(item.category || "").toLowerCase();
-        const excerpt = String(item.excerpt || "").toLowerCase();
+        const searchableText = [
+          item.title,
+          item.slug,
+          item.category,
+          item.excerpt,
+          item.content,
+        ]
+          .filter(Boolean)
+          .join(" ")
+          .toLowerCase();
 
-        const matchesSearch =
-          !query ||
-          title.includes(query) ||
-          slug.includes(query) ||
-          category.includes(query) ||
-          excerpt.includes(query);
+        const matchesSearch = !query || searchableText.includes(query);
 
         const matchesCategory =
           categoryFilter === "all" || item.category === categoryFilter;
 
-        return matchesSearch && matchesCategory;
+        const status = getNewsStatus(item);
+
+        const matchesStatus =
+          statusFilter === "all" ||
+          (statusFilter === "ready" && status === "Hazır") ||
+          (statusFilter === "missing" && status === "Eksik");
+
+        return matchesSearch && matchesCategory && matchesStatus;
       })
       .sort((a, b) => {
         if (sortBy === "title") {
@@ -126,19 +153,7 @@ export default function NewsPanel() {
 
         return sortBy === "newest" ? dateB - dateA : dateA - dateB;
       });
-  }, [news, search, categoryFilter, sortBy]);
-
-  const latestNewsDate = useMemo(() => {
-    if (!news.length) return "-";
-
-    const dates = news
-      .map((item) => item.date)
-      .filter((value): value is string => Boolean(value))
-      .sort()
-      .reverse();
-
-    return dates[0] || "-";
-  }, [news]);
+  }, [news, search, categoryFilter, statusFilter, sortBy]);
 
   const updateNews = (idx: number, key: keyof NewsItem, val: string) => {
     setContent((c: any) => {
@@ -212,54 +227,56 @@ export default function NewsPanel() {
 
     return (
       <div className="space-y-6">
-        <div className="flex flex-col gap-4 rounded-2xl border border-gray-200 bg-white p-5 shadow-sm md:flex-row md:items-center md:justify-between">
-          <div>
-            <button
-              type="button"
-              onClick={() => setEditIdx(null)}
-              className="mb-3 text-xs font-bold text-[#132175] hover:text-[#0e1a5e]"
-            >
-              ← Haber listesine dön
-            </button>
+        <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
+          <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+            <div>
+              <button
+                type="button"
+                onClick={() => setEditIdx(null)}
+                className="mb-3 text-xs font-bold text-[#132175] hover:text-[#0e1a5e]"
+              >
+                ← Haber listesine dön
+              </button>
 
-            <h3 className="text-xl font-bold text-gray-950">
-              Haber Düzenle
-            </h3>
+              <h3 className="text-xl font-bold text-gray-950">
+                Haber Düzenle
+              </h3>
 
-            <p className="mt-1 text-sm text-gray-500">
-              Haber bilgileri, görsel, içerik ve çeviri alanlarını düzenleyin.
-            </p>
-          </div>
+              <p className="mt-1 text-sm text-gray-500">
+                Haber bilgileri, içerik, görsel ve çeviri alanlarını düzenleyin.
+              </p>
+            </div>
 
-          <div className="flex items-center gap-2">
-            <span
-              className={`rounded-full px-3 py-1 text-xs font-bold ${status === "Hazır"
-                ? "bg-emerald-50 text-emerald-700"
-                : "bg-amber-50 text-amber-700"
-                }`}
-            >
-              {status}
-            </span>
+            <div className="flex items-center gap-2">
+              <span
+                className={`rounded-full px-3 py-1 text-xs font-bold ${status === "Hazır"
+                  ? "bg-emerald-50 text-emerald-700"
+                  : "bg-amber-50 text-amber-700"
+                  }`}
+              >
+                {status}
+              </span>
 
-            <button
-              type="button"
-              onClick={() => deleteNews(editIdx)}
-              className="rounded-xl border border-red-100 bg-red-50 px-4 py-2 text-xs font-bold text-red-700 transition hover:bg-red-100"
-            >
-              Sil
-            </button>
+              <button
+                type="button"
+                onClick={() => deleteNews(editIdx)}
+                className="rounded-xl border border-red-100 bg-red-50 px-4 py-2 text-xs font-bold text-red-700 transition hover:bg-red-100"
+              >
+                Sil
+              </button>
+            </div>
           </div>
         </div>
 
-        <div className="grid gap-6 xl:grid-cols-[1fr_360px]">
-          <div className="space-y-6">
+        <div className="grid gap-6 lg:grid-cols-3">
+          <div className="space-y-6 lg:col-span-2">
             <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
               <div className="mb-5 border-b border-gray-100 pb-4">
                 <h4 className="text-sm font-bold text-gray-900">
                   Temel Bilgiler
                 </h4>
                 <p className="mt-1 text-xs text-gray-500">
-                  Haber kartlarında ve detay sayfasında görünecek ana bilgiler.
+                  Liste ve detay sayfasında kullanılan ana haber bilgileri.
                 </p>
               </div>
 
@@ -309,7 +326,7 @@ export default function NewsPanel() {
                   label="Kategori"
                   value={n.category || ""}
                   onChange={(v) => updateNews(editIdx, "category", v)}
-                  placeholder="update, case-study, company..."
+                  placeholder="case-study, update, company..."
                 />
 
                 <div className="md:col-span-2">
@@ -326,11 +343,9 @@ export default function NewsPanel() {
 
             <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
               <div className="mb-5 border-b border-gray-100 pb-4">
-                <h4 className="text-sm font-bold text-gray-900">
-                  İçerik Alanları
-                </h4>
+                <h4 className="text-sm font-bold text-gray-900">İçerik</h4>
                 <p className="mt-1 text-xs text-gray-500">
-                  Özet liste kartında, içerik ise haber detay sayfasında kullanılır.
+                  Özet kartlarda, içerik ise haber detay sayfasında kullanılır.
                 </p>
               </div>
 
@@ -376,87 +391,88 @@ export default function NewsPanel() {
           </div>
 
           <aside className="space-y-5">
-            <div className="sticky top-6 space-y-5">
-              <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
-                <h4 className="mb-4 text-sm font-bold text-gray-900">
-                  Haber Ön İzleme
-                </h4>
+            <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
+              <h4 className="mb-4 text-sm font-bold text-gray-900">
+                Haber Ön İzleme
+              </h4>
 
-                <div className="overflow-hidden rounded-2xl border border-gray-200 bg-gray-50">
-                  {imageSrc ? (
-                    <img
-                      src={imageSrc}
-                      alt={n.title || "News image"}
-                      className="h-40 w-full object-cover"
-                    />
-                  ) : (
-                    <div className="flex h-40 w-full items-center justify-center bg-gradient-to-br from-[#132175]/10 to-[#1a6b8a]/10">
-                      <span className="text-xs font-semibold text-gray-400">
-                        Görsel seçilmedi
-                      </span>
-                    </div>
-                  )}
-
-                  <div className="space-y-3 bg-white p-4">
-                    <div className="flex items-center justify-between gap-3">
-                      <span className="rounded-full bg-[#132175]/10 px-3 py-1 text-xs font-bold text-[#132175]">
-                        {n.category || "Kategori yok"}
-                      </span>
-
-                      <span className="text-xs text-gray-400">
-                        {n.date || "Tarih yok"}
-                      </span>
-                    </div>
-
-                    <h5 className="text-base font-bold leading-6 text-gray-950">
-                      {n.title || "Haber başlığı"}
-                    </h5>
-
-                    <p className="text-sm leading-6 text-gray-500">
-                      {n.excerpt || "Haber özeti burada görünecek."}
-                    </p>
+              <div className="overflow-hidden rounded-2xl border border-gray-200 bg-gray-50">
+                {imageSrc ? (
+                  <img
+                    src={imageSrc}
+                    alt={n.title || "News image"}
+                    className="h-40 w-full object-cover"
+                    onError={(e) => {
+                      e.currentTarget.style.display = "none";
+                    }}
+                  />
+                ) : (
+                  <div className="flex h-40 w-full items-center justify-center bg-gradient-to-br from-[#132175]/10 to-[#1a6b8a]/10">
+                    <span className="text-xs font-semibold text-gray-400">
+                      Görsel seçilmedi
+                    </span>
                   </div>
+                )}
+
+                <div className="space-y-3 bg-white p-4">
+                  <div className="flex items-center justify-between gap-3">
+                    <span className="rounded-full bg-[#132175]/10 px-3 py-1 text-xs font-bold text-[#132175]">
+                      {n.category || "Kategori yok"}
+                    </span>
+
+                    <span className="text-xs text-gray-400">
+                      {getDisplayDate(n.date)}
+                    </span>
+                  </div>
+
+                  <h5 className="text-base font-bold leading-6 text-gray-950">
+                    {n.title || "Haber başlığı"}
+                  </h5>
+
+                  <p className="max-h-24 overflow-hidden text-sm leading-6 text-gray-500">
+                    {n.excerpt || "Haber özeti burada görünecek."}
+                  </p>
                 </div>
               </div>
+            </div>
 
-              <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
-                <h4 className="mb-4 text-sm font-bold text-gray-900">
-                  İçerik Durumu
-                </h4>
+            <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
+              <h4 className="mb-4 text-sm font-bold text-gray-900">
+                İçerik Durumu
+              </h4>
 
-                <div className="space-y-3 text-sm">
-                  <div className="flex items-center justify-between">
-                    <span className="text-gray-500">Durum</span>
-                    <span
-                      className={`font-bold ${status === "Hazır"
-                        ? "text-emerald-600"
-                        : "text-amber-600"
-                        }`}
-                    >
-                      {status}
-                    </span>
-                  </div>
+              <div className="space-y-3 text-sm">
+                <div className="flex items-center justify-between">
+                  <span className="text-gray-500">Durum</span>
+                  <span
+                    className={`font-bold ${status === "Hazır"
+                      ? "text-emerald-600"
+                      : "text-amber-600"
+                      }`}
+                  >
+                    {status}
+                  </span>
+                </div>
 
-                  <div className="flex items-center justify-between">
-                    <span className="text-gray-500">Çeviri</span>
-                    <span className="font-bold text-gray-900">
-                      {getTranslationCount(n)} dil
-                    </span>
-                  </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-gray-500">Çeviri</span>
+                  <span className="font-bold text-gray-900">
+                    {getTranslationCount(n)} dil
+                  </span>
+                </div>
 
-                  <div className="flex items-center justify-between">
-                    <span className="text-gray-500">Slug</span>
-                    <span className="max-w-[180px] truncate font-bold text-gray-900">
-                      {n.slug || "-"}
-                    </span>
-                  </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-gray-500">Slug</span>
+                  <span className="max-w-[180px] truncate font-bold text-gray-900">
+                    {n.slug || "-"}
+                  </span>
+                </div>
 
-                  <div className="flex items-center justify-between">
-                    <span className="text-gray-500">Görsel</span>
-                    <span className="font-bold text-gray-900">
-                      {n.image ? "Var" : "Yok"}
-                    </span>
-                  </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-gray-500">Görsel</span>
+                  <span className="font-bold text-gray-900">
+                    {n.image ? "Var" : "Yok"}
+                  </span>
                 </div>
               </div>
             </div>
@@ -476,8 +492,7 @@ export default function NewsPanel() {
             </h3>
 
             <p className="mt-1 text-sm text-gray-500">
-              Haberler, duyurular, case study içerikleri ve çoklu dil metinlerini
-              buradan yönetin.
+              Haberleri kart görünümünde listeleyin, arayın, filtreleyin ve düzenleme ekranında yönetin.
             </p>
           </div>
 
@@ -490,7 +505,7 @@ export default function NewsPanel() {
           </button>
         </div>
 
-        <div className="mt-5 grid gap-3 md:grid-cols-3">
+        <div className="mt-5 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
           <div className="rounded-2xl border border-gray-100 bg-gray-50 p-4">
             <p className="text-xs font-semibold uppercase tracking-wide text-gray-400">
               Toplam Haber
@@ -502,31 +517,40 @@ export default function NewsPanel() {
 
           <div className="rounded-2xl border border-gray-100 bg-gray-50 p-4">
             <p className="text-xs font-semibold uppercase tracking-wide text-gray-400">
-              Kategori
+              Hazır
             </p>
-            <p className="mt-1 text-2xl font-bold text-gray-950">
-              {categories.length}
+            <p className="mt-1 text-2xl font-bold text-emerald-600">
+              {readyCount}
             </p>
           </div>
 
           <div className="rounded-2xl border border-gray-100 bg-gray-50 p-4">
             <p className="text-xs font-semibold uppercase tracking-wide text-gray-400">
-              Son Haber Tarihi
+              Eksik
             </p>
-            <p className="mt-1 text-2xl font-bold text-gray-950">
-              {latestNewsDate}
+            <p className="mt-1 text-2xl font-bold text-amber-600">
+              {missingCount}
+            </p>
+          </div>
+
+          <div className="rounded-2xl border border-gray-100 bg-gray-50 p-4">
+            <p className="text-xs font-semibold uppercase tracking-wide text-gray-400">
+              Kategori
+            </p>
+            <p className="mt-1 text-2xl font-bold text-[#132175]">
+              {categories.length}
             </p>
           </div>
         </div>
       </div>
 
       <div className="rounded-2xl border border-gray-200 bg-white p-4 shadow-sm">
-        <div className="grid gap-3 lg:grid-cols-[1fr_220px_220px]">
+        <div className="grid gap-3 lg:grid-cols-5">
           <input
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="Başlık, slug, kategori veya özet içinde ara..."
-            className="h-11 rounded-xl border border-gray-200 bg-gray-50 px-4 text-sm text-gray-900 outline-none transition placeholder:text-gray-400 focus:border-[#132175] focus:bg-white focus:ring-4 focus:ring-[#132175]/10"
+            placeholder="Başlık, slug, kategori veya içerik içinde ara..."
+            className="h-11 rounded-xl border border-gray-200 bg-gray-50 px-4 text-sm text-gray-900 outline-none transition placeholder:text-gray-400 focus:border-[#132175] focus:bg-white focus:ring-4 focus:ring-[#132175]/10 lg:col-span-2"
           />
 
           <select
@@ -543,6 +567,16 @@ export default function NewsPanel() {
           </select>
 
           <select
+            value={statusFilter}
+            onChange={(e) => setStatusFilter(e.target.value as StatusFilter)}
+            className="h-11 rounded-xl border border-gray-200 bg-gray-50 px-4 text-sm font-medium text-gray-700 outline-none transition focus:border-[#132175] focus:bg-white focus:ring-4 focus:ring-[#132175]/10"
+          >
+            <option value="all">Tüm durumlar</option>
+            <option value="ready">Hazır</option>
+            <option value="missing">Eksik</option>
+          </select>
+
+          <select
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value as SortType)}
             className="h-11 rounded-xl border border-gray-200 bg-gray-50 px-4 text-sm font-medium text-gray-700 outline-none transition focus:border-[#132175] focus:bg-white focus:ring-4 focus:ring-[#132175]/10"
@@ -554,83 +588,97 @@ export default function NewsPanel() {
         </div>
       </div>
 
-      <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
+      <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
         {filteredNews.length > 0 ? (
-          <div className="divide-y divide-gray-100">
+          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
             {filteredNews.map(({ item: n, idx }) => {
-              const imageSrc = getAssetSrc(n.image);
               const status = getNewsStatus(n);
+              const imageSrc = getAssetSrc(n.image);
 
               return (
-                <div
+                <article
                   key={n.id || idx}
-                  className="grid gap-4 p-4 transition hover:bg-gray-50 md:grid-cols-[96px_1fr_auto]"
+                  className="flex h-full min-h-[360px] flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
                 >
-                  <div className="h-24 w-full overflow-hidden rounded-2xl bg-gray-100 md:w-24">
+                  <div className="relative h-36 w-full overflow-hidden bg-gray-100">
                     {imageSrc ? (
                       <img
                         src={imageSrc}
                         alt={n.title || "News image"}
-                        className="h-full w-full object-cover"
+                        className="h-full w-full object-cover transition duration-200 hover:scale-105"
+                        onError={(e) => {
+                          e.currentTarget.style.display = "none";
+                        }}
                       />
                     ) : (
                       <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-[#132175]/10 to-[#1a6b8a]/10">
-                        <span className="text-[10px] font-bold uppercase text-gray-400">
-                          No Image
+                        <span className="text-xs font-bold uppercase tracking-wide text-gray-400">
+                          Görsel Yok
                         </span>
                       </div>
                     )}
-                  </div>
 
-                  <div className="min-w-0">
-                    <div className="mb-2 flex flex-wrap items-center gap-2">
-                      <span className="rounded-full bg-[#132175]/10 px-2.5 py-1 text-xs font-bold text-[#132175]">
-                        {n.category || "Kategori yok"}
-                      </span>
-
+                    <div className="absolute left-3 top-3">
                       <span
-                        className={`rounded-full px-2.5 py-1 text-xs font-bold ${status === "Hazır"
+                        className={`rounded-full px-2.5 py-1 text-[10px] font-bold shadow-sm ${status === "Hazır"
                           ? "bg-emerald-50 text-emerald-700"
                           : "bg-amber-50 text-amber-700"
                           }`}
                       >
                         {status}
                       </span>
-
-                      <span className="text-xs text-gray-400">
-                        {n.date || "Tarih yok"}
-                      </span>
-                    </div>
-
-                    <h4 className="truncate text-base font-bold text-gray-950">
-                      {n.title || "Başlıksız haber"}
-                    </h4>
-
-                    <p className="mt-1 max-h-12 overflow-hidden text-sm leading-6 text-gray-500">
-                      {n.excerpt || "Özet girilmedi."}
-                    </p>
-
-                    <div className="mt-3 flex flex-wrap gap-3 text-xs text-gray-400">
-                      <span>Slug: {n.slug || "-"}</span>
-                      <span>Çeviri: {getTranslationCount(n)} dil</span>
                     </div>
                   </div>
 
-                  <div className="flex items-center md:justify-end">
+                  <div className="flex flex-1 flex-col p-4">
+                    <div className="mb-3 flex items-center justify-between gap-3">
+                      <span className="max-w-[150px] truncate rounded-full bg-[#132175]/10 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-[#132175]">
+                        {n.category || "Kategori yok"}
+                      </span>
+
+                      <span className="shrink-0 text-xs font-medium text-gray-400">
+                        {getDisplayDate(n.date)}
+                      </span>
+                    </div>
+
+                    <h4 className="min-h-[44px] text-sm font-bold leading-5 text-gray-950">
+                      {n.title || "Başlıksız haber"}
+                    </h4>
+
+                    <p className="mt-2 max-h-[66px] min-h-[66px] overflow-hidden text-xs leading-[22px] text-gray-500">
+                      {n.excerpt || "Özet girilmemiş."}
+                    </p>
+
+                    <div className="mt-4 space-y-2 border-t border-gray-100 pt-3 text-xs">
+                      <div className="flex items-center justify-between gap-3">
+                        <span className="text-gray-400">Slug</span>
+                        <span className="max-w-[150px] truncate font-mono text-gray-500">
+                          {n.slug || "-"}
+                        </span>
+                      </div>
+
+                      <div className="flex items-center justify-between gap-3">
+                        <span className="text-gray-400">Çeviri</span>
+                        <span className="font-bold text-gray-700">
+                          {getTranslationCount(n)} dil
+                        </span>
+                      </div>
+                    </div>
+
                     <button
                       type="button"
                       onClick={() => setEditIdx(idx)}
-                      className="rounded-xl border border-gray-200 bg-white px-4 py-2 text-xs font-bold text-gray-700 transition hover:border-[#132175]/20 hover:bg-[#132175]/5 hover:text-[#132175]"
+                      className="mt-auto w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-2.5 text-xs font-bold text-gray-700 transition hover:border-[#132175]/20 hover:bg-[#132175]/5 hover:text-[#132175]"
                     >
                       Düzenle
                     </button>
                   </div>
-                </div>
+                </article>
               );
             })}
           </div>
         ) : (
-          <div className="flex min-h-[280px] flex-col items-center justify-center p-8 text-center">
+          <div className="flex min-h-[260px] flex-col items-center justify-center p-8 text-center">
             <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-[#132175]/10 text-[#132175]">
               <span className="text-2xl">📰</span>
             </div>
@@ -640,8 +688,7 @@ export default function NewsPanel() {
             </h4>
 
             <p className="mt-2 max-w-md text-sm leading-6 text-gray-500">
-              Arama veya kategori filtresini değiştirerek tekrar deneyebilir ya da
-              yeni bir haber ekleyebilirsiniz.
+              Arama veya filtreleri değiştirerek tekrar deneyebilir ya da yeni haber ekleyebilirsiniz.
             </p>
 
             <button
