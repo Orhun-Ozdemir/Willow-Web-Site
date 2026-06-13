@@ -103,6 +103,18 @@ body[data-page="news-detail"] {
   --accent-soft: rgba(201, 127, 95, 0.10);
   --accent-glow: rgba(201, 127, 95, 0.24);
   --accent-rgb: 201, 127, 95;
+
+  /* Variant C Custom Variables */
+  --ws-navy-950: #070d19;
+  --ws-teal: #14b8a6;
+  --ws-blue: #132175;
+  --ws-ink: #131b2e;
+  --ws-line: #cbd5e1;
+  --ws-body: #475569;
+  --ws-muted: #64748b;
+  --ws-hero-1: #1e1b4b;
+  --ws-hero-2: #312e81;
+  --ws-bg: #ffffff;
 }
 
 body[data-page="news"] {
@@ -7966,4 +7978,163 @@ body[data-page="home"] .ownership-section .eyebrow::before {
   color: var(--accent);
   display: inline-block;
   margin-bottom: 10px;
+}
+
+/* ----------------------------------------------------------------
+   Variant C — "Human / Global" Company Page Styles
+   -------------------------------------------------------------- */
+body[data-page="company"] .ws-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 24px;
+  font-size: 15px;
+  font-weight: 700;
+  border-radius: 12px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+body[data-page="company"] .ws-btn-primary {
+  background: var(--ws-teal);
+  color: #070d19 !important;
+}
+
+body[data-page="company"] .ws-btn-primary:hover {
+  background: #0d9d8d;
+  transform: translateY(-2px);
+}
+
+body[data-page="company"] .ws-btn-ghost {
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: #ffffff !important;
+  background: transparent;
+}
+
+body[data-page="company"] .ws-btn-ghost:hover {
+  background: rgba(255, 255, 255, 0.08);
+  transform: translateY(-2px);
+}
+
+body[data-page="company"] .ws-btn-light {
+  background: #ffffff;
+  color: var(--ws-blue) !important;
+}
+
+body[data-page="company"] .ws-btn-light:hover {
+  background: #f1f5f9;
+  transform: translateY(-2px);
+}
+
+body[data-page="company"] .ws-card {
+  background: #ffffff;
+  border: 1.5px solid var(--ws-line);
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(13, 27, 62, 0.03);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+body[data-page="company"] .ws-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px rgba(13, 27, 62, 0.08);
+}
+
+body[data-page="company"] .ws-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+body[data-page="company"] .ws-stat b {
+  font-size: 40px;
+  font-weight: 800;
+  color: var(--ws-blue);
+  line-height: 1;
+}
+
+body[data-page="company"] .ws-stat span {
+  font-size: 14px;
+  color: var(--ws-muted);
+  font-weight: 600;
+}
+
+body[data-page="company"] .ws-bullets {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+body[data-page="company"] .ws-bullets li {
+  position: relative;
+  padding-left: 28px;
+  font-size: 16.5px;
+  line-height: 1.6;
+  color: var(--ws-body);
+}
+
+body[data-page="company"] .ws-bullets li::before {
+  position: absolute;
+  left: 0;
+  top: 8px;
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--ws-teal);
+}
+
+body[data-page="company"] .ws-chip {
+  background: #f4f6fb;
+  border: 1.5px solid var(--ws-line);
+  color: var(--ws-body);
+  font-weight: 600;
+  border-radius: 99px;
+  transition: all 0.2s ease;
+  padding: 8px 15px;
+  font-size: 13px;
+}
+
+body[data-page="company"] .ws-chip:hover {
+  background: var(--ws-teal);
+  border-color: var(--ws-teal);
+  color: #070d19;
+}
+
+body[data-page="company"] .ws-icbox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: rgba(19, 33, 117, 0.06);
+  color: var(--ws-blue);
+}
+
+body[data-page="company"] .ws-h2 {
+  font-family: var(--font-display);
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  line-height: 1.1;
+  color: var(--ws-ink);
+  margin: 0;
+}
+
+body[data-page="company"] .ws-h3 {
+  font-family: var(--font-display);
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  color: var(--ws-ink);
+  margin: 0;
+}
+
+body[data-page="company"] .ws-lead {
+  font-size: 18px;
+  line-height: 1.65;
+  color: var(--ws-body);
+  margin: 0;
 }

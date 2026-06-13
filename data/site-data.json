@@ -30,7 +30,435 @@
     "turkeyOfficeAddress": "Altınkale Street 40101 District Antalya, Turkey",
     "ukOfficeAddress": "East London (Wood Street, E17 3NU), UK",
     "email": "info@willowsoft.co",
-    "note": "Use the listed Turkey and UK office information for production contact pages."
+    "note": "Use the listed Turkey and UK office information for production contact pages.",
+    "team": [
+      {
+        "id": "member-orhun",
+        "name": "Orhun Özdemir",
+        "role": "Founder & CTO",
+        "bio": "Embedded hardware architect and low-power systems engineer specializing in LoRaWAN and resilient IIoT networks.",
+        "image": "assets/team/orhun.jpg",
+        "sortOrder": 1,
+        "localized": {
+          "tr": {
+            "role": "Kurucu & CTO",
+            "bio": "LoRaWAN ve dayanıklı IIoT şebekelerinde uzmanlaşmış gömülü donanım mimarı ve düşük güç sistemleri mühendisi."
+          }
+        }
+      },
+      {
+        "id": "member-team-placeholder-1",
+        "name": "Alex Martinez",
+        "role": "Lead Firmware Engineer",
+        "bio": "Firmware developer focused on RTOS, low-power scheduling, and robust wireless protocol implementations.",
+        "image": "assets/team/alex.jpg",
+        "sortOrder": 2,
+        "localized": {
+          "tr": {
+            "role": "Kıdemli Gömülü Yazılım Mühendisi",
+            "bio": "RTOS, düşük güç zamanlaması ve kararlı kablosuz protokol entegrasyonlarına odaklanmış gömülü yazılım geliştirici."
+          }
+        }
+      },
+      {
+        "id": "member-team-placeholder-2",
+        "name": "Sarah Chen",
+        "role": "Senior Cloud & IoT Architect",
+        "bio": "Cloud architect designing scalable telemetry ingestion, PostgreSQL database structures, and high-availability APIs.",
+        "image": "assets/team/sarah.jpg",
+        "sortOrder": 3,
+        "localized": {
+          "tr": {
+            "role": "Kıdemli Bulut & IoT Mimarı",
+            "bio": "Ölçeklenebilir telemetri veri alımı, PostgreSQL veritabanı yapıları ve yüksek erişilebilirlikli API'ler tasarlayan bulut mimarı."
+          }
+        }
+      }
+    ],
+    "timeline": [
+      {
+        "id": "time-2020",
+        "year": "2020",
+        "title": "Foundation",
+        "body": "WillowSoft was founded with a focus on R&D, embedded systems, and high-tech product development.",
+        "sortOrder": 1,
+        "localized": {
+          "tr": {
+            "title": "Kuruluş",
+            "body": "WillowSoft, Ar-Ge, gömülü sistemler ve yüksek teknoloji ürün geliştirmeye odaklanarak kuruldu."
+          },
+          "de": {
+            "title": "Gründung",
+            "body": "WillowSoft wurde mit dem Schwerpunkt auf F&E, eingebettete Systeme und High-Tech-Produktentwicklung gegründet."
+          },
+          "fr": {
+            "title": "Fondation",
+            "body": "WillowSoft a été fondée avec un accent sur la R&D, les systèmes embarqués et le développement de produits technologiques."
+          },
+          "es": {
+            "title": "Fundación",
+            "body": "WillowSoft se fundó con un enfoque en I+D, sistemas embebidos y desarrollo de productos de alta tecnología."
+          },
+          "it": {
+            "title": "Fondazione",
+            "body": "WillowSoft è stata fondata focalizzandosi su R&S, sistemi embedded e sviluppo di prodotti ad alta tecnologia."
+          },
+          "ar": {
+            "title": "التأسيس",
+            "body": "تأسست WillowSoft مع التركيز على البحث والتطوير والأنظمة المدمجة وتطوير المنتجات التقنية."
+          },
+          "ja": {
+            "title": "設立",
+            "body": "研究開発、組み込みシステム、先端テクノロジー開発を主軸に WillowSoft を設立。"
+          }
+        }
+      },
+      {
+        "id": "time-2023",
+        "year": "2021-2023",
+        "title": "Export Growth",
+        "body": "The company achieved high-tech export milestones and was recognized as a Technology Export Champion.",
+        "sortOrder": 2,
+        "localized": {
+          "tr": {
+            "title": "İhracat Büyümesi",
+            "body": "Şirket, yüksek teknoloji ihracatında önemli kilometre taşlarına ulaştı ve Teknoloji İhracat Şampiyonu seçildi."
+          },
+          "de": {
+            "title": "Exportwachstum",
+            "body": "Das Unternehmen erreichte wichtige Meilensteine beim Export von High-Tech-Produkten und wurde als Technologie-Export-Champion ausgezeichnet."
+          },
+          "fr": {
+            "title": "Croissance des exportations",
+            "body": "L'entreprise a franchi des étapes clés dans l'exportation de haute technologie et a été reconnue comme Championne de l'exportation technologique."
+          },
+          "es": {
+            "title": "Crecimiento de exportación",
+            "body": "La empresa logró hitos clave en la exportación de alta tecnología y fue galardonada como Campeona de Exportación de Tecnología."
+          },
+          "it": {
+            "title": "Crescita dell'export",
+            "body": "L'azienda ha raggiunto importanti traguardi nell'esportazione di tecnologia ed è stata premiata como Campione dell'Esportazione."
+          },
+          "ar": {
+            "title": "نمو الصادرات",
+            "body": "حققت الشركة إنجازات هامة في تصدير التكنولوجيا المتقدمة وتم تكريمها كbطل لتصدير التكنولوجيا."
+          },
+          "ja": {
+            "title": "輸出拡大",
+            "body": "高度な独自技術 of 輸出実績が評価され、テクノロジー輸出チャンピオン olarak 表彰。"
+          }
+        }
+      },
+      {
+        "id": "time-2025",
+        "year": "2025",
+        "title": "Global Scale",
+        "body": "WillowSoft expanded its international presence with products and engineering projects across 15 countries.",
+        "sortOrder": 3,
+        "localized": {
+          "tr": {
+            "title": "Küresel Ölçek",
+            "body": "WillowSoft, 15 ülkede aktif donanım ve mühendislik projeleri ile uluslararası varlığını genişletti."
+          },
+          "de": {
+            "title": "Globale Skalierung",
+            "body": "WillowSoft weitete seine internationale Präsenz mit Produkten und Engineering-Projekten in 15 Ländern aus."
+          },
+          "fr": {
+            "title": "Échelle mondiale",
+            "body": "WillowSoft a étendu sa présence internationale avec des produits et des projets d'ingénierie dans 15 pays."
+          },
+          "es": {
+            "title": "Escala global",
+            "body": "WillowSoft expandió su presencia internacional con productos y proyectos de ingeniería en 15 países."
+          },
+          "it": {
+            "title": "Scala globale",
+            "body": "WillowSoft ha ampliato la sua presenza internazionale con prodotti e progetti di ingegneria in 15 paesi."
+          },
+          "ar": {
+            "title": "التوسع العالمي",
+            "body": "وسعت WillowSoft حضورها الدولي بمنتجات ومشاريع هندسية في ١٥ دولة."
+          },
+          "ja": {
+            "title": "グローバル展開",
+            "body": "世界15カ国で製品の導入と大規模なエンジニアリングプロジェクトを展開。"
+          }
+        }
+      },
+      {
+        "id": "time-2026",
+        "year": "2026",
+        "title": "Ecosystem Expansion",
+        "body": "Expanded global operations with unified IoT stacks, multi-region compliance setups, and advanced technical visibility across international markets.",
+        "sortOrder": 4,
+        "localized": {
+          "tr": {
+            "title": "Ekosistem Genişlemesi",
+            "body": "Birleşik IoT altyapıları, çoklu bölge uyumluluk çalışmaları ve uluslararası pazarlarda gelişmiş teknik görünürlük ile küresel operasyonlarını genişletti."
+          },
+          "de": {
+            "title": "Ökosystem-Erweiterung",
+            "body": "Ausweitung des weltweiten Betriebs mit einheitlichen IoT-Stacks, regulatorischer Multi-Regionen-Konformität und gesteigerter technischer Präsenz auf internationalen Märkten."
+          },
+          "fr": {
+            "title": "Expansion de l'écosystème",
+            "body": "Expansion des opérations mondiales avec des stacks IoT unifiés, des configurations de conformité multi-régions et une visibilité technique accrue sur les marchés internationaux."
+          },
+          "es": {
+            "title": "Expansión del ecosistema",
+            "body": "Expansión de operaciones globales con stacks de IoT unificados, configuraciones de cumplimiento multirregionales y visibilidad técnica avanzada en mercados internacionales."
+          },
+          "it": {
+            "title": "Espansione dell'ecosistema",
+            "body": "Espansione delle attività globali con stack IoT unificati, configurazioni di conformità multi-regione e visibilità tecnica avanzata sui mercati internazionali."
+          },
+          "ar": {
+            "title": "توسيع المنظومة",
+            "body": "توسيع العمليات العالمية بحزم إنترنت أشياء موحدة، وإعدادات الامتثال متعددة المناطق، والظهور التقني المتقدم في الأسواق الدولية."
+          },
+          "ja": {
+            "title": "事業領域の拡張",
+            "body": "ハード・ソフト統合型IoTスタックの確立、複数地域における規制適合プロセスの整備、グローバル市場での技術的プレゼンス向上を実施。"
+          }
+        }
+      }
+    ],
+    "officesList": [
+      {
+        "id": "office-tr",
+        "country": "Turkey",
+        "flag": "🇹🇷",
+        "phone": "+90 850 30 24766",
+        "email": "info@willowsoft.co",
+        "address": "Altınkale Street 40101 District Antalya, Turkey",
+        "image": "assets/offices/office-tr.jpg",
+        "sortOrder": 1,
+        "localized": {
+          "tr": {
+            "address": "Altınkale Cad. 40101 Sk. Antalya, Türkiye"
+          }
+        }
+      },
+      {
+        "id": "office-uk",
+        "country": "United Kingdom",
+        "flag": "🇬🇧",
+        "phone": "",
+        "email": "info@willowsoft.co",
+        "address": "East London (Wood Street, E17 3NU), UK",
+        "image": "assets/offices/office-uk.jpg",
+        "sortOrder": 2,
+        "localized": {
+          "tr": {
+            "address": "Doğu Londra (Wood Street, E17 3NU), İngiltere"
+          }
+        }
+      }
+    ],
+    "heroSub": "Founded in 2020, WillowSoft grew from an R&D-first engineering team into a globally recognized connected product company — recognized as a Technology Export Champion in 2023 with active deployments across 15+ countries.",
+    "aboutHeadline": "We do not just build devices; we engineer reliable ecosystems.",
+    "aboutSub": "WillowSoft delivers embedded hardware and software solutions for industrial and IoT applications. The team focuses on low-power architecture, LoRa connectivity, firmware reliability, custom hardware design, backend systems, mobile and web interfaces, and production readiness.",
+    "aboutTags": [
+      "Hardware",
+      "Firmware",
+      "Cloud",
+      "IIoT",
+      "Custom PCB",
+      "Low-Power",
+      "Production Ready"
+    ],
+    "mission": "To engineer ultra-reliable, low-power connected systems that bridge physical hardware and digital networks without compromise.",
+    "vision": "To become the global standard for full-stack connected product development from silicon to interface.",
+    "localized": {
+      "tr": {
+        "heroSub": "2020'de kurulan WillowSoft, Ar-Ge odaklı bir mühendislik ekibinden küresel düzeyde tanınan bir bağlı ürün şirketi haline geldi — 2023'te Teknoloji İhracat Şampiyonu seçilen şirketin ürünleri 15'ten fazla ülkede aktif olarak kullanılmaktadır.",
+        "aboutHeadline": "Sadece cihaz üretmiyoruz; güvenilir ekosistemler tasarlıyoruz.",
+        "aboutSub": "2020'de kurulan WillowSoft, endüstriyel ve IoT uygulamaları için gömülü donanım ve yazılım çözümleri sunar. Ekip; düşük güç mimarisi, LoRa bağlantısı, firmware güvenilirliği, özel donanım tasarımı, backend sistemleri, mobil ve web arayüzleri ile üretime hazırlığa odaklanır.",
+        "aboutTags": [
+          "Donanım",
+          "Yazılım",
+          "Bulut",
+          "Endüstriyel IoT",
+          "Özel PCB",
+          "Düşük Güç",
+          "Üretime Hazır"
+        ],
+        "mission": "Fiziksel donanım ile dijital ağları tavizsiz birleştiren, ultra güvenilir ve düşük güç tüketimli bağlı sistemler tasarlamak.",
+        "vision": "Silikondan arayüze kadar uçtan uca bağlı ürün geliştirmede küresel bir standart haline gelmek."
+      },
+      "de": {
+        "heroSub": "Gegründet im Jahr 2020, entwickelte sich WillowSoft von einem F&E-orientierten Engineering-Team zu einem weltweit anerkannten Unternehmen für vernetzte Produkte – 2023 als Technologie-Export-Champion ausgezeichnet, mit aktiven Einsätzen in über 15 Ländern.",
+        "aboutHeadline": "Wir bauen nicht nur Geräte, wir entwickeln zuverlässige Ökosysteme.",
+        "aboutSub": "Das 2020 gegründete Unternehmen WillowSoft liefert Embedded-Hardware- und Softwarelösungen für industrielle und IoT-Anwendungen. Das Team konzentriert sich auf energiesparende Architektur, LoRa-Konnektivität, Firmware-Zuverlässigkeit, kundenspezifisches Hardware-Design, Backend-Systeme, mobile und Web-Schnittstellen sowie Produktionsreife.",
+        "mission": "Ultra-zuverlässige, stromsparende vernetzte Systeme zu entwickeln, die physikalische Hardware und digitale Netzwerke kompromisslos verbinden.",
+        "vision": "Der globale Standard für die Full-Stack-Entwicklung vernetzter Produkte zu werden, vom Silizium bis zur Benutzeroberfläche."
+      },
+      "fr": {
+        "heroSub": "Fondée en 2020, WillowSoft est passée d'une équipe d'ingénierie axée sur la R&D à une entreprise de produits connectés mondialement reconnue — désignée Championne de l'exportation technologique en 2023 avec des déploiements actifs dans plus de 15 pays.",
+        "aboutHeadline": "Nous ne construisons pas seulement des appareils ; nous concevons des écosystèmes fiables.",
+        "aboutSub": "Fondée en 2020, WillowSoft fournit des solutions matérielles et logicielles embarquées pour les applications industrielles et IoT. L'équipe se concentre sur l'architecture basse consommation, la connectivité LoRa, la fiabilité du firmware, la conception matérielle sur mesure, les systèmes backend, les interfaces mobiles et web, et la préparation à la production.",
+        "mission": "Concevoir des systèmes connectés ultra-fiables et à faible consommation qui relient le matériel physique et les réseaux numériques sans compromis.",
+        "vision": "Devenir la norme mondiale pour le développement de produits connectés full-stack, du silicium à l'interface."
+      },
+      "es": {
+        "heroSub": "Fundada en 2020, WillowSoft creció desde un equipo de ingeniería centrado en I+D hasta convertirse en una empresa de productos conectados reconocida mundialmente, siendo galardonada como Campeona de Exportación de Tecnología en 2023 con implementaciones activas en más de 15 países.",
+        "aboutHeadline": "No solo fabricamos dispositivos; diseñamos ecosistemas fiables.",
+        "aboutSub": "Fundada en 2020, WillowSoft ofrece soluciones de hardware y software embebidos para aplicaciones industriales e IoT. El equipo se centra en la arquitectura de bajo consumo, la conectividad LoRa, la fiabilidad del firmware, el diseño de hardware a medida, los sistemas backend, las interfaces móviles y web, y la preparación para producción.",
+        "mission": "Diseñar sistemas conectados de bajo consumo y ultra confiables que unan el hardware físico y las redes digitales sin compromisos.",
+        "vision": "Convertirse en el estándar global para el desarrollo de productos conectados full-stack, desde el silicio hasta la interfaz."
+      },
+      "it": {
+        "heroSub": "Fondata nel 2020, WillowSoft è cresciuta da team di progettazione focalizzato sulla R&S a azienda di prodotti connessi riconosciuta a livello globale — premiata come Campione dell'Esportazione Tecnologica nel 2023 con installazioni attive in oltre 15 paesi.",
+        "aboutHeadline": "Non costruiamo solo dispositivi; progettiamo ecosistemi affidabili.",
+        "aboutSub": "Fondata nel 2020, WillowSoft offre soluzioni hardware e software embedded per applicazioni industriali e IoT. Il team si concentra su architettura a basso consumo, connettività LoRa, affidabilità del firmware, progettazione hardware su misura, sistemi backend, interfacce mobili e web e prontezza alla produzione.",
+        "mission": "Ingegnerizzare sistemi connessi ultra-affidabili e a basso consumo che collegano l'hardware fisico e le reti digitali senza compromessi.",
+        "vision": "Diventare lo standard globale per lo sviluppo di prodotti connessi full-stack, dal silicio all'interfaccia."
+      },
+      "ar": {
+        "heroSub": "تأسست WillowSoft في عام 2020، ونmet من فريق هندسي يركز على البحث والتطوير إلى شركة منتجات متصلة معترف بها عالميًا — تم تكريمها كبطل لتصدير التكنولوجيا في عام 2023 مع عمليات نشر نشطة في أكثر من 15 دولة.",
+        "aboutHeadline": "نحن لا نصنع الأجهزة فحسب؛ بل نهندس منظومات موثوقة.",
+        "aboutSub": "تأسست WillowSoft عام 2020، وتقدّم حلول العتاد والبرمجيات المدمجة للتطبيقات الصناعية وإنترنت الأشياء. يركّز الفريق على البنية منخفضة الطاقة واتصال LoRa وموثوقية البرامج الثابتة وتصميم العتاد المخصص وأنظمة الخلفية وواجهات الجوال والويب والجاهزية للإنتاج.",
+        "mission": "هندسة أنظمة متصلة موثوقة للغاية ومنخفضة الطاقة تربط بين العتاد المادي والشبكات الرقمية دون أي تنازلات.",
+        "vision": "أن نصبح المعيار العالمي لتطوير المنتجات المتصلة بالكامل من السيليكون إلى الواجهة."
+      },
+      "ja": {
+        "heroSub": "2020年に設立された WillowSoft は、研究 R&D 発想のエンジニアリング集団から、グローバル市場で実績を持つ IoT デバイスメーカーへと成長しました。2023年には技術輸出チャンピオンに選出され、現在15カ国以上でシステムが稼働しています。",
+        "aboutHeadline": "私たちはデバイスを作るだけでなく、信頼できるエコシステムを設計します。",
+        "aboutSub": "2020年に設立された WillowSoft は、産業用および IoT 向けの組み込みハードウェア・ソフトウェアソリューションを提供します。チームは、低消費電力アーキテクチャ、LoRa 接続、ファームウェア의 信頼性、カスタムハードウェア設計、バックエンドシステム、モバイル・Web インターフェース、量産対応に注力しています。",
+        "mission": "妥協のない物理ハードウェアとデジタルネットワークをブリッジする、超信頼性・低消費電力のコネクテッドシステムを設計すること。",
+        "vision": "シリコンからUIまで、フルスタックのコネクテッド製品開発におけるグローバルスタンダードとなること。"
+      }
+    },
+    "whyUs": [
+      {
+        "title": "R&D Focused",
+        "icon": "cpu"
+      },
+      {
+        "title": "Global Deployments",
+        "icon": "globe"
+      },
+      {
+        "title": "End-to-End Delivery",
+        "icon": "check"
+      }
+    ],
+    "principles": [
+      {
+        "n": "01",
+        "icon": "cpu",
+        "title": "Production-First Thinking",
+        "body": "Every design decision is evaluated against field reality — power budgets, enclosure constraints, RF environment, and manufacturing tolerances.",
+        "localized": {
+          "tr": {
+            "title": "Üretim Odaklı Düşünce",
+            "body": "Her tasarım kararı saha gerçeklerine göre değerlendirilir: güç bütçeleri, muhafaza kısıtlamaları, RF ortamı ve üretim toleransları."
+          }
+        }
+      },
+      {
+        "n": "02",
+        "icon": "server",
+        "title": "Full Stack Ownership",
+        "body": "We don't hand off. The same team that designs the hardware writes the firmware, builds the backend, and ships the interface. No translation loss between layers.",
+        "localized": {
+          "tr": {
+            "title": "Uçtan Uca Sorumluluk",
+            "body": "İşi başkasına devretmeyiz. Donanımı tasarlayan aynı ekip, yazılımı yazar, backend'i kurar ve arayüzü teslim eder. Katmanlar arasında bilgi kaybı olmaz."
+          }
+        }
+      },
+      {
+        "n": "03",
+        "icon": "shield",
+        "title": "Long-Term Reliability",
+        "body": "Systems we deploy are expected to operate for years without intervention. We engineer for that reality — not for the demo.",
+        "localized": {
+          "tr": {
+            "title": "Uzun Vadeli Güvenilirlik",
+            "body": "Sahaya kurduğumuz sistemlerin müdahale edilmeden yıllarca çalışması beklenir. Biz demolar için değil, bu gerçeklik için mühendislik yapıyoruz."
+          }
+        }
+      }
+    ],
+    "expertise": [
+      {
+        "label": "Embedded Hardware",
+        "note": "Custom PCB & RF",
+        "icon": "cpu"
+      },
+      {
+        "label": "Firmware Development",
+        "note": "Low-power C/RTOS",
+        "icon": "terminal"
+      },
+      {
+        "label": "IoT Backend & DB",
+        "note": "PostgreSQL & APIs",
+        "icon": "database"
+      },
+      {
+        "label": "Web & Admin Panels",
+        "note": "CMS & Live telemetry",
+        "icon": "server"
+      },
+      {
+        "label": "Mobile Apps",
+        "note": "React Native / Swift",
+        "icon": "phone"
+      },
+      {
+        "label": "VR & Simulation",
+        "note": "Unity & Training",
+        "icon": "globe"
+      }
+    ],
+    "industries": [
+      {
+        "name": "Industrial & Energy",
+        "tag": "IIOT & TELEMETRY",
+        "icon": "gear",
+        "body": "Companies like Honeywell and SLB work with WillowSoft on custom sensor nodes, Modbus integration layers, and field-deployed connected hardware.",
+        "c": "rgba(19, 33, 117, 0.10)",
+        "t": "var(--ws-blue)",
+        "localized": {
+          "tr": {
+            "name": "Endüstri & Enerji",
+            "body": "Honeywell ve SLB gibi şirketler; özel sensör düğümleri, Modbus entegrasyon katmanları ve endüstriyel ortamlar için sahada konuşlandırılmış bağlı donanımlar konusunda WillowSoft ile çalışmaktadır."
+          }
+        }
+      },
+      {
+        "name": "Consumer & FMCG",
+        "tag": "SMART CONNECTIVITY",
+        "icon": "check",
+        "body": "Brands including Beko and Coca-Cola have commissioned connected product firmware, backend data platforms, and mobile interfaces.",
+        "c": "rgba(20, 184, 166, 0.10)",
+        "t": "var(--ws-teal)",
+        "localized": {
+          "tr": {
+            "name": "Tüketici & Hızlı Tüketim",
+            "body": "Beko ve Coca-Cola gibi markalar; tüketiciye yönelik IoT girişimleri için bağlı ürün yazılımları, backend veri platformları ve mobil arayüzler sipariş etmiştir."
+          }
+        }
+      },
+      {
+        "name": "Healthcare & Telecoms",
+        "tag": "CRITICAL INFRASTRUCTURE",
+        "icon": "shield",
+        "body": "Aero Healthcare and AT&T require the highest reliability standards. WillowSoft delivers embedded systems built for regulated environments.",
+        "c": "rgba(112, 77, 255, 0.10)",
+        "t": "#704dff",
+        "localized": {
+          "tr": {
+            "name": "Sağlık & Telekom",
+            "body": "Aero Healthcare ve AT&T en yüksek güvenilirlik standartlarını talep ediyor. WillowSoft, düzenlemeye tabi ortamlar ve operatör düzeyinde bağlantı gereksinimleri için gömülü sistemler sunmaktadır."
+          }
+        }
+      }
+    ]
   },
   "clients": [
     {

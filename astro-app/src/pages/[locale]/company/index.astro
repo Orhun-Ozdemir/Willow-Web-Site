@@ -2,7 +2,7 @@
 import PageLayout from "@/layouts/PageLayout.astro";
 import { loadContent } from "@/lib/content";
 import { pageSeo, webPageNode, ORGANIZATION_SCHEMA, WEBSITE_SCHEMA, SITE_ORIGIN } from "@/lib/seo";
-import { localizedValue, locales, resolveLocale, type Locale } from "@/lib/cms";
+import { localizeItem, resolveAsset, localizedValue, locales, resolveLocale, type Locale } from "@/lib/cms";
 
 export const prerender = false;
 
@@ -23,170 +23,36 @@ const companySchema = {
 const pageContent = content.pageContent?.company || {};
 const getVal = (key: string) => localizedValue(pageContent[key], locale);
 
-const labels = {
-  teamBehindSystem: {
-    en: "The team behind the system.",
-    tr: "Sistemin arkasındaki ekip.",
-    de: "Das Team hinter dem System.",
-    fr: "L'équipe derrière le système.",
-    es: "El equipo detrás del sistema.",
-    it: "Il team dietro al sistema.",
-    ar: "الفريق الذي يقف خلف النظام.",
-    ja: "システムを支えるチーム。"
-  },
-  teamDesc: {
-    en: "Founded in 2020, WillowSoft grew from an R&D-first engineering team into a globally recognized connected product company — recognized as a Technology Export Champion in 2023 with active deployments across 15+ countries.",
-    tr: "2020'de kurulan WillowSoft, Ar-Ge odaklı bir mühendislik ekibinden küresel düzeyde tanınan bir bağlı ürün şirketi haline geldi — 2023'te Teknoloji İhracat Şampiyonu seçilen şirketin ürünleri 15'ten fazla ülkede aktif olarak kullanılmaktadır.",
-    de: "Gegründet im Jahr 2020, entwickelte sich WillowSoft von einem F&E-orientierten Engineering-Team zu einem weltweit anerkannten Unternehmen für vernetzte Produkte – 2023 als Technologie-Export-Champion ausgezeichnet, mit aktiven Einsätzen in über 15 Ländern.",
-    fr: "Fondée en 2020, WillowSoft est passée d'une équipe d'ingénierie axée sur la R&D à une entreprise de produits connectés mondialement reconnue — désignée Championne de l'exportation technologique en 2023 avec des déploiements actifs dans plus de 15 pays.",
-    es: "Fundada en 2020, WillowSoft creció desde un equipo de ingeniería centrado en I+D hasta convertirse en una empresa de productos conectados reconocida mundialmente, siendo galardonada como Campeona de Exportación de Tecnología en 2023 con implementaciones activas en más de 15 países.",
-    it: "Fondata nel 2020, WillowSoft è cresciuta da team di progettazione focalizzato sulla R&S a azienda di prodotti connessi riconosciuta a livello globale — premiata come Campione dell'Esportazione Tecnologica nel 2023 con installazioni attive in oltre 15 paesi.",
-    ar: "تأسست WillowSoft في عام 2020، ونمت من فريق هندسي يركز على البحث والتطوير إلى شركة منتجات متصلة معترف بها عالميًا — تم تكريمها كبطل لتصدير التكنولوجيا في عام 2023 مع عمليات نشر نشطة في أكثر من 15 دولة.",
-    ja: "2020年に設立された WillowSoft は、研究 R&D 発想のエンジニアリング集団から、グローバル市場で実績を持つ IoT デバイスメーカーへと成長しました。2023年には技術輸出チャンピオンに選出され、現在15カ国以上でシステムが稼働しています。"
-  },
-  productionFirstThinking: {
-    en: "Production-First Thinking",
-    tr: "Üretim Odaklı Düşünce",
-    de: "Produktionsorientiertes Denken",
-    fr: "Pensée axée sur la production",
-    es: "Pensamiento centrado en la producción",
-    it: "Progettazione orientata alla produzione",
-    ar: "التفكير الموجه للإنتاج",
-    ja: "量産を見据えた設計思想"
-  },
-  productionFirstThinkingDesc: {
-    en: "Every design decision is evaluated against field reality — power budgets, enclosure constraints, RF environment, and manufacturing tolerances.",
-    tr: "Her tasarım kararı saha gerçeklerine göre değerlendirilir: güç bütçeleri, muhafaza kısıtlamaları, RF ortamı ve üretim toleransları.",
-    de: "Jede Designentscheidung wird an der Realität gemessen – Leistungsbudgets, Gehäuseeinschränkungen, RF-Umgebung und Fertigungstoleranzen.",
-    fr: "Chaque décision de conception est évaluée par rapport à la réalité du terrain : budgets énergétiques, contraintes de boîtier, environnement RF et tolérances de fabrication.",
-    es: "Cada decisión de diseño se evalúa frente a la realidad del campo: presupuestos de energía, restricciones de gabinete, entorno de RF y tolerancias de fabricación.",
-    it: "Ogni decisione di progettazione viene valutata rispetto alla realtà sul campo: consumi energetici, limiti di spazio, ambiente RF e tolleranze di fabbricazione.",
-    ar: "يتم تقييم كل قرار تصميم مقابل الواقع العملي — ميزانيات الطاقة، وقيود العلب، وبيئة الـ RF، وتفاوتات التصنيع.",
-    ja: "すべての設計判断は、消費電力、筐体の寸法制限、電波環境、量産時の製造誤差など、現場の実態に合わせて評価されます。"
-  },
-  fullStackOwnership: {
-    en: "Full Stack Ownership",
-    tr: "Uçtan Uca Sorumluluk",
-    de: "Verantwortung für den gesamten Stack",
-    fr: "Responsabilité de l'intégralité du stack",
-    es: "Responsabilidad de todo el stack",
-    it: "Responsabilità dell'intero stack",
-    ar: "امتلاك النظام بالكامل",
-    ja: "全開発レイヤーの内製化"
-  },
-  fullStackOwnershipDesc: {
-    en: "We don't hand off. The same team that designs the hardware writes the firmware, builds the backend, and ships the interface. No translation loss between layers.",
-    tr: "İşi başkasına devretmeyiz. Donanımı tasarlayan aynı ekip, yazılımı yazar, backend'i kurar ve arayüzü teslim eder. Katmanlar arasında bilgi kaybı olmaz.",
-    de: "Wir übergeben die Arbeit nicht. Dasselbe Team, das die Hardware entwirft, schreibt die Firmware, baut das Backend und liefert die Schnittstelle. Kein Informationsverlust zwischen den Schichten.",
-    fr: "Nous ne sous-traitons pas. La même équipe qui conçoit le matériel écrit le firmware, construit le backend et livre l'interface. Aucune perte d'information entre les couches.",
-    es: "No subcontratamos. El mismo equipo que diseña el hardware escribe el firmware, construye el backend y entrega la interfaz. Sin pérdida de información entre capas.",
-    it: "Non esternalizziamo. Lo stesso team che progetta l'hardware scrive il firmware, sviluppa il backend e rilascia l'interfaccia. Nessuna perdita di informazioni tra i livelli.",
-    ar: "نحن لا نسلم العمل لطرف آخر. الفريق نفسه الذي يصمم الأجهزة يكتب البرامج، ويبني المنصة الخلفية، ويسلم الواجهة. لا يوجد فقدان للمعلومات بين الطبقات.",
-    ja: "私たちは下請けに丸投げしません。回路設計を行ったチームgがそのままファームウェアを書き、バックエンドを構築し、UIを納品するため、仕様の伝達ロスがありません。"
-  },
-  longTermReliability: {
-    en: "Long-Term Reliability",
-    tr: "Uzun Vadeli Güvenilirlik",
-    de: "Langfristige Zuverlässigkeit",
-    fr: "Fiabilité à long terme",
-    es: "Confiabilidad a largo plazo",
-    it: "Affidabilità a termine",
-    ar: "الموثوقية على المدى الطويل",
-    ja: "長期にわたる信頼性"
-  },
-  longTermReliabilityDesc: {
-    en: "Systems we deploy are expected to operate for years without intervention. We engineer for that reality — not for the demo.",
-    tr: "Sahaya kurduğumuz sistemlerin müdahale edilmeden yıllarca çalışması beklenir. Biz demolar için değil, bu gerçeklik için mühendislik yapıyoruz.",
-    de: "Die von uns installierten Systeme sollen jahrelang ohne Eingriffe funktionieren. Wir entwickeln für diese Realität – nicht für die Demo.",
-    fr: "Les systèmes que nous déployons sont conçus pour fonctionner pendant des années sans intervention. Nous concevons pour cette réalité — pas pour la démo.",
-    es: "Se espera que los sistemas que implementamos funcionen durante años sin intervención. Diseñamos para esa realidad, no para la demostración.",
-    it: "I sistemi che installiamo sono progettati per funzionare per anni senza interventi. Progettiamo per questa realtà, non per una semplice demo.",
-    ar: "من المتوقع أن تعمل الأنظمة التي ننشرها لسنوات دون تدخل. نحن نهندس لهذا الواقع — وليس لمجرد العرض التجريبي.",
-    ja: "導入したシステムは、メンテナンスなしで何年も動作することが求められます。私たちはデモのためではなく、その厳しい現場現実に合わせて設計しています。"
-  },
-  year2020Title: { en: "2020: Foundation", tr: "2020: Kuruluş", de: "2020: Gründung", fr: "2020 : Fondation", es: "2020: Fundación", it: "2020: Fondazione", ar: "٢٠٢٠: التأسيس", ja: "2020年：設立" },
-  year2020Desc: {
-    en: "WillowSoft was founded with a focus on R&D, embedded systems, and high-tech product development.",
-    tr: "WillowSoft, Ar-Ge, gömülü sistemler ve yüksek teknoloji ürün geliştirmeye odaklanarak kuruldu.",
-    de: "WillowSoft wurde mit dem Schwerpunkt auf F&E, eingebettete Systeme und High-Tech-Produktentwicklung gegründet.",
-    fr: "WillowSoft a été fondée avec un accent sur la R&D, les systèmes embarqués et le développement de produits technologiques.",
-    es: "WillowSoft se fundó con un enfoque en I+D, sistemas embebidos y desarrollo de productos de alta tecnología.",
-    it: "WillowSoft è stata fondata focalizzandosi su R&S, sistemi embedded e sviluppo di prodotti ad alta tecnologia.",
-    ar: "تأسست WillowSoft مع التركيز على البحث والتطوير والأنظمة المدمجة وتطوير المنتجات التقنية.",
-    ja: "研究開発、組み込みシステム、先端テクノロジー開発を主軸に WillowSoft を設立。"
-  },
-  year2023Title: { en: "2021-2023: Export Growth", tr: "2021-2023: İhracat Büyümesi", de: "2021-2023: Exportwachstum", fr: "2021-2023 : Croissance des exportations", es: "2021-2023: Crecimiento de exportación", it: "2021-2023: Crescita dell'export", ar: "٢٠٢١-٢٠٢٣: نمو الصادرات", ja: "2021年〜2023年：輸出拡大" },
-  year2023Desc: {
-    en: "The company achieved high-tech export milestones and was recognized as a Technology Export Champion.",
-    tr: "Şirket, yüksek teknoloji ihracatında önemli kilometre taşlarına ulaştı ve Teknoloji İhracat Şampiyonu seçildi.",
-    de: "Das Unternehmen erreichte wichtige Meilensteine beim Export von High-Tech-Produkten und wurde als Technologie-Export-Champion ausgezeichnet.",
-    fr: "L'entreprise a franchi des étapes clés dans l'exportation de haute technologie et a été reconnue comme Championne de l'exportation technologique.",
-    es: "La empresa logró hitos clave en la exportación de alta tecnología y fue galardonada como Campeona de Exportación de Tecnología.",
-    it: "L'azienda ha raggiunto importanti traguardi nell'esportazione di tecnologia ed è stata premiata come Campione dell'Esportazione.",
-    ar: "حققت الشركة إنجازات هامة في تصدير التكنولوجيا المتقدمة وتم تكريمها كبطل لتصدير التكنولوجيا.",
-    ja: "高度な独自技術 of 輸出実績が評価され、テクノロジー輸出チャンピオンとして表彰。"
-  },
-  year2025Title: { en: "2025: Global Scale", tr: "2025: Küresel Ölçek", de: "2025: Globale Skalierung", fr: "2025 : Échelle mondiale", es: "2025: Escala global", it: "2025: Scala globale", ar: "٢٠٢٥: التوسع العالمي", ja: "2025年：グローバル展開" },
-  year2025Desc: {
-    en: "WillowSoft expanded its international presence with products and engineering projects across 15 countries.",
-    tr: "WillowSoft, 15 ülkede aktif donanım ve mühendislik projeleri ile uluslararası varlığını genişletti.",
-    de: "WillowSoft weitete seine internationale Präsenz mit Produkten und Engineering-Projekten in 15 Ländern aus.",
-    fr: "WillowSoft a étendu sa présence internationale avec des produits et des projets d'ingénierie dans 15 pays.",
-    es: "WillowSoft expandió su presencia internacional con productos y proyectos de ingeniería en 15 países.",
-    it: "WillowSoft ha ampliato la sua presenza internazionale con prodotti e progetti di ingegneria in 15 paesi.",
-    ar: "وسعت WillowSoft حضورها الدولي بمنتجات ومشاريع هندسية في ١٥ دولة.",
-    ja: "世界15カ国で製品の導入と大規模なエンジニアリングプロジェクトを展開。"
-  },
-  year2026Title: { en: "2026: Ecosystem Expansion", tr: "2026: Ekosistem Genişlemesi", de: "2026: Ökosystem-Erweiterung", fr: "2026 : Expansion de l'écosystème", es: "2026: Expansión del ecosistema", it: "2026: Espansione dell'ecosistema", ar: "٢٠٢٦: توسيع المنظومة", ja: "2026年：事業領域の拡張" },
-  year2026Desc: {
-    en: "Expanded global operations with unified IoT stacks, multi-region compliance setups, and advanced technical visibility across international markets.",
-    tr: "Birleşik IoT altyapıları, çoklu bölge uyumluluk çalışmaları ve uluslararası pazarlarda gelişmiş teknik görünürlük ile küresel operasyonlarını genişletti.",
-    de: "Ausweitung des weltweiten Betriebs mit einheitlichen IoT-Stacks, regulatorischer Multi-Regionen-Konformität und gesteigerter technischer Präsenz auf internationalen Märkten.",
-    fr: "Expansion des opérations mondiales avec des stacks IoT unifiés, des configurations de conformité multi-régions et une visibilité technique accrue sur les marchés internationaux.",
-    es: "Expansión de operaciones globales con stacks de IoT unificados, configuraciones de cumplimiento multirregionales y visibilidad técnica avanzada en mercados internacionales.",
-    it: "Espansione delle attività globali con stack IoT unificati, configurazioni di conformità multi-regione e visibilità tecnica avanzata sui mercati internazionali.",
-    ar: "توسيع العمليات العالمية بحزم إنترنت أشياء موحدة، وإعدادات الامتثال متعددة المناطق، والظهور التقني المتقدم في الأسواق الدولية.",
-    ja: "ハード・ソフト統合型IoTスタックの確立、複数地域における規制適合プロセスの整備、グローバル市場での技術的プレゼンス向上を実施。"
-  },
-  industryEnergy: { en: "Industrial & Energy", tr: "Endüstri & Enerji", de: "Industrie & Energie", fr: "Industrie & Énergie", es: "Industria y energía", it: "Industria ed energia", ar: "الصناعة والطاقة", ja: "重工業・エネルギー" },
-  industryEnergyDesc: {
-    en: "Companies like Honeywell and SLB work with WillowSoft on custom sensor nodes, Modbus integration layers, and field-deployed connected hardware for industrial environments.",
-    tr: "Honeywell ve SLB gibi şirketler; özel sensör düğümleri, Modbus entegrasyon katmanları ve endüstriyel ortamlar için sahada konuşlandırılmış bağlı donanımlar konusunda WillowSoft ile çalışmaktadır.",
-    de: "Unternehmen wie Honeywell und SLB arbeiten mit WillowSoft an kundenspezifischen Sensorknoten, Modbus-Integrationsschichten und praxistauglichen vernetzten Geräten für Industrieumgebungen.",
-    fr: "Des entreprises comme Honeywell et SLB collaborent avec WillowSoft sur des nœuds de capteurs personnalisés, des couches d'intégration Modbus et du matériel connecté déployé sur le terrain pour les environnements industriels.",
-    es: "Empresas como Honeywell y SLB trabajan con WillowSoft en nodos de sensores personalizados, capas de integración Modbus y hardware conectado implementado en el campo para entornos industriales.",
-    it: "Aziende come Honeywell e SLB collaborano con WillowSoft per nodi sensori personalizzati, livelli di integrazione Modbus e hardware connesso installato in ambienti industriali.",
-    ar: "تعمل شركات مثل Honeywell و SLB مع WillowSoft على عقد استشعار مخصصة، وطبقات تكامل Modbus، وأجهزة متصلة ميدانية للبيئات الصناعية.",
-    ja: "HoneywellやSLBなどのグローバル企業が、カスタムセンサ端末、Modbus通信コンバータ、過酷な現場向けのデータ連携機器の開発でWillowSoftを採用。"
-  },
-  consumerFmcg: { en: "Consumer & FMCG", tr: "Tüketici & Hızlı Tüketim", de: "Konsumgüter & FMCG", fr: "Consommation & FMCG", es: "Consumo y FMCG", it: "Consumo e FMCG", ar: "السلع الاستهلاكية", ja: "家電・消費財" },
-  consumerFmcgDesc: {
-    en: "Brands including Beko and Coca-Cola have commissioned connected product firmware, backend data platforms, and mobile interfaces for consumer-facing IoT initiatives.",
-    tr: "Beko ve Coca-Cola gibi markalar; tüketiciye yönelik IoT girişimleri için bağlı ürün yazılımları, backend veri platformları ve mobil arayüzler sipariş etmiştir.",
-    de: "Marken wie Beko und Coca-Cola haben vernetzte Produkt-Firmware, Backend-Datenplattformen und mobile Schnittstellen für verbraucherorientierte IoT-Initiativen in Auftrag gegeben.",
-    fr: "Des marques comme Beko et Coca-Cola ont commandé des firmwares de produits connectés, des plateformes de données backend et des interfaces mobiles pour des initiatives IoT grand public.",
-    es: "Marcas como Beko y Coca-Cola han encargado firmware de productos conectados, plataformas de datos de backend y interfaces móviles para iniciativas de IoT orientadas al consumidor.",
-    it: "Marchi come Beko e Coca-Cola hanno commissionato firmware per prodotti connessi, piattaforme dati backend e interfacce mobili per progetti IoT rivolti al consumatore.",
-    ar: "كلفت علامات تجارية مثل Beko و Coca-Cola شركة WillowSoft ببرمجيات المنتجات المتصلة، ومنصات البيانات الخلفية، وواجهات الجوال لمبادرات إنترنت الأشياء الموجهة للمستهلكين.",
-    ja: "BekoやCoca-Colaなどのブランドが、スマート家電や自販機等のコネクテッド製品のファームウェア、クラウドデータ基盤、モバイル画面の開発を委託。"
-  },
-  healthcareTelecoms: { en: "Healthcare & Telecoms", tr: "Sağlık & Telekom", de: "Gesundheitswesen & Telekommunikation", fr: "Santé & Télécoms", es: "Salud y telecomunicaciones", it: "Sanità e telecomunicazioni", ar: "الرعاية الصحية والاتصالات", ja: "医療・通信" },
-  healthcareTelecomsDesc: {
-    en: "Aero Healthcare and AT&T require the highest reliability standards. WillowSoft delivers embedded systems built for regulated environments and carrier-grade connectivity requirements.",
-    tr: "Aero Healthcare ve AT&T en yüksek güvenilirlik standartlarını talep ediyor. WillowSoft, düzenlemeye tabi ortamlar ve operatör düzeyinde bağlantı gereksinimleri için gömülü sistemler sunmaktadır.",
-    de: "Aero Healthcare und AT&T verlangen höchste Zuverlässigkeitsstandards. WillowSoft liefert eingebettete Systeme für regulierte Umgebungen und Konnektivitätsanforderungen auf Carrier-Niveau.",
-    fr: "Aero Healthcare et AT&T exigent les normes de fiabilité les plus élevées. WillowSoft fournit des systèmes embarqués conçus pour des environnements réglementés et des exigences de connectivité de niveau opérateur.",
-    es: "Aero Healthcare y AT&T exigen los más altos estándares de confiabilidad. WillowSoft ofrece sistemas embebidos creados para entornos regulados y requisitos de conectividad de nivel de operador.",
-    it: "Aero Healthcare e AT&T richiedono i massimi standard di affidabilità. WillowSoft fornisce sistemi embedded adatti ad ambienti regolamentati e requisiti di connettività di livello carrier.",
-    ar: "تتطلب Aero Healthcare و AT&T أعلى معايير الموثوقية. تقدم WillowSoft أنظمة مدمجة mbniya للبيئات الخاضعة للتنظيم ومتطلبات الاتصال على مستوى المشغلين.",
-    ja: "高い信頼性基準が求められるAero HealthcareやAT&Tなどの企業に対し、法規制に適合した組み込み設計および通信キャリア品質の接続システムを提供。"
-  },
-  getInTouch: { en: "Get in touch", tr: "İletişime Geçin", de: "Kontakt aufnehmen", fr: "Entrer en contact", es: "Ponerse en contacto", it: "Mettiti in contatto", ar: "اتصل بنا", ja: "お問い合わせ" },
-  talkToEngineering: { en: "Talk to Engineering", tr: "Mühendislerle Görüşün", de: "Mit Engineering sprechen", fr: "Parler à l'ingénierie", es: "Hablar con ingeniería", it: "Parla con il team", ar: "تحدث إلى الهندسة", ja: "技術チームへ相談" }
+const companyFacts = content.companyFacts || {};
+
+const getFactVal = (key: string) => {
+  const map = companyFacts[key];
+  if (!map) return "";
+  if (typeof map === "string") return map;
+  const localized = companyFacts.localized?.[locale]?.[key];
+  return localized || map || "";
 };
 
-const getLabel = (key: keyof typeof labels) => {
-  return labels[key][locale] || labels[key]["en"];
+const getFactList = (key: string) => {
+  return companyFacts[key] || [];
+};
+
+const SVGS: Record<string, string> = {
+  cpu: `<svg viewBox="0 0 24 24" width="SIZE" height="SIZE" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect><rect x="9" y="9" width="6" height="6"></rect><line x1="9" y1="1" x2="9" y2="4"></line><line x1="15" y1="1" x2="15" y2="4"></line><line x1="9" y1="20" x2="9" y2="23"></line><line x1="15" y1="20" x2="15" y2="23"></line><line x1="20" y1="9" x2="23" y2="9"></line><line x1="20" y1="15" x2="23" y2="15"></line><line x1="1" y1="9" x2="4" y2="9"></line><line x1="1" y1="15" x2="4" y2="15"></line></svg>`,
+  globe: `<svg viewBox="0 0 24 24" width="SIZE" height="SIZE" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>`,
+  check: `<svg viewBox="0 0 24 24" width="SIZE" height="SIZE" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>`,
+  server: `<svg viewBox="0 0 24 24" width="SIZE" height="SIZE" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect><rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect><line x1="6" y1="6" x2="6.01" y2="6"></line><line x1="6" y1="18" x2="6.01" y2="18"></line></svg>`,
+  shield: `<svg viewBox="0 0 24 24" width="SIZE" height="SIZE" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>`,
+  terminal: `<svg viewBox="0 0 24 24" width="SIZE" height="SIZE" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>`,
+  phone: `<svg viewBox="0 0 24 24" width="SIZE" height="SIZE" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>`,
+  gear: `<svg viewBox="0 0 24 24" width="SIZE" height="SIZE" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>`,
+  database: `<svg viewBox="0 0 24 24" width="SIZE" height="SIZE" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path><path d="M3 12c0 1.66 4 3 9 3s9-1.34 9-3"></path></svg>`,
+  water: `<svg viewBox="0 0 24 24" width="SIZE" height="SIZE" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22a7 7 0 0 0 7-7c0-4.3-7-11-7-11S5 10.7 5 15a7 7 0 0 0 7 7z"></path></svg>`,
+};
+
+const getSvg = (name: string, size = 20) => {
+  const template = SVGS[name] || SVGS.globe;
+  return template.replace(/SIZE/g, String(size));
 };
 ---
 
@@ -197,131 +63,337 @@ const getLabel = (key: keyof typeof labels) => {
   dataPage="company"
 >
   <main>
-    <!-- Hero Section -->
-    <section class="hero compact">
-      <div class="hero-media">
-        <img src={`${import.meta.env.BASE_URL}pdf-assets/p28_01_X104.jpg`} alt="WillowSoft office reception" loading="lazy" decoding="async" />
-      </div>
-      <canvas class="signal-canvas" data-density="30"></canvas>
-      <div class="hero-inner">
-        <p class="eyebrow reveal">{getVal("heroEyebrow")}</p>
-        <h1 class="reveal delay-1" set:html={getLabel("teamBehindSystem")} />
-        <p class="reveal delay-2">{getLabel("teamDesc")}</p>
-      </div>
-    </section>
+    {/* CoC_Hero */}
+    <div class="company-hero-c" style="background: var(--ws-navy-950); position: relative; overflow: hidden;">
+      {/* grid lines */}
+      <svg style="position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0.06; pointer-events: none;">
+        <defs>
+          <pattern id="cocGrid" x="0" y="0" width="80" height="80" patternUnits="userSpaceOnUse">
+            <path d="M80 0H0V80" fill="none" stroke="#7fa3d8" stroke-width="1"/>
+          </pattern>
+        </defs>
+        <rect width="100%" height="100%" fill="url(#cocGrid)"/>
+      </svg>
 
-    <!-- About Us Split Section -->
-    <section class="section">
-      <div class="section-inner split">
-        <div class="reveal">
-          <p class="eyebrow">{getVal("introEyebrow")}</p>
-          <h2 class="page-title">{getVal("introTitle")}</h2>
+      <div class="hero-inner-c">
+        <div style="display: flex; flex-direction: column; gap: 28px;">
+          <span style="font-family: monospace; font-size: 13px; letter-spacing: .12em; color: var(--ws-teal); font-weight: 700;">// company.willowsoft.co</span>
+          <h1 style="font-size: clamp(2.5rem, 5vw, 4.5rem); font-weight: 800; letter-spacing: -.035em; line-height: 0.96; color: #fff; margin: 0;">
+            Smart<br/><span style="color: var(--ws-teal);">Teams.</span><br/>Resilient<br/>Systems.
+          </h1>
+          <p style="font-size: 18.5px; line-height: 1.65; color: rgba(255,255,255,.62); max-width: 520px; margin: 0;">
+            {getFactVal("heroSub")}
+          </p>
+          
+          <div style="display: flex; gap: 14px; margin-top: 4px;">
+            <a href={`/${locale}/start-project`} class="ws-btn ws-btn-primary">{locale === 'tr' ? 'Proje başlatın' : 'Start a project'}</a>
+            <a href={`/${locale}/contact`} class="ws-btn ws-btn-ghost">{locale === 'tr' ? 'İletişime geçin' : 'Get in touch'}</a>
+          </div>
         </div>
-        <div class="card reveal delay-1">
-          <p>{getVal("introLead")}</p>
+        
+        <div class="company-hero-img-wrap">
+          <img src={`${import.meta.env.BASE_URL}assets/hero-industrial-iot.png`} alt="WillowSoft Smart Teams" style="width: 100%; height: 100%; object-fit: cover; display: block;" />
         </div>
       </div>
-    </section>
+    </div>
 
-    <!-- How We Work Section -->
-    <section class="section soft">
-      <div class="section-inner">
-        <div class="section-head reveal">
-          <p class="eyebrow">{getVal("principlesEyebrow")}</p>
-          <h2>{getVal("principlesTitle")}</h2>
+    {/* CoC_Stats */}
+    <div style="margin-top: -36px; position: relative; z-index: 10; width: min(var(--max), calc(100% - 40px)); margin-left: auto; margin-right: auto;" class="company-stats-wrap">
+      <div class="ws-card" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); padding: 36px 16px; box-shadow: 0 20px 56px rgba(13,27,62,.12); background: #ffffff;">
+        <div class="ws-stat" style="padding: 0 32px;">
+          <b>{getFactVal("founded")}</b>
+          <span>{locale === 'tr' ? 'Kuruluş Yılı' : 'Year founded'}</span>
         </div>
-        <div class="grid grid-3">
-          <article class="card reveal">
-            <h3>{getLabel("productionFirstThinking")}</h3>
-            <p>{getLabel("productionFirstThinkingDesc")}</p>
-          </article>
-          <article class="card reveal delay-1">
-            <h3>{getLabel("fullStackOwnership")}</h3>
-            <p>{getLabel("fullStackOwnershipDesc")}</p>
-          </article>
-          <article class="card reveal delay-2">
-            <h3>{getLabel("longTermReliability")}</h3>
-            <p>{getLabel("longTermReliabilityDesc")}</p>
-          </article>
+        <div class="ws-stat" style="padding: 0 32px;" id="stat-border-1">
+          <b>{getFactVal("countries")}</b>
+          <span>{locale === 'tr' ? 'Ülkeye İhracat' : 'Countries deployed'}</span>
+        </div>
+        <div class="ws-stat" style="padding: 0 32px;" id="stat-border-2">
+          <b>6 yrs</b>
+          <span>{locale === 'tr' ? 'Sürekli Ar-Ge' : 'Continuous R&D'}</span>
+        </div>
+        <div class="ws-stat" style="padding: 0 32px;" id="stat-border-3">
+          <b>Full-stack</b>
+          <span>HW · FW · Cloud</span>
         </div>
       </div>
-    </section>
+    </div>
 
-    <!-- Company History Section -->
-    <section class="section">
-      <div class="section-inner">
-        <div class="section-head reveal">
-          <p class="eyebrow">{getVal("historyEyebrow")}</p>
-          <h2>{getVal("historyTitle")}</h2>
+    {/* CoC_About */}
+    <section class="company-section company-about-c">
+      <div class="company-container company-grid-2">
+        <div style="display: flex; flex-direction: column; gap: 22px;">
+          <span class="eyebrow">{locale === 'tr' ? 'Hakkımızda' : 'About us'}</span>
+          <h2 class="ws-h2" style="font-size: 50px; text-wrap: balance;">
+            {getFactVal("aboutHeadline")}
+          </h2>
+          <ul class="ws-bullets" style="margin-top: 4px;">
+            <li>{locale === 'tr' ? 'Yıllarca müdahalesiz çalışma için optimize edilmiş düşük güç tüketimli mimari' : 'Low-power architecture optimized for years of unattended operation'}</li>
+            <li>{locale === 'tr' ? 'Her türlü kutu, RF ve güç kısıtlaması için özel donanım tasarımı' : 'Custom hardware design for every enclosure, RF and power constraint'}</li>
+            <li>{locale === 'tr' ? 'Kendi bünyemizde geliştirilen bulut ve arayüz katmanları — entegrasyon borcu yok' : 'Backend, cloud and interface layers built in-house — no integration debt'}</li>
+            <li>{locale === 'tr' ? 'Üretime hazır: ilk prototipten sertifikalı, üretilmiş ürüne kadar' : 'Production-ready: from first prototype to certified, manufactured product'}</li>
+          </ul>
         </div>
-        <div class="process">
-          <div class="process-step reveal">
-            <div class="step-dot">20</div>
-            <article class="card">
-              <h3>{getLabel("year2020Title")}</h3>
-              <p>{getLabel("year2020Desc")}</p>
-            </article>
-          </div>
-          <div class="process-step reveal">
-            <div class="step-dot">23</div>
-            <article class="card">
-              <h3>{getLabel("year2023Title")}</h3>
-              <p>{getLabel("year2023Desc")}</p>
-            </article>
-          </div>
-          <div class="process-step reveal">
-            <div class="step-dot">25</div>
-            <article class="card">
-              <h3>{getLabel("year2025Title")}</h3>
-              <p>{getLabel("year2025Desc")}</p>
-            </article>
-          </div>
-          <div class="process-step reveal">
-            <div class="step-dot">26</div>
-            <article class="card">
-              <h3>{getLabel("year2026Title")}</h3>
-              <p>{getLabel("year2026Desc")}</p>
-            </article>
+        <div style="display: flex; flex-direction: column; gap: 18px; padding-top: 8px;">
+          <p style="font-size: 18px; line-height: 1.72; color: var(--ws-body); margin: 0;">
+            {getFactVal("aboutSub")}
+          </p>
+          <div style="display: flex; flex-wrap: wrap; gap: 9px; margin-top: 4px;">
+            {((getFactList("aboutTags") as string[]) || []).map((t: string) => (
+              <span class="ws-chip">{t}</span>
+            ))}
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Who We Work With Section -->
-    <section class="section soft">
-      <div class="section-inner">
-        <div class="section-head reveal">
-          <p class="eyebrow">{getVal("workWithEyebrow")}</p>
-          <h2>{getVal("workWithTitle")}</h2>
+    {/* CoC_MV */}
+    <section class="company-section company-mv-c" style="padding-top: 0;">
+      <div class="company-container company-grid-2" style="gap: 20px;">
+        <div style="background: linear-gradient(140deg, #1e1b4b, #132175); border-radius: 22px; padding: 56px 60px; display: flex; flex-direction: column; gap: 20px; color: #ffffff;">
+          <span style="font-size: 12px; font-weight: 800; letter-spacing: .18em; text-transform: uppercase; color: var(--ws-teal);">MISSION</span>
+          <p style="font-size: 26px; font-weight: 800; line-height: 1.34; margin: 0; text-wrap: balance;">
+            "{getFactVal("mission")}"
+          </p>
         </div>
-        <div class="grid grid-3">
-          <article class="card reveal">
-            <h3>{getLabel("industryEnergy")}</h3>
-            <p>{getLabel("industryEnergyDesc")}</p>
-          </article>
-          <article class="card reveal delay-1">
-            <h3>{getLabel("consumerFmcg")}</h3>
-            <p>{getLabel("consumerFmcgDesc")}</p>
-          </article>
-          <article class="card reveal delay-2">
-            <h3>{getLabel("healthcareTelecoms")}</h3>
-            <p>{getLabel("healthcareTelecomsDesc")}</p>
-          </article>
+        <div style="background: #f4f6fb; border: 1.5px solid var(--ws-line); border-radius: 22px; padding: 56px 60px; display: flex; flex-direction: column; gap: 20px;">
+          <span style="font-size: 12px; font-weight: 800; letter-spacing: .18em; text-transform: uppercase; color: var(--ws-blue);">VISION</span>
+          <p style="font-size: 26px; font-weight: 800; line-height: 1.34; color: var(--ws-ink); margin: 0; text-wrap: balance;">
+            "{getFactVal("vision")}"
+          </p>
         </div>
       </div>
     </section>
 
-    <!-- Final CTA Section -->
-    <section class="section dark">
-      <canvas class="signal-canvas" data-density="26"></canvas>
-      <div class="section-inner split">
-        <div class="reveal">
-          <p class="eyebrow">{getVal("ctaEyebrow")}</p>
-          <h2 class="page-title">{getVal("ctaTitle")}</h2>
+    {/* CoC_Team */}
+    <section class="company-section bg-soft company-team-section">
+      <div class="company-container company-grid-team">
+        <div>
+          <span class="eyebrow">{locale === 'tr' ? 'Ekibimiz' : 'The team'}</span>
+          <h2 class="ws-h2" style="margin-top: 18px; font-size: 42px;">
+            {locale === 'tr' ? 'Mühendisliğin arkasındaki insanlar.' : 'Meet the people behind the engineering.'}
+          </h2>
+          <p style="font-size: 16px; line-height: 1.65; color: var(--ws-body); margin-top: 16px;">
+            {locale === 'tr' ? 'Kurucu mühendislerimiz ve IIoT mimarlarımız.' : 'Our core team of hardware engineers, firmware developers, and cloud architects.'}
+          </p>
         </div>
-        <div class="reveal delay-1">
-          <p class="section-lead">{getVal("ctaLead")}</p>
-          <p><a class="btn btn-primary" href={`/${locale}/contact`}>{getLabel("getInTouch")}</a></p>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; align-self: start;">
+          {(getFactList("team") || []).map((m: any) => {
+            const member = localizeItem(m, locale);
+            return (
+              <div class="ws-card" style="display: flex; flex-direction: column; overflow: hidden; border-radius: 20px;">
+                <div class="ws-placeholder-avatar" style="height: 280px; position: relative; overflow: hidden;">
+                  {member.image && (
+                    <img src={resolveAsset(member.image)} alt={member.name} style="width: 100%; height: 100%; object-fit: cover; position: relative; z-index: 2;" onerror="this.style.display='none';" />
+                  )}
+                </div>
+                <div style="padding: 24px 28px; display: flex; flex-direction: column; gap: 7px; background: #ffffff;">
+                  <b style="font-size: 20px; font-weight: 800; color: var(--ws-ink);">{member.name}</b>
+                  <span style="font-size: 13.5px; font-weight: 700; color: var(--ws-blue);">{member.role}</span>
+                  <p style="font-size: 14.5px; line-height: 1.6; color: var(--ws-body); margin: 4px 0 0;">{member.bio}</p>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+
+    {/* CoC_Principles */}
+    <section class="company-section company-principles-c">
+      <div class="company-container">
+        <div class="company-grid-principles-head">
+          <div>
+            <span class="eyebrow">{locale === 'tr' ? 'Nasıl Çalışırız' : 'How we work'}</span>
+            <h2 class="ws-h2" style="margin-top: 18px; font-size: 42px;">
+              {locale === 'tr' ? 'Taviz vermediğimiz mühendislik ilkeleri.' : "Engineering principles we don't compromise on."}
+            </h2>
+          </div>
+          <div style="display: flex; flex-wrap: wrap; gap: 12px; padding-bottom: 4px;">
+            {(getFactList("whyUs") || []).map((w: any) => (
+              <div style="flex: 1 1 200px; display: flex; gap: 12px; align-items: center; background: #f4f6fb; border-radius: 14px; padding: 16px 18px;">
+                <div class="ws-icbox" style="flex: 0 0 auto;" set:html={getSvg(w.icon, 20)} />
+                <span style="font-size: 14.5px; font-weight: 700; color: var(--ws-ink); line-height: 1.4;">{w.title}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
+          {(getFactList("principles") || []).map((p: any) => {
+            const principle = localizeItem(p, locale);
+            return (
+              <div class="ws-card" style="padding: 36px; display: flex; flex-direction: column; gap: 16px; background: #ffffff;">
+                <div style="display: flex; align-items: flex-start; justify-content: space-between;">
+                  <span style="font-size: 52px; font-weight: 800; color: var(--ws-line); line-height: 1;">{principle.n}</span>
+                  <div class="ws-icbox" set:html={getSvg(principle.icon, 22)} />
+                </div>
+                <h3 class="ws-h3" style="font-size: 20px;">{principle.title}</h3>
+                <p style="font-size: 15.5px; line-height: 1.68; color: var(--ws-body); margin: 0;">{principle.body}</p>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+
+    {/* CoC_Timeline */}
+    <section class="company-section company-timeline-c">
+      <div class="company-container">
+        <div class="company-grid-timeline-head">
+          <div>
+            <span class="eyebrow">{locale === 'tr' ? 'Şirket Geçmişi' : 'Company history'}</span>
+            <h2 class="ws-h2" style="margin-top: 18px; font-size: 42px;">
+              {locale === 'tr' ? 'Ar-Ge köklerinden küresel dağıtıma.' : 'From R&D roots to global deployment.'}
+            </h2>
+          </div>
+          <p class="ws-lead" style="align-self: end; padding-bottom: 4px;">
+            {locale === 'tr' 
+              ? '6 yıllık istikrarlı büyüme — odaklanmış bir mühendislik stüdyosundan uluslararası ölçekte konuşlandırılmış bir IoT şirketine.' 
+              : 'Six years of steady growth — from a focused engineering studio to an internationally deployed IoT company.'}
+          </p>
+        </div>
+        
+        <div class="timeline-container-scroll">
+          <div class="timeline-line"></div>
+          <div class="timeline-grid">
+            {(getFactList("timeline") || []).map((t: any, i: number, arr: any[]) => {
+              const item = localizeItem(t, locale);
+              const isLast = i === arr.length - 1;
+              return (
+                <div class="timeline-item">
+                  <div class="timeline-dot" style={`background: ${isLast ? 'var(--ws-teal)' : 'var(--ws-blue)'}; box-shadow: 0 0 0 2.5px ${isLast ? 'var(--ws-teal)' : 'var(--ws-blue)'};`}></div>
+                  <div class="ws-card" style={`padding: 24px 26px; border-top: 3px solid ${isLast ? 'var(--ws-teal)' : 'var(--ws-blue)'}; background: #ffffff; height: 100%;`}>
+                    <b style="font-size: 16px; font-weight: 800; color: var(--ws-blue); display: block; margin-bottom: 8px;">{item.year}</b>
+                    <b style="font-size: 17px; font-weight: 800; color: var(--ws-ink); display: block; margin-bottom: 8px;">{item.title}</b>
+                    <p style="font-size: 14.5px; line-height: 1.62; color: var(--ws-body); margin: 0;">{item.body}</p>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {/* CoC_Expertise */}
+    <section class="company-section company-expertise-c">
+      <div class="company-container">
+        <div class="company-grid-expertise-head">
+          <div>
+            <span class="eyebrow">{locale === 'tr' ? 'Uzmanlık Alanlarımız' : 'Core expertise'}</span>
+            <h2 class="ws-h2" style="margin-top: 18px; font-size: 42px;">
+              {locale === 'tr' ? 'Asıl iyi olduğumuz işler.' : 'What we are actually good at.'}
+            </h2>
+          </div>
+          <p class="ws-lead" style="padding-bottom: 4px;">
+            {locale === 'tr'
+              ? 'Silikondan buluta kadar tüm IoT ürün yaşam döngüsünü kapsayan altı temel uzmanlık katmanı.'
+              : 'Six deep competencies covering the entire IoT product lifecycle — from silicon to cloud.'}
+          </p>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px;">
+          {(getFactList("expertise") || []).map((e: any) => (
+            <div class="ws-card" style="padding: 28px; display: flex; align-items: center; gap: 18px; background: #ffffff;">
+              <div class="ws-icbox" style="width: 52px; height: 52px; border-radius: 14px; flex: 0 0 auto;" set:html={getSvg(e.icon, 24)} />
+              <div>
+                <b style="font-size: 16.5px; font-weight: 800; color: var(--ws-ink);">{e.label}</b>
+                <span style="display: block; font-size: 13.5px; color: var(--ws-muted); font-weight: 600; margin-top: 3px;">{e.note}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    {/* CoC_Industries */}
+    <section class="company-section bg-soft company-industries-section">
+      <div class="company-container">
+        <div class="company-grid-industries-head">
+          <div>
+            <span class="eyebrow">{locale === 'tr' ? 'Birlikte Çalıştıklarımız' : 'Who we work with'}</span>
+            <h2 class="ws-h2" style="margin-top: 18px; font-size: 42px;">
+              {locale === 'tr' ? 'Küresel ekipler WillowSoft\'a tek bir nedenle güvenir: Sonuç üretiriz.' : 'Global teams trust WillowSoft for one reason: we deliver.'}
+            </h2>
+          </div>
+          <p class="ws-lead" style="padding-bottom: 4px;">
+            {locale === 'tr'
+              ? 'Fortune 500 endüstriyel devlerinden hızlı tüketim markalarına kadar — güvenilirliğin isteğe bağlı olmadığı zorlu çalışma koşulları.'
+              : 'From Fortune 500 industrials to fast-moving consumer brands — demanding environments where reliability is not optional.'}
+          </p>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
+          {(getFactList("industries") || []).map((ind: any) => {
+            const industry = localizeItem(ind, locale);
+            return (
+              <div class="ws-card" style="padding: 32px; display: flex; flex-direction: column; gap: 16px; background: #ffffff;">
+                <div style={`width: 50px; height: 50px; border-radius: 13px; background: ${industry.c}; color: ${industry.t}; display: flex; align-items: center; justify-content: center;`} set:html={getSvg(industry.icon, 24)} />
+                <div>
+                  <b style="font-size: 19px; font-weight: 800; color: var(--ws-ink);">{industry.name}</b>
+                  <br />
+                  <span style="font-size: 12.5px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--ws-muted);">{industry.tag}</span>
+                </div>
+                <p style="font-size: 15px; line-height: 1.65; color: var(--ws-body); margin: 0;">{industry.body}</p>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+
+    {/* CoC_Offices */}
+    <section class="company-section company-offices-c">
+      <div class="company-container">
+        <span class="eyebrow">{locale === 'tr' ? 'Küresel Varlık' : 'Global presence'}</span>
+        <h2 class="ws-h2" style="margin-top: 18px; margin-bottom: 36px; font-size: 42px;">
+          {locale === 'tr' ? 'İki ofis. Tek ekip.' : 'Two offices. One team.'}
+        </h2>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px;">
+          {(getFactList("officesList") || []).map((o: any) => {
+            const office = localizeItem(o, locale);
+            return (
+              <div style="border-radius: 22px; overflow: hidden; display: flex; flex-direction: column;" class="ws-card">
+                <div class="ws-placeholder-office" style="height: 240px; overflow: hidden; position: relative;">
+                  {office.image && (
+                    <img src={resolveAsset(office.image)} alt={office.country} style="width: 100%; height: 100%; object-fit: cover; position: relative; z-index: 2;" onerror="this.style.display='none';" />
+                  )}
+                </div>
+                <div style="padding: 32px; display: flex; flex-direction: column; gap: 12px; background: #ffffff;">
+                  <div style="display: flex; align-items: center; gap: 12px;">
+                    <span style="font-size: 36px; line-height: 1;">{office.flag}</span>
+                    <b style="font-size: 22px; font-weight: 800; color: var(--ws-ink);">{office.country}</b>
+                  </div>
+                  <div style="display: flex; flex-direction: column; gap: 8px; font-size: 15px; color: var(--ws-body); font-weight: 600;">
+                    {office.phone && <span>📞 {office.phone}</span>}
+                    {office.email && <span>✉️ {office.email}</span>}
+                    {office.address && <span>📍 {office.address}</span>}
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+
+    {/* CoC_Cta */}
+    <section class="company-section company-cta-c" style="padding-top: 0;">
+      <div class="company-container company-cta-inner" style="background: linear-gradient(135deg, var(--ws-hero-1), var(--ws-hero-2)); border-radius: 24px; color: #ffffff;">
+        <div>
+          <span class="eyebrow" style="color: var(--ws-teal);">{locale === 'tr' ? 'Bizimle Çalışın' : 'Work with us'}</span>
+          <h2 style="font-size: clamp(2rem, 4vw, 3.25rem); font-weight: 800; color: #fff; letter-spacing: -.025em; line-height: 1.06; margin-top: 18px; max-width: 680px; text-wrap: balance;">
+            {locale === 'tr' ? 'Uçtan uca tüm katmanları yöneten bir ekiple çalışmaya hazır mısınız?' : 'Ready to build with a team that owns the full stack?'}
+          </h2>
+          <p style="font-size: 18px; line-height: 1.65; color: rgba(255,255,255,.68); margin-top: 16px; max-width: 520px;">
+            {locale === 'tr' ? 'Ne üretmek istediğinizi bize anlatın. Size mühendislik yaklaşımımızı sunalım.' : "Tell us what you're building. We'll tell you how we'd approach it."}
+          </p>
+          <div style="display: flex; flex-direction: column; gap: 9px; margin-top: 28px; font-size: 15px; color: rgba(255,255,255,.7); font-weight: 600;">
+            <span>📞 +90 850 30 24766</span>
+            <span>✉️ info@willowsoft.co</span>
+          </div>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 14px; flex: 0 0 auto;">
+          <a href={`/${locale}/start-project`} class="ws-btn ws-btn-light">{locale === 'tr' ? 'Proje başlatın' : 'Start a project'}</a>
+          <a href={`/${locale}/contact`} class="ws-btn ws-btn-ghost">{locale === 'tr' ? 'İletişime geçin' : 'Get in touch'}</a>
         </div>
       </div>
     </section>
