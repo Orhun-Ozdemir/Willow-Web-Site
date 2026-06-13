@@ -25,16 +25,68 @@ const getVal = (key: string) => localizedValue(pageContent[key], locale);
 
 const companyFacts = content.companyFacts || {};
 
+const cleanCmsText = (value: string) => {
+  return value
+    .replace(/\s*\(?\s*Validated\s*Test\s*\)?/gi, "")
+    .replace(/\s+([.,;:!?])/g, "$1")
+    .replace(/\s{2,}/g, " ")
+    .trim();
+};
+
+const cleanCmsValue = (value: any): any => {
+  if (typeof value === "string") return cleanCmsText(value);
+  if (Array.isArray(value)) {
+    return value
+      .map((item) => cleanCmsValue(item))
+      .filter((item) => !(typeof item === "string" && item.length === 0));
+  }
+  if (value && typeof value === "object") {
+    return Object.fromEntries(
+      Object.entries(value).map(([key, item]) => [key, cleanCmsValue(item)])
+    );
+  }
+  return value;
+};
+
 const getFactVal = (key: string) => {
   const map = companyFacts[key];
   if (!map) return "";
-  if (typeof map === "string") return map;
+  if (typeof map === "string") return cleanCmsValue(map);
   const localized = companyFacts.localized?.[locale]?.[key];
-  return localized || map || "";
+  return cleanCmsValue(localized || map || "");
 };
 
 const getFactList = (key: string) => {
-  return companyFacts[key] || [];
+  return cleanCmsValue(companyFacts[key] || []);
+};
+
+const sortByOrder = (items: any[]) => {
+  return [...(Array.isArray(items) ? items : [])].sort((a, b) => {
+    const orderA = Number.isFinite(Number(a?.sortOrder)) ? Number(a.sortOrder) : 9999;
+    const orderB = Number.isFinite(Number(b?.sortOrder)) ? Number(b.sortOrder) : 9999;
+    if (orderA !== orderB) return orderA - orderB;
+    return String(a?.year || a?.name || "").localeCompare(String(b?.year || b?.name || ""));
+  });
+};
+
+const sortedTeam = sortByOrder(getFactList("team")).map((item) => cleanCmsValue(localizeItem(item, locale)));
+const sortedTimeline = sortByOrder(getFactList("timeline")).map((item) => cleanCmsValue(localizeItem(item, locale)));
+const timelineCopies = [0, 1, 2];
+
+const getInitials = (name: string) => {
+  const initials = String(name || "")
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((word) => word[0])
+    .join("")
+    .toUpperCase();
+  return initials || "WS";
+};
+
+const hasUsableImage = (path: unknown) => {
+  const value = String(path || "").trim();
+  return value.length > 0 && !/placeholder/i.test(value);
 };
 
 const SVGS: Record<string, string> = {
@@ -67,6 +119,7 @@ const getSvg = (name: string, size = 20) => {
   <main>
     {/* CoC_Hero */}
     <div class="company-hero-c" style="background: var(--ws-navy-950); position: relative; overflow: hidden;">
+      <canvas class="signal-canvas company-hero-signal" data-density="46" data-color="26, 163, 196"></canvas>
       {/* grid lines */}
       <svg style="position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0.06; pointer-events: none;">
         <defs>
@@ -92,15 +145,11 @@ const getSvg = (name: string, size = 20) => {
             <a href={`/${locale}/contact`} class="ws-btn ws-btn-ghost">{locale === 'tr' ? 'İletişime geçin' : 'Get in touch'}</a>
           </div>
         </div>
-        
-        <div class="company-hero-img-wrap">
-          <img src={`${import.meta.env.BASE_URL}assets/hero-industrial-iot.png`} alt="WillowSoft Smart Teams" style="width: 100%; height: 100%; object-fit: cover; display: block;" />
-        </div>
       </div>
     </div>
 
     {/* CoC_Stats */}
-    <div style="margin-top: -36px; position: relative; z-index: 10; width: min(var(--max), calc(100% - 40px)); margin-left: auto; margin-right: auto;" class="company-stats-wrap">
+    <div style="margin-top: 0; position: relative; z-index: 10; width: min(var(--max), calc(100% - 40px)); margin-left: auto; margin-right: auto;" class="company-stats-wrap">
       <div class="ws-card" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); padding: 36px 16px; box-shadow: 0 20px 56px rgba(13,27,62,.12); background: #ffffff;">
         <div class="ws-stat" style="padding: 0 32px;">
           <b>{getFactVal("founded")}</b>
@@ -115,7 +164,7 @@ const getSvg = (name: string, size = 20) => {
           <span>{locale === 'tr' ? 'Sürekli Ar-Ge' : 'Continuous R&D'}</span>
         </div>
         <div class="ws-stat" style="padding: 0 32px;" id="stat-border-3">
-          <b>Full-stack</b>
+          <b>Full-<br class="company-stat-mobile-break" />stack</b>
           <span>HW · FW · Cloud</span>
         </div>
       </div>
@@ -181,23 +230,20 @@ const getSvg = (name: string, size = 20) => {
             {locale === 'tr' ? 'Kurucu mühendislerimiz ve IIoT mimarlarımız.' : 'Our core team of hardware engineers, firmware developers, and cloud architects.'}
           </p>
         </div>
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; align-self: start;">
-          {(getFactList("team") || []).map((m: any) => {
-            const member = localizeItem(m, locale);
+        <div class="company-team-list">
+          {sortedTeam.map((member: any) => {
             return (
-              <div class="ws-card" style="display: flex; flex-direction: column; overflow: hidden; border-radius: 20px;">
-                <div class="ws-placeholder-avatar" style="height: 280px; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center;">
-                  <span style="font-family: var(--font-display); font-size: 56px; font-weight: 800; color: var(--ws-blue); opacity: 0.32; letter-spacing: -0.02em;">
-                    {String(member.name || "").split(/\s+/).filter(Boolean).slice(0, 2).map((w: string) => w[0]).join("").toUpperCase()}
-                  </span>
-                  {member.image && (
-                    <img src={resolveAsset(member.image)} alt={member.name} style="width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0; z-index: 2;" onerror="this.style.display='none';" />
+              <div class="ws-card company-team-card">
+                <div class="ws-placeholder-avatar company-team-avatar">
+                  <span class="company-team-initials">{getInitials(member.name)}</span>
+                  {hasUsableImage(member.image) && (
+                    <img class="company-team-image" src={resolveAsset(member.image)} alt={member.name} loading="lazy" onerror="this.style.display='none';" />
                   )}
                 </div>
-                <div style="padding: 24px 28px; display: flex; flex-direction: column; gap: 7px; background: #ffffff;">
-                  <b style="font-size: 20px; font-weight: 800; color: var(--ws-ink);">{member.name}</b>
-                  <span style="font-size: 13.5px; font-weight: 700; color: var(--ws-blue);">{member.role}</span>
-                  <p style="font-size: 14.5px; line-height: 1.6; color: var(--ws-body); margin: 4px 0 0;">{member.bio}</p>
+                <div class="company-team-body">
+                  <b>{member.name}</b>
+                  <span>{member.role}</span>
+                  <p>{member.bio}</p>
                 </div>
               </div>
             );
@@ -218,26 +264,26 @@ const getSvg = (name: string, size = 20) => {
                 : <>Engineering principles we don't <span class="serif-accent">compromise</span> on.</>}
             </h2>
           </div>
-          <div style="display: flex; flex-wrap: wrap; gap: 12px; padding-bottom: 4px;">
+          <div class="company-proof-chips">
             {(getFactList("whyUs") || []).map((w: any) => (
-              <div style="flex: 1 1 200px; display: flex; gap: 12px; align-items: center; background: #f4f6fb; border-radius: 14px; padding: 16px 18px;">
+              <div class="company-proof-chip">
                 <div class="ws-icbox" style="flex: 0 0 auto;" set:html={getSvg(w.icon, 20)} />
-                <span style="font-size: 14.5px; font-weight: 700; color: var(--ws-ink); line-height: 1.4;">{w.title}</span>
+                <span>{w.title}</span>
               </div>
             ))}
           </div>
         </div>
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
+        <div class="company-principles-list">
           {(getFactList("principles") || []).map((p: any) => {
             const principle = localizeItem(p, locale);
             return (
-              <div class="ws-card" style="padding: 36px; display: flex; flex-direction: column; gap: 16px; background: #ffffff;">
-                <div style="display: flex; align-items: flex-start; justify-content: space-between;">
-                  <span style="font-size: 52px; font-weight: 800; color: var(--ws-line); line-height: 1;">{principle.n}</span>
+              <div class="ws-card company-principle-card">
+                <div class="company-principle-top">
+                  <span>{principle.n}</span>
                   <div class="ws-icbox" set:html={getSvg(principle.icon, 22)} />
                 </div>
-                <h3 class="ws-h3" style="font-size: 20px;">{principle.title}</h3>
-                <p style="font-size: 15.5px; line-height: 1.68; color: var(--ws-body); margin: 0;">{principle.body}</p>
+                <h3 class="ws-h3">{principle.title}</h3>
+                <p>{principle.body}</p>
               </div>
             );
           })}
@@ -264,53 +310,71 @@ const getSvg = (name: string, size = 20) => {
           </p>
         </div>
         
-        <div class="timeline-container-scroll">
-          <div class="timeline-line"></div>
-          <div class="timeline-grid">
-            {(getFactList("timeline") || []).map((t: any, i: number, arr: any[]) => {
-              const item = localizeItem(t, locale);
-              const isLast = i === arr.length - 1;
-              return (
-                <div class="timeline-item">
-                  <div class="timeline-dot" style={`background: ${isLast ? 'var(--ws-teal)' : 'var(--ws-blue)'}; box-shadow: 0 0 0 2.5px ${isLast ? 'var(--ws-teal)' : 'var(--ws-blue)'};`}></div>
-                  <div class="ws-card" style={`padding: 24px 26px; border-top: 3px solid ${isLast ? 'var(--ws-teal)' : 'var(--ws-blue)'}; background: #ffffff; height: 100%;`}>
-                    <b style="font-size: 16px; font-weight: 800; color: var(--ws-blue); display: block; margin-bottom: 8px;">{item.year}</b>
-                    <b style="font-size: 17px; font-weight: 800; color: var(--ws-ink); display: block; margin-bottom: 8px;">{item.title}</b>
-                    <p style="font-size: 14.5px; line-height: 1.62; color: var(--ws-body); margin: 0;">{item.body}</p>
-                  </div>
+        <div class={`timeline-container-scroll ${sortedTimeline.length > 1 ? 'is-looping' : 'is-static'}`} data-company-timeline data-timeline-count={sortedTimeline.length}>
+          <div class="timeline-viewport" data-timeline-viewport aria-hidden="true">
+            <div class="timeline-track" data-timeline-track>
+              {timelineCopies.map((copyIndex) => (
+                <div class="timeline-sequence" data-timeline-sequence={copyIndex === 1 ? "anchor" : undefined}>
+                  {sortedTimeline.map((item: any, i: number) => {
+                    const isLast = i === sortedTimeline.length - 1;
+                    return (
+                      <div class={`timeline-item ${isLast ? 'is-latest' : ''}`} data-timeline-card-last={copyIndex === 1 && isLast ? "true" : undefined}>
+                        <div class="timeline-dot"></div>
+                        <div class="ws-card timeline-card">
+                          <b class="timeline-year">{item.year}</b>
+                          <b class="timeline-title">{item.title}</b>
+                          <p>{item.body}</p>
+                        </div>
+                      </div>
+                    );
+                  })}
                 </div>
+              ))}
+            </div>
+          </div>
+          <ol class="timeline-accessible-list" aria-label={locale === 'tr' ? 'Şirket zaman çizelgesi' : 'Company timeline'}>
+            {sortedTimeline.map((item: any, i: number) => {
+              const isLast = i === sortedTimeline.length - 1;
+              return (
+                <li class={`timeline-list-item ${isLast ? 'is-latest' : ''}`}>
+                  <div class="timeline-dot"></div>
+                  <div class="ws-card timeline-card">
+                    <b class="timeline-year">{item.year}</b>
+                    <b class="timeline-title">{item.title}</b>
+                    <p>{item.body}</p>
+                  </div>
+                </li>
               );
             })}
-          </div>
+          </ol>
         </div>
       </div>
     </section>
 
     {/* CoC_Expertise */}
     <section class="company-section company-expertise-c">
-      <div class="company-container">
-        <div class="company-grid-expertise-head">
-          <div>
+      <div class="company-container company-expertise-layout">
+        <div class="company-expertise-copy">
             <span class="eyebrow">{locale === 'tr' ? 'Uzmanlık Alanlarımız' : 'Core expertise'}</span>
             <h2 class="ws-h2" style="margin-top: 18px; font-size: 42px;">
               {locale === 'tr'
                 ? <>Asıl <span class="serif-accent">iyi</span> olduğumuz işler.</>
                 : <>What we are actually <span class="serif-accent">good</span> at.</>}
             </h2>
-          </div>
-          <p class="ws-lead" style="padding-bottom: 4px;">
+          <p class="ws-lead">
             {locale === 'tr'
               ? 'Silikondan buluta kadar tüm IoT ürün yaşam döngüsünü kapsayan altı temel uzmanlık katmanı.'
               : 'Six deep competencies covering the entire IoT product lifecycle — from silicon to cloud.'}
           </p>
         </div>
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px;">
-          {(getFactList("expertise") || []).map((e: any) => (
-            <div class="ws-card" style="padding: 28px; display: flex; align-items: center; gap: 18px; background: #ffffff;">
-              <div class="ws-icbox" style="width: 52px; height: 52px; border-radius: 14px; flex: 0 0 auto;" set:html={getSvg(e.icon, 24)} />
-              <div>
-                <b style="font-size: 16.5px; font-weight: 800; color: var(--ws-ink);">{e.label}</b>
-                <span style="display: block; font-size: 13.5px; color: var(--ws-muted); font-weight: 600; margin-top: 3px;">{e.note}</span>
+        <div class="company-capability-panel">
+          {(getFactList("expertise") || []).map((e: any, i: number) => (
+            <div class="company-capability-row">
+              <span class="company-capability-number">{String(i + 1).padStart(2, "0")}</span>
+              <div class="ws-icbox" set:html={getSvg(e.icon, 24)} />
+              <div class="company-capability-copy">
+                <b>{e.label}</b>
+                <span>{e.note}</span>
               </div>
             </div>
           ))}
@@ -320,34 +384,32 @@ const getSvg = (name: string, size = 20) => {
 
     {/* CoC_Industries */}
     <section class="company-section bg-soft company-industries-section">
-      <div class="company-container">
-        <div class="company-grid-industries-head">
-          <div>
+      <div class="company-container company-industries-layout">
+        <div class="company-industries-copy">
             <span class="eyebrow">{locale === 'tr' ? 'Birlikte Çalıştıklarımız' : 'Who we work with'}</span>
             <h2 class="ws-h2" style="margin-top: 18px; font-size: 42px;">
               {locale === 'tr'
                 ? <>Küresel ekipler WillowSoft'a tek bir nedenle güvenir: Sonuç <span class="serif-accent">üretiriz</span>.</>
                 : <>Global teams trust WillowSoft for one reason: we <span class="serif-accent">deliver</span>.</>}
             </h2>
-          </div>
-          <p class="ws-lead" style="padding-bottom: 4px;">
+          <p class="ws-lead">
             {locale === 'tr'
               ? 'Fortune 500 endüstriyel devlerinden hızlı tüketim markalarına kadar — güvenilirliğin isteğe bağlı olmadığı zorlu çalışma koşulları.'
               : 'From Fortune 500 industrials to fast-moving consumer brands — demanding environments where reliability is not optional.'}
           </p>
         </div>
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
-          {(getFactList("industries") || []).map((ind: any) => {
+        <div class="company-industry-proof-list">
+          {(getFactList("industries") || []).map((ind: any, i: number) => {
             const industry = localizeItem(ind, locale);
             return (
-              <div class="ws-card" style="padding: 32px; display: flex; flex-direction: column; gap: 16px; background: #ffffff;">
-                <div style={`width: 50px; height: 50px; border-radius: 13px; background: ${industry.c}; color: ${industry.t}; display: flex; align-items: center; justify-content: center;`} set:html={getSvg(industry.icon, 24)} />
-                <div>
-                  <b style="font-size: 19px; font-weight: 800; color: var(--ws-ink);">{industry.name}</b>
-                  <br />
-                  <span style="font-size: 12.5px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--ws-muted);">{industry.tag}</span>
+              <div class="ws-card company-industry-proof">
+                <span class="company-industry-index">{String(i + 1).padStart(2, "0")}</span>
+                <div class="company-industry-icon" style={`background: ${industry.c}; color: ${industry.t};`} set:html={getSvg(industry.icon, 24)} />
+                <div class="company-industry-body">
+                  <b>{industry.name}</b>
+                  <span>{industry.tag}</span>
+                  <p>{industry.body}</p>
                 </div>
-                <p style="font-size: 15px; line-height: 1.65; color: var(--ws-body); margin: 0;">{industry.body}</p>
               </div>
             );
           })}
@@ -364,17 +426,23 @@ const getSvg = (name: string, size = 20) => {
             ? <>İki ofis. <span class="serif-accent">Tek</span> ekip.</>
             : <>Two offices. <span class="serif-accent">One</span> team.</>}
         </h2>
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px;">
+        <div class="company-offices-grid">
           {(getFactList("officesList") || []).map((o: any) => {
             const office = localizeItem(o, locale);
             return (
-              <div style="border-radius: 22px; overflow: hidden; display: flex; flex-direction: column;" class="ws-card">
-                <div class="ws-placeholder-office" style="height: 240px; overflow: hidden; position: relative;">
-                  {office.image && (
-                    <img src={resolveAsset(office.image)} alt={office.country} style="width: 100%; height: 100%; object-fit: cover; position: relative; z-index: 2;" onerror="this.style.display='none';" />
+              <div class="ws-card company-office-card">
+                <div class="ws-placeholder-office company-office-visual">
+                  <div class="company-office-map-layer" aria-hidden="true">
+                    <span class="company-map-route"></span>
+                    <span class="company-map-pin company-map-pin-main"></span>
+                    <span class="company-map-pin company-map-pin-sub"></span>
+                    <span class="company-map-label">{office.country}</span>
+                  </div>
+                  {hasUsableImage(office.image) && (
+                    <img class="company-office-image" src={resolveAsset(office.image)} alt={office.country} loading="lazy" onerror="this.style.display='none';" />
                   )}
                 </div>
-                <div style="padding: 32px; display: flex; flex-direction: column; gap: 12px; background: #ffffff;">
+                <div class="company-office-body">
                   <div style="display: flex; align-items: center; gap: 12px;">
                     <div class="ws-icbox" style="flex: 0 0 auto; color: var(--ws-teal);" set:html={getSvg('pin', 22)} />
                     <b style="font-size: 22px; font-weight: 800; color: var(--ws-ink);">{office.country}</b>
@@ -418,3 +486,75 @@ const getSvg = (name: string, size = 20) => {
     </section>
   </main>
 </PageLayout>
+
+<script is:inline>
+  (() => {
+    const root = document.querySelector("[data-company-timeline]");
+    if (!root) return;
+
+    const count = Number(root.getAttribute("data-timeline-count") || "0");
+    const viewport = root.querySelector("[data-timeline-viewport]");
+    const track = root.querySelector("[data-timeline-track]");
+    const anchorSequence = root.querySelector('[data-timeline-sequence="anchor"]');
+    const anchorLast = root.querySelector('[data-timeline-card-last="true"]');
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const compactLayout = window.matchMedia("(max-width: 900px)");
+
+    if (!viewport || !track || !anchorSequence || !anchorLast || count < 2) return;
+
+    const setStatic = () => {
+      track.classList.remove("is-ready");
+      root.classList.add("is-static-mode");
+      track.style.setProperty("--timeline-start", "0px");
+      track.style.setProperty("--timeline-shift", "0px");
+    };
+
+    const measure = () => {
+      track.classList.remove("is-ready");
+      root.classList.remove("is-static-mode");
+      track.style.setProperty("--timeline-start", "0px");
+      track.style.setProperty("--timeline-shift", "0px");
+
+      if (reducedMotion.matches || compactLayout.matches) {
+        setStatic();
+        return;
+      }
+
+      requestAnimationFrame(() => {
+        const viewportRect = viewport.getBoundingClientRect();
+        const lastRect = anchorLast.getBoundingClientRect();
+        const sequenceWidth = anchorSequence.getBoundingClientRect().width;
+
+        if (!viewportRect.width || !lastRect.width || !sequenceWidth) {
+          setStatic();
+          return;
+        }
+
+        const start = Math.round(viewportRect.right - lastRect.right);
+        const shift = Math.round(sequenceWidth);
+        const duration = Math.max(28, Math.min(58, count * 9));
+
+        track.style.setProperty("--timeline-start", `${start}px`);
+        track.style.setProperty("--timeline-shift", `${shift}px`);
+        track.style.setProperty("--timeline-duration", `${duration}s`);
+        void track.offsetWidth;
+        track.classList.add("is-ready");
+      });
+    };
+
+    const scheduleMeasure = () => {
+      requestAnimationFrame(() => requestAnimationFrame(measure));
+    };
+
+    if (document.readyState === "complete") {
+      scheduleMeasure();
+    } else {
+      window.addEventListener("load", scheduleMeasure, { once: true });
+      scheduleMeasure();
+    }
+
+    window.addEventListener("resize", scheduleMeasure, { passive: true });
+    reducedMotion.addEventListener?.("change", scheduleMeasure);
+    compactLayout.addEventListener?.("change", scheduleMeasure);
+  })();
+</script>

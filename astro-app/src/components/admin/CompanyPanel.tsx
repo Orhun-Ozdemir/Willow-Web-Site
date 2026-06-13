@@ -31,6 +31,16 @@ const OFFICE_TRANSLATION_FIELDS = [
   { key: "address", label: "Adres", type: "textarea" as const, rows: 3 },
 ];
 
+const getNextSortOrder = (items: any[]) => {
+  const maxSortOrder = Math.max(
+    0,
+    ...(items || [])
+      .map((item) => Number(item?.sortOrder))
+      .filter((order) => Number.isFinite(order))
+  );
+  return maxSortOrder + 1;
+};
+
 export default function CompanyPanel() {
   const { content, setContent } = useAdmin();
   const [activeSubTab, setActiveSubTab] = useState<SubTab>("general");
@@ -86,8 +96,8 @@ export default function CompanyPanel() {
       name: "Yeni Üye",
       role: "Rol",
       bio: "Biyografi...",
-      image: "/assets/team/placeholder.jpg",
-      sortOrder: team.length + 1,
+      image: "",
+      sortOrder: getNextSortOrder(team),
       localized: {},
     };
     setContent((c: any) => {
@@ -132,7 +142,7 @@ export default function CompanyPanel() {
       year: new Date().getFullYear().toString(),
       title: "Yeni Kilometre Taşı",
       body: "Açıklama...",
-      sortOrder: timeline.length + 1,
+      sortOrder: getNextSortOrder(timeline),
       localized: {},
     };
     setContent((c: any) => {
@@ -179,8 +189,8 @@ export default function CompanyPanel() {
       phone: "",
       email: "info@willowsoft.co",
       address: "Adres...",
-      image: "/assets/offices/placeholder.jpg",
-      sortOrder: officesList.length + 1,
+      image: "",
+      sortOrder: getNextSortOrder(officesList),
       localized: {},
     };
     setContent((c: any) => {
