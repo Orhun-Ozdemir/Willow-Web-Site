@@ -75,10 +75,6 @@ function getNewsStatus(item: NewsItem): "Hazır" | "Eksik" {
   return hasRequiredContent ? "Hazır" : "Eksik";
 }
 
-function getDisplayDate(date?: string): string {
-  return date || "-";
-}
-
 export default function NewsPanel() {
   const { content, setContent } = useAdmin();
 
@@ -226,61 +222,53 @@ export default function NewsPanel() {
     const imageSrc = getAssetSrc(n.image);
 
     return (
-      <div className="space-y-6">
-        <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
-          <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-            <div>
-              <button
-                type="button"
-                onClick={() => setEditIdx(null)}
-                className="mb-3 text-xs font-bold text-[#132175] hover:text-[#0e1a5e]"
-              >
-                ← Haber listesine dön
-              </button>
+      <div className="ws-news-page">
+        <style>{newsPanelCss}</style>
 
-              <h3 className="text-xl font-bold text-gray-950">
-                Haber Düzenle
-              </h3>
+        <div className="ws-news-edit-header">
+          <div>
+            <button
+              type="button"
+              onClick={() => setEditIdx(null)}
+              className="ws-back-button"
+            >
+              ← Haber listesine dön
+            </button>
 
-              <p className="mt-1 text-sm text-gray-500">
-                Haber bilgileri, içerik, görsel ve çeviri alanlarını düzenleyin.
-              </p>
-            </div>
+            <h3>Haber Düzenle</h3>
+            <p>Haber bilgileri, görsel, içerik ve çeviri alanlarını düzenleyin.</p>
+          </div>
 
-            <div className="flex items-center gap-2">
-              <span
-                className={`rounded-full px-3 py-1 text-xs font-bold ${status === "Hazır"
-                  ? "bg-emerald-50 text-emerald-700"
-                  : "bg-amber-50 text-amber-700"
-                  }`}
-              >
-                {status}
-              </span>
+          <div className="ws-edit-actions">
+            <span
+              className={
+                status === "Hazır"
+                  ? "ws-status ws-status-ready"
+                  : "ws-status ws-status-missing"
+              }
+            >
+              {status}
+            </span>
 
-              <button
-                type="button"
-                onClick={() => deleteNews(editIdx)}
-                className="rounded-xl border border-red-100 bg-red-50 px-4 py-2 text-xs font-bold text-red-700 transition hover:bg-red-100"
-              >
-                Sil
-              </button>
-            </div>
+            <button
+              type="button"
+              onClick={() => deleteNews(editIdx)}
+              className="ws-delete-button"
+            >
+              Sil
+            </button>
           </div>
         </div>
 
-        <div className="grid gap-6 lg:grid-cols-3">
-          <div className="space-y-6 lg:col-span-2">
-            <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
-              <div className="mb-5 border-b border-gray-100 pb-4">
-                <h4 className="text-sm font-bold text-gray-900">
-                  Temel Bilgiler
-                </h4>
-                <p className="mt-1 text-xs text-gray-500">
-                  Liste ve detay sayfasında kullanılan ana haber bilgileri.
-                </p>
+        <div className="ws-edit-layout">
+          <div className="ws-edit-main">
+            <section className="ws-section-card">
+              <div className="ws-section-title">
+                <h4>Temel Bilgiler</h4>
+                <p>Liste kartında ve detay sayfasında kullanılan ana bilgiler.</p>
               </div>
 
-              <div className="grid gap-4 md:grid-cols-2">
+              <div className="ws-form-grid">
                 <FormField
                   label="Başlık"
                   value={n.title || ""}
@@ -288,18 +276,14 @@ export default function NewsPanel() {
                   placeholder="Haber başlığını girin"
                 />
 
-                <div className="space-y-1.5">
-                  <div className="flex items-center justify-between gap-3">
-                    <label className="text-xs font-semibold uppercase tracking-wide text-gray-500">
-                      Slug
-                    </label>
-
+                <div className="ws-custom-field">
+                  <div className="ws-field-top">
+                    <label>Slug</label>
                     <button
                       type="button"
                       onClick={() =>
                         updateNews(editIdx, "slug", slugify(n.title || ""))
                       }
-                      className="text-xs font-bold text-[#132175] hover:text-[#0e1a5e]"
                     >
                       Başlıktan üret
                     </button>
@@ -311,7 +295,6 @@ export default function NewsPanel() {
                       updateNews(editIdx, "slug", e.target.value)
                     }
                     placeholder="haber-slug"
-                    className="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-900 outline-none transition focus:border-[#132175] focus:bg-white focus:ring-4 focus:ring-[#132175]/10"
                   />
                 </div>
 
@@ -329,7 +312,7 @@ export default function NewsPanel() {
                   placeholder="case-study, update, company..."
                 />
 
-                <div className="md:col-span-2">
+                <div className="ws-form-full">
                   <FormField
                     label="Görsel Yolu"
                     type="image"
@@ -339,17 +322,15 @@ export default function NewsPanel() {
                   />
                 </div>
               </div>
-            </div>
+            </section>
 
-            <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
-              <div className="mb-5 border-b border-gray-100 pb-4">
-                <h4 className="text-sm font-bold text-gray-900">İçerik</h4>
-                <p className="mt-1 text-xs text-gray-500">
-                  Özet kartlarda, içerik ise haber detay sayfasında kullanılır.
-                </p>
+            <section className="ws-section-card">
+              <div className="ws-section-title">
+                <h4>İçerik</h4>
+                <p>Özet kartlarda, içerik ise haber detay sayfasında kullanılır.</p>
               </div>
 
-              <div className="space-y-4">
+              <div className="ws-form-stack">
                 <FormField
                   label="Özet"
                   type="textarea"
@@ -368,16 +349,12 @@ export default function NewsPanel() {
                   placeholder="<p>Haber içeriği...</p>"
                 />
               </div>
-            </div>
+            </section>
 
-            <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
-              <div className="mb-5 border-b border-gray-100 pb-4">
-                <h4 className="text-sm font-bold text-gray-900">
-                  Çeviriler
-                </h4>
-                <p className="mt-1 text-xs text-gray-500">
-                  Çoklu dil destekli haber metinlerini buradan düzenleyin.
-                </p>
+            <section className="ws-section-card">
+              <div className="ws-section-title">
+                <h4>Çeviriler</h4>
+                <p>Çoklu dil destekli haber metinlerini buradan düzenleyin.</p>
               </div>
 
               <TranslationEditor
@@ -387,95 +364,65 @@ export default function NewsPanel() {
                   updateLocalized(editIdx, locale, key, val)
                 }
               />
-            </div>
+            </section>
           </div>
 
-          <aside className="space-y-5">
-            <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
-              <h4 className="mb-4 text-sm font-bold text-gray-900">
-                Haber Ön İzleme
-              </h4>
+          <aside className="ws-edit-side">
+            <section className="ws-section-card">
+              <h4 className="ws-preview-title">Haber Ön İzleme</h4>
 
-              <div className="overflow-hidden rounded-2xl border border-gray-200 bg-gray-50">
-                {imageSrc ? (
-                  <img
-                    src={imageSrc}
-                    alt={n.title || "News image"}
-                    className="h-40 w-full object-cover"
-                    onError={(e) => {
-                      e.currentTarget.style.display = "none";
-                    }}
-                  />
-                ) : (
-                  <div className="flex h-40 w-full items-center justify-center bg-gradient-to-br from-[#132175]/10 to-[#1a6b8a]/10">
-                    <span className="text-xs font-semibold text-gray-400">
-                      Görsel seçilmedi
-                    </span>
-                  </div>
-                )}
+              <div className="ws-preview-card">
+                <div className="ws-preview-image">
+                  {imageSrc ? (
+                    <img
+                      src={imageSrc}
+                      alt={n.title || "News image"}
+                      onError={(e) => {
+                        e.currentTarget.style.display = "none";
+                      }}
+                    />
+                  ) : (
+                    <span>Görsel Yok</span>
+                  )}
+                </div>
 
-                <div className="space-y-3 bg-white p-4">
-                  <div className="flex items-center justify-between gap-3">
-                    <span className="rounded-full bg-[#132175]/10 px-3 py-1 text-xs font-bold text-[#132175]">
-                      {n.category || "Kategori yok"}
-                    </span>
-
-                    <span className="text-xs text-gray-400">
-                      {getDisplayDate(n.date)}
-                    </span>
+                <div className="ws-preview-body">
+                  <div className="ws-preview-meta">
+                    <span>{n.category || "Kategori yok"}</span>
+                    <small>{n.date || "-"}</small>
                   </div>
 
-                  <h5 className="text-base font-bold leading-6 text-gray-950">
-                    {n.title || "Haber başlığı"}
-                  </h5>
-
-                  <p className="max-h-24 overflow-hidden text-sm leading-6 text-gray-500">
-                    {n.excerpt || "Haber özeti burada görünecek."}
-                  </p>
+                  <h5>{n.title || "Haber başlığı"}</h5>
+                  <p>{n.excerpt || "Haber özeti burada görünecek."}</p>
                 </div>
               </div>
-            </div>
+            </section>
 
-            <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
-              <h4 className="mb-4 text-sm font-bold text-gray-900">
-                İçerik Durumu
-              </h4>
+            <section className="ws-section-card">
+              <h4 className="ws-preview-title">İçerik Durumu</h4>
 
-              <div className="space-y-3 text-sm">
-                <div className="flex items-center justify-between">
-                  <span className="text-gray-500">Durum</span>
-                  <span
-                    className={`font-bold ${status === "Hazır"
-                      ? "text-emerald-600"
-                      : "text-amber-600"
-                      }`}
-                  >
-                    {status}
-                  </span>
+              <div className="ws-info-list">
+                <div>
+                  <span>Durum</span>
+                  <strong>{status}</strong>
                 </div>
 
-                <div className="flex items-center justify-between">
-                  <span className="text-gray-500">Çeviri</span>
-                  <span className="font-bold text-gray-900">
-                    {getTranslationCount(n)} dil
-                  </span>
+                <div>
+                  <span>Çeviri</span>
+                  <strong>{getTranslationCount(n)} dil</strong>
                 </div>
 
-                <div className="flex items-center justify-between">
-                  <span className="text-gray-500">Slug</span>
-                  <span className="max-w-[180px] truncate font-bold text-gray-900">
-                    {n.slug || "-"}
-                  </span>
+                <div>
+                  <span>Slug</span>
+                  <strong>{n.slug || "-"}</strong>
                 </div>
 
-                <div className="flex items-center justify-between">
-                  <span className="text-gray-500">Görsel</span>
-                  <span className="font-bold text-gray-900">
-                    {n.image ? "Var" : "Yok"}
-                  </span>
+                <div>
+                  <span>Görsel</span>
+                  <strong>{n.image ? "Var" : "Yok"}</strong>
                 </div>
               </div>
-            </div>
+            </section>
           </aside>
         </div>
       </div>
@@ -483,192 +430,146 @@ export default function NewsPanel() {
   }
 
   return (
-    <div className="space-y-6">
-      <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
-        <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-          <div>
-            <h3 className="text-xl font-bold text-gray-950">
-              Haber Yönetimi
-            </h3>
+    <div className="ws-news-page">
+      <style>{newsPanelCss}</style>
 
-            <p className="mt-1 text-sm text-gray-500">
-              Haberleri kart görünümünde listeleyin, arayın, filtreleyin ve düzenleme ekranında yönetin.
+      <section className="ws-news-header">
+        <div className="ws-news-header-top">
+          <div>
+            <h3>Haber Yönetimi</h3>
+            <p>
+              Haberleri kart görünümünde listeleyin, filtreleyin ve düzenleme
+              ekranında yönetin.
             </p>
           </div>
 
-          <button
-            type="button"
-            onClick={addNews}
-            className="rounded-xl bg-[#132175] px-4 py-2.5 text-sm font-bold text-white shadow-lg shadow-[#132175]/20 transition hover:bg-[#0e1a5e]"
-          >
+          <button type="button" onClick={addNews} className="ws-primary-button">
             + Yeni Haber
           </button>
         </div>
 
-        <div className="mt-5 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-          <div className="rounded-2xl border border-gray-100 bg-gray-50 p-4">
-            <p className="text-xs font-semibold uppercase tracking-wide text-gray-400">
-              Toplam Haber
-            </p>
-            <p className="mt-1 text-2xl font-bold text-gray-950">
-              {news.length}
-            </p>
+        <div className="ws-stats-grid">
+          <div className="ws-stat-card">
+            <span>Toplam Haber</span>
+            <strong>{news.length}</strong>
           </div>
 
-          <div className="rounded-2xl border border-gray-100 bg-gray-50 p-4">
-            <p className="text-xs font-semibold uppercase tracking-wide text-gray-400">
-              Hazır
-            </p>
-            <p className="mt-1 text-2xl font-bold text-emerald-600">
-              {readyCount}
-            </p>
+          <div className="ws-stat-card">
+            <span>Hazır</span>
+            <strong className="ws-green">{readyCount}</strong>
           </div>
 
-          <div className="rounded-2xl border border-gray-100 bg-gray-50 p-4">
-            <p className="text-xs font-semibold uppercase tracking-wide text-gray-400">
-              Eksik
-            </p>
-            <p className="mt-1 text-2xl font-bold text-amber-600">
-              {missingCount}
-            </p>
+          <div className="ws-stat-card">
+            <span>Eksik</span>
+            <strong className="ws-orange">{missingCount}</strong>
           </div>
 
-          <div className="rounded-2xl border border-gray-100 bg-gray-50 p-4">
-            <p className="text-xs font-semibold uppercase tracking-wide text-gray-400">
-              Kategori
-            </p>
-            <p className="mt-1 text-2xl font-bold text-[#132175]">
-              {categories.length}
-            </p>
+          <div className="ws-stat-card">
+            <span>Kategori</span>
+            <strong className="ws-blue">{categories.length}</strong>
           </div>
         </div>
-      </div>
+      </section>
 
-      <div className="rounded-2xl border border-gray-200 bg-white p-4 shadow-sm">
-        <div className="grid gap-3 lg:grid-cols-5">
-          <input
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder="Başlık, slug, kategori veya içerik içinde ara..."
-            className="h-11 rounded-xl border border-gray-200 bg-gray-50 px-4 text-sm text-gray-900 outline-none transition placeholder:text-gray-400 focus:border-[#132175] focus:bg-white focus:ring-4 focus:ring-[#132175]/10 lg:col-span-2"
-          />
+      <section className="ws-filter-card">
+        <input
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          placeholder="Başlık, slug, kategori veya içerik içinde ara..."
+        />
 
-          <select
-            value={categoryFilter}
-            onChange={(e) => setCategoryFilter(e.target.value)}
-            className="h-11 rounded-xl border border-gray-200 bg-gray-50 px-4 text-sm font-medium text-gray-700 outline-none transition focus:border-[#132175] focus:bg-white focus:ring-4 focus:ring-[#132175]/10"
-          >
-            <option value="all">Tüm kategoriler</option>
-            {categories.map((category) => (
-              <option key={category} value={category}>
-                {category}
-              </option>
-            ))}
-          </select>
+        <select
+          value={categoryFilter}
+          onChange={(e) => setCategoryFilter(e.target.value)}
+        >
+          <option value="all">Tüm kategoriler</option>
+          {categories.map((category) => (
+            <option key={category} value={category}>
+              {category}
+            </option>
+          ))}
+        </select>
 
-          <select
-            value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value as StatusFilter)}
-            className="h-11 rounded-xl border border-gray-200 bg-gray-50 px-4 text-sm font-medium text-gray-700 outline-none transition focus:border-[#132175] focus:bg-white focus:ring-4 focus:ring-[#132175]/10"
-          >
-            <option value="all">Tüm durumlar</option>
-            <option value="ready">Hazır</option>
-            <option value="missing">Eksik</option>
-          </select>
+        <select
+          value={statusFilter}
+          onChange={(e) => setStatusFilter(e.target.value as StatusFilter)}
+        >
+          <option value="all">Tüm durumlar</option>
+          <option value="ready">Hazır</option>
+          <option value="missing">Eksik</option>
+        </select>
 
-          <select
-            value={sortBy}
-            onChange={(e) => setSortBy(e.target.value as SortType)}
-            className="h-11 rounded-xl border border-gray-200 bg-gray-50 px-4 text-sm font-medium text-gray-700 outline-none transition focus:border-[#132175] focus:bg-white focus:ring-4 focus:ring-[#132175]/10"
-          >
-            <option value="newest">En yeni</option>
-            <option value="oldest">En eski</option>
-            <option value="title">Başlığa göre</option>
-          </select>
-        </div>
-      </div>
+        <select
+          value={sortBy}
+          onChange={(e) => setSortBy(e.target.value as SortType)}
+        >
+          <option value="newest">En yeni</option>
+          <option value="oldest">En eski</option>
+          <option value="title">Başlığa göre</option>
+        </select>
+      </section>
 
-      <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
+      <section className="ws-news-list-card">
         {filteredNews.length > 0 ? (
-          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+          <div className="ws-news-grid">
             {filteredNews.map(({ item: n, idx }) => {
               const status = getNewsStatus(n);
               const imageSrc = getAssetSrc(n.image);
 
               return (
-                <article
-                  key={n.id || idx}
-                  className="flex h-full min-h-[360px] flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
-                >
-                  <div className="relative h-36 w-full overflow-hidden bg-gray-100">
+                <article key={n.id || idx} className="ws-news-card">
+                  <div className="ws-news-image">
                     {imageSrc ? (
                       <img
                         src={imageSrc}
                         alt={n.title || "News image"}
-                        className="h-full w-full object-cover transition duration-200 hover:scale-105"
                         onError={(e) => {
                           e.currentTarget.style.display = "none";
                         }}
                       />
                     ) : (
-                      <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-[#132175]/10 to-[#1a6b8a]/10">
-                        <span className="text-xs font-bold uppercase tracking-wide text-gray-400">
-                          Görsel Yok
-                        </span>
-                      </div>
+                      <span>Görsel Yok</span>
                     )}
 
-                    <div className="absolute left-3 top-3">
+                    <div className="ws-news-status-wrap">
                       <span
-                        className={`rounded-full px-2.5 py-1 text-[10px] font-bold shadow-sm ${status === "Hazır"
-                          ? "bg-emerald-50 text-emerald-700"
-                          : "bg-amber-50 text-amber-700"
-                          }`}
+                        className={
+                          status === "Hazır"
+                            ? "ws-status ws-status-ready"
+                            : "ws-status ws-status-missing"
+                        }
                       >
                         {status}
                       </span>
                     </div>
                   </div>
 
-                  <div className="flex flex-1 flex-col p-4">
-                    <div className="mb-3 flex items-center justify-between gap-3">
-                      <span className="max-w-[150px] truncate rounded-full bg-[#132175]/10 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-[#132175]">
-                        {n.category || "Kategori yok"}
-                      </span>
-
-                      <span className="shrink-0 text-xs font-medium text-gray-400">
-                        {getDisplayDate(n.date)}
-                      </span>
+                  <div className="ws-news-card-body">
+                    <div className="ws-news-meta">
+                      <span>{n.category || "Kategori yok"}</span>
+                      <small>{n.date || "-"}</small>
                     </div>
 
-                    <h4 className="min-h-[44px] text-sm font-bold leading-5 text-gray-950">
-                      {n.title || "Başlıksız haber"}
-                    </h4>
+                    <h4>{n.title || "Başlıksız haber"}</h4>
 
-                    <p className="mt-2 max-h-[66px] min-h-[66px] overflow-hidden text-xs leading-[22px] text-gray-500">
-                      {n.excerpt || "Özet girilmemiş."}
-                    </p>
+                    <p>{n.excerpt || "Özet girilmemiş."}</p>
 
-                    <div className="mt-4 space-y-2 border-t border-gray-100 pt-3 text-xs">
-                      <div className="flex items-center justify-between gap-3">
-                        <span className="text-gray-400">Slug</span>
-                        <span className="max-w-[150px] truncate font-mono text-gray-500">
-                          {n.slug || "-"}
-                        </span>
+                    <div className="ws-news-details">
+                      <div>
+                        <span>Slug</span>
+                        <strong>{n.slug || "-"}</strong>
                       </div>
 
-                      <div className="flex items-center justify-between gap-3">
-                        <span className="text-gray-400">Çeviri</span>
-                        <span className="font-bold text-gray-700">
-                          {getTranslationCount(n)} dil
-                        </span>
+                      <div>
+                        <span>Çeviri</span>
+                        <strong>{getTranslationCount(n)} dil</strong>
                       </div>
                     </div>
 
                     <button
                       type="button"
                       onClick={() => setEditIdx(idx)}
-                      className="mt-auto w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-2.5 text-xs font-bold text-gray-700 transition hover:border-[#132175]/20 hover:bg-[#132175]/5 hover:text-[#132175]"
+                      className="ws-edit-button"
                     >
                       Düzenle
                     </button>
@@ -678,29 +579,662 @@ export default function NewsPanel() {
             })}
           </div>
         ) : (
-          <div className="flex min-h-[260px] flex-col items-center justify-center p-8 text-center">
-            <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-[#132175]/10 text-[#132175]">
-              <span className="text-2xl">📰</span>
-            </div>
-
-            <h4 className="text-lg font-bold text-gray-950">
-              Haber bulunamadı
-            </h4>
-
-            <p className="mt-2 max-w-md text-sm leading-6 text-gray-500">
-              Arama veya filtreleri değiştirerek tekrar deneyebilir ya da yeni haber ekleyebilirsiniz.
+          <div className="ws-empty-state">
+            <div>📰</div>
+            <h4>Haber bulunamadı</h4>
+            <p>
+              Arama veya filtreleri değiştirerek tekrar deneyebilir ya da yeni
+              haber ekleyebilirsiniz.
             </p>
-
-            <button
-              type="button"
-              onClick={addNews}
-              className="mt-5 rounded-xl bg-[#132175] px-4 py-2.5 text-sm font-bold text-white transition hover:bg-[#0e1a5e]"
-            >
+            <button type="button" onClick={addNews}>
               + Yeni Haber Ekle
             </button>
           </div>
         )}
-      </div>
+      </section>
     </div>
   );
 }
+
+const newsPanelCss = `
+  .ws-news-page {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    box-sizing: border-box;
+  }
+
+  .ws-news-header,
+  .ws-filter-card,
+  .ws-news-list-card,
+  .ws-section-card,
+  .ws-news-edit-header {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 24px;
+    box-shadow: 0 8px 28px rgba(15, 23, 42, 0.06);
+    box-sizing: border-box;
+  }
+
+  .ws-news-header {
+    padding: 28px;
+  }
+
+  .ws-news-header-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 22px;
+  }
+
+  .ws-news-header h3,
+  .ws-news-edit-header h3 {
+    margin: 0;
+    color: #111827;
+    font-size: 24px;
+    line-height: 1.2;
+    font-weight: 800;
+  }
+
+  .ws-news-header p,
+  .ws-news-edit-header p {
+    margin: 8px 0 0;
+    color: #6b7280;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  .ws-primary-button {
+    border: none;
+    border-radius: 14px;
+    background: #132175;
+    color: #ffffff;
+    padding: 12px 18px;
+    min-width: 150px;
+    font-size: 14px;
+    font-weight: 800;
+    cursor: pointer;
+    box-shadow: 0 14px 30px rgba(19, 33, 117, 0.22);
+    transition: background 160ms ease, transform 160ms ease;
+    white-space: nowrap;
+  }
+
+  .ws-primary-button:hover {
+    background: #0e1a5e;
+    transform: translateY(-1px);
+  }
+
+  .ws-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 14px;
+  }
+
+  .ws-stat-card {
+    min-height: 105px;
+    border-radius: 18px;
+    border: 1px solid #eef2f7;
+    background: #f8fafc;
+    padding: 18px;
+    box-sizing: border-box;
+  }
+
+  .ws-stat-card span {
+    display: block;
+    color: #9ca3af;
+    font-size: 12px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .ws-stat-card strong {
+    display: block;
+    margin-top: 12px;
+    color: #111827;
+    font-size: 30px;
+    line-height: 1;
+    font-weight: 900;
+  }
+
+  .ws-green {
+    color: #059669 !important;
+  }
+
+  .ws-orange {
+    color: #d97706 !important;
+  }
+
+  .ws-blue {
+    color: #132175 !important;
+  }
+
+  .ws-filter-card {
+    padding: 18px;
+    display: grid;
+    grid-template-columns: minmax(260px, 1.6fr) minmax(160px, 0.8fr) minmax(160px, 0.8fr) minmax(160px, 0.8fr);
+    gap: 12px;
+  }
+
+  .ws-filter-card input,
+  .ws-filter-card select,
+  .ws-custom-field input {
+    width: 100%;
+    height: 44px;
+    border-radius: 14px;
+    border: 1px solid #dfe3ea;
+    background: #f8fafc;
+    color: #111827;
+    padding: 0 14px;
+    font-size: 14px;
+    outline: none;
+    box-sizing: border-box;
+  }
+
+  .ws-filter-card input:focus,
+  .ws-filter-card select:focus,
+  .ws-custom-field input:focus {
+    border-color: #132175;
+    background: #ffffff;
+    box-shadow: 0 0 0 4px rgba(19, 33, 117, 0.1);
+  }
+
+  .ws-news-list-card {
+    padding: 22px;
+  }
+
+  .ws-news-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 20px;
+    align-items: stretch;
+  }
+
+  .ws-news-card {
+    min-height: 390px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border-radius: 20px;
+    border: 1px solid #e5e7eb;
+    background: #ffffff;
+    box-shadow: 0 4px 18px rgba(15, 23, 42, 0.05);
+    transition: transform 160ms ease, box-shadow 160ms ease;
+  }
+
+  .ws-news-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 14px 34px rgba(15, 23, 42, 0.1);
+  }
+
+  .ws-news-image {
+    position: relative;
+    height: 135px;
+    background: linear-gradient(135deg, rgba(19, 33, 117, 0.08), rgba(26, 107, 138, 0.12));
+    overflow: hidden;
+  }
+
+  .ws-news-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .ws-news-image > span {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #9ca3af;
+    font-size: 12px;
+    font-weight: 800;
+    text-transform: uppercase;
+  }
+
+  .ws-news-status-wrap {
+    position: absolute;
+    left: 12px;
+    top: 12px;
+  }
+
+  .ws-status {
+    display: inline-flex;
+    align-items: center;
+    border-radius: 999px;
+    padding: 6px 10px;
+    font-size: 11px;
+    line-height: 1;
+    font-weight: 800;
+  }
+
+  .ws-status-ready {
+    background: #ecfdf5;
+    color: #047857;
+  }
+
+  .ws-status-missing {
+    background: #fffbeb;
+    color: #b45309;
+  }
+
+  .ws-news-card-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 16px;
+  }
+
+  .ws-news-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+
+  .ws-news-meta span,
+  .ws-preview-meta span {
+    max-width: 150px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    border-radius: 999px;
+    background: rgba(19, 33, 117, 0.08);
+    color: #132175;
+    padding: 6px 10px;
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+
+  .ws-news-meta small,
+  .ws-preview-meta small {
+    color: #9ca3af;
+    font-size: 12px;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+
+  .ws-news-card h4 {
+    min-height: 44px;
+    margin: 0;
+    color: #111827;
+    font-size: 15px;
+    line-height: 22px;
+    font-weight: 850;
+    overflow: hidden;
+  }
+
+  .ws-news-card p {
+    min-height: 66px;
+    max-height: 66px;
+    margin: 10px 0 0;
+    overflow: hidden;
+    color: #6b7280;
+    font-size: 13px;
+    line-height: 22px;
+  }
+
+  .ws-news-details {
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px solid #eef2f7;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .ws-news-details div,
+  .ws-info-list div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .ws-news-details span,
+  .ws-info-list span {
+    color: #9ca3af;
+    font-size: 12px;
+    font-weight: 700;
+  }
+
+  .ws-news-details strong,
+  .ws-info-list strong {
+    max-width: 160px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: #374151;
+    font-size: 12px;
+    font-weight: 800;
+  }
+
+  .ws-edit-button {
+    width: 100%;
+    height: 42px;
+    margin-top: auto;
+    border-radius: 14px;
+    border: 1px solid #e5e7eb;
+    background: #f8fafc;
+    color: #374151;
+    font-size: 13px;
+    font-weight: 850;
+    cursor: pointer;
+    transition: background 160ms ease, color 160ms ease, border-color 160ms ease;
+  }
+
+  .ws-edit-button:hover {
+    border-color: rgba(19, 33, 117, 0.25);
+    background: rgba(19, 33, 117, 0.06);
+    color: #132175;
+  }
+
+  .ws-empty-state {
+    min-height: 280px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    padding: 32px;
+  }
+
+  .ws-empty-state div {
+    width: 58px;
+    height: 58px;
+    border-radius: 18px;
+    background: rgba(19, 33, 117, 0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    margin-bottom: 16px;
+  }
+
+  .ws-empty-state h4 {
+    margin: 0;
+    color: #111827;
+    font-size: 18px;
+    font-weight: 850;
+  }
+
+  .ws-empty-state p {
+    max-width: 460px;
+    margin: 10px 0 0;
+    color: #6b7280;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  .ws-empty-state button {
+    margin-top: 20px;
+    border: none;
+    border-radius: 14px;
+    background: #132175;
+    color: #ffffff;
+    padding: 12px 18px;
+    font-size: 14px;
+    font-weight: 800;
+    cursor: pointer;
+  }
+
+  .ws-news-edit-header {
+    padding: 24px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+  }
+
+  .ws-back-button {
+    border: none;
+    background: transparent;
+    color: #132175;
+    font-size: 13px;
+    font-weight: 850;
+    cursor: pointer;
+    padding: 0;
+    margin-bottom: 12px;
+  }
+
+  .ws-edit-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .ws-delete-button {
+    border: 1px solid #fecaca;
+    background: #fef2f2;
+    color: #b91c1c;
+    border-radius: 14px;
+    padding: 10px 14px;
+    font-size: 13px;
+    font-weight: 850;
+    cursor: pointer;
+  }
+
+  .ws-edit-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 340px;
+    gap: 24px;
+    align-items: start;
+  }
+
+  .ws-edit-main {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .ws-edit-side {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    position: sticky;
+    top: 20px;
+  }
+
+  .ws-section-card {
+    padding: 24px;
+  }
+
+  .ws-section-title {
+    padding-bottom: 16px;
+    margin-bottom: 18px;
+    border-bottom: 1px solid #eef2f7;
+  }
+
+  .ws-section-title h4,
+  .ws-preview-title {
+    margin: 0;
+    color: #111827;
+    font-size: 15px;
+    font-weight: 850;
+  }
+
+  .ws-section-title p {
+    margin: 6px 0 0;
+    color: #6b7280;
+    font-size: 13px;
+    line-height: 1.5;
+  }
+
+  .ws-form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
+
+  .ws-form-full {
+    grid-column: 1 / -1;
+  }
+
+  .ws-form-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .ws-custom-field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .ws-field-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .ws-field-top label {
+    color: #6b7280;
+    font-size: 12px;
+    font-weight: 850;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .ws-field-top button {
+    border: none;
+    background: transparent;
+    color: #132175;
+    font-size: 12px;
+    font-weight: 850;
+    cursor: pointer;
+    padding: 0;
+  }
+
+  .ws-preview-card {
+    overflow: hidden;
+    border-radius: 20px;
+    border: 1px solid #e5e7eb;
+  }
+
+  .ws-preview-image {
+    height: 150px;
+    background: linear-gradient(135deg, rgba(19, 33, 117, 0.08), rgba(26, 107, 138, 0.12));
+  }
+
+  .ws-preview-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .ws-preview-image span {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #9ca3af;
+    font-size: 12px;
+    font-weight: 850;
+  }
+
+  .ws-preview-body {
+    padding: 16px;
+  }
+
+  .ws-preview-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+
+  .ws-preview-body h5 {
+    margin: 0;
+    color: #111827;
+    font-size: 15px;
+    line-height: 1.4;
+    font-weight: 850;
+  }
+
+  .ws-preview-body p {
+    max-height: 70px;
+    overflow: hidden;
+    margin: 10px 0 0;
+    color: #6b7280;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+
+  .ws-info-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  @media (max-width: 1200px) {
+    .ws-filter-card {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .ws-edit-layout {
+      grid-template-columns: 1fr;
+    }
+
+    .ws-edit-side {
+      position: static;
+    }
+  }
+
+  @media (max-width: 900px) {
+    .ws-news-header-top,
+    .ws-news-edit-header {
+      flex-direction: column;
+    }
+
+    .ws-primary-button {
+      width: 100%;
+    }
+
+    .ws-stats-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .ws-filter-card {
+      grid-template-columns: 1fr;
+    }
+
+    .ws-form-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 560px) {
+    .ws-news-header,
+    .ws-filter-card,
+    .ws-news-list-card,
+    .ws-section-card,
+    .ws-news-edit-header {
+      border-radius: 18px;
+    }
+
+    .ws-news-header,
+    .ws-news-list-card,
+    .ws-section-card,
+    .ws-news-edit-header {
+      padding: 18px;
+    }
+
+    .ws-stats-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .ws-news-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+`;
