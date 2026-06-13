@@ -11,6 +11,14 @@ const secret =
   import.meta.env.SESSION_SECRET ||
   "willow-session-secret-dev-only";
 
+// ── Password hashing (PBKDF2, used for creating new admin users) ─────────────
+
+export function hashPassword(password: string, salt?: string): string {
+  const s = salt || crypto.randomBytes(16).toString("hex");
+  const hash = crypto.pbkdf2Sync(password, s, 100_000, 64, "sha512").toString("hex");
+  return `pbkdf2:${s}:${hash}`;
+}
+
 // ── Credential check ──────────────────────────────────────────────────────────
 
 export async function verifyCredentials(username: string, password: string): Promise<boolean> {
