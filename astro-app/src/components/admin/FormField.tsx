@@ -50,28 +50,33 @@ export default function FormField({
     setUploading(true);
     setUploadError("");
 
-    const formData = new FormData();
-    formData.append("file", file);
-    
-    // Choose appropriate folder
-    const folder = label.toLowerCase().includes("team") || label.toLowerCase().includes("takım") 
-      ? "team" 
+    const folder = label.toLowerCase().includes("team") || label.toLowerCase().includes("takım")
+      ? "team"
       : label.toLowerCase().includes("product") || label.toLowerCase().includes("ürün")
       ? "products"
       : "uploads";
-    formData.append("folder", folder);
 
     try {
-      const res = await fetch("/api/upload", {
-        method: "POST",
-        body: formData,
-      });
-      const data = await res.json();
-      if (res.ok && data.ok) {
-        onChange(data.url);
-      } else {
-        setUploadError(data.error || "Yükleme başarısız.");
+      const urlRes = await fetch(
+        `/api/upload-url?folder=${encodeURIComponent(folder)}&filename=${encodeURIComponent(file.name)}`
+      );
+      const urlData = await urlRes.json();
+      if (!urlRes.ok || !urlData.ok) {
+        setUploadError(urlData.error || "İmzalı URL alınamadı.");
+        return;
       }
+
+      const putRes = await fetch(urlData.signedUrl, {
+        method: "PUT",
+        headers: { "Content-Type": file.type || "application/octet-stream" },
+        body: file,
+      });
+      if (!putRes.ok) {
+        setUploadError("Dosya yüklenemedi.");
+        return;
+      }
+
+      onChange(urlData.publicUrl);
     } catch {
       setUploadError("Yükleme sırasında ağ hatası oluştu.");
     } finally {
