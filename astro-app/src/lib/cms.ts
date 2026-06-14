@@ -52,10 +52,16 @@ export function resolveAsset(path: string | undefined): string {
   
   if (path.startsWith('http')) return path;
 
-  const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL || '';
-  
-  // Clean up leading slashes
   const cleanPath = path.startsWith('/') ? path.substring(1) : path;
+
+  // If it is a local public asset in the repository, serve it directly
+  if (cleanPath.startsWith('assets/') || cleanPath.startsWith('pdf-assets/')) {
+    const baseUrl = import.meta.env.BASE_URL || '/';
+    const cleanBase = baseUrl.endsWith('/') ? baseUrl : baseUrl + '/';
+    return cleanBase + cleanPath;
+  }
+
+  const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL || '';
   
   // Return absolute URL pointing to our 'assets' bucket
   return `${supabaseUrl}/storage/v1/object/public/assets/${cleanPath}`;
