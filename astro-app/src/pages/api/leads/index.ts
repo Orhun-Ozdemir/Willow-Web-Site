@@ -2,6 +2,8 @@ import type { APIRoute } from "astro";
 import crypto from "node:crypto";
 import { getSession } from "@/lib/auth";
 import { getServiceClient } from "@/lib/supabase";
+import { getRecipientChannels } from "@/lib/notifications";
+import { sendLeadNotification, sendTelegramNotification, type LeadMailData } from "@/lib/mailer";
 
 export const prerender = false;
 
@@ -54,11 +56,31 @@ export const POST: APIRoute = async ({ request }) => {
     };
 
     const { error } = await supabase.from("leads").insert(lead);
-    
+
     if (error) {
       throw new Error(error.message);
     }
-    
+
+    // Fire-and-forget bildirimler — kayıt başarılıysa Telegram + e-posta gönder.
+    // Hata olsa bile form yanıtını bloklamaz.
+    try {
+      const mailData: LeadMailData = {
+        name: lead.name, email: lead.email, company: lead.company, phone: lead.phone,
+        country: lead.country, interestType: lead.interest_type, productInterest: lead.product_interest,
+        serviceInterest: lead.service_interest, message: lead.message, sourcePage: lead.source_page,
+        locale: lead.locale,
+        projectType: body.projectType, currentStatus: body.currentStatus, layers: body.layers,
+        timeline: body.timeline, budgetRange: body.budgetRange,
+      };
+      const { emails, chatIds } = await getRecipientChannels();
+      await Promise.allSettled([
+        sendTelegramNotification(chatIds, mailData),
+        sendLeadNotification(emails, mailData),
+      ]);
+    } catch (notifyErr) {
+      console.error("Lead bildirimi gönderilemedi:", notifyErr);
+    }
+
     // Convert back to camelCase for response
     const responseLead = {
       ...lead,

@@ -105,6 +105,7 @@ export default function FormField({
                 alt="Önizleme"
                 className="ws-imgfield-img"
                 onError={(e) => {
+                  (e.target as HTMLImageElement).onerror = null;
                   (e.target as HTMLImageElement).src = "/assets/willow-mark-transparent.png";
                   (e.target as HTMLImageElement).style.opacity = "0.18";
                 }}

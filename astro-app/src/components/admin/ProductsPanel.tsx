@@ -509,6 +509,7 @@ export default function ProductsPanel() {
                       src={previewUrl}
                       alt={p.title}
                       onError={(e) => {
+                        (e.target as HTMLImageElement).onerror = null;
                         (e.target as HTMLImageElement).src = "/assets/willow-mark-transparent.png";
                         (e.target as HTMLImageElement).style.opacity = "0.2";
                       }}

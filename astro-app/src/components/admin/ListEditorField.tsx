@@ -99,6 +99,7 @@ export default function ListEditorField({
                 src={getPreviewUrl(src)}
                 alt={`Görsel ${idx + 1}`}
                 onError={(e) => {
+                  (e.target as HTMLImageElement).onerror = null;
                   (e.target as HTMLImageElement).src = "/assets/willow-mark-transparent.png";
                   (e.target as HTMLImageElement).style.opacity = "0.2";
                 }}

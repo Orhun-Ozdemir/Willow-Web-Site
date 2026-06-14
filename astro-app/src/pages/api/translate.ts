@@ -17,7 +17,7 @@ export const POST: APIRoute = async ({ request }) => {
     );
   }
 
-  let body: { text: string; targetLangs: string[] };
+  let body: { text: string; targetLangs: string[]; format?: "text" | "html" };
   try {
     body = await request.json();
   } catch {
@@ -25,6 +25,7 @@ export const POST: APIRoute = async ({ request }) => {
   }
 
   const { text, targetLangs } = body;
+  const format = body.format === "html" ? "html" : "text";
   if (!text?.trim() || !Array.isArray(targetLangs) || targetLangs.length === 0) {
     return new Response(JSON.stringify({ ok: false, error: "text ve targetLangs zorunlu" }), { status: 400 });
   }
@@ -39,7 +40,7 @@ export const POST: APIRoute = async ({ request }) => {
         const res = await fetch(url, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ q: text, source: "en", target: lang, format: "text" }),
+          body: JSON.stringify({ q: text, source: "en", target: lang, format }),
         });
         const data = await res.json();
         if (!res.ok) throw new Error(data.error?.message || "Çeviri başarısız");

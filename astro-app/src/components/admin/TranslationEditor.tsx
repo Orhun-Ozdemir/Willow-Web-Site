@@ -1,42 +1,20 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { locales, type Locale } from "@/lib/cms";
-import LocaleTabs from "./LocaleTabs";
 import VisualHtmlEditor from "./VisualHtmlEditor";
 
-function TextPreview({ text }: { text: string }) {
-  if (!text.trim()) return <p className="text-gray-300 italic text-sm">Boş</p>;
-
-  const lines = text.split("\n");
-  const nodes: React.ReactNode[] = [];
-  let bulletBuf: string[] = [];
-
-  const flushBullets = () => {
-    if (bulletBuf.length === 0) return;
-    nodes.push(
-      <ul key={`ul-${nodes.length}`} className="list-disc list-inside space-y-0.5 text-sm text-gray-700 my-1">
-        {bulletBuf.map((b, i) => <li key={i}>{b}</li>)}
-      </ul>
-    );
-    bulletBuf = [];
-  };
-
-  for (let i = 0; i < lines.length; i++) {
-    const line = lines[i];
-    if (/^[-•*]\s+/.test(line)) {
-      bulletBuf.push(line.replace(/^[-•*]\s+/, ""));
-    } else if (line.trim() === "") {
-      flushBullets();
-      nodes.push(<div key={`br-${i}`} className="h-2" />);
-    } else {
-      flushBullets();
-      nodes.push(<p key={`p-${i}`} className="text-sm text-gray-700 leading-relaxed">{line}</p>);
-    }
-  }
-  flushBullets();
-  return <div className="space-y-0.5">{nodes}</div>;
-}
+// ── Locale display info ───────────────────────────────────────────────────────
+const LOCALE_INFO: Record<string, { flag: string; name: string }> = {
+  en: { flag: "🇬🇧", name: "English" },
+  tr: { flag: "🇹🇷", name: "Türkçe" },
+  de: { flag: "🇩🇪", name: "Deutsch" },
+  fr: { flag: "🇫🇷", name: "Français" },
+  es: { flag: "🇪🇸", name: "Español" },
+  it: { flag: "🇮🇹", name: "Italiano" },
+  ar: { flag: "🇸🇦", name: "العربية" },
+  ja: { flag: "🇯🇵", name: "日本語" },
+};
 
 interface TranslationField {
   key: string;
@@ -54,14 +32,15 @@ interface TranslationEditorProps {
   onChange: (locale: Locale, fieldKey: string, value: string) => void;
 }
 
-function fieldValueToText(value: any) {
+// ── Helpers ───────────────────────────────────────────────────────────────────
+function fieldValueToText(value: any): string {
   if (value == null) return "";
   if (typeof value === "string") return value;
   if (Array.isArray(value)) {
     return value
-      .map((item) => {
-        if (typeof item === "string") return item;
-        if (item && typeof item === "object") return item.label || item.name || item.title || "";
+      .map((it) => {
+        if (typeof it === "string") return it;
+        if (it && typeof it === "object") return it.label || it.name || it.title || "";
         return "";
       })
       .filter(Boolean)
@@ -70,255 +49,320 @@ function fieldValueToText(value: any) {
   return String(value);
 }
 
-function isEmpty(value: any): boolean {
-  return fieldValueToText(value).trim().length === 0;
-}
-
-function ArrayItemsField({
-  field, item, sourceLang, activeLang, sourceData, targetData, onChange,
-}: {
-  field: TranslationField; item: any; sourceLang: Locale; activeLang: Locale;
-  sourceData: any; targetData: any; onChange: (locale: Locale, key: string, value: string) => void;
-}) {
-  const sourceArray: any[] = Array.isArray(item[field.sourceArrayKey!]) ? item[field.sourceArrayKey!] : [];
-  const translatedArray: string[] = (() => {
-    const v = activeLang === sourceLang ? sourceData[field.key] : targetData[field.key];
-    if (Array.isArray(v)) return v.map(String);
-    if (typeof v === "string" && v) return v.split("\n");
-    return [];
-  })();
-
-  const updateItem = (idx: number, val: string) => {
-    const next = [...translatedArray];
-    while (next.length <= idx) next.push("");
-    next[idx] = val;
-    onChange(activeLang, field.key, next.join("\n"));
-  };
-
-  if (sourceArray.length === 0) {
-    return (
-      <div className="p-2 bg-gray-50 border border-gray-200 rounded text-gray-400 text-xs">
-        Önce "Uygulamalar & Parametreler" bölümünden öğe ekleyin.
-      </div>
-    );
-  }
-
-  return (
-    <div className="space-y-2">
-      {sourceArray.map((srcItem: any, idx: number) => {
-        const srcLabel = typeof srcItem === "string" ? srcItem : (srcItem?.label || srcItem?.name || "");
-        const isMissing = activeLang !== sourceLang && !translatedArray[idx]?.trim();
-        return (
-          <div key={idx} className={activeLang === sourceLang ? "" : "grid grid-cols-2 gap-2 items-center"}>
-            {activeLang !== sourceLang && (
-              <div className="p-2 bg-gray-50 border border-gray-200/50 rounded text-gray-400 text-xs truncate" title={srcLabel}>
-                {srcLabel || "—"}
-              </div>
-            )}
-            <input
-              type="text"
-              value={activeLang === sourceLang ? srcLabel : (translatedArray[idx] || "")}
-              onChange={(e) => updateItem(idx, e.target.value)}
-              readOnly={activeLang === sourceLang}
-              placeholder={activeLang === sourceLang ? "" : `${srcLabel} (${activeLang.toUpperCase()})`}
-              className={`w-full p-2 border rounded text-sm outline-none focus:border-[#1aa3c4] ${
-                activeLang === sourceLang
-                  ? "bg-gray-50 border-gray-200/50 text-gray-400"
-                  : isMissing
-                    ? "bg-red-50 border-red-300 text-gray-800"
-                    : "bg-gray-50 border-gray-200 text-gray-800"
-              }`}
-            />
-          </div>
-        );
-      })}
-    </div>
-  );
-}
-
-function TextareaWithPreview({
-  value, onChange: onChangeProp, rows, placeholder, className, readOnly,
-}: {
-  value: string; onChange?: (v: string) => void; rows?: number;
-  placeholder?: string; className?: string; readOnly?: boolean;
-}) {
-  const [preview, setPreview] = useState(false);
-  return (
-    <div>
-      <div className="flex gap-1 mb-1">
-        <button
-          type="button"
-          onClick={() => setPreview(false)}
-          className={`px-2 py-0.5 text-[10px] font-bold rounded transition ${!preview ? "bg-[#132175] text-white" : "bg-gray-100 text-gray-400 hover:text-gray-600"}`}
-        >Düzenle</button>
-        <button
-          type="button"
-          onClick={() => setPreview(true)}
-          className={`px-2 py-0.5 text-[10px] font-bold rounded transition ${preview ? "bg-[#132175] text-white" : "bg-gray-100 text-gray-400 hover:text-gray-600"}`}
-        >Önizle</button>
-      </div>
-      {preview ? (
-        <div className={`min-h-[${(rows || 3) * 24}px] p-2 border border-gray-200 rounded bg-white`}>
-          <TextPreview text={value} />
-        </div>
-      ) : readOnly ? (
-        <div className={`p-2 border rounded text-sm min-h-[38px] whitespace-pre-wrap ${className}`}>{value || <span className="italic text-gray-300">Boş</span>}</div>
-      ) : (
-        <textarea
-          value={value}
-          onChange={(e) => onChangeProp?.(e.target.value)}
-          rows={rows || 3}
-          placeholder={placeholder}
-          className={className}
-        />
-      )}
-    </div>
-  );
-}
+const cellKey = (fieldKey: string, loc: string) => `${fieldKey}::${loc}`;
 
 export default function TranslationEditor({ item, fields, sourceLang = "en", onChange }: TranslationEditorProps) {
-  const [activeLang, setActiveLang] = useState<Locale>(sourceLang);
+  const targetLocales = locales.filter((l) => l !== sourceLang);
 
-  // Count missing fields per locale (excluding source lang)
-  const missingCountMap: Record<string, number> = {};
-  const filledMap: Record<string, boolean> = {};
-  for (const loc of locales) {
-    const locData = item?.localized?.[loc] || {};
-    if (loc === sourceLang) {
-      filledMap[loc] = fields.some((f) => fieldValueToText(locData[f.key]).trim().length > 0);
-      missingCountMap[loc] = 0;
-    } else {
-      const missing = fields.filter((f) => isEmpty(locData[f.key])).length;
-      missingCountMap[loc] = missing;
-      filledMap[loc] = missing < fields.length;
+  // suggestions[fieldKey::loc] = translated text awaiting accept/reject
+  const [suggestions, setSuggestions] = useState<Record<string, string>>({});
+  const [translating, setTranslating] = useState<Set<string>>(new Set());
+  const [expanded, setExpanded] = useState<Set<string>>(new Set());
+  const [error, setError] = useState<string | null>(null);
+  const [busyAll, setBusyAll] = useState(false);
+
+  // Reset transient state when switching to a different item
+  useEffect(() => {
+    setSuggestions({});
+    setTranslating(new Set());
+    setExpanded(new Set());
+    setError(null);
+  }, [item?.id]);
+
+  // ── Value getters ──
+  const sourceText = (field: TranslationField): string => {
+    const loc = item?.localized?.[sourceLang]?.[field.key];
+    return fieldValueToText(loc != null && loc !== "" ? loc : item?.[field.key]);
+  };
+  const targetText = (field: TranslationField, loc: Locale): string =>
+    fieldValueToText(item?.localized?.[loc]?.[field.key]);
+
+  const fmtFor = (field: TranslationField): "text" | "html" =>
+    field.type === "richtext" ? "html" : "text";
+
+  // ── Status ──
+  const isFilled = (field: TranslationField, loc: Locale) => targetText(field, loc).trim().length > 0;
+  const fieldFilledCount = (field: TranslationField) =>
+    targetLocales.filter((l) => isFilled(field, l)).length;
+
+  const totalCells = fields.length * targetLocales.length;
+  const filledCells = fields.reduce((acc, f) => acc + fieldFilledCount(f), 0);
+  const pendingCount = Object.keys(suggestions).length;
+
+  // ── Translate calls ──
+  async function callTranslate(text: string, langs: string[], format: "text" | "html") {
+    const res = await fetch("/api/translate", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ text, targetLangs: langs, format }),
+    });
+    const data = await res.json();
+    if (!data.ok) throw new Error(data.error || "Çeviri başarısız");
+    return data as { translations: Record<string, string>; errors?: string[] };
+  }
+
+  async function translateField(field: TranslationField, onlyLoc?: Locale) {
+    const src = sourceText(field);
+    if (!src.trim()) return;
+    const langs = (onlyLoc ? [onlyLoc] : targetLocales).filter(
+      (l) => !isFilled(field, l) && !suggestions[cellKey(field.key, l)]
+    );
+    if (langs.length === 0) return;
+
+    setError(null);
+    setTranslating((prev) => new Set([...prev, ...langs.map((l) => cellKey(field.key, l))]));
+    try {
+      const { translations, errors } = await callTranslate(src, langs, fmtFor(field));
+      setSuggestions((prev) => {
+        const next = { ...prev };
+        for (const [loc, val] of Object.entries(translations)) next[cellKey(field.key, loc)] = val;
+        return next;
+      });
+      if (errors?.length) setError(errors.join(", "));
+    } catch (e: any) {
+      setError(e.message);
+    } finally {
+      setTranslating((prev) => {
+        const n = new Set(prev);
+        langs.forEach((l) => n.delete(cellKey(field.key, l)));
+        return n;
+      });
     }
   }
 
-  const fallbackSourceData = fields.reduce<Record<string, any>>((acc, field) => {
-    acc[field.key] = item?.[field.key] ?? "";
-    return acc;
-  }, {});
-  const sourceData = { ...fallbackSourceData, ...(item?.localized?.[sourceLang] || {}) };
-  const targetData = item?.localized?.[activeLang] || {};
+  async function translateAll() {
+    setBusyAll(true);
+    setError(null);
+    try {
+      for (const field of fields) {
+        // expand fields that receive suggestions so user can review
+        await translateField(field);
+      }
+      setExpanded((prev) => {
+        const n = new Set(prev);
+        fields.forEach((f) => {
+          if (targetLocales.some((l) => suggestions[cellKey(f.key, l)] || !isFilled(f, l))) n.add(f.key);
+        });
+        return n;
+      });
+    } finally {
+      setBusyAll(false);
+    }
+  }
 
-  const totalMissing = activeLang !== sourceLang
-    ? fields.filter((f) => isEmpty(targetData[f.key])).length
-    : 0;
+  // ── Suggestion actions ──
+  const accept = (field: TranslationField, loc: Locale) => {
+    const key = cellKey(field.key, loc);
+    const val = suggestions[key];
+    if (val == null) return;
+    onChange(loc, field.key, val);
+    setSuggestions((prev) => {
+      const n = { ...prev };
+      delete n[key];
+      return n;
+    });
+  };
+  const reject = (field: TranslationField, loc: Locale) => {
+    setSuggestions((prev) => {
+      const n = { ...prev };
+      delete n[cellKey(field.key, loc)];
+      return n;
+    });
+  };
+  const acceptAllPending = () => {
+    Object.entries(suggestions).forEach(([key, val]) => {
+      const [fieldKey, loc] = key.split("::");
+      onChange(loc as Locale, fieldKey, val);
+    });
+    setSuggestions({});
+  };
 
+  const toggleExpand = (fieldKey: string) =>
+    setExpanded((prev) => {
+      const n = new Set(prev);
+      n.has(fieldKey) ? n.delete(fieldKey) : n.add(fieldKey);
+      return n;
+    });
+
+  const hasAnySource = fields.some((f) => sourceText(f).trim().length > 0);
+
+  // ── Render ────────────────────────────────────────────────────────────────
   return (
     <div className="space-y-3">
-      <div className="flex items-center justify-between gap-3">
-        <LocaleTabs active={activeLang} onChange={setActiveLang} filledMap={filledMap} missingCountMap={missingCountMap} />
-        {totalMissing > 0 && (
-          <span className="text-[11px] font-bold text-red-500 bg-red-50 border border-red-200 rounded px-2 py-0.5">
-            {totalMissing} alan eksik
-          </span>
-        )}
+      {/* Top bar */}
+      <div className="flex flex-wrap items-center justify-between gap-3 bg-[#f5f3ff] border border-gray-200 rounded-xl px-4 py-3">
+        <div className="flex items-center gap-3">
+          <button
+            type="button"
+            onClick={translateAll}
+            disabled={busyAll || !hasAnySource}
+            className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-[#1aa3c4] to-[#0e8aaa] text-white text-xs font-bold rounded-lg shadow-sm shadow-[#1aa3c4]/20 disabled:opacity-50 transition"
+            title={hasAnySource ? "" : "Önce İngilizce alanları doldurun"}
+          >
+            {busyAll ? <><span className="animate-spin">⟳</span> Çevriliyor…</> : <>🌍 Tümünü Otomatik Çevir</>}
+          </button>
+          {pendingCount > 0 && (
+            <button
+              type="button"
+              onClick={acceptAllPending}
+              className="px-3 py-2 bg-blue-600 text-white text-xs font-bold rounded-lg"
+            >
+              ✓ {pendingCount} öneriyi onayla
+            </button>
+          )}
+        </div>
+        <div className="flex items-center gap-2">
+          <div className="w-28 h-1.5 bg-gray-200 rounded-full overflow-hidden">
+            <div
+              className="h-full bg-green-400 rounded-full transition-all"
+              style={{ width: `${totalCells ? Math.round((filledCells / totalCells) * 100) : 0}%` }}
+            />
+          </div>
+          <span className="text-[11px] font-semibold text-gray-500 tabular-nums">{filledCells}/{totalCells}</span>
+        </div>
       </div>
 
-      <div className="space-y-3">
-        {fields.map((f) => {
-          if (f.type === "array-items") {
-            return (
-              <div key={f.key}>
-                <label className="block text-xs font-bold uppercase text-gray-500 mb-1">
-                  {f.label}
-                  {activeLang !== sourceLang && (
-                    <span className="ml-2 text-[#132175]/60 normal-case font-normal">
-                      ({sourceLang.toUpperCase()} → {activeLang.toUpperCase()})
-                    </span>
-                  )}
-                </label>
-                <ArrayItemsField
-                  field={f} item={item} sourceLang={sourceLang} activeLang={activeLang}
-                  sourceData={sourceData} targetData={targetData} onChange={onChange}
-                />
-              </div>
-            );
-          }
+      {error && (
+        <div className="text-[11px] text-red-600 bg-red-50 border border-red-200 rounded-lg px-3 py-2">{error}</div>
+      )}
 
-          const isMissing = activeLang !== sourceLang && isEmpty(targetData[f.key]);
-          const inputCls = `w-full p-2 border rounded text-sm text-gray-800 outline-none focus:border-[#1aa3c4] ${
-            isMissing ? "bg-red-50 border-red-300" : "bg-gray-50 border-gray-200"
-          }`;
-
-          if (activeLang === sourceLang) {
-            return (
-              <div key={f.key}>
-                <label className="block text-xs font-bold uppercase text-gray-500 mb-1">{f.label}</label>
-                {f.type === "richtext" ? (
-                  <VisualHtmlEditor
-                    value={fieldValueToText(sourceData[f.key])}
-                    onChange={(v) => onChange(sourceLang, f.key, v)}
-                  />
-                ) : f.type === "textarea" ? (
-                  <TextareaWithPreview
-                    value={fieldValueToText(sourceData[f.key])}
-                    onChange={(v) => onChange(sourceLang, f.key, v)}
-                    rows={f.rows || 3}
-                    className="w-full p-2 bg-gray-50 border border-gray-200 rounded text-sm text-gray-800 outline-none focus:border-[#1aa3c4]"
-                  />
-                ) : (
-                  <input
-                    type="text"
-                    value={fieldValueToText(sourceData[f.key])}
-                    onChange={(e) => onChange(sourceLang, f.key, e.target.value)}
-                    className="w-full p-2 bg-gray-50 border border-gray-200 rounded text-sm text-gray-800 outline-none focus:border-[#1aa3c4]"
-                  />
-                )}
-              </div>
-            );
-          }
+      {/* Fields */}
+      <div className="space-y-2">
+        {fields.map((field) => {
+          const src = sourceText(field);
+          const filled = fieldFilledCount(field);
+          const isOpen = expanded.has(field.key);
+          const fieldPending = targetLocales.some((l) => suggestions[cellKey(field.key, l)]);
 
           return (
-            <div key={f.key} className="grid grid-cols-2 gap-3">
-              <div>
-                <label className="block text-[10px] font-bold uppercase text-gray-400 mb-1">
-                  {f.label} <span className="normal-case font-normal text-gray-300">({sourceLang.toUpperCase()} kaynak)</span>
-                </label>
-                {f.type === "richtext" ? (
-                  <VisualHtmlEditor value={fieldValueToText(sourceData[f.key])} readOnly />
-                ) : f.type === "textarea" ? (
-                  <TextareaWithPreview
-                    value={fieldValueToText(sourceData[f.key])}
-                    rows={f.rows || 3}
-                    readOnly
-                    className="bg-gray-50 border-gray-200/50 text-gray-400"
-                  />
-                ) : (
-                  <div className="p-2 bg-gray-50 border border-gray-200/50 rounded text-gray-400 text-sm min-h-[38px] whitespace-pre-wrap">
-                    {fieldValueToText(sourceData[f.key]) || <span className="italic text-gray-300">Boş</span>}
-                  </div>
-                )}
+            <div
+              key={field.key}
+              className={`bg-white border rounded-xl overflow-hidden ${fieldPending ? "border-blue-200" : "border-gray-200"}`}
+            >
+              {/* Source row */}
+              <div className="px-4 pt-3 pb-2">
+                <div className="flex items-center justify-between mb-1">
+                  <label className="text-xs font-bold text-gray-700">{field.label}</label>
+                  <span className="text-[9px] font-bold text-gray-300 uppercase tracking-wider">
+                    {LOCALE_INFO[sourceLang]?.flag} Kaynak
+                  </span>
+                </div>
+                <div className="text-sm text-gray-500 bg-gray-50 border border-gray-100 rounded-lg px-3 py-2 min-h-[36px] whitespace-pre-wrap break-words">
+                  {field.type === "richtext" && src
+                    ? <span dangerouslySetInnerHTML={{ __html: src }} />
+                    : (src || <span className="italic text-gray-300">İngilizce metin boş</span>)}
+                </div>
               </div>
-              <div>
-                <label className={`block text-[10px] font-bold uppercase mb-1 ${isMissing ? "text-red-500" : "text-[#132175]/70"}`}>
-                  {f.label} <span className="normal-case font-normal">({activeLang.toUpperCase()} çeviri{isMissing ? " — EKSİK" : ""})</span>
-                </label>
-                {f.type === "richtext" ? (
-                  <VisualHtmlEditor
-                    value={fieldValueToText(targetData[f.key])}
-                    onChange={(v) => onChange(activeLang, f.key, v)}
-                    placeholder={`${sourceLang.toUpperCase()} dilinden çevirin...`}
-                  />
-                ) : f.type === "textarea" ? (
-                  <TextareaWithPreview
-                    value={fieldValueToText(targetData[f.key])}
-                    onChange={(v) => onChange(activeLang, f.key, v)}
-                    rows={f.rows || 3}
-                    placeholder={`${sourceLang.toUpperCase()} dilinden çevirin...`}
-                    className={inputCls}
-                  />
-                ) : (
-                  <input
-                    type="text"
-                    value={fieldValueToText(targetData[f.key])}
-                    onChange={(e) => onChange(activeLang, f.key, e.target.value)}
-                    className={inputCls}
-                    placeholder={`${sourceLang.toUpperCase()} dilinden çevirin...`}
-                  />
-                )}
-              </div>
+
+              {/* Collapsed summary / expand toggle */}
+              <button
+                type="button"
+                onClick={() => toggleExpand(field.key)}
+                className="w-full flex items-center justify-between gap-2 px-4 py-2 border-t border-gray-100 hover:bg-gray-50 transition"
+              >
+                <span className="flex items-center gap-2 text-[11px] font-semibold text-gray-500">
+                  <span className={`transition-transform ${isOpen ? "rotate-90" : ""}`}>▸</span>
+                  {targetLocales.length} dil
+                </span>
+                <span className="flex items-center gap-1">
+                  {targetLocales.map((l) => {
+                    const has = isFilled(field, l);
+                    const sug = !!suggestions[cellKey(field.key, l)];
+                    return (
+                      <span
+                        key={l}
+                        title={`${LOCALE_INFO[l]?.name}${has ? " ✓" : sug ? " (öneri)" : " (boş)"}`}
+                        className={`text-xs leading-none ${has ? "opacity-100" : sug ? "opacity-100" : "opacity-30 grayscale"}`}
+                        style={sug && !has ? { filter: "none" } : undefined}
+                      >
+                        {LOCALE_INFO[l]?.flag}
+                        {sug && !has ? <span className="text-[8px] text-blue-500 align-super">✨</span> : ""}
+                      </span>
+                    );
+                  })}
+                  <span className={`ml-1 text-[10px] font-bold ${filled === targetLocales.length ? "text-green-500" : filled > 0 ? "text-amber-500" : "text-red-400"}`}>
+                    {filled}/{targetLocales.length}
+                  </span>
+                </span>
+              </button>
+
+              {/* Expanded: per-locale editors */}
+              {isOpen && (
+                <div className="px-4 pb-3 pt-1 space-y-2 border-t border-gray-100 bg-gray-50/40">
+                  {targetLocales.map((loc) => {
+                    const info = LOCALE_INFO[loc] ?? { flag: "🌐", name: loc };
+                    const val = targetText(field, loc);
+                    const sug = suggestions[cellKey(field.key, loc)];
+                    const isBusy = translating.has(cellKey(field.key, loc));
+                    const filledHere = val.trim().length > 0;
+
+                    return (
+                      <div key={loc} className="pt-1">
+                        <div className="flex items-center justify-between mb-1">
+                          <span className="flex items-center gap-1.5 text-[11px] font-bold">
+                            <span className="text-sm leading-none">{info.flag}</span>
+                            <span className={filledHere ? "text-green-700" : sug ? "text-blue-700" : "text-amber-700"}>{info.name}</span>
+                            {filledHere && <span className="text-[9px] text-green-600">✓</span>}
+                            {!filledHere && !sug && <span className="text-[9px] text-amber-500 font-bold">BOŞ</span>}
+                          </span>
+                          {!filledHere && !sug && src.trim() && (
+                            <button
+                              type="button"
+                              onClick={() => translateField(field, loc)}
+                              disabled={isBusy}
+                              className="text-[10px] font-bold px-2 py-0.5 bg-amber-400 text-white rounded disabled:opacity-50 flex items-center gap-1"
+                            >
+                              {isBusy ? <span className="animate-spin">⟳</span> : "✨"} Çevir
+                            </button>
+                          )}
+                        </div>
+
+                        {/* Suggestion box */}
+                        {sug && (
+                          <div className="mb-1.5 bg-blue-50 border border-blue-200 rounded-lg px-3 py-2 flex items-start justify-between gap-3">
+                            <p className="text-xs text-blue-800 italic flex-1 whitespace-pre-wrap break-words">«{sug}»</p>
+                            <div className="flex gap-1.5 shrink-0">
+                              <button type="button" onClick={() => accept(field, loc)} className="text-[10px] font-bold px-2 py-0.5 bg-blue-600 text-white rounded">✓ Kabul</button>
+                              <button type="button" onClick={() => reject(field, loc)} className="text-[10px] font-bold px-2 py-0.5 bg-white border border-blue-300 text-blue-600 rounded">✗</button>
+                            </div>
+                          </div>
+                        )}
+
+                        {/* Editable input */}
+                        {field.type === "richtext" ? (
+                          <VisualHtmlEditor
+                            value={val}
+                            onChange={(v) => onChange(loc, field.key, v)}
+                            placeholder={`${info.name} çevirisi...`}
+                          />
+                        ) : field.type === "textarea" || field.type === "array-items" ? (
+                          <textarea
+                            value={val}
+                            onChange={(e) => onChange(loc, field.key, e.target.value)}
+                            rows={field.rows || (field.type === "array-items" ? 4 : 3)}
+                            dir={loc === "ar" ? "rtl" : "ltr"}
+                            placeholder={field.type === "array-items" ? "Her satır bir öğe..." : `${info.name} çevirisi...`}
+                            className={`w-full p-2.5 border rounded-lg text-sm text-gray-800 outline-none resize-none transition ${
+                              filledHere ? "bg-white border-green-200 focus:border-[#1aa3c4]" : "bg-white border-amber-200 focus:border-[#1aa3c4]"
+                            }`}
+                          />
+                        ) : (
+                          <input
+                            type="text"
+                            value={val}
+                            onChange={(e) => onChange(loc, field.key, e.target.value)}
+                            dir={loc === "ar" ? "rtl" : "ltr"}
+                            placeholder={`${info.name} çevirisi...`}
+                            className={`w-full p-2.5 border rounded-lg text-sm text-gray-800 outline-none transition ${
+                              filledHere ? "bg-white border-green-200 focus:border-[#1aa3c4]" : "bg-white border-amber-200 focus:border-[#1aa3c4]"
+                            }`}
+                          />
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
             </div>
           );
         })}

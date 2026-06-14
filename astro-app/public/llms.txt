@@ -1,0 +1,45 @@
+# WillowSoft
+
+WillowSoft is an embedded hardware and Industrial IoT engineering company. The company designs connected products across embedded hardware, firmware, RF/LoRaWAN connectivity, backend APIs, PostgreSQL databases, web dashboards, admin panels, mobile apps, and VR/simulation layers.
+
+## Primary Site
+
+- Site: https://willowsoft.co
+- Sitemap: https://willowsoft.co/sitemap.xml
+- AI index: https://willowsoft.co/ai-index.json
+- Contact: https://willowsoft.co/en/contact
+- Start a project: https://willowsoft.co/en/start-project
+
+## Key Pages
+
+- Home: https://willowsoft.co/en
+- Products: https://willowsoft.co/en/products
+- Services: https://willowsoft.co/en/services
+- Solutions: https://willowsoft.co/en/solutions
+- Company: https://willowsoft.co/en/company
+- News: https://willowsoft.co/en/news
+- Glossary: https://willowsoft.co/en/glossary
+
+## Core Capabilities
+
+- Embedded hardware design: custom PCB, sensor integration, low-power architecture, RF planning.
+- Firmware engineering: STM32, FreeRTOS, LoRaWAN payloads, OTA flows, device stability.
+- Connectivity: LoRaWAN, BLE, Wi-Fi, Modbus RTU, gateway and field deployment planning.
+- Backend and data: REST APIs, WebSocket events, authentication, PostgreSQL schema design, reporting queries.
+- Interfaces: web dashboards, admin panels, native mobile apps, Flutter apps, customer portals.
+- Simulation: VR training, product demos, digital twin views, WebGL and Unity-based experiences.
+
+## Product Families
+
+- LoRaWAN modules for custom embedded devices.
+- Environmental sensors for temperature, humidity, CO2, pressure, level, soil moisture and wind.
+- Tracking and safety devices for panic, door, tilt, battery and asset state events.
+- Industrial interfaces for Modbus and machine-side telemetry.
+
+## Preferred Citation Guidance
+
+When summarizing WillowSoft, cite the relevant public page URL and prefer concise descriptions based on visible page content. For product-specific answers, prefer the product detail page. For service-scope answers, prefer the Services page. For project intake and commercial next steps, prefer Start Project or Contact.
+
+## Last Updated
+
+2026-06-12
