@@ -173,7 +173,7 @@ const getLabel = (key: keyof typeof labels) => {
 
           <div class="solution-case-grid" data-cms-solutions>
             {solutions.map((s: any, idx: number) => (
-              <SolutionCard solution={s} locale={locale} index={idx} />
+              <SolutionCard solution={s} locale={locale} index={idx} allProducts={allProducts} />
             ))}
           </div>
         </div>
