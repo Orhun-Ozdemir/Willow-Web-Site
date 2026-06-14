@@ -432,6 +432,178 @@ const dir = locale === "ar" ? "rtl" : "ltr";
       }
     })();
     </script>
+    <script is:inline define:vars={{ baseUrl: import.meta.env.BASE_URL }}>
+      (function(){
+        // Check if we are on the admin page
+        const path = window.location.pathname;
+        const normalizedBase = baseUrl.replace(/\/+$/, "");
+        let cleanPath = path;
+        if (normalizedBase && path.startsWith(normalizedBase)) {
+          cleanPath = path.slice(normalizedBase.length) || "/";
+        }
+        if (cleanPath.startsWith('/admin') || cleanPath.startsWith('/api')) return;
+
+        // Fetch session
+        fetch(baseUrl + 'api/auth/session')
+          .then(res => res.json())
+          .then(data => {
+            if (data && data.authenticated) {
+              const username = data.user ? data.user.name : 'Admin';
+              
+              // Create style element
+              const style = document.createElement('style');
+              style.textContent = `
+                .admin-toolbar {
+                  position: fixed;
+                  bottom: 24px;
+                  right: 24px;
+                  z-index: 99999;
+                  font-family: var(--font-body), system-ui, -apple-system, sans-serif;
+                  animation: adminSlideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+                }
+                @keyframes adminSlideIn {
+                  from { transform: translateY(20px) scale(0.95); opacity: 0; }
+                  to { transform: translateY(0) scale(1); opacity: 1; }
+                }
+                .admin-toolbar-content {
+                  display: flex;
+                  align-items: center;
+                  gap: 16px;
+                  padding: 8px 12px 8px 16px;
+                  background: rgba(19, 33, 117, 0.9);
+                  backdrop-filter: blur(12px) saturate(160%);
+                  -webkit-backdrop-filter: blur(12px) saturate(160%);
+                  border: 1px solid rgba(255, 255, 255, 0.18);
+                  border-radius: 999px;
+                  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+                  color: #ffffff;
+                }
+                .admin-toolbar-info {
+                  display: flex;
+                  align-items: center;
+                  gap: 8px;
+                }
+                .admin-toolbar-dot {
+                  width: 8px;
+                  height: 8px;
+                  background-color: #10b981;
+                  border-radius: 50%;
+                  box-shadow: 0 0 10px #10b981;
+                  animation: adminPulseDot 2s infinite;
+                }
+                @keyframes adminPulseDot {
+                  0% { transform: scale(0.95); opacity: 0.5; }
+                  50% { transform: scale(1.1); opacity: 1; }
+                  100% { transform: scale(0.95); opacity: 0.5; }
+                }
+                .admin-toolbar-text {
+                  font-size: 13px;
+                  font-weight: 500;
+                  color: rgba(255, 255, 255, 0.9);
+                }
+                .admin-toolbar-text strong {
+                  color: #ffffff;
+                  font-weight: 700;
+                }
+                .admin-toolbar-actions {
+                  display: flex;
+                  align-items: center;
+                  gap: 8px;
+                }
+                .admin-toolbar-btn {
+                  display: inline-flex;
+                  align-items: center;
+                  gap: 6px;
+                  padding: 6px 14px;
+                  border-radius: 999px;
+                  font-size: 12px;
+                  font-weight: 700;
+                  text-decoration: none;
+                  cursor: pointer;
+                  transition: all 0.2s ease;
+                  border: none;
+                }
+                .admin-toolbar-btn svg {
+                  width: 14px;
+                  height: 14px;
+                }
+                .admin-toolbar-btn-primary {
+                  background: #ffffff;
+                  color: #132175;
+                  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.15);
+                }
+                .admin-toolbar-btn-primary:hover {
+                  background: #f1f3f9;
+                  transform: translateY(-1px);
+                }
+                .admin-toolbar-btn-danger {
+                  background: rgba(239, 68, 68, 0.2);
+                  color: #fca5a5;
+                  border: 1px solid rgba(239, 68, 68, 0.3);
+                }
+                .admin-toolbar-btn-danger:hover {
+                  background: rgba(239, 68, 68, 0.35);
+                  color: #ffffff;
+                  transform: translateY(-1px);
+                }
+                @media (max-width: 640px) {
+                  .admin-toolbar {
+                    left: 12px;
+                    right: 12px;
+                    bottom: 12px;
+                  }
+                  .admin-toolbar-content {
+                    justify-content: space-between;
+                    width: 100%;
+                    box-sizing: border-box;
+                  }
+                }
+              `;
+              document.head.appendChild(style);
+
+              // Create HTML structure
+              const toolbar = document.createElement('div');
+              toolbar.id = 'admin-toolbar';
+              toolbar.className = 'admin-toolbar';
+              toolbar.innerHTML = `
+                <div class="admin-toolbar-content">
+                  <div class="admin-toolbar-info">
+                    <span class="admin-toolbar-dot"></span>
+                    <span class="admin-toolbar-text">Hoş Geldiniz, <strong id="admin-toolbar-username">${username}</strong></span>
+                  </div>
+                  <div class="admin-toolbar-actions">
+                    <a href="${baseUrl + 'admin/dashboard'}" class="admin-toolbar-btn admin-toolbar-btn-primary">
+                      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;display:inline-block;vertical-align:middle;">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+                      </svg>
+                      <span>Yönetim Paneli</span>
+                    </a>
+                    <button class="admin-toolbar-btn admin-toolbar-btn-danger" id="admin-toolbar-logout">
+                      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;display:inline-block;vertical-align:middle;">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                      </svg>
+                      <span>Çıkış</span>
+                    </button>
+                  </div>
+                </div>
+              `;
+              document.body.appendChild(toolbar);
+
+              // Add event listener for logout
+              const logoutBtn = document.getElementById('admin-toolbar-logout');
+              logoutBtn?.addEventListener('click', () => {
+                logoutBtn.disabled = true;
+                logoutBtn.textContent = 'Bekleyin...';
+                fetch(baseUrl + 'api/auth/logout', { method: 'POST' })
+                  .then(() => {
+                    window.location.reload();
+                  });
+              });
+            }
+          })
+          .catch(err => console.error('Admin session check failed', err));
+      })();
+    </script>
   {/* Tawk.to Live Chat — PUBLIC_TAWK_PROPERTY_ID .env'de tanımlıysa yüklenir */}
   {import.meta.env.PUBLIC_TAWK_PROPERTY_ID && (
     <script is:inline define:vars={{ tawkPropertyId: import.meta.env.PUBLIC_TAWK_PROPERTY_ID, tawkWidgetId: import.meta.env.PUBLIC_TAWK_WIDGET_ID || "default" }}>

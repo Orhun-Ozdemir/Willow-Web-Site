@@ -140,10 +140,13 @@ export default function CompanyPanel() {
     });
   };
   const deleteBullet = (idx: number) => {
-    const newList = (content.companyFacts?.aboutBullets || []).filter((_: any, i: number) => i !== idx);
-    const newFacts = { ...content.companyFacts, aboutBullets: newList };
-    setContent((c: any) => ({ ...c, companyFacts: newFacts }));
-    saveSection("companyFacts", newFacts);
+    if (!confirm("Bu maddeyi silmek istediğinize emin misiniz?")) return;
+    setContent((c: any) => {
+      const newList = (c.companyFacts?.aboutBullets || []).filter((_: any, i: number) => i !== idx);
+      const newFacts = { ...c.companyFacts, aboutBullets: newList };
+      saveSection("companyFacts", newFacts);
+      return { ...c, companyFacts: newFacts };
+    });
   };
   const moveBullet = (idx: number, dir: -1 | 1) => {
     const target = idx + dir;
@@ -194,11 +197,13 @@ export default function CompanyPanel() {
 
   const deleteTeamMember = (id: string) => {
     if (!confirm("Bu ekip üyesini silmek istediğinize emin misiniz?")) return;
-    const newTeam = (content.companyFacts?.team || []).filter((x: any) => x.id !== id);
-    const newFacts = { ...content.companyFacts, team: newTeam };
-    setContent((c: any) => ({ ...c, companyFacts: newFacts }));
+    setContent((c: any) => {
+      const newTeam = (c.companyFacts?.team || []).filter((x: any) => x.id !== id);
+      const newFacts = { ...c.companyFacts, team: newTeam };
+      saveSection("companyFacts", newFacts);
+      return { ...c, companyFacts: newFacts };
+    });
     setEditingTeamIdx(null);
-    saveSection("companyFacts", newFacts);
   };
 
   // Timeline Updates
@@ -239,11 +244,13 @@ export default function CompanyPanel() {
 
   const deleteTimelineStep = (id: string) => {
     if (!confirm("Bu zaman çizelgesi adımını silmek istediğinize emin misiniz?")) return;
-    const newTimeline = (content.companyFacts?.timeline || []).filter((x: any) => x.id !== id);
-    const newFacts = { ...content.companyFacts, timeline: newTimeline };
-    setContent((c: any) => ({ ...c, companyFacts: newFacts }));
+    setContent((c: any) => {
+      const newTimeline = (c.companyFacts?.timeline || []).filter((x: any) => x.id !== id);
+      const newFacts = { ...c.companyFacts, timeline: newTimeline };
+      saveSection("companyFacts", newFacts);
+      return { ...c, companyFacts: newFacts };
+    });
     setEditingTimelineIdx(null);
-    saveSection("companyFacts", newFacts);
   };
 
   // Offices Updates
@@ -287,11 +294,13 @@ export default function CompanyPanel() {
 
   const deleteOffice = (id: string) => {
     if (!confirm("Bu ofisi silmek istediğinize emin misiniz?")) return;
-    const newOffices = (content.companyFacts?.officesList || []).filter((x: any) => x.id !== id);
-    const newFacts = { ...content.companyFacts, officesList: newOffices };
-    setContent((c: any) => ({ ...c, companyFacts: newFacts }));
+    setContent((c: any) => {
+      const newOffices = (c.companyFacts?.officesList || []).filter((x: any) => x.id !== id);
+      const newFacts = { ...c.companyFacts, officesList: newOffices };
+      saveSection("companyFacts", newFacts);
+      return { ...c, companyFacts: newFacts };
+    });
     setEditingOfficeIdx(null);
-    saveSection("companyFacts", newFacts);
   };
 
   // Expertise helpers
@@ -321,11 +330,13 @@ export default function CompanyPanel() {
 
   const deleteExpertise = (id: string) => {
     if (!confirm("Bu uzmanlık alanını silmek istediğinize emin misiniz?")) return;
-    const newList = (content.companyFacts?.expertise || []).filter((x: any) => x.id !== id);
-    const newFacts = { ...content.companyFacts, expertise: newList };
-    setContent((c: any) => ({ ...c, companyFacts: newFacts }));
+    setContent((c: any) => {
+      const newList = (c.companyFacts?.expertise || []).filter((x: any) => x.id !== id);
+      const newFacts = { ...c.companyFacts, expertise: newList };
+      saveSection("companyFacts", newFacts);
+      return { ...c, companyFacts: newFacts };
+    });
     setEditingExpertiseIdx(null);
-    saveSection("companyFacts", newFacts);
   };
 
   const sortedExpertise = [...expertiseList].sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
@@ -367,11 +378,13 @@ export default function CompanyPanel() {
 
   const deleteIndustry = (id: string) => {
     if (!confirm("Bu sektörü silmek istediğinize emin misiniz?")) return;
-    const newList = (content.companyFacts?.industries || []).filter((x: any) => x.id !== id);
-    const newFacts = { ...content.companyFacts, industries: newList };
-    setContent((c: any) => ({ ...c, companyFacts: newFacts }));
+    setContent((c: any) => {
+      const newList = (c.companyFacts?.industries || []).filter((x: any) => x.id !== id);
+      const newFacts = { ...c.companyFacts, industries: newList };
+      saveSection("companyFacts", newFacts);
+      return { ...c, companyFacts: newFacts };
+    });
     setEditingIndustryIdx(null);
-    saveSection("companyFacts", newFacts);
   };
 
   const sortedIndustries = [...industriesList].sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
