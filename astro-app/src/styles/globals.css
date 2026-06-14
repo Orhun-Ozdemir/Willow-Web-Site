@@ -12476,3 +12476,99 @@ body[data-page="solutions"] .solutions-final-cta p {
   }
 }
 
+/* ================================================================
+   Solutions page — filter bar, use-case chips, product badges
+   ================================================================ */
+
+.solution-filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.sol-filter-btn {
+  padding: 7px 16px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--panel);
+  color: var(--muted);
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.18s, border-color 0.18s, color 0.18s;
+}
+
+.sol-filter-btn:hover {
+  border-color: rgba(var(--accent-rgb), 0.4);
+  color: var(--accent-text);
+}
+
+.sol-filter-btn.active {
+  background: var(--accent-soft);
+  border-color: rgba(var(--accent-rgb), 0.36);
+  color: var(--accent-text);
+}
+
+/* Use-case chips inside solution cards */
+.solution-use-cases {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 14px;
+}
+
+.solution-use-cases span {
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(var(--accent-rgb), 0.22);
+  background: var(--accent-soft);
+  color: var(--accent-text);
+  font-size: 0.69rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+/* Product link badges */
+.solution-product-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--line);
+}
+
+.solution-product-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border-radius: 6px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--ink);
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: border-color 0.18s, background 0.18s;
+}
+
+.solution-product-badge:hover {
+  border-color: rgba(var(--accent-rgb), 0.4);
+  background: var(--accent-soft);
+  color: var(--accent-text);
+}
+
+@media (max-width: 900px) {
+  .solution-filter-bar {
+    gap: 6px;
+  }
+
+  .sol-filter-btn {
+    padding: 6px 12px;
+    font-size: 0.75rem;
+  }
+}
+
