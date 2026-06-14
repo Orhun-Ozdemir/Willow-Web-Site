@@ -131,11 +131,13 @@ const getLabel = (key: keyof typeof labels) => {
     </section>
 
     <!-- AI Answer -->
-    <section class="section tight">
-      <div class="section-inner">
-        <AIAnswerBlock answer={aiAnswer} locale={locale} meta={aiMeta} />
-      </div>
-    </section>
+    {aiAnswer && (
+      <section class="section tight">
+        <div class="section-inner">
+          <AIAnswerBlock answer={aiAnswer} locale={locale} meta={aiMeta} />
+        </div>
+      </section>
+    )}
 
     <!-- Use Cases Section -->
     <section class="section solution-market-section">

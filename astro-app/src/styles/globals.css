@@ -11944,7 +11944,7 @@ body[data-page="company"] .company-cta-inner {
    ============================================================ */
 body[data-page="solutions"] .solutions-hero-premium {
   position: relative;
-  min-height: clamp(520px, 72vh, 680px);
+  min-height: clamp(400px, 50vh, 520px);
   display: flex;
   align-items: center;
   overflow: hidden;
