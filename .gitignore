@@ -85,3 +85,5 @@ data/leads.json
 data/events.json
 data/bot-events.json
 *.pid
+astro-app/.vercel/
+astro-app/dist/
