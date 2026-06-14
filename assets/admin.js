@@ -685,7 +685,11 @@
     const servicesText = Array.isArray(solution.servicesUsed)
       ? solution.servicesUsed.join(", ")
       : String(solution.servicesUsed || "");
-    const imgUrl = solution.image ? (solution.image.startsWith("http") ? solution.image : "/" + solution.image) : "";
+    // image may be a string or an object {webp, png, srcsetWebp, srcsetPng}
+    const imgSrc = typeof solution.image === "object"
+      ? (solution.image?.png || solution.image?.webp || "")
+      : (solution.image || "");
+    const imgUrl = imgSrc ? (imgSrc.startsWith("http") ? imgSrc : "/" + imgSrc) : "";
 
     return `
       <details class="admin-card admin-editor-card" data-solution-index="${index}">
@@ -720,10 +724,16 @@
               ${imgUrl ? `<img src="${esc(imgUrl)}" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';" />` : ""}
               <svg style="width: 24px; height: 24px; fill: var(--admin-muted); display: ${imgUrl ? 'none' : 'block'};" viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
             </div>
-            <label style="flex: 1; margin: 0;">Çözüm Görseli
-              <input data-field="image" value="${esc(solution.image)}" style="margin-top: 4px;" />
+            <label style="flex: 1; margin: 0;">Görsel URL (PNG — Supabase)
+              <span class="field-helper">Supabase Storage'daki PNG URL'i. Otomatik srcset oluşturulur.</span>
+              <input data-field="image" value="${esc(imgSrc)}" style="margin-top: 4px;" placeholder="https://...supabase.co/storage/.../image.png" />
             </label>
           </div>
+
+          <label>Görsel Alt Metni
+            <span class="field-helper">Görselin erişilebilirlik ve SEO açıklaması.</span>
+            <input data-field="alt" value="${esc(solution.alt || "")}" />
+          </label>
 
           <label class="span-2">Çözüm Manşeti
             <span class="field-helper">Sayfa başında büyük harflerle görünecek manşet cümlesi.</span>
@@ -733,16 +743,16 @@
             <span class="field-helper">Çözüm detaylarını açıklayan ana paragraf.</span>
             <textarea data-field="summary">${esc(solution.summary)}</textarea>
           </label>
-          <label class="span-2">Madde Noktaları (Her satıra bir tane)
-            <span class="field-helper">Çözümün sunduğu fayda veya aşamalar.</span>
-            <textarea data-field="bullets" rows="3">${esc(bulletsText)}</textarea>
+          <label class="span-2">Kullanım Alanları / Özellikler (Her satıra bir tane)
+            <span class="field-helper">Kısa etiketler chip olarak gösterilir. Örn: Fabrikalar / Su tankları</span>
+            <textarea data-field="bullets" rows="4">${esc(bulletsText)}</textarea>
           </label>
           <label>Kullanılan Ürünler
-            <span class="field-helper">Ürünlerin slug değerleri (virgülle ayırın). Örn: willowair</span>
+            <span class="field-helper">Ürün slug'ları (virgülle). Kartın altında ürün sayfasına bağlantı oluşturur. Örn: willowair, willowmod</span>
             <input data-field="productsUsed" value="${esc(productsText)}" />
           </label>
           <label>İlişkili Hizmetler
-            <span class="field-helper">Hizmetlerin slug değerleri (virgülle ayırın).</span>
+            <span class="field-helper">Hizmet slug'ları (virgülle). Örn: iot-cloud, backend</span>
             <input data-field="servicesUsed" value="${esc(servicesText)}" />
           </label>
         </div>
@@ -3264,13 +3274,20 @@
           if (titleEl) titleEl.textContent = value || "Yeni Çözüm";
         }
         if (field === "image") {
+          // Preserve srcset structure if current image is an object; update png entry
+          const existing = state.content.solutions[index].image;
+          if (typeof existing === "object" && existing !== null) {
+            existing.png = target.value;
+            existing.webp = target.value.replace(/\.png(\?.*)?$/, ".webp");
+            value = existing;
+          }
           const imgEl = solutionCard.querySelector(".admin-image-preview-thumbnail img");
           const placeholderSvg = solutionCard.querySelector(".admin-image-preview-thumbnail svg");
-          const url = target.value ? (target.value.startsWith("http") ? target.value : "/" + target.value) : "";
+          const url = target.value || "";
           if (imgEl) {
             imgEl.src = url;
-            imgEl.style.display = "block";
-            if (placeholderSvg) placeholderSvg.style.display = "none";
+            imgEl.style.display = url ? "block" : "none";
+            if (placeholderSvg) placeholderSvg.style.display = url ? "none" : "block";
           } else if (url) {
             const thumb = solutionCard.querySelector(".admin-image-preview-thumbnail");
             if (thumb) {

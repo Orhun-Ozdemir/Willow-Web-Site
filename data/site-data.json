@@ -3947,418 +3947,316 @@
   },
   "solutions": [
     {
-      "id": "water-level-monitoring",
-      "title": "Remote tanks, manholes and water infrastructure.",
-      "slug": "water-level-monitoring",
-      "category": "Water & level monitoring",
-      "headline": "Remote tanks, manholes and water infrastructure.",
-      "summary": "Detect level changes, overflow risk, pressure changes and field events without manual inspection routes.",
-      "image": "pdf-assets/p07_02_X18.jpg",
+      "id": "industrial-iot-monitoring",
+      "slug": "industrial-iot-monitoring",
+      "title": "Industrial IoT Monitoring",
+      "headline": "Industrial IoT Monitoring",
+      "summary": "Remote monitoring for industrial sensors, embedded systems and field devices.",
+      "category": "Industrial IoT",
+      "alt": "Engineers working on embedded and industrial IoT systems.",
+      "image": {
+        "webp": "https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/images/usage-only/webp/industrial-iot-monitoring-1200.webp",
+        "png": "https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/images/usage-only/png/industrial-iot-monitoring-1200.png",
+        "srcsetWebp": "https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/images/usage-only/webp/industrial-iot-monitoring-480.webp 480w, https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/images/usage-only/webp/industrial-iot-monitoring-768.webp 768w, https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/images/usage-only/webp/industrial-iot-monitoring-1200.webp 1200w",
+        "srcsetPng": "https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/images/usage-only/png/industrial-iot-monitoring-480.png 480w, https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/images/usage-only/png/industrial-iot-monitoring-768.png 768w, https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/images/usage-only/png/industrial-iot-monitoring-1200.png 1200w"
+      },
       "bullets": [
-        "WillowSonic / pressure sensors",
-        "LoRaWAN telemetry",
-        "Dashboard alerts and reporting"
+        "Industrial facilities",
+        "Remote telemetry",
+        "Cloud data visualization",
+        "Low-power field devices"
       ],
-      "productsUsed": [
-        "willowsonic",
-        "willowpre"
-      ],
-      "servicesUsed": [
-        "iot-cloud",
-        "backend"
-      ],
-      "featured": true,
-      "sortOrder": 10,
-      "localized": {
-        "tr": {
-          "title": "Uzaktaki tanklar, rögarlar ve su altyapısı.",
-          "category": "Su ve seviye izleme",
-          "headline": "Uzaktaki tanklar, rögarlar ve su altyapısı.",
-          "summary": "Manuel denetim turları olmadan seviye değişimlerini, taşma riskini, basınç değişimlerini ve saha olaylarını algılayın.",
-          "bullets": [
-            "WillowSonic / basınç sensörleri",
-            "LoRaWAN telemetrisi",
-            "Pano uyarıları ve raporlama"
-          ]
-        },
-        "de": {
-          "title": "Entfernte Tanks, Schächte und Wasserinfrastruktur.",
-          "category": "Wasser- & Füllstandüberwachung",
-          "headline": "Entfernte Tanks, Schächte und Wasserinfrastruktur.",
-          "summary": "Erkennen Sie Füllstandänderungen, Überlaufrisiken, Druckänderungen und Feldereignisse ohne manuelle Inspektionsrouten.",
-          "bullets": [
-            "WillowSonic / Drucksensoren",
-            "LoRaWAN-Telemetrie",
-            "Dashboard-Alarme und Reporting"
-          ]
-        },
-        "fr": {
-          "title": "Réservoirs, regards et infrastructures d'eau à distance.",
-          "category": "Surveillance de l'eau et du niveau",
-          "headline": "Réservoirs, regards et infrastructures d'eau à distance.",
-          "summary": "Détectez les variations de niveau, les risques de débordement, les changements de pression et les événements de terrain sans tournées d'inspection manuelles.",
-          "bullets": [
-            "Capteurs WillowSonic / de pression",
-            "Télémétrie LoRaWAN",
-            "Alertes et rapports sur tableau de bord"
-          ]
-        },
-        "es": {
-          "title": "Tanques, registros e infraestructura de agua remotos.",
-          "category": "Monitorización de agua y nivel",
-          "headline": "Tanques, registros e infraestructura de agua remotos.",
-          "summary": "Detecte cambios de nivel, riesgo de desbordamiento, cambios de presión y eventos de campo sin rutas de inspección manuales.",
-          "bullets": [
-            "Sensores WillowSonic / de presión",
-            "Telemetría LoRaWAN",
-            "Alertas e informes en el panel"
-          ]
-        },
-        "it": {
-          "title": "Serbatoi, pozzetti e infrastrutture idriche da remoto.",
-          "category": "Monitoraggio acqua e livello",
-          "headline": "Serbatoi, pozzetti e infrastrutture idriche da remoto.",
-          "summary": "Rileva variazioni di livello, rischio di troppopieno, variazioni di pressione ed eventi sul campo senza giri di ispezione manuali.",
-          "bullets": [
-            "Sensori WillowSonic / di pressione",
-            "Telemetria LoRaWAN",
-            "Avvisi e report su dashboard"
-          ]
-        },
-        "ar": {
-          "title": "الخزانات وغرف التفتيش والبنية التحتية للمياه عن بُعد.",
-          "category": "مراقبة المياه والمستوى",
-          "headline": "الخزانات وغرف التفتيش والبنية التحتية للمياه عن بُعد.",
-          "summary": "اكتشف تغيّرات المستوى وخطر الفيضان وتغيّرات الضغط والأحداث الميدانية دون جولات تفتيش يدوية.",
-          "bullets": [
-            "مستشعرات WillowSonic / الضغط",
-            "قياس LoRaWAN عن بُعد",
-            "تنبيهات لوحة المعلومات والتقارير"
-          ]
-        },
-        "ja": {
-          "title": "遠隔のタンク、マンホール、水インフラ。",
-          "category": "水・レベル監視",
-          "headline": "遠隔のタンク、マンホール、水インフラ。",
-          "summary": "手動の点検巡回なしで、レベル変化、溢水リスク、圧力変化、現場イベントを検知します。",
-          "bullets": [
-            "WillowSonic / 圧力センサー",
-            "LoRaWAN テレメトリ",
-            "ダッシュボードのアラートとレポート"
-          ]
-        }
-      }
-    },
-    {
-      "id": "industrial-machine-telemetry",
-      "title": "PLC, meter and Modbus data made visible.",
-      "slug": "industrial-machine-telemetry",
-      "category": "Industrial machine telemetry",
-      "headline": "PLC, meter and Modbus data made visible.",
-      "summary": "Bring legacy industrial signals into APIs, PostgreSQL, dashboards and mobile workflows.",
-      "image": "pdf-assets/p14_02_X51.jpg",
-      "bullets": [
-        "WillowMod bridge",
-        "Backend API + PostgreSQL",
-        "Admin panel and operator dashboard"
-      ],
-      "productsUsed": [
-        "willowmod"
-      ],
-      "servicesUsed": [
-        "backend",
-        "postgresql",
-        "web-admin"
-      ],
-      "featured": true,
-      "sortOrder": 20,
-      "localized": {
-        "tr": {
-          "title": "PLC, sayaç ve Modbus verileri artık izlenebilir.",
-          "category": "Endüstriyel makine telemetrisi",
-          "headline": "PLC, sayaç ve Modbus verileri artık izlenebilir.",
-          "summary": "Eski endüstriyel sinyalleri API'lere, PostgreSQL'e, panolara ve mobil iş akışlarına taşıyın.",
-          "bullets": [
-            "WillowMod köprüsü",
-            "Backend API + PostgreSQL",
-            "Yönetim paneli ve operatör panosu"
-          ]
-        },
-        "de": {
-          "title": "SPS-, Zähler- und Modbus-Daten jetzt direkt auslesbar und überwachbar.",
-          "category": "Telemetrie für Industriemaschinen",
-          "headline": "SPS-, Zähler- und Modbus-Daten jetzt direkt auslesbar und überwachbar.",
-          "summary": "Bringen Sie alte Industriesignale in APIs, PostgreSQL, Dashboards und mobile Workflows.",
-          "bullets": [
-            "WillowMod-Brücke",
-            "Backend-API + PostgreSQL",
-            "Admin-Panel und Bediener-Dashboard"
-          ]
-        },
-        "fr": {
-          "title": "Données API, compteurs et Modbus désormais accessibles et exploitables.",
-          "category": "Télémétrie de machines industrielles",
-          "headline": "Données API, compteurs et Modbus désormais accessibles et exploitables.",
-          "summary": "Intégrez les signaux industriels existants dans des API, PostgreSQL, des tableaux de bord et des flux mobiles.",
-          "bullets": [
-            "Passerelle WillowMod",
-            "API backend + PostgreSQL",
-            "Panneau d'administration et tableau de bord opérateur"
-          ]
-        },
-        "es": {
-          "title": "Datos de PLC, medidores y Modbus ahora visibles y accesibles.",
-          "category": "Telemetría de máquinas industriales",
-          "headline": "Datos de PLC, medidores y Modbus ahora visibles y accesibles.",
-          "summary": "Lleve las señales industriales heredadas a API, PostgreSQL, paneles y flujos móviles.",
-          "bullets": [
-            "Puente WillowMod",
-            "API backend + PostgreSQL",
-            "Panel de administración y panel de operador"
-          ]
-        },
-        "it": {
-          "title": "Dati PLC, contatori e Modbus ora visibili e accessibili.",
-          "category": "Telemetria di macchine industriali",
-          "headline": "Dati PLC, contatori e Modbus ora visibili e accessibili.",
-          "summary": "Porta i segnali industriali legacy in API, PostgreSQL, dashboard e flussi mobili.",
-          "bullets": [
-            "Bridge WillowMod",
-            "API backend + PostgreSQL",
-            "Pannello di amministrazione e dashboard operatore"
-          ]
-        },
-        "ar": {
-          "title": "بيانات PLC والعدادات وModbus تصبح الآن قابلة للرصد والمتابعة.",
-          "category": "قياس بيانات الآلات الصناعية",
-          "headline": "بيانات PLC والعدادات وModbus تصبح الآن قابلة للرصد والمتابعة.",
-          "summary": "انقل الإشارات الصناعية القديمة إلى واجهات البرمجة وPostgreSQL ولوحات المعلومات وسير العمل على الجوال.",
-          "bullets": [
-            "جسر WillowMod",
-            "واجهة خلفية + PostgreSQL",
-            "لوحة إدارة ولوحة معلومات للمشغّل"
-          ]
-        },
-        "ja": {
-          "title": "PLC・メーター・Modbus のデータを可視化。",
-          "category": "産業機械のテレメトリ",
-          "headline": "PLC・メーター・Modbus のデータを可視化。",
-          "summary": "レガシーな産業信号を API、PostgreSQL、ダッシュボード、モバイルワークフローに取り込みます。",
-          "bullets": [
-            "WillowMod ブリッジ",
-            "バックエンド API + PostgreSQL",
-            "管理パネルとオペレーター用ダッシュボード"
-          ]
-        }
-      }
-    },
-    {
-      "id": "smart-buildings",
-      "title": "Air quality, comfort and facility monitoring.",
-      "slug": "smart-buildings",
-      "category": "Smart buildings",
-      "headline": "Air quality, comfort and facility monitoring.",
-      "summary": "Monitor indoor conditions and turn sensor readings into operational notifications and reports.",
-      "image": "pdf-assets/p08_04_X25.jpg",
-      "bullets": [
-        "WillowAir / WillowTemp",
-        "Building dashboards",
-        "Mobile notifications"
-      ],
-      "productsUsed": [
-        "willowair",
-        "willowtemp"
-      ],
-      "servicesUsed": [
-        "mobile",
-        "web-admin"
-      ],
+      "productsUsed": [],
+      "servicesUsed": [],
       "featured": true,
       "sortOrder": 30,
-      "localized": {
-        "tr": {
-          "title": "Hava kalitesi, konfor ve tesis izleme.",
-          "category": "Akıllı binalar",
-          "headline": "Hava kalitesi, konfor ve tesis izleme.",
-          "summary": "İç mekân koşullarını izleyin ve sensör okumalarını operasyonel bildirimlere ve raporlara dönüştürün.",
-          "bullets": [
-            "WillowAir / WillowTemp",
-            "Bina panoları",
-            "Mobil bildirimler"
-          ]
-        },
-        "de": {
-          "title": "Luftqualität, Komfort und Gebäudeüberwachung.",
-          "category": "Smart Buildings",
-          "headline": "Luftqualität, Komfort und Gebäudeüberwachung.",
-          "summary": "Überwachen Sie die Innenraumbedingungen und verwandeln Sie Sensormesswerte in operative Benachrichtigungen und Berichte.",
-          "bullets": [
-            "WillowAir / WillowTemp",
-            "Gebäude-Dashboards",
-            "Mobile Benachrichtigungen"
-          ]
-        },
-        "fr": {
-          "title": "Qualité de l'air, confort et surveillance des installations.",
-          "category": "Bâtiments intelligents",
-          "headline": "Qualité de l'air, confort et surveillance des installations.",
-          "summary": "Surveillez les conditions intérieures et transformez les relevés des capteurs en notifications et rapports opérationnels.",
-          "bullets": [
-            "WillowAir / WillowTemp",
-            "Tableaux de bord du bâtiment",
-            "Notifications mobiles"
-          ]
-        },
-        "es": {
-          "title": "Calidad del aire, confort y monitorización de instalaciones.",
-          "category": "Edificios inteligentes",
-          "headline": "Calidad del aire, confort y monitorización de instalaciones.",
-          "summary": "Supervise las condiciones interiores y convierta las lecturas de los sensores en notificaciones e informes operativos.",
-          "bullets": [
-            "WillowAir / WillowTemp",
-            "Paneles del edificio",
-            "Notificaciones móviles"
-          ]
-        },
-        "it": {
-          "title": "Qualità dell'aria, comfort e monitoraggio degli impianti.",
-          "category": "Edifici intelligenti",
-          "headline": "Qualità dell'aria, comfort e monitoraggio degli impianti.",
-          "summary": "Monitora le condizioni interne e trasforma le letture dei sensori in notifiche e report operativi.",
-          "bullets": [
-            "WillowAir / WillowTemp",
-            "Dashboard dell'edificio",
-            "Notifiche mobili"
-          ]
-        },
-        "ar": {
-          "title": "جودة الهواء والراحة ومراقبة المرافق.",
-          "category": "المباني الذكية",
-          "headline": "جودة الهواء والراحة ومراقبة المرافق.",
-          "summary": "راقب الظروف الداخلية وحوّل قراءات المستشعرات إلى إشعارات وتقارير تشغيلية.",
-          "bullets": [
-            "WillowAir / WillowTemp",
-            "لوحات معلومات المبنى",
-            "إشعارات على الجوال"
-          ]
-        },
-        "ja": {
-          "title": "空気質、快適性、施設の監視。",
-          "category": "スマートビル",
-          "headline": "空気質、快適性、施設の監視。",
-          "summary": "屋内環境を監視し、センサーの測定値を運用上の通知やレポートに変換します。",
-          "bullets": [
-            "WillowAir / WillowTemp",
-            "建物ダッシュボード",
-            "モバイル通知"
-          ]
-        }
-      }
+      "localized": {}
     },
     {
-      "id": "asset-field-operations",
-      "title": "Distributed assets, safety events and route visibility.",
-      "slug": "asset-field-operations",
-      "category": "Asset & field operations",
-      "headline": "Distributed assets, safety events and route visibility.",
-      "summary": "Track movement, door events, panic alerts and field asset state across multiple locations.",
-      "image": "pdf-assets/p09_02_X28.jpg",
+      "id": "water-tank-flood-monitoring",
+      "slug": "water-tank-flood-monitoring",
+      "title": "Water, Tank & Flood Monitoring",
+      "headline": "Water, Tank & Flood Monitoring",
+      "summary": "Distance, level and flood-risk monitoring for tanks, manholes and drainage systems.",
+      "category": "Water & Level",
+      "alt": "Installed field sensor used for water, tank and flood monitoring.",
+      "image": {
+        "webp": "https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/images/usage-only/webp/water-tank-flood-monitoring-1200.webp",
+        "png": "https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/images/usage-only/png/water-tank-flood-monitoring-1200.png",
+        "srcsetWebp": "https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/images/usage-only/webp/water-tank-flood-monitoring-480.webp 480w, https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/images/usage-only/webp/water-tank-flood-monitoring-768.webp 768w, https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/images/usage-only/webp/water-tank-flood-monitoring-1200.webp 1200w",
+        "srcsetPng": "https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/images/usage-only/png/water-tank-flood-monitoring-480.png 480w, https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/images/usage-only/png/water-tank-flood-monitoring-768.png 768w, https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/images/usage-only/png/water-tank-flood-monitoring-1200.png 1200w"
+      },
       "bullets": [
-        "GNSS and motion sensing",
-        "Event-based alerting",
-        "Map and fleet interfaces"
+        "Manhole flooding",
+        "Water tank level",
+        "Stormwater drainage",
+        "Industrial liquid level"
       ],
-      "productsUsed": [
-        "willowgps",
-        "willowsens",
-        "willowpanic",
-        "willowtilt"
-      ],
-      "servicesUsed": [
-        "mobile",
-        "iot-cloud"
-      ],
+      "productsUsed": [],
+      "servicesUsed": [],
       "featured": true,
-      "sortOrder": 40,
-      "localized": {
-        "tr": {
-          "title": "Dağıtık varlıklar, güvenlik olayları ve rota takibi.",
-          "category": "Varlık ve saha operasyonları",
-          "headline": "Dağıtık varlıklar, güvenlik olayları ve rota takibi.",
-          "summary": "Birden fazla konumda hareketi, kapı olaylarını, panik uyarılarını ve saha varlığı durumunu takip edin.",
-          "bullets": [
-            "GNSS ve hareket algılama",
-            "Olay tabanlı uyarı",
-            "Harita ve filo arayüzleri"
-          ]
-        },
-        "de": {
-          "title": "Verteilte Anlagen, Sicherheitsereignisse und Routentransparenz.",
-          "category": "Asset- & Außendienstbetrieb",
-          "headline": "Verteilte Anlagen, Sicherheitsereignisse und Routentransparenz.",
-          "summary": "Verfolgen Sie Bewegungen, Türereignisse, Panikalarme und den Zustand von Feldgeräten über mehrere Standorte hinweg.",
-          "bullets": [
-            "GNSS und Bewegungserkennung",
-            "Ereignisbasierte Alarmierung",
-            "Karten- und Flottenschnittstellen"
-          ]
-        },
-        "fr": {
-          "title": "Actifs distribués, événements de sécurité et visibilité des itinéraires.",
-          "category": "Actifs et opérations sur le terrain",
-          "headline": "Actifs distribués, événements de sécurité et visibilité des itinéraires.",
-          "summary": "Suivez les déplacements, les événements de porte, les alertes de panique et l'état des actifs sur plusieurs sites.",
-          "bullets": [
-            "GNSS et détection de mouvement",
-            "Alertes basées sur les événements",
-            "Interfaces cartographiques et de flotte"
-          ]
-        },
-        "es": {
-          "title": "Activos distribuidos, eventos de seguridad y visibilidad de rutas.",
-          "category": "Activos y operaciones de campo",
-          "headline": "Activos distribuidos, eventos de seguridad y visibilidad de rutas.",
-          "summary": "Realice el seguimiento del movimiento, los eventos de puertas, las alertas de pánico y el estado de los activos en varias ubicaciones.",
-          "bullets": [
-            "GNSS y detección de movimiento",
-            "Alertas basadas en eventos",
-            "Interfaces de mapa y flota"
-          ]
-        },
-        "it": {
-          "title": "Asset distribuiti, eventi di sicurezza e visibilità dei percorsi.",
-          "category": "Asset e operazioni sul campo",
-          "headline": "Asset distribuiti, eventi di sicurezza e visibilità dei percorsi.",
-          "summary": "Monitora movimenti, eventi delle porte, allarmi antipanico e stato degli asset su più sedi.",
-          "bullets": [
-            "GNSS e rilevamento del movimento",
-            "Avvisi basati su eventi",
-            "Interfacce mappa e flotta"
-          ]
-        },
-        "ar": {
-          "title": "أصول موزّعة وأحداث سلامة ووضوح للمسارات.",
-          "category": "الأصول والعمليات الميدانية",
-          "headline": "أصول موزّعة وأحداث سلامة ووضوح للمسارات.",
-          "summary": "تتبّع الحركة وأحداث الأبواب وتنبيهات الطوارئ وحالة الأصول الميدانية عبر مواقع متعددة.",
-          "bullets": [
-            "GNSS واستشعار الحركة",
-            "تنبيهات قائمة على الأحداث",
-            "واجهات الخرائط والأسطول"
-          ]
-        },
-        "ja": {
-          "title": "分散資産、安全イベント、ルートの可視化。",
-          "category": "資産・現場オペレーション",
-          "headline": "分散資産、安全イベント、ルートの可視化。",
-          "summary": "複数拠点にわたり、移動、扉イベント、緊急アラート、現場資産の状態を追跡します。",
-          "bullets": [
-            "GNSS と動き検知",
-            "イベントベースのアラート",
-            "地図・車両管理インターフェース"
-          ]
-        }
-      }
+      "sortOrder": 70,
+      "localized": {}
+    },
+    {
+      "id": "smart-building-air-quality",
+      "slug": "smart-building-air-quality",
+      "title": "Smart Building & Air Quality",
+      "headline": "Smart Building & Air Quality",
+      "summary": "Air-quality, temperature and environmental monitoring for buildings and facilities.",
+      "category": "Smart Buildings",
+      "alt": "Environmental monitoring visual representing air quality use cases.",
+      "image": {
+        "webp": "https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/images/usage-only/webp/smart-building-air-quality-1200.webp",
+        "png": "https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/images/usage-only/png/smart-building-air-quality-1200.png",
+        "srcsetWebp": "https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/images/usage-only/webp/smart-building-air-quality-480.webp 480w, https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/images/usage-only/webp/smart-building-air-quality-768.webp 768w, https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/images/usage-only/webp/smart-building-air-quality-1200.webp 1200w",
+        "srcsetPng": "https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/images/usage-only/png/smart-building-air-quality-480.png 480w, https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/images/usage-only/png/smart-building-air-quality-768.png 768w, https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/images/usage-only/png/smart-building-air-quality-1200.png 1200w"
+      },
+      "bullets": [
+        "Offices",
+        "Schools",
+        "Hospitals",
+        "Warehouses"
+      ],
+      "productsUsed": [],
+      "servicesUsed": [],
+      "featured": true,
+      "sortOrder": 80,
+      "localized": {}
+    },
+    {
+      "id": "asset-fleet-tracking",
+      "slug": "asset-fleet-tracking",
+      "title": "Asset & Fleet Tracking",
+      "headline": "Asset & Fleet Tracking",
+      "summary": "GPS-based tracking for vehicles, logistics and mobile assets.",
+      "category": "Asset & Logistics",
+      "alt": "Illustration of vehicle and asset tracking.",
+      "image": {
+        "webp": "https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/images/usage-only/webp/asset-fleet-tracking-1200.webp",
+        "png": "https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/images/usage-only/png/asset-fleet-tracking-1200.png",
+        "srcsetWebp": "https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/images/usage-only/webp/asset-fleet-tracking-480.webp 480w, https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/images/usage-only/webp/asset-fleet-tracking-768.webp 768w, https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/images/usage-only/webp/asset-fleet-tracking-1200.webp 1200w",
+        "srcsetPng": "https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/images/usage-only/png/asset-fleet-tracking-480.png 480w, https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/images/usage-only/png/asset-fleet-tracking-768.png 768w, https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/images/usage-only/png/asset-fleet-tracking-1200.png 1200w"
+      },
+      "bullets": [
+        "Vehicle tracking",
+        "Asset tracking",
+        "Fleet monitoring",
+        "Supply chain visibility"
+      ],
+      "productsUsed": [],
+      "servicesUsed": [],
+      "featured": false,
+      "sortOrder": 90,
+      "localized": {}
+    },
+    {
+      "id": "safety-emergency-alerts",
+      "slug": "safety-emergency-alerts",
+      "title": "Safety & Emergency Alerts",
+      "headline": "Safety & Emergency Alerts",
+      "summary": "Instant emergency alerts for industrial sites, warehouses and buildings.",
+      "category": "Safety & Security",
+      "alt": "Worker activating an emergency panic button in an industrial setting.",
+      "image": {
+        "webp": "https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/images/usage-only/webp/safety-emergency-alerts-1200.webp",
+        "png": "https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/images/usage-only/png/safety-emergency-alerts-1200.png",
+        "srcsetWebp": "https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/images/usage-only/webp/safety-emergency-alerts-480.webp 480w, https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/images/usage-only/webp/safety-emergency-alerts-768.webp 768w, https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/images/usage-only/webp/safety-emergency-alerts-1200.webp 1200w",
+        "srcsetPng": "https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/images/usage-only/png/safety-emergency-alerts-480.png 480w, https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/images/usage-only/png/safety-emergency-alerts-768.png 768w, https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/images/usage-only/png/safety-emergency-alerts-1200.png 1200w"
+      },
+      "bullets": [
+        "Emergency alerting",
+        "Health intervention",
+        "Security scenarios",
+        "Industrial facilities"
+      ],
+      "productsUsed": [],
+      "servicesUsed": [],
+      "featured": false,
+      "sortOrder": 100,
+      "localized": {}
+    },
+    {
+      "id": "access-door-security",
+      "slug": "access-door-security",
+      "title": "Access & Door Security",
+      "headline": "Access & Door Security",
+      "summary": "Open/close monitoring for doors, restricted rooms, cabinets and windows.",
+      "category": "Safety & Security",
+      "alt": "Restricted-area door monitored by a door security sensor.",
+      "image": {
+        "webp": "https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/images/usage-only/webp/access-door-security-1200.webp",
+        "png": "https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/images/usage-only/png/access-door-security-1200.png",
+        "srcsetWebp": "https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/images/usage-only/webp/access-door-security-480.webp 480w, https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/images/usage-only/webp/access-door-security-768.webp 768w, https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/images/usage-only/webp/access-door-security-1200.webp 1200w",
+        "srcsetPng": "https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/images/usage-only/png/access-door-security-480.png 480w, https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/images/usage-only/png/access-door-security-768.png 768w, https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/images/usage-only/png/access-door-security-1200.png 1200w"
+      },
+      "bullets": [
+        "Server rooms",
+        "Laboratory doors",
+        "Electrical panels",
+        "Restricted areas"
+      ],
+      "productsUsed": [],
+      "servicesUsed": [],
+      "featured": false,
+      "sortOrder": 110,
+      "localized": {}
+    },
+    {
+      "id": "motion-tilt-infrastructure",
+      "slug": "motion-tilt-infrastructure",
+      "title": "Motion, Tilt & Infrastructure",
+      "headline": "Motion, Tilt & Infrastructure",
+      "summary": "3-axis movement, vibration and displacement monitoring for machinery and structures.",
+      "category": "Infrastructure",
+      "alt": "Tilt sensor installed at a construction or infrastructure site.",
+      "image": {
+        "webp": "https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/images/usage-only/webp/motion-tilt-infrastructure-1200.webp",
+        "png": "https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/images/usage-only/png/motion-tilt-infrastructure-1200.png",
+        "srcsetWebp": "https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/images/usage-only/webp/motion-tilt-infrastructure-480.webp 480w, https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/images/usage-only/webp/motion-tilt-infrastructure-768.webp 768w, https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/images/usage-only/webp/motion-tilt-infrastructure-1200.webp 1200w",
+        "srcsetPng": "https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/images/usage-only/png/motion-tilt-infrastructure-480.png 480w, https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/images/usage-only/png/motion-tilt-infrastructure-768.png 768w, https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/images/usage-only/png/motion-tilt-infrastructure-1200.png 1200w"
+      },
+      "bullets": [
+        "Buildings",
+        "Tunnels",
+        "Mining",
+        "Industrial machinery"
+      ],
+      "productsUsed": [],
+      "servicesUsed": [],
+      "featured": false,
+      "sortOrder": 120,
+      "localized": {}
+    },
+    {
+      "id": "temperature-humidity-monitoring",
+      "slug": "temperature-humidity-monitoring",
+      "title": "Temperature & Humidity Monitoring",
+      "headline": "Temperature & Humidity Monitoring",
+      "summary": "Indoor and outdoor temperature and humidity monitoring for operations and facilities.",
+      "category": "Environmental",
+      "alt": "Temperature and humidity sensor installed in a server or industrial environment.",
+      "image": {
+        "webp": "https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/images/usage-only/webp/temperature-humidity-monitoring-1200.webp",
+        "png": "https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/images/usage-only/png/temperature-humidity-monitoring-1200.png",
+        "srcsetWebp": "https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/images/usage-only/webp/temperature-humidity-monitoring-480.webp 480w, https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/images/usage-only/webp/temperature-humidity-monitoring-768.webp 768w, https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/images/usage-only/webp/temperature-humidity-monitoring-1200.webp 1200w",
+        "srcsetPng": "https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/images/usage-only/png/temperature-humidity-monitoring-480.png 480w, https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/images/usage-only/png/temperature-humidity-monitoring-768.png 768w, https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/images/usage-only/png/temperature-humidity-monitoring-1200.png 1200w"
+      },
+      "bullets": [
+        "Factories",
+        "Warehouses",
+        "Greenhouses",
+        "Indoor and outdoor sites"
+      ],
+      "productsUsed": [],
+      "servicesUsed": [],
+      "featured": false,
+      "sortOrder": 130,
+      "localized": {}
+    },
+    {
+      "id": "industrial-modbus-integration",
+      "slug": "industrial-modbus-integration",
+      "title": "Industrial Connectivity & Modbus",
+      "headline": "Industrial Connectivity & Modbus",
+      "summary": "Wireless Modbus RTU bridge for industrial device data over LoRaWAN.",
+      "category": "Industrial IoT",
+      "alt": "Industrial equipment fitted with a wireless Modbus integration device.",
+      "image": {
+        "webp": "https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/images/usage-only/webp/industrial-modbus-integration-1200.webp",
+        "png": "https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/images/usage-only/png/industrial-modbus-integration-1200.png",
+        "srcsetWebp": "https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/images/usage-only/webp/industrial-modbus-integration-480.webp 480w, https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/images/usage-only/webp/industrial-modbus-integration-768.webp 768w, https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/images/usage-only/webp/industrial-modbus-integration-1200.webp 1200w",
+        "srcsetPng": "https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/images/usage-only/png/industrial-modbus-integration-480.png 480w, https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/images/usage-only/png/industrial-modbus-integration-768.png 768w, https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/images/usage-only/png/industrial-modbus-integration-1200.png 1200w"
+      },
+      "bullets": [
+        "PLC applications",
+        "Factories",
+        "Energy monitoring",
+        "Gas and water metering"
+      ],
+      "productsUsed": [],
+      "servicesUsed": [],
+      "featured": false,
+      "sortOrder": 140,
+      "localized": {}
+    },
+    {
+      "id": "smart-agriculture-monitoring",
+      "slug": "smart-agriculture-monitoring",
+      "title": "Smart Agriculture Monitoring",
+      "headline": "Smart Agriculture Monitoring",
+      "summary": "Soil moisture, soil temperature and greenhouse condition monitoring.",
+      "category": "Agriculture",
+      "alt": "Field-installed soil monitoring sensor in an agricultural environment.",
+      "image": {
+        "webp": "https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/images/usage-only/webp/smart-agriculture-monitoring-1200.webp",
+        "png": "https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/images/usage-only/png/smart-agriculture-monitoring-1200.png",
+        "srcsetWebp": "https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/images/usage-only/webp/smart-agriculture-monitoring-480.webp 480w, https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/images/usage-only/webp/smart-agriculture-monitoring-768.webp 768w, https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/images/usage-only/webp/smart-agriculture-monitoring-1200.webp 1200w",
+        "srcsetPng": "https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/images/usage-only/png/smart-agriculture-monitoring-480.png 480w, https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/images/usage-only/png/smart-agriculture-monitoring-768.png 768w, https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/images/usage-only/png/smart-agriculture-monitoring-1200.png 1200w"
+      },
+      "bullets": [
+        "Smart farming",
+        "Gardens",
+        "Greenhouses",
+        "Farms"
+      ],
+      "productsUsed": [],
+      "servicesUsed": [],
+      "featured": false,
+      "sortOrder": 150,
+      "localized": {}
+    },
+    {
+      "id": "liquid-pressure-monitoring",
+      "slug": "liquid-pressure-monitoring",
+      "title": "Liquid Pressure Monitoring",
+      "headline": "Liquid Pressure Monitoring",
+      "summary": "Pipeline, tank and industrial liquid pressure monitoring in harsh environments.",
+      "category": "Water & Level",
+      "alt": "Industrial pipeline and tank pressure monitoring equipment.",
+      "image": {
+        "webp": "https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/images/usage-only/webp/liquid-pressure-monitoring-1200.webp",
+        "png": "https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/images/usage-only/png/liquid-pressure-monitoring-1200.png",
+        "srcsetWebp": "https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/images/usage-only/webp/liquid-pressure-monitoring-480.webp 480w, https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/images/usage-only/webp/liquid-pressure-monitoring-768.webp 768w, https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/images/usage-only/webp/liquid-pressure-monitoring-1200.webp 1200w",
+        "srcsetPng": "https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/images/usage-only/png/liquid-pressure-monitoring-480.png 480w, https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/images/usage-only/png/liquid-pressure-monitoring-768.png 768w, https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/images/usage-only/png/liquid-pressure-monitoring-1200.png 1200w"
+      },
+      "bullets": [
+        "Pipeline pressure",
+        "Water tanks",
+        "Chemical plants",
+        "Hydraulic systems"
+      ],
+      "productsUsed": [],
+      "servicesUsed": [],
+      "featured": false,
+      "sortOrder": 160,
+      "localized": {}
+    },
+    {
+      "id": "environmental-weather-monitoring",
+      "slug": "environmental-weather-monitoring",
+      "title": "Environmental & Weather Monitoring",
+      "headline": "Environmental & Weather Monitoring",
+      "summary": "Wind speed and outdoor environmental measurements for remote sites.",
+      "category": "Environmental",
+      "alt": "Outdoor wind and weather monitoring equipment installed in the field.",
+      "image": {
+        "webp": "https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/images/usage-only/webp/environmental-weather-monitoring-1200.webp",
+        "png": "https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/images/usage-only/png/environmental-weather-monitoring-1200.png",
+        "srcsetWebp": "https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/images/usage-only/webp/environmental-weather-monitoring-480.webp 480w, https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/images/usage-only/webp/environmental-weather-monitoring-768.webp 768w, https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/images/usage-only/webp/environmental-weather-monitoring-1200.webp 1200w",
+        "srcsetPng": "https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/images/usage-only/png/environmental-weather-monitoring-480.png 480w, https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/images/usage-only/png/environmental-weather-monitoring-768.png 768w, https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/images/usage-only/png/environmental-weather-monitoring-1200.png 1200w"
+      },
+      "bullets": [
+        "Weather stations",
+        "Airports",
+        "Ports",
+        "Farms"
+      ],
+      "productsUsed": [],
+      "servicesUsed": [],
+      "featured": false,
+      "sortOrder": 170,
+      "localized": {}
     }
   ],
   "faqs": [

@@ -240,23 +240,56 @@
     return `<div class="logo-tile" style="--z:${z}px;--delay:${delay}ms" data-client="${escapeHtml(client.id)}" title="${escapeHtml(client.name)}">${logo}</div>`;
   }
 
-  function solutionCard(solution, index) {
+  function solutionImageHtml(image, alt) {
+    if (!image) return "";
+    if (typeof image === "string") {
+      return `<figure><img src="${escapeHtml(image)}" alt="${escapeHtml(alt)}" loading="lazy" decoding="async" /></figure>`;
+    }
+    // image is an object with webp/png/srcset fields
+    return `<figure>
+      <picture>
+        ${image.srcsetWebp ? `<source type="image/webp" srcset="${escapeHtml(image.srcsetWebp)}" sizes="(max-width:600px) 480px, (max-width:900px) 768px, 1200px" />` : ""}
+        ${image.srcsetPng ? `<source type="image/png" srcset="${escapeHtml(image.srcsetPng)}" sizes="(max-width:600px) 480px, (max-width:900px) 768px, 1200px" />` : ""}
+        <img src="${escapeHtml(image.png || image.webp)}" alt="${escapeHtml(alt)}" loading="lazy" decoding="async" />
+      </picture>
+    </figure>`;
+  }
+
+  function solutionCard(solution, index, allProducts) {
     solution = localizeItem(solution);
     const delay = index % 4 ? ` delay-${index % 4}` : "";
+    const headline = solution.headline || solution.title || "";
     const bullets = Array.isArray(solution.bullets)
       ? solution.bullets
       : String(solution.bullets || "").split(/\r?\n|,/).map((b) => b.trim()).filter(Boolean);
-    const bulletsHtml = bullets.map((b) => `<li>${escapeHtml(b)}</li>`).join("");
-    const headline = solution.headline || solution.title || "";
+    const locale = currentLocale();
+
+    // Use cases / bullets → chips (short labels) or list
+    const useChips = bullets.every(b => b.split(" ").length <= 5);
+    const bulletContent = useChips
+      ? `<div class="solution-use-cases">${bullets.map(b => `<span>${escapeHtml(b)}</span>`).join("")}</div>`
+      : `<ul>${bullets.map(b => `<li>${escapeHtml(b)}</li>`).join("")}</ul>`;
+
+    // Products used → link badges
+    const productsUsed = Array.isArray(solution.productsUsed) ? solution.productsUsed : [];
+    const productBadges = productsUsed.length && allProducts
+      ? productsUsed.map(pid => {
+          const prod = allProducts.find(p => (p.id || p.slug) === pid);
+          if (!prod) return "";
+          const url = `/${locale}/products/${encodeURIComponent(prod.slug || prod.id)}`;
+          return `<a class="solution-product-badge" href="${escapeHtml(url)}" title="${escapeHtml(prod.title || pid)}">${escapeHtml(prod.title || pid)}</a>`;
+        }).filter(Boolean).join("")
+      : "";
 
     return `
-      <article class="solution-case-card reveal${delay}" data-solution="${escapeHtml(solution.slug || solution.id)}">
-        ${solution.image ? `<figure><img src="${escapeHtml(solution.image)}" alt="${escapeHtml(headline)}" loading="lazy" decoding="async" /></figure>` : ""}
+      <article class="solution-case-card reveal${delay}" data-solution="${escapeHtml(solution.slug || solution.id)}" data-category="${escapeHtml(solution.category || "")}">
+        ${solutionImageHtml(solution.image, solution.alt || headline)}
         <div class="solution-case-body">
           ${solution.category ? `<span>${escapeHtml(solution.category)}</span>` : ""}
           <h3>${escapeHtml(headline)}</h3>
           ${solution.summary ? `<p>${escapeHtml(solution.summary)}</p>` : ""}
-          ${bulletsHtml ? `<ul>${bulletsHtml}</ul>` : ""}
+          ${bulletContent}
+          ${productBadges ? `<div class="solution-product-badges">${productBadges}</div>` : ""}
         </div>
       </article>
     `;
@@ -268,13 +301,68 @@
     const items = (content.solutions || [])
       .slice()
       .sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
-    root.innerHTML = items.map(solutionCard).join("");
+    const allProducts = content.products || [];
+    root.innerHTML = items.map((s, i) => solutionCard(s, i, allProducts)).join("");
+    renderSolutionFilter(root, items);
   }
 
   function renderProducts(content) {
     const root = document.querySelector("[data-cms-products]");
     if (!root) return;
     root.innerHTML = (content.products || []).map(productCard).join("");
+  }
+
+  function renderSolutionFilter(grid, items) {
+    const filterBar = document.querySelector("[data-cms-solution-filter]");
+    if (!filterBar) return;
+    const categories = ["All", ...new Set(items.map(s => s.category).filter(Boolean))];
+    filterBar.innerHTML = categories.map((cat, i) =>
+      `<button class="sol-filter-btn${i === 0 ? " active" : ""}" data-cat="${escapeHtml(cat)}">${escapeHtml(cat)}</button>`
+    ).join("");
+    filterBar.addEventListener("click", e => {
+      const btn = e.target.closest(".sol-filter-btn");
+      if (!btn) return;
+      filterBar.querySelectorAll(".sol-filter-btn").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      const cat = btn.dataset.cat;
+      grid.querySelectorAll(".solution-case-card").forEach(card => {
+        const match = cat === "All" || card.dataset.category === cat;
+        card.style.display = match ? "" : "none";
+      });
+    });
+  }
+
+  function renderArchitectureFlow(content) {
+    const root = document.querySelector("[data-cms-architecture-flow]");
+    if (!root) return;
+    const steps = ((content.pageContent?.solutions?.howItWorksSteps) || [])
+      .slice().sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
+    if (!steps.length) return;
+    root.innerHTML = `<div class="flow-row">${steps.map((step, i) => {
+      const s = localizeItem(step);
+      return `<div class="flow-node">
+        <small>${String(i + 1).padStart(2, "0")}</small>
+        <strong>${escapeHtml(s.title)}</strong>
+        <span>${escapeHtml(s.body)}</span>
+      </div>`;
+    }).join("")}</div>`;
+  }
+
+  function renderWhyPrinciples(content) {
+    const root = document.querySelector("[data-cms-why-principles]");
+    if (!root) return;
+    const cards = ((content.pageContent?.solutions?.whyCards) || [])
+      .slice().sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
+    if (!cards.length) return;
+    const delays = ["", " delay-1", " delay-2", " delay-3"];
+    root.innerHTML = cards.map((card, i) => {
+      const c = localizeItem(card);
+      return `<article class="solutions-principle-card reveal${delays[i] || ""}">
+        <span>${String(i + 1).padStart(2, "0")}</span>
+        <h3>${escapeHtml(c.title)}</h3>
+        <p>${escapeHtml(c.body)}</p>
+      </article>`;
+    }).join("");
   }
 
   function glossaryCard(item, index) {
@@ -389,7 +477,7 @@
   }
 
   function revealDynamicContent() {
-    const nodes = document.querySelectorAll("[data-cms-products] .reveal, [data-cms-featured-products] .reveal, [data-cms-news] .reveal, [data-cms-solutions] .reveal, [data-cms-glossary] .reveal");
+    const nodes = document.querySelectorAll("[data-cms-products] .reveal, [data-cms-featured-products] .reveal, [data-cms-news] .reveal, [data-cms-solutions] .reveal, [data-cms-glossary] .reveal, [data-cms-why-principles] .reveal, [data-cms-architecture-flow] .reveal");
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || !("IntersectionObserver" in window)) {
       nodes.forEach((node) => {
         node.classList.add("visible");
@@ -522,7 +610,9 @@
     renderSolutions,
     renderFaqs,
     renderGlossary,
-    renderPageSEOInjections
+    renderPageSEOInjections,
+    renderArchitectureFlow,
+    renderWhyPrinciples
   };
 
   document.addEventListener("DOMContentLoaded", async () => {
@@ -534,6 +624,8 @@
       renderClients(content);
       renderFacts(content);
       renderSolutions(content);
+      renderArchitectureFlow(content);
+      renderWhyPrinciples(content);
       renderFaqs(content);
       renderGlossary(content);
       renderPageContent(content);
