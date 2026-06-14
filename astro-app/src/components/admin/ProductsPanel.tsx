@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { type Locale } from "@/lib/cms";
 import { useAdmin } from "./AdminContext";
 import FormField from "./FormField";
@@ -102,37 +102,57 @@ function ChevronDown() {
 
 export default function ProductsPanel() {
   const { content, setContent } = useAdmin();
-  const [editIdx, setEditIdx] = useState<number | null>(null);
+  const [editId, setEditId] = useState<string | null>(null);
   const [openSections, setOpenSections] = useState<Record<string, boolean>>({ basics: true });
 
-  const products = content?.products || [];
+  const products = useMemo(() => {
+    const list = content?.products || [];
+    return list.map((item: any, idx: number) => ({
+      ...item,
+      id: item.id || `product-${idx}`,
+    }));
+  }, [content?.products]);
 
   const toggleSection = (key: string) => {
     setOpenSections((prev) => ({ ...prev, [key]: !prev[key] }));
   };
 
-  const updateProduct = (idx: number, key: string, val: any) => {
+  const updateProduct = (id: string, key: string, val: any) => {
     setContent((c: any) => {
-      const list = [...c.products];
-      list[idx] = { ...list[idx], [key]: val };
+      const list = (c.products || []).map((item: any, idx: number) => {
+        const itemId = item.id || `product-${idx}`;
+        if (itemId === id) {
+          return { ...item, id: itemId, [key]: val };
+        }
+        return item;
+      });
       return { ...c, products: list };
     });
   };
 
-  const updateProductFields = (idx: number, fields: Record<string, any>) => {
+  const updateProductFields = (id: string, fields: Record<string, any>) => {
     setContent((c: any) => {
-      const list = [...c.products];
-      list[idx] = { ...list[idx], ...fields };
+      const list = (c.products || []).map((item: any, idx: number) => {
+        const itemId = item.id || `product-${idx}`;
+        if (itemId === id) {
+          return { ...item, id: itemId, ...fields };
+        }
+        return item;
+      });
       return { ...c, products: list };
     });
   };
 
-  const updateLocalized = (idx: number, locale: Locale, fieldKey: string, value: string) => {
+  const updateLocalized = (id: string, locale: Locale, fieldKey: string, value: string) => {
     setContent((c: any) => {
-      const list = [...c.products];
-      const item = { ...list[idx] };
-      const localized = { ...item.localized, [locale]: { ...(item.localized?.[locale] || {}), [fieldKey]: value } };
-      list[idx] = { ...item, localized };
+      const list = (c.products || []).map((item: any, idx: number) => {
+        const itemId = item.id || `product-${idx}`;
+        if (itemId === id) {
+          const localized = { ...item.localized, [locale]: { ...(item.localized?.[locale] || {}), [fieldKey]: value } };
+          return { ...item, id: itemId, localized };
+        }
+        return item;
+      });
       return { ...c, products: list };
     });
   };
@@ -148,19 +168,28 @@ export default function ProductsPanel() {
         chips: [], applications: [], specifications: {}, detailBlocks: {}, localized: {},
       })],
     }));
-    setEditIdx(products.length);
+    setEditId(id);
     setOpenSections({ basics: true });
   };
 
-  const deleteProduct = (idx: number) => {
+  const deleteProduct = (id: string) => {
     if (!confirm("Bu ürünü silmek istediğinize emin misiniz?")) return;
-    setContent((c: any) => ({ ...c, products: c.products.filter((_: any, i: number) => i !== idx) }));
-    setEditIdx(null);
+    setContent((c: any) => {
+      const list = (c.products || []).filter((item: any, idx: number) => {
+        const itemId = item.id || `product-${idx}`;
+        return itemId !== id;
+      });
+      return { ...c, products: list };
+    });
+    setEditId(null);
   };
 
   /* ── EDIT VIEW ── */
-  if (editIdx !== null && products[editIdx]) {
-    const p = products[editIdx];
+  const p = useMemo(() => {
+    return products.find((item: any) => item.id === editId) || null;
+  }, [editId, products]);
+
+  if (editId !== null && p) {
     const specifications =
       p.specifications && typeof p.specifications === "object" && !Array.isArray(p.specifications)
         ? p.specifications : {};
@@ -168,7 +197,7 @@ export default function ProductsPanel() {
     const updateSpecificationField = (key: string, value: any) => {
       const next = { ...specifications, [key]: value };
       if (key === "reported_parameters") delete next.reportedParameters;
-      updateProduct(editIdx, "specifications", next);
+      updateProduct(p.id, "specifications", next);
     };
 
     return (
@@ -178,7 +207,7 @@ export default function ProductsPanel() {
           <div>
             <button
               type="button"
-              onClick={() => setEditIdx(null)}
+              onClick={() => setEditId(null)}
               className="ws-back-button"
             >
               ← Ürün listesine dön
@@ -192,7 +221,7 @@ export default function ProductsPanel() {
             </span>
             <button
               type="button"
-              onClick={() => deleteProduct(editIdx)}
+              onClick={() => deleteProduct(p.id)}
               className="ws-delete-button"
             >
               Sil
@@ -228,15 +257,15 @@ export default function ProductsPanel() {
                     <label>ID (salt okunur)</label>
                     <span title={p.id}>{p.id}</span>
                   </div>
-                  <FormField label="Slug" value={p.slug || ""} onChange={(v) => updateProduct(editIdx, "slug", v)} />
+                  <FormField label="Slug" value={p.slug || ""} onChange={(v) => updateProduct(p.id, "slug", v)} />
                 </div>
                 <div className="ws-prod-field-row">
-                  <FormField label="Ürün Adı" value={p.title || ""} onChange={(v) => updateProduct(editIdx, "title", v)} />
+                  <FormField label="Ürün Adı" value={p.title || ""} onChange={(v) => updateProduct(p.id, "title", v)} />
                   <FormField
                     label="Kategori"
                     type="select"
                     value={p.category || "modules"}
-                    onChange={(v) => updateProduct(editIdx, "category", v)}
+                    onChange={(v) => updateProduct(p.id, "category", v)}
                     options={CATEGORIES}
                   />
                 </div>
@@ -245,14 +274,14 @@ export default function ProductsPanel() {
                     label="Öne Çıkan"
                     type="select"
                     value={p.featured ? "true" : "false"}
-                    onChange={(v) => updateProduct(editIdx, "featured", v === "true")}
+                    onChange={(v) => updateProduct(p.id, "featured", v === "true")}
                     options={[{ value: "true", label: "Evet" }, { value: "false", label: "Hayır" }]}
                   />
                   <FormField
                     label="Sitede Göster (Yayında)"
                     type="select"
                     value={p.visible !== false ? "true" : "false"}
-                    onChange={(v) => updateProduct(editIdx, "visible", v === "true")}
+                    onChange={(v) => updateProduct(p.id, "visible", v === "true")}
                     options={[{ value: "true", label: "Evet" }, { value: "false", label: "Hayır" }]}
                   />
                 </div>
@@ -260,14 +289,14 @@ export default function ProductsPanel() {
                   label="Kısa Açıklama"
                   type="textarea"
                   value={p.shortDescription || ""}
-                  onChange={(v) => updateProduct(editIdx, "shortDescription", v)}
+                  onChange={(v) => updateProduct(p.id, "shortDescription", v)}
                   rows={3}
                   placeholder="Ürünü kısaca tanımlayın..."
                 />
                 <FormField
                   label="Etiketler (virgülle ayırın)"
                   value={(p.chips || []).join(", ")}
-                  onChange={(v) => updateProduct(editIdx, "chips", v.split(",").map((s: string) => s.trim()).filter(Boolean))}
+                  onChange={(v) => updateProduct(p.id, "chips", v.split(",").map((s: string) => s.trim()).filter(Boolean))}
                   hint="Ör: IoT, SCADA, Modbus"
                 />
               </div>
@@ -298,20 +327,20 @@ export default function ProductsPanel() {
                   label="Kapak Görseli"
                   type="image"
                   value={p.image || ""}
-                  onChange={(v) => updateProduct(editIdx, "image", v)}
+                  onChange={(v) => updateProduct(p.id, "image", v)}
                   placeholder="assets/products/..."
                 />
                 <ListEditorField
                   label="Çoklu Görseller (Galeri)"
                   value={Array.isArray(p.images) ? p.images : []}
-                  onChange={(items) => updateProduct(editIdx, "images", items)}
+                  onChange={(items) => updateProduct(p.id, "images", items)}
                   helper="Bir satıra bir görsel yolu. İlk görsel kapak olur."
                   placeholder="assets/product-cutouts/example.png"
                 />
                 <FormField
                   label="Datasheet URL"
                   value={p.datasheet_url || p.datasheet || ""}
-                  onChange={(v) => updateProductFields(editIdx, { datasheet_url: v, datasheet: v })}
+                  onChange={(v) => updateProductFields(p.id, { datasheet_url: v, datasheet: v })}
                   placeholder="/assets/datasheets/..."
                 />
               </div>
@@ -343,19 +372,19 @@ export default function ProductsPanel() {
                   <FormField
                     label="Type"
                     value={p.type || ""}
-                    onChange={(v) => updateProduct(editIdx, "type", v)}
+                    onChange={(v) => updateProduct(p.id, "type", v)}
                     placeholder="Outdoor IP67 LoRaWAN..."
                   />
                   <FormField
                     label="Battery Life"
                     value={p.batteryLife || p.battery_life || ""}
-                    onChange={(v) => updateProductFields(editIdx, { batteryLife: v, battery_life: v })}
+                    onChange={(v) => updateProductFields(p.id, { batteryLife: v, battery_life: v })}
                     placeholder="up to 5 years"
                   />
                   <FormField
                     label="Communication Range"
                     value={p.communicationRange || p.communication_range || ""}
-                    onChange={(v) => updateProductFields(editIdx, { communicationRange: v, communication_range: v })}
+                    onChange={(v) => updateProductFields(p.id, { communicationRange: v, communication_range: v })}
                     placeholder="up to 15 km"
                   />
                 </div>
@@ -363,7 +392,7 @@ export default function ProductsPanel() {
                 <JsonEditorField
                   label=""
                   value={specifications}
-                  onChange={(val) => updateProduct(editIdx, "specifications", val || {})}
+                  onChange={(val) => updateProduct(p.id, "specifications", val || {})}
                   helper='Object olarak kaydedilir. Örnek: { "protocol": "LoRaWAN 868/915 MHz" }'
                   rows={10}
                 />
@@ -394,7 +423,7 @@ export default function ProductsPanel() {
                 <IconListEditor
                   label="Applications"
                   value={Array.isArray(p.applications) ? p.applications : []}
-                  onChange={(items) => updateProduct(editIdx, "applications", items)}
+                  onChange={(items) => updateProduct(p.id, "applications", items)}
                   inferIcon={applicationIconForText}
                   addLabel="Application"
                   helper="Ürün detayındaki Applications ikon şeridini yönetir."
@@ -439,7 +468,7 @@ export default function ProductsPanel() {
               <div className="ws-prod-section-body">
                 <DetailBlocksEditor
                   value={Array.isArray(p.detailBlocks) ? p.detailBlocks : []}
-                  onChange={(val) => updateProduct(editIdx, "detailBlocks", val)}
+                  onChange={(val) => updateProduct(p.id, "detailBlocks", val)}
                   helper="Ek açıklama blokları, ikonlu card'lar ve liste blokları için kullan."
                 />
               </div>
@@ -469,7 +498,7 @@ export default function ProductsPanel() {
                 <TranslationEditor
                   item={p}
                   fields={PRODUCT_FIELDS}
-                  onChange={(locale, key, val) => updateLocalized(editIdx, locale, key, val)}
+                  onChange={(locale, key, val) => updateLocalized(p.id, locale, key, val)}
                 />
               </div>
             )}
@@ -531,7 +560,7 @@ export default function ProductsPanel() {
                   <span className="ws-prod-cat-pill">{p.category || "Genel"}</span>
                   <button
                     type="button"
-                    onClick={() => { setEditIdx(idx); setOpenSections({ basics: true }); }}
+                    onClick={() => { setEditId(p.id); setOpenSections({ basics: true }); }}
                     className="ws-edit-button"
                     style={{ width: "auto", padding: "8px 16px" }}
                   >

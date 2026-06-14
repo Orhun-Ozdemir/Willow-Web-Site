@@ -180,10 +180,10 @@ export default function CompanyPanel() {
     });
   };
 
-  const deleteTeamMember = (idx: number) => {
+  const deleteTeamMember = (id: string) => {
     if (!confirm("Bu ekip üyesini silmek istediğinize emin misiniz?")) return;
     setContent((c: any) => {
-      const t = (c.companyFacts?.team || []).filter((_: any, i: number) => i !== idx);
+      const t = (c.companyFacts?.team || []).filter((x: any) => x.id !== id);
       return { ...c, companyFacts: { ...c.companyFacts, team: t } };
     });
     setEditingTeamIdx(null);
@@ -225,10 +225,10 @@ export default function CompanyPanel() {
     });
   };
 
-  const deleteTimelineStep = (idx: number) => {
+  const deleteTimelineStep = (id: string) => {
     if (!confirm("Bu zaman çizelgesi adımını silmek istediğinize emin misiniz?")) return;
     setContent((c: any) => {
-      const t = (c.companyFacts?.timeline || []).filter((_: any, i: number) => i !== idx);
+      const t = (c.companyFacts?.timeline || []).filter((x: any) => x.id !== id);
       return { ...c, companyFacts: { ...c.companyFacts, timeline: t } };
     });
     setEditingTimelineIdx(null);
@@ -273,10 +273,10 @@ export default function CompanyPanel() {
     });
   };
 
-  const deleteOffice = (idx: number) => {
+  const deleteOffice = (id: string) => {
     if (!confirm("Bu ofisi silmek istediğinize emin misiniz?")) return;
     setContent((c: any) => {
-      const o = (c.companyFacts?.officesList || []).filter((_: any, i: number) => i !== idx);
+      const o = (c.companyFacts?.officesList || []).filter((x: any) => x.id !== id);
       return { ...c, companyFacts: { ...c.companyFacts, officesList: o } };
     });
     setEditingOfficeIdx(null);
@@ -307,10 +307,10 @@ export default function CompanyPanel() {
     });
   };
 
-  const deleteExpertise = (idx: number) => {
+  const deleteExpertise = (id: string) => {
     if (!confirm("Bu uzmanlık alanını silmek istediğinize emin misiniz?")) return;
     setContent((c: any) => {
-      const list = (c.companyFacts?.expertise || []).filter((_: any, i: number) => i !== idx);
+      const list = (c.companyFacts?.expertise || []).filter((x: any) => x.id !== id);
       return { ...c, companyFacts: { ...c.companyFacts, expertise: list } };
     });
     setEditingExpertiseIdx(null);
@@ -353,10 +353,10 @@ export default function CompanyPanel() {
     });
   };
 
-  const deleteIndustry = (idx: number) => {
+  const deleteIndustry = (id: string) => {
     if (!confirm("Bu sektörü silmek istediğinize emin misiniz?")) return;
     setContent((c: any) => {
-      const list = (c.companyFacts?.industries || []).filter((_: any, i: number) => i !== idx);
+      const list = (c.companyFacts?.industries || []).filter((x: any) => x.id !== id);
       return { ...c, companyFacts: { ...c.companyFacts, industries: list } };
     });
     setEditingIndustryIdx(null);
@@ -537,7 +537,7 @@ export default function CompanyPanel() {
                     <h3 className="font-bold text-sm text-[#131b2e]">Ekip Üyesi Düzenle: {member.name}</h3>
                     <div className="flex gap-2">
                       <button
-                        onClick={() => deleteTeamMember(editingTeamIdx)}
+                        onClick={() => deleteTeamMember(member.id)}
                         className="px-3 py-1.5 bg-red-950 hover:bg-red-900 text-red-400 rounded text-xs font-semibold"
                       >
                         Sil
@@ -658,7 +658,7 @@ export default function CompanyPanel() {
                     <h3 className="font-bold text-sm text-[#131b2e]">Zaman Tüneli Adımı Düzenle: {step.year}</h3>
                     <div className="flex gap-2">
                       <button
-                        onClick={() => deleteTimelineStep(editingTimelineIdx)}
+                        onClick={() => deleteTimelineStep(step.id)}
                         className="px-3 py-1.5 bg-red-950 hover:bg-red-900 text-red-400 rounded text-xs font-semibold"
                       >
                         Sil
@@ -765,7 +765,7 @@ export default function CompanyPanel() {
                 <div className="flex items-center justify-between border-b border-gray-200 pb-4">
                   <h3 className="font-bold text-sm">{exp.label}</h3>
                   <div className="flex gap-2">
-                    <button onClick={() => deleteExpertise(editingExpertiseIdx)} className="px-3 py-1.5 bg-red-950 hover:bg-red-900 text-red-400 rounded text-xs font-semibold">Sil</button>
+                    <button onClick={() => deleteExpertise(exp.id)} className="px-3 py-1.5 bg-red-950 hover:bg-red-900 text-red-400 rounded text-xs font-semibold">Sil</button>
                     <button onClick={() => setEditingExpertiseIdx(null)} className="px-3 py-1.5 bg-gray-100 hover:bg-gray-200 rounded text-xs font-semibold">← Listeye Dön</button>
                   </div>
                 </div>
@@ -832,7 +832,7 @@ export default function CompanyPanel() {
                 <div className="flex items-center justify-between border-b border-gray-200 pb-4">
                   <h3 className="font-bold text-sm">{ind.name}</h3>
                   <div className="flex gap-2">
-                    <button onClick={() => deleteIndustry(editingIndustryIdx)} className="px-3 py-1.5 bg-red-950 hover:bg-red-900 text-red-400 rounded text-xs font-semibold">Sil</button>
+                    <button onClick={() => deleteIndustry(ind.id)} className="px-3 py-1.5 bg-red-950 hover:bg-red-900 text-red-400 rounded text-xs font-semibold">Sil</button>
                     <button onClick={() => setEditingIndustryIdx(null)} className="px-3 py-1.5 bg-gray-100 hover:bg-gray-200 rounded text-xs font-semibold">← Listeye Dön</button>
                   </div>
                 </div>
@@ -905,7 +905,7 @@ export default function CompanyPanel() {
                     <h3 className="font-bold text-sm text-[#131b2e]">Ofis Düzenle: {office.country}</h3>
                     <div className="flex gap-2">
                       <button
-                        onClick={() => deleteOffice(editingOfficeIdx)}
+                        onClick={() => deleteOffice(office.id)}
                         className="px-3 py-1.5 bg-red-950 hover:bg-red-900 text-red-400 rounded text-xs font-semibold"
                       >
                         Sil

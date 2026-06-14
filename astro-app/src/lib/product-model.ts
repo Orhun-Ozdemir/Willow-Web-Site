@@ -121,7 +121,7 @@ export function normalizeProductIconItems(
   const items = Array.isArray(parsed) ? parsed : normalizeStringList(parsed);
 
   return items
-    .map((item: any, index: number) => {
+    .map((item: any, index: number): ProductIconItem | null => {
       if (typeof item === "string") {
         const label = item.trim();
         return {

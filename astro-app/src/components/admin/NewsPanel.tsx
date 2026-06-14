@@ -107,14 +107,20 @@ function getNewsStatus(item: NewsItem): "Hazır" | "Eksik" {
 export default function NewsPanel() {
   const { content, setContent } = useAdmin();
 
-  const [editIdx, setEditIdx] = useState<number | null>(null);
+  const [editId, setEditId] = useState<string | null>(null);
   const [openSections, setOpenSections] = useState<Record<string, boolean>>({ basics: true });
   const [search, setSearch] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("all");
   const [statusFilter, setStatusFilter] = useState<StatusFilter>("all");
   const [sortBy, setSortBy] = useState<SortType>("newest");
 
-  const news: NewsItem[] = content?.news || [];
+  const news: NewsItem[] = useMemo(() => {
+    const list = content?.news || [];
+    return list.map((item: NewsItem, idx: number) => ({
+      ...item,
+      id: item.id || `news-${idx}`,
+    }));
+  }, [content?.news]);
 
   const categories = useMemo<string[]>(() => {
     const values = news
@@ -136,22 +142,18 @@ export default function NewsPanel() {
   }, [news]);
 
   const publicFeaturedMatch = useMemo(() => {
-    const sorted = news
-      .map((item, idx) => ({ item, idx }))
-      .sort((a, b) => getNewsTime(b.item) - getNewsTime(a.item));
-
-    return sorted.find(({ item }) => item.featured) || sorted[0] || null;
+    const sorted = [...news].sort((a, b) => getNewsTime(b) - getNewsTime(a));
+    return sorted.find((item) => item.featured) || sorted[0] || null;
   }, [news]);
 
-  const publicFeatured = publicFeaturedMatch?.item;
-  const publicFeaturedIdx = publicFeaturedMatch?.idx ?? -1;
+  const publicFeatured = publicFeaturedMatch;
+  const publicFeaturedId = publicFeaturedMatch?.id || "";
 
   const filteredNews = useMemo(() => {
     const query = search.trim().toLowerCase();
 
     return news
-      .map((item, idx) => ({ item, idx }))
-      .filter(({ item }) => {
+      .filter((item) => {
         const searchableText = [
           item.title,
           item.slug,
@@ -179,46 +181,53 @@ export default function NewsPanel() {
       })
       .sort((a, b) => {
         if (sortBy === "title") {
-          return String(a.item.title || "").localeCompare(
-            String(b.item.title || ""),
+          return String(a.title || "").localeCompare(
+            String(b.title || ""),
             "tr"
           );
         }
 
-        const dateA = getNewsTime(a.item);
-        const dateB = getNewsTime(b.item);
+        const dateA = getNewsTime(a);
+        const dateB = getNewsTime(b);
 
         return sortBy === "newest" ? dateB - dateA : dateA - dateB;
       });
   }, [news, search, categoryFilter, statusFilter, sortBy]);
 
-  const updateNews = <K extends keyof NewsItem>(idx: number, key: K, val: NewsItem[K]) => {
+  const updateNews = <K extends keyof NewsItem>(id: string, key: K, val: NewsItem[K]) => {
     setContent((c: any) => {
-      const list = [...(c.news || [])];
-      list[idx] = { ...list[idx], [key]: val };
+      const list = (c.news || []).map((item: NewsItem, idx: number) => {
+        const itemId = item.id || `news-${idx}`;
+        if (itemId === id) {
+          return { ...item, id: itemId, [key]: val };
+        }
+        return item;
+      });
       return { ...c, news: list };
     });
   };
 
   const updateLocalized = (
-    idx: number,
+    id: string,
     locale: Locale,
     fieldKey: string,
     value: string
   ) => {
     setContent((c: any) => {
-      const list = [...(c.news || [])];
-      const item = { ...list[idx] };
-
-      const localized = {
-        ...(item.localized || {}),
-        [locale]: {
-          ...(item.localized?.[locale] || {}),
-          [fieldKey]: value,
-        },
-      };
-
-      list[idx] = { ...item, localized };
+      const list = (c.news || []).map((item: NewsItem, idx: number) => {
+        const itemId = item.id || `news-${idx}`;
+        if (itemId === id) {
+          const localized = {
+            ...(item.localized || {}),
+            [locale]: {
+              ...(item.localized?.[locale] || {}),
+              [fieldKey]: value,
+            },
+          };
+          return { ...item, id: itemId, localized };
+        }
+        return item;
+      });
       return { ...c, news: list };
     });
   };
@@ -245,52 +254,62 @@ export default function NewsPanel() {
       news: [...(c.news || []), newItem],
     }));
 
-    setEditIdx(news.length);
+    setEditId(id);
     setOpenSections({ basics: true });
   };
 
-  const updateNewsMedia = (idx: number, images: string[], cover?: string) => {
+  const updateNewsMedia = (id: string, images: string[], cover?: string) => {
     setContent((c: any) => {
-      const list = [...(c.news || [])];
-      const item = { ...list[idx] };
-      const uniqueImages = images
-        .filter((src): src is string => typeof src === "string" && src.trim().length > 0)
-        .filter((src, imageIdx, arr) => arr.indexOf(src) === imageIdx);
-      const currentCover = typeof item.image === "string" ? item.image : "";
-      const nextCover =
-        cover !== undefined
-          ? cover
-          : currentCover && uniqueImages.includes(currentCover)
-            ? currentCover
-            : uniqueImages[0] || "";
+      const list = (c.news || []).map((item: NewsItem, idx: number) => {
+        const itemId = item.id || `news-${idx}`;
+        if (itemId === id) {
+          const uniqueImages = images
+            .filter((src): src is string => typeof src === "string" && src.trim().length > 0)
+            .filter((src, imageIdx, arr) => arr.indexOf(src) === imageIdx);
+          const currentCover = typeof item.image === "string" ? item.image : "";
+          const nextCover =
+            cover !== undefined
+              ? cover
+              : currentCover && uniqueImages.includes(currentCover)
+                ? currentCover
+                : uniqueImages[0] || "";
 
-      list[idx] = { ...item, image: nextCover, images: uniqueImages };
+          return { ...item, id: itemId, image: nextCover, images: uniqueImages };
+        }
+        return item;
+      });
       return { ...c, news: list };
     });
   };
 
-  const deleteNews = (idx: number) => {
+  const deleteNews = (id: string) => {
     if (!confirm("Bu haberi silmek istediğinize emin misiniz?")) return;
 
-    setContent((c: any) => ({
-      ...c,
-      news: (c.news || []).filter((_: NewsItem, i: number) => i !== idx),
-    }));
+    setContent((c: any) => {
+      const list = (c.news || []).filter((item: NewsItem, idx: number) => {
+        const itemId = item.id || `news-${idx}`;
+        return itemId !== id;
+      });
+      return { ...c, news: list };
+    });
 
-    setEditIdx(null);
+    setEditId(null);
   };
 
   const toggleSection = (key: string) => setOpenSections((p) => ({ ...p, [key]: !p[key] }));
 
-  if (editIdx !== null && news[editIdx]) {
-    const n = news[editIdx];
+  const n = useMemo(() => {
+    return news.find((item) => item.id === editId) || null;
+  }, [editId, news]);
+
+  if (editId !== null && n) {
     const status = getNewsStatus(n);
     const galleryImages = getGalleryImages(n);
     const coverImage = getCoverImage(n);
     const previewImage = getAssetSrc(coverImage);
     const previewExcerpt = n.excerpt || htmlToPlainPreview(n.content || "", 140) || "Özet girilmemiş.";
     const previewBody = n.content || `<p>${previewExcerpt}</p>`;
-    const isPublicFeatured = editIdx === publicFeaturedIdx;
+    const isPublicFeatured = n.id === publicFeaturedId;
 
     const SectionTrigger = ({ sKey, icon, label, hint }: { sKey: string; icon: React.ReactNode; label: string; hint: string }) => (
       <button type="button" className="ws-prod-section-trigger" onClick={() => toggleSection(sKey)}>
@@ -314,7 +333,7 @@ export default function NewsPanel() {
         {/* Header */}
         <div className="ws-prod-edit-header">
           <div>
-            <button type="button" onClick={() => setEditIdx(null)} className="ws-back-button">
+            <button type="button" onClick={() => setEditId(null)} className="ws-back-button">
               ← Haber listesine dön
             </button>
             <h3>{n.title || "Haber Düzenle"}</h3>
@@ -325,7 +344,7 @@ export default function NewsPanel() {
             <span className={`ws-status ${status === "Hazır" ? "ws-status-ready" : "ws-status-missing"}`}>
               {status}
             </span>
-            <button type="button" onClick={() => deleteNews(editIdx)} className="ws-delete-button">Sil</button>
+            <button type="button" onClick={() => deleteNews(n.id!)} className="ws-delete-button">Sil</button>
           </div>
         </div>
 
@@ -348,19 +367,19 @@ export default function NewsPanel() {
                   <FormField
                     label="Başlık"
                     value={n.title || ""}
-                    onChange={(v) => updateNews(editIdx, "title", v)}
+                    onChange={(v) => updateNews(n.id!, "title", v)}
                     placeholder="Haber başlığını girin"
                   />
                   <div className="ws-custom-field">
                     <div className="ws-field-top">
                       <label>Slug</label>
-                      <button type="button" onClick={() => updateNews(editIdx, "slug", slugify(n.title || ""))}>
+                      <button type="button" onClick={() => updateNews(n.id!, "slug", slugify(n.title || ""))}>
                         Başlıktan üret
                       </button>
                     </div>
                     <input
                       value={n.slug || ""}
-                      onChange={(e) => updateNews(editIdx, "slug", e.target.value)}
+                      onChange={(e) => updateNews(n.id!, "slug", e.target.value)}
                       placeholder="haber-slug"
                       className="ws-imgfield-input"
                     />
@@ -371,12 +390,12 @@ export default function NewsPanel() {
                     label="Tarih"
                     type="date"
                     value={n.date || ""}
-                    onChange={(v) => updateNews(editIdx, "date", v)}
+                    onChange={(v) => updateNews(n.id!, "date", v)}
                   />
                   <FormField
                     label="Kategori"
                     value={n.category || ""}
-                    onChange={(v) => updateNews(editIdx, "category", v)}
+                    onChange={(v) => updateNews(n.id!, "category", v)}
                     placeholder="case-study, update, company..."
                   />
                 </div>
@@ -384,7 +403,7 @@ export default function NewsPanel() {
                   <input
                     type="checkbox"
                     checked={Boolean(n.featured)}
-                    onChange={(e) => updateNews(editIdx, "featured", e.target.checked)}
+                    onChange={(e) => updateNews(n.id!, "featured", e.target.checked)}
                   />
                   <span>
                     <strong>Öne çıkan haber</strong>
@@ -420,7 +439,7 @@ export default function NewsPanel() {
                   value={coverImage}
                   onChange={(v) => {
                     const nextImages = v && !galleryImages.includes(v) ? [v, ...galleryImages] : galleryImages;
-                    updateNewsMedia(editIdx, nextImages, v);
+                    updateNewsMedia(n.id!, nextImages, v);
                   }}
                   placeholder="assets/news/example.webp"
                 />
@@ -429,11 +448,11 @@ export default function NewsPanel() {
                   value={galleryImages}
                   onChange={(value) => {
                     const nextCover = coverImage && value.includes(coverImage) ? coverImage : value[0] || "";
-                    updateNewsMedia(editIdx, value, nextCover);
+                    updateNewsMedia(n.id!, value, nextCover);
                   }}
                   featuredValue={coverImage}
                   featuredLabel="Kapak"
-                  onMakeFeatured={(src) => updateNewsMedia(editIdx, galleryImages, src)}
+                  onMakeFeatured={(src) => updateNewsMedia(n.id!, galleryImages, src)}
                   placeholder="https://... veya assets/news/example.webp"
                   helper="Kapak görseli önde gösterilir; galeri ise haber detayında editoryal görsel blok olarak görünür."
                 />
@@ -455,7 +474,7 @@ export default function NewsPanel() {
                   label="Özet"
                   type="textarea"
                   value={n.excerpt || ""}
-                  onChange={(v) => updateNews(editIdx, "excerpt", v)}
+                  onChange={(v) => updateNews(n.id!, "excerpt", v)}
                   rows={3}
                   placeholder="Haberin kısa açıklamasını girin"
                 />
@@ -466,7 +485,7 @@ export default function NewsPanel() {
                   </div>
                   <VisualHtmlEditor
                     value={n.content || ""}
-                    onChange={(v) => updateNews(editIdx, "content", v)}
+                    onChange={(v) => updateNews(n.id!, "content", v)}
                     placeholder="Haber paragrafını yazın"
                   />
                 </div>
@@ -487,7 +506,7 @@ export default function NewsPanel() {
                 <TranslationEditor
                   item={n}
                   fields={NEWS_FIELDS}
-                  onChange={(locale, key, val) => updateLocalized(editIdx, locale, key, val)}
+                  onChange={(locale, key, val) => updateLocalized(n.id!, locale, key, val)}
                 />
               </div>
             )}
@@ -640,7 +659,7 @@ export default function NewsPanel() {
             </div>
             <button
               type="button"
-              onClick={() => { setEditIdx(publicFeaturedIdx); setOpenSections({ basics: true }); }}
+              onClick={() => { setEditId(publicFeaturedId); setOpenSections({ basics: true }); }}
               className="ws-admin-featured-action"
             >
               Düzenle
@@ -690,13 +709,13 @@ export default function NewsPanel() {
       <section className="ws-news-list-card">
         {filteredNews.length > 0 ? (
           <div className="ws-news-grid">
-            {filteredNews.map(({ item: n, idx }) => {
+            {filteredNews.map((n) => {
               const status = getNewsStatus(n);
               const imageSrc = getAssetSrc(getCoverImage(n));
               const galleryCount = getGalleryImages(n).length;
 
               return (
-                <article key={n.id || idx} className={`ws-news-card${idx === publicFeaturedIdx ? " is-public-featured" : ""}`}>
+                <article key={n.id} className={`ws-news-card${n.id === publicFeaturedId ? " is-public-featured" : ""}`}>
                   <div className="ws-news-image">
                     {imageSrc ? (
                       <img
@@ -721,7 +740,7 @@ export default function NewsPanel() {
                         {status}
                       </span>
                     </div>
-                    {idx === publicFeaturedIdx && (
+                    {n.id === publicFeaturedId && (
                       <div className="ws-news-public-badge">Public vitrin</div>
                     )}
                   </div>
@@ -755,7 +774,7 @@ export default function NewsPanel() {
 
                     <button
                       type="button"
-                      onClick={() => { setEditIdx(idx); setOpenSections({ basics: true }); }}
+                      onClick={() => { setEditId(n.id || ""); setOpenSections({ basics: true }); }}
                       className="ws-edit-button"
                     >
                       Düzenle
