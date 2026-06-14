@@ -128,7 +128,7 @@ const labels: Record<LabelKey, Record<Locale, string>> = {
   heroLead: { en: "Events, export milestones, workshops and engineering updates show how WillowSoft stays active in the field.", tr: "Etkinlikler, ihracat dönüm noktaları, atölyeler ve mühendislik güncellemeleri WillowSoft'un sahadaki aktifliğini gösterir.", de: "Events, Exportmeilensteine, Workshops und Engineering-Updates zeigen WillowSofts Aktivität im Feld.", fr: "Événements, jalons export, ateliers et mises à jour techniques montrent l'activité terrain de WillowSoft.", es: "Eventos, hitos de exportación, workshops y novedades técnicas muestran la actividad de WillowSoft en campo.", it: "Eventi, traguardi export, workshop e aggiornamenti tecnici mostrano l'attività sul campo di WillowSoft.", ar: "تُظهر الفعاليات ومحطات التصدير وورش العمل والتحديثات الهندسية نشاط WillowSoft في الميدان.", ja: "イベント、輸出の節目、ワークショップ、技術更新が WillowSoft の現場での活動を示します。" },
   featuredEyebrow: { en: "Featured update", tr: "Öne çıkan haber", de: "Ausgewähltes Update", fr: "Actualité à la une", es: "Actualización destacada", it: "Aggiornamento in evidenza", ar: "تحديث مميز", ja: "注目の更新" },
   featuredTitle: { en: "The latest signal customers can trust.", tr: "Müşterilerin güvenebileceği en yeni sinyal.", de: "Das neueste Signal, dem Kunden vertrauen können.", fr: "Le dernier signal auquel les clients peuvent faire confiance.", es: "La señal más reciente en la que los clientes pueden confiar.", it: "Il segnale più recente di cui i clienti possono fidarsi.", ar: "أحدث إشارة يمكن للعملاء الوثوق بها.", ja: "顧客が信頼できる最新の実績。" },
-  featuredCta: { en: "Read featured update", tr: "Öne çıkan haberi oku", de: "Ausgewähltes Update lesen", fr: "Lire l'actualité à la une", es: "Leer actualización destacada", it: "Leggi l'aggiornamento in evidenza", ar: "اقرأ التحديث المميز", ja: "注目記事を読む" },
+  featuredCta: { en: "Read", tr: "Oku", de: "Lesen", fr: "Lire", es: "Leer", it: "Leggi", ar: "اقرأ", ja: "読む" },
   allEyebrow: { en: "News archive", tr: "Haber arşivi", de: "Newsarchiv", fr: "Archive des actualités", es: "Archivo de noticias", it: "Archivio news", ar: "أرشيف الأخبار", ja: "ニュースアーカイブ" },
   allTitle: { en: "Browse field signals, launches and company milestones.", tr: "Saha sinyallerini, lansmanları ve şirket dönüm noktalarını keşfedin.", de: "Durchsuchen Sie Feldsignale, Launches und Unternehmensmeilensteine.", fr: "Parcourez les signaux terrain, lancements et jalons d'entreprise.", es: "Explore señales de campo, lanzamientos e hitos de la empresa.", it: "Esplora segnali dal campo, lanci e traguardi aziendali.", ar: "تصفح إشارات الميدان والإطلاقات ومحطات الشركة.", ja: "現場での実績、発表、企業の節目を確認できます。" },
   allLead: { en: "Use search and filters to find the update type that matters for your project.", tr: "Projeniz için önemli olan haber türünü arama ve filtrelerle bulun.", de: "Nutzen Sie Suche und Filter, um den passenden Update-Typ für Ihr Projekt zu finden.", fr: "Utilisez la recherche et les filtres pour trouver l'actualité utile à votre projet.", es: "Use búsqueda y filtros para encontrar la actualización relevante para su proyecto.", it: "Usa ricerca e filtri per trovare l'aggiornamento più utile al tuo progetto.", ar: "استخدم البحث والفلاتر للعثور على نوع التحديث المناسب لمشروعك.", ja: "検索とフィルターで、プロジェクトに必要な更新を探せます。" },
@@ -177,16 +177,46 @@ const getLabel = (key: LabelKey) => labels[key][locale] || labels[key].en;
       <div class="section-inner">
         <div class="news-proof-strip reveal" aria-label="News summary">
           <article>
-            <span>{getLabel("totalUpdates")}</span>
-            <strong>{newsList.length}</strong>
+            <div class="news-proof-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 19.5V5.25A2.25 2.25 0 0 1 6.25 3h11.5A2.25 2.25 0 0 1 20 5.25v14.25" />
+                <path d="M4 19.5h16" />
+                <path d="M8 8h8" />
+                <path d="M8 12h5" />
+              </svg>
+            </div>
+            <div>
+              <span>{getLabel("totalUpdates")}</span>
+              <strong>{newsList.length}</strong>
+            </div>
           </article>
           <article>
-            <span>{getLabel("categories")}</span>
-            <strong>{categories.length}</strong>
+            <div class="news-proof-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 7.5h16" />
+                <path d="M7 4.5v6" />
+                <path d="M17 13.5v6" />
+                <path d="M4 16.5h16" />
+              </svg>
+            </div>
+            <div>
+              <span>{getLabel("categories")}</span>
+              <strong>{categories.length}</strong>
+            </div>
           </article>
           <article>
-            <span>{getLabel("latestUpdate")}</span>
-            <strong>{latestDate || "-"}</strong>
+            <div class="news-proof-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M7 3v3" />
+                <path d="M17 3v3" />
+                <path d="M4 9h16" />
+                <rect x="4" y="5" width="16" height="16" rx="2.5" />
+              </svg>
+            </div>
+            <div>
+              <span>{getLabel("latestUpdate")}</span>
+              <strong>{latestDate || "-"}</strong>
+            </div>
           </article>
         </div>
 

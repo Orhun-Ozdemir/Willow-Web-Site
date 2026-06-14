@@ -6,12 +6,13 @@ import { useAdmin } from "./AdminContext";
 import FormField from "./FormField";
 import ListEditorField from "./ListEditorField";
 import TranslationEditor from "./TranslationEditor";
+import VisualHtmlEditor, { htmlToPlainPreview } from "./VisualHtmlEditor";
 
 const NEWS_FIELDS = [
   { key: "title", label: "Başlık" },
   { key: "category", label: "Kategori" },
   { key: "excerpt", label: "Özet", type: "textarea" as const },
-  { key: "content", label: "İçerik", type: "textarea" as const, rows: 6 },
+  { key: "content", label: "İçerik", type: "richtext" as const, rows: 6 },
 ];
 
 type SortType = "newest" | "oldest" | "title";
@@ -79,6 +80,18 @@ function getCoverImage(item: NewsItem): string {
   return item.image || getGalleryImages(item)[0] || "";
 }
 
+function formatAdminDate(value?: string): string {
+  if (!value) return "-";
+  const date = new Date(`${value}T00:00:00`);
+  if (Number.isNaN(date.getTime())) return value;
+  return date.toLocaleDateString("tr", { year: "numeric", month: "short", day: "numeric" });
+}
+
+function getNewsTime(item: NewsItem): number {
+  const time = item.date ? new Date(`${item.date}T00:00:00`).getTime() : 0;
+  return Number.isFinite(time) ? time : 0;
+}
+
 function getNewsStatus(item: NewsItem): "Hazır" | "Eksik" {
   const hasRequiredContent =
     Boolean(item.title?.trim()) &&
@@ -122,6 +135,17 @@ export default function NewsPanel() {
     return news.filter((item) => getNewsStatus(item) === "Eksik").length;
   }, [news]);
 
+  const publicFeaturedMatch = useMemo(() => {
+    const sorted = news
+      .map((item, idx) => ({ item, idx }))
+      .sort((a, b) => getNewsTime(b.item) - getNewsTime(a.item));
+
+    return sorted.find(({ item }) => item.featured) || sorted[0] || null;
+  }, [news]);
+
+  const publicFeatured = publicFeaturedMatch?.item;
+  const publicFeaturedIdx = publicFeaturedMatch?.idx ?? -1;
+
   const filteredNews = useMemo(() => {
     const query = search.trim().toLowerCase();
 
@@ -161,8 +185,8 @@ export default function NewsPanel() {
           );
         }
 
-        const dateA = new Date(a.item.date || 0).getTime();
-        const dateB = new Date(b.item.date || 0).getTime();
+        const dateA = getNewsTime(a.item);
+        const dateB = getNewsTime(b.item);
 
         return sortBy === "newest" ? dateB - dateA : dateA - dateB;
       });
@@ -263,6 +287,10 @@ export default function NewsPanel() {
     const status = getNewsStatus(n);
     const galleryImages = getGalleryImages(n);
     const coverImage = getCoverImage(n);
+    const previewImage = getAssetSrc(coverImage);
+    const previewExcerpt = n.excerpt || htmlToPlainPreview(n.content || "", 140) || "Özet girilmemiş.";
+    const previewBody = n.content || `<p>${previewExcerpt}</p>`;
+    const isPublicFeatured = editIdx === publicFeaturedIdx;
 
     const SectionTrigger = ({ sKey, icon, label, hint }: { sKey: string; icon: React.ReactNode; label: string; hint: string }) => (
       <button type="button" className="ws-prod-section-trigger" onClick={() => toggleSection(sKey)}>
@@ -293,6 +321,7 @@ export default function NewsPanel() {
             <p>Aşağıdaki bölümleri açıp kapayarak düzenleyin.</p>
           </div>
           <div className="ws-prod-edit-actions">
+            {isPublicFeatured && <span className="ws-status ws-status-featured">Public vitrin</span>}
             <span className={`ws-status ${status === "Hazır" ? "ws-status-ready" : "ws-status-missing"}`}>
               {status}
             </span>
@@ -300,8 +329,10 @@ export default function NewsPanel() {
           </div>
         </div>
 
-        {/* Accordion */}
-        <div className="ws-prod-accordion">
+        <div className="ws-edit-layout">
+          <div className="ws-edit-main">
+            {/* Accordion */}
+            <div className="ws-prod-accordion">
 
           {/* ① Temel Bilgiler */}
           <div className="ws-prod-section">
@@ -357,9 +388,18 @@ export default function NewsPanel() {
                   />
                   <span>
                     <strong>Öne çıkan haber</strong>
-                    <small>Public News sayfasındaki öne çıkan haber alanında öncelik verir.</small>
+                    <small>
+                      Public News sayfasındaki öne çıkan alana aday olur. Birden fazla haber seçiliyse en yeni tarihli haber görünür.
+                    </small>
                   </span>
                 </label>
+                <div className={`ws-feature-note${isPublicFeatured ? " is-active" : ""}`}>
+                  {isPublicFeatured
+                    ? "Bu haber şu anda public News sayfasındaki öne çıkan alanda görünüyor."
+                    : publicFeatured
+                      ? `Public News sayfasında şu an "${publicFeatured.title || "Başlıksız haber"}" görünüyor.`
+                      : "Public News sayfasında öne çıkan haber yok."}
+                </div>
               </div>
             )}
           </div>
@@ -406,7 +446,7 @@ export default function NewsPanel() {
             <SectionTrigger
               sKey="content"
               label="İçerik"
-              hint="Özet ve HTML içerik"
+              hint="Başlık, paragraf ve liste blokları"
               icon={<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"><line x1="17" y1="10" x2="3" y2="10"/><line x1="21" y1="6" x2="3" y2="6"/><line x1="21" y1="14" x2="3" y2="14"/><line x1="17" y1="18" x2="3" y2="18"/></svg>}
             />
             {openSections.content && (
@@ -419,14 +459,17 @@ export default function NewsPanel() {
                   rows={3}
                   placeholder="Haberin kısa açıklamasını girin"
                 />
-                <FormField
-                  label="İçerik (HTML)"
-                  type="textarea"
-                  value={n.content || ""}
-                  onChange={(v) => updateNews(editIdx, "content", v)}
-                  rows={10}
-                  placeholder="<p>Haber içeriği...</p>"
-                />
+                <div className="ws-custom-field">
+                  <div className="ws-field-top">
+                    <label>İçerik</label>
+                    <span className="ws-field-helper">HTML yazmadan bloklarla düzenleyin</span>
+                  </div>
+                  <VisualHtmlEditor
+                    value={n.content || ""}
+                    onChange={(v) => updateNews(editIdx, "content", v)}
+                    placeholder="Haber paragrafını yazın"
+                  />
+                </div>
               </div>
             )}
           </div>
@@ -466,12 +509,69 @@ export default function NewsPanel() {
                   <div><span>Slug</span><strong>{n.slug || "-"}</strong></div>
                   <div><span>Görsel</span><strong>{coverImage ? `${galleryImages.length || 1} görsel` : "Yok"}</strong></div>
                   <div><span>Öne çıkan</span><strong>{n.featured ? "Evet" : "Hayır"}</strong></div>
+                  <div><span>Public vitrin</span><strong>{isPublicFeatured ? "Bu haber" : "Hayır"}</strong></div>
                   {n.sourceUrl && <div><span>Kaynak</span><strong>{n.sourceUrl}</strong></div>}
                 </div>
               </div>
             )}
           </div>
 
+        </div>
+          </div>
+
+          <aside className="ws-edit-side">
+            <section className="ws-section-card ws-news-preview-panel">
+              <div className="ws-section-title">
+                <h4>Ön yüzde nasıl görünür?</h4>
+                <p>Liste kartı ve detay sayfası önizlemesi.</p>
+              </div>
+
+              <div className="ws-preview-stack">
+                <div>
+                  <h5 className="ws-preview-title">News liste kartı</h5>
+                  <article className="ws-news-list-preview">
+                    <div className="ws-preview-image">
+                      {previewImage ? <img src={previewImage} alt={n.title || "Haber görseli"} /> : <span>Görsel yok</span>}
+                    </div>
+                    <div className="ws-preview-body">
+                      <div className="ws-preview-meta">
+                        <span>{n.category || "Kategori"}</span>
+                        {n.featured && <small>Öne çıkan</small>}
+                      </div>
+                      <h5>{n.title || "Başlıksız haber"}</h5>
+                      <p>{previewExcerpt}</p>
+                      <div className="ws-news-preview-footer">
+                        <span>Tarih</span>
+                        <strong>{formatAdminDate(n.date)}</strong>
+                      </div>
+                    </div>
+                  </article>
+                </div>
+
+                <div>
+                  <h5 className="ws-preview-title">News detay sayfası</h5>
+                  <article className="ws-news-detail-preview">
+                    <div className="ws-news-detail-preview-hero">
+                      {previewImage ? <img src={previewImage} alt={n.title || "Haber görseli"} /> : <span>Kapak görseli yok</span>}
+                    </div>
+                    <div className="ws-news-detail-preview-body">
+                      <small>{n.category || "Kategori"} · {formatAdminDate(n.date)}</small>
+                      <h5>{n.title || "Başlıksız haber"}</h5>
+                      <p>{previewExcerpt}</p>
+                      <VisualHtmlEditor value={previewBody} readOnly />
+                      {galleryImages.length > 1 && (
+                        <div className="ws-news-preview-gallery">
+                          {galleryImages.slice(1, 5).map((src, idx) => (
+                            <img key={idx} src={getAssetSrc(src)} alt={`Galeri ${idx + 1}`} />
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  </article>
+                </div>
+              </div>
+            </section>
+          </aside>
         </div>
       </div>
     );
@@ -515,6 +615,38 @@ export default function NewsPanel() {
             <strong className="ws-blue">{categories.length}</strong>
           </div>
         </div>
+
+        {publicFeatured && (
+          <div className="ws-admin-featured-card">
+            <div className="ws-admin-featured-media">
+              {getAssetSrc(getCoverImage(publicFeatured)) ? (
+                <img src={getAssetSrc(getCoverImage(publicFeatured))} alt={publicFeatured.title || "Öne çıkan haber"} />
+              ) : (
+                <span>Görsel yok</span>
+              )}
+            </div>
+            <div className="ws-admin-featured-content">
+              <span className="ws-admin-featured-kicker">News sayfasındaki öne çıkan haber</span>
+              <h4>{publicFeatured.title || "Başlıksız haber"}</h4>
+              <p>
+                {publicFeatured.featured
+                  ? "Bu haber öne çıkan olarak işaretli ve public News vitrini burada bunu gösteriyor."
+                  : "Hiçbir haber öne çıkan seçilmediği için public News vitrini en yeni haberi gösteriyor."}
+              </p>
+              <div className="ws-admin-featured-meta">
+                <span>{publicFeatured.category || "Kategori yok"}</span>
+                <span>{formatAdminDate(publicFeatured.date)}</span>
+              </div>
+            </div>
+            <button
+              type="button"
+              onClick={() => { setEditIdx(publicFeaturedIdx); setOpenSections({ basics: true }); }}
+              className="ws-admin-featured-action"
+            >
+              Düzenle
+            </button>
+          </div>
+        )}
       </section>
 
       <section className="ws-filter-card">
@@ -564,7 +696,7 @@ export default function NewsPanel() {
               const galleryCount = getGalleryImages(n).length;
 
               return (
-                <article key={n.id || idx} className="ws-news-card">
+                <article key={n.id || idx} className={`ws-news-card${idx === publicFeaturedIdx ? " is-public-featured" : ""}`}>
                   <div className="ws-news-image">
                     {imageSrc ? (
                       <img
@@ -589,6 +721,9 @@ export default function NewsPanel() {
                         {status}
                       </span>
                     </div>
+                    {idx === publicFeaturedIdx && (
+                      <div className="ws-news-public-badge">Public vitrin</div>
+                    )}
                   </div>
 
                   <div className="ws-news-card-body">

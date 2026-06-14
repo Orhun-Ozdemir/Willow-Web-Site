@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { locales, type Locale } from "@/lib/cms";
 import LocaleTabs from "./LocaleTabs";
+import VisualHtmlEditor from "./VisualHtmlEditor";
 
 function TextPreview({ text }: { text: string }) {
   if (!text.trim()) return <p className="text-gray-300 italic text-sm">Boş</p>;
@@ -40,7 +41,7 @@ function TextPreview({ text }: { text: string }) {
 interface TranslationField {
   key: string;
   label: string;
-  type?: "text" | "textarea" | "array-items";
+  type?: "text" | "textarea" | "array-items" | "richtext";
   rows?: number;
   /** For type="array-items": the top-level field on `item` that holds the source array */
   sourceArrayKey?: string;
@@ -193,7 +194,11 @@ export default function TranslationEditor({ item, fields, sourceLang = "en", onC
     }
   }
 
-  const sourceData = item?.localized?.[sourceLang] || {};
+  const fallbackSourceData = fields.reduce<Record<string, any>>((acc, field) => {
+    acc[field.key] = item?.[field.key] ?? "";
+    return acc;
+  }, {});
+  const sourceData = { ...fallbackSourceData, ...(item?.localized?.[sourceLang] || {}) };
   const targetData = item?.localized?.[activeLang] || {};
 
   const totalMissing = activeLang !== sourceLang
@@ -241,7 +246,12 @@ export default function TranslationEditor({ item, fields, sourceLang = "en", onC
             return (
               <div key={f.key}>
                 <label className="block text-xs font-bold uppercase text-gray-500 mb-1">{f.label}</label>
-                {f.type === "textarea" ? (
+                {f.type === "richtext" ? (
+                  <VisualHtmlEditor
+                    value={fieldValueToText(sourceData[f.key])}
+                    onChange={(v) => onChange(sourceLang, f.key, v)}
+                  />
+                ) : f.type === "textarea" ? (
                   <TextareaWithPreview
                     value={fieldValueToText(sourceData[f.key])}
                     onChange={(v) => onChange(sourceLang, f.key, v)}
@@ -266,7 +276,9 @@ export default function TranslationEditor({ item, fields, sourceLang = "en", onC
                 <label className="block text-[10px] font-bold uppercase text-gray-400 mb-1">
                   {f.label} <span className="normal-case font-normal text-gray-300">({sourceLang.toUpperCase()} kaynak)</span>
                 </label>
-                {f.type === "textarea" ? (
+                {f.type === "richtext" ? (
+                  <VisualHtmlEditor value={fieldValueToText(sourceData[f.key])} readOnly />
+                ) : f.type === "textarea" ? (
                   <TextareaWithPreview
                     value={fieldValueToText(sourceData[f.key])}
                     rows={f.rows || 3}
@@ -283,7 +295,13 @@ export default function TranslationEditor({ item, fields, sourceLang = "en", onC
                 <label className={`block text-[10px] font-bold uppercase mb-1 ${isMissing ? "text-red-500" : "text-[#132175]/70"}`}>
                   {f.label} <span className="normal-case font-normal">({activeLang.toUpperCase()} çeviri{isMissing ? " — EKSİK" : ""})</span>
                 </label>
-                {f.type === "textarea" ? (
+                {f.type === "richtext" ? (
+                  <VisualHtmlEditor
+                    value={fieldValueToText(targetData[f.key])}
+                    onChange={(v) => onChange(activeLang, f.key, v)}
+                    placeholder={`${sourceLang.toUpperCase()} dilinden çevirin...`}
+                  />
+                ) : f.type === "textarea" ? (
                   <TextareaWithPreview
                     value={fieldValueToText(targetData[f.key])}
                     onChange={(v) => onChange(activeLang, f.key, v)}
