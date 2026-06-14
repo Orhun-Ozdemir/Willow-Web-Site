@@ -17,6 +17,14 @@ export default function ClientsPanel() {
   const [editId, setEditId] = useState<string | null>(null);
   const [imgErrors, setImgErrors] = useState<Set<string>>(new Set());
 
+  const getPreviewUrl = (val: string) => {
+    if (!val) return "";
+    if (/^(https?:)?\/\//i.test(val) || val.startsWith("data:")) return val;
+    const clean = val.replace(/^\/+/, "");
+    const base = (import.meta.env.BASE_URL || "/").replace(/\/+$/, "");
+    return `${base}/${clean}`;
+  };
+
   const clients = useMemo(() => {
     const list = content?.clients || [];
     return list.map((item: any, idx: number) => ({
@@ -99,7 +107,7 @@ export default function ClientsPanel() {
         {cl.logo && (
           <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg border border-gray-200">
             <div className="w-16 h-16 bg-gray-100 rounded flex items-center justify-center text-[10px] text-gray-400 overflow-hidden">
-              <img src={cl.logo} alt={cl.name} className="w-full h-full object-contain" onError={(e) => { (e.target as HTMLImageElement).style.display = 'none' }} />
+              <img src={getPreviewUrl(cl.logo)} alt={cl.name} className="w-full h-full object-contain" onError={(e) => { (e.target as HTMLImageElement).style.display = 'none' }} />
             </div>
             <span className="text-xs text-gray-500">{cl.logo}</span>
           </div>
@@ -125,7 +133,7 @@ export default function ClientsPanel() {
             <div className="w-20 h-20 bg-gray-100 rounded-lg flex items-center justify-center mb-3 overflow-hidden">
               {item.logo && !imgErrors.has(item.id) ? (
                 <img
-                  src={item.logo}
+                  src={getPreviewUrl(item.logo)}
                   alt={item.name}
                   className="w-full h-full object-contain p-2"
                   onError={() => setImgErrors((prev) => new Set(prev).add(item.id))}
