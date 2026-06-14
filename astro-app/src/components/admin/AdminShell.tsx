@@ -18,6 +18,7 @@ import SettingsPanel from "./SettingsPanel";
 import BackupsPanel from "./BackupsPanel";
 import CompanyPanel from "./CompanyPanel";
 import UsersPanel from "./UsersPanel";
+import LeadDetailsDrawer from "./LeadDetailsDrawer";
 
 type Tab =
   | "overview" | "leads" | "kanban"
@@ -92,6 +93,7 @@ const TABS: { section: string; items: { key: Tab; label: string }[] }[] = [
 export default function AdminShell() {
   const { session, isDirty, saving, saveMessage, saveContent, loading } = useAdmin();
   const [activeTab, setActiveTab] = useState<Tab>("overview");
+  const [selectedLeadId, setSelectedLeadId] = useState<string | null>(null);
   
 
   const handleLogout = async () => {
@@ -190,8 +192,8 @@ export default function AdminShell() {
 
         <div className="flex-1 overflow-y-auto p-8">
           {activeTab === "overview" && <OverviewPanel onNavigate={(tab) => setActiveTab(tab as Tab)} />}
-          {activeTab === "leads" && <LeadsTablePanel />}
-          {activeTab === "kanban" && <LeadsKanbanPanel />}
+          {activeTab === "leads" && <LeadsTablePanel onSelectLead={setSelectedLeadId} />}
+          {activeTab === "kanban" && <LeadsKanbanPanel onSelectLead={setSelectedLeadId} />}
           {activeTab === "products" && <ProductsPanel />}
           {activeTab === "news" && <NewsPanel />}
           {activeTab === "faqs" && <FaqsPanel />}
@@ -206,6 +208,11 @@ export default function AdminShell() {
           {activeTab === "users" && <UsersPanel />}
         </div>
       </main>
+
+      <LeadDetailsDrawer
+        leadId={selectedLeadId}
+        onClose={() => setSelectedLeadId(null)}
+      />
     </div>
   );
 }

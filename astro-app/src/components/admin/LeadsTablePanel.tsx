@@ -2,7 +2,11 @@
 
 import { useAdmin } from "./AdminContext";
 
-export default function LeadsTablePanel() {
+interface LeadsTablePanelProps {
+  onSelectLead: (id: string) => void;
+}
+
+export default function LeadsTablePanel({ onSelectLead }: LeadsTablePanelProps) {
   const { leads, updateLeadStatus, deleteLead } = useAdmin();
 
   return (
@@ -26,10 +30,20 @@ export default function LeadsTablePanel() {
           </thead>
           <tbody className="divide-y divide-gray-100">
             {leads.map((lead) => (
-              <tr key={lead.id} className="hover:bg-gray-100/40 transition">
+              <tr
+                key={lead.id}
+                onClick={() => onSelectLead(lead.id)}
+                className="hover:bg-gray-100/60 cursor-pointer transition"
+              >
                 <td className="p-4">
                   <p className="font-bold text-gray-800">{lead.name}</p>
-                  <a href={`mailto:${lead.email}`} className="text-[#132175] hover:underline">{lead.email}</a>
+                  <a
+                    href={`mailto:${lead.email}`}
+                    onClick={(e) => e.stopPropagation()}
+                    className="text-[#132175] hover:underline"
+                  >
+                    {lead.email}
+                  </a>
                 </td>
                 <td className="p-4 text-gray-700">{lead.company || "—"}</td>
                 <td className="p-4">
@@ -45,7 +59,11 @@ export default function LeadsTablePanel() {
                 <td className="p-4">
                   <select
                     value={lead.status || "new"}
-                    onChange={(e) => updateLeadStatus(lead.id, e.target.value)}
+                    onClick={(e) => e.stopPropagation()}
+                    onChange={(e) => {
+                      e.stopPropagation();
+                      updateLeadStatus(lead.id, e.target.value);
+                    }}
                     className="bg-gray-100 border border-gray-300 rounded px-2 py-1 outline-none text-gray-800"
                   >
                     <option value="new">Yeni</option>
@@ -57,7 +75,13 @@ export default function LeadsTablePanel() {
                   </select>
                 </td>
                 <td className="p-4">
-                  <button onClick={() => deleteLead(lead.id)} className="text-red-400 hover:text-red-300 font-bold">
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      deleteLead(lead.id);
+                    }}
+                    className="text-red-400 hover:text-red-300 font-bold"
+                  >
                     Sil
                   </button>
                 </td>

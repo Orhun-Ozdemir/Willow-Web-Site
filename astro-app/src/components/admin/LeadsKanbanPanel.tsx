@@ -10,7 +10,11 @@ const COLUMNS = [
   { key: "lost", label: "Kapandı", color: "border-red-500" },
 ];
 
-export default function LeadsKanbanPanel() {
+interface LeadsKanbanPanelProps {
+  onSelectLead: (id: string) => void;
+}
+
+export default function LeadsKanbanPanel({ onSelectLead }: LeadsKanbanPanelProps) {
   const { leads, updateLeadStatus, deleteLead } = useAdmin();
 
   const grouped: Record<string, any[]> = {};
@@ -31,7 +35,11 @@ export default function LeadsKanbanPanel() {
           </div>
           <div className="flex-1 p-2 space-y-2 overflow-y-auto">
             {grouped[col.key].map((lead) => (
-              <div key={lead.id} className="bg-gray-50 border border-gray-200 rounded-lg p-3 space-y-2 hover:border-gray-300 transition">
+              <div
+                key={lead.id}
+                onClick={() => onSelectLead(lead.id)}
+                className="bg-gray-50 border border-gray-200 rounded-lg p-3 space-y-2 hover:border-gray-300 cursor-pointer transition"
+              >
                 <p className="text-sm font-bold text-gray-800">{lead.name}</p>
                 <p className="text-[10px] text-[#132175] truncate">{lead.email}</p>
                 {lead.company && <p className="text-[10px] text-gray-500">{lead.company}</p>}
@@ -42,14 +50,20 @@ export default function LeadsKanbanPanel() {
                   {COLUMNS.filter((c) => c.key !== col.key).map((target) => (
                     <button
                       key={target.key}
-                      onClick={() => updateLeadStatus(lead.id, target.key)}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        updateLeadStatus(lead.id, target.key);
+                      }}
                       className="px-1.5 py-0.5 bg-gray-100 hover:bg-gray-200 rounded text-[9px] text-gray-500 font-medium transition"
                     >
                       → {target.label}
                     </button>
                   ))}
                   <button
-                    onClick={() => deleteLead(lead.id)}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      deleteLead(lead.id);
+                    }}
                     className="px-1.5 py-0.5 text-red-400 hover:text-red-300 text-[9px] font-bold"
                   >
                     Sil

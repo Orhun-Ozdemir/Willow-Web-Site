@@ -15,6 +15,7 @@ interface AdminContextValue {
   saveMessage: string;
   saveContent: () => Promise<void>;
   updateLeadStatus: (leadId: string, status: string) => Promise<void>;
+  updateLead: (leadId: string, updates: { status?: string; internalNote?: string }) => Promise<void>;
   deleteLead: (leadId: string) => Promise<void>;
 }
 
@@ -137,20 +138,82 @@ export function AdminProvider({ children }: { children: ReactNode }) {
     }
   }, [initialContent, content]);
 
-  const updateLeadStatus = useCallback(async (leadId: string, status: string) => {
+  const updateLead = useCallback(async (leadId: string, updates: { status?: string; internalNote?: string }) => {
     try {
       const res = await fetch(`/api/leads/${leadId}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ status }),
+        body: JSON.stringify(updates),
       });
       if (res.ok) {
-        setLeads((prev) => prev.map((l) => (l.id === leadId ? { ...l, status } : l)));
+        const data = await res.json();
+        if (data.ok && data.lead) {
+          setLeads((prev) => prev.map((l) => (l.id === leadId ? data.lead : l)));
+        }
       }
     } catch (err) {
       console.error(err);
     }
   }, []);
+
+  const updateLeadStatus = useCallback(async (leadId: string, status: string) => {
+    const lead = leads.find((l) => l.id === leadId);
+    if (!lead) return;
+
+    const oldStatus = lead.status || "new";
+    if (oldStatus === status) return;
+
+    const getStatusLabel = (s: string) => {
+      const labels: Record<string, string> = {
+        new: "Yeni",
+        contacted: "Görüşüldü",
+        qualified: "Uygun",
+        won: "Kazanıldı",
+        lost: "Kapandı",
+        spam: "Spam",
+      };
+      return labels[s] || s;
+    };
+
+    const noteText = lead.internalNote || "";
+    let parsedNote: any = { notes: [], documents: [], activities: [] };
+    try {
+      if (noteText.trim().startsWith("{")) {
+        parsedNote = JSON.parse(noteText);
+      } else if (noteText.trim()) {
+        parsedNote.notes.push({
+          id: "legacy",
+          text: noteText,
+          author: "Sistem",
+          createdAt: lead.updatedAt || lead.createdAt || new Date().toISOString(),
+        });
+      }
+    } catch (e) {
+      if (noteText.trim()) {
+        parsedNote.notes.push({
+          id: "legacy",
+          text: noteText,
+          author: "Sistem",
+          createdAt: lead.updatedAt || lead.createdAt || new Date().toISOString(),
+        });
+      }
+    }
+
+    const activity = {
+      id: typeof window !== "undefined" && window.crypto?.randomUUID ? window.crypto.randomUUID() : Math.random().toString(36).substring(2, 15),
+      type: "status_change",
+      description: `Durum '${getStatusLabel(oldStatus)}' -> '${getStatusLabel(status)}' olarak değiştirildi.`,
+      author: session?.name || "Admin",
+      createdAt: new Date().toISOString(),
+    };
+
+    parsedNote.activities = [activity, ...(parsedNote.activities || [])];
+
+    await updateLead(leadId, {
+      status,
+      internalNote: JSON.stringify(parsedNote),
+    });
+  }, [leads, session, updateLead]);
 
   const deleteLead = useCallback(async (leadId: string) => {
     if (!confirm("Bu mesajı silmek istediğinize emin misiniz?")) return;
@@ -178,6 +241,7 @@ export function AdminProvider({ children }: { children: ReactNode }) {
         saveMessage,
         saveContent,
         updateLeadStatus,
+        updateLead,
         deleteLead,
       }}
     >

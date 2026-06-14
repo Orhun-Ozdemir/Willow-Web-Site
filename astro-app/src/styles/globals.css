@@ -2314,7 +2314,7 @@ select {
   place-items: center;
   margin: 0;
   padding: 20px;
-  background: #ffffff;
+  background: #ffffff !important;
 }
 
 .product-card img {
@@ -2491,7 +2491,7 @@ select {
 body[data-page="products"] .product-card {
   grid-template-rows: 292px auto;
   border-color: rgba(198, 206, 230, 0.86);
-  background: #ffffff;
+  background: #ffffff !important;
   box-shadow: 0 18px 54px rgba(16, 31, 92, 0.065);
 }
 
@@ -2500,7 +2500,7 @@ body[data-page="products"] .product-card figure {
   isolation: isolate;
   min-height: 292px;
   padding: 24px;
-  background: #ffffff;
+  background: #ffffff !important;
 }
 
 body[data-page="products"] .product-card figure::before {
