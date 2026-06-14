@@ -1,5 +1,6 @@
 ---
 import PageLayout from "@/layouts/PageLayout.astro";
+import NewsCard from "@/components/NewsCard.astro";
 import { loadContent } from "@/lib/content";
 import { localizedValue, localizeItem, locales, resolveLocale, type Locale } from "@/lib/cms";
 import { buildAlternates, DEFAULT_OG_IMAGE, ORGANIZATION_SCHEMA, WEBSITE_SCHEMA, SITE_ORIGIN } from "@/lib/seo";
@@ -7,12 +8,34 @@ import { normalizeProductSlug } from "@/lib/product-model";
 
 export const prerender = false;
 
+type LabelKey =
+  | "backNews"
+  | "newsLabel"
+  | "whyMatters"
+  | "whyLead"
+  | "articleMeta"
+  | "category"
+  | "published"
+  | "context"
+  | "contextValue"
+  | "relatedEyebrow"
+  | "relatedTitle"
+  | "ctaEyebrow"
+  | "ctaTitle"
+  | "ctaLead"
+  | "startProject";
+
 const locale = resolveLocale(Astro.params.locale, Astro.url.pathname);
 const { slug } = Astro.params as { slug: string };
 const content = await loadContent();
 const normalizedSlug = normalizeProductSlug(slug);
 const normalizeRouteSlug = (value: any) => normalizeProductSlug(value);
-const raw = (content.news || []).find((n: any) => {
+const newsList = [...(content.news || [])].sort((a: any, b: any) => {
+  const dateA = a.date ? new Date(`${a.date}T00:00:00`).getTime() : 0;
+  const dateB = b.date ? new Date(`${b.date}T00:00:00`).getTime() : 0;
+  return dateB - dateA;
+});
+const raw = newsList.find((n: any) => {
   const localSlug = normalizeRouteSlug(localizedValue(n.slug, locale) || n.slug?.en || n.id);
   return localSlug === normalizedSlug || normalizeRouteSlug(n.id) === normalizedSlug;
 });
@@ -26,12 +49,62 @@ const slugByLocale = Object.fromEntries(
   locales.map((l) => [l, `/news/${localizedValue(raw.slug, l) || raw.slug?.en || raw.id}`]),
 ) as Record<Locale, string>;
 const canonical = seo.canonical || `${SITE_ORIGIN}/${locale}${slugByLocale[locale]}`;
-const ogImage = article.image ? `${SITE_ORIGIN}${article.image.startsWith("/") ? "" : "/"}${article.image}` : DEFAULT_OG_IMAGE;
+const basePath = import.meta.env.BASE_URL || "/";
+const assetPath = (value: any) => {
+  if (!value || typeof value !== "string") return "";
+  if (value.startsWith("http") || value.startsWith("data:")) return value;
+  return `${basePath}${value.replace(/^\/+/, "")}`.replace(/([^:]\/)\/+/g, "$1");
+};
+const absoluteImage = (value: any) => {
+  if (!value || typeof value !== "string") return "";
+  if (value.startsWith("http")) return value;
+  if (value.startsWith("data:")) return "";
+  return `${SITE_ORIGIN}/${value.replace(/^\/+/, "")}`;
+};
+const ogImage = absoluteImage(article.image) || DEFAULT_OG_IMAGE;
+const heroImage = assetPath(article.image) || "/assets/hero-industrial-iot.png";
+const dateLabel = article.date
+  ? new Date(`${article.date}T00:00:00`).toLocaleDateString(locale, { year: "numeric", month: "long", day: "numeric" })
+  : "";
+
+const escapeHtml = (value: any) =>
+  String(value || "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+
+const articleBody = article.content?.trim()
+  ? article.content
+  : `<p>${escapeHtml(article.excerpt || "")}</p>`;
+
+const relatedNews = newsList
+  .filter((item: any) => item.id !== raw.id)
+  .sort((a: any, b: any) => {
+    const categoryA = String(localizeItem(a, locale).category || "").toLowerCase();
+    const categoryB = String(localizeItem(b, locale).category || "").toLowerCase();
+    const currentCategory = String(article.category || "").toLowerCase();
+    const categoryScore = Number(categoryB === currentCategory) - Number(categoryA === currentCategory);
+    if (categoryScore !== 0) return categoryScore;
+    const dateA = a.date ? new Date(`${a.date}T00:00:00`).getTime() : 0;
+    const dateB = b.date ? new Date(`${b.date}T00:00:00`).getTime() : 0;
+    return dateB - dateA;
+  })
+  .slice(0, 3);
+
 const articleSchema = {
   "@context": "https://schema.org",
   "@graph": [
     ORGANIZATION_SCHEMA,
     WEBSITE_SCHEMA,
+    {
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Home", item: `${SITE_ORIGIN}/${locale}` },
+        { "@type": "ListItem", position: 2, name: "News", item: `${SITE_ORIGIN}/${locale}/news` },
+        { "@type": "ListItem", position: 3, name: article.title },
+      ],
+    },
     {
       "@type": "NewsArticle",
       headline: article.title,
@@ -39,17 +112,32 @@ const articleSchema = {
       image: [ogImage],
       inLanguage: locale,
       mainEntityOfPage: { "@type": "WebPage", "@id": canonical },
-      ...(article.date ? { datePublished: article.date } : {}),
+      ...(article.date ? { datePublished: article.date, dateModified: article.date } : {}),
+      articleSection: article.category || "Company News",
       author: { "@id": `${SITE_ORIGIN}/#org` },
       publisher: { "@id": `${SITE_ORIGIN}/#org` },
     },
   ],
 };
 
-const labels = {
+const labels: Record<LabelKey, Record<Locale, string>> = {
   backNews: { en: "News", tr: "Haberler", de: "Neuigkeiten", fr: "Actualités", es: "Noticias", it: "Notizie", ar: "الأخبار", ja: "ニュース" },
+  newsLabel: { en: "News", tr: "Haber", de: "News", fr: "Actualités", es: "Noticias", it: "News", ar: "الأخبار", ja: "ニュース" },
+  whyMatters: { en: "Why this matters for customers.", tr: "Bu haber müşteriler için neden önemli?", de: "Warum dies für Kunden wichtig ist.", fr: "Pourquoi cela compte pour les clients.", es: "Por qué esto importa a los clientes.", it: "Perché conta per i clienti.", ar: "لماذا يهم هذا العملاء؟", ja: "お客様にとっての意味。" },
+  whyLead: { en: "Each public update is treated as a practical signal: market activity, engineering maturity, ecosystem reach or field validation.", tr: "Her public güncelleme pratik bir sinyal olarak ele alınır: pazar aktivitesi, mühendislik olgunluğu, ekosistem erişimi veya saha doğrulaması.", de: "Jedes öffentliche Update ist ein praktisches Signal: Marktaktivität, technische Reife, Reichweite oder Validierung im Feld.", fr: "Chaque actualité publique est un signal concret : activité marché, maturité technique, portée écosystème ou validation terrain.", es: "Cada actualización pública es una señal práctica: actividad de mercado, madurez técnica, alcance del ecosistema o validación en campo.", it: "Ogni aggiornamento pubblico è un segnale concreto: attività di mercato, maturità tecnica, portata dell'ecosistema o validazione sul campo.", ar: "كل تحديث عام هو إشارة عملية: نشاط سوقي أو نضج هندسي أو امتداد منظومة أو تحقق ميداني.", ja: "公開された各更新は、市場活動、技術成熟度、エコシステム展開、現場検証を示す実用的なシグナルです。" },
+  articleMeta: { en: "Article context", tr: "Haber bağlamı", de: "Artikelkontext", fr: "Contexte de l'article", es: "Contexto del artículo", it: "Contesto articolo", ar: "سياق المقال", ja: "記事の背景" },
+  category: { en: "Category", tr: "Kategori", de: "Kategorie", fr: "Catégorie", es: "Categoría", it: "Categoria", ar: "الفئة", ja: "カテゴリ" },
+  published: { en: "Published", tr: "Yayın tarihi", de: "Veröffentlicht", fr: "Publié", es: "Publicado", it: "Pubblicato", ar: "تاريخ النشر", ja: "公開日" },
+  context: { en: "Signal", tr: "Sinyal", de: "Signal", fr: "Signal", es: "Señal", it: "Segnale", ar: "إشارة", ja: "シグナル" },
+  contextValue: { en: "Field activity and enterprise trust", tr: "Saha aktivitesi ve kurumsal güven", de: "Feldaktivität und Vertrauen", fr: "Activité terrain et confiance entreprise", es: "Actividad de campo y confianza empresarial", it: "Attività sul campo e fiducia enterprise", ar: "نشاط ميداني وثقة مؤسسية", ja: "現場活動と企業信頼" },
+  relatedEyebrow: { en: "Related proof", tr: "İlgili kanıtlar", de: "Ähnliche Belege", fr: "Preuves associées", es: "Pruebas relacionadas", it: "Prove correlate", ar: "إثباتات ذات صلة", ja: "関連実績" },
+  relatedTitle: { en: "More signals from WillowSoft.", tr: "WillowSoft'tan diğer güven sinyalleri.", de: "Weitere Signale von WillowSoft.", fr: "Autres signaux de WillowSoft.", es: "Más señales de WillowSoft.", it: "Altri segnali da WillowSoft.", ar: "إشارات أخرى من WillowSoft.", ja: "WillowSoft のその他の実績。" },
+  ctaEyebrow: { en: "Start with context", tr: "Bağlamla başlayın", de: "Mit Kontext starten", fr: "Commencer avec le contexte", es: "Comenzar con contexto", it: "Inizia dal contesto", ar: "ابدأ بالسياق", ja: "背景から始める" },
+  ctaTitle: { en: "Need a connected product team that can own the full stack?", tr: "Tüm sistemi sahiplenebilecek bağlı ürün ekibine mi ihtiyacınız var?", de: "Brauchen Sie ein Team, das den gesamten Connected-Product-Stack verantwortet?", fr: "Besoin d'une équipe produit connecté capable de porter toute la stack ?", es: "¿Necesita un equipo de producto conectado que asuma toda la stack?", it: "Serve un team di prodotto connesso che gestisca l'intero stack?", ar: "هل تحتاج إلى فريق منتج متصل يتولى كامل المنظومة؟", ja: "フルスタックで担えるコネクテッド製品チームが必要ですか？" },
+  ctaLead: { en: "Share the product, field constraints and target launch path. WillowSoft can map the hardware, firmware, backend and interface route together.", tr: "Ürünü, saha kısıtlarını ve hedef lansman yolunu paylaşın. WillowSoft donanım, firmware, backend ve arayüz rotasını birlikte netleştirebilir.", de: "Teilen Sie Produkt, Feldbedingungen und Launch-Ziel. WillowSoft kann Hardware, Firmware, Backend und Interfaces gemeinsam planen.", fr: "Partagez le produit, les contraintes terrain et l'objectif de lancement. WillowSoft peut cartographier matériel, firmware, backend et interface ensemble.", es: "Comparta el producto, las restricciones de campo y el camino de lanzamiento. WillowSoft puede mapear hardware, firmware, backend e interfaz juntos.", it: "Condividi prodotto, vincoli di campo e percorso di lancio. WillowSoft può mappare insieme hardware, firmware, backend e interfacce.", ar: "شارك المنتج وقيود الميدان ومسار الإطلاق المستهدف. يمكن لـ WillowSoft تخطيط العتاد والبرامج الثابتة والخلفية والواجهة معاً.", ja: "製品、現場制約、ローンチ目標を共有してください。WillowSoft はハードウェア、ファームウェア、バックエンド、UIを一体で整理できます。" },
+  startProject: { en: "Start Project", tr: "Projeye Başla", de: "Projekt starten", fr: "Démarrer un projet", es: "Iniciar proyecto", it: "Avvia progetto", ar: "ابدأ مشروعًا", ja: "プロジェクト開始" },
 };
-const getLabel = (key: keyof typeof labels) => labels[key][locale] || labels[key].en;
+const getLabel = (key: LabelKey) => labels[key][locale] || labels[key].en;
 ---
 
 <PageLayout
@@ -65,27 +153,80 @@ const getLabel = (key: keyof typeof labels) => labels[key][locale] || labels[key
   locale={locale}
   dataPage="news-detail"
 >
-  <main>
+  <main id="main-content">
     <article>
-      <section class="hero compact">
+      <section class="hero compact news-detail-hero">
+        <div class="hero-media">
+          <img src={heroImage} alt={article.title} loading="lazy" decoding="async" />
+        </div>
+        <canvas class="signal-canvas" data-density="30"></canvas>
         <div class="hero-inner">
           <a href={`/${locale}/news`} class="back-link reveal">← {getLabel("backNews")}</a>
-          {article.category && <span class="eyebrow reveal">{article.category}</span>}
+          <p class="eyebrow reveal">
+            {article.category || getLabel("newsLabel")} {dateLabel && `• ${dateLabel}`}
+          </p>
           <h1 class="reveal delay-1">{article.title}</h1>
-          {article.date && <time class="reveal delay-2">{article.date}</time>}
+          {article.excerpt && <p class="reveal delay-2">{article.excerpt}</p>}
         </div>
       </section>
 
-      {article.image && (
-        <section class="section">
+      <section class="section news-detail-body-section">
+        <div class="section-inner news-article-layout">
+          <div class="news-article-main reveal">
+            <p class="eyebrow">{getLabel("whyMatters")}</p>
+            <p class="section-lead">{getLabel("whyLead")}</p>
+            <div class="prose news-article-copy" set:html={articleBody} />
+          </div>
+
+          <aside class="news-detail-panel reveal delay-1" aria-label={getLabel("articleMeta")}>
+            <h2>{getLabel("articleMeta")}</h2>
+            <dl>
+              <div>
+                <dt>{getLabel("category")}</dt>
+                <dd>{article.category || getLabel("newsLabel")}</dd>
+              </div>
+              <div>
+                <dt>{getLabel("published")}</dt>
+                <dd>{dateLabel || "-"}</dd>
+              </div>
+              <div>
+                <dt>{getLabel("context")}</dt>
+                <dd>{getLabel("contextValue")}</dd>
+              </div>
+            </dl>
+            <a class="btn btn-primary" href={`/${locale}/start-project`}>{getLabel("startProject")}</a>
+          </aside>
+        </div>
+      </section>
+
+      {relatedNews.length > 0 && (
+        <section class="section news-related-section">
           <div class="section-inner">
-            <img src={article.image} alt={article.title} class="article-hero-img" loading="lazy" />
+            <div class="section-head reveal">
+              <p class="eyebrow">{getLabel("relatedEyebrow")}</p>
+              <h2>{getLabel("relatedTitle")}</h2>
+            </div>
+            <div class="grid grid-3 news-grid">
+              {relatedNews.map((item: any, idx: number) => (
+                <NewsCard item={item} locale={locale} index={idx} variant="compact" />
+              ))}
+            </div>
           </div>
         </section>
       )}
 
-      <section class="section">
-        <div class="section-inner prose" set:html={article.content || article.excerpt || ""} />
+      <section class="section dark news-proof-cta">
+        <canvas class="signal-canvas" data-density="24" data-color="215, 154, 43"></canvas>
+        <div class="section-inner split">
+          <div class="reveal">
+            <p class="eyebrow">{getLabel("ctaEyebrow")}</p>
+            <h2 class="page-title">{getLabel("ctaTitle")}</h2>
+          </div>
+          <div class="reveal delay-1">
+            <p class="section-lead">{getLabel("ctaLead")}</p>
+            <p><a class="btn btn-primary" href={`/${locale}/start-project`}>{getLabel("startProject")}</a></p>
+          </div>
+        </div>
       </section>
     </article>
   </main>

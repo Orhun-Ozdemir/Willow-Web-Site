@@ -302,7 +302,7 @@ const homeSchema = appendSchemaNodes({
         </div>
         <div class="grid grid-3" data-cms-news>
           {latestNews.map((n: any, idx: number) => (
-            <NewsCard item={n} locale={locale} index={idx} />
+            <NewsCard item={n} locale={locale} index={idx} variant="compact" />
           ))}
         </div>
       </div>

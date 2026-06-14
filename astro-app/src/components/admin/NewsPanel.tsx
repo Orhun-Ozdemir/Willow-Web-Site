@@ -25,6 +25,7 @@ type NewsItem = {
   image?: string;
   excerpt?: string;
   content?: string;
+  featured?: boolean;
   localized?: Record<string, Record<string, string>>;
 };
 
@@ -152,7 +153,7 @@ export default function NewsPanel() {
       });
   }, [news, search, categoryFilter, statusFilter, sortBy]);
 
-  const updateNews = (idx: number, key: keyof NewsItem, val: string) => {
+  const updateNews = <K extends keyof NewsItem>(idx: number, key: K, val: NewsItem[K]) => {
     setContent((c: any) => {
       const list = [...(c.news || [])];
       list[idx] = { ...list[idx], [key]: val };
@@ -195,6 +196,7 @@ export default function NewsPanel() {
       image: "",
       excerpt: "",
       content: "",
+      featured: false,
       localized: {},
     };
 
@@ -309,6 +311,17 @@ export default function NewsPanel() {
                     placeholder="case-study, update, company..."
                   />
                 </div>
+                <label className="ws-feature-toggle">
+                  <input
+                    type="checkbox"
+                    checked={Boolean(n.featured)}
+                    onChange={(e) => updateNews(editIdx, "featured", e.target.checked)}
+                  />
+                  <span>
+                    <strong>Öne çıkan haber</strong>
+                    <small>Public News sayfasındaki Featured Proof alanında öncelik verir.</small>
+                  </span>
+                </label>
               </div>
             )}
           </div>
@@ -398,6 +411,7 @@ export default function NewsPanel() {
                   <div><span>Çeviri</span><strong>{getTranslationCount(n)} dil</strong></div>
                   <div><span>Slug</span><strong>{n.slug || "-"}</strong></div>
                   <div><span>Görsel</span><strong>{n.image ? "Var" : "Yok"}</strong></div>
+                  <div><span>Öne çıkan</span><strong>{n.featured ? "Evet" : "Hayır"}</strong></div>
                 </div>
               </div>
             )}
@@ -525,6 +539,7 @@ export default function NewsPanel() {
                     <div className="ws-news-meta">
                       <span>{n.category || "Kategori yok"}</span>
                       <small>{n.date || "-"}</small>
+                      {n.featured && <small>Öne çıkan</small>}
                     </div>
 
                     <h4>{n.title || "Başlıksız haber"}</h4>
@@ -572,4 +587,3 @@ export default function NewsPanel() {
     </div>
   );
 }
-

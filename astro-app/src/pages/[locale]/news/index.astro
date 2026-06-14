@@ -3,9 +3,35 @@ import PageLayout from "@/layouts/PageLayout.astro";
 import NewsCard from "@/components/NewsCard.astro";
 import { loadContent } from "@/lib/content";
 import { pageSeo, webPageNode, ORGANIZATION_SCHEMA, WEBSITE_SCHEMA, SITE_ORIGIN } from "@/lib/seo";
-import { localizedValue, locales, resolveLocale, type Locale } from "@/lib/cms";
+import { localizedValue, localizeItem, resolveLocale, type Locale } from "@/lib/cms";
 
 export const prerender = false;
+
+type LabelKey =
+  | "heroAlt"
+  | "featuredEyebrow"
+  | "featuredTitle"
+  | "featuredCta"
+  | "allEyebrow"
+  | "allTitle"
+  | "allLead"
+  | "totalUpdates"
+  | "categories"
+  | "latestProof"
+  | "searchLabel"
+  | "searchPlaceholder"
+  | "allCategories"
+  | "sortLabel"
+  | "sortNewest"
+  | "sortOldest"
+  | "sortTitle"
+  | "emptyTitle"
+  | "emptyLead"
+  | "resetFilters"
+  | "ctaEyebrow"
+  | "ctaTitle"
+  | "ctaLead"
+  | "startProject";
 
 const locale = resolveLocale(Astro.params.locale, Astro.url.pathname);
 const content = await loadContent();
@@ -13,11 +39,42 @@ const seoProps = pageSeo(content, "news", locale, "/news", "News | WillowSoft", 
 const pageContent = content.pageContent?.news || {};
 const getVal = (key: string) => localizedValue(pageContent[key], locale);
 
-const newsList = (content.news || []).sort((a: any, b: any) => {
-  const dateA = a.date ? new Date(a.date).getTime() : 0;
-  const dateB = b.date ? new Date(b.date).getTime() : 0;
-  return dateB - dateA;
+const toTime = (value: any) => {
+  const time = value ? new Date(`${value}T00:00:00`).getTime() : 0;
+  return Number.isFinite(time) ? time : 0;
+};
+
+const basePath = import.meta.env.BASE_URL || "/";
+const assetPath = (value: any) => {
+  if (!value || typeof value !== "string") return "";
+  if (value.startsWith("http") || value.startsWith("data:")) return value;
+  return `${basePath}${value.replace(/^\/+/, "")}`.replace(/([^:]\/)\/+/g, "$1");
+};
+
+const formatDate = (value: any, month: "short" | "long" = "short") => {
+  if (!value) return "";
+  const date = new Date(`${value}T00:00:00`);
+  if (Number.isNaN(date.getTime())) return "";
+  return date.toLocaleDateString(locale, { year: "numeric", month, day: "numeric" });
+};
+
+const categoryKey = (value: any) => String(value || "").trim().toLowerCase();
+
+const newsList = [...(content.news || [])].sort((a: any, b: any) => toTime(b.date) - toTime(a.date));
+const featuredRaw = newsList.find((item: any) => item.featured) || newsList[0];
+const featured = featuredRaw ? localizeItem(featuredRaw, locale) : null;
+const featuredDate = featured ? formatDate(featured.date, "long") : "";
+const featuredImage = assetPath(featured?.image);
+const renderedNews = newsList.map((item: any) => localizeItem(item, locale));
+
+const categoryMap = new Map<string, string>();
+renderedNews.forEach((item: any) => {
+  const label = item.category || "News";
+  const key = categoryKey(label);
+  if (key && !categoryMap.has(key)) categoryMap.set(key, label);
 });
+const categories = Array.from(categoryMap.entries()).map(([key, label]) => ({ key, label }));
+const latestDate = formatDate(newsList[0]?.date, "short");
 
 const newsItemListId = `${seoProps.canonical}#itemlist`;
 const newsSchema = {
@@ -36,25 +93,40 @@ const newsSchema = {
         "@type": "ListItem",
         position: idx + 1,
         name: localizedValue(item.title, locale),
-        url: `${SITE_ORIGIN}/${locale}/news/${localizedValue(item.slug, locale) || item.slug?.en || item.id}`,
+        url: `${SITE_ORIGIN}/${locale}/news/${encodeURIComponent(localizedValue(item.slug, locale) || item.slug?.en || item.id)}`,
       })),
     },
   ],
 };
 
-const labels = {
-  backAdmin: { en: "Open Admin", tr: "Yönetici Panelini Aç", de: "Admin öffnen", fr: "Ouvrir l'admin", es: "Abrir admin", it: "Apri admin", ar: "افتح الإدارة", ja: "管理画面を開く" },
+const labels: Record<LabelKey, Record<Locale, string>> = {
   heroAlt: { en: "WillowSoft engineering updates", tr: "WillowSoft mühendislik haberleri", de: "WillowSoft Engineering-Neuigkeiten", fr: "Actualités d'ingénierie WillowSoft", es: "Actualizaciones de ingeniería de WillowSoft", it: "Aggiornamenti tecnici WillowSoft", ar: "تحديثات WillowSoft الهندسية", ja: "WillowSoft エンジニアリングニュース" },
-  latestUpdates: { en: "Latest Updates", tr: "Son Güncellemeler", de: "Aktuelle Meldungen", fr: "Dernières actualités", es: "Últimas novedades", it: "Ultimi aggiornamenti", ar: "آخر التحديثات", ja: "最新情報" },
-  proofTitle: { en: "Proof that WillowSoft is active in the field.", tr: "WillowSoft'un sahada aktif olduğunu gösteren kanıtlar.", de: "Nachweise, dass WillowSoft im Feld aktiv ist.", fr: "La preuve que WillowSoft est actif sur le terrain.", es: "Pruebas de que WillowSoft está activo sobre el terreno.", it: "Prove concrete dell'attività di WillowSoft sul campo.", ar: "دليل على أن WillowSoft نشطة في الميدان.", ja: "WillowSoft が現場で活動していることを示す実績。" },
-  ctaEyebrow: { en: "Turn proof into pipeline", tr: "Kanıtı fırsat akışına dönüştür", de: "Nachweise in Anfragen verwandeln", fr: "Transformer la preuve en opportunités", es: "Convertir pruebas en oportunidades", it: "Trasforma le prove in opportunità", ar: "حوّل الدليل إلى فرص", ja: "実績を商談につなげる" },
-  ctaTitle: { en: "Use news, events and product launches to drive qualified leads.", tr: "Haberleri, etkinlikleri ve ürün lansmanlarını nitelikli taleplere dönüştürün.", de: "Nutzen Sie News, Events und Produktstarts für qualifizierte Anfragen.", fr: "Utilisez les actualités, événements et lancements produits pour générer des prospects qualifiés.", es: "Use noticias, eventos y lanzamientos de producto para generar clientes potenciales cualificados.", it: "Usa notizie, eventi e lanci di prodotto per generare lead qualificati.", ar: "استخدم الأخبار والفعاليات وإطلاق المنتجات لجذب عملاء محتملين مؤهلين.", ja: "ニュース、イベント、製品発表を有望な問い合わせにつなげます。" },
-  ctaLead: { en: "The admin panel can add new news items without touching code. Featured updates can later be surfaced on Home and Company pages.", tr: "Yönetici paneli kod yazmadan yeni haber ekleyebilir. Öne çıkan güncellemeler daha sonra Ana Sayfa ve Şirket sayfalarında gösterilebilir.", de: "Über das Admin-Panel lassen sich neue Meldungen ohne Codeänderung hinzufügen. Ausgewählte Updates können später auf Startseite und Unternehmensseite erscheinen.", fr: "Le panneau d'administration permet d'ajouter des actualités sans modifier le code. Les mises à jour importantes peuvent ensuite apparaître sur les pages Accueil et Entreprise.", es: "El panel de administración permite añadir noticias sin tocar código. Las novedades destacadas pueden mostrarse después en Inicio y Empresa.", it: "Il pannello admin permette di aggiungere news senza modificare il codice. Gli aggiornamenti in evidenza possono poi comparire in Home e nella pagina Azienda.", ar: "يمكن للوحة الإدارة إضافة أخبار جديدة دون تعديل الكود. ويمكن لاحقاً عرض التحديثات المميزة في الصفحة الرئيسية وصفحة الشركة.", ja: "管理画面からコードを触らずにニュースを追加できます。重要な更新は後でホームや会社情報ページにも表示できます。" }
+  featuredEyebrow: { en: "Featured proof", tr: "Öne çıkan kanıt", de: "Ausgewählter Beleg", fr: "Preuve à la une", es: "Prueba destacada", it: "Prova in evidenza", ar: "إثبات مميز", ja: "注目の実績" },
+  featuredTitle: { en: "The latest signal customers can trust.", tr: "Müşterilerin güvenebileceği en yeni sinyal.", de: "Das neueste Signal, dem Kunden vertrauen können.", fr: "Le dernier signal auquel les clients peuvent faire confiance.", es: "La señal más reciente en la que los clientes pueden confiar.", it: "Il segnale più recente di cui i clienti possono fidarsi.", ar: "أحدث إشارة يمكن للعملاء الوثوق بها.", ja: "顧客が信頼できる最新の実績。" },
+  featuredCta: { en: "Read featured update", tr: "Öne çıkan haberi oku", de: "Ausgewähltes Update lesen", fr: "Lire l'actualité à la une", es: "Leer actualización destacada", it: "Leggi l'aggiornamento in evidenza", ar: "اقرأ التحديث المميز", ja: "注目記事を読む" },
+  allEyebrow: { en: "Proof archive", tr: "Kanıt arşivi", de: "Belegarchiv", fr: "Archive des preuves", es: "Archivo de pruebas", it: "Archivio prove", ar: "أرشيف الإثباتات", ja: "実績アーカイブ" },
+  allTitle: { en: "Browse field signals, launches and company milestones.", tr: "Saha sinyallerini, lansmanları ve şirket dönüm noktalarını keşfedin.", de: "Durchsuchen Sie Feldsignale, Launches und Unternehmensmeilensteine.", fr: "Parcourez les signaux terrain, lancements et jalons d'entreprise.", es: "Explore señales de campo, lanzamientos e hitos de la empresa.", it: "Esplora segnali dal campo, lanci e traguardi aziendali.", ar: "تصفح إشارات الميدان والإطلاقات ومحطات الشركة.", ja: "現場での実績、発表、企業の節目を確認できます。" },
+  allLead: { en: "Use search and filters to find the proof type that matters for your project.", tr: "Projeniz için önemli olan kanıt türünü arama ve filtrelerle bulun.", de: "Nutzen Sie Suche und Filter, um den passenden Belegtyp für Ihr Projekt zu finden.", fr: "Utilisez la recherche et les filtres pour trouver la preuve utile à votre projet.", es: "Use búsqueda y filtros para encontrar la prueba relevante para su proyecto.", it: "Usa ricerca e filtri per trovare la prova più utile al tuo progetto.", ar: "استخدم البحث والفلاتر للعثور على نوع الإثبات المناسب لمشروعك.", ja: "検索とフィルターで、プロジェクトに必要な実績を探せます。" },
+  totalUpdates: { en: "Updates", tr: "Haber", de: "Updates", fr: "Actualités", es: "Actualizaciones", it: "Aggiornamenti", ar: "تحديثات", ja: "更新数" },
+  categories: { en: "Categories", tr: "Kategori", de: "Kategorien", fr: "Catégories", es: "Categorías", it: "Categorie", ar: "فئات", ja: "カテゴリ" },
+  latestProof: { en: "Latest proof", tr: "Son kanıt", de: "Neuester Beleg", fr: "Dernière preuve", es: "Prueba reciente", it: "Prova recente", ar: "أحدث إثبات", ja: "最新実績" },
+  searchLabel: { en: "Search updates", tr: "Haberlerde ara", de: "Updates suchen", fr: "Rechercher", es: "Buscar novedades", it: "Cerca aggiornamenti", ar: "ابحث في التحديثات", ja: "更新を検索" },
+  searchPlaceholder: { en: "Search by title, category or summary", tr: "Başlık, kategori veya özet ile ara", de: "Nach Titel, Kategorie oder Zusammenfassung suchen", fr: "Rechercher par titre, catégorie ou résumé", es: "Buscar por título, categoría o resumen", it: "Cerca per titolo, categoria o sintesi", ar: "ابحث بالعنوان أو الفئة أو الملخص", ja: "タイトル、カテゴリ、要約で検索" },
+  allCategories: { en: "All", tr: "Tümü", de: "Alle", fr: "Tout", es: "Todo", it: "Tutto", ar: "الكل", ja: "すべて" },
+  sortLabel: { en: "Sort", tr: "Sırala", de: "Sortieren", fr: "Trier", es: "Ordenar", it: "Ordina", ar: "ترتيب", ja: "並び替え" },
+  sortNewest: { en: "Newest first", tr: "En yeni önce", de: "Neueste zuerst", fr: "Plus récent", es: "Más reciente", it: "Più recenti", ar: "الأحدث أولاً", ja: "新しい順" },
+  sortOldest: { en: "Oldest first", tr: "En eski önce", de: "Älteste zuerst", fr: "Plus ancien", es: "Más antiguo", it: "Meno recenti", ar: "الأقدم أولاً", ja: "古い順" },
+  sortTitle: { en: "Title A-Z", tr: "Başlık A-Z", de: "Titel A-Z", fr: "Titre A-Z", es: "Título A-Z", it: "Titolo A-Z", ar: "العنوان أ-ي", ja: "タイトル順" },
+  emptyTitle: { en: "No matching updates", tr: "Eşleşen haber yok", de: "Keine passenden Updates", fr: "Aucune actualité trouvée", es: "No hay novedades coincidentes", it: "Nessun aggiornamento corrispondente", ar: "لا توجد تحديثات مطابقة", ja: "一致する更新はありません" },
+  emptyLead: { en: "Clear the filters or try a broader search term.", tr: "Filtreleri temizleyin veya daha geniş bir arama deneyin.", de: "Filter löschen oder einen breiteren Suchbegriff verwenden.", fr: "Effacez les filtres ou élargissez votre recherche.", es: "Limpie los filtros o use una búsqueda más amplia.", it: "Cancella i filtri o prova una ricerca più ampia.", ar: "امسح الفلاتر أو جرّب مصطلح بحث أوسع.", ja: "フィルターを解除するか、より広い検索語を試してください。" },
+  resetFilters: { en: "Clear filters", tr: "Filtreleri temizle", de: "Filter löschen", fr: "Effacer les filtres", es: "Limpiar filtros", it: "Cancella filtri", ar: "مسح الفلاتر", ja: "フィルター解除" },
+  ctaEyebrow: { en: "Turn proof into a project", tr: "Kanıtı projeye dönüştür", de: "Belege in ein Projekt verwandeln", fr: "Transformer la preuve en projet", es: "Convertir pruebas en proyecto", it: "Trasforma le prove in progetto", ar: "حوّل الإثبات إلى مشروع", ja: "実績をプロジェクトへ" },
+  ctaTitle: { en: "Bring the same field-proven engineering into your connected product.", tr: "Aynı saha kanıtlı mühendisliği bağlı ürününüze taşıyın.", de: "Bringen Sie dieselbe feldbewährte Technik in Ihr vernetztes Produkt.", fr: "Intégrez cette ingénierie éprouvée sur le terrain à votre produit connecté.", es: "Lleve esta ingeniería validada en campo a su producto conectado.", it: "Porta la stessa ingegneria validata sul campo nel tuo prodotto connesso.", ar: "انقل هذه الهندسة المثبتة ميدانياً إلى منتجك المتصل.", ja: "現場で実証されたエンジニアリングを、あなたのコネクテッド製品へ。" },
+  ctaLead: { en: "Share your hardware, firmware, backend or interface challenge and the engineering team will map the next practical step.", tr: "Donanım, firmware, backend veya arayüz probleminizi paylaşın; mühendislik ekibi uygulanabilir sonraki adımı netleştirsin.", de: "Teilen Sie Ihre Hardware-, Firmware-, Backend- oder Interface-Herausforderung und das Engineering-Team skizziert den nächsten praktischen Schritt.", fr: "Partagez votre défi matériel, firmware, backend ou interface et l'équipe technique définira la prochaine étape concrète.", es: "Comparta su reto de hardware, firmware, backend o interfaz y el equipo técnico definirá el siguiente paso práctico.", it: "Condividi la tua sfida hardware, firmware, backend o interfaccia e il team tecnico definirà il prossimo passo pratico.", ar: "شارك تحدي العتاد أو البرامج الثابتة أو الخلفية أو الواجهة وسيحدد فريق الهندسة الخطوة العملية التالية.", ja: "ハードウェア、ファームウェア、バックエンド、UIの課題を共有すれば、技術チームが次の実行可能な一歩を整理します。" },
+  startProject: { en: "Start Project", tr: "Projeye Başla", de: "Projekt starten", fr: "Démarrer un projet", es: "Iniciar proyecto", it: "Avvia progetto", ar: "ابدأ مشروعًا", ja: "プロジェクト開始" },
 };
 
-const getLabel = (key: keyof typeof labels) => {
-  return labels[key][locale] || labels[key]["en"];
-};
+const getLabel = (key: LabelKey) => labels[key][locale] || labels[key].en;
 ---
 
 <PageLayout
@@ -63,10 +135,10 @@ const getLabel = (key: keyof typeof labels) => {
   locale={locale}
   dataPage="news"
 >
-  <main>
-    <section class="hero compact">
+  <main id="main-content" data-news-proof data-active-category="all">
+    <section class="hero compact news-proof-hero">
       <div class="hero-media"><img src={`${import.meta.env.BASE_URL}pdf-assets/p29_06_X111.jpg`} alt={getLabel("heroAlt")} loading="lazy" decoding="async"/></div>
-      <canvas class="signal-canvas" data-density="34"></canvas>
+      <canvas class="signal-canvas" data-density="28"></canvas>
       <div class="hero-inner">
         <p class="eyebrow reveal">{getVal("heroEyebrow")}</p>
         <h1 class="reveal delay-1" set:html={getVal("heroTitle")} />
@@ -74,13 +146,91 @@ const getLabel = (key: keyof typeof labels) => {
       </div>
     </section>
 
-    <section class="section">
+    <section class="section news-proof-overview">
       <div class="section-inner">
-        <div class="section-head reveal">
-          <p class="eyebrow">{getLabel("latestUpdates")}</p>
-          <h2>{getLabel("proofTitle")}</h2>
+        <div class="news-proof-strip reveal" aria-label="News proof summary">
+          <article>
+            <span>{getLabel("totalUpdates")}</span>
+            <strong>{newsList.length}</strong>
+          </article>
+          <article>
+            <span>{getLabel("categories")}</span>
+            <strong>{categories.length}</strong>
+          </article>
+          <article>
+            <span>{getLabel("latestProof")}</span>
+            <strong>{latestDate || "-"}</strong>
+          </article>
         </div>
-        <div class="grid grid-3">
+
+        {featured && (
+          <article class="news-featured-card reveal delay-1">
+            <figure class={!featuredImage ? "is-empty" : ""}>
+              {featuredImage ? (
+                <img
+                  src={featuredImage}
+                  alt={featured.title}
+                  loading="lazy"
+                  decoding="async"
+                  onerror="this.closest('figure').classList.add('is-empty'); this.remove();"
+                />
+              ) : (
+                <span>WillowSoft</span>
+              )}
+            </figure>
+            <div class="news-featured-copy">
+              <p class="eyebrow">{getLabel("featuredEyebrow")}</p>
+              <div class="news-card-meta">
+                <span class="news-badge">{featured.category || "News"}</span>
+                {featuredDate && <time datetime={featured.date}>{featuredDate}</time>}
+              </div>
+              <h2>{featured.title || getLabel("featuredTitle")}</h2>
+              <p>{featured.excerpt}</p>
+              <a class="btn btn-primary" href={`/${locale}/news/${encodeURIComponent(featured.slug || featured.id)}`}>{getLabel("featuredCta")}</a>
+            </div>
+          </article>
+        )}
+      </div>
+    </section>
+
+    <section class="section news-proof-list-section">
+      <div class="section-inner">
+        <div class="section-head product-headline reveal">
+          <div>
+            <p class="eyebrow">{getLabel("allEyebrow")}</p>
+            <h2>{getLabel("allTitle")}</h2>
+            <p class="section-lead">{getLabel("allLead")}</p>
+          </div>
+        </div>
+
+        <div class="news-controls reveal delay-1" aria-label="News filters">
+          <label class="news-search">
+            <span>{getLabel("searchLabel")}</span>
+            <input type="search" data-news-search-input placeholder={getLabel("searchPlaceholder")} />
+          </label>
+          <div class="news-filter-row" role="group" aria-label="News categories">
+            <button type="button" class="news-filter-chip is-active" data-news-filter="all" aria-pressed="true">{getLabel("allCategories")}</button>
+            {categories.map((category) => (
+              <button type="button" class="news-filter-chip" data-news-filter={category.key} aria-pressed="false">{category.label}</button>
+            ))}
+          </div>
+          <label class="news-sort">
+            <span>{getLabel("sortLabel")}</span>
+            <select data-news-sort>
+              <option value="newest">{getLabel("sortNewest")}</option>
+              <option value="oldest">{getLabel("sortOldest")}</option>
+              <option value="title">{getLabel("sortTitle")}</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="news-empty-state" data-news-empty hidden>
+          <h3>{getLabel("emptyTitle")}</h3>
+          <p>{getLabel("emptyLead")}</p>
+          <button type="button" class="btn btn-secondary btn-small" data-news-reset>{getLabel("resetFilters")}</button>
+        </div>
+
+        <div class="grid grid-3 news-grid" data-news-grid>
           {newsList.map((n: any, idx: number) => (
             <NewsCard item={n} locale={locale} index={idx} />
           ))}
@@ -88,8 +238,7 @@ const getLabel = (key: keyof typeof labels) => {
       </div>
     </section>
 
-    <!-- CTA Section -->
-    <section class="section dark">
+    <section class="section dark news-proof-cta">
       <canvas class="signal-canvas" data-density="26" data-color="215, 154, 43"></canvas>
       <div class="section-inner split">
         <div class="reveal">
@@ -98,9 +247,105 @@ const getLabel = (key: keyof typeof labels) => {
         </div>
         <div class="reveal delay-1">
           <p class="section-lead">{getLabel("ctaLead")}</p>
-          <p><a class="btn btn-primary" href={`/${locale}/admin`}>{getLabel("backAdmin")}</a></p>
+          <p><a class="btn btn-primary" href={`/${locale}/start-project`}>{getLabel("startProject")}</a></p>
         </div>
       </div>
     </section>
   </main>
+
+  <script is:inline>
+    (function () {
+      var root = document.querySelector("[data-news-proof]");
+      if (!root) return;
+
+      var grid = root.querySelector("[data-news-grid]");
+      var searchInput = root.querySelector("[data-news-search-input]");
+      var sortSelect = root.querySelector("[data-news-sort]");
+      var emptyState = root.querySelector("[data-news-empty]");
+      var resetButton = root.querySelector("[data-news-reset]");
+      var filters = Array.prototype.slice.call(root.querySelectorAll("[data-news-filter]"));
+      var cards = Array.prototype.slice.call(root.querySelectorAll("[data-news-card]"));
+      var pageLocale = document.documentElement.lang || "en";
+
+      function normalize(value) {
+        return String(value || "").trim().toLowerCase();
+      }
+
+      function activeCategory() {
+        return normalize(root.getAttribute("data-active-category") || "all");
+      }
+
+      function applyFilters() {
+        var query = normalize(searchInput && searchInput.value);
+        var category = activeCategory();
+        var visibleCount = 0;
+
+        cards.forEach(function (card) {
+          var text = normalize(card.dataset.newsSearch);
+          var cardCategory = normalize(card.dataset.newsCategory);
+          var matchesSearch = !query || text.indexOf(query) !== -1;
+          var matchesCategory = category === "all" || cardCategory === category;
+          var shouldShow = matchesSearch && matchesCategory;
+
+          card.hidden = !shouldShow;
+          if (shouldShow) visibleCount += 1;
+        });
+
+        if (emptyState) emptyState.hidden = visibleCount !== 0;
+      }
+
+      function sortCards() {
+        if (!grid) return;
+        var mode = sortSelect ? sortSelect.value : "newest";
+
+        cards
+          .slice()
+          .sort(function (a, b) {
+            if (mode === "title") {
+              return normalize(a.dataset.newsTitle).localeCompare(normalize(b.dataset.newsTitle), pageLocale);
+            }
+
+            var dateA = Number(a.dataset.newsDate || 0);
+            var dateB = Number(b.dataset.newsDate || 0);
+            return mode === "oldest" ? dateA - dateB : dateB - dateA;
+          })
+          .forEach(function (card) {
+            grid.appendChild(card);
+          });
+
+        applyFilters();
+      }
+
+      filters.forEach(function (button) {
+        button.addEventListener("click", function () {
+          var next = normalize(button.getAttribute("data-news-filter") || "all");
+          root.setAttribute("data-active-category", next);
+          filters.forEach(function (item) {
+            var active = item === button;
+            item.classList.toggle("is-active", active);
+            item.setAttribute("aria-pressed", active ? "true" : "false");
+          });
+          applyFilters();
+        });
+      });
+
+      if (searchInput) searchInput.addEventListener("input", applyFilters);
+      if (sortSelect) sortSelect.addEventListener("change", sortCards);
+      if (resetButton) {
+        resetButton.addEventListener("click", function () {
+          if (searchInput) searchInput.value = "";
+          if (sortSelect) sortSelect.value = "newest";
+          root.setAttribute("data-active-category", "all");
+          filters.forEach(function (item) {
+            var active = item.getAttribute("data-news-filter") === "all";
+            item.classList.toggle("is-active", active);
+            item.setAttribute("aria-pressed", active ? "true" : "false");
+          });
+          sortCards();
+        });
+      }
+
+      sortCards();
+    })();
+  </script>
 </PageLayout>

@@ -5,15 +5,28 @@ interface Props {
   item: any;
   locale: Locale;
   index: number;
+  variant?: "default" | "compact";
 }
 
-const { item, index } = Astro.props;
+const { item, index, variant = "default" } = Astro.props;
 const locale = resolveLocale(Astro.props.locale, Astro.url.pathname);
 const n = localizeItem(item, locale);
 const delay = index % 3 ? ` delay-${index % 3}` : "";
+const basePath = import.meta.env.BASE_URL || "/";
 const date = n.date
   ? new Date(`${n.date}T00:00:00`).toLocaleDateString(locale, { year: "numeric", month: "short", day: "numeric" })
   : "";
+const timestamp = n.date ? new Date(`${n.date}T00:00:00`).getTime() || 0 : 0;
+const category = n.category || "News";
+const slug = encodeURIComponent(n.slug || n.id || "");
+const rawImage = typeof n.image === "string" ? n.image : "";
+const imageSrc = rawImage
+  ? rawImage.startsWith("http") || rawImage.startsWith("data:")
+    ? rawImage
+    : `${basePath}${rawImage.replace(/^\/+/, "")}`.replace(/([^:]\/)\/+/g, "$1")
+  : "";
+const searchable = [n.title, category, n.excerpt].filter(Boolean).join(" ").toLowerCase();
+const categoryKey = String(category).trim().toLowerCase();
 const readLabel: Record<string, string> = {
   en: "Read Update",
   tr: "Haberi Oku",
@@ -24,20 +37,49 @@ const readLabel: Record<string, string> = {
   ar: "اقرأ التحديث",
   ja: "更新を見る",
 };
+const featuredLabel: Record<string, string> = {
+  en: "Featured proof",
+  tr: "Öne çıkan kanıt",
+  de: "Ausgewählter Beleg",
+  fr: "Preuve à la une",
+  es: "Prueba destacada",
+  it: "Prova in evidenza",
+  ar: "إثبات مميز",
+  ja: "注目の実績",
+};
 ---
 
-<article class={`card news-card reveal${delay}`}>
-  <figure>
-    <img src={n.image} alt={n.title} loading="lazy" decoding="async" />
+<article
+  class={`card news-card news-card-${variant} reveal${delay}`}
+  data-news-card
+  data-news-search={searchable}
+  data-news-category={categoryKey}
+  data-news-date={timestamp}
+  data-news-title={String(n.title || "").toLowerCase()}
+>
+  <figure class={!imageSrc ? "is-empty" : ""}>
+    {imageSrc ? (
+      <img
+        src={imageSrc}
+        alt={n.title}
+        loading="lazy"
+        decoding="async"
+        onerror="this.closest('figure').classList.add('is-empty'); this.remove();"
+      />
+    ) : (
+      <span class="news-card-placeholder">WillowSoft</span>
+    )}
   </figure>
   <div class="product-body">
-    <p class="eyebrow">
-      {n.category} {date && `• ${date}`}
-    </p>
+    <div class="news-card-meta">
+      <span class="news-badge">{category}</span>
+      {date && <time datetime={n.date}>{date}</time>}
+    </div>
+    {n.featured && <span class="news-featured-pill">{featuredLabel[locale] || featuredLabel.en}</span>}
     <h3>{n.title}</h3>
     <p>{n.excerpt}</p>
-    <p class="mt-4">
-      <a href={`/${locale}/news/${encodeURIComponent(n.slug || n.id)}`} class="btn btn-ghost btn-small">
+    <p class="news-card-action">
+      <a href={`/${locale}/news/${slug}`} class="btn btn-ghost btn-small">
         {readLabel[locale] || readLabel.en}
       </a>
     </p>
