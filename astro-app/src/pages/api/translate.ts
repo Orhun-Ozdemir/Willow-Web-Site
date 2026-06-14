@@ -1,5 +1,6 @@
 import type { APIRoute } from "astro";
 import { getSession } from "@/lib/auth";
+import { loadContent } from "@/lib/content";
 
 export const prerender = false;
 
@@ -9,10 +10,15 @@ export const POST: APIRoute = async ({ request }) => {
     return new Response(JSON.stringify({ ok: false, error: "Unauthorized" }), { status: 401 });
   }
 
-  const apiKey = import.meta.env.GOOGLE_TRANSLATE_API_KEY;
+  let apiKey = import.meta.env.GOOGLE_TRANSLATE_API_KEY;
+  if (!apiKey) {
+    const content = await loadContent();
+    apiKey = content?.companyFacts?.googleTranslateApiKey;
+  }
+
   if (!apiKey) {
     return new Response(
-      JSON.stringify({ ok: false, error: "GOOGLE_TRANSLATE_API_KEY yapılandırılmamış" }),
+      JSON.stringify({ ok: false, error: "GOOGLE_TRANSLATE_API_KEY yapılandırılmamış (Admin > Ayarlar > Çeviri API)" }),
       { status: 503 }
     );
   }

@@ -139,8 +139,8 @@ export default function AdminShell() {
                     onClick={() => setActiveTab(tab.key)}
                     className={`w-full text-left px-3 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2.5 ${
                       activeTab === tab.key
-                        ? "bg-white/15 text-white shadow-sm"
-                        : "text-white/60 hover:bg-white/8 hover:text-white/90"
+                        ? "bg-white/20 text-white shadow-sm font-bold"
+                        : "text-white hover:bg-white/15"
                     }`}
                   >
                     <TabIcon tab={tab.key} />

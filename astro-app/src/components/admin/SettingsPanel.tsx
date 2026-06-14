@@ -438,7 +438,7 @@ function SocialLinksPanel() {
 
 export default function SettingsPanel() {
   const { content, setContent } = useAdmin();
-  const [subTab, setSubTab] = useState<"facts" | "ui" | "notifications" | "social">("facts");
+  const [subTab, setSubTab] = useState<"facts" | "ui" | "notifications" | "social" | "api">("facts");
   const [uiLocale, setUiLocale] = useState<Locale>("tr");
 
   const facts = content?.companyFacts || {};
@@ -496,6 +496,12 @@ export default function SettingsPanel() {
         >
           🔗 Sosyal Medya
         </button>
+        <button
+          onClick={() => setSubTab("api")}
+          className={`px-4 py-2.5 text-sm font-semibold border-b-2 transition -mb-px ${subTab === "api" ? "border-[#132175] text-[#132175]" : "border-transparent text-gray-400 hover:text-gray-700"}`}
+        >
+          🔑 API & Entegrasyon
+        </button>
       </div>
 
       {/* ── Company Facts ── */}
@@ -547,6 +553,29 @@ export default function SettingsPanel() {
 
       {/* ── Social Media ── */}
       {subTab === "social" && <SocialLinksPanel />}
+
+      {/* ── API & Integration ── */}
+      {subTab === "api" && (
+        <div className="space-y-4">
+          <div className="bg-blue-50 border border-blue-100 rounded-xl p-4 text-sm text-blue-700">
+            Sitenin dış servislerle haberleşmesi için gerekli API anahtarlarını buradan yönetebilirsiniz.
+          </div>
+
+          <div className="bg-white border border-gray-200 rounded-xl p-5 space-y-4">
+            <div className="space-y-1">
+              <label className="block text-sm font-semibold text-gray-800">Google Translate API Key</label>
+              <p className="text-xs text-gray-400">Admin sayfasında "Çeviri Sağlığı" modülünün otomatik çeviri yapabilmesi için gereklidir.</p>
+              <input
+                type="password"
+                placeholder="AIzaSyB..."
+                value={String(facts.googleTranslateApiKey ?? "")}
+                onChange={(e) => updateFact("googleTranslateApiKey", e.target.value)}
+                className="w-full mt-2 p-2.5 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-800 outline-none focus:border-[#1aa3c4]"
+              />
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* ── UI Strings ── */}
       {subTab === "ui" && (
