@@ -21,6 +21,8 @@ const aiAnswer = aiAnswerForPage(content, "solutions", locale, seoProps.descript
 const aiMeta = aiMetaForPage(content, "solutions", locale);
 
 const solutions = (content.solutions || []).sort((a: any, b: any) => (a.sortOrder || 0) - (b.sortOrder || 0));
+const allProducts = content.products || [];
+const solutionCategories = ["All", ...Array.from(new Set(solutions.map((s: any) => s.category).filter(Boolean)))];
 const solutionsSchema = appendSchemaNodes({
   "@context": "https://schema.org",
   "@graph": [
@@ -150,7 +152,17 @@ const getLabel = (key: keyof typeof labels) => {
           <a class="btn btn-secondary btn-small" href={`/${locale}/start-project`}>{locale === 'tr' ? 'Sahanızla Başlayın' : 'Start with Your Site'}</a>
         </div>
 
-        <div class="solutions-showcase-frame reveal delay-1">
+        {solutionCategories.length > 2 && (
+          <div class="solution-filter-bar reveal" data-solution-filter data-cms-solution-filter>
+            {solutionCategories.map((cat: string, i: number) => (
+              <button class={`sol-filter-btn${i === 0 ? " active" : ""}`} data-cat={cat}>
+                {cat === "All" ? (locale === "tr" ? "Tümü" : "All") : cat}
+              </button>
+            ))}
+          </div>
+        )}
+
+        <div class="solutions-showcase-frame reveal delay-2">
           <div class="solutions-showcase-side">
             <span>{getVal("showcaseEyebrow") || (locale === 'tr' ? 'Operasyonel Kapsam' : 'Operational Coverage')}</span>
             <h3>{getVal("showcaseTitle") || (locale === 'tr' ? 'Tek bir sistem, çoklu saha gerçekliği.' : 'One system, multiple field realities.')}</h3>
@@ -251,23 +263,22 @@ const getLabel = (key: keyof typeof labels) => {
       <canvas class="signal-canvas" data-density="36" data-color="35, 168, 216"></canvas>
 
       <div class="section-inner">
-        <div class="solutions-architecture-layout">
-          <div class="reveal">
-            <p class="eyebrow">{getVal("howEyebrow") || (locale === 'tr' ? 'Nasıl Çalışır' : 'How It Works')}</p>
-            <h2 class="page-title">{getVal("howTitle") || (locale === 'tr' ? 'Sensörler raporlar. Geçitler bağlar. Platformlar harekete geçer.' : 'Sensors report. Gateways connect. Platforms act.')}</h2>
-            <p class="section-lead">
-              {getVal("howLead") || "WillowSoft solutions turn field signals into operational intelligence through a complete embedded-to-cloud architecture."}
-            </p>
-          </div>
+        <div class="section-head center reveal" style={{ marginBottom: "40px" }}>
+          <p class="eyebrow">{getVal("howEyebrow") || (locale === 'tr' ? 'Nasıl Çalışır' : 'How It Works')}</p>
+          <h2 class="page-title">{getVal("howTitle") || (locale === 'tr' ? 'Sensörler raporlar. Geçitler bağlar. Platformlar harekete geçer.' : 'Sensors report. Gateways connect. Platforms act.')}</h2>
+          <p class="section-lead">
+            {getVal("howLead") || "WillowSoft solutions turn field signals into operational intelligence through a complete embedded-to-cloud architecture."}
+          </p>
+        </div>
 
-          <div class="architecture-card reveal delay-1">
-            <div class="architecture-line"></div>
-
+        <div class="tech-flow reveal delay-1" data-cms-architecture-flow>
+          <div class="flow-row">
             {howItWorksSteps.length > 0 ? (
-              howItWorksSteps.map((step: any) => {
+              howItWorksSteps.map((step: any, idx: number) => {
                 const s = localizeItem(step, locale);
                 return (
-                  <div class="architecture-step">
+                  <div class="flow-node">
+                    <small>{String(idx + 1).padStart(2, '0')}</small>
                     <strong>{s.title || step.title}</strong>
                     <span>{s.body || step.body}</span>
                   </div>
@@ -276,23 +287,28 @@ const getLabel = (key: keyof typeof labels) => {
             ) : (
               // Fallback
               <>
-                <div class="architecture-step">
+                <div class="flow-node">
+                  <small>01</small>
                   <strong>{locale === 'tr' ? 'Ölçüm' : 'Measure'}</strong>
                   <span>{locale === 'tr' ? 'Seviye, basınç, hava kalitesi, hareket, GPS, sıcaklık, nem ve daha fazlası.' : 'Level, pressure, air quality, motion, GPS, temperature, humidity and more.'}</span>
                 </div>
-                <div class="architecture-step">
+                <div class="flow-node">
+                  <small>02</small>
                   <strong>{locale === 'tr' ? 'İletim' : 'Transmit'}</strong>
                   <span>{locale === 'tr' ? 'Saha gerçekliğine göre tasarlanmış LoRaWAN ve düşük güçlü iletişim yolları.' : 'LoRaWAN and low-power communication paths designed for site reality.'}</span>
                 </div>
-                <div class="architecture-step">
+                <div class="flow-node">
+                  <small>03</small>
                   <strong>{locale === 'tr' ? 'İşleme' : 'Process'}</strong>
                   <span>{locale === 'tr' ? 'Backend API\'leri, PostgreSQL depolaması, kurallar, eşikler ve raporlama mantığı.' : 'Backend APIs, PostgreSQL storage, rules, thresholds and reporting logic.'}</span>
                 </div>
-                <div class="architecture-step">
+                <div class="flow-node">
+                  <small>04</small>
                   <strong>{locale === 'tr' ? 'Görselleştirme' : 'Visualize'}</strong>
                   <span>{locale === 'tr' ? 'Paneller, haritalar, yönetici panelleri, mobil uygulamalar ve müşteri portalları.' : 'Dashboards, maps, admin panels, mobile apps and customer portals.'}</span>
                 </div>
-                <div class="architecture-step">
+                <div class="flow-node">
+                  <small>05</small>
                   <strong>{locale === 'tr' ? 'Eylem' : 'Act'}</strong>
                   <span>{locale === 'tr' ? 'Uyarılar, iş akışları, saha yanıtları, bakım planlaması ve karar desteği.' : 'Alerts, workflows, field response, maintenance planning and decision support.'}</span>
                 </div>
@@ -313,7 +329,7 @@ const getLabel = (key: keyof typeof labels) => {
           </div>
         </div>
 
-        <div class="solutions-principle-grid">
+        <div class="solutions-principle-grid" data-cms-why-principles>
           {whyCards.length > 0 ? (
             whyCards.map((card: any, idx: number) => {
               const c = localizeItem(card, locale);
@@ -393,4 +409,24 @@ const getLabel = (key: keyof typeof labels) => {
       </div>
     </section>
   </main>
+
+  <script is:inline>
+    (function() {
+      const filterBar = document.querySelector("[data-solution-filter]");
+      const grid = document.querySelector("[data-cms-solutions]");
+      if (filterBar && grid) {
+        filterBar.addEventListener("click", (e) => {
+          const btn = e.target.closest(".sol-filter-btn");
+          if (!btn) return;
+          filterBar.querySelectorAll(".sol-filter-btn").forEach(b => b.classList.remove("active"));
+          btn.classList.add("active");
+          const cat = btn.dataset.cat;
+          grid.querySelectorAll(".solution-case-card").forEach((card) => {
+            const match = cat === "All" || card.dataset.category === cat;
+            card.style.display = match ? "" : "none";
+          });
+        });
+      }
+    })();
+  </script>
 </PageLayout>

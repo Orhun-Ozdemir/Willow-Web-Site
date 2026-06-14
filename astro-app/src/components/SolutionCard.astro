@@ -5,32 +5,77 @@ interface Props {
   solution: any;
   locale: Locale;
   index: number;
+  allProducts?: any[];
 }
 
-const { solution, locale, index } = Astro.props;
+const { solution, locale, index, allProducts = [] } = Astro.props;
 const s = localizeItem(solution, locale);
 const delay = index % 4 ? ` delay-${index % 4}` : "";
+const headline = s.headline || s.title || "";
+
 const bullets = Array.isArray(s.bullets)
   ? s.bullets
   : String(s.bullets || "").split(/\r?\n|,/).map((b: string) => b.trim()).filter(Boolean);
+
+// Short labels render as chips, longer ones as a bulleted list
+const useChips = bullets.length > 0 && bullets.every((b: string) => b.split(" ").length <= 5);
+
+// Structured image (object with webp/png/srcset) vs plain string path
+const image = s.image;
+const isImageObject = image && typeof image === "object";
+const imgAlt = s.alt || headline;
+const sizes = "(max-width:600px) 480px, (max-width:900px) 768px, 1200px";
+
+// Products used → link badges
+const productsUsed = Array.isArray(s.productsUsed) ? s.productsUsed : [];
+const productBadges = productsUsed
+  .map((pid: string) => allProducts.find((p: any) => (p.id || p.slug) === pid))
+  .filter(Boolean)
+  .map((prod: any) => ({
+    url: `/${locale}/products/${encodeURIComponent(prod.slug || prod.id)}`,
+    title: prod.title || prod.id,
+  }));
 ---
 
-<article class={`solution-case-card reveal${delay}`} data-solution={s.slug || s.id}>
-  {s.image && (
+<article
+  class={`solution-case-card reveal${delay}`}
+  data-solution={s.slug || s.id}
+  data-category={s.category || ""}
+>
+  {image && (
     <figure>
-      <img src={resolveAsset(s.image)} alt={s.headline || s.title} loading="lazy" decoding="async" />
+      {isImageObject ? (
+        <picture>
+          {image.srcsetWebp && <source type="image/webp" srcset={image.srcsetWebp} sizes={sizes} />}
+          {image.srcsetPng && <source type="image/png" srcset={image.srcsetPng} sizes={sizes} />}
+          <img src={resolveAsset(image.png || image.webp)} alt={imgAlt} loading="lazy" decoding="async" />
+        </picture>
+      ) : (
+        <img src={resolveAsset(image)} alt={imgAlt} loading="lazy" decoding="async" />
+      )}
     </figure>
   )}
   <div class="solution-case-body">
     {s.category && <span>{s.category}</span>}
-    <h3>{s.headline || s.title}</h3>
+    <h3>{headline}</h3>
     {s.summary && <p>{s.summary}</p>}
     {bullets.length > 0 && (
-      <ul>
-        {bullets.map((b: string) => (
-          <li>{b}</li>
+      useChips ? (
+        <div class="solution-use-cases">
+          {bullets.map((b: string) => <span>{b}</span>)}
+        </div>
+      ) : (
+        <ul>
+          {bullets.map((b: string) => <li>{b}</li>)}
+        </ul>
+      )
+    )}
+    {productBadges.length > 0 && (
+      <div class="solution-product-badges">
+        {productBadges.map((p: any) => (
+          <a class="solution-product-badge" href={p.url} title={p.title}>{p.title}</a>
         ))}
-      </ul>
+      </div>
     )}
   </div>
 </article>
