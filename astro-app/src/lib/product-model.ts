@@ -85,8 +85,9 @@ export interface ProductDetailBlock {
   visible?: boolean;
 }
 
-export function normalizeAssetPath(path: any): string {
+export function normalizeAssetPath(path: any): any {
   if (!path) return "";
+  if (typeof path === "object" && !Array.isArray(path)) return path;
   const value = String(path).trim();
   if (!value) return "";
   return value.replace(/^\/+/, "");
