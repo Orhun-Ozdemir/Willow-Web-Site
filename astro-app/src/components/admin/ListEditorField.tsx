@@ -6,6 +6,9 @@ interface ListEditorFieldProps {
   label: string;
   value: string[];
   onChange: (value: string[]) => void;
+  featuredValue?: string;
+  featuredLabel?: string;
+  onMakeFeatured?: (value: string) => void;
   helper?: string;
   placeholder?: string;
   rows?: number;
@@ -35,7 +38,16 @@ async function uploadFile(file: File): Promise<string> {
   return urlData.publicUrl as string;
 }
 
-export default function ListEditorField({ label, value, onChange, helper, placeholder }: ListEditorFieldProps) {
+export default function ListEditorField({
+  label,
+  value,
+  onChange,
+  featuredValue,
+  featuredLabel = "Kapak",
+  onMakeFeatured,
+  helper,
+  placeholder,
+}: ListEditorFieldProps) {
   const [manualPath, setManualPath] = useState("");
   const [uploading, setUploading] = useState(false);
   const [uploadError, setUploadError] = useState("");
@@ -46,6 +58,7 @@ export default function ListEditorField({ label, value, onChange, helper, placeh
     const trimmed = manualPath.trim();
     if (!trimmed || items.includes(trimmed)) return;
     onChange([...items, trimmed]);
+    if (onMakeFeatured && !featuredValue) onMakeFeatured(trimmed);
     setManualPath("");
   };
 
@@ -61,6 +74,7 @@ export default function ListEditorField({ label, value, onChange, helper, placeh
     try {
       const url = await uploadFile(file);
       if (!items.includes(url)) onChange([...items, url]);
+      if (onMakeFeatured && !featuredValue) onMakeFeatured(url);
     } catch (err: any) {
       setUploadError(err.message || "Hata oluştu.");
     } finally {
@@ -97,6 +111,16 @@ export default function ListEditorField({ label, value, onChange, helper, placeh
               >
                 ✕
               </button>
+              {onMakeFeatured && (
+                <button
+                  type="button"
+                  className={`ws-gallery-thumb-cover${featuredValue === src ? " is-active" : ""}`}
+                  onClick={() => onMakeFeatured(src)}
+                  title={featuredValue === src ? `${featuredLabel} görsel` : `${featuredLabel} yap`}
+                >
+                  {featuredValue === src ? featuredLabel : `${featuredLabel} yap`}
+                </button>
+              )}
             </div>
           ))}
 

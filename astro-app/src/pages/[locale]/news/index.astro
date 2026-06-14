@@ -9,6 +9,9 @@ export const prerender = false;
 
 type LabelKey =
   | "heroAlt"
+  | "heroEyebrow"
+  | "heroTitle"
+  | "heroLead"
   | "featuredEyebrow"
   | "featuredTitle"
   | "featuredCta"
@@ -17,7 +20,9 @@ type LabelKey =
   | "allLead"
   | "totalUpdates"
   | "categories"
-  | "latestProof"
+  | "latestUpdate"
+  | "filterEyebrow"
+  | "filterTitle"
   | "searchLabel"
   | "searchPlaceholder"
   | "allCategories"
@@ -36,8 +41,6 @@ type LabelKey =
 const locale = resolveLocale(Astro.params.locale, Astro.url.pathname);
 const content = await loadContent();
 const seoProps = pageSeo(content, "news", locale, "/news", "News | WillowSoft", "WillowSoft company updates, events, export news, and engineering updates.");
-const pageContent = content.pageContent?.news || {};
-const getVal = (key: string) => localizedValue(pageContent[key], locale);
 
 const toTime = (value: any) => {
   const time = value ? new Date(`${value}T00:00:00`).getTime() : 0;
@@ -59,12 +62,27 @@ const formatDate = (value: any, month: "short" | "long" = "short") => {
 };
 
 const categoryKey = (value: any) => String(value || "").trim().toLowerCase();
+const categoryLabels: Record<string, Record<Locale, string>> = {
+  proof: { en: "Field signal", tr: "Saha sinyali", de: "Feldsignal", fr: "Signal terrain", es: "Señal de campo", it: "Segnale sul campo", ar: "إشارة ميدانية", ja: "現場シグナル" },
+  tracking: { en: "Field update", tr: "Saha güncellemesi", de: "Feld-Update", fr: "Mise à jour terrain", es: "Actualización de campo", it: "Aggiornamento sul campo", ar: "تحديث ميداني", ja: "現場アップデート" },
+  "field-update": { en: "Field update", tr: "Saha güncellemesi", de: "Feld-Update", fr: "Mise à jour terrain", es: "Actualización de campo", it: "Aggiornamento sul campo", ar: "تحديث ميداني", ja: "現場アップデート" },
+  "export": { en: "Export", tr: "İhracat", de: "Export", fr: "Export", es: "Exportación", it: "Export", ar: "تصدير", ja: "輸出" },
+  event: { en: "Event", tr: "Etkinlik", de: "Event", fr: "Événement", es: "Evento", it: "Evento", ar: "فعالية", ja: "イベント" },
+  company: { en: "Company", tr: "Şirket", de: "Unternehmen", fr: "Entreprise", es: "Empresa", it: "Azienda", ar: "الشركة", ja: "会社" },
+  workshop: { en: "Workshop", tr: "Atölye", de: "Workshop", fr: "Atelier", es: "Workshop", it: "Workshop", ar: "ورشة عمل", ja: "ワークショップ" },
+  update: { en: "Update", tr: "Güncelleme", de: "Update", fr: "Mise à jour", es: "Actualización", it: "Aggiornamento", ar: "تحديث", ja: "更新" },
+};
+const displayCategory = (value: any) => {
+  const key = categoryKey(value);
+  return categoryLabels[key]?.[locale] || categoryLabels[key]?.en || String(value || "News");
+};
 
 const newsList = [...(content.news || [])].sort((a: any, b: any) => toTime(b.date) - toTime(a.date));
 const featuredRaw = newsList.find((item: any) => item.featured) || newsList[0];
 const featured = featuredRaw ? localizeItem(featuredRaw, locale) : null;
 const featuredDate = featured ? formatDate(featured.date, "long") : "";
-const featuredImage = assetPath(featured?.image);
+const featuredGalleryImage = Array.isArray(featured?.images) ? featured.images.find((src: any) => typeof src === "string" && src.trim()) : "";
+const featuredImage = assetPath(featured?.image || featuredGalleryImage);
 const renderedNews = newsList.map((item: any) => localizeItem(item, locale));
 
 const categoryMap = new Map<string, string>();
@@ -73,7 +91,11 @@ renderedNews.forEach((item: any) => {
   const key = categoryKey(label);
   if (key && !categoryMap.has(key)) categoryMap.set(key, label);
 });
-const categories = Array.from(categoryMap.entries()).map(([key, label]) => ({ key, label }));
+const categories = Array.from(categoryMap.entries()).map(([key, label]) => ({
+  key,
+  label: displayCategory(label),
+  count: renderedNews.filter((item: any) => categoryKey(item.category || "News") === key).length,
+}));
 const latestDate = formatDate(newsList[0]?.date, "short");
 
 const newsItemListId = `${seoProps.canonical}#itemlist`;
@@ -101,15 +123,20 @@ const newsSchema = {
 
 const labels: Record<LabelKey, Record<Locale, string>> = {
   heroAlt: { en: "WillowSoft engineering updates", tr: "WillowSoft mühendislik haberleri", de: "WillowSoft Engineering-Neuigkeiten", fr: "Actualités d'ingénierie WillowSoft", es: "Actualizaciones de ingeniería de WillowSoft", it: "Aggiornamenti tecnici WillowSoft", ar: "تحديثات WillowSoft الهندسية", ja: "WillowSoft エンジニアリングニュース" },
-  featuredEyebrow: { en: "Featured proof", tr: "Öne çıkan kanıt", de: "Ausgewählter Beleg", fr: "Preuve à la une", es: "Prueba destacada", it: "Prova in evidenza", ar: "إثبات مميز", ja: "注目の実績" },
+  heroEyebrow: { en: "News & Updates", tr: "Haberler ve Güncellemeler", de: "News & Updates", fr: "Actualités et mises à jour", es: "Noticias y novedades", it: "News e aggiornamenti", ar: "الأخبار والتحديثات", ja: "ニュースと更新" },
+  heroTitle: { en: "Company signals that build trust.", tr: "Güven veren kurumsal gelişmeler.", de: "Unternehmenssignale, die Vertrauen schaffen.", fr: "Des signaux d'entreprise qui inspirent confiance.", es: "Señales corporativas que generan confianza.", it: "Segnali aziendali che costruiscono fiducia.", ar: "إشارات مؤسسية تبني الثقة.", ja: "信頼を築く企業アップデート。" },
+  heroLead: { en: "Events, export milestones, workshops and engineering updates show how WillowSoft stays active in the field.", tr: "Etkinlikler, ihracat dönüm noktaları, atölyeler ve mühendislik güncellemeleri WillowSoft'un sahadaki aktifliğini gösterir.", de: "Events, Exportmeilensteine, Workshops und Engineering-Updates zeigen WillowSofts Aktivität im Feld.", fr: "Événements, jalons export, ateliers et mises à jour techniques montrent l'activité terrain de WillowSoft.", es: "Eventos, hitos de exportación, workshops y novedades técnicas muestran la actividad de WillowSoft en campo.", it: "Eventi, traguardi export, workshop e aggiornamenti tecnici mostrano l'attività sul campo di WillowSoft.", ar: "تُظهر الفعاليات ومحطات التصدير وورش العمل والتحديثات الهندسية نشاط WillowSoft في الميدان.", ja: "イベント、輸出の節目、ワークショップ、技術更新が WillowSoft の現場での活動を示します。" },
+  featuredEyebrow: { en: "Featured update", tr: "Öne çıkan haber", de: "Ausgewähltes Update", fr: "Actualité à la une", es: "Actualización destacada", it: "Aggiornamento in evidenza", ar: "تحديث مميز", ja: "注目の更新" },
   featuredTitle: { en: "The latest signal customers can trust.", tr: "Müşterilerin güvenebileceği en yeni sinyal.", de: "Das neueste Signal, dem Kunden vertrauen können.", fr: "Le dernier signal auquel les clients peuvent faire confiance.", es: "La señal más reciente en la que los clientes pueden confiar.", it: "Il segnale più recente di cui i clienti possono fidarsi.", ar: "أحدث إشارة يمكن للعملاء الوثوق بها.", ja: "顧客が信頼できる最新の実績。" },
   featuredCta: { en: "Read featured update", tr: "Öne çıkan haberi oku", de: "Ausgewähltes Update lesen", fr: "Lire l'actualité à la une", es: "Leer actualización destacada", it: "Leggi l'aggiornamento in evidenza", ar: "اقرأ التحديث المميز", ja: "注目記事を読む" },
-  allEyebrow: { en: "Proof archive", tr: "Kanıt arşivi", de: "Belegarchiv", fr: "Archive des preuves", es: "Archivo de pruebas", it: "Archivio prove", ar: "أرشيف الإثباتات", ja: "実績アーカイブ" },
+  allEyebrow: { en: "News archive", tr: "Haber arşivi", de: "Newsarchiv", fr: "Archive des actualités", es: "Archivo de noticias", it: "Archivio news", ar: "أرشيف الأخبار", ja: "ニュースアーカイブ" },
   allTitle: { en: "Browse field signals, launches and company milestones.", tr: "Saha sinyallerini, lansmanları ve şirket dönüm noktalarını keşfedin.", de: "Durchsuchen Sie Feldsignale, Launches und Unternehmensmeilensteine.", fr: "Parcourez les signaux terrain, lancements et jalons d'entreprise.", es: "Explore señales de campo, lanzamientos e hitos de la empresa.", it: "Esplora segnali dal campo, lanci e traguardi aziendali.", ar: "تصفح إشارات الميدان والإطلاقات ومحطات الشركة.", ja: "現場での実績、発表、企業の節目を確認できます。" },
-  allLead: { en: "Use search and filters to find the proof type that matters for your project.", tr: "Projeniz için önemli olan kanıt türünü arama ve filtrelerle bulun.", de: "Nutzen Sie Suche und Filter, um den passenden Belegtyp für Ihr Projekt zu finden.", fr: "Utilisez la recherche et les filtres pour trouver la preuve utile à votre projet.", es: "Use búsqueda y filtros para encontrar la prueba relevante para su proyecto.", it: "Usa ricerca e filtri per trovare la prova più utile al tuo progetto.", ar: "استخدم البحث والفلاتر للعثور على نوع الإثبات المناسب لمشروعك.", ja: "検索とフィルターで、プロジェクトに必要な実績を探せます。" },
+  allLead: { en: "Use search and filters to find the update type that matters for your project.", tr: "Projeniz için önemli olan haber türünü arama ve filtrelerle bulun.", de: "Nutzen Sie Suche und Filter, um den passenden Update-Typ für Ihr Projekt zu finden.", fr: "Utilisez la recherche et les filtres pour trouver l'actualité utile à votre projet.", es: "Use búsqueda y filtros para encontrar la actualización relevante para su proyecto.", it: "Usa ricerca e filtri per trovare l'aggiornamento più utile al tuo progetto.", ar: "استخدم البحث والفلاتر للعثور على نوع التحديث المناسب لمشروعك.", ja: "検索とフィルターで、プロジェクトに必要な更新を探せます。" },
   totalUpdates: { en: "Updates", tr: "Haber", de: "Updates", fr: "Actualités", es: "Actualizaciones", it: "Aggiornamenti", ar: "تحديثات", ja: "更新数" },
   categories: { en: "Categories", tr: "Kategori", de: "Kategorien", fr: "Catégories", es: "Categorías", it: "Categorie", ar: "فئات", ja: "カテゴリ" },
-  latestProof: { en: "Latest proof", tr: "Son kanıt", de: "Neuester Beleg", fr: "Dernière preuve", es: "Prueba reciente", it: "Prova recente", ar: "أحدث إثبات", ja: "最新実績" },
+  latestUpdate: { en: "Latest update", tr: "Son haber", de: "Neuestes Update", fr: "Dernière actualité", es: "Actualización reciente", it: "Ultimo aggiornamento", ar: "أحدث تحديث", ja: "最新更新" },
+  filterEyebrow: { en: "Explore the archive", tr: "Arşivi keşfet", de: "Archiv erkunden", fr: "Explorer l'archive", es: "Explorar archivo", it: "Esplora archivio", ar: "استكشف الأرشيف", ja: "アーカイブを探索" },
+  filterTitle: { en: "Find updates by topic, market signal or date.", tr: "Haberleri konuya, saha sinyaline veya tarihe göre bulun.", de: "Updates nach Thema, Marktsignal oder Datum finden.", fr: "Trouvez les actualités par sujet, signal marché ou date.", es: "Encuentre novedades por tema, señal de mercado o fecha.", it: "Trova aggiornamenti per tema, segnale di mercato o data.", ar: "اعثر على التحديثات حسب الموضوع أو الإشارة السوقية أو التاريخ.", ja: "トピック、市場シグナル、日付で更新を探せます。" },
   searchLabel: { en: "Search updates", tr: "Haberlerde ara", de: "Updates suchen", fr: "Rechercher", es: "Buscar novedades", it: "Cerca aggiornamenti", ar: "ابحث في التحديثات", ja: "更新を検索" },
   searchPlaceholder: { en: "Search by title, category or summary", tr: "Başlık, kategori veya özet ile ara", de: "Nach Titel, Kategorie oder Zusammenfassung suchen", fr: "Rechercher par titre, catégorie ou résumé", es: "Buscar por título, categoría o resumen", it: "Cerca per titolo, categoria o sintesi", ar: "ابحث بالعنوان أو الفئة أو الملخص", ja: "タイトル、カテゴリ、要約で検索" },
   allCategories: { en: "All", tr: "Tümü", de: "Alle", fr: "Tout", es: "Todo", it: "Tutto", ar: "الكل", ja: "すべて" },
@@ -120,8 +147,8 @@ const labels: Record<LabelKey, Record<Locale, string>> = {
   emptyTitle: { en: "No matching updates", tr: "Eşleşen haber yok", de: "Keine passenden Updates", fr: "Aucune actualité trouvée", es: "No hay novedades coincidentes", it: "Nessun aggiornamento corrispondente", ar: "لا توجد تحديثات مطابقة", ja: "一致する更新はありません" },
   emptyLead: { en: "Clear the filters or try a broader search term.", tr: "Filtreleri temizleyin veya daha geniş bir arama deneyin.", de: "Filter löschen oder einen breiteren Suchbegriff verwenden.", fr: "Effacez les filtres ou élargissez votre recherche.", es: "Limpie los filtros o use una búsqueda más amplia.", it: "Cancella i filtri o prova una ricerca più ampia.", ar: "امسح الفلاتر أو جرّب مصطلح بحث أوسع.", ja: "フィルターを解除するか、より広い検索語を試してください。" },
   resetFilters: { en: "Clear filters", tr: "Filtreleri temizle", de: "Filter löschen", fr: "Effacer les filtres", es: "Limpiar filtros", it: "Cancella filtri", ar: "مسح الفلاتر", ja: "フィルター解除" },
-  ctaEyebrow: { en: "Turn proof into a project", tr: "Kanıtı projeye dönüştür", de: "Belege in ein Projekt verwandeln", fr: "Transformer la preuve en projet", es: "Convertir pruebas en proyecto", it: "Trasforma le prove in progetto", ar: "حوّل الإثبات إلى مشروع", ja: "実績をプロジェクトへ" },
-  ctaTitle: { en: "Bring the same field-proven engineering into your connected product.", tr: "Aynı saha kanıtlı mühendisliği bağlı ürününüze taşıyın.", de: "Bringen Sie dieselbe feldbewährte Technik in Ihr vernetztes Produkt.", fr: "Intégrez cette ingénierie éprouvée sur le terrain à votre produit connecté.", es: "Lleve esta ingeniería validada en campo a su producto conectado.", it: "Porta la stessa ingegneria validata sul campo nel tuo prodotto connesso.", ar: "انقل هذه الهندسة المثبتة ميدانياً إلى منتجك المتصل.", ja: "現場で実証されたエンジニアリングを、あなたのコネクテッド製品へ。" },
+  ctaEyebrow: { en: "Turn updates into a project", tr: "Haberleri projeye dönüştür", de: "Updates in ein Projekt verwandeln", fr: "Transformer l'actualité en projet", es: "Convertir novedades en proyecto", it: "Trasforma gli aggiornamenti in progetto", ar: "حوّل التحديثات إلى مشروع", ja: "更新をプロジェクトへ" },
+  ctaTitle: { en: "Bring the same field-tested engineering into your connected product.", tr: "Aynı saha testli mühendisliği bağlı ürününüze taşıyın.", de: "Bringen Sie dieselbe feldgetestete Technik in Ihr vernetztes Produkt.", fr: "Intégrez cette ingénierie testée sur le terrain à votre produit connecté.", es: "Lleve esta ingeniería validada en campo a su producto conectado.", it: "Porta la stessa ingegneria testata sul campo nel tuo prodotto connesso.", ar: "انقل هذه الهندسة المختبرة ميدانياً إلى منتجك المتصل.", ja: "現場で検証されたエンジニアリングを、あなたのコネクテッド製品へ。" },
   ctaLead: { en: "Share your hardware, firmware, backend or interface challenge and the engineering team will map the next practical step.", tr: "Donanım, firmware, backend veya arayüz probleminizi paylaşın; mühendislik ekibi uygulanabilir sonraki adımı netleştirsin.", de: "Teilen Sie Ihre Hardware-, Firmware-, Backend- oder Interface-Herausforderung und das Engineering-Team skizziert den nächsten praktischen Schritt.", fr: "Partagez votre défi matériel, firmware, backend ou interface et l'équipe technique définira la prochaine étape concrète.", es: "Comparta su reto de hardware, firmware, backend o interfaz y el equipo técnico definirá el siguiente paso práctico.", it: "Condividi la tua sfida hardware, firmware, backend o interfaccia e il team tecnico definirà il prossimo passo pratico.", ar: "شارك تحدي العتاد أو البرامج الثابتة أو الخلفية أو الواجهة وسيحدد فريق الهندسة الخطوة العملية التالية.", ja: "ハードウェア、ファームウェア、バックエンド、UIの課題を共有すれば、技術チームが次の実行可能な一歩を整理します。" },
   startProject: { en: "Start Project", tr: "Projeye Başla", de: "Projekt starten", fr: "Démarrer un projet", es: "Iniciar proyecto", it: "Avvia progetto", ar: "ابدأ مشروعًا", ja: "プロジェクト開始" },
 };
@@ -140,15 +167,15 @@ const getLabel = (key: LabelKey) => labels[key][locale] || labels[key].en;
       <div class="hero-media"><img src={`${import.meta.env.BASE_URL}pdf-assets/p29_06_X111.jpg`} alt={getLabel("heroAlt")} loading="lazy" decoding="async"/></div>
       <canvas class="signal-canvas" data-density="28"></canvas>
       <div class="hero-inner">
-        <p class="eyebrow reveal">{getVal("heroEyebrow")}</p>
-        <h1 class="reveal delay-1" set:html={getVal("heroTitle")} />
-        <p class="reveal delay-2">{getVal("heroLead")}</p>
+        <p class="eyebrow reveal">{getLabel("heroEyebrow")}</p>
+        <h1 class="reveal delay-1">{getLabel("heroTitle")}</h1>
+        <p class="reveal delay-2">{getLabel("heroLead")}</p>
       </div>
     </section>
 
     <section class="section news-proof-overview">
       <div class="section-inner">
-        <div class="news-proof-strip reveal" aria-label="News proof summary">
+        <div class="news-proof-strip reveal" aria-label="News summary">
           <article>
             <span>{getLabel("totalUpdates")}</span>
             <strong>{newsList.length}</strong>
@@ -158,7 +185,7 @@ const getLabel = (key: LabelKey) => labels[key][locale] || labels[key].en;
             <strong>{categories.length}</strong>
           </article>
           <article>
-            <span>{getLabel("latestProof")}</span>
+            <span>{getLabel("latestUpdate")}</span>
             <strong>{latestDate || "-"}</strong>
           </article>
         </div>
@@ -181,7 +208,7 @@ const getLabel = (key: LabelKey) => labels[key][locale] || labels[key].en;
             <div class="news-featured-copy">
               <p class="eyebrow">{getLabel("featuredEyebrow")}</p>
               <div class="news-card-meta">
-                <span class="news-badge">{featured.category || "News"}</span>
+                <span class="news-badge">{displayCategory(featured.category || "News")}</span>
                 {featuredDate && <time datetime={featured.date}>{featuredDate}</time>}
               </div>
               <h2>{featured.title || getLabel("featuredTitle")}</h2>
@@ -204,14 +231,24 @@ const getLabel = (key: LabelKey) => labels[key][locale] || labels[key].en;
         </div>
 
         <div class="news-controls reveal delay-1" aria-label="News filters">
+          <div class="news-controls-head">
+            <span>{getLabel("filterEyebrow")}</span>
+            <strong>{getLabel("filterTitle")}</strong>
+          </div>
           <label class="news-search">
             <span>{getLabel("searchLabel")}</span>
             <input type="search" data-news-search-input placeholder={getLabel("searchPlaceholder")} />
           </label>
           <div class="news-filter-row" role="group" aria-label="News categories">
-            <button type="button" class="news-filter-chip is-active" data-news-filter="all" aria-pressed="true">{getLabel("allCategories")}</button>
+            <button type="button" class="news-filter-chip is-active" data-news-filter="all" aria-pressed="true">
+              {getLabel("allCategories")}
+              <span class="news-chip-count">{newsList.length}</span>
+            </button>
             {categories.map((category) => (
-              <button type="button" class="news-filter-chip" data-news-filter={category.key} aria-pressed="false">{category.label}</button>
+              <button type="button" class="news-filter-chip" data-news-filter={category.key} aria-pressed="false">
+                {category.label}
+                <span class="news-chip-count">{category.count}</span>
+              </button>
             ))}
           </div>
           <label class="news-sort">
@@ -231,7 +268,7 @@ const getLabel = (key: LabelKey) => labels[key][locale] || labels[key].en;
         </div>
 
         <div class="grid grid-3 news-grid" data-news-grid>
-          {newsList.map((n: any, idx: number) => (
+          {newsList.map((n, idx) => (
             <NewsCard item={n} locale={locale} index={idx} />
           ))}
         </div>

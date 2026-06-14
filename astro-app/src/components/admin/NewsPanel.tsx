@@ -4,6 +4,7 @@ import React, { useMemo, useState } from "react";
 import { type Locale } from "@/lib/cms";
 import { useAdmin } from "./AdminContext";
 import FormField from "./FormField";
+import ListEditorField from "./ListEditorField";
 import TranslationEditor from "./TranslationEditor";
 
 const NEWS_FIELDS = [
@@ -23,9 +24,12 @@ type NewsItem = {
   date?: string;
   category?: string;
   image?: string;
+  images?: string[];
   excerpt?: string;
   content?: string;
   featured?: boolean;
+  sourceUrl?: string;
+  sourceId?: number | string;
   localized?: Record<string, Record<string, string>>;
 };
 
@@ -65,11 +69,22 @@ function getTranslationCount(item: NewsItem): number {
   return Object.keys(item.localized || {}).length;
 }
 
+function getGalleryImages(item: NewsItem): string[] {
+  return Array.isArray(item.images)
+    ? item.images.filter((src): src is string => typeof src === "string" && src.trim().length > 0)
+    : [];
+}
+
+function getCoverImage(item: NewsItem): string {
+  return item.image || getGalleryImages(item)[0] || "";
+}
+
 function getNewsStatus(item: NewsItem): "Hazır" | "Eksik" {
   const hasRequiredContent =
     Boolean(item.title?.trim()) &&
     Boolean(item.slug?.trim()) &&
     Boolean(item.date?.trim()) &&
+    Boolean(getCoverImage(item)) &&
     Boolean(item.excerpt?.trim()) &&
     Boolean(item.content?.trim());
 
@@ -194,6 +209,7 @@ export default function NewsPanel() {
       date: new Date().toISOString().slice(0, 10),
       category: "update",
       image: "",
+      images: [],
       excerpt: "",
       content: "",
       featured: false,
@@ -207,6 +223,26 @@ export default function NewsPanel() {
 
     setEditIdx(news.length);
     setOpenSections({ basics: true });
+  };
+
+  const updateNewsMedia = (idx: number, images: string[], cover?: string) => {
+    setContent((c: any) => {
+      const list = [...(c.news || [])];
+      const item = { ...list[idx] };
+      const uniqueImages = images
+        .filter((src): src is string => typeof src === "string" && src.trim().length > 0)
+        .filter((src, imageIdx, arr) => arr.indexOf(src) === imageIdx);
+      const currentCover = typeof item.image === "string" ? item.image : "";
+      const nextCover =
+        cover !== undefined
+          ? cover
+          : currentCover && uniqueImages.includes(currentCover)
+            ? currentCover
+            : uniqueImages[0] || "";
+
+      list[idx] = { ...item, image: nextCover, images: uniqueImages };
+      return { ...c, news: list };
+    });
   };
 
   const deleteNews = (idx: number) => {
@@ -225,6 +261,8 @@ export default function NewsPanel() {
   if (editIdx !== null && news[editIdx]) {
     const n = news[editIdx];
     const status = getNewsStatus(n);
+    const galleryImages = getGalleryImages(n);
+    const coverImage = getCoverImage(n);
 
     const SectionTrigger = ({ sKey, icon, label, hint }: { sKey: string; icon: React.ReactNode; label: string; hint: string }) => (
       <button type="button" className="ws-prod-section-trigger" onClick={() => toggleSection(sKey)}>
@@ -319,7 +357,7 @@ export default function NewsPanel() {
                   />
                   <span>
                     <strong>Öne çıkan haber</strong>
-                    <small>Public News sayfasındaki Featured Proof alanında öncelik verir.</small>
+                    <small>Public News sayfasındaki öne çıkan haber alanında öncelik verir.</small>
                   </span>
                 </label>
               </div>
@@ -331,7 +369,7 @@ export default function NewsPanel() {
             <SectionTrigger
               sKey="media"
               label="Görsel"
-              hint="Haber kapak görseli"
+              hint="Kapak görseli ve haber galerisi"
               icon={<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>}
             />
             {openSections.media && (
@@ -339,9 +377,25 @@ export default function NewsPanel() {
                 <FormField
                   label="Kapak Görseli"
                   type="image"
-                  value={n.image || ""}
-                  onChange={(v) => updateNews(editIdx, "image", v)}
+                  value={coverImage}
+                  onChange={(v) => {
+                    const nextImages = v && !galleryImages.includes(v) ? [v, ...galleryImages] : galleryImages;
+                    updateNewsMedia(editIdx, nextImages, v);
+                  }}
                   placeholder="assets/news/example.webp"
+                />
+                <ListEditorField
+                  label="Haber Galerisi"
+                  value={galleryImages}
+                  onChange={(value) => {
+                    const nextCover = coverImage && value.includes(coverImage) ? coverImage : value[0] || "";
+                    updateNewsMedia(editIdx, value, nextCover);
+                  }}
+                  featuredValue={coverImage}
+                  featuredLabel="Kapak"
+                  onMakeFeatured={(src) => updateNewsMedia(editIdx, galleryImages, src)}
+                  placeholder="https://... veya assets/news/example.webp"
+                  helper="Kapak görseli önde gösterilir; galeri ise haber detayında editoryal görsel blok olarak görünür."
                 />
               </div>
             )}
@@ -410,8 +464,9 @@ export default function NewsPanel() {
                   <div><span>Durum</span><strong>{status}</strong></div>
                   <div><span>Çeviri</span><strong>{getTranslationCount(n)} dil</strong></div>
                   <div><span>Slug</span><strong>{n.slug || "-"}</strong></div>
-                  <div><span>Görsel</span><strong>{n.image ? "Var" : "Yok"}</strong></div>
+                  <div><span>Görsel</span><strong>{coverImage ? `${galleryImages.length || 1} görsel` : "Yok"}</strong></div>
                   <div><span>Öne çıkan</span><strong>{n.featured ? "Evet" : "Hayır"}</strong></div>
+                  {n.sourceUrl && <div><span>Kaynak</span><strong>{n.sourceUrl}</strong></div>}
                 </div>
               </div>
             )}
@@ -505,7 +560,8 @@ export default function NewsPanel() {
           <div className="ws-news-grid">
             {filteredNews.map(({ item: n, idx }) => {
               const status = getNewsStatus(n);
-              const imageSrc = getAssetSrc(n.image);
+              const imageSrc = getAssetSrc(getCoverImage(n));
+              const galleryCount = getGalleryImages(n).length;
 
               return (
                 <article key={n.id || idx} className="ws-news-card">
@@ -555,6 +611,10 @@ export default function NewsPanel() {
                       <div>
                         <span>Çeviri</span>
                         <strong>{getTranslationCount(n)} dil</strong>
+                      </div>
+                      <div>
+                        <span>Galeri</span>
+                        <strong>{galleryCount || (n.image ? 1 : 0)} görsel</strong>
                       </div>
                     </div>
 

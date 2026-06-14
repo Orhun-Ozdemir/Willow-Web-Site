@@ -17,16 +17,28 @@ const date = n.date
   ? new Date(`${n.date}T00:00:00`).toLocaleDateString(locale, { year: "numeric", month: "short", day: "numeric" })
   : "";
 const timestamp = n.date ? new Date(`${n.date}T00:00:00`).getTime() || 0 : 0;
-const category = n.category || "News";
+const rawCategory = n.category || "News";
+const categoryKey = String(rawCategory).trim().toLowerCase();
+const categoryLabels: Record<string, Record<string, string>> = {
+  proof: { en: "Field signal", tr: "Saha sinyali", de: "Feldsignal", fr: "Signal terrain", es: "Señal de campo", it: "Segnale sul campo", ar: "إشارة ميدانية", ja: "現場シグナル" },
+  tracking: { en: "Field update", tr: "Saha güncellemesi", de: "Feld-Update", fr: "Mise à jour terrain", es: "Actualización de campo", it: "Aggiornamento sul campo", ar: "تحديث ميداني", ja: "現場アップデート" },
+  "field-update": { en: "Field update", tr: "Saha güncellemesi", de: "Feld-Update", fr: "Mise à jour terrain", es: "Actualización de campo", it: "Aggiornamento sul campo", ar: "تحديث ميداني", ja: "現場アップデート" },
+  "export": { en: "Export", tr: "İhracat", de: "Export", fr: "Export", es: "Exportación", it: "Export", ar: "تصدير", ja: "輸出" },
+  event: { en: "Event", tr: "Etkinlik", de: "Event", fr: "Événement", es: "Evento", it: "Evento", ar: "فعالية", ja: "イベント" },
+  company: { en: "Company", tr: "Şirket", de: "Unternehmen", fr: "Entreprise", es: "Empresa", it: "Azienda", ar: "الشركة", ja: "会社" },
+  workshop: { en: "Workshop", tr: "Atölye", de: "Workshop", fr: "Atelier", es: "Workshop", it: "Workshop", ar: "ورشة عمل", ja: "ワークショップ" },
+  update: { en: "Update", tr: "Güncelleme", de: "Update", fr: "Mise à jour", es: "Actualización", it: "Aggiornamento", ar: "تحديث", ja: "更新" },
+};
+const category = categoryLabels[categoryKey]?.[locale] || categoryLabels[categoryKey]?.en || rawCategory;
 const slug = encodeURIComponent(n.slug || n.id || "");
-const rawImage = typeof n.image === "string" ? n.image : "";
+const rawGalleryImage = Array.isArray(n.images) ? n.images.find((src: any) => typeof src === "string" && src.trim()) : "";
+const rawImage = typeof n.image === "string" && n.image.trim() ? n.image : rawGalleryImage || "";
 const imageSrc = rawImage
   ? rawImage.startsWith("http") || rawImage.startsWith("data:")
     ? rawImage
     : `${basePath}${rawImage.replace(/^\/+/, "")}`.replace(/([^:]\/)\/+/g, "$1")
   : "";
-const searchable = [n.title, category, n.excerpt].filter(Boolean).join(" ").toLowerCase();
-const categoryKey = String(category).trim().toLowerCase();
+const searchable = [n.title, rawCategory, category, n.excerpt].filter(Boolean).join(" ").toLowerCase();
 const readLabel: Record<string, string> = {
   en: "Read Update",
   tr: "Haberi Oku",
@@ -38,14 +50,24 @@ const readLabel: Record<string, string> = {
   ja: "更新を見る",
 };
 const featuredLabel: Record<string, string> = {
-  en: "Featured proof",
-  tr: "Öne çıkan kanıt",
-  de: "Ausgewählter Beleg",
-  fr: "Preuve à la une",
-  es: "Prueba destacada",
-  it: "Prova in evidenza",
-  ar: "إثبات مميز",
-  ja: "注目の実績",
+  en: "Featured update",
+  tr: "Öne çıkan haber",
+  de: "Ausgewähltes Update",
+  fr: "Actualité à la une",
+  es: "Actualización destacada",
+  it: "Aggiornamento in evidenza",
+  ar: "تحديث مميز",
+  ja: "注目の更新",
+};
+const dateLabel: Record<string, string> = {
+  en: "Date",
+  tr: "Tarih",
+  de: "Datum",
+  fr: "Date",
+  es: "Fecha",
+  it: "Data",
+  ar: "التاريخ",
+  ja: "日付",
 };
 ---
 
@@ -73,7 +95,6 @@ const featuredLabel: Record<string, string> = {
   <div class="product-body">
     <div class="news-card-meta">
       <span class="news-badge">{category}</span>
-      {date && <time datetime={n.date}>{date}</time>}
     </div>
     {n.featured && <span class="news-featured-pill">{featuredLabel[locale] || featuredLabel.en}</span>}
     <h3>{n.title}</h3>
@@ -83,5 +104,9 @@ const featuredLabel: Record<string, string> = {
         {readLabel[locale] || readLabel.en}
       </a>
     </p>
+    <div class="news-card-footer">
+      <span>{dateLabel[locale] || dateLabel.en}</span>
+      {date ? <time datetime={n.date}>{date}</time> : <strong>-</strong>}
+    </div>
   </div>
 </article>
