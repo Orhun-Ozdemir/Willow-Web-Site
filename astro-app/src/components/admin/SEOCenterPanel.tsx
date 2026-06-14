@@ -31,6 +31,106 @@ const SCHEMA_TYPES = [
   { value: "CollectionPage",  label: "Koleksiyon / Liste" },
 ];
 
+const LOCALE_LABELS: Record<Locale, string> = {
+  en: "English",
+  tr: "Türkçe",
+  de: "Deutsch",
+  fr: "Français",
+  es: "Español",
+  it: "Italiano",
+  ar: "Arabic",
+  ja: "日本語",
+};
+
+const PAGE_PATHS: Record<string, string> = {
+  home: "",
+  products: "products",
+  solutions: "solutions",
+  services: "services",
+  news: "news",
+  company: "company",
+  contact: "contact",
+  startProject: "start-project",
+  glossary: "glossary",
+};
+
+type SEOFieldKey = "seoTitle" | "metaDescription" | "focusKeyword" | "h1" | "slug";
+
+const CORE_SEO_FIELDS: SEOFieldKey[] = ["seoTitle", "metaDescription", "focusKeyword", "h1", "slug"];
+
+const SEO_FIELD_META: Record<SEOFieldKey, {
+  label: string;
+  hint: string;
+  type?: "text" | "textarea";
+  rows?: number;
+  charTarget?: [number, number];
+  sharedNote?: string;
+}> = {
+  seoTitle: {
+    label: "Sayfa Başlığı",
+    hint: "Google'da mavi link olarak görünür. 50-60 karakter ideal.",
+    charTarget: [50, 60],
+  },
+  metaDescription: {
+    label: "Kısa Açıklama",
+    hint: "Arama sonucunda başlığın altında gözükür. 150-160 karakter ideal.",
+    type: "textarea",
+    rows: 3,
+    charTarget: [150, 160],
+  },
+  focusKeyword: {
+    label: "Odak Anahtar Kelime",
+    hint: "Bu sayfa için hedeflediğin ana kelime. Her dilde yerel arama niyetine göre farklı yazılabilir.",
+  },
+  h1: {
+    label: "H1 Ana Başlık",
+    hint: "SEO kontrolü için kullanılan ana başlık. Canlı sayfadaki Hero başlığıyla uyumlu olmalı.",
+    sharedNote: "Canlı sayfadaki karşılığı genellikle Sayfa Çevirileri > Hero > Ana Başlık alanıdır.",
+  },
+  slug: {
+    label: "URL Adresi (Slug)",
+    hint: "Küçük harf, tire ile ayrılmış, mümkünse kısa ve temiz URL yolu.",
+  },
+};
+
+type SEOFieldMeta = (typeof SEO_FIELD_META)[SEOFieldKey];
+
+function plainText(value: any): string {
+  return String(value || "")
+    .replace(/<[^>]+>/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function localizedPageValue(pageContent: any, key: string, locale: Locale): string {
+  const value = pageContent?.[key];
+  if (!value) return "";
+  if (typeof value === "string") return value;
+  return value[locale] || value.en || "";
+}
+
+function displayPath(pageKey: string, locale: Locale, slug?: string) {
+  let cleanSlug = String(slug || PAGE_PATHS[pageKey] || "")
+    .replace(/^https?:\/\/(www\.)?willowsoft\.co\/?/i, "")
+    .replace(/^\/+|\/+$/g, "");
+  if (cleanSlug === locale) cleanSlug = "";
+  if (cleanSlug.startsWith(`${locale}/`)) cleanSlug = cleanSlug.slice(locale.length + 1);
+  return cleanSlug ? `willowsoft.co/${locale}/${cleanSlug}` : `willowsoft.co/${locale}`;
+}
+
+function charState(value: string, target?: [number, number]) {
+  if (!target) return null;
+  const len = plainText(value).length;
+  const [min, max] = target;
+  const ok = len >= min && len <= max;
+  const warn = len > 0 && !ok;
+  return {
+    len,
+    className: ok ? "text-green-600" : warn ? "text-amber-600" : "text-gray-400",
+    label: `${len} karakter`,
+  };
+}
+
 function ScoreMeter({ score, label, level }: { score: number; label: string; level: string }) {
   const color = level === "good" ? "#22c55e" : level === "ok" ? "#f59e0b" : "#ef4444";
   const bg    = level === "good" ? "bg-green-50 border-green-200" : level === "ok" ? "bg-amber-50 border-amber-200" : "bg-red-50 border-red-200";
@@ -49,6 +149,281 @@ function ScoreMeter({ score, label, level }: { score: number; label: string; lev
         <p className="text-xs text-gray-400">{level === "good" ? "İyi" : level === "ok" ? "Geliştirilmeli" : "Eksik"}</p>
       </div>
     </div>
+  );
+}
+
+function LanguageStatusStrip({
+  pageSeo,
+  pageKey,
+  activeLocale,
+}: {
+  pageSeo: any;
+  pageKey: string;
+  activeLocale: Locale;
+}) {
+  return (
+    <div className="grid grid-cols-4 gap-2">
+      {locales.map((loc) => {
+        const data = pageSeo?.[pageKey]?.[loc] || {};
+        const missing = CORE_SEO_FIELDS.filter((field) => !String(data[field] || "").trim()).length;
+        const filled = CORE_SEO_FIELDS.length - missing;
+        const tone = missing === 0 ? "border-green-200 bg-green-50 text-green-700" : filled >= 3 ? "border-amber-200 bg-amber-50 text-amber-700" : "border-red-200 bg-red-50 text-red-600";
+        return (
+          <div key={loc} className={`rounded-xl border px-3 py-2 ${tone} ${loc === activeLocale ? "ring-2 ring-[#132175]/20" : ""}`}>
+            <div className="flex items-center justify-between gap-2">
+              <strong className="text-xs">{loc.toUpperCase()}</strong>
+              <span className="text-[10px] font-black">{filled}/{CORE_SEO_FIELDS.length}</span>
+            </div>
+            <p className="mt-1 text-[10px] font-semibold opacity-75">
+              {missing === 0 ? "Tamam" : `${missing} alan eksik`}
+            </p>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+function MultilingualSEOField({
+  field,
+  meta,
+  pageSeo,
+  pageKey,
+  activeLocale,
+  onChange,
+}: {
+  field: SEOFieldKey;
+  meta: SEOFieldMeta;
+  pageSeo: any;
+  pageKey: string;
+  activeLocale: Locale;
+  onChange: (locale: Locale, field: string, value: any) => void;
+}) {
+  const activeValue = pageSeo?.[pageKey]?.[activeLocale]?.[field] || "";
+  const activeChar = charState(activeValue, meta.charTarget);
+
+  return (
+    <div className="rounded-xl border border-gray-200 bg-white overflow-hidden">
+      <div className="px-4 py-3 border-b border-gray-100 bg-gray-50/70">
+        <div className="flex items-start justify-between gap-3">
+          <div>
+            <label className="text-sm font-bold text-gray-800">{meta.label}</label>
+            <p className="mt-1 text-xs text-gray-400 leading-relaxed">{meta.hint}</p>
+            {meta.sharedNote && <p className="mt-1 text-[11px] font-semibold text-[#132175]/70">{meta.sharedNote}</p>}
+          </div>
+          {activeChar && <span className={`shrink-0 text-xs font-black ${activeChar.className}`}>{activeChar.label}</span>}
+        </div>
+      </div>
+
+      <div className="p-4 space-y-4">
+        <div>
+          <div className="mb-1 flex items-center justify-between">
+            <span className="text-[10px] font-black uppercase text-[#132175]">
+              Aktif dil: {LOCALE_LABELS[activeLocale]} ({activeLocale.toUpperCase()})
+            </span>
+            {!String(activeValue).trim() && <span className="text-[10px] font-black text-red-500">Eksik</span>}
+          </div>
+          {meta.type === "textarea" ? (
+            <textarea
+              value={activeValue}
+              onChange={(e) => onChange(activeLocale, field, e.target.value)}
+              rows={meta.rows || 3}
+              className="w-full p-3 bg-white border border-gray-200 rounded-lg text-sm text-gray-800 outline-none focus:border-[#1aa3c4] resize-none"
+            />
+          ) : (
+            <input
+              type="text"
+              value={activeValue}
+              onChange={(e) => onChange(activeLocale, field, e.target.value)}
+              className="w-full p-3 bg-white border border-gray-200 rounded-lg text-sm text-gray-800 outline-none focus:border-[#1aa3c4]"
+            />
+          )}
+        </div>
+
+        <div className="rounded-xl border border-gray-100 bg-gray-50/60 p-3">
+          <div className="mb-3 flex items-center justify-between gap-3">
+            <p className="text-[10px] font-black uppercase tracking-wide text-gray-400">Diğer dillerde durum ve hızlı düzenleme</p>
+            <span className="text-[10px] text-gray-400">Aynı alanı dil değiştirmeden doldurabilirsiniz.</span>
+          </div>
+          <div className="grid grid-cols-2 gap-2">
+            {locales.map((loc) => {
+              const value = pageSeo?.[pageKey]?.[loc]?.[field] || "";
+              const missing = !String(value).trim();
+              const count = charState(value, meta.charTarget);
+              const rowTone = loc === activeLocale
+                ? "border-[#132175]/30 bg-white"
+                : missing
+                  ? "border-red-100 bg-red-50/60"
+                  : "border-gray-200 bg-white";
+              return (
+                <div key={loc} className={`rounded-lg border p-2 ${rowTone}`}>
+                  <div className="mb-1 flex items-center justify-between gap-2">
+                    <span className="text-[10px] font-black text-gray-500">{loc.toUpperCase()} · {LOCALE_LABELS[loc]}</span>
+                    <span className={`text-[9px] font-black ${missing ? "text-red-500" : "text-green-600"}`}>
+                      {missing ? "Eksik" : "Dolu"}
+                    </span>
+                  </div>
+                  {meta.type === "textarea" ? (
+                    <textarea
+                      value={value}
+                      onChange={(e) => onChange(loc, field, e.target.value)}
+                      rows={2}
+                      placeholder={`${loc.toUpperCase()} metni`}
+                      className="w-full p-2 bg-white border border-gray-200 rounded text-xs text-gray-800 outline-none focus:border-[#1aa3c4] resize-none"
+                      dir={loc === "ar" ? "rtl" : "ltr"}
+                    />
+                  ) : (
+                    <input
+                      type="text"
+                      value={value}
+                      onChange={(e) => onChange(loc, field, e.target.value)}
+                      placeholder={`${loc.toUpperCase()} metni`}
+                      className="w-full p-2 bg-white border border-gray-200 rounded text-xs text-gray-800 outline-none focus:border-[#1aa3c4]"
+                      dir={loc === "ar" ? "rtl" : "ltr"}
+                    />
+                  )}
+                  {count && <p className={`mt-1 text-[9px] font-bold ${count.className}`}>{count.label}</p>}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function LiveRelationCard({
+  seoData,
+  pageContent,
+  locale,
+  onSeoChange,
+  onContentChange,
+}: {
+  seoData: any;
+  pageContent: any;
+  locale: Locale;
+  onSeoChange: (field: string, value: any) => void;
+  onContentChange: (key: string, value: string) => void;
+}) {
+  const liveHeroTitle = localizedPageValue(pageContent, "heroTitle", locale);
+  const liveHeroLead = localizedPageValue(pageContent, "heroLead", locale);
+  const seoH1 = seoData.h1 || "";
+  const hasLiveTitle = plainText(liveHeroTitle).length > 0;
+  const differs = hasLiveTitle && plainText(seoH1) && plainText(liveHeroTitle).toLowerCase() !== plainText(seoH1).toLowerCase();
+
+  return (
+    <div className="rounded-xl border border-blue-100 bg-blue-50/70 p-4 space-y-3">
+      <div className="flex items-start justify-between gap-3">
+        <div>
+          <p className="text-sm font-black text-[#132175]">SEO alanı ile canlı sayfa metni ilişkisi</p>
+          <p className="mt-1 text-xs text-blue-700/70 leading-relaxed">
+            SEO verisi Google, sosyal paylaşım ve AI sinyalleri içindir. Canlı sayfada görünen başlıklar ise Sayfa Çevirileri alanından gelir.
+          </p>
+        </div>
+        <span className={`shrink-0 rounded-full px-2 py-1 text-[10px] font-black ${differs ? "bg-amber-100 text-amber-700" : "bg-green-100 text-green-700"}`}>
+          {differs ? "Fark var" : "Uyumlu"}
+        </span>
+      </div>
+
+      <div className="grid grid-cols-2 gap-3">
+        <div className="rounded-lg border border-white bg-white/80 p-3">
+          <span className="text-[10px] font-black uppercase text-gray-400">SEO H1</span>
+          <p className="mt-1 text-sm font-bold text-gray-800">{seoH1 || <span className="text-gray-300 italic">Boş</span>}</p>
+        </div>
+        <div className="rounded-lg border border-white bg-white/80 p-3">
+          <span className="text-[10px] font-black uppercase text-gray-400">Canlı Hero Başlığı</span>
+          <p className="mt-1 text-sm font-bold text-gray-800">{plainText(liveHeroTitle) || <span className="text-gray-300 italic">Bu sayfada pageContent heroTitle yok</span>}</p>
+        </div>
+      </div>
+
+      {liveHeroLead && (
+        <div className="rounded-lg border border-white bg-white/70 p-3">
+          <span className="text-[10px] font-black uppercase text-gray-400">Canlı Hero Açıklaması</span>
+          <p className="mt-1 text-xs leading-relaxed text-gray-600">{plainText(liveHeroLead)}</p>
+        </div>
+      )}
+
+      <div className="flex flex-wrap gap-2">
+        {hasLiveTitle && (
+          <button type="button" onClick={() => onSeoChange("h1", plainText(liveHeroTitle))} className="rounded-lg bg-[#132175] px-3 py-2 text-xs font-bold text-white">
+            Canlı başlığı SEO H1'e al
+          </button>
+        )}
+        {seoH1 && (
+          <button type="button" onClick={() => onContentChange("heroTitle", seoH1)} className="rounded-lg border border-[#132175]/20 bg-white px-3 py-2 text-xs font-bold text-[#132175]">
+            SEO H1'i canlı başlığa yaz
+          </button>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function SitePreview({
+  pageLabel,
+  pageKey,
+  locale,
+  seoData,
+  pageContent,
+}: {
+  pageLabel: string;
+  pageKey: string;
+  locale: Locale;
+  seoData: any;
+  pageContent: any;
+}) {
+  const heroEyebrow = localizedPageValue(pageContent, "heroEyebrow", locale) || pageLabel;
+  const heroTitle = localizedPageValue(pageContent, "heroTitle", locale) || seoData.h1 || seoData.seoTitle || pageLabel;
+  const heroLead = localizedPageValue(pageContent, "heroLead", locale) || seoData.metaDescription || "";
+  const googleTitle = seoData.seoTitle || "Sayfa Başlığı";
+  const googleDesc = seoData.metaDescription || "Meta açıklama burada görünecek...";
+  const ogTitle = seoData.ogTitle || seoData.seoTitle || "Paylaşım başlığı";
+  const ogDesc = seoData.ogDescription || seoData.metaDescription || "Paylaşım açıklaması";
+  const url = displayPath(pageKey, locale, seoData.slug);
+  const isRtl = locale === "ar";
+
+  return (
+    <aside className="w-80 shrink-0 self-start sticky top-0 hidden xl:block">
+      <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider px-1 mb-2">
+        Canlı görünüm
+        <span className="ml-2 font-normal normal-case">({locale.toUpperCase()})</span>
+      </p>
+      <div className="space-y-3">
+        <div className="rounded-2xl border border-gray-200 bg-white p-3 shadow-sm">
+          <div className="mb-3 flex items-center gap-1.5 border-b border-gray-100 pb-2">
+            <span className="h-2.5 w-2.5 rounded-full bg-red-300" />
+            <span className="h-2.5 w-2.5 rounded-full bg-amber-300" />
+            <span className="h-2.5 w-2.5 rounded-full bg-green-300" />
+            <span className="ml-2 truncate rounded-full bg-gray-100 px-2 py-1 text-[10px] text-gray-400">{url}</span>
+          </div>
+          <div className="rounded-xl bg-[#0f172a] p-4 text-white" dir={isRtl ? "rtl" : "ltr"}>
+            <p className="text-[10px] font-black uppercase tracking-widest text-cyan-300">{plainText(heroEyebrow)}</p>
+            <h3 className="mt-2 text-xl font-black leading-tight" dangerouslySetInnerHTML={{ __html: heroTitle }} />
+            {heroLead && <p className="mt-3 text-xs leading-relaxed text-white/70">{plainText(heroLead)}</p>}
+          </div>
+          <p className="mt-2 text-[10px] text-gray-400">Bu blok canlı sayfadaki Hero metninin yaklaşık görünümüdür.</p>
+        </div>
+
+        <div className="rounded-2xl border border-gray-200 bg-white p-4 shadow-sm">
+          <p className="mb-3 text-[10px] font-black uppercase tracking-wide text-gray-300">Google sonucu</p>
+          <p className="truncate text-base font-medium text-sky-700">{googleTitle}</p>
+          <p className="mt-0.5 truncate text-xs text-green-700">{url}</p>
+          <p className="mt-1 line-clamp-3 text-sm leading-relaxed text-gray-500">{googleDesc}</p>
+        </div>
+
+        <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
+          <div className="flex h-28 items-center justify-center bg-gray-100 text-xs font-bold text-gray-300">
+            {seoData.ogImage ? seoData.ogImage.split("/").pop() : "OG görseli"}
+          </div>
+          <div className="p-3">
+            <p className="text-[10px] uppercase text-gray-300">willowsoft.co</p>
+            <p className="truncate text-sm font-black text-gray-800">{ogTitle}</p>
+            <p className="line-clamp-2 text-xs text-gray-500">{ogDesc}</p>
+          </div>
+        </div>
+      </div>
+    </aside>
   );
 }
 
@@ -98,26 +473,42 @@ export default function SEOCenterPanel() {
   const pageSeo = content?.pageSeo || {};
   const seoData = pageSeo[selectedPage]?.[locale] || {};
   const pageContent = content?.pageContent?.[selectedPage] || {};
+  const selectedPageLabel = PAGES.find((p) => p.key === selectedPage)?.label || selectedPage;
 
   const scoreResult: SEOScoreResult = useMemo(
     () => calcSEOScore(seoData, locale, pageSeo, selectedPage, pageContent),
     [seoData, locale, pageSeo, selectedPage, pageContent]
   );
 
-  const updateSEO = (field: string, value: any) => {
+  const updateSEOForLocale = (targetLocale: Locale, field: string, value: any) => {
     setContent((c: any) => {
-      const ps = { ...c.pageSeo };
-      const page = { ...ps[selectedPage] };
-      page[locale] = { ...(page[locale] || {}), [field]: value };
+      const ps = { ...(c.pageSeo || {}) };
+      const page = { ...(ps[selectedPage] || {}) };
+      page[targetLocale] = { ...(page[targetLocale] || {}), [field]: value };
       ps[selectedPage] = page;
       return { ...c, pageSeo: ps };
     });
   };
 
+  const updateSEO = (field: string, value: any) => updateSEOForLocale(locale, field, value);
+
+  const updatePageContent = (key: string, value: string) => {
+    setContent((c: any) => {
+      const pc = { ...(c.pageContent || {}) };
+      const page = { ...(pc[selectedPage] || {}) };
+      page[key] = { ...(page[key] || {}), [locale]: value };
+      pc[selectedPage] = page;
+      return { ...c, pageContent: pc };
+    });
+  };
+
   const filledMap: Record<string, boolean> = {};
+  const missingCountMap: Record<string, number> = {};
   for (const l of locales) {
     const d = pageSeo[selectedPage]?.[l];
-    filledMap[l] = !!(d?.seoTitle || d?.metaDescription);
+    const missing = CORE_SEO_FIELDS.filter((field) => !String(d?.[field] || "").trim()).length;
+    missingCountMap[l] = missing;
+    filledMap[l] = missing < CORE_SEO_FIELDS.length;
   }
 
   return (
@@ -154,49 +545,45 @@ export default function SEOCenterPanel() {
 
         {/* Header row: locale tabs + scores */}
         <div className="flex flex-wrap items-center gap-3 justify-between">
-          <LocaleTabs active={locale} onChange={setLocale} filledMap={filledMap} />
+          <LocaleTabs active={locale} onChange={setLocale} filledMap={filledMap} missingCountMap={missingCountMap} />
           <div className="flex gap-3">
             <ScoreMeter score={scoreResult.seoScore} label="SEO Puanı" level={scoreResult.seoLevel} />
             <ScoreMeter score={scoreResult.aiScore}  label="AI Puanı"  level={scoreResult.aiLevel}  />
           </div>
         </div>
 
-        {/* ── Section 1: Temel Bilgiler ── */}
-        <Section title="Temel SEO Bilgileri" hint="Arama motorlarının sayfanı nasıl tanımlayacağını belirler.">
-          <FormField
-            label="Sayfa Başlığı"
-            value={seoData.seoTitle || ""}
-            onChange={(v) => updateSEO("seoTitle", v)}
-            charTarget={[50, 60]}
-            hint="Google'da mavi link olarak görünür. 50-60 karakter ideal."
-          />
-          <FormField
-            label="Kısa Açıklama"
-            type="textarea" rows={3}
-            value={seoData.metaDescription || ""}
-            onChange={(v) => updateSEO("metaDescription", v)}
-            charTarget={[150, 160]}
-            hint="Arama sonucunda başlığın altında gözükür. 150-160 karakter ideal."
-          />
-          <div className="grid grid-cols-2 gap-4">
-            <FormField
-              label="Odak Anahtar Kelime"
-              value={seoData.focusKeyword || ""}
-              onChange={(v) => updateSEO("focusKeyword", v)}
-              hint="Bu sayfa için hedeflediğin ana kelime."
-            />
-            <FormField
-              label="H1 Ana Başlık"
-              value={seoData.h1 || ""}
-              onChange={(v) => updateSEO("h1", v)}
-              hint="Sayfanın en büyük başlığı. Anahtar kelimeyi içermeli."
-            />
+        <div className="rounded-xl border border-gray-200 bg-white p-4">
+          <div className="mb-3 flex items-start justify-between gap-3">
+            <div>
+              <p className="text-sm font-bold text-gray-800">Dil bazlı SEO durumu</p>
+              <p className="mt-1 text-xs text-gray-400">
+                Her dil için başlık, açıklama, anahtar kelime, H1 ve slug doluluk durumunu buradan takip edin.
+              </p>
+            </div>
+            <span className="rounded-full bg-[#132175]/10 px-3 py-1 text-xs font-black text-[#132175]">{selectedPageLabel}</span>
           </div>
-          <FormField
-            label="URL Adresi (Slug)"
-            value={seoData.slug || ""}
-            onChange={(v) => updateSEO("slug", v)}
-            hint="Küçük harf, tire ile ayrılmış, Türkçe karakter olmadan. Örn: urun-izleme-sistemi"
+          <LanguageStatusStrip pageSeo={pageSeo} pageKey={selectedPage} activeLocale={locale} />
+        </div>
+
+        {/* ── Section 1: Temel Bilgiler ── */}
+        <Section title="Temel SEO Bilgileri" hint="Arama motorlarının sayfanı nasıl tanımlayacağını belirler. Her alanı tüm diller için aynı ekranda yönetebilirsiniz.">
+          {CORE_SEO_FIELDS.map((field) => (
+            <MultilingualSEOField
+              key={field}
+              field={field}
+              meta={SEO_FIELD_META[field]}
+              pageSeo={pageSeo}
+              pageKey={selectedPage}
+              activeLocale={locale}
+              onChange={updateSEOForLocale}
+            />
+          ))}
+          <LiveRelationCard
+            seoData={seoData}
+            pageContent={pageContent}
+            locale={locale}
+            onSeoChange={updateSEO}
+            onContentChange={updatePageContent}
           />
         </Section>
 
@@ -205,7 +592,7 @@ export default function SEOCenterPanel() {
           <div className="rounded-xl border border-gray-200 bg-white p-4">
             <p className="text-[10px] text-gray-300 mb-3 uppercase font-bold tracking-wide">Google Arama Sonucu</p>
             <p className="text-sky-600 text-base font-medium truncate">{seoData.seoTitle || "Sayfa Başlığı"}</p>
-            <p className="text-green-600 text-xs truncate mt-0.5">willowsoft.co/{seoData.slug || selectedPage}</p>
+            <p className="text-green-600 text-xs truncate mt-0.5">{displayPath(selectedPage, locale, seoData.slug)}</p>
             <p className="text-gray-500 text-sm mt-1 line-clamp-2 leading-relaxed">{seoData.metaDescription || "Meta açıklama burada görünecek..."}</p>
           </div>
         </Section>
@@ -311,6 +698,13 @@ export default function SEOCenterPanel() {
         </div>
 
       </div>
+      <SitePreview
+        pageLabel={selectedPageLabel}
+        pageKey={selectedPage}
+        locale={locale}
+        seoData={seoData}
+        pageContent={pageContent}
+      />
     </div>
   );
 }

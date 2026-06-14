@@ -189,7 +189,7 @@ export default function AdminShell() {
         </header>
 
         <div className="flex-1 overflow-y-auto p-8">
-          {activeTab === "overview" && <OverviewPanel />}
+          {activeTab === "overview" && <OverviewPanel onNavigate={(tab) => setActiveTab(tab as Tab)} />}
           {activeTab === "leads" && <LeadsTablePanel />}
           {activeTab === "kanban" && <LeadsKanbanPanel />}
           {activeTab === "products" && <ProductsPanel />}
