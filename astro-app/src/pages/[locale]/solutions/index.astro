@@ -5,7 +5,7 @@ import FaqAccordion from "@/components/FaqAccordion.astro";
 import AIAnswerBlock from "@/components/AIAnswerBlock.astro";
 import { loadContent } from "@/lib/content";
 import { pageSeo, webPageNode, ORGANIZATION_SCHEMA, WEBSITE_SCHEMA } from "@/lib/seo";
-import { localizedValue, resolveAsset, locales, resolveLocale, type Locale } from "@/lib/cms";
+import { localizedValue, resolveAsset, locales, resolveLocale, type Locale, localizeItem } from "@/lib/cms";
 import { aiAnswerForPage, aiMetaForPage, appendSchemaNodes, fallbackFaqsForPage, faqItemsForPage, faqSchemaNode } from "@/lib/ai-search";
 
 export const prerender = false;
@@ -30,11 +30,15 @@ const solutionsSchema = appendSchemaNodes({
   ],
 }, [faqSchemaNode(seoProps.canonical, solutionsFaqItems)]);
 
+const selectorCards = pageContent.selectorCards || [];
+const howItWorksSteps = pageContent.howItWorksSteps || [];
+const whyCards = pageContent.whyCards || [];
+
 const labels = {
   useCases: { en: "Use Cases", tr: "Kullanım Alanları", de: "Anwendungsbereiche", fr: "Cas d'usage", es: "Casos de uso", it: "Casi d'uso", ar: "حالات الاستخدام", ja: "ユースケース" },
   whyWillowSoft: { en: "Why WillowSoft", tr: "Neden WillowSoft", de: "Warum WillowSoft", fr: "Pourquoi WillowSoft", es: "Por qué WillowSoft", it: "Perché WillowSoft", ar: "لماذا WillowSoft", ja: "WillowSoftの強み" },
-  mapCase: { en: "Map Your Use Case", tr: "Kullanım Senaryonuzu Belirleyin", de: "Anwendung zuordnen", fr: "Cartographier votre usage", es: "Mapear su caso de uso", it: "Mappa il tuo caso", ar: "خطط لحالة استخدامك", ja: "ユースケースを相談する" },
-  faqEyebrow: { en: "Frequently asked", tr: "Sıkça sorulanlar", de: "Häufig gestellte Fragen", fr: "Questions fréquentes", es: "Preguntas frecuentes", it: "Domande frequenti", ar: "أسئلة مكررة", ja: "よくある質問" },
+  mapCase: { en: "Map Your Use Case", tr: "Kullanım Senaryonuzu Belirleyin", de: "Anwendung zuordnen", fr: "Cartographier votre usage", es: "Casos de uso", it: "Mappa il tuo caso", ar: "خطط لحالة استخدامك", ja: "ユースケースを相談する" },
+  faqEyebrow: { en: "Frequently asked", tr: "Sıkça sorulanlar", de: "Häufig gestellte Fragen", fr: "Questions fréquentes", es: "Preguntas frecuentes", it: "Domande frequenti", ar: "أسئلة mكررة", ja: "よくある質問" },
   faqTitle: { en: "Questions about our solutions.", tr: "Çözümlerimiz hakkında sorular.", de: "Fragen zu unseren Lösungen.", fr: "Questions sur nos solutions.", es: "Preguntas sobre nuestras soluciones.", it: "Domande sulle nostre soluzioni.", ar: "أسئلة حول حلولنا.", ja: "ソリューションに関するご質問" },
   faqLead: {
     en: "Here are the answers to the most common questions about our IoT capabilities and deployments.",
@@ -60,37 +64,106 @@ const getLabel = (key: keyof typeof labels) => {
   dataPage="solutions"
 >
   <main>
-    <!-- Hero -->
-    <section class="hero compact">
-      <div class="hero-media"><img src={resolveAsset("/pdf-assets/p04_01_X9.jpg")} alt="Industrial IoT concept" loading="lazy" decoding="async"/></div>
-      <canvas class="signal-canvas" data-density="38"></canvas>
-      <div class="hero-inner">
-        <p class="eyebrow reveal">{getVal("heroEyebrow")}</p>
-        <h1 class="reveal delay-1">{getVal("heroTitle")}</h1>
-        <p class="reveal delay-2">{getVal("heroLead")}</p>
+    <!-- Premium Hero -->
+    <section class="solutions-hero-premium">
+      <div class="solutions-hero-bg">
+        <img src={resolveAsset(getVal("heroImage") || "/pdf-assets/p04_01_X9.jpg")} alt="Industrial IoT telemetry network" loading="lazy" decoding="async" />
+      </div>
+
+      <canvas class="signal-canvas" data-density="42" data-color="35, 168, 216"></canvas>
+
+      <div class="solutions-hero-overlay"></div>
+
+      <div class="solutions-hero-inner">
+        <div class="solutions-hero-content reveal">
+          <p class="eyebrow">{getVal("heroEyebrow") || "Industrial IoT Solutions"}</p>
+
+          <h1 set:html={getVal("heroTitle") || "Connected solutions for assets, sites and operations that cannot fail."} />
+
+          <p>{getVal("heroLead") || "WillowSoft connects field sensors, LoRaWAN devices, gateways, APIs, dashboards and mobile workflows into one reliable industrial IoT ecosystem."}</p>
+
+          <div class="solutions-hero-actions">
+            <a class="btn btn-primary" href={`/${locale}/start-project`}>{getLabel("mapCase")}</a>
+            <a class="btn btn-secondary" href={`/${locale}/products`}>{locale === 'tr' ? 'Cihazları İnceleyin' : 'Explore Devices'}</a>
+          </div>
+        </div>
+
+        <div class="solutions-hero-panel reveal delay-1">
+          <span class="panel-kicker">{locale === 'tr' ? 'Çözüm Katmanları' : 'Solution Stack'}</span>
+
+          <div class="solution-stack-list">
+            <div>
+              <strong>01</strong>
+              <span>{locale === 'tr' ? 'Saha algılama' : 'Field sensing'}</span>
+            </div>
+            <div>
+              <strong>02</strong>
+              <span>{locale === 'tr' ? 'Düşük güç iletimi' : 'Low-power transmission'}</span>
+            </div>
+            <div>
+              <strong>03</strong>
+              <span>{locale === 'tr' ? 'Arka uç işleme' : 'Backend processing'}</span>
+            </div>
+            <div>
+              <strong>04</strong>
+              <span>{locale === 'tr' ? 'Paneller ve mobil uyarılar' : 'Dashboards & mobile alerts'}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="solutions-hero-metrics reveal delay-2">
+          <article>
+            <strong>{pageContent.metric1Value || "15+"}</strong>
+            <span>{localizedValue(pageContent.metric1Label, locale) || (locale === 'tr' ? 'aktif kurulum yapılan ülke' : 'countries with active deployments')}</span>
+          </article>
+          <article>
+            <strong>{pageContent.metric2Value || "2020"}</strong>
+            <span>{localizedValue(pageContent.metric2Label, locale) || (locale === 'tr' ? 'Ar-Ge odaklı mühendislik temeli' : 'R&D-first engineering foundation')}</span>
+          </article>
+          <article>
+            <strong>{pageContent.metric3Value || "24/7"}</strong>
+            <span>{localizedValue(pageContent.metric3Label, locale) || (locale === 'tr' ? 'kritik varlıklar için 24/7 uzaktan görünürlük' : 'remote visibility for critical assets')}</span>
+          </article>
+        </div>
       </div>
     </section>
 
+    <!-- AI Answer -->
     <section class="section tight">
       <div class="section-inner">
         <AIAnswerBlock answer={aiAnswer} locale={locale} meta={aiMeta} />
       </div>
     </section>
 
-    <!-- Use Cases Grid -->
+    <!-- Use Cases Section -->
     <section class="section solution-market-section">
       <div class="section-inner">
         <div class="section-head reveal product-headline">
           <div>
-            <p class="eyebrow">{getLabel("useCases")}</p>
-            <h2>{getVal("useCasesTitle")}</h2>
+            <p class="eyebrow">{getVal("useCasesEyebrow") || getLabel("useCases")}</p>
+            <h2>{getVal("useCasesTitle") || "Designed for distributed, harsh and operationally critical environments."}</h2>
+            <p class="section-lead">
+              {getVal("useCasesLead") || "From infrastructure and factories to buildings, logistics and utilities, every solution is shaped around field conditions, data needs and response workflows."}
+            </p>
           </div>
-          <a class="btn btn-secondary btn-small" href={`/${locale}/start-project`}>{getLabel("mapCase")}</a>
+
+          <a class="btn btn-secondary btn-small" href={`/${locale}/start-project`}>{locale === 'tr' ? 'Sahanızla Başlayın' : 'Start with Your Site'}</a>
         </div>
-        <div class="solution-case-grid" data-cms-solutions>
-          {solutions.map((s: any, idx: number) => (
-            <SolutionCard solution={s} locale={locale} index={idx} />
-          ))}
+
+        <div class="solutions-showcase-frame reveal delay-1">
+          <div class="solutions-showcase-side">
+            <span>{getVal("showcaseEyebrow") || (locale === 'tr' ? 'Operasyonel Kapsam' : 'Operational Coverage')}</span>
+            <h3>{getVal("showcaseTitle") || (locale === 'tr' ? 'Tek bir sistem, çoklu saha gerçekliği.' : 'One system, multiple field realities.')}</h3>
+            <p>
+              {getVal("showcaseLead") || (locale === 'tr' ? 'Aynı platform; izleme, uyarılar, raporlama, haritalar, varlık durumu, çevre verileri ve mevcut sistemlerle entegrasyonu destekleyebilir.' : 'The same platform can support monitoring, alerts, reporting, maps, asset status, environmental data and integration with existing systems.')}
+            </p>
+          </div>
+
+          <div class="solution-case-grid" data-cms-solutions>
+            {solutions.map((s: any, idx: number) => (
+              <SolutionCard solution={s} locale={locale} index={idx} />
+            ))}
+          </div>
         </div>
       </div>
     </section>
@@ -99,48 +172,132 @@ const getLabel = (key: keyof typeof labels) => {
     <section class="section soft solution-selector-section">
       <div class="section-inner">
         <div class="section-head center reveal">
-          <p class="eyebrow">{getVal("whyEyebrow")}</p>
-          <h2>{getVal("whyTitle")}</h2>
-          <p class="section-lead">The strongest IoT projects do not start with “which sensor?” They start with what the user must see, decide, or automate.</p>
+          <p class="eyebrow">{getVal("selectorEyebrow") || (locale === 'tr' ? 'Doğru Yolu Seçin' : 'Choose the Right Path')}</p>
+          <h2>{getVal("selectorTitle") || (locale === 'tr' ? 'Her çözüm operasyonel soruyla başlar.' : 'Every solution starts with the operational question.')}</h2>
+          <p class="section-lead">{getVal("selectorLead") || "Strong IoT projects do not start with “which sensor?”. They start with what the user needs to see, decide or automate."}</p>
         </div>
-        <div class="solution-selector-grid">
-          <article class="solution-selector-card reveal">
-            <span>Need visibility?</span>
-            <h3>Remote monitoring</h3>
-            <p>For assets that are hard to reach, distributed, or checked manually today.</p>
-          </article>
-          <article class="solution-selector-card reveal delay-1">
-            <span>Need action?</span>
-            <h3>Alerts and workflows</h3>
-            <p>For operations where threshold, motion, panic, door, level or pressure events require response.</p>
-          </article>
-          <article class="solution-selector-card reveal delay-2">
-            <span>Need integration?</span>
-            <h3>Data platform</h3>
-            <p>For telemetry that must feed ERP, reporting, customer portals, PostgreSQL or internal APIs.</p>
-          </article>
+
+        <div class="solution-decision-grid">
+          {selectorCards.length > 0 ? (
+            selectorCards.map((card: any, idx: number) => {
+              const c = localizeItem(card, locale);
+              return (
+                <article class={`solution-decision-card reveal ${idx > 0 ? `delay-${idx}` : ''}`}>
+                  <div class="decision-icon">{String(idx + 1).padStart(2, '0')}</div>
+                  <span>{c.eyebrow || card.eyebrow}</span>
+                  <h3>{c.title || card.title}</h3>
+                  <p>{c.body || card.body}</p>
+                  {card.bullets && card.bullets.length > 0 && (
+                    <ul>
+                      {card.bullets.map((b: string, bi: number) => {
+                        const locBullet = c.bullets?.[bi] || b;
+                        return <li>{locBullet}</li>;
+                      })}
+                    </ul>
+                  )}
+                </article>
+              );
+            })
+          ) : (
+            // Fallback hardcoded if missing
+            <>
+              <article class="solution-decision-card reveal">
+                <div class="decision-icon">01</div>
+                <span>{locale === 'tr' ? 'Görünürlük mü lazım?' : 'Need visibility?'}</span>
+                <h3>{locale === 'tr' ? 'Uzaktan İzleme' : 'Remote Monitoring'}</h3>
+                <p>
+                  {locale === 'tr' ? 'Erişilmesi zor, sahalara dağıtılmış veya saha ekipleri tarafından manuel kontrol edilen varlıklar için.' : 'For assets that are hard to reach, distributed across sites or still checked manually by field teams.'}
+                </p>
+                <ul>
+                  <li>{locale === 'tr' ? 'Canlı telemetri' : 'Live telemetry'}</li>
+                  <li>{locale === 'tr' ? 'Varlık durumu' : 'Asset status'}</li>
+                  <li>{locale === 'tr' ? 'Geçmiş trendler' : 'Historical trends'}</li>
+                </ul>
+              </article>
+              <article class="solution-decision-card reveal delay-1">
+                <div class="decision-icon">02</div>
+                <span>{locale === 'tr' ? 'Müdahale mi gerekiyor?' : 'Need response?'}</span>
+                <h3>{locale === 'tr' ? 'Uyarılar ve İş Akışları' : 'Alerts & Workflows'}</h3>
+                <p>
+                  {locale === 'tr' ? 'Seviye, basınç, hareket, panik, kapı, GPS veya hava kalitesi olaylarının anında müdahale gerektirdiği operasyonlar için.' : 'For operations where level, pressure, motion, panic, door, GPS or air-quality events require immediate action.'}
+                </p>
+                <ul>
+                  <li>{locale === 'tr' ? 'Eşik uyarıları' : 'Threshold alerts'}</li>
+                  <li>{locale === 'tr' ? 'Mobil bildirimler' : 'Mobile notifications'}</li>
+                  <li>{locale === 'tr' ? 'Eskalasyon akışları' : 'Escalation flows'}</li>
+                </ul>
+              </article>
+              <article class="solution-decision-card reveal delay-2">
+                <div class="decision-icon">03</div>
+                <span>{locale === 'tr' ? 'Entegrasyon mu lazım?' : 'Need integration?'}</span>
+                <h3>{locale === 'tr' ? 'Endüstriyel Veri Platformu' : 'Industrial Data Platform'}</h3>
+                <p>
+                  {locale === 'tr' ? 'Raporlama araçlarını, ERP sistemlerini, müşteri portallarını, PostgreSQL veritabanını veya dahili API\'leri beslemesi gereken telemetri için.' : 'For telemetry that must feed reporting tools, ERP systems, customer portals, PostgreSQL or internal APIs.'}
+                </p>
+                <ul>
+                  <li>{locale === 'tr' ? 'Arka uç API\'leri' : 'Backend APIs'}</li>
+                  <li>{locale === 'tr' ? 'Yönetici panelleri' : 'Admin panels'}</li>
+                  <li>{locale === 'tr' ? 'Veri hatları' : 'Data pipelines'}</li>
+                </ul>
+              </article>
+            </>
+          )}
         </div>
       </div>
     </section>
 
-    <!-- Data Flow Timeline / How It Works -->
-    <section class="section dark">
-      <canvas class="signal-canvas" data-density="32" data-color="35, 168, 216"></canvas>
-      <div class="section-inner split">
-        <div class="reveal">
-          <p class="eyebrow">{getVal("howEyebrow")}</p>
-          <h2 class="page-title">{getVal("howTitle")}</h2>
-          <p class="section-lead">{getVal("howLead")}</p>
-        </div>
-        <div class="reveal delay-1">
-          <div class="tech-flow">
-            <div class="flow-row">
-              <div class="flow-node"><strong>Measure</strong><span>Level, pressure, air, motion, GPS.</span></div>
-              <div class="flow-node"><strong>Transmit</strong><span>LoRaWAN and low-power network paths.</span></div>
-              <div class="flow-node"><strong>Store</strong><span>Backend APIs and PostgreSQL.</span></div>
-              <div class="flow-node"><strong>Visualize</strong><span>Dashboards, maps, mobile apps.</span></div>
-              <div class="flow-node"><strong>Act</strong><span>Alerts, reports, and workflows.</span></div>
-            </div>
+    <!-- Data Flow Architecture -->
+    <section class="section dark solutions-architecture-section">
+      <canvas class="signal-canvas" data-density="36" data-color="35, 168, 216"></canvas>
+
+      <div class="section-inner">
+        <div class="solutions-architecture-layout">
+          <div class="reveal">
+            <p class="eyebrow">{getVal("howEyebrow") || (locale === 'tr' ? 'Nasıl Çalışır' : 'How It Works')}</p>
+            <h2 class="page-title">{getVal("howTitle") || (locale === 'tr' ? 'Sensörler raporlar. Geçitler bağlar. Platformlar harekete geçer.' : 'Sensors report. Gateways connect. Platforms act.')}</h2>
+            <p class="section-lead">
+              {getVal("howLead") || "WillowSoft solutions turn field signals into operational intelligence through a complete embedded-to-cloud architecture."}
+            </p>
+          </div>
+
+          <div class="architecture-card reveal delay-1">
+            <div class="architecture-line"></div>
+
+            {howItWorksSteps.length > 0 ? (
+              howItWorksSteps.map((step: any) => {
+                const s = localizeItem(step, locale);
+                return (
+                  <div class="architecture-step">
+                    <strong>{s.title || step.title}</strong>
+                    <span>{s.body || step.body}</span>
+                  </div>
+                );
+              })
+            ) : (
+              // Fallback
+              <>
+                <div class="architecture-step">
+                  <strong>{locale === 'tr' ? 'Ölçüm' : 'Measure'}</strong>
+                  <span>{locale === 'tr' ? 'Seviye, basınç, hava kalitesi, hareket, GPS, sıcaklık, nem ve daha fazlası.' : 'Level, pressure, air quality, motion, GPS, temperature, humidity and more.'}</span>
+                </div>
+                <div class="architecture-step">
+                  <strong>{locale === 'tr' ? 'İletim' : 'Transmit'}</strong>
+                  <span>{locale === 'tr' ? 'Saha gerçekliğine göre tasarlanmış LoRaWAN ve düşük güçlü iletişim yolları.' : 'LoRaWAN and low-power communication paths designed for site reality.'}</span>
+                </div>
+                <div class="architecture-step">
+                  <strong>{locale === 'tr' ? 'İşleme' : 'Process'}</strong>
+                  <span>{locale === 'tr' ? 'Backend API\'leri, PostgreSQL depolaması, kurallar, eşikler ve raporlama mantığı.' : 'Backend APIs, PostgreSQL storage, rules, thresholds and reporting logic.'}</span>
+                </div>
+                <div class="architecture-step">
+                  <strong>{locale === 'tr' ? 'Görselleştirme' : 'Visualize'}</strong>
+                  <span>{locale === 'tr' ? 'Paneller, haritalar, yönetici panelleri, mobil uygulamalar ve müşteri portalları.' : 'Dashboards, maps, admin panels, mobile apps and customer portals.'}</span>
+                </div>
+                <div class="architecture-step">
+                  <strong>{locale === 'tr' ? 'Eylem' : 'Act'}</strong>
+                  <span>{locale === 'tr' ? 'Uyarılar, iş akışları, saha yanıtları, bakım planlaması ve karar desteği.' : 'Alerts, workflows, field response, maintenance planning and decision support.'}</span>
+                </div>
+              </>
+            )}
           </div>
         </div>
       </div>
@@ -150,22 +307,74 @@ const getLabel = (key: keyof typeof labels) => {
     <section class="section soft solutions-why-section">
       <div class="section-inner">
         <div class="section-head reveal">
-          <p class="eyebrow">{getLabel("whyWillowSoft")}</p>
-          <h2>Solutions are engineered around the site, not forced onto it.</h2>
+          <div>
+            <p class="eyebrow">{getVal("whyEyebrow") || getLabel("whyWillowSoft")}</p>
+            <h2>{getVal("whyTitle") || "Solutions are engineered around the site, not forced onto it."}</h2>
+          </div>
         </div>
-        <div class="grid grid-3">
-          <article class="card reveal">
-            <h3>Low-Power Expertise</h3>
-            <p>Battery life and data intervals are designed according to operational reality, not generic lab assumptions.</p>
-          </article>
-          <article class="card reveal delay-1">
-            <h3>RF-Aware Deployment</h3>
-            <p>Connectivity planning accounts for metal-heavy factories, distance, harsh weather, and gateway placement.</p>
-          </article>
-          <article class="card reveal delay-2">
-            <h3>Full Digital Layer</h3>
-            <p>Backend, database, dashboard, admin panel, mobile alerts, and reporting are designed with the device workflow.</p>
-          </article>
+
+        <div class="solutions-principle-grid">
+          {whyCards.length > 0 ? (
+            whyCards.map((card: any, idx: number) => {
+              const c = localizeItem(card, locale);
+              return (
+                <article class={`solutions-principle-card reveal ${idx > 0 ? `delay-${idx}` : ''}`}>
+                  <span>{String(idx + 1).padStart(2, '0')}</span>
+                  <h3>{c.title || card.title}</h3>
+                  <p>{c.body || card.body}</p>
+                </article>
+              );
+            })
+          ) : (
+            // Fallback
+            <>
+              <article class="solutions-principle-card reveal">
+                <span>01</span>
+                <h3>{locale === 'tr' ? 'Düşük Güç Uzmanlığı' : 'Low-Power Expertise'}</h3>
+                <p>
+                  {locale === 'tr' ? 'Pil ömrü, veri paketi boyutu ve raporlama aralıkları gerçek kurulum gereksinimlerine göre tasarlanır.' : 'Battery life, payload size and reporting intervals are designed around real deployment requirements.'}
+                </p>
+              </article>
+              <article class="solutions-principle-card reveal delay-1">
+                <span>02</span>
+                <h3>{locale === 'tr' ? 'RF Uyumlu Kurulum' : 'RF-Aware Deployment'}</h3>
+                <p>
+                  {locale === 'tr' ? 'Bağlantı planlaması; metal yoğunluklu fabrikaları, mesafeyi, hava koşullarını, muhafazaları ve geçit yerleşimini hesaba katar.' : 'Connectivity planning considers metal-heavy factories, distance, weather, enclosures and gateway placement.'}
+                </p>
+              </article>
+              <article class="solutions-principle-card reveal delay-2">
+                <span>03</span>
+                <h3>{locale === 'tr' ? 'Uçtan Uca Sahiplik' : 'Full Stack Ownership'}</h3>
+                <p>
+                  {locale === 'tr' ? 'Donanım, gömülü yazılım (firmware), backend, veritabanı, pano, admin paneli ve mobil iş akışları birlikte tasarlanır.' : 'Hardware, firmware, backend, database, dashboard, admin panel and mobile workflows are designed together.'}
+                </p>
+              </article>
+              <article class="solutions-principle-card reveal delay-3">
+                <span>04</span>
+                <h3>{locale === 'tr' ? 'Önce Üretim Yaklaşımı' : 'Production-First Thinking'}</h3>
+                <p>
+                  {locale === 'tr' ? 'Her çözüm sadece prototip varsayımlarına göre değil, saha gerçekliğine göre değerlendirilir.' : 'Every solution is evaluated against field reality, not only against prototype assumptions.'}
+                </p>
+              </article>
+            </>
+          )}
+        </div>
+      </div>
+    </section>
+
+    <!-- Final CTA -->
+    <section class="section solutions-final-cta-section">
+      <div class="section-inner">
+        <div class="solutions-final-cta reveal">
+          <div>
+            <p class="eyebrow">{getVal("finalCtaEyebrow") || (locale === 'tr' ? 'Operasyonunuzla Başlayın' : 'Start With Your Operation')}</p>
+            <h2>{getVal("finalCtaTitle") || (locale === 'tr' ? 'Görünürlüğe ihtiyaç duyan bir sahanız, varlığınız veya süreciniz mi var?' : 'Have a site, asset or process that needs visibility?')}</h2>
+            <p>
+              {getVal("finalCtaLead") || (locale === 'tr' ? 'Saha koşullarınızı, veri ihtiyaçlarınızı ve operasyonel hedeflerinizi paylaşın. WillowSoft doğru cihaz, bağlantı ve platform mimarisini çıkarabilir.' : 'Share your field conditions, data needs and operational goals. WillowSoft can map the right device, connectivity and platform architecture.')}
+            </p>
+          </div>
+
+          <a class="btn btn-primary" href={`/${locale}/start-project`}>{getVal("finalCtaButton") || (locale === 'tr' ? 'Projeyi Başlat' : 'Start Project')}</a>
         </div>
       </div>
     </section>

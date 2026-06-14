@@ -3216,38 +3216,54 @@
     },
     "solutions": {
       "heroEyebrow": {
-        "en": "Solutions",
-        "tr": "Çözümler",
-        "de": "Lösungen",
-        "fr": "Solutions",
-        "es": "Soluciones",
-        "it": "Soluzioni",
-        "ar": "الحلول",
-        "ja": "ソリューション"
+        "en": "Industrial IoT Solutions",
+        "tr": "Endüstriyel IoT Çözümleri",
+        "de": "Industrielle IoT-Lösungen",
+        "fr": "Solutions IoT industrielles",
+        "es": "Soluciones de IoT industrial",
+        "it": "Soluzioni IoT industriali",
+        "ar": "حلول إنترنت الأشياء الصناعي",
+        "ja": "産業用 IoT ソリューション"
       },
       "heroTitle": {
-        "en": "Industrial IoT solutions for real-world operations.",
-        "tr": "Gerçek dünya operasyonları için Endüstriyel IoT çözümleri.",
-        "de": "Industrielle IoT-Lösungen für den realen Betrieb.",
-        "fr": "Solutions IoT industrielles pour des opérations concrètes.",
-        "es": "Soluciones de IoT industrial para operaciones del mundo real.",
-        "it": "Soluzioni IoT industriali per operazioni reali.",
-        "ar": "حلول إنترنت الأشياء الصناعي لعمليات واقعية.",
-        "ja": "実運用のための産業用 IoT ソリューション。"
+        "en": "Connected solutions for assets, sites and operations that cannot fail.",
+        "tr": "Başarısızlığa tahammülü olmayan varlıklar, sahalar ve operasyonlar için bağlantılı çözümler.",
+        "de": "Vernetzte Lösungen für ausfallsichere Anlagen, Standorte und Betriebe.",
+        "fr": "Solutions connectées pour les actifs, les sites et les opérations critiques.",
+        "es": "Soluciones conectadas para activos, sitios y operaciones que no pueden fallar.",
+        "it": "Soluzioni connesse per asset, siti e attività che non possono guastarsi.",
+        "ar": "حلول متصلة للأصول والمواقع والعمليات التي لا devre لها بالفشل.",
+        "ja": "停止が許されない資産、現場、運用のためのコネクテッドソリューション。"
       },
       "heroLead": {
-        "en": "We connect distributed assets, buildings, machines, utilities, and logistics systems with low-power hardware and scalable digital platforms.",
-        "tr": "Dağıtık varlıkları, binaları, makineleri, altyapıları ve lojistik sistemlerini düşük güçlü donanım ve ölçeklenebilir dijital platformlarla birbirine bağlıyoruz.",
-        "de": "Wir verbinden verteilte Anlagen, Gebäude, Maschinen, Versorgungsnetze und Logistiksysteme mit energiesparender Hardware und skalierbaren digitalen Plattformen.",
-        "fr": "Nous connectons des actifs distribués, des bâtiments, des machines, des réseaux et des systèmes logistiques grâce à du matériel basse consommation et à des plateformes numériques évolutives.",
-        "es": "Conectamos activos distribuidos, edificios, máquinas, servicios públicos y sistemas logísticos con hardware de bajo consumo y plataformas digitales escalables.",
-        "it": "Colleghiamo asset distribuiti, edifici, macchine, utility e sistemi logistici con hardware a basso consumo e piattaforme digitali scalabili.",
-        "ar": "نربط الأصول الموزّعة والمباني والآلات والمرافق وأنظمة الخدمات اللوجستية بعتاد منخفض الطاقة ومنصات رقمية قابلة للتوسّع.",
-        "ja": "分散した資産、建物、機械、インフラ、物流システムを、低消費電力ハードウェアとスケーラブルなデジタルプラットフォームで接続します。"
+        "en": "WillowSoft connects field sensors, LoRaWAN devices, gateways, APIs, dashboards and mobile workflows into one reliable industrial IoT ecosystem.",
+        "tr": "WillowSoft; saha sensörlerini, LoRaWAN cihazlarını, geçitleri (gateways), API'leri, panoları ve mobil iş akışlarını tek bir güvenilir endüstriyel IoT ekosisteminde birleştirir.",
+        "de": "WillowSoft verbindet Feldsensoren, LoRaWAN-Geräte, Gateways, APIs, Dashboards und mobile Workflows zu einem zuverlässigen industriellen IoT-Ökosystem.",
+        "fr": "WillowSoft connecte les capteurs de terrain, les appareils LoRaWAN, les passerelles, les API, les tableaux de bord et les flux mobiles en un seul écosystème IoT industriel fiable.",
+        "es": "WillowSoft conecta sensores de campo, dispositivos LoRaWAN, pasarelas, API, paneles de control y flujos de trabajo móviles en un ecosistema de IoT industrial fiable.",
+        "it": "WillowSoft collega sensori sul campo, dispositivi LoRaWAN, gateway, API, dashboard e flujos di lavoro mobili in un unico ecosistema IoT industriel affidabile.",
+        "ar": "تربط WillowSoft المستشعرات الميدانية وأجهزة LoRaWAN والبوابات وواجهات برمجة التطبيقات ولوحات التحكم وسير العمل عبر الجوال في منظومة متكاملة وموثوقة لإنترنت الأشياء الصناعي.",
+        "ja": "WillowSoftは、現場のセンサー、LoRaWANデバイス、ゲートウェイ, API, ダッシュボード、モバイルワークフローを、信頼性の高い一つの産業用IoTエコシステムに接続します。"
+      },
+      "heroImage": "/pdf-assets/p04_01_X9.jpg",
+      "metric1Value": "15+",
+      "metric1Label": {
+        "en": "countries with active deployments",
+        "tr": "aktif kurulum yapılan ülke"
+      },
+      "metric2Value": "2020",
+      "metric2Label": {
+        "en": "R&D-first engineering foundation",
+        "tr": "Ar-Ge odaklı mühendislik temeli"
+      },
+      "metric3Value": "24/7",
+      "metric3Label": {
+        "en": "remote visibility for critical assets",
+        "tr": "kritik varlıklar için 24/7 uzaktan görünürlük"
       },
       "useCasesEyebrow": {
         "en": "Use Cases",
-        "tr": "Kullanım Senaryoları",
+        "tr": "Kullanım Alanları",
         "de": "Anwendungsfälle",
         "fr": "Cas d'usage",
         "es": "Casos de uso",
@@ -3256,65 +3272,289 @@
         "ja": "ユースケース"
       },
       "useCasesTitle": {
-        "en": "Built for environments where reliability matters.",
-        "tr": "Güvenilirliğin önem taşıdığı ortamlar için tasarlandı.",
-        "de": "Entwickelt für Umgebungen, in denen Zuverlässigkeit zählt.",
-        "fr": "Conçu pour les environnements où la fiabilité compte.",
-        "es": "Diseñado para entornos donde la fiabilidad importa.",
-        "it": "Progettato per ambienti in cui l'affidabilità conta.",
-        "ar": "مُصمّم لبيئات تكون فيها الموثوقية أساسية.",
-        "ja": "信頼性が重要な環境のために設計。"
+        "en": "Designed for distributed, harsh and operationally critical environments.",
+        "tr": "Dağıtık, zorlu ve operasyonel açıdan kritik ortamlar için tasarlandı.",
+        "de": "Entwickelt für verteilte, raue und betriebskritische Umgebungen.",
+        "fr": "Conçu pour les environnements distribués, rudes et critiques.",
+        "es": "Diseñado para entornos distribuidos, hostiles y de misión crítica.",
+        "it": "Progettato per ambienti distribuiti, difficili e operativamente critici.",
+        "ar": "مُصمم للبيئات الموزعة والقاسية والحرجة عملياتياً.",
+        "ja": "分散型、過酷、かつ運用上重要な環境向けに設計。"
+      },
+      "useCasesLead": {
+        "en": "From infrastructure and factories to buildings, logistics and utilities, every solution is shaped around field conditions, data needs and response workflows.",
+        "tr": "Altyapı ve fabrikalardan binalara, lojistik ve altyapı hizmetlerine kadar her çözüm; saha koşulları, veri gereksinimleri ve müdahale iş akışlarına göre şekillenir.",
+        "de": "Von Infrastrukturen und Fabriken bis hin zu Gebäuden, Logistik und Versorgungsunternehmen wird jede Lösung an die Bedingungen vor Ort, den Datenbedarf und die Reaktionsabläufe angepasst.",
+        "fr": "Des infrastructures et usines aux bâtiments, à la logistique et aux services publics, chaque solution s'adapte aux conditions du terrain, aux besoins en données et aux flux d'intervention.",
+        "es": "Desde infraestructuras y fábricas hasta edificios, logística y servicios públicos, cada solución se adapta a las condiciones del campo, las necesidades de datos y los flujos de respuesta.",
+        "it": "Dalle infrastrutture e fabbriche agli edifici, alla logistica e alle utility, ogni soluzione è modellata in base alle condizioni sul campo, alle esigenze di dati e ai flujos di risposta.",
+        "ar": "من البنية التحتية والمصانع إلى المباني والخدمات اللوجستية والمرافق، يتم تشكيل her çözüm حول الظروف Mydan ve ihtiyaçlar.",
+        "ja": "インフラや工場からビル、物流、ユーティリティにいたるまで、すべてのソリューションは現場の条件、データニーズ、対応ワークフローに合わせて形作られます。"
+      },
+      "showcaseEyebrow": {
+        "en": "Operational Coverage",
+        "tr": "Operasyonel Kapsam",
+        "de": "Betriebliche Abdeckung",
+        "fr": "Couverture opérationnelle",
+        "es": "Cobertura operativa",
+        "it": "Copertura operativa",
+        "ar": "التغطية التشغيلية",
+        "ja": "業務のカバー範囲"
+      },
+      "showcaseTitle": {
+        "en": "One system, multiple field realities.",
+        "tr": "Tek bir sistem, çoklu saha gerçekliği.",
+        "de": "Ein System, mehrere Realitäten vor Ort.",
+        "fr": "Un seul système, de multiples réalités de terrain.",
+        "es": "Un solo sistema, múltiples realidades de campo.",
+        "it": "Un solo sistema, molteplici realtà sul campo.",
+        "ar": "نظام واحد، وواقع ميداني متعدد.",
+        "ja": "一つのシステム、複数の現場の現実。"
+      },
+      "showcaseLead": {
+        "en": "The same platform can support monitoring, alerts, reporting, maps, asset status, environmental data and integration with existing systems.",
+        "tr": "Aynı platform; izleme, uyarılar, raporlama, haritalar, varlık durumu, çevre verileri ve mevcut sistemlerle entegrasyonu destekleyebilir.",
+        "de": "Dieselbe Plattform kann Überwachung, Alarmierung, Berichterstattung, Karten, Anlagenstatus, Umweltdaten und die Integration in bestehende Systeme unterstützen.",
+        "fr": "La même plateforme peut gérer la surveillance, les alertes, les rapports, les cartes, l'état des actifs, les données environnementales et l'intégration aux systèmes existants.",
+        "es": "La misma plataforma puede admitir monitorización, alertas, informes, mapas, estado de los activos, datos ambientales e integración con sistemas existentes.",
+        "it": "La stessa piattaforma può supportare monitoraggio, avvisi, reportistica, mappe, stato degli asset, dati ambientali e integrazione con i sistemi esistenti.",
+        "ar": "يمكن للمنصة نفسها دعم المراقبة والتنبيهات والتقارير والخرائط وحالة الأصول البيانات البيئية والتكامل مع الأنظمة الحالية.",
+        "ja": "同一プラットフォームで、監視、アラート、レポート、マップ、資産ステータス、環境データ、既存システムとの統合に対応できます。"
+      },
+      "selectorEyebrow": {
+        "en": "Choose the Right Path",
+        "tr": "Doğru Yolu Seçin"
+      },
+      "selectorTitle": {
+        "en": "Every solution starts with the operational question.",
+        "tr": "Her çözüm operasyonel soruyla başlar."
+      },
+      "selectorLead": {
+        "en": "Strong IoT projects do not start with “which sensor?”. They start with what the user needs to see, decide or automate.",
+        "tr": "Güçlü IoT projeleri \"hangi sensör?\" sorusuyla başlamaz. Kullanıcının neyi görmesi, neye karar vermesi veya neyi otomatikleştirmesi gerektiğiyle başlar."
       },
       "howEyebrow": {
         "en": "How It Works",
-        "tr": "Nasıl Çalışır",
-        "de": "So funktioniert es",
-        "fr": "Comment ça marche",
-        "es": "Cómo funciona",
-        "it": "Come funziona",
-        "ar": "كيف يعمل",
-        "ja": "仕組み"
+        "tr": "Nasıl Çalışır"
       },
       "howTitle": {
-        "en": "Sensors report, gateways connect, platforms act.",
-        "tr": "Sensörler raporlar, geçitler bağlar, platformlar harekete geçer.",
-        "de": "Sensoren melden, Gateways verbinden, Plattformen handeln.",
-        "fr": "Les capteurs remontent, les passerelles connectent, les plateformes agissent.",
-        "es": "Los sensores informan, las pasarelas conectan, las plataformas actúan.",
-        "it": "I sensori segnalano, i gateway collegano, le piattaforme agiscono.",
-        "ar": "تُبلِّغ المستشعرات، وتربط البوابات، وتتصرّف المنصات.",
-        "ja": "センサーが報告し、ゲートウェイがつなぎ、プラットフォームが動く。"
+        "en": "Sensors report. Gateways connect. Platforms act.",
+        "tr": "Sensörler raporlar. Geçitler bağlar. Platformlar harekete geçer."
       },
       "howLead": {
-        "en": "WillowSoft integrates distributed field telemetry with scalable data networks. In our production systems, each device streams real-time telemetry directly into secure APIs, PostgreSQL databases, monitoring dashboards, mobile alerts, and operational reporting tools.",
-        "tr": "WillowSoft, dağıtık saha telemetrisini ölçeklenebilir veri ağlarıyla entegre eder. Üretim sistemlerimizde her cihaz, telemetri verilerini doğrudan güvenli API'lere, PostgreSQL veritabanlarına, izleme panolarına, mobil uyarılara ve operasyonel raporlama araçlarına gerçek zamanlı olarak aktarır.",
-        "de": "WillowSoft integriert verteilte Feldtelemetrie in skalierbare Datennetzwerke. In unseren Produktionssystemen überträgt jedes Gerät Echtzeit-Telemetrie direkt an sichere APIs, PostgreSQL-Datenbanken, Dashboards, mobile Benachrichtigungen und operative Reporting-Tools.",
-        "fr": "WillowSoft intègre la télémétrie de terrain distribuée avec des réseaux de données évolutifs. Dans nos systèmes de production, chaque appareil transmet sa télémétrie en temps réel directement vers des API sécurisées, des bases de données PostgreSQL, des tableaux de bord, des alertes mobiles et des outils de reporting.",
-        "es": "WillowSoft integra la telemetría de campo distribuida con redes de datos escalables. En nuestros sistemas de producción, cada dispositivo transmite telemetría en tiempo real directamente a API seguras, bases de datos PostgreSQL, paneles de control, alertas móviles y herramientas de informes operativos.",
-        "it": "WillowSoft integra la telemetria di campo distribuita con reti dati scalabili. Nei nostri sistemi di produzione, ogni dispositivo trasmette la telemetria in tempo reale direttamente ad API sicure, database PostgreSQL, dashboard di monitoraggio, avvisi mobili e strumenti di reporting operativo.",
-        "ar": "تدمج WillowSoft قياس البيانات الميدانية الموزعة مع شبكات بيانات قابلة للتطوير. في أنظمة الإنتاج لدينا، يرسل كل جهاز بيانات القياس في الوقت الفعلي مباشرة إلى واجهات برمجة التطبيقات الآمنة وقواعد بيانات PostgreSQL ولوحات المراقبة وتنبيهات الجوال وأدوات التقارير التشغيلية.",
-        "ja": "WillowSoftは、分散した現場のテレメトリをスケーラブルなデータネットワークと統合します。実稼働システムでは、各デバイスがリアルタイムのテレメトリをセキュアなAPI、PostgreSQLデータベース、監視ダッシュボード、モバイルアラート、業務レポートツールへ直接配信します。"
+        "en": "WillowSoft solutions turn field signals into operational intelligence through a complete embedded-to-cloud architecture.",
+        "tr": "WillowSoft çözümleri, uçtan buluta eksiksiz bir mimari aracılığıyla saha sinyallerini operasyonel zekaya dönüştürür."
       },
       "whyEyebrow": {
         "en": "Why WillowSoft",
-        "tr": "Neden WillowSoft",
-        "de": "Warum WillowSoft",
-        "fr": "Pourquoi WillowSoft",
-        "es": "Por qué WillowSoft",
-        "it": "Perché WillowSoft",
-        "ar": "لماذا WillowSoft",
-        "ja": "WillowSoft が選ばれる理由"
+        "tr": "Neden WillowSoft"
       },
       "whyTitle": {
         "en": "Solutions are engineered around the site, not forced onto it.",
-        "tr": "Çözümler sahaya dayatılmaz; sahanın dinamiklerine göre tasarlanır.",
-        "de": "Lösungen werden an die Gegebenheiten vor Ort angepasst, anstatt sie aufzuzwingen.",
-        "fr": "Les solutions sont conçues en fonction des réalités du terrain, et non imposées à celui-ci.",
-        "es": "Las soluciones se diseñan en función de las necesidades del terreno, no se imponen sobre él.",
-        "it": "Le soluzioni sono progettate in base alle reali esigenze del terreno, non imposte su di esso.",
-        "ar": "تُصمَّم الحلول بناءً على احتياجات الميدان, لا تُفرَض عليه.",
-        "ja": "ソリューションは現場に押し付けるのではなく、現場に合わせて設計します。"
-      }
+        "tr": "Çözümler sahaya dayatılmaz; sahanın dinamiklerine göre tasarlanır."
+      },
+      "finalCtaEyebrow": {
+        "en": "Start With Your Operation",
+        "tr": "Operasyonunuzla Başlayın"
+      },
+      "finalCtaTitle": {
+        "en": "Have a site, asset or process that needs visibility?",
+        "tr": "Görünürlüğe ihtiyaç duyan bir sahanız, varlığınız veya süreciniz mi var?"
+      },
+      "finalCtaLead": {
+        "en": "Share your field conditions, data needs and operational goals. WillowSoft can map the right device, connectivity and platform architecture.",
+        "tr": "Saha koşullarınızı, veri ihtiyaçlarınızı ve operasyonel hedeflerinizi paylaşın. WillowSoft doğru cihaz, bağlantı ve platform mimarisini çıkarabilir."
+      },
+      "finalCtaButton": {
+        "en": "Start Project",
+        "tr": "Projeyi Başlat"
+      },
+      "selectorCards": [
+        {
+          "id": "selector-1",
+          "eyebrow": "Need visibility?",
+          "title": "Remote Monitoring",
+          "body": "For assets that are hard to reach, distributed across sites or still checked manually by field teams.",
+          "sortOrder": 1,
+          "bullets": [
+            "Live telemetry",
+            "Asset status",
+            "Historical trends"
+          ],
+          "localized": {
+            "tr": {
+              "eyebrow": "Görünürlük mü lazım?",
+              "title": "Uzaktan İzleme",
+              "body": "Erişilmesi zor, sahalara dağıtılmış veya hala saha ekipleri tarafından manuel olarak kontrol edilen varlıklar için.",
+              "bullets": [
+                "Canlı telemetri",
+                "Varlık durumu",
+                "Geçmiş trendler"
+              ]
+            }
+          }
+        },
+        {
+          "id": "selector-2",
+          "eyebrow": "Need response?",
+          "title": "Alerts & Workflows",
+          "body": "For operations where level, pressure, motion, panic, door, GPS or air-quality events require immediate action.",
+          "sortOrder": 2,
+          "bullets": [
+            "Threshold alerts",
+            "Mobile notifications",
+            "Escalation flows"
+          ],
+          "localized": {
+            "tr": {
+              "eyebrow": "Müdahale mi gerekiyor?",
+              "title": "Uyarılar ve İş Akışları",
+              "body": "Seviye, basınç, hareket, panik, kapı, GPS veya hava kalitesi olaylarının anında müdahale gerektirdiği operasyonlar için.",
+              "bullets": [
+                "Eşik uyarıları",
+                "Mobil bildirimler",
+                "Eskalasyon akışları"
+              ]
+            }
+          }
+        },
+        {
+          "id": "selector-3",
+          "eyebrow": "Need integration?",
+          "title": "Industrial Data Platform",
+          "body": "For telemetry that must feed reporting tools, ERP systems, customer portals, PostgreSQL or internal APIs.",
+          "sortOrder": 3,
+          "bullets": [
+            "Backend APIs",
+            "Admin panels",
+            "Data pipelines"
+          ],
+          "localized": {
+            "tr": {
+              "eyebrow": "Entegrasyon mu lazım?",
+              "title": "Endüstriyel Veri Platformu",
+              "body": "Raporlama araçlarını, ERP sistemlerini, müşteri portallarını, PostgreSQL veritabanını veya dahili API'leri beslemesi gereken telemetri için.",
+              "bullets": [
+                "Arka uç API'leri",
+                "Yönetici panelleri",
+                "Veri hatları"
+              ]
+            }
+          }
+        }
+      ],
+      "howItWorksSteps": [
+        {
+          "id": "step-1",
+          "title": "Measure",
+          "body": "Level, pressure, air quality, motion, GPS, temperature, humidity and more.",
+          "sortOrder": 1,
+          "localized": {
+            "tr": {
+              "title": "Ölçüm",
+              "body": "Seviye, basınç, hava kalitesi, hareket, GPS, sıcaklık, nem ve daha fazlası."
+            }
+          }
+        },
+        {
+          "id": "step-2",
+          "title": "Transmit",
+          "body": "LoRaWAN and low-power communication paths designed for site reality.",
+          "sortOrder": 2,
+          "localized": {
+            "tr": {
+              "title": "İletim",
+              "body": "Saha gerçekliğine göre tasarlanmış LoRaWAN ve düşük güçlü iletişim yolları."
+            }
+          }
+        },
+        {
+          "id": "step-3",
+          "title": "Process",
+          "body": "Backend APIs, PostgreSQL storage, rules, thresholds and reporting logic.",
+          "sortOrder": 3,
+          "localized": {
+            "tr": {
+              "title": "İşleme",
+              "body": "Backend API'leri, PostgreSQL depolaması, kurallar, eşikler ve raporlama mantığı."
+            }
+          }
+        },
+        {
+          "id": "step-4",
+          "title": "Visualize",
+          "body": "Dashboards, maps, admin panels, mobile apps and customer portals.",
+          "sortOrder": 4,
+          "localized": {
+            "tr": {
+              "title": "Görselleştirme",
+              "body": "Paneller, haritalar, yönetici panelleri, mobil uygulamalar ve müşteri portalları."
+            }
+          }
+        },
+        {
+          "id": "step-5",
+          "title": "Act",
+          "body": "Alerts, workflows, field response, maintenance planning and decision support.",
+          "sortOrder": 5,
+          "localized": {
+            "tr": {
+              "title": "Eylem",
+              "body": "Uyarılar, iş akışları, saha yanıtları, bakım planlaması ve karar desteği."
+            }
+          }
+        }
+      ],
+      "whyCards": [
+        {
+          "id": "why-1",
+          "title": "Low-Power Expertise",
+          "body": "Battery life, payload size and reporting intervals are designed around real deployment requirements.",
+          "sortOrder": 1,
+          "localized": {
+            "tr": {
+              "title": "Düşük Güç Uzmanlığı",
+              "body": "Pil ömrü, veri paketi boyutu ve raporlama aralıkları gerçek kurulum gereksinimlerine göre tasarlanır."
+            }
+          }
+        },
+        {
+          "id": "why-2",
+          "title": "RF-Aware Deployment",
+          "body": "Connectivity planning considers metal-heavy factories, distance, weather, enclosures and gateway placement.",
+          "sortOrder": 2,
+          "localized": {
+            "tr": {
+              "title": "RF Uyumlu Kurulum",
+              "body": "Bağlantı planlaması; metal yoğunluklu fabrikaları, mesafeyi, hava koşullarını, muhafazaları ve geçit yerleşimini hesaba katar."
+            }
+          }
+        },
+        {
+          "id": "why-3",
+          "title": "Full Stack Ownership",
+          "body": "Hardware, firmware, backend, database, dashboard, admin panel and mobile workflows are designed together.",
+          "sortOrder": 3,
+          "localized": {
+            "tr": {
+              "title": "Uçtan Uca Sahiplik",
+              "body": "Donanım, gömülü yazılım (firmware), backend, veritabanı, pano, admin paneli ve mobil iş akışları birlikte tasarlanır."
+            }
+          }
+        },
+        {
+          "id": "why-4",
+          "title": "Production-First Thinking",
+          "body": "Every solution is evaluated against field reality, not only against prototype assumptions.",
+          "sortOrder": 4,
+          "localized": {
+            "tr": {
+              "title": "Önce Üretim Yaklaşımı",
+              "body": "Her çözüm sadece prototip varsayımlarına göre değil, saha gerçekliğine göre değerlendirilir."
+            }
+          }
+        }
+      ]
     },
     "company": {
       "introEyebrow": {
