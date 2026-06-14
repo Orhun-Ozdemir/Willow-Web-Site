@@ -1,9 +1,8 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useCallback } from "react";
 import { locales, type Locale } from "@/lib/cms";
 import { useAdmin } from "./AdminContext";
-import LocaleTabs from "./LocaleTabs";
 
 // ── Page list ────────────────────────────────────────────────────────────────
 const PAGES = [
@@ -18,102 +17,77 @@ const PAGES = [
   { key: "glossary",     label: "Sözlük",       icon: "📖" },
 ];
 
-// ── Field metadata: key → { label, section, hint, type } ────────────────────
-type FieldType = "short" | "long" | "button";
+// ── Locale display info ───────────────────────────────────────────────────────
+const LOCALE_INFO: Record<string, { flag: string; name: string }> = {
+  en: { flag: "🇬🇧", name: "English" },
+  tr: { flag: "🇹🇷", name: "Türkçe" },
+  de: { flag: "🇩🇪", name: "Deutsch" },
+  fr: { flag: "🇫🇷", name: "Français" },
+  es: { flag: "🇪🇸", name: "Español" },
+  it: { flag: "🇮🇹", name: "Italiano" },
+  ar: { flag: "🇸🇦", name: "العربية" },
+  ja: { flag: "🇯🇵", name: "日本語" },
+};
 
-interface FieldMeta {
-  label: string;
-  section: string;
-  hint: string;
-  type: FieldType;
-}
+// ── Field metadata ────────────────────────────────────────────────────────────
+type FieldType = "short" | "long" | "button";
+interface FieldMeta { label: string; section: string; hint: string; type: FieldType; }
 
 const FIELD_META: Record<string, FieldMeta> = {
-  // Hero
-  heroEyebrow:        { label: "Küçük Üst Etiket",      section: "Hero (Giriş Bölümü)",      hint: "Başlığın üstünde küçük renkli metin. Örn: 'IoT Yazılım Uzmanı'",                   type: "short" },
-  heroTitle:          { label: "Ana Başlık",             section: "Hero (Giriş Bölümü)",      hint: "Sayfada en büyük gözüken başlık. HTML destekler (<em>, <span> vb.)",               type: "long"  },
-  heroLead:           { label: "Alt Açıklama",           section: "Hero (Giriş Bölümü)",      hint: "Ana başlığın altındaki paragraf metni.",                                             type: "long"  },
-  heroCta:            { label: "Buton Metni",            section: "Hero (Giriş Bölümü)",      hint: "Hero'daki ana eylem butonu.",                                                        type: "button"},
-  heroCtaSecondary:   { label: "İkincil Buton",          section: "Hero (Giriş Bölümü)",      hint: "Hero'daki ikincil buton (varsa).",                                                   type: "button"},
-
-  // Trust / Stats
-  trustEyebrow:       { label: "Küçük Üst Etiket",      section: "Güven / İstatistik Bölümü", hint: "Bu bölümün üst etiketi.",                                                           type: "short" },
-  trustTitle:         { label: "Bölüm Başlığı",         section: "Güven / İstatistik Bölümü", hint: "",                                                                                   type: "short" },
-  trustLead:          { label: "Bölüm Açıklaması",      section: "Güven / İstatistik Bölümü", hint: "",                                                                                   type: "long"  },
-
-  // Ecosystem
-  ecosystemEyebrow:   { label: "Küçük Üst Etiket",      section: "Ekosistem Bölümü",         hint: "",                                                                                   type: "short" },
-  ecosystemTitle:     { label: "Bölüm Başlığı",         section: "Ekosistem Bölümü",         hint: "HTML destekler.",                                                                    type: "short" },
-  ecosystemLead:      { label: "Bölüm Açıklaması",      section: "Ekosistem Bölümü",         hint: "",                                                                                   type: "long"  },
-
-  // Products section (on home)
-  productsEyebrow:    { label: "Küçük Üst Etiket",      section: "Ürünler Bölümü",           hint: "",                                                                                   type: "short" },
-  productsTitle:      { label: "Bölüm Başlığı",         section: "Ürünler Bölümü",           hint: "HTML destekler.",                                                                    type: "short" },
-  productsLead:       { label: "Bölüm Açıklaması",      section: "Ürünler Bölümü",           hint: "",                                                                                   type: "long"  },
-
-  // Industries
-  industriesEyebrow:  { label: "Küçük Üst Etiket",      section: "Sektörler Bölümü",         hint: "",                                                                                   type: "short" },
-  industriesTitle:    { label: "Bölüm Başlığı",         section: "Sektörler Bölümü",         hint: "HTML destekler.",                                                                    type: "short" },
-
-  // News section (on home)
-  newsEyebrow:        { label: "Küçük Üst Etiket",      section: "Haberler Bölümü",          hint: "",                                                                                   type: "short" },
-  newsTitle:          { label: "Bölüm Başlığı",         section: "Haberler Bölümü",          hint: "",                                                                                   type: "short" },
-
-  // CTA
-  ctaEyebrow:         { label: "Küçük Üst Etiket",      section: "Eylem (CTA) Bölümü",       hint: "Sayfanın altındaki büyük eylem çağrısı üst etiketi.",                               type: "short" },
-  ctaTitle:           { label: "Başlık",                 section: "Eylem (CTA) Bölümü",       hint: "HTML destekler.",                                                                    type: "short" },
-  ctaLead:            { label: "Açıklama",               section: "Eylem (CTA) Bölümü",       hint: "",                                                                                   type: "long"  },
-  ctaCta:             { label: "Buton Metni",            section: "Eylem (CTA) Bölümü",       hint: "",                                                                                   type: "button"},
-
-  // Solutions
-  howEyebrow:         { label: "Küçük Üst Etiket",      section: "Nasıl Çalışır Bölümü",     hint: "",                                                                                   type: "short" },
-  howTitle:           { label: "Bölüm Başlığı",         section: "Nasıl Çalışır Bölümü",     hint: "",                                                                                   type: "short" },
-  howLead:            { label: "Bölüm Açıklaması",      section: "Nasıl Çalışır Bölümü",     hint: "",                                                                                   type: "long"  },
-  whyEyebrow:         { label: "Küçük Üst Etiket",      section: "Neden Biz Bölümü",         hint: "",                                                                                   type: "short" },
-  whyTitle:           { label: "Bölüm Başlığı",         section: "Neden Biz Bölümü",         hint: "",                                                                                   type: "short" },
-  useCasesTitle:      { label: "Kullanım Alanları Başlığı", section: "Kullanım Alanları",     hint: "",                                                                                   type: "short" },
-
-  // Services
-  stackTitle:         { label: "Teknoloji Yığını Başlığı", section: "Teknoloji Bölümü",      hint: "",                                                                                   type: "short" },
-
-  // Start Project
-  pathsEyebrow:       { label: "Küçük Üst Etiket",      section: "Yollar Bölümü",            hint: "",                                                                                   type: "short" },
-  pathsTitle:         { label: "Bölüm Başlığı",         section: "Yollar Bölümü",            hint: "",                                                                                   type: "short" },
-  pathsLead:          { label: "Bölüm Açıklaması",      section: "Yollar Bölümü",            hint: "",                                                                                   type: "long"  },
-  realityEyebrow:     { label: "Küçük Üst Etiket",      section: "Gerçek Bölümü",            hint: "",                                                                                   type: "short" },
-  realityTitle:       { label: "Bölüm Başlığı",         section: "Gerçek Bölümü",            hint: "",                                                                                   type: "short" },
-  afterSubmission:    { label: "Form Sonrası Mesaj",     section: "Form",                     hint: "Form gönderildikten sonra kullanıcıya gösterilen mesaj.",                           type: "long"  },
-
-  // Glossary
-  connectivityEyebrow:{ label: "Küçük Üst Etiket",      section: "Bağlantı Bölümü",          hint: "",                                                                                   type: "short" },
-  connectivityTitle:  { label: "Bölüm Başlığı",         section: "Bağlantı Bölümü",          hint: "",                                                                                   type: "short" },
-  devicesEyebrow:     { label: "Küçük Üst Etiket",      section: "Cihazlar Bölümü",          hint: "",                                                                                   type: "short" },
-  devicesTitle:       { label: "Bölüm Başlığı",         section: "Cihazlar Bölümü",          hint: "",                                                                                   type: "short" },
-  softwareEyebrow:    { label: "Küçük Üst Etiket",      section: "Yazılım Bölümü",           hint: "",                                                                                   type: "short" },
-  softwareTitle:      { label: "Bölüm Başlığı",         section: "Yazılım Bölümü",           hint: "",                                                                                   type: "short" },
-
-  // Catalog (products page)
-  catalogEyebrow:     { label: "Küçük Üst Etiket",      section: "Katalog Bölümü",           hint: "",                                                                                   type: "short" },
-  catalogTitle:       { label: "Bölüm Başlığı",         section: "Katalog Bölümü",           hint: "",                                                                                   type: "short" },
+  heroEyebrow:        { label: "Küçük Üst Etiket",           section: "Hero (Giriş Bölümü)",       hint: "Başlığın üstünde küçük renkli metin.",                        type: "short"  },
+  heroTitle:          { label: "Ana Başlık",                  section: "Hero (Giriş Bölümü)",       hint: "Sayfada en büyük başlık. HTML destekler (<em>, <span> vb.)",  type: "long"   },
+  heroLead:           { label: "Alt Açıklama",                section: "Hero (Giriş Bölümü)",       hint: "Ana başlığın altındaki paragraf.",                             type: "long"   },
+  heroCta:            { label: "Buton Metni",                 section: "Hero (Giriş Bölümü)",       hint: "Hero'daki ana eylem butonu.",                                  type: "button" },
+  heroCtaSecondary:   { label: "İkincil Buton",               section: "Hero (Giriş Bölümü)",       hint: "Hero'daki ikincil buton (varsa).",                             type: "button" },
+  trustEyebrow:       { label: "Küçük Üst Etiket",           section: "Güven / İstatistik Bölümü", hint: "",                                                             type: "short"  },
+  trustTitle:         { label: "Bölüm Başlığı",              section: "Güven / İstatistik Bölümü", hint: "",                                                             type: "short"  },
+  trustLead:          { label: "Bölüm Açıklaması",           section: "Güven / İstatistik Bölümü", hint: "",                                                             type: "long"   },
+  ecosystemEyebrow:   { label: "Küçük Üst Etiket",           section: "Ekosistem Bölümü",          hint: "",                                                             type: "short"  },
+  ecosystemTitle:     { label: "Bölüm Başlığı",              section: "Ekosistem Bölümü",          hint: "HTML destekler.",                                              type: "short"  },
+  ecosystemLead:      { label: "Bölüm Açıklaması",           section: "Ekosistem Bölümü",          hint: "",                                                             type: "long"   },
+  productsEyebrow:    { label: "Küçük Üst Etiket",           section: "Ürünler Bölümü",            hint: "",                                                             type: "short"  },
+  productsTitle:      { label: "Bölüm Başlığı",              section: "Ürünler Bölümü",            hint: "HTML destekler.",                                              type: "short"  },
+  productsLead:       { label: "Bölüm Açıklaması",           section: "Ürünler Bölümü",            hint: "",                                                             type: "long"   },
+  industriesEyebrow:  { label: "Küçük Üst Etiket",           section: "Sektörler Bölümü",          hint: "",                                                             type: "short"  },
+  industriesTitle:    { label: "Bölüm Başlığı",              section: "Sektörler Bölümü",          hint: "HTML destekler.",                                              type: "short"  },
+  newsEyebrow:        { label: "Küçük Üst Etiket",           section: "Haberler Bölümü",           hint: "",                                                             type: "short"  },
+  newsTitle:          { label: "Bölüm Başlığı",              section: "Haberler Bölümü",           hint: "",                                                             type: "short"  },
+  ctaEyebrow:         { label: "Küçük Üst Etiket",           section: "Eylem (CTA) Bölümü",        hint: "Sayfanın altındaki büyük eylem çağrısı üst etiketi.",          type: "short"  },
+  ctaTitle:           { label: "Başlık",                     section: "Eylem (CTA) Bölümü",        hint: "HTML destekler.",                                              type: "short"  },
+  ctaLead:            { label: "Açıklama",                   section: "Eylem (CTA) Bölümü",        hint: "",                                                             type: "long"   },
+  ctaCta:             { label: "Buton Metni",                section: "Eylem (CTA) Bölümü",        hint: "",                                                             type: "button" },
+  howEyebrow:         { label: "Küçük Üst Etiket",           section: "Nasıl Çalışır Bölümü",      hint: "",                                                             type: "short"  },
+  howTitle:           { label: "Bölüm Başlığı",              section: "Nasıl Çalışır Bölümü",      hint: "",                                                             type: "short"  },
+  howLead:            { label: "Bölüm Açıklaması",           section: "Nasıl Çalışır Bölümü",      hint: "",                                                             type: "long"   },
+  whyEyebrow:         { label: "Küçük Üst Etiket",           section: "Neden Biz Bölümü",          hint: "",                                                             type: "short"  },
+  whyTitle:           { label: "Bölüm Başlığı",              section: "Neden Biz Bölümü",          hint: "",                                                             type: "short"  },
+  useCasesTitle:      { label: "Kullanım Alanları Başlığı",  section: "Kullanım Alanları",         hint: "",                                                             type: "short"  },
+  stackTitle:         { label: "Teknoloji Yığını Başlığı",   section: "Teknoloji Bölümü",          hint: "",                                                             type: "short"  },
+  pathsEyebrow:       { label: "Küçük Üst Etiket",           section: "Yollar Bölümü",             hint: "",                                                             type: "short"  },
+  pathsTitle:         { label: "Bölüm Başlığı",              section: "Yollar Bölümü",             hint: "",                                                             type: "short"  },
+  pathsLead:          { label: "Bölüm Açıklaması",           section: "Yollar Bölümü",             hint: "",                                                             type: "long"   },
+  realityEyebrow:     { label: "Küçük Üst Etiket",           section: "Gerçek Bölümü",             hint: "",                                                             type: "short"  },
+  realityTitle:       { label: "Bölüm Başlığı",              section: "Gerçek Bölümü",             hint: "",                                                             type: "short"  },
+  afterSubmission:    { label: "Form Sonrası Mesaj",         section: "Form",                      hint: "Form gönderildikten sonra kullanıcıya gösterilen mesaj.",       type: "long"   },
+  connectivityEyebrow:{ label: "Küçük Üst Etiket",           section: "Bağlantı Bölümü",           hint: "",                                                             type: "short"  },
+  connectivityTitle:  { label: "Bölüm Başlığı",              section: "Bağlantı Bölümü",           hint: "",                                                             type: "short"  },
+  devicesEyebrow:     { label: "Küçük Üst Etiket",           section: "Cihazlar Bölümü",           hint: "",                                                             type: "short"  },
+  devicesTitle:       { label: "Bölüm Başlığı",              section: "Cihazlar Bölümü",           hint: "",                                                             type: "short"  },
+  softwareEyebrow:    { label: "Küçük Üst Etiket",           section: "Yazılım Bölümü",            hint: "",                                                             type: "short"  },
+  softwareTitle:      { label: "Bölüm Başlığı",              section: "Yazılım Bölümü",            hint: "",                                                             type: "short"  },
+  catalogEyebrow:     { label: "Küçük Üst Etiket",           section: "Katalog Bölümü",            hint: "",                                                             type: "short"  },
+  catalogTitle:       { label: "Bölüm Başlığı",              section: "Katalog Bölümü",            hint: "",                                                             type: "short"  },
 };
 
 function getMeta(key: string): FieldMeta {
   return FIELD_META[key] ?? { label: key, section: "Diğer Alanlar", hint: "", type: "short" };
 }
 
-// ── Preview: render one section's fields as a visual snippet ─────────────────
-function PreviewBadge({ type }: { type: FieldType }) {
-  if (type === "button") return <span className="inline-block px-2 py-0.5 bg-[#132175] text-white text-[9px] font-bold rounded">BUTON</span>;
-  if (type === "long")   return null;
-  return null;
-}
-
-function PreviewSections({ pageKey, data, locale, activeKey }: {
-  pageKey: string; data: Record<string, any>; locale: Locale; activeKey: string | null;
+// ── Live preview (right panel) ────────────────────────────────────────────────
+function PreviewSections({ data, locale, activeKey }: {
+  data: Record<string, any>; locale: Locale; activeKey: string | null;
 }) {
   const val = (k: string) => (data[k]?.[locale] || data[k]?.en || "").trim();
-
-  // Build unique section list in key order
   const keys = Object.keys(data).sort();
   const sectionOrder: string[] = [];
   const bySection: Record<string, string[]> = {};
@@ -122,27 +96,18 @@ function PreviewSections({ pageKey, data, locale, activeKey }: {
     if (!bySection[s]) { bySection[s] = []; sectionOrder.push(s); }
     bySection[s].push(k);
   }
-
   return (
     <div className="space-y-3 text-sm">
       {sectionOrder.map((section) => {
-        const fields = bySection[section];
-        const isActive = fields.some((k) => k === activeKey);
+        const sFields = bySection[section];
+        const isActive = sFields.some((k) => k === activeKey);
         return (
-          <div
-            key={section}
-            className={`rounded-xl border transition-all duration-150 overflow-hidden ${
-              isActive ? "border-[#1aa3c4] shadow-md shadow-[#1aa3c4]/10" : "border-gray-100"
-            }`}
-          >
-            {/* Section header */}
+          <div key={section} className={`rounded-xl border transition-all overflow-hidden ${isActive ? "border-[#1aa3c4] shadow-md shadow-[#1aa3c4]/10" : "border-gray-100"}`}>
             <div className={`px-3 py-1.5 text-[9px] font-black uppercase tracking-wider ${isActive ? "bg-[#1aa3c4]/10 text-[#1aa3c4]" : "bg-gray-50 text-gray-300"}`}>
               {section}
             </div>
-
-            {/* Fields rendered as page content */}
             <div className="px-4 py-3 space-y-1.5 bg-white">
-              {fields.map((k) => {
+              {sFields.map((k) => {
                 const meta = getMeta(k);
                 const v = val(k);
                 const highlight = k === activeKey;
@@ -156,11 +121,9 @@ function PreviewSections({ pageKey, data, locale, activeKey }: {
                       <p className="text-xs text-gray-500 leading-relaxed">{v || <span className="text-gray-200 italic">—</span>}</p>
                     ) : k.toLowerCase().includes("eyebrow") ? (
                       <p className="text-[9px] font-bold text-[#1aa3c4] uppercase tracking-widest">{v || <span className="text-gray-200 italic">—</span>}</p>
-                    ) : k.toLowerCase().includes("title") || k.toLowerCase().includes("lead") ? (
+                    ) : (
                       <p className={`font-extrabold text-gray-800 ${k.toLowerCase().includes("hero") ? "text-base" : "text-sm"}`}
                         dangerouslySetInnerHTML={{ __html: v || `<span style="color:#d1d5db;font-style:italic">—</span>` }} />
-                    ) : (
-                      <p className="text-xs text-gray-600">{v || <span className="text-gray-200 italic">—</span>}</p>
                     )}
                   </div>
                 );
@@ -174,37 +137,24 @@ function PreviewSections({ pageKey, data, locale, activeKey }: {
 }
 
 // ── Main component ────────────────────────────────────────────────────────────
+const SOURCE_LANG: Locale = "en";
+const TARGET_LOCALES = locales.filter((l) => l !== SOURCE_LANG);
+
 export default function PageContentPanel() {
   const { content, setContent } = useAdmin();
   const [selectedPage, setSelectedPage] = useState("home");
-  const [locale, setLocale] = useState<Locale>("tr");
   const [activeKey, setActiveKey] = useState<string | null>(null);
-  const previewRef = useRef<HTMLDivElement>(null);
-  const sourceLang: Locale = "en";
+  const [previewLocale, setPreviewLocale] = useState<Locale>("tr");
+  // suggestions: locale → translated text (pending accept/reject)
+  const [suggestions, setSuggestions] = useState<Record<string, string>>({});
+  const [translating, setTranslating] = useState<Set<string>>(new Set());
+  const [translateError, setTranslateError] = useState<string | null>(null);
 
   const pageContent = content?.pageContent || {};
   const pageData = pageContent[selectedPage] || {};
   const keys = Object.keys(pageData).sort();
 
-  const updateField = (key: string, loc: Locale, value: string) => {
-    setContent((c: any) => {
-      const pc = { ...c.pageContent };
-      const page = { ...pc[selectedPage] };
-      page[key] = { ...page[key], [loc]: value };
-      pc[selectedPage] = page;
-      return { ...c, pageContent: pc };
-    });
-  };
-
-  // Completion stats
-  const filledMap: Record<string, boolean> = {};
-  for (const l of locales) {
-    filledMap[l] = keys.some((k) => (pageData[k]?.[l] || "").trim().length > 0);
-  }
-  const filledCount = keys.filter((k) => (pageData[k]?.[locale] || "").trim().length > 0).length;
-  const emptyCount = keys.length - filledCount;
-
-  // Group fields by section (for editor)
+  // Group fields by section
   const sectionOrder: string[] = [];
   const bySection: Record<string, string[]> = {};
   for (const k of keys) {
@@ -213,200 +163,360 @@ export default function PageContentPanel() {
     bySection[s].push(k);
   }
 
+  const activeField = activeKey ?? keys[0] ?? null;
+  const activeMeta = activeField ? getMeta(activeField) : null;
+
+  const updateField = useCallback((key: string, loc: Locale, value: string) => {
+    setContent((c: any) => {
+      const pc = { ...c.pageContent };
+      const page = { ...pc[selectedPage] };
+      page[key] = { ...page[key], [loc]: value };
+      pc[selectedPage] = page;
+      return { ...c, pageContent: pc };
+    });
+  }, [selectedPage, setContent]);
+
+  const getVal = (key: string, loc: Locale) => (pageData[key]?.[loc] || "").trim();
+
+  // Count missing per locale for current page
+  const missingPerLocale = (loc: Locale) =>
+    keys.filter((k) => !getVal(k, loc)).length;
+
+  // Field completion: how many locales are filled for this field
+  const fieldStatus = (key: string): "all" | "partial" | "empty" => {
+    const filled = TARGET_LOCALES.filter((l) => getVal(key, l)).length;
+    if (filled === TARGET_LOCALES.length) return "all";
+    if (filled > 0) return "partial";
+    return "empty";
+  };
+
+  // Translate selected field into all empty target locales
+  const translateAll = async () => {
+    if (!activeField) return;
+    const sourceText = getVal(activeField, SOURCE_LANG);
+    if (!sourceText) return;
+
+    const emptyLangs = TARGET_LOCALES.filter((l) => !getVal(activeField, l) && !suggestions[l]);
+    if (emptyLangs.length === 0) return;
+
+    setTranslateError(null);
+    setTranslating(new Set(emptyLangs));
+    try {
+      const res = await fetch("/api/translate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text: sourceText, targetLangs: emptyLangs }),
+      });
+      const data = await res.json();
+      if (!data.ok) throw new Error(data.error || "Çeviri başarısız");
+      setSuggestions((prev) => ({ ...prev, ...data.translations }));
+      if (data.errors?.length) setTranslateError(data.errors.join(", "));
+    } catch (e: any) {
+      setTranslateError(e.message);
+    } finally {
+      setTranslating(new Set());
+    }
+  };
+
+  // Translate single locale
+  const translateOne = async (lang: string) => {
+    if (!activeField) return;
+    const sourceText = getVal(activeField, SOURCE_LANG);
+    if (!sourceText) return;
+
+    setTranslating((prev) => new Set([...prev, lang]));
+    setTranslateError(null);
+    try {
+      const res = await fetch("/api/translate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text: sourceText, targetLangs: [lang] }),
+      });
+      const data = await res.json();
+      if (!data.ok) throw new Error(data.error || "Çeviri başarısız");
+      setSuggestions((prev) => ({ ...prev, ...data.translations }));
+    } catch (e: any) {
+      setTranslateError(e.message);
+    } finally {
+      setTranslating((prev) => { const s = new Set(prev); s.delete(lang); return s; });
+    }
+  };
+
+  const acceptSuggestion = (lang: string) => {
+    if (!activeField || !suggestions[lang]) return;
+    updateField(activeField, lang as Locale, suggestions[lang]);
+    setSuggestions((prev) => { const n = { ...prev }; delete n[lang]; return n; });
+  };
+
+  const rejectSuggestion = (lang: string) => {
+    setSuggestions((prev) => { const n = { ...prev }; delete n[lang]; return n; });
+  };
+
+  // Clear suggestions when field changes
+  const selectField = (key: string) => {
+    setActiveKey(key);
+    setSuggestions({});
+    setTranslateError(null);
+  };
+
+  const sourceText = activeField ? getVal(activeField, SOURCE_LANG) : "";
+  const emptyTargetCount = activeField
+    ? TARGET_LOCALES.filter((l) => !getVal(activeField, l) && !suggestions[l]).length
+    : 0;
+
   return (
-    <div className="flex gap-5 min-h-[600px]">
+    <div className="flex gap-4 min-h-[600px]">
 
-      {/* ── Left: Page list ── */}
-      <div className="w-48 shrink-0 space-y-1 self-start">
-        <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider px-1 mb-2">Sayfa Seçin</p>
-        {PAGES.map((pg) => {
-          const pgData = pageContent[pg.key] || {};
-          const pgKeys = Object.keys(pgData);
-          const pgFilled = pgKeys.filter((k) => (pgData[k]?.[locale] || "").trim()).length;
-          const pct = pgKeys.length ? Math.round((pgFilled / pgKeys.length) * 100) : 0;
-          const active = selectedPage === pg.key;
-          const dotClr = pct === 100 ? "bg-green-400" : pct > 50 ? "bg-amber-400" : "bg-red-400";
-          return (
-            <button
-              key={pg.key}
-              onClick={() => { setSelectedPage(pg.key); setActiveKey(null); }}
-              className={`w-full text-left px-3 py-2.5 rounded-xl text-sm font-medium transition flex items-center justify-between gap-2 ${
-                active ? "bg-[#132175] text-white shadow-sm" : "bg-white text-gray-600 border border-gray-200 hover:border-[#132175]/30 hover:text-gray-900"
-              }`}
-            >
-              <span className="flex items-center gap-2">
-                <span>{pg.icon}</span>
-                <span>{pg.label}</span>
-              </span>
-              <span className={`w-2 h-2 rounded-full shrink-0 ${dotClr} ${active ? "opacity-80" : ""}`} />
-            </button>
-          );
-        })}
-      </div>
+      {/* ── Left: Page list + Field list ─────────────────────────────────── */}
+      <div className="w-52 shrink-0 flex flex-col gap-3 self-start sticky top-0">
 
-      {/* ── Center: Field editor ── */}
-      <div className="flex-1 min-w-0 space-y-4">
-
-        {/* Header */}
-        <div className="flex items-center justify-between">
-          <LocaleTabs active={locale} onChange={setLocale} filledMap={filledMap} />
-          <div className="flex items-center gap-3">
-            {emptyCount > 0 && (
-              <span className="px-2 py-1 bg-red-50 border border-red-200 text-red-500 text-xs font-bold rounded-lg">
-                {emptyCount} alan boş
-              </span>
-            )}
-            <span className="text-xs text-gray-400">{filledCount}/{keys.length} dolu</span>
+        {/* Page picker */}
+        <div>
+          <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider px-1 mb-1.5">Sayfa</p>
+          <div className="space-y-0.5">
+            {PAGES.map((pg) => {
+              const pgData = pageContent[pg.key] || {};
+              const pgKeys = Object.keys(pgData);
+              const pgFilled = pgKeys.filter((k) => (pgData[k]?.tr || "").trim()).length;
+              const pct = pgKeys.length ? Math.round((pgFilled / pgKeys.length) * 100) : 0;
+              const dotClr = pct === 100 ? "bg-green-400" : pct > 50 ? "bg-amber-400" : "bg-red-400";
+              const active = selectedPage === pg.key;
+              return (
+                <button
+                  key={pg.key}
+                  onClick={() => { setSelectedPage(pg.key); setActiveKey(null); setSuggestions({}); }}
+                  className={`w-full text-left px-2.5 py-2 rounded-lg text-xs font-medium transition flex items-center justify-between gap-2 ${
+                    active ? "bg-[#132175] text-white" : "bg-white text-gray-600 border border-gray-200 hover:border-[#132175]/30"
+                  }`}
+                >
+                  <span className="flex items-center gap-1.5"><span>{pg.icon}</span><span>{pg.label}</span></span>
+                  <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${dotClr} ${active ? "opacity-80" : ""}`} />
+                </button>
+              );
+            })}
           </div>
         </div>
 
-        {/* Info banner */}
-        <div className="bg-blue-50 border border-blue-100 rounded-xl px-4 py-3 text-sm text-blue-700">
-          Aşağıdaki alanlar <strong>"{PAGES.find(p => p.key === selectedPage)?.label}" sayfasında</strong> görünen metinlerdir.
-          Sol sütun İngilizce orijinal metni gösterir. Sağ sütuna çevirinizi yazın.
-        </div>
+        {/* Field list */}
+        {sectionOrder.length > 0 && (
+          <div>
+            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider px-1 mb-1.5">Alan</p>
+            <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
+              {sectionOrder.map((section, si) => (
+                <div key={section}>
+                  {si > 0 && <div className="h-px bg-gray-100 mx-3" />}
+                  <p className="text-[9px] font-black uppercase tracking-wider text-gray-300 px-3 pt-2 pb-0.5">{section}</p>
+                  {bySection[section].map((k) => {
+                    const meta = getMeta(k);
+                    const status = fieldStatus(k);
+                    const isActive = activeField === k;
+                    return (
+                      <button
+                        key={k}
+                        onClick={() => selectField(k)}
+                        className={`w-full text-left px-3 py-1.5 text-[11px] flex items-center justify-between gap-1 transition ${
+                          isActive ? "bg-[#132175] text-white font-bold" : "text-gray-600 hover:bg-gray-50"
+                        }`}
+                      >
+                        <span className="truncate">{meta.label}</span>
+                        {status === "all"     && <span className="text-[9px] shrink-0">✓</span>}
+                        {status === "partial" && <span className={`text-[9px] shrink-0 ${isActive ? "text-amber-200" : "text-amber-400"}`}>⚠</span>}
+                        {status === "empty"   && <span className={`text-[9px] shrink-0 ${isActive ? "text-red-300" : "text-red-400"}`}>✗</span>}
+                      </button>
+                    );
+                  })}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
 
-        {keys.length === 0 && (
+      {/* ── Center: All locales for selected field ────────────────────────── */}
+      <div className="flex-1 min-w-0">
+        {!activeField ? (
           <div className="bg-white border border-gray-200 rounded-xl p-8 text-center text-gray-400 text-sm">
             Bu sayfa için henüz içerik alanı eklenmemiş.
           </div>
-        )}
+        ) : (
+          <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
 
-        {/* Sections */}
-        {sectionOrder.map((section) => {
-          const sectionKeys = bySection[section];
-          const hasEmpty = sectionKeys.some((k) => !(pageData[k]?.[locale] || "").trim());
-          return (
-            <div key={section} className="bg-white border border-gray-200 rounded-xl overflow-hidden">
-              {/* Section header */}
-              <div className="flex items-center justify-between px-5 py-3 border-b border-gray-100 bg-gray-50/60">
-                <p className="text-xs font-bold text-gray-700">{section}</p>
-                {hasEmpty && locale !== sourceLang && (
-                  <span className="text-[10px] font-bold text-red-400 bg-red-50 px-2 py-0.5 rounded">Eksik çeviri var</span>
+            {/* Field header */}
+            <div className="px-5 py-3 border-b border-gray-100 bg-gray-50/60 flex items-center justify-between">
+              <div>
+                <p className="text-sm font-bold text-gray-800">{activeMeta?.label}</p>
+                <p className="text-[10px] text-gray-400">{activeMeta?.section}
+                  {activeMeta?.hint ? ` · ${activeMeta.hint}` : ""}
+                </p>
+              </div>
+              <div className="flex items-center gap-2">
+                {translateError && (
+                  <span className="text-[10px] text-red-500">{translateError}</span>
+                )}
+                {emptyTargetCount > 0 && sourceText && (
+                  <button
+                    onClick={translateAll}
+                    disabled={translating.size > 0}
+                    className="flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-r from-[#1aa3c4] to-[#0e8aaa] text-white text-[11px] font-bold rounded-lg disabled:opacity-50 transition"
+                  >
+                    {translating.size > 0 ? (
+                      <><span className="animate-spin">⟳</span> Çevriliyor…</>
+                    ) : (
+                      <>✨ Tümünü Çevir ({emptyTargetCount})</>
+                    )}
+                  </button>
                 )}
               </div>
+            </div>
 
-              {/* Fields */}
-              <div className="divide-y divide-gray-50">
-                {sectionKeys.map((key) => {
-                  const meta = getMeta(key);
-                  const srcVal = pageData[key]?.[sourceLang] || "";
-                  const tgtVal = pageData[key]?.[locale] || "";
-                  const isEmpty = locale !== sourceLang && !tgtVal.trim();
-                  const isActive = activeKey === key;
+            {/* Locale inputs */}
+            <div className="divide-y divide-gray-50">
+              {locales.map((loc) => {
+                const info = LOCALE_INFO[loc] ?? { flag: "🌐", name: loc };
+                const isSource = loc === SOURCE_LANG;
+                const value = getVal(activeField, loc);
+                const suggestion = !isSource ? suggestions[loc] : undefined;
+                const isTranslating = translating.has(loc);
+                const isEmpty = !isSource && !value && !suggestion;
+                const isFilled = !isSource && !!value;
 
-                  return (
-                    <div
-                      key={key}
-                      className={`px-5 py-4 transition-colors ${isActive ? "bg-blue-50/40" : ""}`}
-                    >
-                      <div className="flex items-baseline justify-between mb-2">
-                        <label className="text-sm font-semibold text-gray-800">{meta.label}</label>
-                        {isEmpty && <span className="text-[10px] text-red-400 font-bold">— Çeviri Eksik</span>}
+                return (
+                  <div
+                    key={loc}
+                    className={`px-5 py-3 ${isSource ? "bg-[#f0f4ff]" : ""}`}
+                  >
+                    {/* Locale label row */}
+                    <div className="flex items-center justify-between mb-1.5">
+                      <div className="flex items-center gap-1.5">
+                        <span className="text-base leading-none">{info.flag}</span>
+                        <span className={`text-[11px] font-bold ${
+                          isSource ? "text-[#132175]" :
+                          isFilled ? "text-green-700" :
+                          suggestion ? "text-blue-700" :
+                          "text-amber-700"
+                        }`}>{info.name}</span>
+                        {isSource && <span className="text-[9px] bg-[#132175] text-white px-1.5 py-0.5 rounded font-bold">KAYNAK</span>}
+                        {isFilled && !isSource && <span className="text-[9px] text-green-600">✓</span>}
+                        {isEmpty && !isSource && <span className="text-[9px] text-amber-500 font-bold">BOŞ</span>}
                       </div>
-                      {meta.hint && <p className="text-xs text-gray-400 mb-2">{meta.hint}</p>}
-
-                      {locale === sourceLang ? (
-                        /* Single edit for source lang */
-                        meta.type === "long" ? (
-                          <textarea
-                            value={srcVal}
-                            onChange={(e) => updateField(key, sourceLang, e.target.value)}
-                            onFocus={() => setActiveKey(key)}
-                            onBlur={() => setActiveKey(null)}
-                            rows={3}
-                            className="w-full p-2.5 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-800 outline-none focus:border-[#1aa3c4] resize-none"
-                          />
-                        ) : (
-                          <input
-                            type="text"
-                            value={srcVal}
-                            onChange={(e) => updateField(key, sourceLang, e.target.value)}
-                            onFocus={() => setActiveKey(key)}
-                            onBlur={() => setActiveKey(null)}
-                            className="w-full p-2.5 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-800 outline-none focus:border-[#1aa3c4]"
-                          />
-                        )
-                      ) : (
-                        /* Source + Target side by side */
-                        <div className="grid grid-cols-2 gap-3">
-                          {/* Source (read-only) */}
-                          <div>
-                            <p className="text-[9px] text-gray-300 font-bold uppercase mb-1">İngilizce (orijinal)</p>
-                            <div className={`p-2.5 bg-gray-50 border border-gray-100 rounded-lg text-sm text-gray-400 min-h-[40px] ${
-                              meta.type === "long" ? "whitespace-pre-wrap leading-relaxed" : ""
-                            }`}>
-                              {srcVal || <span className="italic text-gray-200">—</span>}
-                            </div>
-                          </div>
-
-                          {/* Target (editable) */}
-                          <div>
-                            <p className={`text-[9px] font-bold uppercase mb-1 ${locale === "tr" ? "text-red-400" : locale === "de" ? "text-yellow-600" : locale === "fr" ? "text-blue-400" : "text-gray-400"}`}>
-                              {locale === "tr" ? "Türkçe" : locale === "de" ? "Almanca" : locale === "fr" ? "Fransızca" : locale.toUpperCase()} (çeviri)
-                            </p>
-                            {meta.type === "long" ? (
-                              <textarea
-                                value={tgtVal}
-                                onChange={(e) => updateField(key, locale, e.target.value)}
-                                onFocus={() => setActiveKey(key)}
-                                onBlur={() => setActiveKey(null)}
-                                rows={3}
-                                placeholder={srcVal ? `Çeviri: ${srcVal.slice(0, 40)}...` : "Çeviri girin..."}
-                                className={`w-full p-2.5 border rounded-lg text-sm text-gray-800 outline-none resize-none transition ${
-                                  isEmpty ? "border-red-200 bg-red-50 focus:border-red-400" : "border-gray-200 bg-gray-50 focus:border-[#1aa3c4]"
-                                }`}
-                              />
-                            ) : (
-                              <input
-                                type="text"
-                                value={tgtVal}
-                                onChange={(e) => updateField(key, locale, e.target.value)}
-                                onFocus={() => setActiveKey(key)}
-                                onBlur={() => setActiveKey(null)}
-                                placeholder={srcVal ? `Çeviri: ${srcVal.slice(0, 40)}` : "Çeviri girin..."}
-                                className={`w-full p-2.5 border rounded-lg text-sm text-gray-800 outline-none transition ${
-                                  isEmpty ? "border-red-200 bg-red-50 focus:border-red-400" : "border-gray-200 bg-gray-50 focus:border-[#1aa3c4]"
-                                }`}
-                              />
-                            )}
-                          </div>
-                        </div>
+                      {!isSource && !value && !suggestion && sourceText && (
+                        <button
+                          onClick={() => translateOne(loc)}
+                          disabled={isTranslating || translating.size > 0}
+                          className="text-[10px] font-bold px-2 py-0.5 bg-amber-400 text-white rounded disabled:opacity-50 flex items-center gap-1"
+                        >
+                          {isTranslating ? <span className="animate-spin">⟳</span> : "✨"} Çevir
+                        </button>
                       )}
                     </div>
-                  );
-                })}
-              </div>
+
+                    {/* Suggestion box */}
+                    {suggestion && (
+                      <div className="mb-1.5 bg-blue-50 border border-blue-200 rounded-lg px-3 py-2 flex items-center justify-between gap-3">
+                        <p className="text-xs text-blue-800 italic flex-1">«{suggestion}»</p>
+                        <div className="flex gap-1.5 shrink-0">
+                          <button
+                            onClick={() => acceptSuggestion(loc)}
+                            className="text-[10px] font-bold px-2 py-0.5 bg-blue-600 text-white rounded"
+                          >✓ Kabul</button>
+                          <button
+                            onClick={() => rejectSuggestion(loc)}
+                            className="text-[10px] font-bold px-2 py-0.5 bg-white border border-blue-300 text-blue-600 rounded"
+                          >✗</button>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Input */}
+                    {activeMeta?.type === "long" ? (
+                      <textarea
+                        value={isSource ? value : (pageData[activeField]?.[loc] || "")}
+                        onChange={isSource ? undefined : (e) => updateField(activeField, loc, e.target.value)}
+                        readOnly={isSource}
+                        rows={3}
+                        placeholder={isSource ? "" : `${info.name} çevirisi...`}
+                        dir={loc === "ar" ? "rtl" : "ltr"}
+                        className={`w-full p-2.5 border rounded-lg text-sm outline-none resize-none transition ${
+                          isSource
+                            ? "bg-transparent border-[#c7d2fe] text-[#132175] font-semibold cursor-default"
+                            : isFilled
+                              ? "bg-gray-50 border-green-200 text-gray-800 focus:border-[#1aa3c4]"
+                              : "bg-gray-50 border-amber-200 text-gray-800 focus:border-[#1aa3c4]"
+                        }`}
+                      />
+                    ) : (
+                      <input
+                        type="text"
+                        value={isSource ? value : (pageData[activeField]?.[loc] || "")}
+                        onChange={isSource ? undefined : (e) => updateField(activeField, loc, e.target.value)}
+                        readOnly={isSource}
+                        placeholder={isSource ? "" : `${info.name} çevirisi...`}
+                        dir={loc === "ar" ? "rtl" : "ltr"}
+                        className={`w-full p-2.5 border rounded-lg text-sm outline-none transition ${
+                          isSource
+                            ? "bg-transparent border-[#c7d2fe] text-[#132175] font-semibold cursor-default"
+                            : isFilled
+                              ? "bg-gray-50 border-green-200 text-gray-800 focus:border-[#1aa3c4]"
+                              : "bg-gray-50 border-amber-200 text-gray-800 focus:border-[#1aa3c4]"
+                        }`}
+                      />
+                    )}
+                  </div>
+                );
+              })}
             </div>
-          );
-        })}
+
+            {/* Navigate prev/next */}
+            <div className="px-5 py-3 border-t border-gray-100 bg-gray-50/40 flex justify-between items-center">
+              <button
+                onClick={() => {
+                  const idx = keys.indexOf(activeField);
+                  if (idx > 0) selectField(keys[idx - 1]);
+                }}
+                disabled={keys.indexOf(activeField) === 0}
+                className="text-xs text-[#132175] font-semibold disabled:opacity-30 hover:underline"
+              >← Önceki</button>
+              <span className="text-[10px] text-gray-400">
+                {keys.indexOf(activeField) + 1} / {keys.length}
+              </span>
+              <button
+                onClick={() => {
+                  const idx = keys.indexOf(activeField);
+                  if (idx < keys.length - 1) selectField(keys[idx + 1]);
+                }}
+                disabled={keys.indexOf(activeField) === keys.length - 1}
+                className="text-xs text-[#132175] font-semibold disabled:opacity-30 hover:underline"
+              >Sonraki →</button>
+            </div>
+          </div>
+        )}
       </div>
 
-      {/* ── Right: Live preview ── */}
-      <div className="w-64 shrink-0 self-start sticky top-0">
-        <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider px-1 mb-2">
-          Canlı Ön İzleme
-          <span className="ml-2 font-normal normal-case">({locale.toUpperCase()})</span>
-        </p>
+      {/* ── Right: Live preview ───────────────────────────────────────────── */}
+      <div className="w-60 shrink-0 self-start sticky top-0">
+        <div className="flex items-center justify-between px-1 mb-1.5">
+          <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Ön İzleme</p>
+          <select
+            value={previewLocale}
+            onChange={(e) => setPreviewLocale(e.target.value as Locale)}
+            className="text-[10px] border border-gray-200 rounded px-1 py-0.5 bg-white outline-none text-gray-600"
+          >
+            {locales.map((l) => (
+              <option key={l} value={l}>{LOCALE_INFO[l]?.flag} {l.toUpperCase()}</option>
+            ))}
+          </select>
+        </div>
         <div
-          ref={previewRef}
           className="bg-white border border-gray-200 rounded-xl p-4 overflow-y-auto"
           style={{ maxHeight: "calc(100vh - 180px)" }}
         >
           {keys.length === 0 ? (
             <p className="text-xs text-gray-300 text-center py-4">İçerik alanı yok.</p>
           ) : (
-            <PreviewSections
-              pageKey={selectedPage}
-              data={pageData}
-              locale={locale}
-              activeKey={activeKey}
-            />
+            <PreviewSections data={pageData} locale={previewLocale} activeKey={activeField} />
           )}
         </div>
-        <div className="mt-2 px-1 text-[9px] text-gray-300">
-          Bir alana tıklayınca burada sarıyla vurgulanır.
-        </div>
+        <p className="mt-1.5 px-1 text-[9px] text-gray-300">Aktif alan sarıyla vurgulanır.</p>
       </div>
 
     </div>

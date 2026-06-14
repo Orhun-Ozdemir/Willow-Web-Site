@@ -1,0 +1,161 @@
+<h2>C Yaklaşımı — Detaylı Mockup</h2>
+<p class="subtitle">Bir alanı seçince tüm diller alt alta görünür. İngilizce doldurunca "Tümünü Çevir" ile diğerleri otomatik dolar. Onaylayıp kaydet.</p>
+
+<div class="mockup">
+  <div class="mockup-header">Admin Panel → Sayfa Çevirileri → Ana Sayfa</div>
+  <div class="mockup-body" style="padding:0;overflow:hidden">
+    <div style="display:grid;grid-template-columns:220px 1fr;min-height:420px;font-size:12px">
+
+      <!-- Sol: Alan listesi -->
+      <div style="border-right:1px solid #e5e7eb;background:#f9fafb;display:flex;flex-direction:column">
+        <div style="padding:10px 12px;border-bottom:1px solid #e5e7eb">
+          <div style="font-size:10px;font-weight:700;color:#888;text-transform:uppercase;margin-bottom:6px">Sayfa Seç</div>
+          <select style="width:100%;border:1px solid #ddd;border-radius:6px;padding:5px 8px;font-size:11px;background:white">
+            <option>🏠 Ana Sayfa</option>
+            <option>📦 Ürünler</option>
+            <option>💡 Çözümler</option>
+            <option>🏢 Şirket</option>
+          </select>
+        </div>
+        <div style="padding:8px;overflow-y:auto;flex:1">
+          <div style="font-size:10px;font-weight:700;color:#888;text-transform:uppercase;padding:4px 6px 6px">Hero Bölümü</div>
+          <div style="background:#132175;color:white;padding:6px 10px;border-radius:6px;margin-bottom:2px;font-weight:600;display:flex;justify-content:space-between">
+            <span>Ana Başlık</span><span style="font-size:10px;background:rgba(255,255,255,0.2);padding:1px 5px;border-radius:10px">●</span>
+          </div>
+          <div style="padding:6px 10px;color:#555;margin-bottom:2px;border-radius:6px;hover:bg-gray-100">Alt Başlık</div>
+          <div style="padding:6px 10px;color:#555;margin-bottom:2px;border-radius:6px">Açıklama</div>
+          <div style="padding:6px 10px;color:#f59e0b;margin-bottom:2px;border-radius:6px;display:flex;justify-content:space-between">
+            <span>Buton Metni</span><span style="font-size:10px">⚠ 3 eksik</span>
+          </div>
+          <div style="font-size:10px;font-weight:700;color:#888;text-transform:uppercase;padding:10px 6px 6px">İstatistikler</div>
+          <div style="padding:6px 10px;color:#dc2626;margin-bottom:2px;border-radius:6px;display:flex;justify-content:space-between">
+            <span>Ürün Sayısı</span><span style="font-size:10px">✗ 6 eksik</span>
+          </div>
+          <div style="padding:6px 10px;color:#555;margin-bottom:2px;border-radius:6px">Müşteri Sayısı</div>
+          <div style="padding:6px 10px;color:#555;border-radius:6px">Yıl Metni</div>
+        </div>
+        <div style="padding:10px 12px;border-top:1px solid #e5e7eb;background:white">
+          <div style="font-size:10px;color:#888;margin-bottom:4px">Ana Sayfa Tamamlanma</div>
+          <div style="background:#e5e7eb;border-radius:20px;height:6px;overflow:hidden">
+            <div style="background:#16a34a;width:68%;height:100%;border-radius:20px"></div>
+          </div>
+          <div style="font-size:10px;color:#555;margin-top:3px">23/34 alan dolu</div>
+        </div>
+      </div>
+
+      <!-- Sağ: Çeviri editörü -->
+      <div style="display:flex;flex-direction:column">
+        <!-- Üst başlık -->
+        <div style="padding:12px 16px;border-bottom:1px solid #e5e7eb;background:white;display:flex;justify-content:space-between;align-items:center">
+          <div>
+            <div style="font-weight:700;color:#111;font-size:13px">Ana Başlık</div>
+            <div style="font-size:10px;color:#888">Hero Bölümü · Kısa metin</div>
+          </div>
+          <button style="background:#1aa3c4;color:white;border:none;padding:6px 14px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer">
+            ✨ Tümünü Çevir
+          </button>
+        </div>
+
+        <!-- Diller -->
+        <div style="flex:1;overflow-y:auto;padding:12px 16px;display:flex;flex-direction:column;gap:8px">
+
+          <!-- EN — kaynak, dolu -->
+          <div style="border:2px solid #132175;border-radius:8px;overflow:hidden">
+            <div style="background:#132175;color:white;padding:5px 10px;display:flex;justify-content:space-between;align-items:center">
+              <span style="font-weight:700;font-size:11px">🇬🇧 English (kaynak)</span>
+              <span style="font-size:10px;opacity:0.7">Referans dil</span>
+            </div>
+            <div style="padding:8px 10px;background:#f0f4ff">
+              <input style="width:100%;border:none;background:transparent;font-size:12px;color:#222;font-weight:600;outline:none;box-sizing:border-box" value="Smart Teams. Resilient Systems." />
+            </div>
+          </div>
+
+          <!-- TR — dolu -->
+          <div style="border:1px solid #d1fae5;border-radius:8px;overflow:hidden">
+            <div style="background:#f0fdf4;padding:5px 10px;display:flex;justify-content:space-between;align-items:center">
+              <span style="font-weight:600;font-size:11px;color:#15803d">🇹🇷 Türkçe</span>
+              <span style="font-size:10px;color:#15803d">✓ Dolu</span>
+            </div>
+            <div style="padding:8px 10px;display:flex;gap:6px;align-items:center">
+              <input style="flex:1;border:1px solid #d1fae5;border-radius:5px;padding:5px 8px;font-size:12px;outline:none;background:white" value="Akıllı Ekipler. Güçlü Sistemler." />
+            </div>
+          </div>
+
+          <!-- DE — boş, çeviri bekliyor -->
+          <div style="border:1px solid #fde68a;border-radius:8px;overflow:hidden">
+            <div style="background:#fffbeb;padding:5px 10px;display:flex;justify-content:space-between;align-items:center">
+              <span style="font-weight:600;font-size:11px;color:#92400e">🇩🇪 Deutsch</span>
+              <div style="display:flex;gap:6px;align-items:center">
+                <span style="font-size:10px;color:#92400e;background:#fde68a;padding:2px 6px;border-radius:10px">⚠ Boş</span>
+                <button style="font-size:10px;background:#f59e0b;color:white;border:none;padding:2px 8px;border-radius:4px;cursor:pointer">Çevir</button>
+              </div>
+            </div>
+            <div style="padding:8px 10px;display:flex;gap:6px;align-items:center">
+              <input style="flex:1;border:1px solid #fde68a;border-radius:5px;padding:5px 8px;font-size:12px;outline:none;background:white;color:#92400e" placeholder="Buraya çeviri yaz ya da 'Çevir' tıkla..." />
+            </div>
+          </div>
+
+          <!-- FR — çeviri önerisi var -->
+          <div style="border:1px solid #bfdbfe;border-radius:8px;overflow:hidden">
+            <div style="background:#eff6ff;padding:5px 10px;display:flex;justify-content:space-between;align-items:center">
+              <span style="font-weight:600;font-size:11px;color:#1d4ed8">🇫🇷 Français</span>
+              <span style="font-size:10px;color:#1d4ed8;background:#dbeafe;padding:2px 6px;border-radius:10px">✨ Çeviri önerisi hazır</span>
+            </div>
+            <div style="padding:8px 10px">
+              <div style="background:#dbeafe;border-radius:5px;padding:6px 8px;margin-bottom:6px;color:#1e3a8a;font-size:11px;display:flex;justify-content:space-between;align-items:center">
+                <span>«Équipes Intelligentes. Systèmes Résilients.»</span>
+                <div style="display:flex;gap:4px">
+                  <button style="background:#2563eb;color:white;border:none;padding:2px 7px;border-radius:4px;font-size:10px;cursor:pointer">✓ Kabul</button>
+                  <button style="background:white;border:1px solid #93c5fd;padding:2px 7px;border-radius:4px;font-size:10px;cursor:pointer">✗</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ES, IT, AR, JA — collapsed -->
+          <div style="border:1px solid #e5e7eb;border-radius:8px;padding:8px 12px;color:#888;font-size:11px;display:flex;justify-content:space-between;align-items:center">
+            <span>🇪🇸 ES · 🇮🇹 IT · 🇸🇦 AR · 🇯🇵 JA</span>
+            <span style="color:#dc2626">4 dil boş — Tümünü Çevir butonu ile doldur</span>
+          </div>
+
+        </div>
+
+        <!-- Alt kaydet çubuğu -->
+        <div style="padding:10px 16px;border-top:1px solid #e5e7eb;background:#f9fafb;display:flex;justify-content:space-between;align-items:center">
+          <span style="font-size:11px;color:#888">← Alt Başlık &nbsp;|&nbsp; Açıklama →</span>
+          <button style="background:#132175;color:white;border:none;padding:7px 18px;border-radius:6px;font-size:12px;font-weight:700;cursor:pointer">
+            Kaydet
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section" style="margin-top:24px">
+  <h3>✨ "Tümünü Çevir" nasıl çalışır?</h3>
+  <p class="subtitle">İngilizce metni yazdıktan sonra butona basınca boş olan tüm diller otomatik dolar. Çevirileri tek tek onaylayabilir ya da düzenleyebilirsin.</p>
+  <div class="options" style="margin-top:16px">
+    <div class="option" data-choice="google" onclick="toggleSelect(this)">
+      <div class="letter">1</div>
+      <div class="content">
+        <h3>Google Translate API</h3>
+        <p>Ücretsiz: günde 500.000 karakter. Kalite iyi, kurulumu basit. Ücretsiz limit aşılınca küçük ücret var (çok düşük).</p>
+      </div>
+    </div>
+    <div class="option" data-choice="deepl" onclick="toggleSelect(this)">
+      <div class="letter">2</div>
+      <div class="content">
+        <h3>DeepL API</h3>
+        <p>Ücretsiz: ayda 500.000 karakter. Avrupa dilleri için çok daha kaliteli çeviri. TR desteği sınırlı.</p>
+      </div>
+    </div>
+    <div class="option" data-choice="claude" onclick="toggleSelect(this)">
+      <div class="letter">3</div>
+      <div class="content">
+        <h3>Claude API (Mevcut)</h3>
+        <p>Zaten Anthropic hesabın var. En kaliteli + bağlam anlayan çeviri. Kısa metinler için maliyet ihmal edilebilir (1000 çeviri = ~$0.10).</p>
+      </div>
+    </div>
+  </div>
+</div>

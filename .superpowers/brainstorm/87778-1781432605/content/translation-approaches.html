@@ -1,0 +1,115 @@
+<h2>Çeviri Editörü — Hangi Yaklaşım?</h2>
+<p class="subtitle">Mevcut sistem zor çünkü her dili ayrı ayrı, her alanı tek tek doldurmak gerekiyor. Aşağıdaki 3 yaklaşımdan hangisi sana daha uygun?</p>
+
+<div class="options">
+  <div class="option" data-choice="a" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>Tablo Görünümü</h3>
+      <p>Satırlar = alanlar, sütunlar = diller. Tek ekranda tüm çeviriler yan yana. Excel gibi hızlı giriş. Büyük içeriklerde kaydırma gerekir.</p>
+      <div style="margin-top:12px;background:#f8faff;border:1px solid #dde4f5;border-radius:8px;overflow:hidden;font-size:11px">
+        <div style="display:grid;grid-template-columns:140px 1fr 1fr 1fr;background:#132175;color:white;padding:6px 10px;gap:8px;font-weight:600">
+          <span>Alan</span><span>🇬🇧 EN</span><span>🇹🇷 TR</span><span>🇩🇪 DE</span>
+        </div>
+        <div style="display:grid;grid-template-columns:140px 1fr 1fr 1fr;padding:6px 10px;gap:8px;border-bottom:1px solid #eee;align-items:center">
+          <span style="color:#666;font-weight:600">Ana Başlık</span>
+          <span style="color:#222">Smart Teams.</span>
+          <input style="border:1px solid #ddd;border-radius:4px;padding:3px 6px;width:100%;font-size:11px" value="Akıllı Ekipler." />
+          <input style="border:1px solid #f99;border-radius:4px;padding:3px 6px;width:100%;font-size:11px;background:#fff5f5" placeholder="Eksik..." />
+        </div>
+        <div style="display:grid;grid-template-columns:140px 1fr 1fr 1fr;padding:6px 10px;gap:8px;border-bottom:1px solid #eee;align-items:center">
+          <span style="color:#666;font-weight:600">Alt Başlık</span>
+          <span style="color:#222">Resilient Systems.</span>
+          <input style="border:1px solid #ddd;border-radius:4px;padding:3px 6px;width:100%;font-size:11px" value="Güçlü Sistemler." />
+          <input style="border:1px solid #ddd;border-radius:4px;padding:3px 6px;width:100%;font-size:11px" value="Belastbare Systeme." />
+        </div>
+        <div style="display:grid;grid-template-columns:140px 1fr 1fr 1fr;padding:6px 10px;gap:8px;align-items:center">
+          <span style="color:#666;font-weight:600">Buton Metni</span>
+          <span style="color:#222">Start a Project</span>
+          <input style="border:1px solid #ddd;border-radius:4px;padding:3px 6px;width:100%;font-size:11px" value="Proje Başlat" />
+          <input style="border:1px solid #f99;border-radius:4px;padding:3px 6px;width:100%;font-size:11px;background:#fff5f5" placeholder="Eksik..." />
+        </div>
+      </div>
+      <div style="margin-top:8px;display:flex;gap:8px;font-size:11px">
+        <span style="color:#16a34a">✓ Hızlı genel bakış</span>
+        <span style="color:#16a34a">✓ Tüm diller bir arada</span>
+        <span style="color:#dc2626">✗ Uzun metinler sığmaz</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="option" data-choice="b" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>Eksik Odaklı Kuyruk</h3>
+      <p>Önce dili seç (TR, DE…), sonra sadece eksik alanlar sırayla gösterilir. İngilizce referans üstte sabit, çeviri kutusu altta. Bitince bir sonraki alan.</p>
+      <div style="margin-top:12px;background:#f8faff;border:1px solid #dde4f5;border-radius:8px;overflow:hidden;font-size:11px">
+        <div style="background:#132175;color:white;padding:8px 12px;display:flex;justify-content:space-between;align-items:center">
+          <span style="font-weight:600">🇹🇷 Türkçe Çevirileri — Ana Sayfa</span>
+          <span style="background:rgba(255,255,255,0.2);padding:2px 8px;border-radius:20px">12 / 34 eksik</span>
+        </div>
+        <div style="padding:12px">
+          <div style="font-size:10px;color:#888;text-transform:uppercase;font-weight:600;margin-bottom:4px">1/12 · Hero Bölümü · Ana Başlık</div>
+          <div style="background:#f0f4ff;border-radius:6px;padding:8px;margin-bottom:8px;color:#333">
+            🇬🇧 &nbsp;"Smart Teams. Resilient Systems."
+          </div>
+          <textarea style="width:100%;border:2px solid #1aa3c4;border-radius:6px;padding:8px;font-size:12px;resize:none;height:48px;box-sizing:border-box" placeholder="Türkçe çeviriyi buraya yaz..."></textarea>
+          <div style="display:flex;gap:6px;margin-top:6px">
+            <button style="flex:1;background:#132175;color:white;border:none;padding:6px;border-radius:5px;font-size:11px;font-weight:600">Kaydet & Sonraki →</button>
+            <button style="background:#f3f4f6;border:none;padding:6px 10px;border-radius:5px;font-size:11px">Atla</button>
+          </div>
+        </div>
+        <div style="background:#f9fafb;padding:6px 12px;border-top:1px solid #eee;font-size:10px;color:#aaa">İlerleme: ████████░░░░░░░░░░ 35%</div>
+      </div>
+      <div style="margin-top:8px;display:flex;gap:8px;font-size:11px">
+        <span style="color:#16a34a">✓ Odaklanmış, dikkat dağınık değil</span>
+        <span style="color:#16a34a">✓ Neredesin belli</span>
+        <span style="color:#dc2626">✗ Büyük resmi görmek zor</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="option" data-choice="c" onclick="toggleSelect(this)">
+    <div class="letter">C</div>
+    <div class="content">
+      <h3>İkili Panel + Tüm Diller</h3>
+      <p>Sol tarafta alan listesi, sağda seçilen alan için tüm dillerin çeviri kutuları alt alta. Bir alanı seçince 8 dili aynı anda doldurabilirsin.</p>
+      <div style="margin-top:12px;background:#f8faff;border:1px solid #dde4f5;border-radius:8px;overflow:hidden;font-size:11px">
+        <div style="display:grid;grid-template-columns:130px 1fr;min-height:130px">
+          <div style="border-right:1px solid #eee;padding:8px">
+            <div style="font-size:10px;color:#888;font-weight:600;margin-bottom:6px;text-transform:uppercase">Alanlar</div>
+            <div style="background:#132175;color:white;padding:4px 8px;border-radius:5px;margin-bottom:3px;font-weight:600">Ana Başlık ●</div>
+            <div style="padding:4px 8px;color:#666;margin-bottom:3px">Alt Başlık</div>
+            <div style="padding:4px 8px;color:#666;margin-bottom:3px">Açıklama</div>
+            <div style="padding:4px 8px;color:#f59e0b;margin-bottom:3px">Buton Metni ⚠</div>
+            <div style="padding:4px 8px;color:#dc2626">CTA Başlık ✗</div>
+          </div>
+          <div style="padding:8px">
+            <div style="font-size:10px;color:#888;font-weight:600;margin-bottom:6px">ANA BAŞLIK — Tüm Diller</div>
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px">
+              <span style="width:22px;font-size:13px">🇬🇧</span>
+              <input style="flex:1;border:1px solid #e2e8f0;border-radius:4px;padding:4px 7px;font-size:11px" value="Smart Teams." readonly style="background:#f8f9fa" />
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px">
+              <span style="width:22px;font-size:13px">🇹🇷</span>
+              <input style="flex:1;border:1px solid #1aa3c4;border-radius:4px;padding:4px 7px;font-size:11px" value="Akıllı Ekipler." />
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px">
+              <span style="width:22px;font-size:13px">🇩🇪</span>
+              <input style="flex:1;border:1px solid #f99;border-radius:4px;padding:4px 7px;font-size:11px;background:#fff5f5" placeholder="Eksik..." />
+            </div>
+            <div style="display:flex;align-items:center;gap:6px">
+              <span style="width:22px;font-size:13px">🇫🇷</span>
+              <input style="flex:1;border:1px solid #f99;border-radius:4px;padding:4px 7px;font-size:11px;background:#fff5f5" placeholder="Eksik..." />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:8px;display:flex;gap:8px;font-size:11px">
+        <span style="color:#16a34a">✓ Bir alanı tüm dillerde birden doldur</span>
+        <span style="color:#16a34a">✓ Mantıksal akış</span>
+        <span style="color:#dc2626">✗ Alan başına 8 kutu fazla gelebilir</span>
+      </div>
+    </div>
+  </div>
+</div>

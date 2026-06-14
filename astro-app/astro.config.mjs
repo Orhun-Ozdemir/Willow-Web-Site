@@ -13,7 +13,7 @@ export default defineConfig({
         site: "https://orhun-ozdemir.github.io",
         base: "/Willow-Web-Site/",
       }),
-  publicDir: "../next-app/public",
+  publicDir: "./public",
   output: "server",
   adapter: isVercel ? vercel() : node({ mode: "standalone" }),
   integrations: [react()],
