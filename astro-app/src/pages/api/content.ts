@@ -44,8 +44,8 @@ export const PUT: APIRoute = async ({ request }) => {
       headers: { "Content-Type": "application/json" },
     });
   } catch (error: any) {
-    return new Response(JSON.stringify({ ok: false, error: error.message || "Invalid payload" }), {
-      status: 400,
+    return new Response(JSON.stringify({ ok: false, error: error.message || "Save failed" }), {
+      status: 500,
       headers: { "Content-Type": "application/json" },
     });
   }

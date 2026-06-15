@@ -22,20 +22,15 @@ function getPreviewUrl(val: string) {
 }
 
 async function uploadFile(file: File): Promise<string> {
-  const urlRes = await fetch(
-    `/api/upload-url?folder=uploads&filename=${encodeURIComponent(file.name)}`
-  );
-  const urlData = await urlRes.json();
-  if (!urlRes.ok || !urlData.ok) throw new Error(urlData.error || "İmzalı URL alınamadı.");
+  const formData = new FormData();
+  formData.append("file", file);
+  formData.append("folder", "uploads");
 
-  const putRes = await fetch(urlData.signedUrl, {
-    method: "PUT",
-    headers: { "Content-Type": file.type || "application/octet-stream" },
-    body: file,
-  });
-  if (!putRes.ok) throw new Error("Dosya yüklenemedi.");
+  const res = await fetch("/api/upload", { method: "POST", body: formData });
+  const data = await res.json();
+  if (!res.ok || !data.ok) throw new Error(data.error || "Dosya yüklenemedi.");
 
-  return urlData.publicUrl as string;
+  return data.url as string;
 }
 
 export default function ListEditorField({

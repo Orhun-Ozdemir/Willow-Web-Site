@@ -4,13 +4,16 @@ import { loadContent } from "@/lib/content";
 
 export const prerender = false;
 
+const env = (key: string): string | undefined =>
+  (import.meta.env as any)?.[key] ?? (typeof process !== "undefined" ? process.env?.[key] : undefined);
+
 export const POST: APIRoute = async ({ request }) => {
   const session = getSession(request.headers.get("cookie"));
   if (!session) {
     return new Response(JSON.stringify({ ok: false, error: "Unauthorized" }), { status: 401 });
   }
 
-  let apiKey = import.meta.env.GOOGLE_TRANSLATE_API_KEY;
+  let apiKey = env("GOOGLE_TRANSLATE_API_KEY");
   if (!apiKey) {
     const content = await loadContent();
     apiKey = content?.companyFacts?.googleTranslateApiKey;

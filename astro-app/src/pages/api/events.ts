@@ -1,7 +1,7 @@
 import type { APIRoute } from "astro";
 import crypto from "node:crypto";
 import { getSession } from "@/lib/auth";
-import { getServiceClient } from "@/lib/supabase";
+import { getServiceClient, getPublicClient } from "@/lib/supabase";
 
 export const prerender = false;
 
@@ -121,7 +121,7 @@ export const GET: APIRoute = async ({ request }) => {
 export const POST: APIRoute = async ({ request }) => {
   try {
     const body = await request.json();
-    const supabase = getServiceClient();
+    const supabase = getPublicClient();
     
     const event = {
       id: crypto.randomUUID(),

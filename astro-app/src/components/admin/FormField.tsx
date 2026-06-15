@@ -57,26 +57,18 @@ export default function FormField({
       : "uploads";
 
     try {
-      const urlRes = await fetch(
-        `/api/upload-url?folder=${encodeURIComponent(folder)}&filename=${encodeURIComponent(file.name)}`
-      );
-      const urlData = await urlRes.json();
-      if (!urlRes.ok || !urlData.ok) {
-        setUploadError(urlData.error || "İmzalı URL alınamadı.");
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("folder", folder);
+
+      const res = await fetch("/api/upload", { method: "POST", body: formData });
+      const data = await res.json();
+      if (!res.ok || !data.ok) {
+        setUploadError(data.error || "Dosya yüklenemedi.");
         return;
       }
 
-      const putRes = await fetch(urlData.signedUrl, {
-        method: "PUT",
-        headers: { "Content-Type": file.type || "application/octet-stream" },
-        body: file,
-      });
-      if (!putRes.ok) {
-        setUploadError("Dosya yüklenemedi.");
-        return;
-      }
-
-      onChange(urlData.publicUrl);
+      onChange(data.url);
     } catch {
       setUploadError("Yükleme sırasında ağ hatası oluştu.");
     } finally {
