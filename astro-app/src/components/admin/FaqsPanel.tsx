@@ -98,7 +98,7 @@ export default function FaqsPanel() {
             <button onClick={() => deleteFaq(f.id)} className="px-3 py-1.5 bg-red-950 hover:bg-red-900 text-red-400 rounded text-xs font-semibold">Sil</button>
           </div>
         </div>
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <FormField label="Soru" value={f.question || ""} onChange={(v) => updateFaq(f.id, "question", v)} />
           <FormField label="Sayfa" type="select" value={f.page || "home"} onChange={(v) => updateFaq(f.id, "page", v)} options={PAGE_OPTIONS} />
           <FormField label="Sıra" type="number" value={String(f.sortOrder || 0)} onChange={(v) => updateFaq(f.id, "sortOrder", parseInt(v) || 0)} />

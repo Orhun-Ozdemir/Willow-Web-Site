@@ -593,7 +593,7 @@ export default function SettingsPanel() {
                 {knownUiKeys.map((key) => (
                   <div key={key} className="space-y-1">
                     <label className="block text-sm font-semibold text-gray-800">{UI_KEY_LABELS[key]}</label>
-                    <div className="grid grid-cols-2 gap-2">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                       <div className="p-2 bg-gray-50 border border-gray-100 rounded text-sm text-gray-400 truncate">
                         {enStrings[key] || <span className="italic">—</span>}
                       </div>

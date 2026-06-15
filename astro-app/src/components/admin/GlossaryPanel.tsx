@@ -23,6 +23,7 @@ const CATEGORY_OPTIONS = [
 export default function GlossaryPanel() {
   const { content, setContent } = useAdmin();
   const [editId, setEditId] = useState<string | null>(null);
+  const [query, setQuery] = useState("");
 
   const terms = useMemo(() => {
     const list = content?.glossary || [];
@@ -87,6 +88,12 @@ export default function GlossaryPanel() {
 
   const categoryLabel = (value: string) => CATEGORY_OPTIONS.find((o) => o.value === value)?.label || value;
 
+  const filtered = terms.filter((item: any) => {
+    const q = query.trim().toLowerCase();
+    if (!q) return true;
+    return [item.term, item.definition, item.category].some((v: any) => String(v || "").toLowerCase().includes(q));
+  });
+
   if (editId !== null && t) {
     return (
       <div className="space-y-4">
@@ -96,11 +103,12 @@ export default function GlossaryPanel() {
         <div className="bg-white border border-gray-200 rounded-xl p-6 space-y-5">
           <div className="flex items-center justify-between border-b border-gray-200 pb-4">
             <h3 className="font-bold">Terim Düzenle</h3>
-            <div className="flex gap-2">
+            <div className="flex gap-2 items-center">
+              <a href={`/en/glossary#${t.id}`} target="_blank" rel="noopener" className="px-3 py-1.5 bg-gray-100 hover:bg-gray-200 text-gray-600 rounded text-xs font-semibold">Sitede önizle ↗</a>
               <button onClick={() => deleteTerm(t.id)} className="px-3 py-1.5 bg-red-950 hover:bg-red-900 text-red-400 rounded text-xs font-semibold">Sil</button>
             </div>
           </div>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <FormField label="Terim" value={t.term || ""} onChange={(v) => updateTerm(t.id, "term", v)} />
             <FormField label="Kategori" type="select" value={t.category || "connectivity"} onChange={(v) => updateTerm(t.id, "category", v)} options={CATEGORY_OPTIONS} />
             <FormField label="Sıra" type="number" value={String(t.sortOrder || 0)} onChange={(v) => updateTerm(t.id, "sortOrder", parseInt(v) || 0)} />
@@ -123,15 +131,18 @@ export default function GlossaryPanel() {
 
   return (
     <div className="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-lg">
-      <div className="p-4 border-b border-gray-200 flex justify-between items-center">
+      <div className="p-4 border-b border-gray-200 flex flex-wrap gap-3 justify-between items-center">
         <h3 className="font-bold text-sm">Sözlük Yönetimi</h3>
-        <button onClick={addTerm} className="px-3 py-1.5 bg-[#132175] hover:bg-[#0e1a5e] text-white rounded text-xs font-bold">+ Yeni Terim</button>
+        <div className="flex items-center gap-2">
+          <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Terim ara…" className="px-3 py-1.5 border border-gray-200 rounded text-xs w-44 focus:outline-none focus:border-[#132175]" />
+          <button onClick={addTerm} className="px-3 py-1.5 bg-[#132175] hover:bg-[#0e1a5e] text-white rounded text-xs font-bold whitespace-nowrap">+ Yeni Terim</button>
+        </div>
       </div>
       <div className="divide-y divide-gray-100">
-        {terms.length === 0 && (
-          <div className="p-6 text-sm text-gray-400">Henüz terim yok. “+ Yeni Terim” ile ekleyin.</div>
+        {filtered.length === 0 && (
+          <div className="p-6 text-sm text-gray-400">{query ? "Eşleşen terim yok." : "Henüz terim yok. “+ Yeni Terim” ile ekleyin."}</div>
         )}
-        {terms.map((item: any) => (
+        {filtered.map((item: any) => (
           <div key={item.id} className="p-4 flex items-center justify-between hover:bg-gray-100/40 transition">
             <div className="min-w-0 flex-1 mr-4">
               <div className="flex items-center gap-2 mb-1">

@@ -187,7 +187,7 @@ export default function ServicesPanel() {
               <button onClick={() => setEditIdx(null)} className="px-3 py-1.5 bg-gray-100 hover:bg-gray-200 rounded text-xs font-semibold">Listeye Dön</button>
             </div>
           </div>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <FormField label="Sıra Numarası" type="number" value={String(item.sortOrder || 0)} onChange={(v) => updateListItem(listKey, editIdx, "sortOrder", parseInt(v) || 0)} />
             {fields.map((f) => (
               <div key={f.key} className={f.type === "textarea" ? "col-span-2" : ""}>

@@ -423,7 +423,7 @@ export default function CompanyPanel() {
       {/* 1. General page info tab */}
       {activeSubTab === "general" && (
         <div className="bg-white border border-gray-200 rounded-xl p-6 space-y-6">
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <FormField
               label="Kuruluş Yılı (founded)"
               value={facts.founded || ""}
@@ -469,7 +469,7 @@ export default function CompanyPanel() {
                 hint="Virgülle ayırarak yazın. Örn: Hardware, Firmware, Cloud"
               />
             </div>
-            <div className="col-span-2 grid grid-cols-2 gap-4">
+            <div className="col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-4">
               <FormField
                 label="Misyon (EN)"
                 type="textarea"
@@ -575,7 +575,7 @@ export default function CompanyPanel() {
                       </button>
                     </div>
                   </div>
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <FormField
                       label="Ad Soyad"
                       value={member.name || ""}
@@ -696,7 +696,7 @@ export default function CompanyPanel() {
                       </button>
                     </div>
                   </div>
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <FormField
                       label="Yıl / Dönem"
                       value={step.year || ""}
@@ -794,7 +794,7 @@ export default function CompanyPanel() {
                     <button onClick={() => setEditingExpertiseIdx(null)} className="px-3 py-1.5 bg-gray-100 hover:bg-gray-200 rounded text-xs font-semibold">← Listeye Dön</button>
                   </div>
                 </div>
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <FormField label="Başlık (EN)" value={exp.label || ""} onChange={(v) => updateExpertise(editingExpertiseIdx, "label", v)} />
                   <FormField label="Alt Not (EN)" value={exp.note || ""} onChange={(v) => updateExpertise(editingExpertiseIdx, "note", v)} hint="Örn: Custom PCB & RF" />
                   <FormField label="İkon" value={exp.icon || "check"} onChange={(v) => updateExpertise(editingExpertiseIdx, "icon", v)} hint="check, cpu, server, terminal, phone, gear, database, globe, shield, water, mail, pin" />
@@ -862,7 +862,7 @@ export default function CompanyPanel() {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <FormField label="Sektör Adı (EN)" value={ind.name || ""} onChange={(v) => updateIndustry(editingIndustryIdx, "name", v)} hint="Örn: Industrial & Energy" />
                   <FormField label="Etiket (EN)" value={ind.tag || ""} onChange={(v) => updateIndustry(editingIndustryIdx, "tag", v)} hint="Büyük harf. Örn: IIoT & TELEMETRY" />
                   <div className="col-span-2">
@@ -943,7 +943,7 @@ export default function CompanyPanel() {
                       </button>
                     </div>
                   </div>
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <FormField
                       label="Ülke"
                       value={office.country || ""}

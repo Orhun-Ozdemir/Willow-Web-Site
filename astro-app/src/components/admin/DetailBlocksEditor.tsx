@@ -90,7 +90,7 @@ export default function DetailBlocksEditor({ value, onChange, helper }: DetailBl
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <FormField
                 label="Type"
                 type="select"

@@ -11,6 +11,7 @@ interface AdminContextValue {
   setContent: (updater: (prev: any) => any) => void;
   setLeads: React.Dispatch<React.SetStateAction<any[]>>;
   isDirty: boolean;
+  dirtyKeys: string[];
   saving: boolean;
   saveMessage: string;
   saveContent: () => Promise<void>;
@@ -71,15 +72,27 @@ export function AdminProvider({ children }: { children: ReactNode }) {
     });
   }, []);
 
-  const isDirty = useMemo(() => {
-    if (!initialContent || !content) return false;
+  const dirtyKeys = useMemo<string[]>(() => {
+    if (!initialContent || !content) return [];
     const keys = [
-      "products", "news", "services", "solutions", "clients", 
-      "faqs", "glossary", "pageContent", "pageSeo", "translations", 
+      "products", "news", "services", "solutions", "clients",
+      "faqs", "glossary", "pageContent", "pageSeo", "translations",
       "companyFacts", "meta"
     ];
-    return keys.some(key => JSON.stringify(initialContent[key]) !== JSON.stringify(content[key]));
+    return keys.filter(key => JSON.stringify(initialContent[key]) !== JSON.stringify(content[key]));
   }, [initialContent, content]);
+  const isDirty = dirtyKeys.length > 0;
+
+  // Guard against losing unsaved edits when the tab is closed or reloaded.
+  useEffect(() => {
+    if (!isDirty) return;
+    const handler = (e: BeforeUnloadEvent) => {
+      e.preventDefault();
+      e.returnValue = "";
+    };
+    window.addEventListener("beforeunload", handler);
+    return () => window.removeEventListener("beforeunload", handler);
+  }, [isDirty]);
 
   const saveContent = useCallback(async () => {
     if (!initialContent || !content) return;
@@ -237,6 +250,7 @@ export function AdminProvider({ children }: { children: ReactNode }) {
         setContent,
         setLeads,
         isDirty,
+        dirtyKeys,
         saving,
         saveMessage,
         saveContent,

@@ -370,7 +370,7 @@ export default function SolutionsPanel() {
                     <button onClick={() => deleteSolution(s.id)} className="px-3 py-1.5 bg-red-950 hover:bg-red-900 text-red-400 rounded text-xs font-semibold">Sil</button>
                   </div>
                 </div>
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <FormField label="Başlık" value={s.title || ""} onChange={(v) => updateSolution(s.id, "title", v)} />
                   <FormField label="Slug" value={s.slug || ""} onChange={(v) => updateSolution(s.id, "slug", v)} />
                   <FormField label="Kategori" value={s.category || ""} onChange={(v) => updateSolution(s.id, "category", v)} />
@@ -428,7 +428,7 @@ export default function SolutionsPanel() {
       {/* 2. General Page texts tab */}
       {activeSubTab === "general" && (
         <div className="bg-white border border-gray-200 rounded-xl p-6 space-y-6">
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <FormField label="Hero Görseli" value={solutionsPage.heroImage || ""} onChange={(v) => updateGeneralField("heroImage", v)} hint="assets/... şeklinde dosya yolu veya URL" />
             <FormField label="Metrik 1 Değeri" value={solutionsPage.metric1Value || ""} onChange={(v) => updateGeneralField("metric1Value", v)} placeholder="15+" />
             <FormField label="Metrik 2 Değeri" value={solutionsPage.metric2Value || ""} onChange={(v) => updateGeneralField("metric2Value", v)} placeholder="2020" />
@@ -461,7 +461,7 @@ export default function SolutionsPanel() {
                       <button onClick={() => setEditingSelectorIdx(null)} className="px-3 py-1.5 bg-gray-100 hover:bg-gray-200 rounded text-xs font-semibold">Listeye Dön</button>
                     </div>
                   </div>
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <FormField label="Üst Başlık (EN)" value={card.eyebrow || ""} onChange={(v) => updateSelectorCard(editingSelectorIdx, "eyebrow", v)} />
                     <FormField label="Sıra Numarası" type="number" value={String(card.sortOrder || 0)} onChange={(v) => updateSelectorCard(editingSelectorIdx, "sortOrder", parseInt(v) || 0)} />
                     <div className="col-span-2">
@@ -536,7 +536,7 @@ export default function SolutionsPanel() {
                       <button onClick={() => setEditingFlowIdx(null)} className="px-3 py-1.5 bg-gray-100 hover:bg-gray-200 rounded text-xs font-semibold">Listeye Dön</button>
                     </div>
                   </div>
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <FormField label="Aşama Adı (EN)" value={step.title || ""} onChange={(v) => updateFlowStep(editingFlowIdx, "title", v)} />
                     <FormField label="Sıra Numarası" type="number" value={String(step.sortOrder || 0)} onChange={(v) => updateFlowStep(editingFlowIdx, "sortOrder", parseInt(v) || 0)} />
                     <div className="col-span-2">
@@ -599,7 +599,7 @@ export default function SolutionsPanel() {
                       <button onClick={() => setEditingWhyIdx(null)} className="px-3 py-1.5 bg-gray-100 hover:bg-gray-200 rounded text-xs font-semibold">Listeye Dön</button>
                     </div>
                   </div>
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <FormField label="Özellik Adı (EN)" value={card.title || ""} onChange={(v) => updateWhyCard(editingWhyIdx, "title", v)} />
                     <FormField label="Sıra Numarası" type="number" value={String(card.sortOrder || 0)} onChange={(v) => updateWhyCard(editingWhyIdx, "sortOrder", parseInt(v) || 0)} />
                     <div className="col-span-2">

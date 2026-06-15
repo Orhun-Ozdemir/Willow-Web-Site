@@ -340,6 +340,15 @@ export default function NewsPanel() {
             <p>Aşağıdaki bölümleri açıp kapayarak düzenleyin.</p>
           </div>
           <div className="ws-prod-edit-actions">
+            <a
+              href={`/en/news/${n.slug || n.id}`}
+              target="_blank"
+              rel="noopener"
+              className="ws-edit-button"
+              style={{ width: "auto", padding: "8px 16px", textDecoration: "none", display: "inline-flex", alignItems: "center" }}
+            >
+              Sitede önizle ↗
+            </a>
             {isPublicFeatured && <span className="ws-status ws-status-featured">Public vitrin</span>}
             <span className={`ws-status ${status === "Hazır" ? "ws-status-ready" : "ws-status-missing"}`}>
               {status}

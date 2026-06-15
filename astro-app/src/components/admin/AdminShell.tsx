@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import { useAdmin } from "./AdminContext";
 import OverviewPanel from "./OverviewPanel";
@@ -90,17 +90,37 @@ const TABS: { section: string; items: { key: Tab; label: string }[] }[] = [
     section: "Sistem",
     items: [
       { key: "settings", label: "Ayarlar" },
-      { key: "backups", label: "Yedekleme" },
+      { key: "backups", label: "Yedek & Aktarım" },
       { key: "users", label: "Kullanıcılar" },
     ],
   },
 ];
 
+// Which content sections each tab edits — used to show an "unsaved" dot on the tab.
+const TAB_SECTIONS: Partial<Record<Tab, string[]>> = {
+  products: ["products"], news: ["news"], faqs: ["faqs"], glossary: ["glossary"],
+  solutions: ["solutions"], clients: ["clients"], company: ["companyFacts"],
+  services_page: ["services"], seo: ["pageSeo"], translations: ["pageContent", "translations"],
+};
+
 export default function AdminShell() {
-  const { session, isDirty, saving, saveMessage, saveContent, loading } = useAdmin();
+  const { session, isDirty, dirtyKeys, saving, saveMessage, saveContent, loading } = useAdmin();
   const [activeTab, setActiveTab] = useState<Tab>("overview");
   const [selectedLeadId, setSelectedLeadId] = useState<string | null>(null);
-  
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  // Cmd/Ctrl+S saves pending changes.
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "s") {
+        e.preventDefault();
+        if (isDirty && !saving) saveContent();
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [isDirty, saving, saveContent]);
+
 
   const handleLogout = async () => {
     await fetch("/api/auth/logout", { method: "POST" });
@@ -122,8 +142,13 @@ export default function AdminShell() {
 
   return (
     <div className="min-h-screen flex bg-[#f5f3ff]" style={{ fontFamily: "var(--font-body)" }}>
+      {/* Mobile backdrop */}
+      {sidebarOpen && (
+        <div className="fixed inset-0 z-30 bg-black/40 md:hidden" onClick={() => setSidebarOpen(false)} aria-hidden="true" />
+      )}
+
       {/* Sidebar */}
-      <aside className="w-64 bg-[#132175] flex flex-col justify-between shrink-0 shadow-xl">
+      <aside className={`fixed md:static inset-y-0 left-0 z-40 w-64 bg-[#132175] flex flex-col justify-between shrink-0 shadow-xl transform transition-transform duration-200 md:translate-x-0 ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}`}>
         <div>
           <div className="px-5 py-5 flex items-center gap-3 border-b border-white/10">
             <div className="w-9 h-9 rounded-lg bg-white/15 flex items-center justify-center backdrop-blur">
@@ -142,7 +167,7 @@ export default function AdminShell() {
                 {group.items.map((tab) => (
                   <button
                     key={tab.key}
-                    onClick={() => setActiveTab(tab.key)}
+                    onClick={() => { setActiveTab(tab.key); setSidebarOpen(false); }}
                     className={`w-full text-left px-3 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2.5 ${
                       activeTab === tab.key
                         ? "bg-white/20 text-white shadow-sm font-bold"
@@ -150,7 +175,10 @@ export default function AdminShell() {
                     }`}
                   >
                     <TabIcon tab={tab.key} />
-                    {tab.label}
+                    <span className="flex-1">{tab.label}</span>
+                    {(TAB_SECTIONS[tab.key] || []).some((s) => dirtyKeys.includes(s)) && (
+                      <span className="w-2 h-2 rounded-full bg-amber-400 shrink-0" title="Kaydedilmemiş değişiklik" />
+                    )}
                   </button>
                 ))}
               </div>
@@ -185,10 +213,21 @@ export default function AdminShell() {
 
       {/* Main */}
       <main className="flex-1 flex flex-col min-w-0">
-        <header className="h-16 border-b border-gray-200 bg-white/80 backdrop-blur px-8 flex items-center justify-between shrink-0 shadow-sm">
-          <h2 className="text-lg font-bold tracking-tight text-[#131b2e]" style={{ fontFamily: "var(--font-display)" }}>
-            {TABS.flatMap((g) => g.items).find((t) => t.key === activeTab)?.label || "Panel"}
-          </h2>
+        <header className="h-16 border-b border-gray-200 bg-white/80 backdrop-blur px-4 md:px-8 flex items-center justify-between shrink-0 shadow-sm">
+          <div className="flex items-center gap-2 min-w-0">
+            <button
+              onClick={() => setSidebarOpen(true)}
+              className="md:hidden p-2 -ml-2 rounded-lg hover:bg-gray-100 text-[#131b2e] shrink-0"
+              aria-label="Menüyü aç"
+            >
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+            </button>
+            <h2 className="text-lg font-bold tracking-tight text-[#131b2e] truncate" style={{ fontFamily: "var(--font-display)" }}>
+              {TABS.flatMap((g) => g.items).find((t) => t.key === activeTab)?.label || "Panel"}
+            </h2>
+          </div>
           <div className="flex items-center gap-3">
             {saveMessage && <span className="text-xs font-medium text-emerald-600">{saveMessage}</span>}
             <button
@@ -205,7 +244,7 @@ export default function AdminShell() {
           </div>
         </header>
 
-        <div className="flex-1 overflow-y-auto p-8">
+        <div className="flex-1 overflow-y-auto p-4 md:p-8">
           {activeTab === "overview" && <OverviewPanel onNavigate={(tab) => setActiveTab(tab as Tab)} />}
           {activeTab === "leads" && <LeadsTablePanel onSelectLead={setSelectedLeadId} />}
           {activeTab === "kanban" && <LeadsKanbanPanel onSelectLead={setSelectedLeadId} />}

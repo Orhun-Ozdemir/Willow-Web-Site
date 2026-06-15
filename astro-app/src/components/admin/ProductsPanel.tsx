@@ -104,6 +104,7 @@ export default function ProductsPanel() {
   const { content, setContent } = useAdmin();
   const [editId, setEditId] = useState<string | null>(null);
   const [openSections, setOpenSections] = useState<Record<string, boolean>>({ basics: true });
+  const [query, setQuery] = useState("");
 
   const products = useMemo(() => {
     const list = content?.products || [];
@@ -216,6 +217,15 @@ export default function ProductsPanel() {
             <p>Aşağıdaki bölümleri açıp kapayarak düzenleyin.</p>
           </div>
           <div className="ws-prod-edit-actions">
+            <a
+              href={`/en/products/${p.slug || p.id}`}
+              target="_blank"
+              rel="noopener"
+              className="ws-edit-button"
+              style={{ width: "auto", padding: "8px 16px", textDecoration: "none", display: "inline-flex", alignItems: "center" }}
+            >
+              Sitede önizle ↗
+            </a>
             <span className={`ws-status ${p.visible !== false ? "ws-status-ready" : "ws-status-missing"}`}>
               {p.visible !== false ? "Yayında" : "Taslak"}
             </span>
@@ -510,20 +520,34 @@ export default function ProductsPanel() {
   }
 
   /* ── LIST VIEW ── */
+  const filtered = products.filter((item: any) => {
+    const q = query.trim().toLowerCase();
+    if (!q) return true;
+    return [item.title, item.slug, item.category, item.shortDescription].some((v: any) => String(v || "").toLowerCase().includes(q));
+  });
+
   return (
     <div className="ws-prod-page">
       <div className="ws-prod-list-header">
         <h3>Ürün Kataloğu</h3>
-        <button type="button" onClick={addProduct} className="ws-primary-button">
-          + Yeni Ürün
-        </button>
+        <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+          <input
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="Ürün ara…"
+            style={{ padding: "8px 12px", border: "1px solid #e5e7eb", borderRadius: 8, fontSize: 13, width: 180 }}
+          />
+          <button type="button" onClick={addProduct} className="ws-primary-button">
+            + Yeni Ürün
+          </button>
+        </div>
       </div>
 
-      {products.length === 0 ? (
-        <div className="ws-prod-empty">Katalogda henüz ürün bulunmuyor.</div>
+      {filtered.length === 0 ? (
+        <div className="ws-prod-empty">{query ? "Eşleşen ürün yok." : "Katalogda henüz ürün bulunmuyor."}</div>
       ) : (
         <div className="ws-prod-grid">
-          {products.map((p: any, idx: number) => {
+          {filtered.map((p: any, idx: number) => {
             const previewUrl = p.image
               ? /^(https?:)?\/\//i.test(p.image) || p.image.startsWith("data:")
                 ? p.image

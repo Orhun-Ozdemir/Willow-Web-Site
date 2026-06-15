@@ -245,7 +245,7 @@ function MultilingualSEOField({
             <p className="text-[10px] font-black uppercase tracking-wide text-gray-400">Diğer dillerde durum ve hızlı düzenleme</p>
             <span className="text-[10px] text-gray-400">Aynı alanı dil değiştirmeden doldurabilirsiniz.</span>
           </div>
-          <div className="grid grid-cols-2 gap-2">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
             {locales.map((loc) => {
               const value = pageSeo?.[pageKey]?.[loc]?.[field] || "";
               const missing = !String(value).trim();
@@ -326,7 +326,7 @@ function LiveRelationCard({
         </span>
       </div>
 
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <div className="rounded-lg border border-white bg-white/80 p-3">
           <span className="text-[10px] font-black uppercase text-gray-400">SEO H1</span>
           <p className="mt-1 text-sm font-bold text-gray-800">{seoH1 || <span className="text-gray-300 italic">Boş</span>}</p>
@@ -666,13 +666,13 @@ export default function SEOCenterPanel() {
 
         {/* ── Section 5: Gelişmiş ── */}
         <Section title="Gelişmiş Ayarlar" hint="Canonical URL, Schema türü, indeksleme kuralları. Emin değilseniz dokunmayın." defaultOpen={false}>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <FormField label="Canonical URL" value={seoData.canonical || ""} onChange={(v) => updateSEO("canonical", v)} placeholder="https://willowsoft.co/..." hint="Aynı içeriğin birden fazla URL'de olduğu durumlar için." />
             <FormField label="Schema Türü" type="select" value={seoData.schemaType || ""} onChange={(v) => updateSEO("schemaType", v)} options={SCHEMA_TYPES} hint="Yapısal veri türü." />
             <FormField label="Arama Motorlarından Gizle (Noindex)" type="select" value={seoData.noindex ? "true" : "false"} onChange={(v) => updateSEO("noindex", v === "true")} options={[{ value: "false", label: "Hayır — Normal indexle" }, { value: "true", label: "Evet — Bu sayfayı gizle" }]} />
             <FormField label="Link Takibini Engelle (Nofollow)" type="select" value={seoData.nofollow ? "true" : "false"} onChange={(v) => updateSEO("nofollow", v === "true")} options={[{ value: "false", label: "Hayır — Normal" }, { value: "true", label: "Evet — Engelle" }]} />
           </div>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <FormField label="Yazar" value={seoData.author || ""} onChange={(v) => updateSEO("author", v)} />
             <FormField label="Son Güncelleme" type="date" value={seoData.lastUpdated || ""} onChange={(v) => updateSEO("lastUpdated", v)} />
           </div>

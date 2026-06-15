@@ -98,7 +98,7 @@ export default function ClientsPanel() {
             <button onClick={() => deleteClient(cl.id)} className="px-3 py-1.5 bg-red-950 hover:bg-red-900 text-red-400 rounded text-xs font-semibold">Sil</button>
           </div>
         </div>
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <FormField label="İsim" value={cl.name || ""} onChange={(v) => updateClient(cl.id, "name", v)} />
           <FormField label="Sektör" value={cl.industry || ""} onChange={(v) => updateClient(cl.id, "industry", v)} />
           <FormField label="Logo Yolu" value={cl.logo || ""} onChange={(v) => updateClient(cl.id, "logo", v)} placeholder="/assets/clients/..." />

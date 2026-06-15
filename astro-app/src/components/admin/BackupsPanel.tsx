@@ -34,12 +34,18 @@ export default function BackupsPanel() {
     reader.onload = (ev) => {
       try {
         const data = JSON.parse(ev.target?.result as string);
-        if (!data.products && !data.pageSeo && !data.meta) {
-          setUploadMessage("Geçersiz yedek dosyası — products, pageSeo veya meta alanı bulunamadı.");
+        if (typeof data !== "object" || data === null || (!data.products && !data.pageContent && !data.pageSeo && !data.meta)) {
+          setUploadMessage("Geçersiz dosya — beklenen içerik alanları (products, pageContent, pageSeo, meta) bulunamadı.");
           return;
         }
-        setContent(() => data);
-        setUploadMessage(`Yedek yüklendi (${Object.keys(data).length} üst alan). Kaydetmek için "Değişiklikleri Kaydet" butonuna basın.`);
+        const sections = Object.keys(data);
+        if (!confirm(`Bu dosyadaki ${sections.length} bölüm mevcut içeriğin üzerine yazılacak:\n\n${sections.join(", ")}\n\nDevam edilsin mi? (Henüz kaydedilmez — önce gözden geçirebilirsiniz.)`)) {
+          return;
+        }
+        // Merge: only sections present in the file are replaced; sections not in
+        // the file are kept untouched, so a partial export can't wipe other data.
+        setContent((prev: any) => ({ ...prev, ...data }));
+        setUploadMessage(`Yüklendi — ${sections.length} bölüm güncellendi (${sections.join(", ")}). Kalıcı yapmak için sağ üstteki "Değişiklikleri Kaydet" butonuna basın.`);
       } catch {
         setUploadMessage("JSON ayrıştırma hatası — dosya geçerli JSON değil.");
       }
@@ -87,19 +93,30 @@ export default function BackupsPanel() {
 
   return (
     <div className="space-y-6 max-w-2xl">
+      {/* Intro */}
+      <div className="bg-[#132175]/5 border border-[#132175]/15 rounded-xl p-5">
+        <h3 className="text-sm font-bold text-[#132175]">Tüm site metinlerini dışa / içe aktar</h3>
+        <p className="text-xs text-gray-600 mt-1.5 leading-relaxed">
+          Sitenin <strong>bütün içeriği</strong> — ürünler, haberler, hizmetler, çözümler, müşteriler, SSS, sözlük,
+          sayfa metinleri, SEO ayarları, tüm dil çevirileri ve şirket bilgileri — tek bir JSON dosyasında toplanır.
+          Dosyayı indirip dışarıda düzenleyebilir veya yedek olarak saklayabilir, sonra geri yükleyerek siteyi
+          toplu güncelleyebilirsiniz.
+        </p>
+      </div>
+
       {/* Download Backup */}
       <div className="bg-white border border-gray-200 rounded-xl p-5 space-y-3">
-        <h3 className="text-sm font-bold text-gray-800">JSON Yedek İndir</h3>
-        <p className="text-xs text-gray-500">Mevcut site-data.json içeriğini tam olarak indirir. Bu dosyayı tekrar yükleyerek geri dönebilirsiniz.</p>
+        <h3 className="text-sm font-bold text-gray-800">1 · JSON İndir (Dışa Aktar)</h3>
+        <p className="text-xs text-gray-500">Tüm site metinlerini tek dosyada indirir (<code>willowsoft-backup-…json</code>). Aynı dosyayı geri yükleyerek değişiklikleri toplu uygulayabilirsiniz.</p>
         <button onClick={handleDownload} className="px-4 py-2 bg-[#132175] hover:bg-[#0e1a5e] text-white rounded-lg text-xs font-bold transition">
-          Yedek İndir (.json)
+          Tüm Metinleri İndir (.json)
         </button>
       </div>
 
       {/* Upload Backup */}
       <div className="bg-white border border-gray-200 rounded-xl p-5 space-y-3">
-        <h3 className="text-sm font-bold text-gray-800">Yedekten Geri Yükle</h3>
-        <p className="text-xs text-gray-500">Daha önce indirdiğiniz bir yedek dosyasını yükleyin. Yükleme sonrası "Değişiklikleri Kaydet" ile veritabanına yazılır.</p>
+        <h3 className="text-sm font-bold text-gray-800">2 · JSON Yükle (İçe Aktar)</h3>
+        <p className="text-xs text-gray-500">İndirdiğiniz/düzenlediğiniz JSON dosyasını seçin. Yalnızca dosyadaki bölümler güncellenir; diğerleri korunur. Yükleme sonrası sağ üstteki <strong>"Değişiklikleri Kaydet"</strong> ile veritabanına yazılır.</p>
         <label className="inline-block px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg text-xs font-bold cursor-pointer transition">
           Dosya Seç (.json)
           <input type="file" accept=".json" onChange={handleUpload} className="hidden" />
