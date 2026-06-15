@@ -6,7 +6,7 @@ import { useAdmin } from "./AdminContext";
 
 type AdminTab =
   | "overview" | "leads" | "kanban"
-  | "products" | "news" | "faqs" | "solutions" | "clients" | "company"
+  | "products" | "news" | "faqs" | "glossary" | "solutions" | "clients" | "company"
   | "seo" | "translations" | "health"
   | "settings" | "backups" | "users";
 
@@ -217,7 +217,7 @@ export default function OverviewPanel({ onNavigate }: OverviewPanelProps) {
               ["Müşteriler", clients.length, `${overview.mediaReady}/${overview.mediaTotal || 0} görselli`, "clients" as AdminTab],
               ["Servisler", services.length, "yayında", "services" as AdminTab],
               ["SSS", faqs.length, "cevap", "faqs" as AdminTab],
-              ["Sözlük", glossary.length, "terim", "health" as AdminTab],
+              ["Sözlük", glossary.length, "terim", "glossary" as AdminTab],
               ["Mesajlar", leads.length, `${overview.newLeads} yeni`, "leads" as AdminTab],
             ].map(([label, value, note, tab]) => (
               <button
