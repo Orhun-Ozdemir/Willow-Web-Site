@@ -160,27 +160,33 @@ export default function AdminShell() {
             </div>
           </div>
 
-          <nav className="px-3 py-3 space-y-0.5 overflow-y-auto max-h-[calc(100vh-200px)]">
+          <nav className="px-2 py-3 space-y-0.5 overflow-y-auto max-h-[calc(100vh-200px)]">
             {TABS.map((group) => (
               <div key={group.section}>
-                <p className="text-[10px] font-bold text-white/35 uppercase tracking-wider px-3 mb-1.5 mt-4 first:mt-1">{group.section}</p>
-                {group.items.map((tab) => (
-                  <button
-                    key={tab.key}
-                    onClick={() => { setActiveTab(tab.key); setSidebarOpen(false); }}
-                    className={`w-full text-left px-3 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2.5 ${
-                      activeTab === tab.key
-                        ? "bg-white/20 text-white shadow-sm font-bold"
-                        : "text-white hover:bg-white/15"
-                    }`}
-                  >
-                    <TabIcon tab={tab.key} />
-                    <span className="flex-1">{tab.label}</span>
-                    {(TAB_SECTIONS[tab.key] || []).some((s) => dirtyKeys.includes(s)) && (
-                      <span className="w-2 h-2 rounded-full bg-amber-400 shrink-0" title="Kaydedilmemiş değişiklik" />
-                    )}
-                  </button>
-                ))}
+                <p className="text-[9px] font-extrabold text-white/30 uppercase tracking-[0.12em] px-3 mb-1 mt-5 first:mt-1">{group.section}</p>
+                {group.items.map((tab) => {
+                  const isActive = activeTab === tab.key;
+                  return (
+                    <button
+                      key={tab.key}
+                      onClick={() => { setActiveTab(tab.key); setSidebarOpen(false); }}
+                      className={`w-full text-left px-3 py-2 rounded-lg text-[13px] font-medium transition-all flex items-center gap-2.5 relative ${
+                        isActive
+                          ? "bg-white/15 text-white font-bold"
+                          : "text-white/70 hover:text-white hover:bg-white/8"
+                      }`}
+                    >
+                      {isActive && (
+                        <span className="absolute left-0 top-1/2 -translate-y-1/2 h-5 w-0.5 rounded-full bg-[#23a8d8]" />
+                      )}
+                      <TabIcon tab={tab.key} />
+                      <span className="flex-1">{tab.label}</span>
+                      {(TAB_SECTIONS[tab.key] || []).some((s) => dirtyKeys.includes(s)) && (
+                        <span className="w-1.5 h-1.5 rounded-full bg-amber-400 shrink-0" title="Kaydedilmemiş değişiklik" />
+                      )}
+                    </button>
+                  );
+                })}
               </div>
             ))}
           </nav>
