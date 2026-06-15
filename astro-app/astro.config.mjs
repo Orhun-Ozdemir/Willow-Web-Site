@@ -7,12 +7,9 @@ import tailwindcss from "@tailwindcss/vite";
 const isVercel = Boolean(process.env.VERCEL);
 
 export default defineConfig({
-  ...(isVercel
-    ? {}
-    : {
-        site: "https://orhun-ozdemir.github.io",
-        base: "/Willow-Web-Site/",
-      }),
+  // Production is Vercel-only; serve at the real origin with no base prefix so
+  // local dev matches production (the old GitHub Pages base is no longer used).
+  site: "https://willowsoft.co",
   publicDir: "./public",
   output: "server",
   adapter: isVercel ? vercel() : node({ mode: "standalone" }),

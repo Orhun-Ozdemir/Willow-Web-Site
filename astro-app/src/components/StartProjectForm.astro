@@ -177,6 +177,11 @@ const getLabel = (key: keyof typeof labels) => {
       </div>
     </fieldset>
 
+    {/* Honeypot — hidden from humans, bots auto-fill it. Submissions with this set are silently dropped server-side. */}
+    <div aria-hidden="true" style="position:absolute; left:-9999px; top:auto; width:1px; height:1px; overflow:hidden;">
+      <label for="lpWebsite">Website</label>
+      <input id="lpWebsite" name="website" type="text" tabindex="-1" autocomplete="off" />
+    </div>
     <p id="error-message" style="color: #ef4444; font-size: 0.875rem; display: none; margin-bottom: 12px;">{getLabel("errorMsg")}</p>
     <button class="btn btn-primary project-submit" type="submit" id="submit-btn">{getLabel("submit")}</button>
   </form>
@@ -241,6 +246,7 @@ const getLabel = (key: keyof typeof labels) => {
         name: form.name.value,
         email: form.email.value,
         company: form.company.value,
+        website: form.website.value, // honeypot
       };
 
       try {
@@ -259,12 +265,13 @@ const getLabel = (key: keyof typeof labels) => {
           successMsg.style.display = 'flex';
           form.reset();
         } else {
-          throw new Error('Failed to submit form');
+          // Server rejected the submission (validation / rate limit / error):
+          // surface the real error instead of pretending it succeeded.
+          errorMsg.style.display = 'block';
         }
       } catch (err) {
-        console.error(err);
+        // Network failure only — queue offline so the visitor's brief isn't lost.
         try {
-          // Offline fallback
           const localLeads = JSON.parse(window.localStorage.getItem('willowsoft-leads-offline') || '[]');
           localLeads.unshift({
             id: `offline-${Date.now()}`,
@@ -275,7 +282,7 @@ const getLabel = (key: keyof typeof labels) => {
             ...formData,
           });
           window.localStorage.setItem('willowsoft-leads-offline', JSON.stringify(localLeads));
-          
+
           form.style.display = 'none';
           successMsg.style.display = 'flex';
           form.reset();

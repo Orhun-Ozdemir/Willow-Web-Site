@@ -2,7 +2,7 @@ import { locales, type Locale } from "@/lib/cms";
 
 export const SITE_ORIGIN = "https://willowsoft.co";
 export const SITE_NAME = "WillowSoft";
-export const DEFAULT_OG_IMAGE = `${SITE_ORIGIN}/assets/hero-industrial-iot.png`;
+export const DEFAULT_OG_IMAGE = `${SITE_ORIGIN}/assets/hero-industrial-iot.jpg`;
 
 export const OG_LOCALE_MAP: Record<Locale, string> = {
   en: "en_US",

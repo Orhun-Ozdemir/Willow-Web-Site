@@ -57,7 +57,7 @@ const articleGalleryImages = articleImageList
   .filter((value, index, list) => value !== articleImage && list.indexOf(value) === index);
 const schemaImages = articleImageList.map((value) => absoluteImage(value)).filter(Boolean);
 const ogImage = schemaImages[0] || DEFAULT_OG_IMAGE;
-const heroImage = articleImage || "/assets/hero-industrial-iot.png";
+const heroImage = articleImage || "/assets/hero-industrial-iot.jpg";
 const dateLabel = article.date
   ? new Date(`${article.date}T00:00:00`).toLocaleDateString(locale, { year: "numeric", month: "long", day: "numeric" })
   : "";

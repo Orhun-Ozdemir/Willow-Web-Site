@@ -2,25 +2,6 @@
   "version": "0.0.1",
   "configurations": [
     {
-      "name": "willow-site",
-      "runtimeExecutable": "/opt/homebrew/bin/npx",
-      "runtimeArgs": ["serve", "-l", "8000", "/Users/orhunozdemir/Documents/Willow Web Site"],
-      "port": 8000
-    },
-    {
-      "name": "willow-dynamic",
-      "runtimeExecutable": "node",
-      "runtimeArgs": ["server.mjs"],
-      "port": 4173
-    },
-    {
-      "name": "next-dev",
-      "runtimeExecutable": "/opt/homebrew/bin/npx",
-      "runtimeArgs": ["next", "dev", "--port", "3100"],
-      "port": 3100,
-      "cwd": "next-app"
-    },
-    {
       "name": "astro-dev",
       "runtimeExecutable": "/opt/homebrew/bin/npx",
       "runtimeArgs": ["astro", "dev", "--port", "4100"],

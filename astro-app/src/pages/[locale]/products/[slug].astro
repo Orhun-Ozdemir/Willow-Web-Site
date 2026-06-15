@@ -35,13 +35,13 @@ const heroImages = Array.from(
   ),
 );
 const heroImage = heroImages[0] || product.image;
-const productAssetUrl = (path: any, fallback = "assets/hero-industrial-iot.png") => {
+const productAssetUrl = (path: any, fallback = "assets/hero-industrial-iot.jpg") => {
   const normalized = normalizeAssetPath(path) || normalizeAssetPath(fallback);
   if (/^(https?:)?\/\//i.test(normalized) || normalized.startsWith("data:")) return normalized;
   return `${import.meta.env.BASE_URL}${normalized}`;
 };
 const heroImageUrl = productAssetUrl(heroImage);
-const fallbackHeroImageUrl = productAssetUrl("assets/hero-industrial-iot.png");
+const fallbackHeroImageUrl = productAssetUrl("assets/hero-industrial-iot.jpg");
 const heroImageItems = heroImages.map((imgUrl) => productAssetUrl(imgUrl));
 
 // Category text mappings

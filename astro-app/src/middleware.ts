@@ -20,9 +20,16 @@ function isExemptFromLocale(pathname: string): boolean {
   return false;
 }
 
-// Pick the best matching locale from the visitor's Accept-Language header,
-// falling back to the default locale when none is supported.
+// Pick the best matching locale: 1) cookie preference, 2) Accept-Language, 3) default.
 function detectLocale(request: Request): Locale {
+  // 1. Check for saved preference cookie
+  const cookies = request.headers.get("cookie") || "";
+  const match = cookies.match(/(?:^|;\s*)preferred_locale=([a-z]{2})/);
+  if (match && locales.includes(match[1] as Locale)) {
+    return match[1] as Locale;
+  }
+
+  // 2. Fall back to Accept-Language header
   const header = request.headers.get("accept-language") || "";
   for (const part of header.split(",")) {
     const code = part.split(";")[0].trim().toLowerCase();

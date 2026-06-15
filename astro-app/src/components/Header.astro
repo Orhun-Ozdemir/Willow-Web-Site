@@ -36,13 +36,13 @@ const ctaLabels: Record<string, string> = {
 
 const getLabel = (key: keyof typeof navLabels) => navLabels[key][locale] || navLabels[key].en;
 const links = [
-  { name: getLabel("home"), href: `/${locale}`, accent: "nav-accent-cyan" },
+  { name: getLabel("home"), href: `/${locale}`, accent: "nav-accent-blue" },
   { name: getLabel("solutions"), href: `/${locale}/solutions`, accent: "nav-accent-green" },
-  { name: getLabel("services"), href: `/${locale}/services`, accent: "nav-accent-cyan" },
+  { name: getLabel("services"), href: `/${locale}/services`, accent: "nav-accent-amber" },
   { name: getLabel("products"), href: `/${locale}/products`, accent: "nav-accent-cyan" },
-  { name: getLabel("news"), href: `/${locale}/news`, accent: "nav-accent-amber" },
-  { name: getLabel("company"), href: `/${locale}/company`, accent: "nav-accent-warm" },
-  { name: getLabel("contact"), href: `/${locale}/contact`, accent: "nav-accent-green" },
+  { name: getLabel("news"), href: `/${locale}/news`, accent: "nav-accent-violet" },
+  { name: getLabel("company"), href: `/${locale}/company`, accent: "nav-accent-red" },
+  { name: getLabel("contact"), href: `/${locale}/contact`, accent: "nav-accent-teal" },
 ];
 
 function isActive(href: string) {
@@ -103,6 +103,8 @@ function isActive(href: string) {
   const select = document.getElementById("locale-select") as HTMLSelectElement | null;
   select?.addEventListener("change", (e) => {
     const nextLocale = (e.target as HTMLSelectElement).value;
+    // Save preference in cookie (365 days, site-wide)
+    document.cookie = `preferred_locale=${nextLocale};path=/;max-age=${365 * 24 * 60 * 60};SameSite=Lax`;
     const parts = window.location.pathname.split("/").filter(Boolean);
     const locales = ["en", "tr", "de", "fr", "es", "it", "ar", "ja"];
     if (locales.includes(parts[0])) parts[0] = nextLocale;

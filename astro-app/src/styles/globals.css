@@ -288,25 +288,42 @@ select {
   font-weight: 700;
 }
 
+/* Each top-bar tab gets its own well-separated hue so the active/hover tab is
+   unmistakable (text = a dark, legible shade; underline = the vivid accent). */
+.nav-links .nav-accent-blue:hover,
+.nav-links .nav-accent-blue[aria-current="page"] { color: #26348b; }
+.nav-links .nav-accent-blue:hover::after,
+.nav-links .nav-accent-blue[aria-current="page"]::after { background: #3346b0; }
+
 .nav-links .nav-accent-green:hover,
 .nav-links .nav-accent-green[aria-current="page"] { color: #2b6d2e; }
 .nav-links .nav-accent-green:hover::after,
 .nav-links .nav-accent-green[aria-current="page"]::after { background: #5ba65b; }
-
-.nav-links .nav-accent-cyan:hover,
-.nav-links .nav-accent-cyan[aria-current="page"] { color: #0e687e; }
-.nav-links .nav-accent-cyan:hover::after,
-.nav-links .nav-accent-cyan[aria-current="page"]::after { background: #1aa3c4; }
 
 .nav-links .nav-accent-amber:hover,
 .nav-links .nav-accent-amber[aria-current="page"] { color: #a06b0d; }
 .nav-links .nav-accent-amber:hover::after,
 .nav-links .nav-accent-amber[aria-current="page"]::after { background: #d79a2b; }
 
-.nav-links .nav-accent-warm:hover,
-.nav-links .nav-accent-warm[aria-current="page"] { color: #964a27; }
-.nav-links .nav-accent-warm:hover::after,
-.nav-links .nav-accent-warm[aria-current="page"]::after { background: #c97f5f; }
+.nav-links .nav-accent-cyan:hover,
+.nav-links .nav-accent-cyan[aria-current="page"] { color: #0e687e; }
+.nav-links .nav-accent-cyan:hover::after,
+.nav-links .nav-accent-cyan[aria-current="page"]::after { background: #1aa3c4; }
+
+.nav-links .nav-accent-violet:hover,
+.nav-links .nav-accent-violet[aria-current="page"] { color: #5538c9; }
+.nav-links .nav-accent-violet:hover::after,
+.nav-links .nav-accent-violet[aria-current="page"]::after { background: #704dff; }
+
+.nav-links .nav-accent-red:hover,
+.nav-links .nav-accent-red[aria-current="page"] { color: #b0392f; }
+.nav-links .nav-accent-red:hover::after,
+.nav-links .nav-accent-red[aria-current="page"]::after { background: #cf4f45; }
+
+.nav-links .nav-accent-teal:hover,
+.nav-links .nav-accent-teal[aria-current="page"] { color: #0b6f6a; }
+.nav-links .nav-accent-teal:hover::after,
+.nav-links .nav-accent-teal[aria-current="page"]::after { background: #12a39c; }
 
 .nav-actions {
   display: flex;
@@ -567,10 +584,11 @@ select {
   background:
     linear-gradient(rgba(19, 33, 117, 0.045) 1px, transparent 1px),
     linear-gradient(90deg, rgba(19, 33, 117, 0.045) 1px, transparent 1px),
-    radial-gradient(circle at 76% 28%, rgba(75, 87, 170, .16), transparent 30%),
-    radial-gradient(circle at 28% 76%, rgba(187, 195, 255, .22), transparent 34%);
-  background-size: 42px 42px, 42px 42px, auto, auto;
-  opacity: .3;
+    radial-gradient(circle at 78% 26%, rgba(75, 87, 170, .16), transparent 30%),
+    radial-gradient(circle at 18% 36%, rgba(35, 168, 216, .14), transparent 30%),
+    radial-gradient(circle at 30% 80%, rgba(112, 77, 255, .16), transparent 34%);
+  background-size: 42px 42px, 42px 42px, auto, auto, auto;
+  opacity: .4;
   mask-image: linear-gradient(180deg, #000 0%, rgba(0,0,0,.78) 70%, transparent 100%);
 }
 
@@ -620,9 +638,10 @@ select {
 }
 
 .motion-hero .hero-shader-canvas {
-  /* Keep the right side vivid while allowing a lighter trail to reach the top-left. */
-  -webkit-mask-image: linear-gradient(90deg, rgba(0,0,0,0.14) 0%, rgba(0,0,0,0.10) 28%, rgba(0,0,0,0.56) 50%, #000 72%);
-          mask-image: linear-gradient(90deg, rgba(0,0,0,0.14) 0%, rgba(0,0,0,0.10) 28%, rgba(0,0,0,0.56) 50%, #000 72%);
+  /* Let the animation breathe across to the left, keeping the right a touch more vivid
+     and the far-left light enough for the hero copy / eyebrow to stay legible. */
+  -webkit-mask-image: linear-gradient(90deg, rgba(0,0,0,0.34) 0%, rgba(0,0,0,0.30) 26%, rgba(0,0,0,0.60) 50%, #000 74%);
+          mask-image: linear-gradient(90deg, rgba(0,0,0,0.34) 0%, rgba(0,0,0,0.30) 26%, rgba(0,0,0,0.60) 50%, #000 74%);
 }
 
 .hero-inner,
@@ -1920,30 +1939,6 @@ select {
   opacity: .54;
   content: "";
   animation: trustGridDrift 9000ms linear infinite;
-}
-
-.trust-mark {
-  position: absolute;
-  right: 44%;
-  top: 42%;
-  z-index: 1;
-  display: grid;
-  place-items: center;
-  width: 150px;
-  height: 150px;
-  border: 1px solid rgba(38,52,139,.18);
-  border-radius: 50%;
-  background: rgba(255,255,255,.74);
-  box-shadow: 0 24px 80px rgba(38,52,139,.18);
-  transform: translateY(-50%) rotateY(-18deg) rotateX(12deg);
-  backdrop-filter: blur(12px);
-  animation: trustFloat 5200ms ease-in-out infinite;
-}
-
-.trust-mark img {
-  width: 88px;
-  height: 88px;
-  object-fit: contain;
 }
 
 .logo-cloud {
@@ -5492,18 +5487,6 @@ html[dir="rtl"] .news-sort select {
     transform: none;
   }
 
-  .trust-mark {
-    right: 12px;
-    top: 18px;
-    width: 96px;
-    height: 96px;
-  }
-
-  .trust-mark img {
-    width: 58px;
-    height: 58px;
-  }
-
   .logo-tile {
     min-height: 112px;
     padding: 18px;
@@ -5530,6 +5513,13 @@ html[dir="rtl"] .news-sort select {
 
   .motion-hero {
     min-height: 400px;
+  }
+
+  /* The product stage (right column) is display:none here, so collapse to a single
+     column — otherwise the empty 2nd column squeezes the hero copy into the left half. */
+  .motion-hero .hero-layout {
+    grid-template-columns: 1fr;
+    gap: 28px;
   }
 
   .motion-hero .hero-inner {

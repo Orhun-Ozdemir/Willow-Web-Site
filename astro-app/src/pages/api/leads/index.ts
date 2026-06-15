@@ -7,6 +7,39 @@ import { sendLeadNotification, sendTelegramNotification, type LeadMailData } fro
 
 export const prerender = false;
 
+// ── Spam protection ───────────────────────────────────────────────────────────
+// Hidden honeypot field name shared with the contact / start-project forms.
+// Real users never see or fill it; bots that auto-fill every input will.
+const HONEYPOT_FIELD = "website";
+
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const MESSAGE_MIN_LENGTH = 10;
+
+// Best-effort, per-instance rate limit. On serverless this is per warm instance
+// (not a global guarantee), but it cheaply blunts rapid abuse from a single IP.
+const RATE_LIMIT_WINDOW_MS = 60_000;
+const RATE_LIMIT_MAX = 5;
+const rateBuckets = new Map<string, number[]>();
+
+function isRateLimited(ip: string): boolean {
+  if (!ip) return false;
+  const now = Date.now();
+  const hits = (rateBuckets.get(ip) || []).filter((t) => now - t < RATE_LIMIT_WINDOW_MS);
+  if (hits.length >= RATE_LIMIT_MAX) {
+    rateBuckets.set(ip, hits);
+    return true;
+  }
+  hits.push(now);
+  rateBuckets.set(ip, hits);
+  return false;
+}
+
+function getClientIp(request: Request, clientAddress?: string): string {
+  const fwd = request.headers.get("x-forwarded-for");
+  if (fwd) return fwd.split(",")[0].trim();
+  return request.headers.get("x-real-ip") || clientAddress || "";
+}
+
 export const GET: APIRoute = async ({ request }) => {
   const session = getSession(request.headers.get("cookie"));
   if (!session) {
@@ -31,9 +64,35 @@ export const GET: APIRoute = async ({ request }) => {
   return new Response(JSON.stringify(leads), { status: 200, headers: { "Content-Type": "application/json" } });
 };
 
-export const POST: APIRoute = async ({ request }) => {
+export const POST: APIRoute = async ({ request, clientAddress }) => {
   try {
     const body = await request.json();
+
+    // 1. Honeypot: if the hidden field is filled, silently accept (don't store/notify).
+    if (typeof body[HONEYPOT_FIELD] === "string" && body[HONEYPOT_FIELD].trim() !== "") {
+      return new Response(JSON.stringify({ ok: true }), { status: 201, headers: { "Content-Type": "application/json" } });
+    }
+
+    // 2. Rate limit per IP.
+    const ip = getClientIp(request, clientAddress);
+    if (isRateLimited(ip)) {
+      return new Response(JSON.stringify({ ok: false, error: "Too many requests. Please try again in a minute." }), {
+        status: 429,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
+
+    // 3. Validation.
+    const email = String(body.email || "").trim();
+    const message = String(body.message || "").trim();
+    const name = String(body.name || "").trim();
+    if (!name || !EMAIL_RE.test(email) || message.length < MESSAGE_MIN_LENGTH) {
+      return new Response(JSON.stringify({ ok: false, error: "Please provide a valid name, email and message." }), {
+        status: 400,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
+
     const supabase = getServiceClient();
 
     const lead = {

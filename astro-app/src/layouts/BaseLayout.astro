@@ -43,6 +43,18 @@ const robots = noindex
   ? "noindex, nofollow"
   : "index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1";
 const dir = locale === "ar" ? "rtl" : "ltr";
+
+const skipLabels: Record<string, string> = {
+  en: "Skip to main content",
+  tr: "Ana içeriğe atla",
+  de: "Zum Hauptinhalt springen",
+  fr: "Aller au contenu principal",
+  es: "Saltar al contenido principal",
+  it: "Vai al contenuto principale",
+  ar: "تخطَّ إلى المحتوى الرئيسي",
+  ja: "メインコンテンツへスキップ",
+};
+const skipLabel = skipLabels[locale] || skipLabels.en;
 ---
 
 <!doctype html>
@@ -82,7 +94,7 @@ const dir = locale === "ar" ? "rtl" : "ltr";
     {schema && <script type="application/ld+json" set:html={JSON.stringify(schema)} />}
   </head>
   <body data-page={dataPage} class="min-h-full flex flex-col">
-    <a class="skip-link" href="#main-content">Ana içeriğe atla</a>
+    <a class="skip-link" href="#main-content">{skipLabel}</a>
     <slot />
     <script is:inline>
     (function(){

@@ -146,7 +146,7 @@ const homeSchema = appendSchemaNodes({
     <!-- Hero -->
     <section class="hero motion-hero">
       <div class="hero-media">
-        <img src={`${import.meta.env.BASE_URL}assets/hero-industrial-iot.png`} alt="Industrial IoT hardware on a lab bench" loading="lazy" decoding="async" />
+        <img src={`${import.meta.env.BASE_URL}assets/hero-industrial-iot.jpg`} alt="Industrial IoT hardware on a lab bench" loading="lazy" decoding="async" />
       </div>
       <canvas class="hero-shader-canvas" aria-hidden="true" style="position:absolute;inset:0;pointer-events:none;"></canvas>
       <canvas class="signal-canvas" data-density="42" data-color="75, 87, 170"></canvas>
@@ -221,7 +221,6 @@ const homeSchema = appendSchemaNodes({
           </div>
         </div>
         <div class="trust-stage reveal-right delay-1">
-          <div class="trust-mark"><img src={`${import.meta.env.BASE_URL}pdf-assets/p01_01_X0.jpg`} alt="WillowSoft mark" loading="lazy" decoding="async" /></div>
           <div class="logo-cloud" data-cms-clients>
             {featuredClients.map((client: any, idx: number) => {
               const depths = [18, 54, 28, 42, 12, 66, 36, 24];

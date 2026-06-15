@@ -4,7 +4,8 @@ import { getPublicClient } from "./supabase";
 const sessionTtlMs = 1000 * 60 * 60 * 12;
 
 const adminUser = (typeof process !== "undefined" ? process.env?.ADMIN_USER : undefined) || import.meta.env.ADMIN_USER || "admin";
-const adminPassword = (typeof process !== "undefined" ? process.env?.ADMIN_PASSWORD : undefined) || import.meta.env.ADMIN_PASSWORD || "willow-admin-2026";
+const adminPasswordEnv = (typeof process !== "undefined" ? process.env?.ADMIN_PASSWORD : undefined) || import.meta.env.ADMIN_PASSWORD;
+const adminPassword = adminPasswordEnv || "willow-admin-2026";
 
 const secret =
   (typeof process !== "undefined" ? process.env?.SESSION_SECRET : undefined) ||
@@ -33,7 +34,10 @@ export async function verifyCredentials(username: string, password: string): Pro
     // fall through to env var fallback
   }
 
-  // Fallback: env-var credentials
+  // Fallback: env-var credentials. In production, only honor this path when an
+  // ADMIN_PASSWORD is explicitly configured — never the baked-in dev default,
+  // which would otherwise be a public backdoor.
+  if (!adminPasswordEnv && import.meta.env.PROD) return false;
   return username === adminUser && password === adminPassword;
 }
 

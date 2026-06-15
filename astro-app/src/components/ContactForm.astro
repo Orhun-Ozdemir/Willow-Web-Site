@@ -54,6 +54,16 @@ const labels = {
 const getLabel = (key: keyof typeof labels) => {
   return labels[key][locale] || labels[key]["en"];
 };
+
+// Subject options: keep `value` in English (consistent lead data / email routing),
+// localize only the visible label.
+const subjectOptions: { value: string; label: Record<string, string> }[] = [
+  { value: "General Inquiry", label: { en: "General Inquiry", tr: "Genel Soru", de: "Allgemeine Anfrage", fr: "Demande générale", es: "Consulta general", it: "Richiesta generale", ar: "استفسار عام", ja: "一般的なお問い合わせ" } },
+  { value: "Partnership Opportunity", label: { en: "Partnership Opportunity", tr: "İş Birliği Fırsatı", de: "Partnerschaftsmöglichkeit", fr: "Opportunité de partenariat", es: "Oportunidad de asociación", it: "Opportunità di partnership", ar: "فرصة شراكة", ja: "パートナーシップのご相談" } },
+  { value: "Careers & Contracting", label: { en: "Careers & Contracting", tr: "Kariyer ve Sözleşme", de: "Karriere & Auftragsarbeit", fr: "Carrières et sous-traitance", es: "Empleo y contratación", it: "Carriere e collaborazioni", ar: "الوظائف والتعاقد", ja: "採用・業務委託" } },
+  { value: "Press & Media", label: { en: "Press & Media", tr: "Basın ve Medya", de: "Presse & Medien", fr: "Presse et médias", es: "Prensa y medios", it: "Stampa e media", ar: "الصحافة والإعلام", ja: "報道・メディア" } },
+  { value: "Other", label: { en: "Other", tr: "Diğer", de: "Sonstiges", fr: "Autre", es: "Otro", it: "Altro", ar: "أخرى", ja: "その他" } },
+];
 ---
 
 <div class="contact-form-container">
@@ -73,16 +83,19 @@ const getLabel = (key: keyof typeof labels) => {
     <div class="field">
       <label for="subject">{getLabel("subject")}</label>
       <select id="subject" name="subject">
-        <option value="General Inquiry">General Inquiry</option>
-        <option value="Partnership Opportunity">Partnership Opportunity</option>
-        <option value="Careers & Contracting">Careers & Contracting</option>
-        <option value="Press & Media">Press & Media</option>
-        <option value="Other">Other</option>
+        {subjectOptions.map((opt) => (
+          <option value={opt.value}>{opt.label[locale] || opt.label.en}</option>
+        ))}
       </select>
     </div>
     <div class="field">
       <label for="message">{getLabel("message")}</label>
       <textarea id="message" name="message" required></textarea>
+    </div>
+    {/* Honeypot — hidden from humans, bots auto-fill it. Submissions with this set are silently dropped server-side. */}
+    <div aria-hidden="true" style="position:absolute; left:-9999px; top:auto; width:1px; height:1px; overflow:hidden;">
+      <label for="website">Website</label>
+      <input id="website" name="website" type="text" tabindex="-1" autocomplete="off" />
     </div>
     <p id="error-message" style="color: #ef4444; font-size: 0.875rem; display: none; margin-bottom: 12px;">{getLabel("errorMsg")}</p>
     <button class="btn btn-primary" type="submit" id="submit-btn">{getLabel("send")}</button>
@@ -140,6 +153,7 @@ const getLabel = (key: keyof typeof labels) => {
         company: form.company.value,
         subject: form.subject.value,
         message: form.message.value,
+        website: form.website.value, // honeypot
       };
 
       try {
@@ -158,12 +172,13 @@ const getLabel = (key: keyof typeof labels) => {
           successMsg.style.display = 'flex';
           form.reset();
         } else {
-          throw new Error('Failed to submit form');
+          // Server rejected the submission (validation / rate limit / error):
+          // surface the real error instead of pretending it succeeded.
+          errorMsg.style.display = 'block';
         }
       } catch (err) {
-        console.error(err);
+        // Network failure only — queue offline so the visitor's message isn't lost.
         try {
-          // Offline fallback
           const localLeads = JSON.parse(window.localStorage.getItem('willowsoft-leads-offline') || '[]');
           localLeads.unshift({
             id: `offline-${Date.now()}`,
@@ -174,7 +189,7 @@ const getLabel = (key: keyof typeof labels) => {
             ...formData,
           });
           window.localStorage.setItem('willowsoft-leads-offline', JSON.stringify(localLeads));
-          
+
           form.style.display = 'none';
           successMsg.style.display = 'flex';
           form.reset();
