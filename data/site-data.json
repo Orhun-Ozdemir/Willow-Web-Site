@@ -11,7 +11,7 @@
       "ar",
       "ja"
     ],
-    "updatedAt": "2026-06-12T15:30:40.335Z"
+    "updatedAt": "2026-06-16T22:52:45.058Z"
   },
   "companyFacts": {
     "founded": "2020",
@@ -788,10 +788,35 @@
         ]
       },
       "visible": true,
-      "localized": {},
+      "localized": {
+        "tr": {
+          "type": "LoRaWAN Kablosuz Modül",
+          "title": "WillowBee LoRaWAN Modülü",
+          "description": "Endüstriyel LoRaWAN uç düğümleri (endpoint) geliştirmek için tasarlanmış bir LoRaWAN modülüdür. STM32WL Cortex-M4 tabanlı olup MCU ve LoRa radyosunu tek çip üzerinde birleştirir; LoRaWAN uç düğümü geliştirme için gereken yazılım ve donanım özelliklerini tek bir modülde toplayarak geliştiricilerin hızla ürün oluşturmasını sağlar.",
+          "shortDescription": "Düşük güçlü sensör uç düğümleri ve gömülü uygulamalar için endüstriyel sınıf, LoRaWAN özellikli MCU modülü."
+        }
+      },
       "sortOrder": 10,
       "battery_life": null,
-      "communication_range": null
+      "communication_range": null,
+      "documents": [
+        {
+          "id": "brochure",
+          "type": "brochure",
+          "files": {
+            "en": "https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/datasheets/willowbee/brochure-en.pdf",
+            "tr": "https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/datasheets/willowbee/brochure-tr.pdf"
+          }
+        },
+        {
+          "id": "schematic",
+          "type": "schematic",
+          "files": {
+            "en": "https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/datasheets/willowbee/schematic-en.pdf",
+            "tr": "https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/datasheets/willowbee/schematic-tr.pdf"
+          }
+        }
+      ]
     },
     {
       "id": "willowsonic",
@@ -901,7 +926,48 @@
         ]
       },
       "visible": true,
-      "localized": {},
+      "localized": {
+        "tr": {
+          "type": "LoRaWAN Ultrasonik Mesafe/Seviye Sensörü",
+          "title": "LoRaWAN Ultrasonik Mesafe/Seviye Sensörü",
+          "description": "WS-O-X-AI-UD-1 sensörü, ağır dış ortam şartlarına dayanıklı ve kullanıma hazır bir ultrasonik mesafe sensörüdür. Sıvı, silo, kar ve rögar seviyelerini izlemek için hazırlanan sensör duvara ya da herhangi bir yüzeye monte edilebilir. 19000 mAh pil ile 10 yıla kadar çalışabilir. LoRaWAN® ağ geçidi ve IoT Cloud çözümü ile birleştiğinde kullanıcılar tüm sensör verilerini uzaktan ve görsel olarak izleyebilir ve yönetebilir. LoRaWAN protokolünü destekleyen tüm LoRaWAN ağ geçitleriyle uyumlu çalışır.",
+          "applications": [
+            {
+              "icon": "water",
+              "label": "Rögar taşkın izleme"
+            },
+            {
+              "icon": "water",
+              "label": "Su tankı seviye izleme"
+            },
+            {
+              "icon": "water",
+              "label": "Kar seviyesi ölçümü"
+            },
+            {
+              "icon": "water",
+              "label": "Atık su seviye izleme"
+            },
+            {
+              "icon": "barn",
+              "label": "Tahıl ve hububat depo seviye izleme"
+            },
+            {
+              "icon": "water",
+              "label": "Endüstriyel sıvı seviye izleme"
+            },
+            {
+              "icon": "water",
+              "label": "Taşkın önleme sistemleri"
+            },
+            {
+              "icon": "water",
+              "label": "Yağmur suyu drenaj izleme"
+            }
+          ],
+          "shortDescription": "Ağır dış ortam şartlarına dayanıklı ultrasonik mesafe/seviye sensörü. Sıvı, silo, kar ve rögar seviyelerini izlemek için tasarlanmıştır."
+        }
+      },
       "sortOrder": 20,
       "battery_life": "up to 10 years",
       "communication_range": "up to 15 km"
@@ -1023,10 +1089,74 @@
         ]
       },
       "visible": true,
-      "localized": {},
+      "localized": {
+        "tr": {
+          "type": "LoRaWAN İç Ortam Hava Kalitesi Sensörü",
+          "title": "LoRaWAN İç Ortam Hava Kalitesi Sensörü",
+          "description": "TVOC, eCO2 ve sıcaklığı ölçerek IoT tabanlı bina ve ortam izleme için kullanılan LoRaWAN iç ortam hava kalitesi sensörü. Veriler LoRaWAN üzerinden uzaktan izleme platformlarına aktarılır.",
+          "applications": [
+            {
+              "icon": "building",
+              "label": "Evler ve konutlar"
+            },
+            {
+              "icon": "building",
+              "label": "Ofisler ve ticari binalar"
+            },
+            {
+              "icon": "factory",
+              "label": "Fabrikalar ve endüstriyel tesisler"
+            },
+            {
+              "icon": "barn",
+              "label": "Depolar ve lojistik merkezleri"
+            },
+            {
+              "icon": "sprout",
+              "label": "Seralar ve kontrollü ortamlar"
+            },
+            {
+              "icon": "building",
+              "label": "Okullar ve üniversiteler"
+            },
+            {
+              "icon": "activity",
+              "label": "Hastaneler ve sağlık tesisleri"
+            },
+            {
+              "icon": "building",
+              "label": "Oteller ve konaklama binaları"
+            }
+          ],
+          "shortDescription": "TVOC, eCO2 ve sıcaklığı ölçerek IoT tabanlı bina ve ortam izleme sağlayan LoRaWAN hava kalitesi sensörü."
+        }
+      },
       "sortOrder": 30,
       "battery_life": "up to 10 years",
-      "communication_range": "up to 15 km"
+      "communication_range": "up to 15 km",
+      "documents": [
+        {
+          "id": "brochure",
+          "type": "brochure",
+          "files": {
+            "tr": "https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/datasheets/willowair/brochure-tr.pdf"
+          }
+        },
+        {
+          "id": "manual",
+          "type": "manual",
+          "files": {
+            "tr": "https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/datasheets/willowair/manual-tr.pdf"
+          }
+        },
+        {
+          "id": "quickstart",
+          "type": "quickstart",
+          "files": {
+            "tr": "https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/datasheets/willowair/quickstart-tr.pdf"
+          }
+        }
+      ]
     },
     {
       "id": "willowgps",
@@ -1131,7 +1261,36 @@
         ]
       },
       "visible": true,
-      "localized": {},
+      "localized": {
+        "tr": {
+          "type": "IP67 LoRaWAN GPS Modülü",
+          "title": "IP67 LoRaWAN GPS Modülü",
+          "description": "Enlem, boylam, rakım ve hız ölçer. Kompakt kullanım için entegre LoRa ve GPS antenlerine sahiptir. Veriler LoRaWAN üzerinden uzaktan izleme platformlarına iletilir.",
+          "applications": [
+            {
+              "icon": "carShield",
+              "label": "Araç takibi"
+            },
+            {
+              "icon": "location",
+              "label": "Varlık ve nesne takibi"
+            },
+            {
+              "icon": "map",
+              "label": "Rota kaydı ve sefer analizi"
+            },
+            {
+              "icon": "carShield",
+              "label": "Filo izleme ve yönetimi"
+            },
+            {
+              "icon": "map",
+              "label": "Lojistik ve tedarik zinciri takibi"
+            }
+          ],
+          "shortDescription": "Enlem, boylam, rakım ve hız ölçen; entegre LoRa ve GPS antenli kompakt LoRaWAN takip modülü."
+        }
+      },
       "sortOrder": 40,
       "battery_life": "up to 10 years",
       "communication_range": "up to 15 km"
@@ -1208,10 +1367,52 @@
         ]
       },
       "visible": true,
-      "localized": {},
+      "localized": {
+        "tr": {
+          "type": "IP67 Endüstriyel LoRaWAN Panik Butonu",
+          "title": "IP67 Endüstriyel LoRaWAN Panik Butonu",
+          "description": "Aktive edildiğinde merkezi izleme birimine acil durum uyarısı gönderir. Sağlık müdahaleleri veya güvenlik amaçlı kullanım için idealdir. IP67 koruma sınıfıyla iç ve dış mekanlara duvara monte edilebilir.",
+          "applications": [
+            {
+              "icon": "building",
+              "label": "Ofisler"
+            },
+            {
+              "icon": "building",
+              "label": "Evler"
+            },
+            {
+              "icon": "barn",
+              "label": "Depolar"
+            },
+            {
+              "icon": "building",
+              "label": "Havalimanları"
+            },
+            {
+              "icon": "factory",
+              "label": "Endüstriyel tesisler"
+            },
+            {
+              "icon": "building",
+              "label": "Diğer bina ve sahalar"
+            }
+          ],
+          "shortDescription": "Aktive edildiğinde merkezi izleme birimine acil durum uyarısı gönderen LoRaWAN panik butonu."
+        }
+      },
       "sortOrder": 50,
       "battery_life": "up to 10 years",
-      "communication_range": "up to 15 km"
+      "communication_range": "up to 15 km",
+      "documents": [
+        {
+          "id": "brochure",
+          "type": "brochure",
+          "files": {
+            "tr": "https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/datasheets/willowpanic/brochure-tr.pdf"
+          }
+        }
+      ]
     },
     {
       "id": "willowsens",
@@ -1300,7 +1501,48 @@
         ]
       },
       "visible": true,
-      "localized": {},
+      "localized": {
+        "tr": {
+          "type": "LoRaWAN Kapı Açık/Kapalı Sensörü",
+          "title": "LoRaWAN Kapı Açık/Kapalı Sensörü",
+          "description": "Kapı durumunu (açık/kapalı olaylarını) izler. Kapıların, dolapların, çekmecelerin ve pencerelerin uzaktan izlenmesi için idealdir. İç ve dış mekan seçenekleriyle sunulur.",
+          "applications": [
+            {
+              "icon": "building",
+              "label": "Laboratuvar kapıları"
+            },
+            {
+              "icon": "barn",
+              "label": "Depo kapıları"
+            },
+            {
+              "icon": "stack",
+              "label": "Sunucu odası kapıları"
+            },
+            {
+              "icon": "gear",
+              "label": "Elektrik pano odası kapıları"
+            },
+            {
+              "icon": "building",
+              "label": "Yönetici odası kapıları"
+            },
+            {
+              "icon": "shield",
+              "label": "Güvenlik odası kapıları"
+            },
+            {
+              "icon": "mount",
+              "label": "Dolaplar ve çekmeceler"
+            },
+            {
+              "icon": "shield",
+              "label": "Pencere açılış/kapanışlarının uzaktan izlenmesi"
+            }
+          ],
+          "shortDescription": "Kapı durumunu (açık/kapalı olaylarını) izleyen LoRaWAN sensörü; kapı, dolap, çekmece ve pencerelerin uzaktan izlenmesi için idealdir."
+        }
+      },
       "sortOrder": 60,
       "battery_life": "up to 10 years",
       "communication_range": "up to 15 km"
@@ -1407,7 +1649,44 @@
         ]
       },
       "visible": true,
-      "localized": {},
+      "localized": {
+        "tr": {
+          "type": "LoRaWAN Açı/Eğim Sensörü",
+          "title": "LoRaWAN Açı/Eğim Sensörü",
+          "description": "Willow Software'in WS-O-X-AI-TS-1 sensörü, ağır dış ortam şartlarına dayanıklı, 3 eksendeki ivme ve açı değerlerini ölçüp LoRaWAN protokolü üzerinden gönderen bir sensördür. İstinat duvarları, düşme ve devrilme riski bulunan noktalar ve 2G'ye kadar titreşim ölçümleri için kullanılabilir. Montaj aparatıyla birlikte gelir ve 19000 mAh pil ile 10 yıla kadar çalışabilir. LoRaWAN ağ geçidi ve IoT Cloud çözümüyle entegre olduğunda kullanıcılar tüm sensör verilerini uzaktan ve görsel olarak izleyebilir.",
+          "applications": [
+            {
+              "icon": "carShield",
+              "label": "Otomobil güvenlik sistemleri"
+            },
+            {
+              "icon": "building",
+              "label": "Binalar ve altyapı"
+            },
+            {
+              "icon": "tunnel",
+              "label": "Demiryolu ve otoyol tünelleri"
+            },
+            {
+              "icon": "mountain",
+              "label": "Madencilik ve jeoteknik izleme"
+            },
+            {
+              "icon": "mobile",
+              "label": "El cihazları"
+            },
+            {
+              "icon": "gamepad",
+              "label": "Oyun ve işaretleme cihazları"
+            },
+            {
+              "icon": "gear",
+              "label": "Endüstriyel makineler"
+            }
+          ],
+          "shortDescription": "3 eksenli ivme ve açı (eğim) değerlerini ölçüp LoRaWAN üzerinden ileten dış ortam sensörü."
+        }
+      },
       "sortOrder": 70,
       "battery_life": "up to 5 years",
       "communication_range": "up to 15 km"
@@ -1485,10 +1764,66 @@
         ]
       },
       "visible": true,
-      "localized": {},
+      "localized": {
+        "tr": {
+          "type": "LoRaWAN Sıcaklık ve Nem Sensörü",
+          "title": "LoRaWAN Sıcaklık ve Nem Sensörü",
+          "description": "Willow Software'in WS-O-X-AI-TH-1 sensörü, ağır dış ortam şartlarına dayanıklı ve kullanıma hazır bir sıcaklık ve nem sensörüdür. LoRaWAN® teknolojisini kullanarak dış ortam sıcaklık ve nem ölçüm verilerini aktaran kompakt bir ortam izleme sensörüdür. 10000 mAh pil ile 10 yıla kadar çalışabilir ve LoRaWAN protokolünü destekleyen tüm LoRaWAN ağ geçitleriyle uyumlu çalışır.",
+          "applications": [
+            {
+              "icon": "building",
+              "label": "Evler"
+            },
+            {
+              "icon": "factory",
+              "label": "Fabrikalar"
+            },
+            {
+              "icon": "barn",
+              "label": "Depolar"
+            },
+            {
+              "icon": "building",
+              "label": "Ofisler"
+            },
+            {
+              "icon": "map",
+              "label": "İç ve dış mekan sahaları"
+            },
+            {
+              "icon": "sprout",
+              "label": "Seralar"
+            }
+          ],
+          "shortDescription": "Dış ortamda sıcaklık ve nemi hassas şekilde ölçen, gerçek zamanlı uzaktan izleme sunan LoRaWAN sensörü."
+        }
+      },
       "sortOrder": 80,
       "battery_life": "up to 10 years",
-      "communication_range": "up to 15 km"
+      "communication_range": "up to 15 km",
+      "documents": [
+        {
+          "id": "brochure",
+          "type": "brochure",
+          "files": {
+            "en": "https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/datasheets/willowtemp/brochure-en.pdf"
+          }
+        },
+        {
+          "id": "manual",
+          "type": "manual",
+          "files": {
+            "en": "https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/datasheets/willowtemp/manual-en.pdf"
+          }
+        },
+        {
+          "id": "quickstart",
+          "type": "quickstart",
+          "files": {
+            "en": "https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/datasheets/willowtemp/quickstart-en.pdf"
+          }
+        }
+      ]
     },
     {
       "id": "willowmod",
@@ -1573,10 +1908,70 @@
         ]
       },
       "visible": true,
-      "localized": {},
+      "localized": {
+        "tr": {
+          "type": "IP67 Endüstriyel LoRaWAN Modbus Sensörü",
+          "title": "IP67 Endüstriyel LoRaWAN Modbus Sensörü",
+          "description": "Kullanıcı tanımlı Modbus register'larını okur/yazar ve LoRaWAN üzerinden kablosuz bir Modbus RTU geçiş (pass-through) köprüsü oluşturur. Endüstriyel ekipmanların kablosuz uzaktan izlenmesi için idealdir.",
+          "applications": [
+            {
+              "icon": "factory",
+              "label": "Endüstriyel tesisler"
+            },
+            {
+              "icon": "factory",
+              "label": "Fabrikalar"
+            },
+            {
+              "icon": "barn",
+              "label": "Depolar"
+            },
+            {
+              "icon": "sprout",
+              "label": "Seralar"
+            },
+            {
+              "icon": "activity",
+              "label": "Enerji izleme sistemleri"
+            },
+            {
+              "icon": "gear",
+              "label": "PLC uygulamaları"
+            },
+            {
+              "icon": "water",
+              "label": "Gaz ve su sayacı okuma"
+            }
+          ],
+          "shortDescription": "Modbus register'larını okuyup LoRaWAN üzerinden kablosuz Modbus RTU köprüsü oluşturan endüstriyel sensör."
+        }
+      },
       "sortOrder": 90,
       "battery_life": "up to 10 years",
-      "communication_range": "up to 15 km"
+      "communication_range": "up to 15 km",
+      "documents": [
+        {
+          "id": "brochure",
+          "type": "brochure",
+          "files": {
+            "en": "https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/datasheets/willowmod/brochure-en.pdf"
+          }
+        },
+        {
+          "id": "manual",
+          "type": "manual",
+          "files": {
+            "en": "https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/datasheets/willowmod/manual-en.pdf"
+          }
+        },
+        {
+          "id": "quickstart",
+          "type": "quickstart",
+          "files": {
+            "en": "https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/datasheets/willowmod/quickstart-en.pdf"
+          }
+        }
+      ]
     },
     {
       "id": "willowmos",
@@ -1675,7 +2070,36 @@
         ]
       },
       "visible": true,
-      "localized": {},
+      "localized": {
+        "tr": {
+          "type": "Dış Ortam LoRaWAN Toprak Nemi Sensörü",
+          "title": "Dış Ortam LoRaWAN Toprak Nemi Sensörü",
+          "description": "Toprak sıcaklığını ve toprak nemini ölçer. Veriler LoRaWAN üzerinden iletilir; akıllı tarım uygulamaları, seralar ve bahçeler için idealdir.",
+          "applications": [
+            {
+              "icon": "sprout",
+              "label": "Akıllı tarım uygulamaları"
+            },
+            {
+              "icon": "leaf",
+              "label": "Bahçeler"
+            },
+            {
+              "icon": "sprout",
+              "label": "Seralar"
+            },
+            {
+              "icon": "factory",
+              "label": "Gıda sanayi tesisleri"
+            },
+            {
+              "icon": "sprout",
+              "label": "Çiftlikler"
+            }
+          ],
+          "shortDescription": "Toprak nemi ve toprak sıcaklığını ölçen, akıllı tarım için ideal LoRaWAN sensörü."
+        }
+      },
       "sortOrder": 100,
       "battery_life": "up to 10 years",
       "communication_range": "up to 15 km"
@@ -1777,7 +2201,44 @@
         ]
       },
       "visible": true,
-      "localized": {},
+      "localized": {
+        "tr": {
+          "type": "IP67 LoRaWAN Sıvı Basınç Sensörü",
+          "title": "IP67 LoRaWAN Sıvı Basınç Sensörü",
+          "description": "Boru ve tank sistemlerindeki sıvı basıncını ölçer. Zorlu çalışma koşulları için uygundur ve veriler LoRaWAN üzerinden uzaktan izlenir.",
+          "applications": [
+            {
+              "icon": "activity",
+              "label": "Boru hattı basınç izleme"
+            },
+            {
+              "icon": "water",
+              "label": "Su tankı basıncı"
+            },
+            {
+              "icon": "water",
+              "label": "Atık su seviye izleme"
+            },
+            {
+              "icon": "water",
+              "label": "Endüstriyel sıvı basınç sistemleri"
+            },
+            {
+              "icon": "factory",
+              "label": "Kimyasal işleme tesisleri"
+            },
+            {
+              "icon": "gear",
+              "label": "Hidrolik sistemler"
+            },
+            {
+              "icon": "sprout",
+              "label": "Sulama sistemleri"
+            }
+          ],
+          "shortDescription": "Boru ve tank sistemlerindeki sıvı basıncını ölçen, zorlu koşullara uygun LoRaWAN sensörü."
+        }
+      },
       "sortOrder": 110,
       "battery_life": "up to 10 years",
       "communication_range": "up to 15 km"
@@ -1861,7 +2322,40 @@
         }
       },
       "visible": true,
-      "localized": {},
+      "localized": {
+        "tr": {
+          "type": "Dış Ortam LoRaWAN Anemometre",
+          "title": "Dış Ortam LoRaWAN Anemometre",
+          "description": "Dış ortamda rüzgar hızını ölçer. Zorlu koşullar için tasarlanmıştır ve veriler LoRaWAN üzerinden uzaktan izleme platformlarına iletilir.",
+          "applications": [
+            {
+              "icon": "cloud",
+              "label": "Meteoroloji istasyonları"
+            },
+            {
+              "icon": "building",
+              "label": "Havalimanları"
+            },
+            {
+              "icon": "water",
+              "label": "Limanlar ve barınaklar"
+            },
+            {
+              "icon": "building",
+              "label": "Gökdelenler"
+            },
+            {
+              "icon": "factory",
+              "label": "Endüstriyel sahalar"
+            },
+            {
+              "icon": "sprout",
+              "label": "Çiftlikler"
+            }
+          ],
+          "shortDescription": "Dış ortamda rüzgar hızını ölçen, zorlu koşullar için tasarlanmış LoRaWAN anemometre."
+        }
+      },
       "sortOrder": 120,
       "battery_life": "up to 10 years",
       "communication_range": "up to 15 km"
@@ -2259,214 +2753,399 @@
       "title": "WillowSoft at Embedded World 2026",
       "slug": "embedded-world-2026",
       "date": "2026-01-22",
-      "category": "Event",
+      "category": "event",
       "excerpt": "WillowSoft will showcase low-power embedded firmware, wireless connectivity and telemetry dashboards in Nuremberg.",
       "image": "pdf-assets/p29_06_X111.jpg",
       "featured": true,
       "localized": {
         "tr": {
-          "title": "WillowSoft, Embedded World 2026'da",
-          "category": "Etkinlik",
-          "excerpt": "WillowSoft, Nürnberg'de düşük güçlü gömülü firmware, kablosuz bağlantı ve telemetri panolarını sergileyecek.",
-          "content": ""
+          "title": "WillowSoft, Embedded World 2026'da Yer Alıyor",
+          "content": "<p>WillowSoft ile 10-12 Mart 2026'da Nürnberg'de buluşun; gömülü sistemler, kablosuz bağlantı ve IoT ürün teslimi konularını birlikte konuşalım.</p>\n<p>Bu etkinlik haberi, WillowSoft'un endüstriyel teknoloji ekosistemlerindeki aktif varlığını ve sahaya hazır bağlı ürün odağını gösterir.</p>",
+          "excerpt": "WillowSoft ile 10-12 Mart 2026'da Nürnberg'de buluşun; gömülü sistemler, kablosuz bağlantı ve IoT ürün teslimi konularını birlikte konuşalım."
         },
         "de": {
-          "title": "WillowSoft auf der Embedded World 2026",
-          "category": "Veranstaltung",
-          "excerpt": "WillowSoft präsentiert in Nürnberg energiesparende Embedded-Firmware, drahtlose Konnektivität und Telemetrie-Dashboards.",
-          "content": ""
+          "title": "WillowSoft stellt auf der Embedded World 2026 aus",
+          "content": "<p>Treffen Sie WillowSoft vom 10. bis 12. Maerz 2026 in Nuernberg, um ueber Embedded Systems, Wireless Connectivity und IoT-Produktlieferung zu sprechen.</p>\n<p>Dieses Event-Update zeigt WillowSofts aktive Rolle in industriellen Technologie-Oekosystemen und den Fokus auf feldbereite Connected Products.</p>",
+          "excerpt": "Treffen Sie WillowSoft vom 10. bis 12. Maerz 2026 in Nuernberg, um ueber Embedded Systems, Wireless Connectivity und IoT-Produktlieferung zu sprechen."
         },
         "fr": {
-          "title": "WillowSoft à Embedded World 2026",
-          "category": "Événement",
-          "excerpt": "WillowSoft présentera à Nuremberg des firmwares embarqués basse consommation, la connectivité sans fil et des tableaux de bord de télémétrie.",
-          "content": ""
+          "title": "WillowSoft expose a Embedded World 2026",
+          "content": "<p>Retrouvez WillowSoft a Nuremberg du 10 au 12 mars 2026 pour echanger sur les systemes embarques, la connectivite sans fil et la livraison de produits IoT.</p>\n<p>Cette actualite evenementielle montre la presence active de WillowSoft dans les ecosystemes industriels et son focus sur les produits connectes prets terrain.</p>",
+          "excerpt": "Retrouvez WillowSoft a Nuremberg du 10 au 12 mars 2026 pour echanger sur les systemes embarques, la connectivite sans fil et la livraison de produits IoT."
         },
         "es": {
-          "title": "WillowSoft en Embedded World 2026",
-          "category": "Evento",
-          "excerpt": "WillowSoft mostrará en Núremberg firmware embebido de bajo consumo, conectividad inalámbrica y paneles de telemetría.",
-          "content": ""
+          "title": "WillowSoft expondra en Embedded World 2026",
+          "content": "<p>Reunase con WillowSoft en Nuremberg del 10 al 12 de marzo de 2026 para hablar sobre sistemas embebidos, conectividad inalambrica y entrega de productos IoT.</p>\n<p>Esta actualizacion de evento muestra la presencia activa de WillowSoft en ecosistemas industriales y su foco en productos conectados listos para campo.</p>",
+          "excerpt": "Reunase con WillowSoft en Nuremberg del 10 al 12 de marzo de 2026 para hablar sobre sistemas embebidos, conectividad inalambrica y entrega de productos IoT."
         },
         "it": {
-          "title": "WillowSoft a Embedded World 2026",
-          "category": "Evento",
-          "excerpt": "WillowSoft presenterà a Norimberga firmware embedded a basso consumo, connettività wireless e dashboard di telemetria.",
-          "content": ""
+          "title": "WillowSoft espone a Embedded World 2026",
+          "content": "<p>Incontra WillowSoft a Norimberga dal 10 al 12 marzo 2026 per parlare di sistemi embedded, connettivita wireless e delivery di prodotti IoT.</p>\n<p>Questo aggiornamento evento mostra la presenza attiva di WillowSoft negli ecosistemi industriali e il focus su prodotti connessi pronti per il campo.</p>",
+          "excerpt": "Incontra WillowSoft a Norimberga dal 10 al 12 marzo 2026 per parlare di sistemi embedded, connettivita wireless e delivery di prodotti IoT."
         },
         "ar": {
-          "title": "WillowSoft في معرض Embedded World 2026",
-          "category": "فعالية",
-          "excerpt": "ستعرض WillowSoft في نورمبرغ برامج ثابتة مدمجة منخفضة الطاقة واتصالاً لاسلكياً ولوحات قياس عن بُعد.",
-          "content": ""
+          "title": "WillowSoft تشارك في Embedded World 2026",
+          "content": "<p>التقوا WillowSoft في نورمبرغ بين 10 و12 مارس 2026 لمناقشة الأنظمة المضمنة والاتصال اللاسلكي وتسليم منتجات IoT.</p>\n<p>يوضح هذا الخبر حضور WillowSoft النشط في منظومات التقنية الصناعية وتركيزها على المنتجات المتصلة الجاهزة للميدان.</p>",
+          "excerpt": "التقوا WillowSoft في نورمبرغ بين 10 و12 مارس 2026 لمناقشة الأنظمة المضمنة والاتصال اللاسلكي وتسليم منتجات IoT."
         },
         "ja": {
           "title": "WillowSoft、Embedded World 2026 に出展",
-          "category": "イベント",
-          "excerpt": "WillowSoft はニュルンベルクで、低消費電力の組み込みファームウェア、無線接続、テレメトリダッシュボードを展示します。",
-          "content": ""
+          "content": "<p>2026年3月10日から12日までニュルンベルクで、組込みシステム、無線接続、IoT製品デリバリーについて WillowSoft とご相談ください。</p>\n<p>このイベント更新は、産業技術エコシステムにおける WillowSoft の活動と、現場対応できるコネクテッド製品への注力を示します。</p>",
+          "excerpt": "2026年3月10日から12日までニュルンベルクで、組込みシステム、無線接続、IoT製品デリバリーについて WillowSoft とご相談ください。"
+        },
+        "en": {
+          "title": "WillowSoft is Exhibiting at Embedded World 2026",
+          "content": "<p>Meet us in Nuremberg on 10–12 March 2026 to discuss production-focused embedded systems, wireless connectivity, and IoT product delivery.</p>\n<p>Willowsoft is pleased to announce that we will be exhibiting at <strong>embedded world 2026</strong> in <strong>Nuremberg, Germany</strong>. We look forward to meeting engineering teams, product owners, and industry partners to discuss how we help turn connected-product concepts into reliable, field-ready solutions.</p>\n<h2>Event Details</h2>\n<ul>\n<li>\n<p><strong>Event:</strong> embedded world 2026</p>\n</li>\n<li>\n<p><strong>Dates:</strong> <strong>10–12 March 2026</strong></p>\n</li>\n<li>\n<p><strong>Location:</strong> Nuremberg, Germany</p>\n</li>\n<li>\n<p><strong>Booth:</strong> <strong>Hall 2 | Booth 2-637g</strong></p></li>\n</ul>\n<h2>What We’ll Be Showcasing</h2>\n<p>At the booth, we’ll be available to discuss:</p>\n<ul>\n<li>\n<p><strong>Low-power embedded firmware</strong> (MCU, RTOS, bare-metal)</p>\n</li>\n<li>\n<p><strong>Wireless connectivity</strong> with a strong focus on <strong>LoRaWAN</strong> (plus BLE, sub-GHz, cellular/LTE where relevant)</p>\n</li>\n<li>\n<p><strong>Custom sensor and electronics design</strong> (schematic, PCB, bring-up, validation)</p>\n</li>\n<li>\n<p><strong>Device telemetry & fleet monitoring dashboards</strong> (data pipelines, monitoring, operations tooling)</p>\n</li>\n<li>\n<p><strong>Production-readiness support</strong> (test strategy, reliability, deployment hardening)</p>\n</li>\n</ul>\n<p>Our goal is straightforward: reduce delivery risk and accelerate the path from prototype to a deployable product</p>",
+          "excerpt": "Meet WillowSoft in Nuremberg on 10-12 March 2026 to discuss embedded systems, wireless connectivity and IoT product delivery."
         }
-      }
+      },
+      "sortOrder": 0
     },
     {
       "id": "uk-operations",
       "title": "WillowSoft Launches UK Operations in London",
       "slug": "uk-operations",
       "date": "2025-09-24",
-      "category": "Company",
+      "category": "company",
       "excerpt": "The London operation supports UK and European customers with connected product engineering services.",
       "image": "pdf-assets/p28_01_X104.jpg",
       "featured": true,
       "localized": {
         "tr": {
-          "title": "WillowSoft, Londra'da Birleşik Krallık Operasyonlarını Başlattı",
-          "category": "Şirket",
-          "excerpt": "Londra operasyonu, Birleşik Krallık ve Avrupa'daki müşterilere bağlı ürün mühendisliği hizmetleri sunar.",
-          "content": ""
+          "title": "WillowSoft Londra'da Birleşik Krallık Operasyonlarını Başlattı",
+          "content": "<p>WillowSoft, Birleşik Krallık ve Avrupa müşterilerine üretim odaklı gömülü sistem ve IoT geliştirme desteği vermek için Londra operasyonlarını başlattı.</p>\n<p>Bu şirket dönüm noktası, WillowSoft'un operasyonel zeminini güçlendirir ve müşterilere uzun vadeli ürün teslimi için daha net bir partner sunar.</p>",
+          "excerpt": "WillowSoft, Birleşik Krallık ve Avrupa müşterilerine üretim odaklı gömülü sistem ve IoT geliştirme desteği vermek için Londra operasyonlarını başlattı."
         },
         "de": {
-          "title": "WillowSoft startet UK-Geschäft in London",
-          "category": "Unternehmen",
-          "excerpt": "Der Standort London unterstützt Kunden in Großbritannien und Europa mit Engineering-Services für vernetzte Produkte.",
-          "content": ""
+          "title": "WillowSoft startet UK-Operationen in London",
+          "content": "<p>WillowSoft expandiert nach London, um Kunden in Grossbritannien und Europa bei produktionsorientierter Embedded- und IoT-Entwicklung zu unterstuetzen.</p>\n<p>Dieser Unternehmensmeilenstein staerkt WillowSofts operative Basis und gibt Kunden einen klareren Partner fuer langfristige Produktlieferung.</p>",
+          "excerpt": "WillowSoft expandiert nach London, um Kunden in Grossbritannien und Europa bei produktionsorientierter Embedded- und IoT-Entwicklung zu unterstuetzen."
         },
         "fr": {
-          "title": "WillowSoft lance ses opérations britanniques à Londres",
-          "category": "Entreprise",
-          "excerpt": "L'antenne de Londres accompagne les clients britanniques et européens avec des services d'ingénierie de produits connectés.",
-          "content": ""
+          "title": "WillowSoft lance ses operations UK a Londres",
+          "content": "<p>WillowSoft s'implante a Londres afin d'accompagner les clients britanniques et europeens sur le developpement embedded et IoT oriente production.</p>\n<p>Ce jalon d'entreprise renforce la base operationnelle de WillowSoft et donne aux clients un partenaire plus clair pour la livraison produit long terme.</p>",
+          "excerpt": "WillowSoft s'implante a Londres afin d'accompagner les clients britanniques et europeens sur le developpement embedded et IoT oriente production."
         },
         "es": {
-          "title": "WillowSoft inicia sus operaciones en el Reino Unido en Londres",
-          "category": "Empresa",
-          "excerpt": "La operación de Londres da soporte a clientes del Reino Unido y Europa con servicios de ingeniería de productos conectados.",
-          "content": ""
+          "title": "WillowSoft inicia operaciones en Reino Unido desde Londres",
+          "content": "<p>WillowSoft se expande a Londres para apoyar a clientes del Reino Unido y Europa con desarrollo embedded e IoT orientado a produccion.</p>\n<p>Este hito corporativo fortalece la base operativa de WillowSoft y ofrece a los clientes un socio mas claro para entregas de producto a largo plazo.</p>",
+          "excerpt": "WillowSoft se expande a Londres para apoyar a clientes del Reino Unido y Europa con desarrollo embedded e IoT orientado a produccion."
         },
         "it": {
-          "title": "WillowSoft avvia le operazioni nel Regno Unito a Londra",
-          "category": "Azienda",
-          "excerpt": "La sede di Londra supporta i clienti del Regno Unito e d'Europa con servizi di ingegneria di prodotti connessi.",
-          "content": ""
+          "title": "WillowSoft avvia le operazioni UK a Londra",
+          "content": "<p>WillowSoft si espande a Londra per supportare clienti UK ed europei nello sviluppo embedded e IoT orientato alla produzione.</p>\n<p>Questo traguardo aziendale rafforza la base operativa di WillowSoft e offre ai clienti un partner piu chiaro per delivery di prodotto a lungo termine.</p>",
+          "excerpt": "WillowSoft si espande a Londra per supportare clienti UK ed europei nello sviluppo embedded e IoT orientato alla produzione."
         },
         "ar": {
           "title": "WillowSoft تطلق عملياتها في المملكة المتحدة من لندن",
-          "category": "الشركة",
-          "excerpt": "تدعم عمليات لندن عملاء المملكة المتحدة وأوروبا بخدمات هندسة المنتجات المتصلة.",
-          "content": ""
+          "content": "<p>تتوسع WillowSoft إلى لندن لدعم عملاء المملكة المتحدة وأوروبا في تطوير الأنظمة المضمنة ومنتجات IoT الموجهة للإنتاج.</p>\n<p>تعزز هذه المحطة المؤسسية قاعدة WillowSoft التشغيلية وتمنح العملاء شريكاً أوضح لتسليم المنتجات على المدى الطويل.</p>",
+          "excerpt": "تتوسع WillowSoft إلى لندن لدعم عملاء المملكة المتحدة وأوروبا في تطوير الأنظمة المضمنة ومنتجات IoT الموجهة للإنتاج."
         },
         "ja": {
           "title": "WillowSoft、ロンドンで英国事業を開始",
-          "category": "会社",
-          "excerpt": "ロンドン拠点は、コネクテッド製品のエンジニアリングサービスで英国および欧州の顧客を支援します。",
-          "content": ""
+          "content": "<p>WillowSoft はロンドンに拠点を広げ、英国および欧州の顧客に生産志向の組込み・IoT開発を提供します。</p>\n<p>この企業マイルストーンは WillowSoft の事業基盤を強化し、長期的な製品デリバリーに向けた明確なパートナー像を示します。</p>",
+          "excerpt": "WillowSoft はロンドンに拠点を広げ、英国および欧州の顧客に生産志向の組込み・IoT開発を提供します。"
+        },
+        "en": {
+          "title": "WillowSoft Launches UK Operations in London",
+          "content": "<p>We are expanding our operations to London to better support UK and EU customers with production-focused embedded and IoT development.<br><br></p>\n<p>Willowsoft is pleased to announce the launch of our UK operations in London. This expansion is a practical step to work closer with customers and partners across the United Kingdom and Europe—improving responsiveness, collaboration, and delivery for embedded and connected-product programs.</p>\n<p>While we establish our presence in London, we will continue to strengthen our engineering capacity and growth in Türkiye, maintaining the same execution discipline that has supported our work across industrial and commercial deployments.<br><br><br></p>",
+          "excerpt": "WillowSoft is expanding to London to support UK and European customers with production-focused embedded and IoT development."
         }
-      }
+      },
+      "sortOrder": 1
     },
     {
       "id": "minister-varank-visit",
       "title": "Minister Varank Visit at Mugla Teknopark",
       "slug": "minister-varank-visit",
       "date": "2022-08-02",
-      "category": "Proof",
+      "category": "field-update",
       "excerpt": "WillowSoft presented LoRaWAN sensor solutions and local IoT engineering capabilities during the visit.",
       "image": "pdf-assets/p29_03_X108.jpg",
       "featured": false,
       "localized": {
         "tr": {
-          "title": "Bakan Varank'ın Muğla Teknopark Ziyareti",
-          "category": "Kanıt",
-          "excerpt": "WillowSoft, ziyaret sırasında LoRaWAN sensör çözümlerini ve yerel IoT mühendislik yeteneklerini sundu.",
-          "content": ""
+          "title": "Bakan Varank Ziyaretinde IIoT İnovasyonu Sergilendi",
+          "content": "<p>WillowSoft, Bakan Mustafa Varank'ın Muğla Teknopark ziyaretinde IIoT ve embedded technology yeteneklerini sundu.</p>\n<p>Bu saha güncellemesi, ekosistem etkileşimini, paydaş güvenini ve WillowSoft'un teknik yetkinliğini gerçek ortamlarda gösterebilme gücünü vurgular.</p>",
+          "excerpt": "WillowSoft, Bakan Mustafa Varank'ın Muğla Teknopark ziyaretinde IIoT ve gömülü teknoloji yeteneklerini sundu."
         },
         "de": {
-          "title": "Besuch von Minister Varank im Mugla Teknopark",
-          "category": "Beleg",
-          "excerpt": "WillowSoft präsentierte beim Besuch LoRaWAN-Sensorlösungen und lokale IoT-Engineering-Kompetenzen.",
-          "content": ""
+          "title": "IIoT-Innovation beim Besuch von Minister Varank vorgestellt",
+          "content": "<p>WillowSoft praesentierte beim Besuch von Minister Mustafa Varank im Mugla Teknopark Kompetenzen in IIoT und Embedded Technology.</p>\n<p>Dieses Field-Update hebt Oekosystem-Engagement, Stakeholder-Vertrauen und WillowSofts Faehigkeit hervor, technische Kompetenz real zu zeigen.</p>",
+          "excerpt": "WillowSoft praesentierte beim Besuch von Minister Mustafa Varank im Mugla Teknopark Kompetenzen in IIoT und Embedded Technology."
         },
         "fr": {
-          "title": "Visite du ministre Varank au Mugla Teknopark",
-          "category": "Preuve",
-          "excerpt": "WillowSoft a présenté lors de la visite des solutions de capteurs LoRaWAN et ses compétences locales en ingénierie IoT.",
-          "content": ""
+          "title": "Innovation IIoT presentee lors de la visite du ministre Varank",
+          "content": "<p>WillowSoft a presente ses capacites IIoT et embedded technology lors de la visite du ministre Mustafa Varank a Mugla Teknopark.</p>\n<p>Cette mise a jour terrain souligne l'engagement ecosysteme, la confiance des parties prenantes et la capacite de WillowSoft a presenter ses competences en conditions reelles.</p>",
+          "excerpt": "WillowSoft a presente ses capacites IIoT et embedded technology lors de la visite du ministre Mustafa Varank a Mugla Teknopark."
         },
         "es": {
-          "title": "Visita del ministro Varank al Mugla Teknopark",
-          "category": "Prueba",
-          "excerpt": "Durante la visita, WillowSoft presentó soluciones de sensores LoRaWAN y capacidades locales de ingeniería IoT.",
-          "content": ""
+          "title": "Innovacion IIoT durante la visita del ministro Varank",
+          "content": "<p>WillowSoft presento sus capacidades de IIoT y embedded technology durante la visita del ministro Mustafa Varank a Mugla Teknopark.</p>\n<p>Esta actualizacion de campo destaca el compromiso del ecosistema, la confianza de los stakeholders y la capacidad de WillowSoft para mostrar competencia tecnica en entornos reales.</p>",
+          "excerpt": "WillowSoft presento sus capacidades de IIoT y embedded technology durante la visita del ministro Mustafa Varank a Mugla Teknopark."
         },
         "it": {
-          "title": "Visita del ministro Varank al Mugla Teknopark",
-          "category": "Prova",
-          "excerpt": "Durante la visita, WillowSoft ha presentato soluzioni di sensori LoRaWAN e competenze locali di ingegneria IoT.",
-          "content": ""
+          "title": "Innovazione IIoT durante la visita del ministro Varank",
+          "content": "<p>WillowSoft ha presentato capacita IIoT ed embedded technology durante la visita del ministro Mustafa Varank a Mugla Teknopark.</p>\n<p>Questo aggiornamento sul campo evidenzia engagement dell'ecosistema, fiducia degli stakeholder e capacita di WillowSoft di mostrare competenze tecniche in contesti reali.</p>",
+          "excerpt": "WillowSoft ha presentato capacita IIoT ed embedded technology durante la visita del ministro Mustafa Varank a Mugla Teknopark."
         },
         "ar": {
-          "title": "زيارة الوزير وارانك إلى مجمّع موغلا التقني",
-          "category": "إثبات",
-          "excerpt": "قدّمت WillowSoft خلال الزيارة حلول مستشعرات LoRaWAN وقدرات هندسة إنترنت الأشياء المحلية.",
-          "content": ""
+          "title": "عرض ابتكارات IIoT خلال زيارة الوزير فارانك",
+          "content": "<p>قدمت WillowSoft قدراتها في IIoT والتقنيات المضمنة خلال زيارة الوزير مصطفى فارانك إلى Muğla Teknopark.</p>\n<p>يسلط هذا التحديث الميداني الضوء على تفاعل المنظومة وثقة أصحاب المصلحة وقدرة WillowSoft على عرض قدراتها التقنية في بيئات حقيقية.</p>",
+          "excerpt": "قدمت WillowSoft قدراتها في IIoT والتقنيات المضمنة خلال زيارة الوزير مصطفى فارانك إلى Muğla Teknopark."
         },
         "ja": {
-          "title": "ヴァランク大臣がムーラ・テクノパークを訪問",
-          "category": "実績",
-          "excerpt": "WillowSoft は訪問時に、LoRaWAN センサーソリューションと地域の IoT エンジニアリング能力を紹介しました。",
-          "content": ""
+          "title": "Varank 大臣訪問時に IIoT イノベーションを紹介",
+          "content": "<p>WillowSoft は Mustafa Varank 大臣の Muğla Teknopark 訪問時に、IIoT と組込み技術の能力を紹介しました。</p>\n<p>この現場アップデートは、エコシステムとの関係、ステークホルダーの信頼、実環境で技術力を示す WillowSoft の能力を強調します。</p>",
+          "excerpt": "WillowSoft は Mustafa Varank 大臣の Muğla Teknopark 訪問時に、IIoT と組込み技術の能力を紹介しました。"
+        },
+        "en": {
+          "title": "Showcasing IIoT Innovation During Minister Varank's Visit",
+          "content": "<p>Minister of Industry and Technology, Mr. Mustafa Varank, Muğla Governor, Mr. Orhan Tavlı, and the Muğla Teknopark Board of Directors attended the official opening of Muğla Teknopark on June 18. Following the opening, they visited the technopark companies.</p>\n<p>During the visit to our company, Mr. Varank showed great interest in our LoRaWAN sensor solutions, and we explained the technical details.</p>\n<p>He stated that we are contributing to our country in the field of IoT, which we are striving to make local and national through the technologies we have developed, and that they will provide their support.</p>",
+          "excerpt": "WillowSoft presented IIoT and embedded technology capabilities during Minister Mustafa Varank's visit to Mugla Teknopark."
         }
-      }
+      },
+      "sortOrder": 2
     },
     {
       "id": "win-eurasia",
       "title": "WillowSoft at WIN EURASIA",
       "slug": "win-eurasia",
       "date": "2022-08-02",
-      "category": "Event",
+      "category": "event",
       "excerpt": "Industrial IoT solutions and LoRaWAN products were presented to manufacturing and automation teams.",
       "image": "pdf-assets/p29_02_X107.jpg",
       "featured": false,
       "localized": {
         "tr": {
-          "title": "WillowSoft, WIN EURASIA'da",
-          "category": "Etkinlik",
-          "excerpt": "Üretim ve otomasyon ekiplerine Endüstriyel IoT çözümleri ve LoRaWAN ürünleri sunuldu.",
-          "content": ""
+          "title": "WillowSoft WIN EURASIA 2022'de",
+          "content": "<p>WillowSoft, endüstriyel ziyaretçilerle buluşmak ve IoT, IIoT ve akıllı çözüm yeteneklerini sunmak için WIN EURASIA 2022'ye katıldı.</p>\n<p>Bu etkinlik haberi, WillowSoft'un endüstriyel teknoloji ekosistemlerindeki aktif varlığını ve sahaya hazır bağlı ürün odağını gösterir.</p>",
+          "excerpt": "WillowSoft, endüstriyel ziyaretçilerle buluşmak ve IoT, IIoT ve akıllı çözüm yeteneklerini sunmak için WIN EURASIA 2022'ye katıldı."
         },
         "de": {
-          "title": "WillowSoft auf der WIN EURASIA",
-          "category": "Veranstaltung",
-          "excerpt": "Fertigungs- und Automatisierungsteams wurden industrielle IoT-Lösungen und LoRaWAN-Produkte vorgestellt.",
-          "content": ""
+          "title": "WillowSoft auf der WIN EURASIA 2022",
+          "content": "<p>WillowSoft nahm an der WIN EURASIA 2022 teil, um Industriebesucher zu treffen und IoT-, IIoT- und Smart-Solution-Kompetenzen zu zeigen.</p>\n<p>Dieses Event-Update zeigt WillowSofts aktive Rolle in industriellen Technologie-Oekosystemen und den Fokus auf feldbereite Connected Products.</p>",
+          "excerpt": "WillowSoft nahm an der WIN EURASIA 2022 teil, um Industriebesucher zu treffen und IoT-, IIoT- und Smart-Solution-Kompetenzen zu zeigen."
         },
         "fr": {
-          "title": "WillowSoft à WIN EURASIA",
-          "category": "Événement",
-          "excerpt": "Des solutions IoT industrielles et des produits LoRaWAN ont été présentés aux équipes de fabrication et d'automatisation.",
-          "content": ""
+          "title": "WillowSoft a WIN EURASIA 2022",
+          "content": "<p>WillowSoft a participe a WIN EURASIA 2022 pour rencontrer les visiteurs industriels et presenter ses capacites IoT, IIoT et smart solutions.</p>\n<p>Cette actualite evenementielle montre la presence active de WillowSoft dans les ecosystemes industriels et son focus sur les produits connectes prets terrain.</p>",
+          "excerpt": "WillowSoft a participe a WIN EURASIA 2022 pour rencontrer les visiteurs industriels et presenter ses capacites IoT, IIoT et smart solutions."
         },
         "es": {
-          "title": "WillowSoft en WIN EURASIA",
-          "category": "Evento",
-          "excerpt": "Se presentaron soluciones de IoT industrial y productos LoRaWAN a equipos de fabricación y automatización.",
-          "content": ""
+          "title": "WillowSoft en WIN EURASIA 2022",
+          "content": "<p>WillowSoft participo en WIN EURASIA 2022 para reunirse con visitantes industriales y presentar capacidades IoT, IIoT y smart solutions.</p>\n<p>Esta actualizacion de evento muestra la presencia activa de WillowSoft en ecosistemas industriales y su foco en productos conectados listos para campo.</p>",
+          "excerpt": "WillowSoft participo en WIN EURASIA 2022 para reunirse con visitantes industriales y presentar capacidades IoT, IIoT y smart solutions."
         },
         "it": {
-          "title": "WillowSoft a WIN EURASIA",
-          "category": "Evento",
-          "excerpt": "Sono state presentate soluzioni IoT industriali e prodotti LoRaWAN ai team di produzione e automazione.",
-          "content": ""
+          "title": "WillowSoft a WIN EURASIA 2022",
+          "content": "<p>WillowSoft ha partecipato a WIN EURASIA 2022 per incontrare visitatori industriali e presentare capacita IoT, IIoT e smart solution.</p>\n<p>Questo aggiornamento evento mostra la presenza attiva di WillowSoft negli ecosistemi industriali e il focus su prodotti connessi pronti per il campo.</p>",
+          "excerpt": "WillowSoft ha partecipato a WIN EURASIA 2022 per incontrare visitatori industriali e presentare capacita IoT, IIoT e smart solution."
         },
         "ar": {
-          "title": "WillowSoft في معرض WIN EURASIA",
-          "category": "فعالية",
-          "excerpt": "عُرضت حلول إنترنت الأشياء الصناعي ومنتجات LoRaWAN على فرق التصنيع والأتمتة.",
-          "content": ""
+          "title": "WillowSoft في WIN EURASIA 2022",
+          "content": "<p>شاركت WillowSoft في WIN EURASIA 2022 للقاء زوار القطاع الصناعي وعرض قدراتها في IoT وIIoT والحلول الذكية.</p>\n<p>يوضح هذا الخبر حضور WillowSoft النشط في منظومات التقنية الصناعية وتركيزها على المنتجات المتصلة الجاهزة للميدان.</p>",
+          "excerpt": "شاركت WillowSoft في WIN EURASIA 2022 للقاء زوار القطاع الصناعي وعرض قدراتها في IoT وIIoT والحلول الذكية."
         },
         "ja": {
-          "title": "WillowSoft、WIN EURASIA に出展",
-          "category": "イベント",
-          "excerpt": "製造・オートメーションのチームに、産業用 IoT ソリューションと LoRaWAN 製品を紹介しました。",
-          "content": ""
+          "title": "WillowSoft、WIN EURASIA 2022 に参加",
+          "content": "<p>WillowSoft は WIN EURASIA 2022 に参加し、産業分野の来場者に IoT、IIoT、スマートソリューションの能力を紹介しました。</p>\n<p>このイベント更新は、産業技術エコシステムにおける WillowSoft の活動と、現場対応できるコネクテッド製品への注力を示します。</p>",
+          "excerpt": "WillowSoft は WIN EURASIA 2022 に参加し、産業分野の来場者に IoT、IIoT、スマートソリューションの能力を紹介しました。"
+        },
+        "en": {
+          "title": "WillowSoft at WIN EURASIA 2022",
+          "content": "<p>Willow Software participated in WIN EURASIA 2022, engaging with domestic and international visitors. We showcased our expertise in IoT, IIoT, Cloud Technologies, Smart Agriculture Solutions, Smart City Solutions, and Smart Industry Solutions. The strong interest in our LoRaWAN sensors underscored our proven success in this field.</p><p>#smartcities #smartagriculture #smartindustry #cloudsolutions #lorawan</p>",
+          "excerpt": "WillowSoft joined WIN EURASIA 2022 to meet industrial visitors and present IoT, IIoT and smart solution capabilities."
+        }
+      },
+      "sortOrder": 3
+    },
+    {
+      "id": "bakim-istanbul-2022",
+      "date": "2022-05-22",
+      "slug": "bakim-istanbul-2022",
+      "image": "https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/news/bakim-istanbul-2022/cover.jpg",
+      "title": "WillowSoft Shines at Bakim Istanbul 2022",
+      "images": [
+        "https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/news/bakim-istanbul-2022/cover.jpg",
+        "https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/news/bakim-istanbul-2022/gallery-1.jpg",
+        "https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/news/bakim-istanbul-2022/gallery-2.jpg",
+        "https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/news/bakim-istanbul-2022/gallery-3.jpg",
+        "https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/news/bakim-istanbul-2022/gallery-4.png"
+      ],
+      "content": "<p>At the Bakım İstanbul 2022 Symposium, held on May 17-18 at The Green Park Pendik Hotel, Willow Software connected with industry professionals to present our cutting-edge projects from Turkey. Our LoRaWAN sensors, showcased through live demonstrations, drew significant interest, underscoring their impact on IoT, Industrial IoT (IIoT), and industrial maintenance solutions.</p><p>#smartindustry #cloudsolutions #lorawan</p>",
+      "excerpt": "WillowSoft met industry professionals at Bakim Istanbul 2022 and presented LoRaWAN sensors and IIoT solutions.",
+      "category": "event",
+      "featured": false,
+      "sourceId": 3044,
+      "sortOrder": 4,
+      "sourceUrl": "https://willowsoft.co/willow-software-bakim-istanbul-2022-sempozyumunda-2/",
+      "localized": {
+        "ar": {
+          "title": "WillowSoft تبرز في Bakim Istanbul 2022",
+          "content": "<p>التقت WillowSoft بمهنيي القطاع في Bakim Istanbul 2022 وعرضت مستشعرات LoRaWAN وحلول IIoT.</p>\n<p>يوضح هذا الخبر حضور WillowSoft النشط في منظومات التقنية الصناعية وتركيزها على المنتجات المتصلة الجاهزة للميدان.</p>",
+          "excerpt": "التقت WillowSoft بمهنيي القطاع في Bakim Istanbul 2022 وعرضت مستشعرات LoRaWAN وحلول IIoT."
+        },
+        "de": {
+          "title": "WillowSoft ueberzeugt auf der Bakim Istanbul 2022",
+          "content": "<p>WillowSoft traf auf der Bakim Istanbul 2022 Branchenexperten und stellte LoRaWAN-Sensoren sowie IIoT-Loesungen vor.</p>\n<p>Dieses Event-Update zeigt WillowSofts aktive Rolle in industriellen Technologie-Oekosystemen und den Fokus auf feldbereite Connected Products.</p>",
+          "excerpt": "WillowSoft traf auf der Bakim Istanbul 2022 Branchenexperten und stellte LoRaWAN-Sensoren sowie IIoT-Loesungen vor."
+        },
+        "en": {
+          "title": "WillowSoft Shines at Bakim Istanbul 2022",
+          "content": "<p>At the Bakım İstanbul 2022 Symposium, held on May 17-18 at The Green Park Pendik Hotel, Willow Software connected with industry professionals to present our cutting-edge projects from Turkey. Our LoRaWAN sensors, showcased through live demonstrations, drew significant interest, underscoring their impact on IoT, Industrial IoT (IIoT), and industrial maintenance solutions.</p><p>#smartindustry #cloudsolutions #lorawan</p>",
+          "excerpt": "WillowSoft met industry professionals at Bakim Istanbul 2022 and presented LoRaWAN sensors and IIoT solutions."
+        },
+        "es": {
+          "title": "WillowSoft destaca en Bakim Istanbul 2022",
+          "content": "<p>WillowSoft se reunio con profesionales del sector en Bakim Istanbul 2022 y presento sensores LoRaWAN y soluciones IIoT.</p>\n<p>Esta actualizacion de evento muestra la presencia activa de WillowSoft en ecosistemas industriales y su foco en productos conectados listos para campo.</p>",
+          "excerpt": "WillowSoft se reunio con profesionales del sector en Bakim Istanbul 2022 y presento sensores LoRaWAN y soluciones IIoT."
+        },
+        "fr": {
+          "title": "WillowSoft se distingue a Bakim Istanbul 2022",
+          "content": "<p>WillowSoft a rencontre des professionnels du secteur a Bakim Istanbul 2022 et presente ses capteurs LoRaWAN et solutions IIoT.</p>\n<p>Cette actualite evenementielle montre la presence active de WillowSoft dans les ecosystemes industriels et son focus sur les produits connectes prets terrain.</p>",
+          "excerpt": "WillowSoft a rencontre des professionnels du secteur a Bakim Istanbul 2022 et presente ses capteurs LoRaWAN et solutions IIoT."
+        },
+        "it": {
+          "title": "WillowSoft si distingue a Bakim Istanbul 2022",
+          "content": "<p>WillowSoft ha incontrato professionisti del settore a Bakim Istanbul 2022 e presentato sensori LoRaWAN e soluzioni IIoT.</p>\n<p>Questo aggiornamento evento mostra la presenza attiva di WillowSoft negli ecosistemi industriali e il focus su prodotti connessi pronti per il campo.</p>",
+          "excerpt": "WillowSoft ha incontrato professionisti del settore a Bakim Istanbul 2022 e presentato sensori LoRaWAN e soluzioni IIoT."
+        },
+        "ja": {
+          "title": "WillowSoft、Bakim Istanbul 2022 で存在感を発揮",
+          "content": "<p>WillowSoft は Bakim Istanbul 2022 で業界関係者と交流し、LoRaWAN センサーと IIoT ソリューションを紹介しました。</p>\n<p>このイベント更新は、産業技術エコシステムにおける WillowSoft の活動と、現場対応できるコネクテッド製品への注力を示します。</p>",
+          "excerpt": "WillowSoft は Bakim Istanbul 2022 で業界関係者と交流し、LoRaWAN センサーと IIoT ソリューションを紹介しました。"
+        },
+        "tr": {
+          "title": "WillowSoft Bakım İstanbul 2022'de Öne Çıktı",
+          "content": "<p>WillowSoft, Bakım İstanbul 2022'de sektör profesyonelleriyle buluştu ve LoRaWAN sensör ile IIoT çözümlerini sundu.</p>\n<p>Bu etkinlik haberi, WillowSoft'un endüstriyel teknoloji ekosistemlerindeki aktif varlığını ve sahaya hazır bağlı ürün odağını gösterir.</p>",
+          "excerpt": "WillowSoft, Bakım İstanbul 2022'de sektör profesyonelleriyle buluştu ve LoRaWAN sensör ile IIoT çözümlerini sundu."
+        }
+      }
+    },
+    {
+      "id": "industry-4-0-fair-2022",
+      "date": "2021-10-06",
+      "slug": "industry-4-0-fair-2022",
+      "image": "https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/news/industry-4-0-fair-2022/cover.jpg",
+      "title": "WillowSoft Showcases LoRaWAN and IIoT at Industry 4.0 Fair 2022",
+      "images": [
+        "https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/news/industry-4-0-fair-2022/cover.jpg",
+        "https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/news/industry-4-0-fair-2022/gallery-1.jpg",
+        "https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/news/industry-4-0-fair-2022/gallery-2.jpg",
+        "https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/news/industry-4-0-fair-2022/gallery-3.jpg",
+        "https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/news/industry-4-0-fair-2022/gallery-4.jpg",
+        "https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/news/industry-4-0-fair-2022/gallery-5.jpg",
+        "https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/news/industry-4-0-fair-2022/gallery-6.jpg",
+        "https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/news/industry-4-0-fair-2022/gallery-7.jpg",
+        "https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/news/industry-4-0-fair-2022/gallery-8.jpg"
+      ],
+      "content": "<p>At the Industry 4.0 Fair 2022 in Istanbul, Willow Software connected with attendees to present our cutting-edge projects developed in Turkey. Through live demonstrations, we introduced our advanced LoRaWAN sensors, showcasing their role in Industrial IoT (IIoT) and smart industry solutions. The strong interest from participants reaffirmed Willow Software’s leadership in advancing Industry 4.0 technologies.</p>\n<p>#smartindustry #cloudsolutions #lorawan #industry40</p>",
+      "excerpt": "WillowSoft demonstrated LoRaWAN, IIoT and smart industrial solutions at the Industry 4.0 Fair in Istanbul.",
+      "category": "event",
+      "featured": false,
+      "sourceId": 1651,
+      "sortOrder": 5,
+      "sourceUrl": "https://willowsoft.co/willow-software-bipom-turkey-endustri-4-0-fuarinda/",
+      "localized": {
+        "ar": {
+          "title": "WillowSoft تعرض LoRaWAN وIIoT في Industry 4.0 Fair 2022",
+          "content": "<p>عرضت WillowSoft قدرات LoRaWAN وIIoT والحلول الصناعية الذكية في معرض Industry 4.0 في إسطنبول.</p>\n<p>يوضح هذا الخبر حضور WillowSoft النشط في منظومات التقنية الصناعية وتركيزها على المنتجات المتصلة الجاهزة للميدان.</p>",
+          "excerpt": "عرضت WillowSoft قدرات LoRaWAN وIIoT والحلول الصناعية الذكية في معرض Industry 4.0 في إسطنبول."
+        },
+        "de": {
+          "title": "WillowSoft zeigt LoRaWAN und IIoT auf der Industry 4.0 Fair 2022",
+          "content": "<p>WillowSoft demonstrierte LoRaWAN, IIoT und smarte Industrieloesungen auf der Industry 4.0 Fair in Istanbul.</p>\n<p>Dieses Event-Update zeigt WillowSofts aktive Rolle in industriellen Technologie-Oekosystemen und den Fokus auf feldbereite Connected Products.</p>",
+          "excerpt": "WillowSoft demonstrierte LoRaWAN, IIoT und smarte Industrieloesungen auf der Industry 4.0 Fair in Istanbul."
+        },
+        "en": {
+          "title": "WillowSoft Showcases LoRaWAN and IIoT at Industry 4.0 Fair 2022",
+          "content": "<p>At the Industry 4.0 Fair 2022 in Istanbul, Willow Software connected with attendees to present our cutting-edge projects developed in Turkey. Through live demonstrations, we introduced our advanced LoRaWAN sensors, showcasing their role in Industrial IoT (IIoT) and smart industry solutions. The strong interest from participants reaffirmed Willow Software’s leadership in advancing Industry 4.0 technologies.</p>\n<p>#smartindustry #cloudsolutions #lorawan #industry40</p>",
+          "excerpt": "WillowSoft demonstrated LoRaWAN, IIoT and smart industrial solutions at the Industry 4.0 Fair in Istanbul."
+        },
+        "es": {
+          "title": "WillowSoft presenta LoRaWAN e IIoT en Industry 4.0 Fair 2022",
+          "content": "<p>WillowSoft demostro LoRaWAN, IIoT y soluciones industriales inteligentes en la feria Industry 4.0 de Estambul.</p>\n<p>Esta actualizacion de evento muestra la presencia activa de WillowSoft en ecosistemas industriales y su foco en productos conectados listos para campo.</p>",
+          "excerpt": "WillowSoft demostro LoRaWAN, IIoT y soluciones industriales inteligentes en la feria Industry 4.0 de Estambul."
+        },
+        "fr": {
+          "title": "WillowSoft presente LoRaWAN et IIoT au salon Industry 4.0 2022",
+          "content": "<p>WillowSoft a demontre LoRaWAN, IIoT et des solutions industrielles intelligentes au salon Industry 4.0 a Istanbul.</p>\n<p>Cette actualite evenementielle montre la presence active de WillowSoft dans les ecosystemes industriels et son focus sur les produits connectes prets terrain.</p>",
+          "excerpt": "WillowSoft a demontre LoRaWAN, IIoT et des solutions industrielles intelligentes au salon Industry 4.0 a Istanbul."
+        },
+        "it": {
+          "title": "WillowSoft presenta LoRaWAN e IIoT a Industry 4.0 Fair 2022",
+          "content": "<p>WillowSoft ha dimostrato LoRaWAN, IIoT e soluzioni industriali smart alla fiera Industry 4.0 di Istanbul.</p>\n<p>Questo aggiornamento evento mostra la presenza attiva di WillowSoft negli ecosistemi industriali e il focus su prodotti connessi pronti per il campo.</p>",
+          "excerpt": "WillowSoft ha dimostrato LoRaWAN, IIoT e soluzioni industriali smart alla fiera Industry 4.0 di Istanbul."
+        },
+        "ja": {
+          "title": "WillowSoft、Industry 4.0 Fair 2022 で LoRaWAN と IIoT を紹介",
+          "content": "<p>WillowSoft はイスタンブールの Industry 4.0 Fair で LoRaWAN、IIoT、スマート産業ソリューションを実演しました。</p>\n<p>このイベント更新は、産業技術エコシステムにおける WillowSoft の活動と、現場対応できるコネクテッド製品への注力を示します。</p>",
+          "excerpt": "WillowSoft はイスタンブールの Industry 4.0 Fair で LoRaWAN、IIoT、スマート産業ソリューションを実演しました。"
+        },
+        "tr": {
+          "title": "WillowSoft Industry 4.0 Fair 2022'de LoRaWAN ve IIoT Çözümlerini Sergiledi",
+          "content": "<p>WillowSoft, İstanbul'daki Industry 4.0 Fair'de LoRaWAN, IIoT ve akıllı endüstriyel çözüm yeteneklerini gösterdi.</p>\n<p>Bu etkinlik haberi, WillowSoft'un endüstriyel teknoloji ekosistemlerindeki aktif varlığını ve sahaya hazır bağlı ürün odağını gösterir.</p>",
+          "excerpt": "WillowSoft, İstanbul'daki Industry 4.0 Fair'de LoRaWAN, IIoT ve akıllı endüstriyel çözüm yeteneklerini gösterdi."
+        }
+      }
+    },
+    {
+      "id": "american-firms-mugla-teknopark",
+      "date": "2021-09-13",
+      "slug": "american-firms-mugla-teknopark",
+      "image": "https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/news/american-firms-mugla-teknopark/cover.jpg",
+      "title": "American Firms Boost Collaboration with Mugla Teknopark's WillowSoft",
+      "images": [
+        "https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/news/american-firms-mugla-teknopark/cover.jpg"
+      ],
+      "content": "<p>In 2022, Tom Dever, NimbeLink’s Americas Product Manager, and Oğuz Mürtezaoğlu, CEO of BiPOM Electronics, visited Muğla to engage with Willow Software at Muğla Teknopark A.Ş. Willow Software, a leader in embedded systems, electronic card design, and production, finalized a collaboration with NimbeLink to develop advanced sensors and electronic cards. The partnership enables Willow Software to utilize NimbeLink’s 4G and NB-IoT chips to produce sensors for markets in Turkey and the United States.</p><p>Following the agreement, Dever, Mürtezaoğlu, and Willow Software Co-Founder/Software Engineer Eren Baştürk met with representatives of the Muğla Chamber of Commerce and Industry (MUTSO), including Council President H. Koray Özcan, Board President Mustafa Ercan, and Board Member Mehmet Dişcigil. The group discussed the collaboration and explored opportunities for future projects. Mustafa Ercan, also Vice Chairman of Muğla Teknopark’s Board, expressed enthusiasm for the partnership, noting its potential benefits for both companies, Muğla, and Turkey. He pledged MUTSO’s ongoing support and oversight of the initiative.</p><p>#smartindustry #iot #lorawan #industry40</p>",
+      "excerpt": "American technology partners visited Mugla Teknopark to explore collaboration opportunities with WillowSoft around embedded systems and wireless products.",
+      "category": "field-update",
+      "featured": false,
+      "sourceId": 307,
+      "sortOrder": 6,
+      "sourceUrl": "https://willowsoft.co/amerikali-firmalarin-mugla-teknoparka-ilgisi-devam-ediyor/",
+      "localized": {
+        "ar": {
+          "title": "شركات أمريكية تعزز التعاون مع WillowSoft في Muğla Teknopark",
+          "content": "<p>زار شركاء تقنيون أمريكيون Muğla Teknopark لاستكشاف فرص التعاون مع WillowSoft في الأنظمة المضمنة والمنتجات اللاسلكية.</p>\n<p>يسلط هذا التحديث الميداني الضوء على تفاعل المنظومة وثقة أصحاب المصلحة وقدرة WillowSoft على عرض قدراتها التقنية في بيئات حقيقية.</p>",
+          "excerpt": "زار شركاء تقنيون أمريكيون Muğla Teknopark لاستكشاف فرص التعاون مع WillowSoft في الأنظمة المضمنة والمنتجات اللاسلكية."
+        },
+        "de": {
+          "title": "US-Unternehmen staerken die Zusammenarbeit mit WillowSoft im Mugla Teknopark",
+          "content": "<p>Amerikanische Technologiepartner besuchten den Mugla Teknopark, um Kooperationsmoeglichkeiten mit WillowSoft rund um Embedded Systems und Wireless Products zu pruefen.</p>\n<p>Dieses Field-Update hebt Oekosystem-Engagement, Stakeholder-Vertrauen und WillowSofts Faehigkeit hervor, technische Kompetenz real zu zeigen.</p>",
+          "excerpt": "Amerikanische Technologiepartner besuchten den Mugla Teknopark, um Kooperationsmoeglichkeiten mit WillowSoft rund um Embedded Systems und Wireless Products zu pruefen."
+        },
+        "en": {
+          "title": "American Firms Boost Collaboration with Mugla Teknopark's WillowSoft",
+          "content": "<p>In 2022, Tom Dever, NimbeLink’s Americas Product Manager, and Oğuz Mürtezaoğlu, CEO of BiPOM Electronics, visited Muğla to engage with Willow Software at Muğla Teknopark A.Ş. Willow Software, a leader in embedded systems, electronic card design, and production, finalized a collaboration with NimbeLink to develop advanced sensors and electronic cards. The partnership enables Willow Software to utilize NimbeLink’s 4G and NB-IoT chips to produce sensors for markets in Turkey and the United States.</p><p>Following the agreement, Dever, Mürtezaoğlu, and Willow Software Co-Founder/Software Engineer Eren Baştürk met with representatives of the Muğla Chamber of Commerce and Industry (MUTSO), including Council President H. Koray Özcan, Board President Mustafa Ercan, and Board Member Mehmet Dişcigil. The group discussed the collaboration and explored opportunities for future projects. Mustafa Ercan, also Vice Chairman of Muğla Teknopark’s Board, expressed enthusiasm for the partnership, noting its potential benefits for both companies, Muğla, and Turkey. He pledged MUTSO’s ongoing support and oversight of the initiative.</p><p>#smartindustry #iot #lorawan #industry40</p>",
+          "excerpt": "American technology partners visited Mugla Teknopark to explore collaboration opportunities with WillowSoft around embedded systems and wireless products."
+        },
+        "es": {
+          "title": "Empresas estadounidenses refuerzan la colaboracion con WillowSoft en Mugla Teknopark",
+          "content": "<p>Socios tecnologicos estadounidenses visitaron Mugla Teknopark para explorar oportunidades con WillowSoft en embedded systems y wireless products.</p>\n<p>Esta actualizacion de campo destaca el compromiso del ecosistema, la confianza de los stakeholders y la capacidad de WillowSoft para mostrar competencia tecnica en entornos reales.</p>",
+          "excerpt": "Socios tecnologicos estadounidenses visitaron Mugla Teknopark para explorar oportunidades con WillowSoft en embedded systems y wireless products."
+        },
+        "fr": {
+          "title": "Des entreprises americaines renforcent leur collaboration avec WillowSoft a Mugla Teknopark",
+          "content": "<p>Des partenaires technologiques americains ont visite Mugla Teknopark pour explorer des collaborations avec WillowSoft autour des systemes embedded et produits wireless.</p>\n<p>Cette mise a jour terrain souligne l'engagement ecosysteme, la confiance des parties prenantes et la capacite de WillowSoft a presenter ses competences en conditions reelles.</p>",
+          "excerpt": "Des partenaires technologiques americains ont visite Mugla Teknopark pour explorer des collaborations avec WillowSoft autour des systemes embedded et produits wireless."
+        },
+        "it": {
+          "title": "Aziende americane rafforzano la collaborazione con WillowSoft a Mugla Teknopark",
+          "content": "<p>Partner tecnologici americani hanno visitato Mugla Teknopark per esplorare opportunita con WillowSoft su embedded systems e wireless products.</p>\n<p>Questo aggiornamento sul campo evidenzia engagement dell'ecosistema, fiducia degli stakeholder e capacita di WillowSoft di mostrare competenze tecniche in contesti reali.</p>",
+          "excerpt": "Partner tecnologici americani hanno visitato Mugla Teknopark per esplorare opportunita con WillowSoft su embedded systems e wireless products."
+        },
+        "ja": {
+          "title": "米国企業、Muğla Teknopark の WillowSoft との連携を強化",
+          "content": "<p>米国の技術パートナーが Muğla Teknopark を訪問し、組込みシステムと無線製品に関する WillowSoft との協業機会を検討しました。</p>\n<p>この現場アップデートは、エコシステムとの関係、ステークホルダーの信頼、実環境で技術力を示す WillowSoft の能力を強調します。</p>",
+          "excerpt": "米国の技術パートナーが Muğla Teknopark を訪問し、組込みシステムと無線製品に関する WillowSoft との協業機会を検討しました。"
+        },
+        "tr": {
+          "title": "Amerikan Firmaları Muğla Teknopark'ta WillowSoft ile İş Birliğini Güçlendirdi",
+          "content": "<p>Amerikalı teknoloji partnerleri, gömülü sistemler ve kablosuz ürünler odağında WillowSoft ile iş birliği fırsatlarını görüşmek için Muğla Teknopark'ı ziyaret etti.</p>\n<p>Bu saha güncellemesi, ekosistem etkileşimini, paydaş güvenini ve WillowSoft'un teknik yetkinliğini gerçek ortamlarda gösterebilme gücünü vurgular.</p>",
+          "excerpt": "Amerikalı teknoloji partnerleri, gömülü sistemler ve kablosuz ürünler odağında WillowSoft ile iş birliği fırsatlarını görüşmek için Muğla Teknopark'ı ziyaret etti."
         }
       }
     },
@@ -2475,52 +3154,169 @@
       "title": "TUBITAK LoRaWAN End Node Workshop",
       "slug": "tubitak-workshop",
       "date": "2021-07-10",
-      "category": "Workshop",
+      "category": "workshop",
       "excerpt": "WillowSoft contributed to LoRaWAN end-node design and training for embedded connectivity teams.",
       "image": "pdf-assets/p06_02_X14.jpg",
       "featured": false,
       "localized": {
         "tr": {
-          "title": "TÜBİTAK LoRaWAN Uç Düğüm Atölyesi",
-          "category": "Atölye",
-          "excerpt": "WillowSoft, gömülü bağlantı ekipleri için LoRaWAN uç düğüm tasarımına ve eğitimine katkıda bulundu.",
-          "content": ""
+          "title": "TÜBİTAK - WillowSoft LoRaWAN Eğitim Atölyesi",
+          "content": "<p>WillowSoft, gömülü bağlantı ekipleri için LoRaWAN uç cihaz tasarımı ve eğitim atölyesi düzenlemek üzere TÜBİTAK ile çalıştı.</p>\n<p>Bu atölye haberi, WillowSoft'un eğitim kabiliyetini ve gömülü bağlantı ekiplerine uygulamalı bilgi aktarımını gösterir.</p>",
+          "excerpt": "WillowSoft, gömülü bağlantı ekipleri için LoRaWAN uç cihaz tasarımı ve eğitim atölyesi düzenlemek üzere TÜBİTAK ile çalıştı."
         },
         "de": {
-          "title": "TUBITAK LoRaWAN End-Node-Workshop",
-          "category": "Workshop",
-          "excerpt": "WillowSoft trug zum LoRaWAN-End-Node-Design und zur Schulung von Embedded-Connectivity-Teams bei.",
-          "content": ""
+          "title": "TUBITAK - WillowSoft Workshop",
+          "content": "<p>WillowSoft arbeitete mit TUBITAK zusammen, um einen Workshop zu LoRaWAN-End-Node-Design und Training fuer Embedded-Connectivity-Teams durchzufuehren.</p>\n<p>Dieses Workshop-Update zeigt WillowSofts Trainingskompetenz und praxisnahe Wissensvermittlung fuer Embedded-Connectivity-Teams.</p>",
+          "excerpt": "WillowSoft arbeitete mit TUBITAK zusammen, um einen Workshop zu LoRaWAN-End-Node-Design und Training fuer Embedded-Connectivity-Teams durchzufuehren."
         },
         "fr": {
-          "title": "Atelier TUBITAK sur les nœuds finaux LoRaWAN",
-          "category": "Atelier",
-          "excerpt": "WillowSoft a contribué à la conception de nœuds finaux LoRaWAN et à la formation des équipes de connectivité embarquée.",
-          "content": ""
+          "title": "Workshop TUBITAK - WillowSoft",
+          "content": "<p>WillowSoft s'est associe a TUBITAK pour organiser un workshop de design et formation LoRaWAN end-node pour les equipes embedded connectivity.</p>\n<p>Cette actualite workshop demontre la capacite de formation de WillowSoft et le transfert pratique de savoir pour les equipes embedded connectivity.</p>",
+          "excerpt": "WillowSoft s'est associe a TUBITAK pour organiser un workshop de design et formation LoRaWAN end-node pour les equipes embedded connectivity."
         },
         "es": {
-          "title": "Taller TUBITAK sobre nodos finales LoRaWAN",
-          "category": "Taller",
-          "excerpt": "WillowSoft contribuyó al diseño de nodos finales LoRaWAN y a la formación de equipos de conectividad embebida.",
-          "content": ""
+          "title": "Workshop TUBITAK - WillowSoft",
+          "content": "<p>WillowSoft colaboro con TUBITAK para impartir un workshop de diseno LoRaWAN end-node y formacion para equipos de embedded connectivity.</p>\n<p>Esta actualizacion de workshop demuestra la capacidad formativa de WillowSoft y la transferencia practica de conocimiento para equipos embedded connectivity.</p>",
+          "excerpt": "WillowSoft colaboro con TUBITAK para impartir un workshop de diseno LoRaWAN end-node y formacion para equipos de embedded connectivity."
         },
         "it": {
-          "title": "Workshop TUBITAK sui nodi finali LoRaWAN",
-          "category": "Workshop",
-          "excerpt": "WillowSoft ha contribuito alla progettazione di nodi finali LoRaWAN e alla formazione dei team di connettività embedded.",
-          "content": ""
+          "title": "Workshop TUBITAK - WillowSoft",
+          "content": "<p>WillowSoft ha collaborato con TUBITAK per erogare un workshop di LoRaWAN end-node design e training per team di embedded connectivity.</p>\n<p>Questo aggiornamento workshop dimostra la capacita formativa di WillowSoft e il trasferimento pratico di conoscenza per team embedded connectivity.</p>",
+          "excerpt": "WillowSoft ha collaborato con TUBITAK per erogare un workshop di LoRaWAN end-node design e training per team di embedded connectivity."
         },
         "ar": {
-          "title": "ورشة TÜBİTAK حول عُقد LoRaWAN الطرفية",
-          "category": "ورشة عمل",
-          "excerpt": "ساهمت WillowSoft في تصميم عُقد LoRaWAN الطرفية وتدريب فرق الاتصال المدمج.",
-          "content": ""
+          "title": "ورشة TUBITAK - WillowSoft",
+          "content": "<p>تعاونت WillowSoft مع TUBITAK لتقديم ورشة تصميم وتدريب LoRaWAN end-node لفرق الاتصال المضمن.</p>\n<p>يوضح هذا الخبر قدرة WillowSoft التدريبية ونقل المعرفة العملي لفرق الاتصال المضمن.</p>",
+          "excerpt": "تعاونت WillowSoft مع TUBITAK لتقديم ورشة تصميم وتدريب LoRaWAN end-node لفرق الاتصال المضمن."
         },
         "ja": {
-          "title": "TUBITAK LoRaWAN エンドノードワークショップ",
-          "category": "ワークショップ",
-          "excerpt": "WillowSoft は、組み込み接続チーム向けの LoRaWAN エンドノード設計とトレーニングに貢献しました。",
-          "content": ""
+          "title": "TUBITAK - WillowSoft ワークショップ",
+          "content": "<p>WillowSoft は TUBITAK と連携し、組込み接続チーム向けに LoRaWAN end-node design と training workshop を実施しました。</p>\n<p>このワークショップ更新は、WillowSoft の教育力と組込み接続チームへの実践的な知識移転を示します。</p>",
+          "excerpt": "WillowSoft は TUBITAK と連携し、組込み接続チーム向けに LoRaWAN end-node design と training workshop を実施しました。"
+        },
+        "en": {
+          "title": "TUBITAK - WillowSoft Workshop",
+          "content": "<p>From July 5-9, 2025, Willow Software partnered with TÜBİTAK to deliver a five-day \"LoRaWAN End Node Design and Training\" workshop at TÜBİTAK’s Ankara facilities. The event focused on systems developed with LoRaWAN technology, enabling participants to explore its applications and prepare infrastructure for future initiatives. Attendees actively developed various LoRaWAN End Node applications through hands-on sessions, demonstrating the technology’s impact on Industrial IoT (IIoT) and smart industry solutions. The workshop highlighted Willow Software’s leadership in LoRaWAN innovation.</p><p>#smartindustry #lorawan #iot #industry40</p>",
+          "excerpt": "WillowSoft partnered with TUBITAK to deliver a LoRaWAN end-node design and training workshop for embedded connectivity teams."
+        }
+      },
+      "sortOrder": 7
+    },
+    {
+      "id": "usa-export-mugla-teknopark",
+      "date": "2021-06-08",
+      "slug": "usa-export-mugla-teknopark",
+      "image": "https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/news/usa-export-mugla-teknopark/cover.jpg",
+      "title": "WillowSoft's USA Export Marks Mugla Teknopark's First Milestone",
+      "images": [
+        "https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/news/usa-export-mugla-teknopark/cover.jpg"
+      ],
+      "content": "<p>Willow Software, a leader in embedded systems, electronic card design, and production at Muğla Teknopark, achieved its first export to the United States. The export, a high-tech device software enabling secure, wireless communication for industrial devices, supports critical applications in defense, aerospace, and medical industries. Led by Co-Founder/Software Engineer Eren Baştürk, Software Developer Mikail Akta, Embedded Systems Developer Emre Kasap, and Software Developer Mehmet Can Onat, this achievement also represents Muğla Teknopark’s first export.</p><p>The agreement was signed with BiPOM Electronics, a U.S.-based company. Eren Baştürk and BiPOM founder Oğuz Murtezaoğlu met with Muğla Chamber of Commerce and Industry (MUTSO) Board President and Muğla Teknopark Vice Chairman Mustafa Ercan to discuss the deal and explore future collaborations. Ercan stated, “Since 2016, Muğla Teknopark A.Ş., founded by 52 partners including private sector, chambers, municipalities, and NGOs, has begun yielding results. Exporting advanced software to a technology powerhouse like the U.S. is a source of pride. Willow Software’s additional deal to export 500 modems and software to Israel highlights the growing impact of our Teknopark firms on Turkey’s innovation landscape.” This milestone affirms Willow Software’s expertise in Industrial IoT (IIoT) and Muğla Teknopark’s role as a hub for technological advancement.</p><p>#smartindustry #iot #industry40 #teknopark</p>",
+      "excerpt": "WillowSoft completed a high-tech export to the United States, marking an important milestone for Mugla Teknopark.",
+      "category": "export",
+      "featured": false,
+      "sourceId": 591,
+      "sortOrder": 8,
+      "sourceUrl": "https://willowsoft.co/mugla-teknoparktan-ilk-ihracat-amerikaya/",
+      "localized": {
+        "ar": {
+          "title": "تصدير WillowSoft إلى الولايات المتحدة يمثل محطة مهمة لـ Muğla Teknopark",
+          "content": "<p>أكملت WillowSoft تصديراً عالي التقنية إلى الولايات المتحدة، مسجلة محطة مهمة لـ Muğla Teknopark.</p>\n<p>تمثل محطة التصدير هذه إشارة سوقية: يمكن لمخرجات WillowSoft الهندسية أن تتجاوز التسليم المحلي وتصل إلى عملاء دوليين.</p>",
+          "excerpt": "أكملت WillowSoft تصديراً عالي التقنية إلى الولايات المتحدة، مسجلة محطة مهمة لـ Muğla Teknopark."
+        },
+        "de": {
+          "title": "WillowSofts USA-Export markiert einen Meilenstein fuer Mugla Teknopark",
+          "content": "<p>WillowSoft schloss einen Hightech-Export in die USA ab und setzte damit einen wichtigen Meilenstein fuer Mugla Teknopark.</p>\n<p>Dieser Exportmeilenstein ist ein Marktsignal: WillowSofts Engineering-Output kann ueber lokale Lieferung hinaus internationale Kunden erreichen.</p>",
+          "excerpt": "WillowSoft schloss einen Hightech-Export in die USA ab und setzte damit einen wichtigen Meilenstein fuer Mugla Teknopark."
+        },
+        "en": {
+          "title": "WillowSoft's USA Export Marks Mugla Teknopark's First Milestone",
+          "content": "<p>Willow Software, a leader in embedded systems, electronic card design, and production at Muğla Teknopark, achieved its first export to the United States. The export, a high-tech device software enabling secure, wireless communication for industrial devices, supports critical applications in defense, aerospace, and medical industries. Led by Co-Founder/Software Engineer Eren Baştürk, Software Developer Mikail Akta, Embedded Systems Developer Emre Kasap, and Software Developer Mehmet Can Onat, this achievement also represents Muğla Teknopark’s first export.</p><p>The agreement was signed with BiPOM Electronics, a U.S.-based company. Eren Baştürk and BiPOM founder Oğuz Murtezaoğlu met with Muğla Chamber of Commerce and Industry (MUTSO) Board President and Muğla Teknopark Vice Chairman Mustafa Ercan to discuss the deal and explore future collaborations. Ercan stated, “Since 2016, Muğla Teknopark A.Ş., founded by 52 partners including private sector, chambers, municipalities, and NGOs, has begun yielding results. Exporting advanced software to a technology powerhouse like the U.S. is a source of pride. Willow Software’s additional deal to export 500 modems and software to Israel highlights the growing impact of our Teknopark firms on Turkey’s innovation landscape.” This milestone affirms Willow Software’s expertise in Industrial IoT (IIoT) and Muğla Teknopark’s role as a hub for technological advancement.</p><p>#smartindustry #iot #industry40 #teknopark</p>",
+          "excerpt": "WillowSoft completed a high-tech export to the United States, marking an important milestone for Mugla Teknopark."
+        },
+        "es": {
+          "title": "La exportacion de WillowSoft a EE. UU. marca un hito para Mugla Teknopark",
+          "content": "<p>WillowSoft completo una exportacion de alta tecnologia a Estados Unidos, un hito importante para Mugla Teknopark.</p>\n<p>Este hito de exportacion es una senal de mercado: la ingenieria de WillowSoft puede ir mas alla de la entrega local y llegar a clientes internacionales.</p>",
+          "excerpt": "WillowSoft completo una exportacion de alta tecnologia a Estados Unidos, un hito importante para Mugla Teknopark."
+        },
+        "fr": {
+          "title": "L'export USA de WillowSoft marque un jalon pour Mugla Teknopark",
+          "content": "<p>WillowSoft a realise un export high-tech vers les Etats-Unis, marquant une etape importante pour Mugla Teknopark.</p>\n<p>Ce jalon export est un signal marche : les livrables engineering de WillowSoft peuvent depasser le local et atteindre des clients internationaux.</p>",
+          "excerpt": "WillowSoft a realise un export high-tech vers les Etats-Unis, marquant une etape importante pour Mugla Teknopark."
+        },
+        "it": {
+          "title": "L'export USA di WillowSoft segna un traguardo per Mugla Teknopark",
+          "content": "<p>WillowSoft ha completato un export high-tech verso gli Stati Uniti, segnando un traguardo importante per Mugla Teknopark.</p>\n<p>Questo traguardo export e un segnale di mercato: l'engineering output di WillowSoft puo superare la delivery locale e raggiungere clienti internazionali.</p>",
+          "excerpt": "WillowSoft ha completato un export high-tech verso gli Stati Uniti, segnando un traguardo importante per Mugla Teknopark."
+        },
+        "ja": {
+          "title": "WillowSoft の米国輸出、Muğla Teknopark の重要な節目に",
+          "content": "<p>WillowSoft は米国向けのハイテク輸出を完了し、Muğla Teknopark にとって重要な節目となりました。</p>\n<p>この輸出マイルストーンは市場シグナルです。WillowSoft のエンジニアリング成果は国内提供を越え、国際顧客に届くことを示します。</p>",
+          "excerpt": "WillowSoft は米国向けのハイテク輸出を完了し、Muğla Teknopark にとって重要な節目となりました。"
+        },
+        "tr": {
+          "title": "WillowSoft'un ABD İhracatı Muğla Teknopark İçin İlk Dönüm Noktası Oldu",
+          "content": "<p>WillowSoft'un Amerika Birleşik Devletleri'ne gerçekleştirdiği yüksek teknoloji ihracatı, Muğla Teknopark için önemli bir dönüm noktası oldu.</p>\n<p>Bu ihracat dönüm noktası güçlü bir pazar sinyalidir: WillowSoft'un mühendislik çıktısı yerel teslimatın ötesine geçip uluslararası müşterilere ulaşabilir.</p>",
+          "excerpt": "WillowSoft'un Amerika Birleşik Devletleri'ne gerçekleştirdiği yüksek teknoloji ihracatı, Muğla Teknopark için önemli bir dönüm noktası oldu."
+        }
+      }
+    },
+    {
+      "id": "mugla-teknopark-launch",
+      "date": "2021-04-22",
+      "slug": "mugla-teknopark-launch",
+      "image": "https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/news/mugla-teknopark-launch/cover.jpeg",
+      "title": "WillowSoft Launches Operations at Mugla Teknopark",
+      "images": [
+        "https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/news/mugla-teknopark-launch/cover.jpeg"
+      ],
+      "content": "<p>Willow Software San. ve Tic. Ltd. Şti. remains a key innovator at Muğla Teknopark, providing state-of-the-art solutions in IoT, electronics, and software development. With expertise in Industrial IoT (IIoT), the company develops advanced microcontroller and wireless technologies for sectors including defense, aerospace, medical, and smart agriculture. Willow Software’s ongoing contributions enhance Muğla Teknopark’s reputation as a center for technological excellence, driving global collaborations and high-tech exports.</p>\n<p>#smartindustry #iot #industry40 #teknopark</p>",
+      "excerpt": "WillowSoft began operations at Mugla Teknopark, strengthening its work in IoT, electronics and software development.",
+      "category": "company",
+      "featured": false,
+      "sourceId": 605,
+      "sortOrder": 9,
+      "sourceUrl": "https://willowsoft.co/willow-software-faaliyetlerine-basliyor/",
+      "localized": {
+        "ar": {
+          "title": "WillowSoft تبدأ عملياتها في Muğla Teknopark",
+          "content": "<p>بدأت WillowSoft عملياتها في Muğla Teknopark، معززة عملها في IoT والإلكترونيات وتطوير البرمجيات.</p>\n<p>تعزز هذه المحطة المؤسسية قاعدة WillowSoft التشغيلية وتمنح العملاء شريكاً أوضح لتسليم المنتجات على المدى الطويل.</p>",
+          "excerpt": "بدأت WillowSoft عملياتها في Muğla Teknopark، معززة عملها في IoT والإلكترونيات وتطوير البرمجيات."
+        },
+        "de": {
+          "title": "WillowSoft nimmt den Betrieb im Mugla Teknopark auf",
+          "content": "<p>WillowSoft startete den Betrieb im Mugla Teknopark und staerkt damit die Arbeit in IoT, Elektronik und Softwareentwicklung.</p>\n<p>Dieser Unternehmensmeilenstein staerkt WillowSofts operative Basis und gibt Kunden einen klareren Partner fuer langfristige Produktlieferung.</p>",
+          "excerpt": "WillowSoft startete den Betrieb im Mugla Teknopark und staerkt damit die Arbeit in IoT, Elektronik und Softwareentwicklung."
+        },
+        "en": {
+          "title": "WillowSoft Launches Operations at Mugla Teknopark",
+          "content": "<p>Willow Software San. ve Tic. Ltd. Şti. remains a key innovator at Muğla Teknopark, providing state-of-the-art solutions in IoT, electronics, and software development. With expertise in Industrial IoT (IIoT), the company develops advanced microcontroller and wireless technologies for sectors including defense, aerospace, medical, and smart agriculture. Willow Software’s ongoing contributions enhance Muğla Teknopark’s reputation as a center for technological excellence, driving global collaborations and high-tech exports.</p>\n<p>#smartindustry #iot #industry40 #teknopark</p>",
+          "excerpt": "WillowSoft began operations at Mugla Teknopark, strengthening its work in IoT, electronics and software development."
+        },
+        "es": {
+          "title": "WillowSoft inicia operaciones en Mugla Teknopark",
+          "content": "<p>WillowSoft inicio operaciones en Mugla Teknopark, reforzando su trabajo en IoT, electronica y desarrollo de software.</p>\n<p>Este hito corporativo fortalece la base operativa de WillowSoft y ofrece a los clientes un socio mas claro para entregas de producto a largo plazo.</p>",
+          "excerpt": "WillowSoft inicio operaciones en Mugla Teknopark, reforzando su trabajo en IoT, electronica y desarrollo de software."
+        },
+        "fr": {
+          "title": "WillowSoft demarre ses operations a Mugla Teknopark",
+          "content": "<p>WillowSoft a demarre ses operations a Mugla Teknopark, renforcant son travail en IoT, electronique et developpement logiciel.</p>\n<p>Ce jalon d'entreprise renforce la base operationnelle de WillowSoft et donne aux clients un partenaire plus clair pour la livraison produit long terme.</p>",
+          "excerpt": "WillowSoft a demarre ses operations a Mugla Teknopark, renforcant son travail en IoT, electronique et developpement logiciel."
+        },
+        "it": {
+          "title": "WillowSoft avvia le attivita a Mugla Teknopark",
+          "content": "<p>WillowSoft ha avviato le attivita a Mugla Teknopark, rafforzando il lavoro in IoT, elettronica e sviluppo software.</p>\n<p>Questo traguardo aziendale rafforza la base operativa di WillowSoft e offre ai clienti un partner piu chiaro per delivery di prodotto a lungo termine.</p>",
+          "excerpt": "WillowSoft ha avviato le attivita a Mugla Teknopark, rafforzando il lavoro in IoT, elettronica e sviluppo software."
+        },
+        "ja": {
+          "title": "WillowSoft、Muğla Teknopark で事業を開始",
+          "content": "<p>WillowSoft は Muğla Teknopark で事業を開始し、IoT、電子機器、ソフトウェア開発の取り組みを強化しました。</p>\n<p>この企業マイルストーンは WillowSoft の事業基盤を強化し、長期的な製品デリバリーに向けた明確なパートナー像を示します。</p>",
+          "excerpt": "WillowSoft は Muğla Teknopark で事業を開始し、IoT、電子機器、ソフトウェア開発の取り組みを強化しました。"
+        },
+        "tr": {
+          "title": "WillowSoft Muğla Teknopark'ta Faaliyetlerine Başladı",
+          "content": "<p>WillowSoft, IoT, elektronik ve yazılım geliştirme çalışmalarını güçlendirmek üzere Muğla Teknopark'ta faaliyetlerine başladı.</p>\n<p>Bu şirket dönüm noktası, WillowSoft'un operasyonel zeminini güçlendirir ve müşterilere uzun vadeli ürün teslimi için daha net bir partner sunar.</p>",
+          "excerpt": "WillowSoft, IoT, elektronik ve yazılım geliştirme çalışmalarını güçlendirmek üzere Muğla Teknopark'ta faaliyetlerine başladı."
         }
       }
     }

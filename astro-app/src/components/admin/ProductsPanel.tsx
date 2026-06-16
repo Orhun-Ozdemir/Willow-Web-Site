@@ -8,6 +8,7 @@ import ListEditorField from "./ListEditorField";
 import JsonEditorField from "./JsonEditorField";
 import DetailBlocksEditor from "./DetailBlocksEditor";
 import IconListEditor from "./IconListEditor";
+import ProductDocumentsEditor from "./ProductDocumentsEditor";
 import TranslationEditor from "./TranslationEditor";
 import { applicationIconForText, canonicalizeProduct, iconKeyForText } from "@/lib/product-model";
 
@@ -347,12 +348,18 @@ export default function ProductsPanel() {
                   helper="Bir satıra bir görsel yolu. İlk görsel kapak olur."
                   placeholder="assets/product-cutouts/example.png"
                 />
-                <FormField
-                  label="Datasheet URL"
-                  value={p.datasheet_url || p.datasheet || ""}
-                  onChange={(v) => updateProductFields(p.id, { datasheet_url: v, datasheet: v })}
-                  placeholder="/assets/datasheets/..."
+                <ProductDocumentsEditor
+                  value={Array.isArray(p.documents) ? p.documents : []}
+                  onChange={(docs) => updateProduct(p.id, "documents", docs)}
+                  productId={p.id}
                 />
+                {(p.datasheet_url || p.datasheet) && !(Array.isArray(p.documents) && p.documents.length) && (
+                  <p style={{ marginTop: 10, fontSize: 12.5, color: "#9ca3af" }}>
+                    Eski tek datasheet bağlantısı mevcut ve detay sayfasında yedek olarak gösteriliyor:{" "}
+                    <code style={{ fontSize: 11.5 }}>{p.datasheet_url || p.datasheet}</code>. Yukarıdan bir döküman
+                    ekleyip dile atadığınızda yeni sistem devreye girer.
+                  </p>
+                )}
               </div>
             )}
           </div>

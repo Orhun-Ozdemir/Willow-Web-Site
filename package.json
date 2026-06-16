@@ -5,7 +5,10 @@
   "scripts": {
     "start": "npm run start --prefix astro-app",
     "dev": "npm run dev --prefix astro-app",
-    "build": "npm run build --prefix astro-app"
+    "build": "npm run build --prefix astro-app",
+    "sync:product-tr": "node scripts/sync-product-localized-tr.mjs",
+    "verify:seo": "node scripts/verify-seo-redirects.mjs",
+    "verify:seo:http": "node scripts/verify-seo-redirects.mjs --http"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.108.1"

@@ -6,7 +6,7 @@ import { localizedValue, localizeItem, locales, resolveLocale, type Locale } fro
 import { buildAlternates, DEFAULT_OG_IMAGE, ORGANIZATION_SCHEMA, WEBSITE_SCHEMA, SITE_ORIGIN } from "@/lib/seo";
 import { aiMetaForPage, appendSchemaNodes, faqSchemaNode, stripHtml, type AiFaqItem } from "@/lib/ai-search";
 import { getProductExtras } from "@/lib/product-extras";
-import { applicationIconForText, buildSpecificationGroups, canonicalizeProduct, iconKeyForText, normalizeAssetPath, normalizeProductIconItems, normalizeProductSlug, normalizeStringList, productSlugCandidates, PRODUCT_ICON_SVG } from "@/lib/product-model";
+import { applicationIconForText, buildSpecificationGroups, canonicalizeProduct, iconKeyForText, LOCALE_NATIVE_NAMES, normalizeAssetPath, normalizeProductIconItems, normalizeProductSlug, normalizeStringList, productDocumentTypeLabel, productSlugCandidates, PRODUCT_ICON_SVG } from "@/lib/product-model";
 
 export const prerender = false;
 
@@ -43,6 +43,42 @@ const productAssetUrl = (path: any, fallback = "assets/hero-industrial-iot.jpg")
 const heroImageUrl = productAssetUrl(heroImage);
 const fallbackHeroImageUrl = productAssetUrl("assets/hero-industrial-iot.jpg");
 const heroImageItems = heroImages.map((imgUrl) => productAssetUrl(imgUrl));
+
+// ── Documents (type × language PDFs) ──────────────────────────────────────────
+// Keep only documents that actually have at least one file. For each, order the
+// available languages with the active locale first so the visitor sees their own
+// language at the top of the picker.
+const productDocuments = (Array.isArray(product.documents) ? product.documents : [])
+  .map((doc: any) => {
+    const availableLangs = locales.filter((l) => doc?.files?.[l]);
+    if (availableLangs.length === 0) return null;
+    const orderedLangs = [
+      ...(availableLangs.includes(locale) ? [locale] : []),
+      ...availableLangs.filter((l) => l !== locale),
+    ];
+    return {
+      type: doc.type,
+      label: productDocumentTypeLabel(doc.type, locale),
+      langs: orderedLangs.map((l) => ({
+        code: l,
+        name: LOCALE_NATIVE_NAMES[l] || l,
+        url: productAssetUrl(doc.files[l]),
+        isActive: l === locale,
+      })),
+    };
+  })
+  .filter(Boolean) as { type: string; label: string; langs: { code: string; name: string; url: string; isActive: boolean }[] }[];
+
+const hasDocuments = productDocuments.length > 0;
+// Primary document for the hero button: datasheet > brochure > first available.
+const primaryDoc =
+  productDocuments.find((d) => d.type === "datasheet") ||
+  productDocuments.find((d) => d.type === "brochure") ||
+  productDocuments[0] ||
+  null;
+const primaryDocUrl = primaryDoc ? (primaryDoc.langs.find((l) => l.isActive)?.url || primaryDoc.langs[0]?.url || "") : "";
+// Legacy single datasheet, used only as a fallback when no documents are set.
+const legacyDatasheetUrl = product.datasheet_url || product.datasheet || "";
 
 // Category text mappings
 const categoryMap: Record<string, string> = {
@@ -583,6 +619,8 @@ const t = {
   productsBreadcrumb: { en: "Products", tr: "Ürünler", de: "Produkte", fr: "Produits", es: "Productos", it: "Prodotti", ar: "المنتجات", ja: "製品一覧" },
   requestQuote: { en: "Request a quote", tr: "Teklif isteyin", de: "Angebot anfordern", fr: "Demander un devis", es: "Solicitar cotización", it: "Richiedi un preventivo", ar: "طلب عرض سعر", ja: "見積もりを依頼" },
   downloadDatasheet: { en: "Download datasheet", tr: "Veri sayfasını indir", de: "Datenblatt herunterladen", fr: "Télécharger la fiche technique", es: "Descargar ficha técnica", it: "Scarica la scheda tecnica", ar: "تنزيل ورقة البيانات", ja: "データシートをダウンロード" },
+  documentsTitle: { en: "Documents", tr: "Dökümanlar", de: "Dokumente", fr: "Documents", es: "Documentos", it: "Documenti", ar: "المستندات", ja: "ドキュメント" },
+  download: { en: "Download", tr: "İndir", de: "Herunterladen", fr: "Télécharger", es: "Descargar", it: "Scarica", ar: "تنزيل", ja: "ダウンロード" },
   specifications: { en: "Specifications", tr: "Teknik Özellikler", de: "Spezifikationen", fr: "Spécifications", es: "Especificaciones", it: "Specifiche", ar: "المواصفات", ja: "仕様" },
   keyFeatures: { en: "Key features", tr: "Öne çıkan özellikler", de: "Wichtige Eigenschaften", fr: "Caractéristiques principales", es: "Características clave", it: "Caratteristiche chiave", ar: "الميزات الرئيسية", ja: "主な特長" },
   capabilities: { en: "Capabilities", tr: "Yetenekler", de: "Fähigkeiten", fr: "Capacités", es: "Capacidades", it: "Funzionalità", ar: "القدرات", ja: "機能" },
@@ -686,8 +724,8 @@ const getT = (key: keyof typeof t) => {
           )}
           <div class="ws-hero-ctas">
             <a class="ws-btn ws-btn-primary" href={`/${locale}/contact?product=${encodeURIComponent(slug)}`}>{getT("requestQuote")}</a>
-            {(product.datasheet_url || product.datasheet) && (
-              <a class="ws-btn ws-btn-secondary" href={product.datasheet_url || product.datasheet} target="_blank" rel="noopener noreferrer">
+            {(hasDocuments ? primaryDocUrl : legacyDatasheetUrl) && (
+              <a class="ws-btn ws-btn-secondary" href={hasDocuments ? primaryDocUrl : legacyDatasheetUrl} target="_blank" rel="noopener noreferrer" download>
                 <Fragment set:html={ICONS.download} />
                 <span>{getT("downloadDatasheet")}</span>
               </a>
@@ -742,14 +780,59 @@ const getT = (key: keyof typeof t) => {
                 </div>
               ))}
             </dl>
-            {(product.datasheet_url || product.datasheet) && (
+            {hasDocuments ? (
+              <div class="ws-doc-block">
+                <span class="ws-doc-block-title">{getT("documentsTitle")}</span>
+                <div class="ws-doc-list">
+                  {productDocuments.map((doc) => (
+                    doc.langs.length === 1 ? (
+                      <a
+                        class="ws-doc-item"
+                        href={doc.langs[0].url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        hreflang={doc.langs[0].code}
+                        download
+                      >
+                        <Fragment set:html={ICONS.download} />
+                        <span class="ws-doc-label">{doc.label}</span>
+                        <span class="ws-doc-lang-tag">{doc.langs[0].name}</span>
+                      </a>
+                    ) : (
+                      <details class="ws-doc-item ws-doc-item-multi">
+                        <summary>
+                          <Fragment set:html={ICONS.download} />
+                          <span class="ws-doc-label">{doc.label}</span>
+                          <span class="ws-doc-caret" aria-hidden="true">▾</span>
+                        </summary>
+                        <div class="ws-doc-langs">
+                          {doc.langs.map((l) => (
+                            <a
+                              href={l.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              hreflang={l.code}
+                              download
+                              class={l.isActive ? "is-active" : ""}
+                            >
+                              <span>{l.name}</span>
+                              <span class="ws-doc-langs-dl">{getT("download")}</span>
+                            </a>
+                          ))}
+                        </div>
+                      </details>
+                    )
+                  ))}
+                </div>
+              </div>
+            ) : (legacyDatasheetUrl && (
               <div class="ws-specs-download-link">
                 <Fragment set:html={ICONS.download} />
-                <a href={product.datasheet_url || product.datasheet} target="_blank" rel="noopener noreferrer">
+                <a href={legacyDatasheetUrl} target="_blank" rel="noopener noreferrer" download>
                   {getT("downloadDatasheet")} (PDF)
                 </a>
               </div>
-            )}
+            ))}
           </div>
         </div>
 
@@ -1344,6 +1427,116 @@ const getT = (key: keyof typeof t) => {
     .ws-specs-card {
       padding: 24px;
     }
+  }
+  /* ── Documents block (type × language PDFs) ── */
+  .ws-doc-block {
+    margin-top: 22px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(var(--accent-rgb), 0.10);
+  }
+  .ws-doc-block-title {
+    display: block;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 12px;
+  }
+  .ws-doc-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .ws-doc-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 11px 14px;
+    border-radius: 10px;
+    border: 1px solid rgba(var(--accent-rgb), 0.12);
+    background: var(--panel);
+    color: var(--ink);
+    text-decoration: none;
+    font-size: 0.92rem;
+    font-weight: 600;
+    transition: border-color 0.15s ease, background 0.15s ease;
+  }
+  .ws-doc-item :global(svg) {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    color: var(--accent);
+  }
+  .ws-doc-item:hover {
+    border-color: rgba(var(--accent-rgb), 0.32);
+    background: rgba(var(--accent-rgb), 0.04);
+  }
+  .ws-doc-label {
+    flex: 1;
+  }
+  .ws-doc-lang-tag {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--muted);
+  }
+  /* multi-language: <details> dropdown */
+  details.ws-doc-item-multi {
+    display: block;
+    padding: 0;
+  }
+  details.ws-doc-item-multi > summary {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 11px 14px;
+    cursor: pointer;
+    list-style: none;
+  }
+  details.ws-doc-item-multi > summary::-webkit-details-marker {
+    display: none;
+  }
+  .ws-doc-caret {
+    font-size: 0.8rem;
+    color: var(--muted);
+    transition: transform 0.18s ease;
+  }
+  details.ws-doc-item-multi[open] .ws-doc-caret {
+    transform: rotate(180deg);
+  }
+  .ws-doc-langs {
+    display: flex;
+    flex-direction: column;
+    border-top: 1px solid rgba(var(--accent-rgb), 0.10);
+  }
+  .ws-doc-langs > a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 14px 10px 42px;
+    color: var(--ink);
+    text-decoration: none;
+    font-size: 0.88rem;
+    font-weight: 600;
+  }
+  .ws-doc-langs > a:hover {
+    background: rgba(var(--accent-rgb), 0.05);
+  }
+  .ws-doc-langs > a.is-active {
+    background: rgba(var(--accent-rgb), 0.06);
+  }
+  .ws-doc-langs > a.is-active > span:first-child::before {
+    content: "● ";
+    color: var(--accent);
+    font-size: 0.7em;
+    vertical-align: middle;
+  }
+  .ws-doc-langs-dl {
+    font-size: 0.74rem;
+    font-weight: 700;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
   }
   .ws-specs-header {
     display: flex;

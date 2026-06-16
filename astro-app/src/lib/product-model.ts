@@ -234,6 +234,87 @@ export function normalizeProductSpecifications(value: any): any {
   return {};
 }
 
+// ── Product documents (multi-type × multi-language PDFs) ──────────────────────
+
+export const PRODUCT_DOCUMENT_TYPES = [
+  "datasheet",
+  "brochure",
+  "schematic",
+  "manual",
+  "quickstart",
+  "certificate",
+  "other",
+] as const;
+export type ProductDocumentType = (typeof PRODUCT_DOCUMENT_TYPES)[number];
+
+/** Localized labels for each document type (used in admin + product detail). */
+export const PRODUCT_DOCUMENT_TYPE_LABELS: Record<ProductDocumentType, Record<string, string>> = {
+  datasheet: { en: "Datasheet", tr: "Veri Sayfası", de: "Datenblatt", fr: "Fiche technique", es: "Ficha técnica", it: "Scheda tecnica", ar: "ورقة البيانات", ja: "データシート" },
+  brochure: { en: "Brochure", tr: "Broşür", de: "Broschüre", fr: "Brochure", es: "Folleto", it: "Brochure", ar: "كتيب", ja: "カタログ" },
+  schematic: { en: "Schematic", tr: "Şematik", de: "Schaltplan", fr: "Schéma", es: "Esquema", it: "Schema", ar: "مخطط", ja: "回路図" },
+  manual: { en: "Manual", tr: "Kılavuz", de: "Handbuch", fr: "Manuel", es: "Manual", it: "Manuale", ar: "دليل", ja: "マニュアル" },
+  quickstart: { en: "Quick Start Guide", tr: "Hızlı Başlangıç", de: "Schnellstart", fr: "Guide de démarrage", es: "Guía rápida", it: "Guida rapida", ar: "دليل البدء السريع", ja: "クイックスタート" },
+  certificate: { en: "Certificate", tr: "Sertifika", de: "Zertifikat", fr: "Certificat", es: "Certificado", it: "Certificato", ar: "شهادة", ja: "証明書" },
+  other: { en: "Document", tr: "Doküman", de: "Dokument", fr: "Document", es: "Documento", it: "Documento", ar: "مستند", ja: "ドキュメント" },
+};
+
+/** Native language names, keyed by locale code (used in the document language picker). */
+export const LOCALE_NATIVE_NAMES: Record<string, string> = {
+  en: "English",
+  tr: "Türkçe",
+  de: "Deutsch",
+  fr: "Français",
+  es: "Español",
+  it: "Italiano",
+  ar: "العربية",
+  ja: "日本語",
+};
+
+export interface ProductDocument {
+  id: string;
+  type: ProductDocumentType;
+  /** locale code → PDF url. Only languages that actually have a file are present. */
+  files: Record<string, string>;
+}
+
+export function productDocumentTypeLabel(type: string, locale: string): string {
+  const key = (PRODUCT_DOCUMENT_TYPES as readonly string[]).includes(type)
+    ? (type as ProductDocumentType)
+    : "other";
+  const labels = PRODUCT_DOCUMENT_TYPE_LABELS[key];
+  return labels[locale] || labels.en;
+}
+
+/**
+ * Normalizes the `documents` array. Drops empty file URLs and invalid entries.
+ * Does NOT auto-migrate the legacy single `datasheet_url` — that stays available
+ * as a fallback so existing products keep working until documents are populated.
+ */
+export function normalizeProductDocuments(value: any): ProductDocument[] {
+  const parsed = parseMaybeJson(value);
+  if (!Array.isArray(parsed)) return [];
+  const out: ProductDocument[] = [];
+  parsed.forEach((entry: any, idx: number) => {
+    if (!entry || typeof entry !== "object") return;
+    const rawType = String(entry.type || "other").trim();
+    const type = (PRODUCT_DOCUMENT_TYPES as readonly string[]).includes(rawType)
+      ? (rawType as ProductDocumentType)
+      : "other";
+    const filesRaw = entry.files && typeof entry.files === "object" && !Array.isArray(entry.files) ? entry.files : {};
+    const files: Record<string, string> = {};
+    Object.entries(filesRaw).forEach(([loc, url]) => {
+      const clean = String(url || "").trim();
+      if (clean) files[loc] = clean;
+    });
+    out.push({
+      id: String(entry.id || `${type}-${idx}`),
+      type,
+      files,
+    });
+  });
+  return out;
+}
+
 export function canonicalizeProduct(raw: any) {
   const name = String(raw?.title || raw?.name || raw?.slug || raw?.id || "Product").trim();
   const category = normalizeProductCategory(raw?.category);
@@ -269,6 +350,7 @@ export function canonicalizeProduct(raw: any) {
     detailBlocks,
     datasheet: String(raw?.datasheet || raw?.datasheet_url || raw?.datasheetUrl || "").trim(),
     datasheet_url: String(raw?.datasheet_url || raw?.datasheet || raw?.datasheetUrl || "").trim(),
+    documents: normalizeProductDocuments(raw?.documents),
     visible: raw?.visible !== false,
     sortOrder: raw?.sortOrder ?? raw?.sort_order ?? 0,
     sort_order: raw?.sort_order ?? raw?.sortOrder ?? 0,
