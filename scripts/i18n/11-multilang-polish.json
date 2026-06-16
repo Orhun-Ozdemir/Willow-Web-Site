@@ -1,0 +1,576 @@
+{
+  "pageContent": {
+    "home": {
+      "heroLead": {
+        "de": "WillowSoft entwickelt alle Ebenen Ihres IoT-Produkts mit einem Team: Hardware, Firmware, Konnektivität, Backend und Benutzeroberflächen.",
+        "fr": "WillowSoft développe toutes les couches de votre produit IoT avec une seule équipe : matériel, firmware, connectivité, backend et interfaces utilisateur.",
+        "es": "WillowSoft desarrolla todas las capas de su producto IoT con un solo equipo: hardware, firmware, conectividad, backend e interfaces de usuario.",
+        "it": "WillowSoft sviluppa ogni livello del tuo prodotto IoT con un unico team: hardware, firmware, connettività, backend e interfacce utente.",
+        "ar": "تطوّر WillowSoft جميع طبقات منتج IoT الخاص بك بفريق واحد: العتاد، والـ firmware، والاتصال، والـ backend، وواجهات المستخدم.",
+        "ja": "WillowSoft は、ハードウェア、ファームウェア、通信、バックエンド、ユーザーインターフェースまで、IoT 製品のすべてのレイヤーを一つのチームで開発します。"
+      },
+      "ctaTitle": {
+        "de": "Bereit, ein <em class=\"hw-serif\">IoT-Produkt</em> oder eine <strong class=\"hw-display\">Industrieplattform</strong> zu entwickeln?",
+        "fr": "Prêt à créer un <em class=\"hw-serif\">produit IoT</em> ou une <strong class=\"hw-display\">plateforme industrielle</strong> ?",
+        "es": "¿Listo para crear un <em class=\"hw-serif\">producto IoT</em> o una <strong class=\"hw-display\">plataforma industrial</strong>?",
+        "it": "Pronto a creare un <em class=\"hw-serif\">prodotto IoT</em> o una <strong class=\"hw-display\">piattaforma industriale</strong>?",
+        "ar": "هل أنت مستعد لبناء <em class=\"hw-serif\">منتج IoT</em> أو <strong class=\"hw-display\">منصة صناعية</strong>؟",
+        "ja": "<em class=\"hw-serif\">IoT 製品</em>または<strong class=\"hw-display\">産業用プラットフォーム</strong>を構築する準備はできていますか？"
+      },
+      "ctaLead": {
+        "de": "Sagen Sie uns, ob Sie Hardware, Firmware, Backend, PostgreSQL, eine mobile App, ein Web-Dashboard, eine Website, eine VR-Simulation oder eine komplette Systemarchitektur benötigen.",
+        "fr": "Dites-nous si vous avez besoin de matériel, firmware, backend, PostgreSQL, application mobile, dashboard web, site web, simulation VR ou architecture système complète.",
+        "es": "Cuéntenos si necesita hardware, firmware, backend, PostgreSQL, app móvil, dashboard web, sitio web, simulación VR o una arquitectura de sistema completa.",
+        "it": "Dicci se hai bisogno di hardware, firmware, backend, PostgreSQL, app mobile, dashboard web, sito web, simulazione VR o architettura di sistema completa.",
+        "ar": "أخبرنا إن كنت بحاجة إلى عتاد، أو firmware، أو backend، أو PostgreSQL، أو تطبيق جوال، أو dashboard ويب، أو موقع إلكتروني، أو محاكاة VR، أو بنية نظام متكاملة.",
+        "ja": "ハードウェア、ファームウェア、バックエンド、PostgreSQL、モバイルアプリ、Web ダッシュボード、Web サイト、VR シミュレーション、またはシステム全体の設計が必要かをお聞かせください。"
+      }
+    },
+    "services": {
+      "heroTitle": {
+        "de": "Engineering-Leistungen für IoT-Produkte.",
+        "fr": "Services d’ingénierie pour produits IoT.",
+        "es": "Servicios de ingeniería para productos IoT.",
+        "it": "Servizi di ingegneria per prodotti IoT.",
+        "ar": "خدمات هندسية لمنتجات IoT.",
+        "ja": "IoT 製品のためのエンジニアリングサービス。"
+      },
+      "heroLead": {
+        "de": "WillowSoft hilft Teams, die gesamte Produktarchitektur aufzubauen: Embedded Devices, Firmware, Konnektivität, Backend, PostgreSQL, Web-Admin, Mobile App und VR-Layer, die zusammen funktionieren.",
+        "fr": "WillowSoft aide les équipes à construire toute l’architecture produit : appareils embarqués, firmware, connectivité, backend, PostgreSQL, interface web admin, application mobile et couches VR conçues pour fonctionner ensemble.",
+        "es": "WillowSoft ayuda a los equipos a construir toda la arquitectura del producto: dispositivos embebidos, firmware, conectividad, backend, PostgreSQL, web admin, app móvil y capas VR diseñadas para trabajar juntas.",
+        "it": "WillowSoft aiuta i team a costruire l’intera architettura del prodotto: dispositivi embedded, firmware, connettività, backend, PostgreSQL, web admin, app mobile e layer VR progettati per lavorare insieme.",
+        "ar": "تساعد WillowSoft الفرق على بناء بنية المنتج كاملة: أجهزة embedded، وfirmware، واتصال، وbackend، وPostgreSQL، وواجهة web admin، وتطبيق جوال، وطبقات VR تعمل معًا.",
+        "ja": "WillowSoft は、組み込みデバイス、ファームウェア、通信、バックエンド、PostgreSQL、Web 管理画面、モバイルアプリ、VR レイヤーまで、連携して動く製品アーキテクチャ全体の構築を支援します。"
+      },
+      "stackLead": {
+        "de": "Die animierten Knoten und Signale hinter den Technologiekarten zeigen den Datenfluss vom Gerät über Gateway, Backend und Datenbank bis zu Dashboard, Mobile App und VR-Layer.",
+        "fr": "Les nœuds et signaux animés derrière les cartes technologiques représentent le flux de données : appareil, gateway, backend, base de données, dashboard, application mobile et couche VR.",
+        "es": "Los nodos y señales animados detrás de las tarjetas tecnológicas muestran el flujo de datos: dispositivo, gateway, backend, base de datos, dashboard, app móvil y capa VR.",
+        "it": "I nodi e i segnali animati dietro le card tecnologiche mostrano il flusso dei dati: dispositivo, gateway, backend, database, dashboard, app mobile e layer VR.",
+        "ar": "تعرض العُقد والإشارات المتحركة خلف بطاقات التقنية مسار البيانات: من الجهاز إلى الـ gateway، ثم الـ backend وقاعدة البيانات والـ dashboard وتطبيق الجوال وطبقة VR.",
+        "ja": "技術カードの背後にあるアニメーションのノードと信号は、デバイスからゲートウェイ、バックエンド、データベース、ダッシュボード、モバイルアプリ、VR レイヤーへ流れるデータを表しています。"
+      }
+    },
+    "contact": {
+      "heroLead": {
+        "de": "Sagen Sie uns, ob Sie Hardware, Firmware, Backend-API, PostgreSQL-Architektur, Admin-Panel, Mobile App, Website, Web-Dashboard, VR-Simulation oder ein komplettes IoT-System benötigen.",
+        "fr": "Dites-nous si vous avez besoin de matériel, firmware, API backend, architecture PostgreSQL, panneau admin, application mobile, site web, dashboard web, simulation VR ou système IoT complet.",
+        "es": "Cuéntenos si necesita hardware, firmware, API backend, arquitectura PostgreSQL, panel admin, app móvil, sitio web, dashboard web, simulación VR o un sistema IoT completo.",
+        "it": "Dicci se hai bisogno di hardware, firmware, API backend, architettura PostgreSQL, pannello admin, app mobile, sito web, dashboard web, simulazione VR o un sistema IoT completo.",
+        "ar": "أخبرنا إن كنت بحاجة إلى عتاد، أو firmware، أو API backend، أو بنية PostgreSQL، أو لوحة admin، أو تطبيق جوال، أو موقع إلكتروني، أو dashboard ويب، أو محاكاة VR، أو نظام IoT متكامل.",
+        "ja": "ハードウェア、ファームウェア、バックエンド API、PostgreSQL 設計、管理パネル、モバイルアプリ、Web サイト、Web ダッシュボード、VR シミュレーション、または IoT システム全体のどれが必要かをお聞かせください。"
+      }
+    },
+    "startProject": {
+      "formLead": {
+        "de": "Teilen Sie uns Projekttyp, Umfang und Zeitplan mit. Unser Team klärt die Anforderungen in einem Discovery-Call und erstellt einen passenden technischen Fahrplan.",
+        "fr": "Partagez le type de projet, le périmètre et le calendrier. Notre équipe clarifie les besoins lors d’un appel de cadrage et propose une feuille de route adaptée.",
+        "es": "Comparta el tipo de proyecto, el alcance y el calendario. Nuestro equipo aclarará los requisitos en una llamada de descubrimiento y preparará una hoja de ruta adecuada.",
+        "it": "Condividi tipo di progetto, ambito e tempistiche. Il nostro team chiarirà i requisiti in una call di discovery e preparerà una roadmap adatta.",
+        "ar": "شارك نوع المشروع ونطاقه والجدول الزمني. يوضّح فريقنا المتطلبات في مكالمة استكشافية ويقدّم خارطة طريق مناسبة.",
+        "ja": "プロジェクトの種類、範囲、スケジュールを共有してください。チームがディスカバリーコールで要件を整理し、適切なロードマップを提案します。"
+      }
+    }
+  },
+  "solutions": {
+    "industrial-iot-monitoring": {
+      "title": { "de": "Industrial IoT Monitoring", "fr": "Monitoring IoT industriel", "es": "Monitorización IoT industrial", "it": "Monitoraggio IoT industriale", "ar": "مراقبة IoT الصناعية", "ja": "産業 IoT モニタリング" },
+      "headline": { "de": "Industrial IoT Monitoring", "fr": "Monitoring IoT industriel", "es": "Monitorización IoT industrial", "it": "Monitoraggio IoT industriale", "ar": "مراقبة IoT الصناعية", "ja": "産業 IoT モニタリング" },
+      "summary": { "de": "Remote Monitoring für Industriesensoren, Embedded Systems und Feldgeräte.", "fr": "Monitoring à distance pour capteurs industriels, systèmes embarqués et appareils terrain.", "es": "Monitorización remota para sensores industriales, sistemas embebidos y dispositivos de campo.", "it": "Monitoraggio remoto per sensori industriali, sistemi embedded e dispositivi sul campo.", "ar": "مراقبة عن بُعد للمستشعرات الصناعية والأنظمة embedded والأجهزة الميدانية.", "ja": "産業用センサー、組み込みシステム、現場デバイス向けのリモート監視。" },
+      "category": { "de": "Industrial IoT", "fr": "IoT industriel", "es": "IoT industrial", "it": "IoT industriale", "ar": "IoT صناعي", "ja": "産業 IoT" }
+    },
+    "water-tank-flood-monitoring": {
+      "title": { "de": "Wasser-, Tank- und Überflutungsmonitoring", "fr": "Monitoring eau, réservoirs et inondation", "es": "Monitorización de agua, tanques e inundaciones", "it": "Monitoraggio acqua, serbatoi e allagamenti", "ar": "مراقبة المياه والخزانات والفيضانات", "ja": "水・タンク・浸水モニタリング" },
+      "headline": { "de": "Wasser-, Tank- und Überflutungsmonitoring", "fr": "Monitoring eau, réservoirs et inondation", "es": "Monitorización de agua, tanques e inundaciones", "it": "Monitoraggio acqua, serbatoi e allagamenti", "ar": "مراقبة المياه والخزانات والفيضانات", "ja": "水・タンク・浸水モニタリング" },
+      "summary": { "de": "Distanz-, Füllstand- und Überlaufrisiko-Monitoring für Tanks, Schächte und Drainagesysteme.", "fr": "Suivi distance, niveau et risque de débordement pour réservoirs, regards et drainage.", "es": "Seguimiento de distancia, nivel y riesgo de desbordamiento para tanques, registros y drenaje.", "it": "Monitoraggio di distanza, livello e rischio trabocco per serbatoi, pozzetti e drenaggi.", "ar": "مراقبة المسافة والمستوى وخطر الفيضان للخزانات وغرف التفتيش وأنظمة التصريف.", "ja": "タンク、マンホール、排水システムの距離・レベル・溢水リスク監視。" },
+      "category": { "de": "Wasser und Füllstand", "fr": "Eau et niveau", "es": "Agua y nivel", "it": "Acqua e livello", "ar": "المياه والمستوى", "ja": "水・レベル" }
+    },
+    "smart-building-air-quality": {
+      "title": { "de": "Smart Buildings und Luftqualität", "fr": "Smart building et qualité de l’air", "es": "Smart building y calidad del aire", "it": "Smart building e qualità dell’aria", "ar": "المباني الذكية وجودة الهواء", "ja": "スマートビルと空気質" },
+      "headline": { "de": "Smart Buildings und Luftqualität", "fr": "Smart building et qualité de l’air", "es": "Smart building y calidad del aire", "it": "Smart building e qualità dell’aria", "ar": "المباني الذكية وجودة الهواء", "ja": "スマートビルと空気質" },
+      "summary": { "de": "Luftqualität, Temperatur und Umgebungsmonitoring für Gebäude und Anlagen.", "fr": "Qualité de l’air, température et monitoring environnemental pour bâtiments et sites.", "es": "Calidad del aire, temperatura y monitorización ambiental para edificios e instalaciones.", "it": "Qualità dell’aria, temperatura e monitoraggio ambientale per edifici e impianti.", "ar": "مراقبة جودة الهواء والحرارة والبيئة للمباني والمنشآت.", "ja": "建物・施設向けの空気質、温度、環境モニタリング。" },
+      "category": { "de": "Smart Buildings", "fr": "Smart buildings", "es": "Smart buildings", "it": "Smart buildings", "ar": "المباني الذكية", "ja": "スマートビル" }
+    },
+    "asset-fleet-tracking": {
+      "title": { "de": "Asset- und Flotten-Tracking", "fr": "Tracking d’actifs et de flotte", "es": "Tracking de activos y flotas", "it": "Tracking asset e flotte", "ar": "تتبع الأصول والأساطيل", "ja": "資産・フリートトラッキング" },
+      "headline": { "de": "Asset- und Flotten-Tracking", "fr": "Tracking d’actifs et de flotte", "es": "Tracking de activos y flotas", "it": "Tracking asset e flotte", "ar": "تتبع الأصول والأساطيل", "ja": "資産・フリートトラッキング" },
+      "summary": { "de": "GPS-basiertes Tracking für Fahrzeuge, Logistikprozesse und mobile Assets.", "fr": "Tracking GPS pour véhicules, opérations logistiques et actifs mobiles.", "es": "Tracking GPS para vehículos, operaciones logísticas y activos móviles.", "it": "Tracking GPS per veicoli, logistica e asset mobili.", "ar": "تتبع GPS للمركبات وعمليات اللوجستيات والأصول المتنقلة.", "ja": "車両、物流オペレーション、モバイル資産向けの GPS トラッキング。" },
+      "category": { "de": "Assets und Logistik", "fr": "Actifs et logistique", "es": "Activos y logística", "it": "Asset e logistica", "ar": "الأصول واللوجستيات", "ja": "資産・物流" }
+    },
+    "safety-emergency-alerts": {
+      "title": { "de": "Sicherheits- und Notfallalarme", "fr": "Alertes sécurité et urgence", "es": "Alertas de seguridad y emergencia", "it": "Allarmi sicurezza ed emergenza", "ar": "تنبيهات السلامة والطوارئ", "ja": "安全・緊急アラート" },
+      "headline": { "de": "Sicherheits- und Notfallalarme", "fr": "Alertes sécurité et urgence", "es": "Alertas de seguridad y emergencia", "it": "Allarmi sicurezza ed emergenza", "ar": "تنبيهات السلامة والطوارئ", "ja": "安全・緊急アラート" },
+      "summary": { "de": "Sofortige Notfallmeldungen für Industrieflächen, Lager und Gebäude.", "fr": "Notifications d’urgence instantanées pour sites industriels, entrepôts et bâtiments.", "es": "Alertas de emergencia instantáneas para plantas industriales, almacenes y edificios.", "it": "Notifiche di emergenza immediate per siti industriali, magazzini ed edifici.", "ar": "إشعارات طوارئ فورية للمواقع الصناعية والمستودعات والمباني.", "ja": "産業現場、倉庫、建物向けの即時緊急通知。" },
+      "category": { "de": "Sicherheit", "fr": "Sécurité", "es": "Seguridad", "it": "Sicurezza", "ar": "السلامة", "ja": "安全" }
+    },
+    "access-door-security": {
+      "title": { "de": "Zugang und Türsicherheit", "fr": "Accès et sécurité des portes", "es": "Acceso y seguridad de puertas", "it": "Accessi e sicurezza porte", "ar": "أمن الوصول والأبواب", "ja": "アクセス・ドアセキュリティ" },
+      "headline": { "de": "Zugang und Türsicherheit", "fr": "Accès et sécurité des portes", "es": "Acceso y seguridad de puertas", "it": "Accessi e sicurezza porte", "ar": "أمن الوصول والأبواب", "ja": "アクセス・ドアセキュリティ" },
+      "summary": { "de": "Auf/Zu-Monitoring für Türen, Schränke, gesicherte Bereiche und Fenster.", "fr": "Monitoring ouverture/fermeture pour portes, armoires, zones sensibles et fenêtres.", "es": "Monitorización de apertura/cierre para puertas, armarios, zonas restringidas y ventanas.", "it": "Monitoraggio aperto/chiuso per porte, armadi, aree riservate e finestre.", "ar": "مراقبة فتح/إغلاق للأبواب والخزائن والمناطق المحمية والنوافذ.", "ja": "ドア、キャビネット、制限区域、窓の開閉監視。" },
+      "category": { "de": "Sicherheit", "fr": "Sécurité", "es": "Seguridad", "it": "Sicurezza", "ar": "السلامة", "ja": "安全" }
+    },
+    "motion-tilt-infrastructure": {
+      "title": { "de": "Bewegung, Neigung und Infrastruktur", "fr": "Mouvement, inclinaison et infrastructure", "es": "Movimiento, inclinación e infraestructura", "it": "Movimento, inclinazione e infrastrutture", "ar": "الحركة والميل والبنية التحتية", "ja": "動き・傾斜・インフラ" },
+      "headline": { "de": "Bewegung, Neigung und Infrastruktur", "fr": "Mouvement, inclinaison et infrastructure", "es": "Movimiento, inclinación e infraestructura", "it": "Movimento, inclinazione e infrastrutture", "ar": "الحركة والميل والبنية التحتية", "ja": "動き・傾斜・インフラ" },
+      "summary": { "de": "3-Achsen-Bewegung, Vibration und Lageänderung für Maschinen und Bauwerke.", "fr": "Mouvement 3 axes, vibration et déplacement pour machines et structures.", "es": "Movimiento de 3 ejes, vibración y desplazamiento para máquinas y estructuras.", "it": "Movimento a 3 assi, vibrazione e spostamento per macchine e strutture.", "ar": "حركة ثلاثية المحاور واهتزاز وتغيّر موضع للآلات والمنشآت.", "ja": "機械・構造物向けの 3 軸動き、振動、変位監視。" },
+      "category": { "de": "Infrastruktur", "fr": "Infrastructure", "es": "Infraestructura", "it": "Infrastrutture", "ar": "البنية التحتية", "ja": "インフラ" }
+    },
+    "temperature-humidity-monitoring": {
+      "title": { "de": "Temperatur- und Feuchtemonitoring", "fr": "Monitoring température et humidité", "es": "Monitorización de temperatura y humedad", "it": "Monitoraggio temperatura e umidità", "ar": "مراقبة الحرارة والرطوبة", "ja": "温湿度モニタリング" },
+      "headline": { "de": "Temperatur- und Feuchtemonitoring", "fr": "Monitoring température et humidité", "es": "Monitorización de temperatura y humedad", "it": "Monitoraggio temperatura e umidità", "ar": "مراقبة الحرارة والرطوبة", "ja": "温湿度モニタリング" },
+      "summary": { "de": "Innen- und Außentemperatur sowie Feuchte für Betrieb, Lager und Anlagen.", "fr": "Température et humidité intérieure/extérieure pour opérations, entrepôts et sites.", "es": "Temperatura y humedad interior/exterior para operaciones, almacenes e instalaciones.", "it": "Temperatura e umidità indoor/outdoor per operations, magazzini e impianti.", "ar": "حرارة ورطوبة داخلية/خارجية للعمليات والمستودعات والمنشآت.", "ja": "運用、倉庫、施設向けの屋内外温度・湿度監視。" },
+      "category": { "de": "Umweltmonitoring", "fr": "Monitoring environnemental", "es": "Monitorización ambiental", "it": "Monitoraggio ambientale", "ar": "المراقبة البيئية", "ja": "環境モニタリング" }
+    },
+    "industrial-modbus-integration": {
+      "title": { "de": "Industrielle Konnektivität und Modbus", "fr": "Connectivité industrielle et Modbus", "es": "Conectividad industrial y Modbus", "it": "Connettività industriale e Modbus", "ar": "الاتصال الصناعي وModbus", "ja": "産業接続と Modbus" },
+      "headline": { "de": "Industrielle Konnektivität und Modbus", "fr": "Connectivité industrielle et Modbus", "es": "Conectividad industrial y Modbus", "it": "Connettività industriale e Modbus", "ar": "الاتصال الصناعي وModbus", "ja": "産業接続と Modbus" },
+      "summary": { "de": "Drahtlose Modbus-RTU-Brücke, die Industriegerätedaten über LoRaWAN transportiert.", "fr": "Passerelle Modbus RTU sans fil qui transporte les données industrielles via LoRaWAN.", "es": "Puente Modbus RTU inalámbrico que transporta datos industriales vía LoRaWAN.", "it": "Bridge Modbus RTU wireless che trasporta dati industriali via LoRaWAN.", "ar": "جسر Modbus RTU لاسلكي ينقل بيانات الأجهزة الصناعية عبر LoRaWAN.", "ja": "産業機器データを LoRaWAN で送るワイヤレス Modbus RTU ブリッジ。" },
+      "category": { "de": "Industrial IoT", "fr": "IoT industriel", "es": "IoT industrial", "it": "IoT industriale", "ar": "IoT صناعي", "ja": "産業 IoT" }
+    },
+    "smart-agriculture-monitoring": {
+      "title": { "de": "Smart-Agriculture-Monitoring", "fr": "Monitoring smart agriculture", "es": "Monitorización de agricultura inteligente", "it": "Monitoraggio smart agriculture", "ar": "مراقبة الزراعة الذكية", "ja": "スマート農業モニタリング" },
+      "headline": { "de": "Smart-Agriculture-Monitoring", "fr": "Monitoring smart agriculture", "es": "Monitorización de agricultura inteligente", "it": "Monitoraggio smart agriculture", "ar": "مراقبة الزراعة الذكية", "ja": "スマート農業モニタリング" },
+      "summary": { "de": "Monitoring von Bodenfeuchte, Bodentemperatur und Gewächshausbedingungen.", "fr": "Suivi humidité du sol, température du sol et conditions de serre.", "es": "Seguimiento de humedad del suelo, temperatura del suelo y condiciones de invernadero.", "it": "Monitoraggio di umidità del suolo, temperatura del suolo e condizioni serra.", "ar": "مراقبة رطوبة التربة وحرارتها وظروف البيوت المحمية.", "ja": "土壌水分、地温、温室環境のモニタリング。" },
+      "category": { "de": "Landwirtschaft", "fr": "Agriculture", "es": "Agricultura", "it": "Agricoltura", "ar": "الزراعة", "ja": "農業" }
+    },
+    "liquid-pressure-monitoring": {
+      "title": { "de": "Flüssigkeitsdruck-Monitoring", "fr": "Monitoring pression liquide", "es": "Monitorización de presión de líquidos", "it": "Monitoraggio pressione liquidi", "ar": "مراقبة ضغط السوائل", "ja": "液体圧力モニタリング" },
+      "headline": { "de": "Flüssigkeitsdruck-Monitoring", "fr": "Monitoring pression liquide", "es": "Monitorización de presión de líquidos", "it": "Monitoraggio pressione liquidi", "ar": "مراقبة ضغط السوائل", "ja": "液体圧力モニタリング" },
+      "summary": { "de": "Druckmonitoring für Rohrleitungen, Tanks und industrielle Flüssigkeiten in rauen Umgebungen.", "fr": "Suivi de pression pour pipelines, réservoirs et liquides industriels en environnements difficiles.", "es": "Seguimiento de presión para tuberías, tanques y líquidos industriales en entornos exigentes.", "it": "Monitoraggio pressione per tubazioni, serbatoi e liquidi industriali in ambienti difficili.", "ar": "مراقبة الضغط للأنابيب والخزانات والسوائل الصناعية في بيئات قاسية.", "ja": "過酷な環境における配管、タンク、産業用液体の圧力監視。" },
+      "category": { "de": "Wasser und Füllstand", "fr": "Eau et niveau", "es": "Agua y nivel", "it": "Acqua e livello", "ar": "المياه والمستوى", "ja": "水・レベル" }
+    },
+    "environmental-weather-monitoring": {
+      "title": { "de": "Umwelt- und Wettermonitoring", "fr": "Monitoring environnemental et météo", "es": "Monitorización ambiental y meteorológica", "it": "Monitoraggio ambientale e meteo", "ar": "مراقبة البيئة والطقس", "ja": "環境・気象モニタリング" },
+      "headline": { "de": "Umwelt- und Wettermonitoring", "fr": "Monitoring environnemental et météo", "es": "Monitorización ambiental y meteorológica", "it": "Monitoraggio ambientale e meteo", "ar": "مراقبة البيئة والطقس", "ja": "環境・気象モニタリング" },
+      "summary": { "de": "Windgeschwindigkeit und Outdoor-Messwerte für entfernte Standorte.", "fr": "Vitesse du vent et mesures extérieures pour sites distants.", "es": "Velocidad del viento y mediciones exteriores para ubicaciones remotas.", "it": "Velocità del vento e misure outdoor per siti remoti.", "ar": "سرعة الرياح وقياسات خارجية للمواقع البعيدة.", "ja": "遠隔拠点向けの風速および屋外環境測定。" },
+      "category": { "de": "Umweltmonitoring", "fr": "Monitoring environnemental", "es": "Monitorización ambiental", "it": "Monitoraggio ambientale", "ar": "المراقبة البيئية", "ja": "環境モニタリング" }
+    }
+  },
+  "services": {
+    "embedded-hardware": {
+      "title": {
+        "de": "Embedded-Hardware-Design",
+        "fr": "Conception hardware embarqué",
+        "es": "Diseño de hardware embebido",
+        "it": "Progettazione hardware embedded",
+        "ar": "تصميم عتاد embedded",
+        "ja": "組み込みハードウェア設計"
+      },
+      "summary": {
+        "de": "PCB-Design, Sensorentwicklung, robuste IoT-Gateways und Low-Power-Hardware.",
+        "fr": "Conception PCB, développement de capteurs, gateways IoT robustes et hardware basse consommation.",
+        "es": "Diseño de PCB, desarrollo de sensores, gateways IoT robustos y hardware de bajo consumo.",
+        "it": "Design PCB, sviluppo sensori, gateway IoT robusti e hardware a basso consumo.",
+        "ar": "تصميم PCB، تطوير المستشعرات، gateways IoT متينة وعتاد منخفض الطاقة.",
+        "ja": "PCB 設計、センサー開発、堅牢な IoT ゲートウェイ、低消費電力ハードウェア。"
+      }
+    },
+    "firmware": {
+      "title": {
+        "de": "Firmware-Entwicklung",
+        "fr": "Développement firmware",
+        "es": "Desarrollo de firmware",
+        "it": "Sviluppo firmware",
+        "ar": "تطوير firmware",
+        "ja": "ファームウェア開発"
+      },
+      "summary": {
+        "de": "MCU, RTOS, Bare-Metal, LoRaWAN-Stack und Gerätetreiber.",
+        "fr": "MCU, RTOS, bare-metal, stack LoRaWAN et drivers de périphériques.",
+        "es": "MCU, RTOS, bare-metal, stack LoRaWAN y drivers de dispositivo.",
+        "it": "MCU, RTOS, bare-metal, stack LoRaWAN e driver di dispositivo.",
+        "ar": "MCU وRTOS وbare-metal وLoRaWAN stack وتعريفات الأجهزة.",
+        "ja": "MCU、RTOS、ベアメタル、LoRaWAN スタック、デバイスドライバー。"
+      }
+    },
+    "backend-api": {
+      "title": {
+        "de": "Backend-API",
+        "fr": "API backend",
+        "es": "API backend",
+        "it": "API backend",
+        "ar": "API backend",
+        "ja": "バックエンド API"
+      },
+      "summary": {
+        "de": "REST-APIs, WebSocket, Telemetrie-Ingestion, Authentifizierung und Reporting.",
+        "fr": "API REST, WebSocket, ingestion de télémétrie, authentification et reporting.",
+        "es": "API REST, WebSocket, ingesta de telemetría, autenticación e informes.",
+        "it": "API REST, WebSocket, ingestion della telemetria, autenticazione e reporting.",
+        "ar": "REST API وWebSocket واستقبال بيانات telemetry والمصادقة والتقارير.",
+        "ja": "REST API、WebSocket、テレメトリ取り込み、認証、レポート。"
+      }
+    },
+    "postgresql": {
+      "title": {
+        "de": "PostgreSQL- und Datenbankarchitektur",
+        "fr": "Architecture PostgreSQL et base de données",
+        "es": "Arquitectura PostgreSQL y base de datos",
+        "it": "Architettura PostgreSQL e database",
+        "ar": "بنية PostgreSQL وقواعد البيانات",
+        "ja": "PostgreSQL とデータベース設計"
+      },
+      "summary": {
+        "de": "Datenmodelle für Gerätedaten, Time-Series-Daten, Reporting-Tabellen und Dashboard-Abfragen.",
+        "fr": "Modèles de données pour appareils, données time-series, tables de reporting et requêtes dashboard.",
+        "es": "Modelado de datos de dispositivos, datos time-series, tablas de informes y consultas de dashboard.",
+        "it": "Modellazione dati dei dispositivi, dati time-series, tabelle di reporting e query per dashboard.",
+        "ar": "نمذجة بيانات الأجهزة وبيانات time-series وجداول التقارير واستعلامات dashboard.",
+        "ja": "デバイスデータ、時系列データ、レポート用テーブル、ダッシュボード向けクエリの設計。"
+      }
+    },
+    "web-admin": {
+      "title": {
+        "de": "Web-Plattform / Admin-Panel",
+        "fr": "Plateforme web / panneau admin",
+        "es": "Plataforma web / panel admin",
+        "it": "Piattaforma web / pannello admin",
+        "ar": "منصة ويب / لوحة admin",
+        "ja": "Web プラットフォーム / 管理パネル"
+      },
+      "summary": {
+        "de": "Dashboards, Admin-Oberflächen, Kundenportale und Monitoring-Ansichten.",
+        "fr": "Dashboards, interfaces admin, portails clients et écrans de supervision.",
+        "es": "Dashboards, interfaces admin, portales de clientes y pantallas de monitorización.",
+        "it": "Dashboard, interfacce admin, portali clienti e schermate di monitoraggio.",
+        "ar": "Dashboards وواجهات admin وبوابات العملاء وشاشات المراقبة.",
+        "ja": "ダッシュボード、管理画面、顧客ポータル、監視画面。"
+      }
+    },
+    "mobile": {
+      "title": {
+        "de": "Mobile-App-Entwicklung",
+        "fr": "Développement d’applications mobiles",
+        "es": "Desarrollo de apps móviles",
+        "it": "Sviluppo app mobile",
+        "ar": "تطوير تطبيقات الجوال",
+        "ja": "モバイルアプリ開発"
+      },
+      "summary": {
+        "de": "Native iOS (Swift), native Android (Kotlin) und Flutter-Apps für Feldbetrieb, Sensor-Monitoring, Push-Benachrichtigungen, Offline-Szenarien und Store-Release.",
+        "fr": "Applications native iOS (Swift), native Android (Kotlin) et Flutter pour opérations terrain, suivi capteurs, notifications push, scénarios offline et publication store.",
+        "es": "Apps nativas iOS (Swift), nativas Android (Kotlin) y Flutter para operaciones de campo, monitorización de sensores, notificaciones push, escenarios offline y publicación en stores.",
+        "it": "App native iOS (Swift), native Android (Kotlin) e Flutter per operazioni sul campo, monitoraggio sensori, notifiche push, scenari offline e pubblicazione sugli store.",
+        "ar": "تطبيقات native iOS (Swift) وnative Android (Kotlin) وFlutter لعمليات الميدان، ومراقبة المستشعرات، وإشعارات push، وسيناريوهات offline، والنشر على المتاجر.",
+        "ja": "現場運用、センサー監視、プッシュ通知、オフライン対応、ストア公開向けの native iOS（Swift）、native Android（Kotlin）、Flutter アプリ。"
+      }
+    },
+    "vr": {
+      "title": {
+        "de": "VR / Simulation",
+        "fr": "VR / simulation",
+        "es": "VR / simulación",
+        "it": "VR / simulazione",
+        "ar": "VR / محاكاة",
+        "ja": "VR / シミュレーション"
+      },
+      "summary": {
+        "de": "Industrielle Schulungen, Produktdemos, Digital Twins und Simulationspräsentationen.",
+        "fr": "Formation industrielle, démonstrations produit, digital twins et présentations de simulation.",
+        "es": "Formación industrial, demos de producto, digital twins y presentaciones de simulación.",
+        "it": "Formazione industriale, demo di prodotto, digital twin e presentazioni di simulazione.",
+        "ar": "تدريب صناعي، عروض منتجات، digital twins وعروض محاكاة.",
+        "ja": "産業トレーニング、製品デモ、デジタルツイン、シミュレーションプレゼンテーション。"
+      }
+    },
+    "telemetry": {
+      "title": {
+        "de": "IoT-Cloud / Telemetrie",
+        "fr": "Cloud IoT / télémétrie",
+        "es": "Cloud IoT / telemetría",
+        "it": "Cloud IoT / telemetria",
+        "ar": "IoT Cloud / Telemetry",
+        "ja": "IoT クラウド / テレメトリ"
+      },
+      "summary": {
+        "de": "Flotten-Monitoring, Alarme, Integrationen und Remote-Datenvisualisierung.",
+        "fr": "Suivi de flotte d’appareils, alertes, intégrations et visualisation des données à distance.",
+        "es": "Monitorización de flotas de dispositivos, alarmas, integraciones y visualización remota de datos.",
+        "it": "Monitoraggio flotte dispositivi, allarmi, integrazioni e visualizzazione dati da remoto.",
+        "ar": "مراقبة أسطول الأجهزة، والتنبيهات، والتكاملات، وعرض البيانات عن بُعد.",
+        "ja": "デバイスフリート監視、アラーム、連携、リモートデータ可視化。"
+      }
+    }
+  },
+  "glossary": {
+    "lorawan": {
+      "term": { "de": "LoRaWAN", "fr": "LoRaWAN", "es": "LoRaWAN", "it": "LoRaWAN", "ar": "LoRaWAN", "ja": "LoRaWAN" },
+      "definition": { "de": "LoRaWAN ist ein Low-Power-Funkprotokoll für Sensoren und Geräte, die über große Entfernungen kleine Datenmengen senden.", "fr": "LoRaWAN est un protocole radio basse consommation utilisé par des capteurs et appareils qui envoient de petites données sur de longues distances.", "es": "LoRaWAN es un protocolo inalámbrico de bajo consumo para sensores y dispositivos que envían pequeños datos a larga distancia.", "it": "LoRaWAN è un protocollo wireless a basso consumo per sensori e dispositivi che inviano piccoli dati su lunghe distanze.", "ar": "LoRaWAN بروتوكول لاسلكي منخفض الطاقة للمستشعرات والأجهزة التي ترسل كميات صغيرة من البيانات لمسافات طويلة.", "ja": "LoRaWAN は、センサーやデバイスが少量のデータを長距離で送るための低消費電力の無線プロトコルです。" }
+    },
+    "modbus-rtu": {
+      "term": { "de": "Modbus RTU", "fr": "Modbus RTU", "es": "Modbus RTU", "it": "Modbus RTU", "ar": "Modbus RTU", "ja": "Modbus RTU" },
+      "definition": { "de": "Modbus RTU ist ein serielles Industrieprotokoll für PLCs, Zähler, Sensoren und andere Feldgeräte.", "fr": "Modbus RTU est un protocole série industriel utilisé pour connecter PLC, compteurs, capteurs et autres appareils terrain.", "es": "Modbus RTU es un protocolo serie industrial usado para conectar PLC, medidores, sensores y otros dispositivos de campo.", "it": "Modbus RTU è un protocollo seriale industriale usato per collegare PLC, contatori, sensori e altri dispositivi sul campo.", "ar": "Modbus RTU بروتوكول تسلسلي صناعي يُستخدم لربط PLC والعدادات والمستشعرات وأجهزة الميدان.", "ja": "Modbus RTU は、PLC、メーター、センサー、現場機器を接続するための産業用シリアルプロトコルです。" }
+    },
+    "lorawan-classes": {
+      "term": { "de": "LoRaWAN-Geräteklassen (A / B / C)", "fr": "Classes LoRaWAN (A / B / C)", "es": "Clases LoRaWAN (A / B / C)", "it": "Classi LoRaWAN (A / B / C)", "ar": "فئات LoRaWAN (A / B / C)", "ja": "LoRaWAN デバイスクラス（A / B / C）" },
+      "definition": { "de": "LoRaWAN-Klassen legen fest, wie oft ein Gerät Daten empfängt und wie viel Energie es verbraucht.", "fr": "Les classes LoRaWAN définissent quand un appareil peut recevoir des données et combien d’énergie il consomme.", "es": "Las clases LoRaWAN definen cuándo un dispositivo puede recibir datos y cuánta energía consume.", "it": "Le classi LoRaWAN definiscono quando un dispositivo può ricevere dati e quanta energia consuma.", "ar": "تحدد فئات LoRaWAN متى يستطيع الجهاز استقبال البيانات وكمية الطاقة التي يستهلكها.", "ja": "LoRaWAN のクラスは、デバイスがいつデータを受信できるか、どの程度電力を使うかを決めます。" }
+    },
+    "gateway": {
+      "term": { "de": "LoRaWAN-Gateway", "fr": "Gateway LoRaWAN", "es": "Gateway LoRaWAN", "it": "Gateway LoRaWAN", "ar": "LoRaWAN Gateway", "ja": "LoRaWAN ゲートウェイ" },
+      "definition": { "de": "Ein Gateway empfängt LoRaWAN-Funksignale von Geräten und leitet sie über Internet an den Network Server weiter.", "fr": "Un gateway reçoit les signaux LoRaWAN des appareils et les transmet au network server via Internet.", "es": "Un gateway recibe señales LoRaWAN de los dispositivos y las envía al network server por Internet.", "it": "Un gateway riceve segnali LoRaWAN dai dispositivi e li inoltra al network server via Internet.", "ar": "يتلقى الـ gateway إشارات LoRaWAN من الأجهزة ويرسلها إلى network server عبر الإنترنت.", "ja": "ゲートウェイはデバイスからの LoRaWAN 無線信号を受信し、インターネット経由でネットワークサーバーへ送ります。" }
+    },
+    "mcu": {
+      "term": { "de": "MCU (Microcontroller Unit)", "fr": "MCU (microcontrôleur)", "es": "MCU (microcontrolador)", "it": "MCU (microcontrollore)", "ar": "MCU (وحدة تحكم دقيقة)", "ja": "MCU（マイクロコントローラー）" },
+      "definition": { "de": "Eine MCU ist ein kleiner Chip mit CPU, Speicher und Peripherie; sie ist das Gehirn eines Embedded Devices.", "fr": "Une MCU est une puce avec CPU, mémoire et périphériques ; c’est le cerveau d’un appareil embarqué.", "es": "Una MCU es un chip con CPU, memoria y periféricos; es el cerebro de un dispositivo embebido.", "it": "Una MCU è un chip con CPU, memoria e periferiche; è il cervello di un dispositivo embedded.", "ar": "MCU شريحة صغيرة تضم المعالج والذاكرة والواجهات، وهي عقل الجهاز embedded.", "ja": "MCU は CPU、メモリ、周辺機能を持つ小さなチップで、組み込みデバイスの頭脳です。" }
+    },
+    "embedded": {
+      "term": { "de": "Embedded System", "fr": "Système embarqué", "es": "Sistema embebido", "it": "Sistema embedded", "ar": "نظام Embedded", "ja": "組み込みシステム" },
+      "definition": { "de": "Ein Embedded System ist ein Gerät, das für eine bestimmte Aufgabe gebaut wird und Hardware, MCU und Firmware kombiniert.", "fr": "Un système embarqué est un appareil conçu pour une fonction précise, combinant hardware, MCU et firmware.", "es": "Un sistema embebido es un dispositivo creado para una función concreta, combinando hardware, MCU y firmware.", "it": "Un sistema embedded è un dispositivo progettato per una funzione specifica, con hardware, MCU e firmware.", "ar": "النظام embedded جهاز مصمم لوظيفة محددة ويجمع بين العتاد وMCU وfirmware.", "ja": "組み込みシステムは、特定の機能のために作られたハードウェア、MCU、ファームウェアを組み合わせた装置です。" }
+    },
+    "pcb": {
+      "term": { "de": "PCB", "fr": "PCB", "es": "PCB", "it": "PCB", "ar": "PCB", "ja": "PCB" },
+      "definition": { "de": "Eine PCB ist die Leiterplatte, auf der elektronische Bauteile mechanisch befestigt und elektrisch verbunden werden.", "fr": "Un PCB est la carte qui supporte et relie électriquement les composants électroniques.", "es": "Una PCB es la placa que soporta y conecta eléctricamente los componentes electrónicos.", "it": "Un PCB è la scheda che supporta e collega elettricamente i componenti elettronici.", "ar": "PCB هي اللوحة التي تثبّت المكوّنات الإلكترونية وتربطها كهربائيًا.", "ja": "PCB は電子部品を固定し、電気的に接続する基板です。" }
+    },
+    "sensor-node": {
+      "term": { "de": "Sensor Node", "fr": "Nœud capteur", "es": "Nodo sensor", "it": "Nodo sensore", "ar": "Sensor Node", "ja": "センサーノード" },
+      "definition": { "de": "Ein Sensor Node misst physikalische Werte wie Temperatur, Druck oder Bewegung und sendet sie an ein System.", "fr": "Un nœud capteur mesure des valeurs physiques comme température, pression ou mouvement et les transmet à un système.", "es": "Un nodo sensor mide valores físicos como temperatura, presión o movimiento y los envía a un sistema.", "it": "Un nodo sensore misura valori fisici come temperatura, pressione o movimento e li invia a un sistema.", "ar": "Sensor Node يقيس قيماً فيزيائية مثل الحرارة أو الضغط أو الحركة ويرسلها إلى النظام.", "ja": "センサーノードは温度、圧力、動きなどの物理値を測定してシステムへ送ります。" }
+    },
+    "ip67": {
+      "term": { "de": "IP67-Schutzart", "fr": "Indice IP67", "es": "Grado IP67", "it": "Grado IP67", "ar": "تصنيف IP67", "ja": "IP67 等級" },
+      "definition": { "de": "IP67 bedeutet staubdicht und gegen zeitweiliges Untertauchen geschützt.", "fr": "IP67 signifie protection totale contre la poussière et résistance à une immersion temporaire.", "es": "IP67 significa protección total contra polvo y resistencia a inmersión temporal.", "it": "IP67 indica protezione totale dalla polvere e resistenza a immersione temporanea.", "ar": "IP67 يعني حماية كاملة من الغبار ومقاومة للغمر المؤقت في الماء.", "ja": "IP67 は防塵性能と一時的な水没への耐性を示す保護等級です。" }
+    },
+    "rf": {
+      "term": { "de": "RF (Radio Frequency)", "fr": "RF (radiofréquence)", "es": "RF (radiofrecuencia)", "it": "RF (radiofrequenza)", "ar": "RF (ترددات الراديو)", "ja": "RF（無線周波数）" },
+      "definition": { "de": "RF bezeichnet Funkfrequenzen, die für drahtlose Kommunikation wie LoRaWAN verwendet werden.", "fr": "RF désigne les fréquences radio utilisées pour les communications sans fil comme LoRaWAN.", "es": "RF se refiere a las radiofrecuencias usadas para comunicación inalámbrica como LoRaWAN.", "it": "RF indica le frequenze radio usate per comunicazioni wireless come LoRaWAN.", "ar": "RF تعني ترددات الراديو المستخدمة في الاتصالات اللاسلكية مثل LoRaWAN.", "ja": "RF は LoRaWAN などの無線通信に使われる無線周波数を指します。" }
+    },
+    "ota": {
+      "term": { "de": "OTA-Update", "fr": "Mise à jour OTA", "es": "Actualización OTA", "it": "Aggiornamento OTA", "ar": "تحديث OTA", "ja": "OTA アップデート" },
+      "definition": { "de": "Ein OTA-Update aktualisiert Firmware drahtlos, ohne das Gerät physisch anzuschließen.", "fr": "Une mise à jour OTA met à jour le firmware à distance, sans accès physique à l’appareil.", "es": "Una actualización OTA actualiza el firmware de forma inalámbrica, sin conectar físicamente el dispositivo.", "it": "Un aggiornamento OTA aggiorna il firmware da remoto, senza collegare fisicamente il dispositivo.", "ar": "تحديث OTA يحدّث الـ firmware لاسلكيًا من دون توصيل الجهاز فعليًا.", "ja": "OTA アップデートは、デバイスを物理的に接続せずにファームウェアを無線で更新します。" }
+    },
+    "edge": {
+      "term": { "de": "Edge Computing", "fr": "Edge computing", "es": "Edge computing", "it": "Edge computing", "ar": "Edge Computing", "ja": "エッジコンピューティング" },
+      "definition": { "de": "Edge Computing verarbeitet Daten direkt am Gerät oder Gateway, statt alles in die Cloud zu senden.", "fr": "L’edge computing traite les données sur l’appareil ou le gateway au lieu de tout envoyer au cloud.", "es": "Edge computing procesa datos en el dispositivo o gateway en lugar de enviarlo todo a la nube.", "it": "L’edge computing elabora i dati sul dispositivo o sul gateway invece di inviare tutto al cloud.", "ar": "Edge Computing يعالج البيانات على الجهاز أو الـ gateway بدلاً من إرسال كل شيء إلى السحابة.", "ja": "エッジコンピューティングは、すべてをクラウドへ送らず、デバイスやゲートウェイ側でデータを処理します。" }
+    },
+    "telemetry": {
+      "term": { "de": "Telemetrie", "fr": "Télémétrie", "es": "Telemetría", "it": "Telemetria", "ar": "Telemetry", "ja": "テレメトリ" },
+      "definition": { "de": "Telemetrie ist das automatische Sammeln und Übertragen von Sensordaten für Monitoring, Alarme und Analyse.", "fr": "La télémétrie collecte et transmet automatiquement les mesures des capteurs pour monitoring, alertes et analyse.", "es": "La telemetría recoge y transmite automáticamente datos de sensores para monitorización, alertas y análisis.", "it": "La telemetria raccoglie e trasmette automaticamente dati dai sensori per monitoraggio, allarmi e analisi.", "ar": "Telemetry هي جمع وإرسال بيانات المستشعرات تلقائيًا للمراقبة والتنبيهات والتحليل.", "ja": "テレメトリは、監視、アラート、分析のためにセンサーデータを自動収集・送信する仕組みです。" }
+    },
+    "digital-twin": {
+      "term": { "de": "Digital Twin", "fr": "Digital twin", "es": "Digital twin", "it": "Digital twin", "ar": "Digital Twin", "ja": "デジタルツイン" },
+      "definition": { "de": "Ein Digital Twin ist ein virtuelles Abbild einer Anlage, eines Prozesses oder Standorts, das mit realen Daten synchron bleibt.", "fr": "Un digital twin est une représentation virtuelle d’un actif, d’un processus ou d’un site, synchronisée avec les données réelles.", "es": "Un digital twin es una representación virtual de un activo, proceso o sitio, sincronizada con datos reales.", "it": "Un digital twin è una rappresentazione virtuale di un asset, processo o sito, sincronizzata con dati reali.", "ar": "Digital Twin تمثيل افتراضي لأصل أو عملية أو موقع يبقى متزامنًا مع البيانات الواقعية.", "ja": "デジタルツインは、実データと同期する設備、プロセス、施設の仮想表現です。" }
+    },
+    "iiot": {
+      "term": { "de": "Industrial IoT (IIoT)", "fr": "IoT industriel (IIoT)", "es": "IoT industrial (IIoT)", "it": "IoT industriale (IIoT)", "ar": "Industrial IoT (IIoT)", "ja": "産業 IoT（IIoT）" },
+      "definition": { "de": "IIoT verbindet Sensoren, Maschinen, Gateways und Software, um Betriebsdaten aus industriellen Anlagen nutzbar zu machen.", "fr": "L’IIoT relie capteurs, machines, gateways et logiciels pour exploiter les données opérationnelles des sites industriels.", "es": "IIoT conecta sensores, máquinas, gateways y software para aprovechar datos operativos de entornos industriales.", "it": "L’IIoT collega sensori, macchine, gateway e software per usare i dati operativi degli impianti industriali.", "ar": "IIoT يربط المستشعرات والآلات والـ gateways والبرمجيات للاستفادة من بيانات التشغيل في المنشآت الصناعية.", "ja": "IIoT は、センサー、機械、ゲートウェイ、ソフトウェアを接続し、産業現場の運用データを活用する仕組みです。" }
+    }
+  },
+  "products": {
+    "willowbee": {
+      "title": {
+        "de": "WillowBee LoRaWAN-Modul",
+        "fr": "Module LoRaWAN WillowBee",
+        "es": "Módulo LoRaWAN WillowBee",
+        "it": "Modulo LoRaWAN WillowBee",
+        "ar": "وحدة WillowBee LoRaWAN",
+        "ja": "WillowBee LoRaWAN モジュール"
+      },
+      "shortDescription": {
+        "de": "Industrielles LoRaWAN-MCU-Modul für Low-Power-Sensor-Endpunkte und Embedded-Anwendungen.",
+        "fr": "Module MCU LoRaWAN industriel pour capteurs basse consommation et applications embarquées.",
+        "es": "Módulo MCU LoRaWAN industrial para sensores de bajo consumo y aplicaciones embebidas.",
+        "it": "Modulo MCU LoRaWAN industriale per nodi sensore a basso consumo e applicazioni embedded.",
+        "ar": "وحدة MCU LoRaWAN صناعية لنقاط استشعار منخفضة الطاقة وتطبيقات embedded.",
+        "ja": "低消費電力センサーエンドポイントと組み込み用途向けの産業用 LoRaWAN MCU モジュール。"
+      }
+    },
+    "willowsonic": {
+      "title": {
+        "de": "LoRaWAN-Ultraschall-Abstands- und Füllstandsensor",
+        "fr": "Capteur LoRaWAN de distance et de niveau à ultrasons",
+        "es": "Sensor LoRaWAN ultrasónico de distancia y nivel",
+        "it": "Sensore LoRaWAN a ultrasuoni per distanza e livello",
+        "ar": "مستشعر LoRaWAN بالموجات فوق الصوتية للمسافة والمستوى",
+        "ja": "LoRaWAN 超音波距離・レベルセンサー"
+      },
+      "shortDescription": {
+        "de": "Robuster Ultraschallsensor für Flüssigkeits-, Silo-, Schnee- und Schachtfüllstände im Außenbereich.",
+        "fr": "Capteur ultrasonique robuste pour niveaux de liquides, silos, neige et regards en extérieur.",
+        "es": "Sensor ultrasónico robusto para niveles de líquidos, silos, nieve y registros en exterior.",
+        "it": "Sensore a ultrasuoni robusto per livelli di liquidi, silo, neve e pozzetti in esterno.",
+        "ar": "مستشعر فوق صوتي متين لمستويات السوائل والصوامع والثلوج وغرف التفتيش في الخارج.",
+        "ja": "液体、サイロ、積雪、マンホールのレベル監視向けの堅牢な屋外用超音波センサー。"
+      }
+    },
+    "willowair": {
+      "title": {
+        "de": "LoRaWAN-Innenraum-Luftqualitätssensor",
+        "fr": "Capteur LoRaWAN de qualité de l’air intérieur",
+        "es": "Sensor LoRaWAN de calidad del aire interior",
+        "it": "Sensore LoRaWAN per qualità dell’aria interna",
+        "ar": "مستشعر LoRaWAN لجودة الهواء الداخلي",
+        "ja": "LoRaWAN 屋内空気質センサー"
+      },
+      "shortDescription": {
+        "de": "LoRaWAN-Sensor für Gebäude- und Raum-Monitoring mit TVOC, eCO₂ und Temperatur.",
+        "fr": "Capteur LoRaWAN pour bâtiments et espaces intérieurs avec mesure TVOC, eCO₂ et température.",
+        "es": "Sensor LoRaWAN para edificios y espacios interiores con medición de TVOC, eCO₂ y temperatura.",
+        "it": "Sensore LoRaWAN per edifici e ambienti interni con misura di TVOC, eCO₂ e temperatura.",
+        "ar": "مستشعر LoRaWAN للمباني والمساحات الداخلية مع قياس TVOC وeCO₂ والحرارة.",
+        "ja": "TVOC、eCO₂、温度を測定する建物・室内環境向け LoRaWAN センサー。"
+      }
+    },
+    "willowgps": {
+      "title": {
+        "de": "IP67 LoRaWAN-GPS-Modul",
+        "fr": "Module GPS LoRaWAN IP67",
+        "es": "Módulo GPS LoRaWAN IP67",
+        "it": "Modulo GPS LoRaWAN IP67",
+        "ar": "وحدة GPS LoRaWAN IP67",
+        "ja": "IP67 LoRaWAN GPS モジュール"
+      },
+      "shortDescription": {
+        "de": "Kompaktes Tracking-Modul für Position, Höhe und Geschwindigkeit mit integrierten LoRa- und GPS-Antennen.",
+        "fr": "Module de tracking compact pour position, altitude et vitesse avec antennes LoRa et GPS intégrées.",
+        "es": "Módulo compacto de tracking para posición, altitud y velocidad con antenas LoRa y GPS integradas.",
+        "it": "Modulo di tracking compatto per posizione, altitudine e velocità con antenne LoRa e GPS integrate.",
+        "ar": "وحدة tracking مدمجة للموقع والارتفاع والسرعة مع هوائيات LoRa وGPS مدمجة.",
+        "ja": "LoRa と GPS アンテナを内蔵した、位置・高度・速度を測定するコンパクトなトラッキングモジュール。"
+      }
+    },
+    "willowpanic": {
+      "title": {
+        "de": "IP67 industrieller LoRaWAN-Notfallknopf",
+        "fr": "Bouton d’alerte industriel LoRaWAN IP67",
+        "es": "Botón de pánico industrial LoRaWAN IP67",
+        "it": "Pulsante antipanico industriale LoRaWAN IP67",
+        "ar": "زر طوارئ صناعي LoRaWAN IP67",
+        "ja": "IP67 産業用 LoRaWAN 緊急ボタン"
+      },
+      "shortDescription": {
+        "de": "LoRaWAN-Notfallknopf, der bei Betätigung einen Alarm an die zentrale Monitoring-Einheit sendet.",
+        "fr": "Bouton d’alerte LoRaWAN qui envoie une notification d’urgence à l’unité centrale de supervision.",
+        "es": "Botón LoRaWAN que envía una alerta de emergencia a la unidad central de monitorización.",
+        "it": "Pulsante LoRaWAN che invia un allarme di emergenza all’unità centrale di monitoraggio.",
+        "ar": "زر LoRaWAN يرسل تنبيه طوارئ إلى وحدة المراقبة المركزية عند الضغط عليه.",
+        "ja": "押下時に中央監視システムへ緊急アラートを送信する LoRaWAN ボタン。"
+      }
+    },
+    "willowtemp": {
+      "title": {
+        "de": "LoRaWAN-Temperatur- und Feuchtesensor",
+        "fr": "Capteur LoRaWAN de température et d’humidité",
+        "es": "Sensor LoRaWAN de temperatura y humedad",
+        "it": "Sensore LoRaWAN di temperatura e umidità",
+        "ar": "مستشعر LoRaWAN للحرارة والرطوبة",
+        "ja": "LoRaWAN 温湿度センサー"
+      },
+      "shortDescription": {
+        "de": "LoRaWAN-Sensor für präzise Temperatur- und Feuchtemessung im Außenbereich mit Remote-Monitoring.",
+        "fr": "Capteur LoRaWAN pour mesurer précisément température et humidité en extérieur avec supervision à distance.",
+        "es": "Sensor LoRaWAN para medir temperatura y humedad en exterior con monitorización remota.",
+        "it": "Sensore LoRaWAN per misurare temperatura e umidità in esterno con monitoraggio remoto.",
+        "ar": "مستشعر LoRaWAN لقياس الحرارة والرطوبة في الخارج مع مراقبة عن بُعد.",
+        "ja": "屋外の温度・湿度を高精度に測定し、リモート監視できる LoRaWAN センサー。"
+      }
+    },
+    "willowmod": {
+      "title": {
+        "de": "IP67 industrieller LoRaWAN-Modbus-Sensor",
+        "fr": "Capteur Modbus industriel LoRaWAN IP67",
+        "es": "Sensor Modbus industrial LoRaWAN IP67",
+        "it": "Sensore Modbus industriale LoRaWAN IP67",
+        "ar": "مستشعر Modbus صناعي LoRaWAN IP67",
+        "ja": "IP67 産業用 LoRaWAN Modbus センサー"
+      },
+      "shortDescription": {
+        "de": "Industrieller Sensor, der Modbus-Register ausliest und Modbus RTU drahtlos über LoRaWAN verfügbar macht.",
+        "fr": "Capteur industriel qui lit les registres Modbus et rend Modbus RTU disponible sans fil via LoRaWAN.",
+        "es": "Sensor industrial que lee registros Modbus y lleva Modbus RTU de forma inalámbrica vía LoRaWAN.",
+        "it": "Sensore industriale che legge registri Modbus e rende Modbus RTU disponibile via LoRaWAN.",
+        "ar": "مستشعر صناعي يقرأ سجلات Modbus ويتيح Modbus RTU لاسلكيًا عبر LoRaWAN.",
+        "ja": "Modbus レジスタを読み取り、LoRaWAN 経由で Modbus RTU をワイヤレス化する産業用センサー。"
+      }
+    },
+    "willowsens": {
+      "title": {
+        "de": "LoRaWAN-Tür-Auf/Zu-Sensor",
+        "fr": "Capteur LoRaWAN d’ouverture/fermeture de porte",
+        "es": "Sensor LoRaWAN de apertura/cierre de puerta",
+        "it": "Sensore LoRaWAN porta aperta/chiusa",
+        "ar": "مستشعر LoRaWAN لفتح/إغلاق الأبواب",
+        "ja": "LoRaWAN ドア開閉センサー"
+      },
+      "shortDescription": {
+        "de": "LoRaWAN-Sensor zur Fernüberwachung von Türen, Schränken, Schubladen und Fenstern.",
+        "fr": "Capteur LoRaWAN pour surveiller à distance portes, armoires, tiroirs et fenêtres.",
+        "es": "Sensor LoRaWAN para monitorizar a distancia puertas, armarios, cajones y ventanas.",
+        "it": "Sensore LoRaWAN per monitorare da remoto porte, armadi, cassetti e finestre.",
+        "ar": "مستشعر LoRaWAN لمراقبة الأبواب والخزائن والأدراج والنوافذ عن بُعد.",
+        "ja": "ドア、キャビネット、引き出し、窓の開閉をリモート監視する LoRaWAN センサー。"
+      }
+    },
+    "willowtilt": {
+      "title": {
+        "de": "LoRaWAN-Neigungssensor",
+        "fr": "Capteur d’inclinaison LoRaWAN",
+        "es": "Sensor de inclinación LoRaWAN",
+        "it": "Sensore di inclinazione LoRaWAN",
+        "ar": "مستشعر ميل LoRaWAN",
+        "ja": "LoRaWAN 傾斜センサー"
+      },
+      "shortDescription": {
+        "de": "Outdoor-Sensor, der 3-Achsen-Beschleunigung und Neigung misst und per LoRaWAN überträgt.",
+        "fr": "Capteur extérieur qui mesure l’accélération et l’inclinaison sur 3 axes et transmet via LoRaWAN.",
+        "es": "Sensor exterior que mide aceleración e inclinación en 3 ejes y transmite vía LoRaWAN.",
+        "it": "Sensore outdoor che misura accelerazione e inclinazione su 3 assi e trasmette via LoRaWAN.",
+        "ar": "مستشعر خارجي يقيس التسارع والميل على 3 محاور ويرسل البيانات عبر LoRaWAN.",
+        "ja": "3 軸の加速度と傾斜を測定し、LoRaWAN で送信する屋外用センサー。"
+      }
+    },
+    "willowmos": {
+      "title": {
+        "de": "Outdoor-LoRaWAN-Bodenfeuchtesensor",
+        "fr": "Capteur LoRaWAN extérieur d’humidité du sol",
+        "es": "Sensor LoRaWAN exterior de humedad del suelo",
+        "it": "Sensore LoRaWAN outdoor per umidità del suolo",
+        "ar": "مستشعر LoRaWAN خارجي لرطوبة التربة",
+        "ja": "屋外用 LoRaWAN 土壌水分センサー"
+      },
+      "shortDescription": {
+        "de": "LoRaWAN-Sensor für Bodenfeuchte und Bodentemperatur in Landwirtschaft, Gewächshäusern und Gärten.",
+        "fr": "Capteur LoRaWAN pour humidité et température du sol en agriculture, serres et jardins.",
+        "es": "Sensor LoRaWAN para humedad y temperatura del suelo en agricultura, invernaderos y jardines.",
+        "it": "Sensore LoRaWAN per umidità e temperatura del suolo in agricoltura, serre e giardini.",
+        "ar": "مستشعر LoRaWAN لرطوبة وحرارة التربة في الزراعة والبيوت المحمية والحدائق.",
+        "ja": "農業、温室、庭園向けに土壌水分と地温を測定する LoRaWAN センサー。"
+      }
+    },
+    "willowpre": {
+      "title": {
+        "de": "IP67 LoRaWAN-Flüssigkeitsdrucksensor",
+        "fr": "Capteur LoRaWAN IP67 de pression liquide",
+        "es": "Sensor LoRaWAN IP67 de presión de líquidos",
+        "it": "Sensore LoRaWAN IP67 per pressione liquidi",
+        "ar": "مستشعر LoRaWAN IP67 لضغط السوائل",
+        "ja": "IP67 LoRaWAN 液体圧力センサー"
+      },
+      "shortDescription": {
+        "de": "LoRaWAN-Sensor zur Messung von Flüssigkeitsdruck in Rohrleitungen und Tanks unter rauen Bedingungen.",
+        "fr": "Capteur LoRaWAN pour mesurer la pression des liquides dans tuyaux et réservoirs en conditions difficiles.",
+        "es": "Sensor LoRaWAN para medir presión de líquidos en tuberías y tanques en condiciones exigentes.",
+        "it": "Sensore LoRaWAN per misurare la pressione dei liquidi in tubazioni e serbatoi in condizioni difficili.",
+        "ar": "مستشعر LoRaWAN لقياس ضغط السوائل في الأنابيب والخزانات ضمن ظروف قاسية.",
+        "ja": "過酷な環境で配管やタンク内の液体圧力を測定する LoRaWAN センサー。"
+      }
+    },
+    "willowane": {
+      "title": {
+        "de": "Outdoor-LoRaWAN-Anemometer",
+        "fr": "Anémomètre LoRaWAN extérieur",
+        "es": "Anemómetro LoRaWAN exterior",
+        "it": "Anemometro LoRaWAN outdoor",
+        "ar": "مقياس رياح LoRaWAN خارجي",
+        "ja": "屋外用 LoRaWAN 風速計"
+      },
+      "shortDescription": {
+        "de": "LoRaWAN-Anemometer zur Windgeschwindigkeitsmessung in rauen Außenumgebungen.",
+        "fr": "Anémomètre LoRaWAN pour mesurer la vitesse du vent dans des environnements extérieurs difficiles.",
+        "es": "Anemómetro LoRaWAN para medir velocidad del viento en exteriores exigentes.",
+        "it": "Anemometro LoRaWAN per misurare la velocità del vento in ambienti outdoor difficili.",
+        "ar": "مقياس رياح LoRaWAN لقياس سرعة الرياح في بيئات خارجية قاسية.",
+        "ja": "過酷な屋外環境で風速を測定する LoRaWAN 風速計。"
+      }
+    }
+  }
+}
