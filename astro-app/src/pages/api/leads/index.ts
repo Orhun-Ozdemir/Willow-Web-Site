@@ -46,22 +46,27 @@ export const GET: APIRoute = async ({ request }) => {
     return new Response(JSON.stringify({ ok: false, error: "Unauthorized" }), { status: 401, headers: { "Content-Type": "application/json" } });
   }
   
-  const supabase = getServiceClient();
-  const { data, error } = await supabase.from("leads").select("*").order("created_at", { ascending: false });
-  
-  if (error) {
-    return new Response(JSON.stringify({ ok: false, error: error.message }), { status: 500, headers: { "Content-Type": "application/json" } });
+  try {
+    const supabase = getServiceClient();
+    const { data, error } = await supabase.from("leads").select("*").order("created_at", { ascending: false });
+
+    if (error) {
+      return new Response(JSON.stringify({ ok: false, error: error.message }), { status: 500, headers: { "Content-Type": "application/json" } });
+    }
+
+    // Map snake_case back to camelCase for the frontend
+    const leads = (data || []).map(l => ({
+      id: l.id, status: l.status, internalNote: l.internal_note, sourcePage: l.source_page,
+      locale: l.locale, name: l.name, company: l.company, email: l.email, phone: l.phone,
+      country: l.country, interestType: l.interest_type, productInterest: l.product_interest,
+      serviceInterest: l.service_interest, message: l.message, createdAt: l.created_at, updatedAt: l.updated_at
+    }));
+
+    return new Response(JSON.stringify(leads), { status: 200, headers: { "Content-Type": "application/json" } });
+  } catch (err: any) {
+    // Most commonly: SUPABASE_SERVICE_ROLE_KEY missing/invalid in this environment.
+    return new Response(JSON.stringify({ ok: false, error: err?.message || "Server error" }), { status: 500, headers: { "Content-Type": "application/json" } });
   }
-
-  // Map snake_case back to camelCase for the frontend
-  const leads = (data || []).map(l => ({
-    id: l.id, status: l.status, internalNote: l.internal_note, sourcePage: l.source_page,
-    locale: l.locale, name: l.name, company: l.company, email: l.email, phone: l.phone,
-    country: l.country, interestType: l.interest_type, productInterest: l.product_interest,
-    serviceInterest: l.service_interest, message: l.message, createdAt: l.created_at, updatedAt: l.updated_at
-  }));
-
-  return new Response(JSON.stringify(leads), { status: 200, headers: { "Content-Type": "application/json" } });
 };
 
 export const POST: APIRoute = async ({ request, clientAddress }) => {
