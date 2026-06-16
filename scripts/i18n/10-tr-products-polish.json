@@ -1,0 +1,86 @@
+{
+  "products": {
+    "willowbee": {
+      "title": { "tr": "WillowBee LoRaWAN Modülü" },
+      "type": { "tr": "LoRaWAN Kablosuz Modül" },
+      "shortDescription": { "tr": "Düşük güçlü sensör uç noktaları ve gömülü uygulamalar için endüstriyel sınıf LoRaWAN MCU modülü." },
+      "description": { "tr": "Endüstriyel LoRaWAN uç noktaları geliştirmek için tasarlanmış modüldür. STM32WL Cortex-M4 tabanlıdır; MCU ile LoRa radyosunu tek çipte birleştirir. LoRaWAN uç nokta geliştirmek için gereken yazılım ve donanım özelliklerini tek modülde toplayarak ürün geliştirmeyi hızlandırır." }
+    },
+    "willowsonic": {
+      "title": { "tr": "LoRaWAN Ultrasonik Mesafe ve Seviye Sensörü" },
+      "type": { "tr": "LoRaWAN Ultrasonik Mesafe/Seviye Sensörü" },
+      "shortDescription": { "tr": "Zorlu dış ortam koşullarına dayanıklı ultrasonik mesafe ve seviye sensörü; sıvı, silo, kar ve rögar seviyelerini izlemek için tasarlandı." },
+      "description": { "tr": "WS-O-X-AI-UD-1, ağır dış ortam koşullarına dayanıklı, kullanıma hazır bir ultrasonik mesafe sensörüdür. Sıvı, silo, kar ve rögar seviyelerini izlemek üzere duvara veya herhangi bir yüzeye monte edilebilir. 19.000 mAh pil ile 10 yıla kadar çalışabilir. LoRaWAN ağ geçidi ve IoT bulut çözümüyle birleştiğinde tüm sensör verileri uzaktan izlenebilir ve yönetilebilir. LoRaWAN protokolünü destekleyen tüm ağ geçitleriyle uyumludur." },
+      "applications": { "tr": [
+        { "icon": "water", "label": "Rögar taşkın izleme" },
+        { "icon": "water", "label": "Su tankı seviye izleme" },
+        { "icon": "water", "label": "Kar yüksekliği ölçümü" },
+        { "icon": "water", "label": "Atık su seviye izleme" },
+        { "icon": "barn", "label": "Tahıl ve hububat deposu seviye izleme" },
+        { "icon": "water", "label": "Endüstriyel sıvı seviye izleme" },
+        { "icon": "water", "label": "Taşkın önleme sistemleri" },
+        { "icon": "water", "label": "Yağmur suyu drenaj izleme" }
+      ]}
+    },
+    "willowair": {
+      "title": { "tr": "LoRaWAN İç Ortam Hava Kalitesi Sensörü" },
+      "type": { "tr": "LoRaWAN İç Ortam Hava Kalitesi Sensörü" },
+      "shortDescription": { "tr": "TVOC, eCO₂ ve sıcaklığı ölçerek bina ve ortam izleme sağlayan LoRaWAN hava kalitesi sensörü." },
+      "description": { "tr": "TVOC, eCO₂ ve sıcaklığı ölçerek bina ve ortam izleme için kullanılan LoRaWAN iç ortam hava kalitesi sensörüdür. Veriler LoRaWAN üzerinden uzaktan izleme platformlarına aktarılır." }
+    },
+    "willowgps": {
+      "title": { "tr": "IP67 LoRaWAN GPS Modülü" },
+      "type": { "tr": "IP67 LoRaWAN GPS Modülü" },
+      "shortDescription": { "tr": "Enlem, boylam, rakım ve hız ölçen; entegre LoRa ve GPS antenli kompakt takip modülü." },
+      "description": { "tr": "Enlem, boylam, rakım ve hız ölçer. Kompakt kullanım için entegre LoRa ve GPS antenleri vardır. Veriler LoRaWAN üzerinden uzaktan izleme platformlarına iletilir." }
+    },
+    "willowpanic": {
+      "title": { "tr": "IP67 Endüstriyel LoRaWAN Panik Butonu" },
+      "type": { "tr": "IP67 Endüstriyel LoRaWAN Panik Butonu" },
+      "shortDescription": { "tr": "Devreye alındığında merkezi izleme birimine acil durum uyarısı gönderen LoRaWAN panik butonu." },
+      "description": { "tr": "Devreye alındığında merkezi izleme birimine acil durum uyarısı gönderir. Sağlık müdahalesi ve güvenlik senaryoları için uygundur. IP67 koruma sınıfıyla iç ve dış mekâna duvara monte edilebilir." }
+    },
+    "willowsens": {
+      "title": { "tr": "LoRaWAN Kapı Açık/Kapalı Sensörü" },
+      "type": { "tr": "LoRaWAN Kapı Açık/Kapalı Sensörü" },
+      "shortDescription": { "tr": "Kapı, dolap, çekmece ve pencerelerin açık/kapalı durumunu uzaktan izleyen LoRaWAN sensörü." },
+      "description": { "tr": "Kapıların açık ve kapalı olma durumunu izler. Kapı, dolap, çekmece ve pencerelerin uzaktan takibi için uygundur. İç ve dış mekân seçenekleriyle sunulur." }
+    },
+    "willowtilt": {
+      "title": { "tr": "LoRaWAN Eğim Sensörü" },
+      "type": { "tr": "LoRaWAN Açı/Eğim Sensörü" },
+      "shortDescription": { "tr": "3 eksenli ivme ve eğim değerlerini ölçüp LoRaWAN üzerinden ileten dış ortam sensörü." },
+      "description": { "tr": "WS-O-X-AI-TS-1, ağır dış ortam koşullarına dayanıklı bir sensördür. 3 eksendeki ivme ve açı değerlerini ölçerek LoRaWAN üzerinden iletir. İstinat duvarları, devrilme riski taşıyan noktalar ve 2G'ye kadar titreşim ölçümleri için kullanılabilir. Montaj aparatıyla birlikte gelir; 19.000 mAh pil ile 10 yıla kadar çalışabilir." }
+    },
+    "willowtemp": {
+      "title": { "tr": "LoRaWAN Sıcaklık ve Nem Sensörü" },
+      "type": { "tr": "LoRaWAN Sıcaklık ve Nem Sensörü" },
+      "shortDescription": { "tr": "Dış ortamda sıcaklık ve nemi hassas biçimde ölçen, gerçek zamanlı uzaktan izleme sunan LoRaWAN sensörü." },
+      "description": { "tr": "WS-O-X-AI-TH-1, ağır dış ortam koşullarına dayanıklı, kullanıma hazır bir sıcaklık ve nem sensörüdür. LoRaWAN teknolojisiyle dış ortam sıcaklık ve nem verilerini iletir. 10.000 mAh pil ile 10 yıla kadar çalışabilir; LoRaWAN destekleyen tüm ağ geçitleriyle uyumludur." }
+    },
+    "willowmod": {
+      "title": { "tr": "IP67 Endüstriyel LoRaWAN Modbus Sensörü" },
+      "type": { "tr": "IP67 Endüstriyel LoRaWAN Modbus Sensörü" },
+      "shortDescription": { "tr": "Modbus register'larını okuyup LoRaWAN üzerinden kablosuz Modbus RTU köprüsü oluşturan endüstriyel sensör." },
+      "description": { "tr": "Tanımlanabilir Modbus register'larını okur/yazar ve LoRaWAN üzerinden kablosuz Modbus RTU geçiş köprüsü oluşturur. Endüstriyel ekipmanların kablosuz uzaktan izlenmesi için uygundur." }
+    },
+    "willowmos": {
+      "title": { "tr": "Dış Ortam LoRaWAN Toprak Nemi Sensörü" },
+      "type": { "tr": "Dış Ortam LoRaWAN Toprak Nemi Sensörü" },
+      "shortDescription": { "tr": "Toprak nemi ve toprak sıcaklığını ölçen, akıllı tarım uygulamaları için ideal LoRaWAN sensörü." },
+      "description": { "tr": "Toprak sıcaklığını ve toprak nemini ölçer. Veriler LoRaWAN üzerinden iletilir; akıllı tarım, seralar ve bahçeler için uygundur." }
+    },
+    "willowpre": {
+      "title": { "tr": "IP67 LoRaWAN Sıvı Basınç Sensörü" },
+      "type": { "tr": "IP67 LoRaWAN Sıvı Basınç Sensörü" },
+      "shortDescription": { "tr": "Boru ve tank sistemlerindeki sıvı basıncını ölçen, zorlu koşullara uygun LoRaWAN sensörü." },
+      "description": { "tr": "Boru ve tank sistemlerindeki sıvı basıncını ölçer. Zorlu çalışma koşullarına uygundur; veriler LoRaWAN üzerinden uzaktan izlenir." }
+    },
+    "willowane": {
+      "title": { "tr": "Dış Ortam LoRaWAN Anemometre" },
+      "type": { "tr": "Dış Ortam LoRaWAN Anemometre" },
+      "shortDescription": { "tr": "Dış ortamda rüzgâr hızını ölçen, zorlu saha koşulları için tasarlanmış LoRaWAN anemometre." },
+      "description": { "tr": "Dış ortamda rüzgar hızını ölçer. Zorlu saha koşulları için tasarlanmıştır; veriler LoRaWAN üzerinden uzaktan izleme platformlarına iletilir." }
+    }
+  }
+}

@@ -81,15 +81,51 @@ const primaryDocUrl = primaryDoc ? (primaryDoc.langs.find((l) => l.isActive)?.ur
 const legacyDatasheetUrl = product.datasheet_url || product.datasheet || "";
 
 // Category text mappings
-const categoryMap: Record<string, string> = {
-  modules: "Use this module as the embedded core of low-power connected devices where firmware, RF performance and long-term maintainability matter.",
-  environment: "Use this sensor family for environmental telemetry, alerts and remote monitoring in industrial, utility and field conditions.",
-  tracking: "Use this device family to detect movement, access, safety events and asset state changes across distributed sites.",
-  industrial: "Use this product to connect industrial equipment, Modbus devices and telemetry workflows into a unified platform."
+const categoryFitByCategory: Record<string, Record<string, string>> = {
+  modules: {
+    en: "Use this module as the embedded core of low-power connected devices where firmware, RF performance and long-term maintainability matter.",
+    tr: "Firmware, RF performansı ve uzun vadeli sürdürülebilirliğin kritik olduğu düşük güçlü bağlı cihazların gömülü çekirdeği olarak kullanın.",
+    de: "Nutzen Sie dieses Modul als Embedded-Kern für energieeffiziente vernetzte Geräte, bei denen Firmware, RF-Leistung und langfristige Wartbarkeit entscheidend sind.",
+    fr: "Utilisez ce module comme cœur embarqué de dispositifs connectés basse consommation, là où firmware, performance RF et maintenabilité comptent.",
+    es: "Use este módulo como núcleo embebido de dispositivos conectados de bajo consumo donde importan firmware, rendimiento RF y mantenibilidad.",
+    it: "Usa questo modulo come nucleo embedded di dispositivi connessi a basso consumo dove contano firmware, prestazioni RF e manutenibilità.",
+    ar: "استخدم هذه الوحدة كنواة مدمجة لأجهزة متصلة منخفضة الطاقة حيث تهم البرامج الثابتة وأداء RF والصيانة طويلة الأمد.",
+    ja: "ファームウェア、RF性能、長期保守性が重要な低消費電力接続デバイスの組み込みコアとして利用できます。",
+  },
+  environment: {
+    en: "Use this sensor family for environmental telemetry, alerts and remote monitoring in industrial, utility and field conditions.",
+    tr: "Endüstriyel, kamu hizmeti ve saha koşullarında çevresel telemetri, uyarı ve uzaktan izleme için bu sensör ailesini tercih edin.",
+    de: "Nutzen Sie diese Sensorfamilie für Umwelttelemetrie, Alarme und Fernüberwachung in Industrie-, Versorgungs- und Feldbedingungen.",
+    fr: "Utilisez cette famille de capteurs pour la télémétrie environnementale, les alertes et la surveillance à distance en conditions industrielles et terrain.",
+    es: "Use esta familia de sensores para telemetría ambiental, alertas y monitorización remota en entornos industriales y de campo.",
+    it: "Usa questa famiglia di sensori per telemetria ambientale, allarmi e monitoraggio remoto in condizioni industriali e sul campo.",
+    ar: "استخدم هذه العائلة من المستشعرات للقياس البيئي والتنبيهات والمراقبة عن بُعد في البيئات الصناعية والميدانية.",
+    ja: "産業・インフラ・現場環境での環境テレメトリ、アラート、リモート監視にこのセンサー群を利用できます。",
+  },
+  tracking: {
+    en: "Use this device family to detect movement, access, safety events and asset state changes across distributed sites.",
+    tr: "Dağınık tesislerde hareket, erişim, güvenlik olayları ve varlık durumu değişikliklerini tespit etmek için bu cihaz ailesini kullanın.",
+    de: "Nutzen Sie diese Gerätefamilie zur Erkennung von Bewegung, Zugang, Sicherheitsereignissen und Asset-Statusänderungen an verteilten Standorten.",
+    fr: "Utilisez cette famille d'appareils pour détecter mouvement, accès, événements de sécurité et changements d'état d'actifs sur des sites distribués.",
+    es: "Use esta familia de dispositivos para detectar movimiento, acceso, eventos de seguridad y cambios de estado de activos en sitios distribuidos.",
+    it: "Usa questa famiglia di dispositivi per rilevare movimento, accesso, eventi di sicurezza e cambi di stato degli asset su siti distribuiti.",
+    ar: "استخدم هذه العائلة من الأجهزة لاكتشاف الحركة والوصول وأحداث السلامة وتغيّرات حالة الأصول عبر مواقع موزّعة.",
+    ja: "分散拠点での動き、アクセス、安全イベント、資産状態の変化を検知するためにこのデバイス群を利用できます。",
+  },
+  industrial: {
+    en: "Use this product to connect industrial equipment, Modbus devices and telemetry workflows into a unified platform.",
+    tr: "Endüstriyel ekipmanları, Modbus cihazlarını ve telemetri süreçlerini tek bir platformda birleştirmek için bu ürünü kullanın.",
+    de: "Nutzen Sie dieses Produkt, um Industrieanlagen, Modbus-Geräte und Telemetrie-Workflows in einer einheitlichen Plattform zu verbinden.",
+    fr: "Utilisez ce produit pour connecter équipements industriels, appareils Modbus et flux de télémétrie dans une plateforme unifiée.",
+    es: "Use este producto para conectar equipos industriales, dispositivos Modbus y flujos de telemetría en una plataforma unificada.",
+    it: "Usa questo prodotto per collegare apparecchiature industriali, dispositivi Modbus e flussi di telemetria in un'unica piattaforma.",
+    ar: "استخدم هذا المنتج لربط المعدات الصناعية وأجهزة Modbus وتدفقات القياس عن بُعد في منصة موحّدة.",
+    ja: "産業機器、Modbusデバイス、テレメトリワークフローを統合プラットフォームにつなぐために利用できます。",
+  },
 };
-const localizedFitText = {
-  en: categoryMap[product.category] || "Use this product as part of a reliable connected product ecosystem.",
-  tr: "Bu ürünü güvenilir bir bağlı ürün ekosisteminin parçası olarak konumlandırın.",
+const defaultFitText = {
+  en: "Use this product as part of a reliable connected product ecosystem.",
+  tr: "Güvenilir bir IoT sisteminin parçası olarak konumlandırın.",
   de: "Nutzen Sie dieses Produkt als Teil eines zuverlässigen vernetzten Produktsystems.",
   fr: "Positionnez ce produit comme une brique d'un écosystème connecté fiable.",
   es: "Use este producto como parte de un ecosistema conectado fiable.",
@@ -97,25 +133,61 @@ const localizedFitText = {
   ar: "استخدم هذا المنتج كجزء من منظومة منتجات متصلة وموثوقة.",
   ja: "この製品を信頼性の高い接続システムの一部として活用できます。",
 };
-const fitText = pickText(localizedFitText);
+const fitText = pickText(categoryFitByCategory[product.category] || defaultFitText);
 
-const snapshotMap: Record<string, string> = {
-  modules: "Embedded core for low-power device builds.",
-  environment: "Field telemetry for environmental monitoring.",
-  tracking: "Event detection for distributed operations.",
-  industrial: "Industrial bridge for machine-side data."
+const snapshotByCategory: Record<string, Record<string, string>> = {
+  modules: {
+    en: "Embedded core for low-power device builds.",
+    tr: "Düşük güçlü cihaz geliştirmeleri için gömülü çekirdek.",
+    de: "Embedded-Kern für energieeffiziente Geräteentwicklung.",
+    fr: "Cœur embarqué pour conceptions basse consommation.",
+    es: "Núcleo embebido para desarrollos de bajo consumo.",
+    it: "Nucleo embedded per progetti a basso consumo.",
+    ar: "نواة مدمجة لتطوير أجهزة منخفضة الطاقة.",
+    ja: "低消費電力デバイス開発向けの組み込みコア。",
+  },
+  environment: {
+    en: "Field telemetry for environmental monitoring.",
+    tr: "Çevresel izleme için saha telemetrisi.",
+    de: "Feldtelemetrie für Umweltüberwachung.",
+    fr: "Télémétrie terrain pour la surveillance environnementale.",
+    es: "Telemetría de campo para monitorización ambiental.",
+    it: "Telemetria sul campo per il monitoraggio ambientale.",
+    ar: "قياس عن بُعد ميداني للمراقبة البيئية.",
+    ja: "環境監視向けの現場テレメトリ。",
+  },
+  tracking: {
+    en: "Event detection for distributed operations.",
+    tr: "Dağınık operasyonlar için olay algılama.",
+    de: "Ereigniserkennung für verteilte Betriebe.",
+    fr: "Détection d'événements pour opérations distribuées.",
+    es: "Detección de eventos para operaciones distribuidas.",
+    it: "Rilevamento eventi per operazioni distribuite.",
+    ar: "اكتشاف الأحداث للعمليات الموزّعة.",
+    ja: "分散運用向けのイベント検知。",
+  },
+  industrial: {
+    en: "Industrial bridge for machine-side data.",
+    tr: "Makine tarafı verileri için endüstriyel köprü.",
+    de: "Industrielle Brücke für maschinenseitige Daten.",
+    fr: "Passerelle industrielle pour les données côté machine.",
+    es: "Puente industrial para datos del lado máquina.",
+    it: "Ponte industriale per i dati lato macchina.",
+    ar: "جسر صناعي لبيانات جانب الآلة.",
+    ja: "機械側データ向けの産業ブリッジ。",
+  },
 };
-const localizedSnapshotText = {
-  en: snapshotMap[product.category] || "Built for field telemetry.",
-  tr: "Saha telemetrisi için tasarlanmış teknik yapı.",
-  de: "Technische Basis für Feldtelemetrie.",
-  fr: "Base technique pour la télémétrie terrain.",
-  es: "Base técnica para telemetría de campo.",
-  it: "Base tecnica per la telemetria sul campo.",
-  ar: "بنية تقنية للقياس عن بعد في الميدان.",
-  ja: "現場テレメトリ向けの技術構成。",
+const defaultSnapshotText = {
+  en: "Built for field telemetry.",
+  tr: "Saha telemetrisi için tasarlandı.",
+  de: "Für Feldtelemetrie entwickelt.",
+  fr: "Conçu pour la télémétrie terrain.",
+  es: "Diseñado para telemetría de campo.",
+  it: "Progettato per la telemetria sul campo.",
+  ar: "مصمّم للقياس عن بُعد في الميدان.",
+  ja: "現場テレメトリ向けに設計。",
 };
-const snapshotText = pickText(localizedSnapshotText);
+const snapshotText = pickText(snapshotByCategory[product.category] || defaultSnapshotText);
 
 const byCategory: Record<string, any> = {
   modules: {
@@ -156,43 +228,70 @@ const decision = { ...(byCategory[product.category] || {
   delivered: ["Firmware and connectivity configuration", "Backend ingestion and PostgreSQL model", "Dashboard, mobile and alerting workflow"]
 }) };
 
-if (titleLower.includes("panic")) {
-  decision.useTitle = "Safety and emergency workflows";
-  decision.use = "Use this device where operators need a physical emergency trigger connected to remote alerts and response workflows.";
-}
-if (titleLower.includes("modbus")) {
-  decision.useTitle = "Legacy equipment integration";
-  decision.roleTitle = "Modbus-to-platform bridge";
-}
-if (titleLower.includes("ultrasonic") || titleLower.includes("level")) {
-  decision.useTitle = "Tank, manhole and level monitoring";
-  decision.use = "Use this product where level, distance or fill state must be monitored remotely across distributed field assets.";
-}
-if (titleLower.includes("soil")) {
-  decision.useTitle = "Agriculture and field research";
+const decisionI18n: Record<string, Record<string, any>> = {
+  modules: {
+    useTitle: { en: "Custom connected devices", tr: "Özel bağlı cihazlar", de: "Individuelle vernetzte Geräte", fr: "Appareils connectés sur mesure", es: "Dispositivos conectados a medida", it: "Dispositivi connessi personalizzati", ar: "أجهزة متصلة مخصّصة", ja: "カスタム接続デバイス" },
+    use: { en: byCategory.modules.use, tr: "Özel sensör, kontrolör veya saha cihazı geliştirmek için düşük güçlü bir LoRaWAN çekirdeğine ihtiyaç duyduğunuzda bu modülü kullanın.", de: "Setzen Sie dieses Modul ein, wenn Sie einen energieeffizienten LoRaWAN-Kern für Sensor, Controller oder Felgerät benötigen.", fr: "Utilisez ce module lorsque vous avez besoin d'un cœur LoRaWAN basse consommation pour capteur, contrôleur ou appareil terrain.", es: "Use este módulo cuando necesite un núcleo LoRaWAN de bajo consumo para sensor, controlador o dispositivo de campo.", it: "Usa questo modulo quando serve un core LoRaWAN a basso consumo per sensore, controller o dispositivo sul campo.", ar: "استخدم هذه الوحدة عند الحاجة إلى نواة LoRaWAN منخفضة الطاقة لمستشعر أو متحكم أو جهاز ميداني.", ja: "カスタムセンサー、コントローラー、現場デバイス向けの低消費電力LoRaWANコアが必要な場合に利用します。" },
+    roleTitle: { en: "Embedded core", tr: "Gömülü çekirdek", de: "Embedded-Kern", fr: "Cœur embarqué", es: "Núcleo embebido", it: "Nucleo embedded", ar: "نواة مدمجة", ja: "組み込みコア" },
+    role: { en: byCategory.modules.role, tr: "MCU mantığı, RF davranışı, GPIO eşlemesi ve firmware sürdürülebilirliğinin ürün güvenilirliğini belirlediği cihaz katmanında konumlanır.", de: "Es sitzt auf der Geräteebene, wo MCU-Logik, RF-Verhalten, GPIO-Mapping und Firmware-Wartbarkeit die Zuverlässigkeit bestimmen.", fr: "Il se situe à la couche appareil, où logique MCU, comportement RF, mapping GPIO et maintenabilité firmware déterminent la fiabilité.", es: "Se sitúa en la capa de dispositivo, donde la lógica MCU, el comportamiento RF, el mapeo GPIO y la mantenibilidad del firmware deciden la fiabilidad.", it: "Si colloca al livello dispositivo, dove logica MCU, comportamento RF, mapping GPIO e manutenibilità firmware determinano l'affidabilità.", ar: "يقع في طبقة الجهاز حيث تحدد منطق MCU وسلوك RF وتعيين GPIO وقابلية صيانة البرامج الثابتة موثوقية المنتج.", ja: "MCUロジック、RF挙動、GPIOマッピング、ファームウェア保守性が製品信頼性を左右するデバイス層に位置します。" },
+    delivered: { tr: ["Firmware mimarisi ve düşük güç mantığı", "LoRaWAN payload tasarımı ve RF doğrulaması", "Prototipten seri üretime gömülü destek"], de: ["Firmware-Architektur und Low-Power-Logik", "LoRaWAN-Payload-Design und RF-Validierung", "Embedded-Support von Prototyp bis Serie"], fr: ["Architecture firmware et logique basse consommation", "Conception payload LoRaWAN et validation RF", "Support embarqué du prototype à la production"], es: ["Arquitectura de firmware y lógica de bajo consumo", "Diseño de payload LoRaWAN y validación RF", "Soporte embebido de prototipo a producción"], it: ["Architettura firmware e logica a basso consumo", "Design payload LoRaWAN e validazione RF", "Supporto embedded da prototipo a produzione"], ar: ["هندسة البرامج الثابتة ومنطق الطاقة المنخفضة", "تصميم حمولة LoRaWAN والتحقق من RF", "دعم مدمج من النموذج الأولي إلى الإنتاج"], ja: ["ファームウェア設計と低消費電力ロジック", "LoRaWANペイロード設計とRF検証", "試作から量産までの組み込み支援"] },
+  },
+  environment: {
+    useTitle: { en: "Environmental monitoring", tr: "Çevresel izleme", de: "Umweltüberwachung", fr: "Surveillance environnementale", es: "Monitorización ambiental", it: "Monitoraggio ambientale", ar: "المراقبة البيئية", ja: "環境監視" },
+    use: { en: byCategory.environment.use, tr: "Ölçümlerin uyarı, panel ve rapora dönüşmesi gereken iç, dış ve saha koşulları için bu sensör ailesini kullanın.", de: "Nutzen Sie diese Sensorfamilie, wenn Messwerte zu Alarmen, Dashboards und Berichten werden müssen.", fr: "Utilisez cette famille de capteurs lorsque les mesures doivent devenir alertes, tableaux de bord et rapports.", es: "Use esta familia cuando las mediciones deban convertirse en alertas, paneles e informes.", it: "Usa questa famiglia quando le misure devono diventare allarmi, dashboard e report.", ar: "استخدم هذه العائلة عندما يجب أن تتحول القياسات إلى تنبيهات ولوحات وتقارير.", ja: "測定値をアラート、ダッシュボード、レポートに変える必要がある内外・現場環境向けです。" },
+    roleTitle: { en: "Measurement node", tr: "Ölçüm düğümü", de: "Messknoten", fr: "Nœud de mesure", es: "Nodo de medición", it: "Nodo di misura", ar: "عقدة قياس", ja: "計測ノード" },
+    role: { en: byCategory.environment.role, tr: "Saha koşullarını ölçer; yapılandırılmış telemetriyi izleme, raporlama ve operatör müdahalesi için platforma iletir.", de: "Es erfasst Feldbedingungen und sendet strukturierte Telemetrie zur Plattform für Monitoring, Reporting und Operatoraktion.", fr: "Il capture les conditions terrain et envoie une télémétrie structurée vers la plateforme pour suivi, reporting et action opérateur.", es: "Captura condiciones de campo y envía telemetría estructurada a la plataforma para monitorización, informes y acción del operador.", it: "Cattura le condizioni sul campo e invia telemetria strutturata alla piattaforma per monitoraggio, report e azione operatore.", ar: "يقيس ظروف الميدان ويرسل القياس عن بُعد المنظّم إلى المنصة للمراقبة والتقارير وتدخل المشغّل.", ja: "現場条件を計測し、監視・報告・オペレーター対応のために構造化テレメトリをプラットフォームへ送ります。" },
+    delivered: { tr: ["Sensör yapılandırması ve raporlama aralıkları", "Backend veri alımı ve PostgreSQL time-series modeli", "Dashboard'lar, eşikler ve mobil bildirimler"], de: ["Sensorkonfiguration und Berichtsintervalle", "Backend-Ingestion und PostgreSQL-Zeitreihenmodell", "Dashboards, Schwellenwerte und mobile Benachrichtigungen"], fr: ["Configuration capteur et intervalles de rapport", "Ingestion backend et modèle séries temporelles PostgreSQL", "Tableaux de bord, seuils et notifications mobiles"], es: ["Configuración de sensor e intervalos de informe", "Ingesta backend y modelo de series temporales PostgreSQL", "Paneles, umbrales y notificaciones móviles"], it: ["Configurazione sensore e intervalli di report", "Ingestion backend e modello serie temporali PostgreSQL", "Dashboard, soglie e notifiche mobile"], ar: ["إعداد المستشعر وفترات الإبلاغ", "استقبال البيانات في الخلفية ونموذج PostgreSQL للسلاسل الزمنية", "لوحات تحكم وعتبات وإشعارات جوال"], ja: ["センサー設定と報告間隔", "バックエンド取り込みとPostgreSQL時系列モデル", "ダッシュボード、閾値、モバイル通知"] },
+  },
+  tracking: {
+    useTitle: { en: "Event and asset state tracking", tr: "Olay ve varlık durumu takibi", de: "Ereignis- und Asset-Statusverfolgung", fr: "Suivi d'événements et d'état d'actifs", es: "Seguimiento de eventos y estado de activos", it: "Tracciamento eventi e stato asset", ar: "تتبع الأحداث وحالة الأصول", ja: "イベントと資産状態の追跡" },
+    use: { en: byCategory.tracking.use, tr: "Hareket, erişim, güvenlik, eğim veya rota olaylarının saha kontrolü olmadan görünür olması gerektiğinde bu cihazı kullanın.", de: "Setzen Sie dieses Gerät ein, wenn Bewegungs-, Zugangs-, Sicherheits-, Neigungs- oder Routenereignisse ohne manuelle Kontrolle sichtbar sein müssen.", fr: "Utilisez cet appareil lorsque mouvement, accès, sécurité, inclinaison ou itinéraire doivent être visibles sans contrôle manuel sur site.", es: "Use este dispositivo cuando eventos de movimiento, acceso, seguridad, inclinación o ruta deban ser visibles sin controles manuales en sitio.", it: "Usa questo dispositivo quando movimento, accesso, sicurezza, inclinazione o percorso devono essere visibili senza controlli manuali sul campo.", ar: "استخدم هذا الجهاز عندما يجب أن تكون أحداث الحركة أو الوصول أو السلامة أو الميل أو المسار مرئية دون فحص يدوي في الموقع.", ja: "動き、アクセス、安全、傾斜、ルートイベントを現場確認なしで可視化したい場合に利用します。" },
+    roleTitle: { en: "Event trigger", tr: "Olay tetikleyici", de: "Ereignisauslöser", fr: "Déclencheur d'événement", es: "Disparador de eventos", it: "Trigger eventi", ar: "مُحفّز الأحداث", ja: "イベントトリガー" },
+    role: { en: byCategory.tracking.role, tr: "Fiziksel durum değişikliklerini operasyonel uyarılara ve geçmiş kayıtlara dönüştüren saha sinyali görevi görür.", de: "Es wird zum Feldsignal, das physische Zustandsänderungen in operative Alarme und Historie verwandelt.", fr: "Il devient le signal terrain qui transforme les changements d'état physiques en alertes opérationnelles et historique.", es: "Se convierte en la señal de campo que transforma cambios de estado físico en alertas operativas e historial.", it: "Diventa il segnale sul campo che trasforma i cambi di stato fisico in allarmi operativi e storico.", ar: "يصبح إشارة ميدانية تحوّل تغيّرات الحالة الفيزيائية إلى تنبيهات تشغيلية وسجل.", ja: "物理状態の変化を運用アラートと履歴に変える現場信号になります。" },
+    delivered: { tr: ["Olay mantığı ve payload tasarımı", "Uyarı yönlendirme ve operatör iş akışı", "Harita, log veya admin panel entegrasyonu"], de: ["Ereignislogik und Payload-Design", "Alarm-Routing und Operator-Workflow", "Karten-, Log- oder Admin-Panel-Integration"], fr: ["Logique d'événement et conception payload", "Routage d'alertes et workflow opérateur", "Intégration carte, journal ou panneau admin"], es: ["Lógica de eventos y diseño de payload", "Enrutamiento de alertas y flujo de operador", "Integración de mapa, registro o panel admin"], it: ["Logica eventi e design payload", "Instradamento allarmi e workflow operatore", "Integrazione mappa, log o pannello admin"], ar: ["منطق الأحداث وتصميم الحمولة", "توجيه التنبيهات وسير عمل المشغّل", "تكامل الخريطة أو السجل أو لوحة الإدارة"], ja: ["イベントロジックとペイロード設計", "アラートルーティングとオペレーターワークフロー", "マップ、ログ、管理パネル連携"] },
+  },
+  industrial: {
+    useTitle: { en: "Industrial telemetry integration", tr: "Endüstriyel telemetri entegrasyonu", de: "Industrielle Telemetrie-Integration", fr: "Intégration télémétrie industrielle", es: "Integración de telemetría industrial", it: "Integrazione telemetria industriale", ar: "تكامل القياس عن بُعد الصناعي", ja: "産業テレメトリ統合" },
+    use: { en: byCategory.industrial.use, tr: "Mevcut sayaçlar, PLC'ler veya saha varlıklarının operasyonel verilerini modern bir dijital platforma aktarması gerektiğinde bu ürünü kullanın.", de: "Nutzen Sie dieses Produkt, wenn bestehende Zähler, SPS oder Feldanlagen Betriebsdaten in eine moderne Plattform melden müssen.", fr: "Utilisez ce produit lorsque compteurs, automates ou actifs terrain doivent remonter leurs données vers une plateforme numérique moderne.", es: "Use este producto cuando contadores, PLC o activos de campo deban reportar datos operativos a una plataforma digital moderna.", it: "Usa questo prodotto quando contatori, PLC o asset sul campo devono inviare dati operativi a una piattaforma digitale moderna.", ar: "استخدم هذا المنتج عندما تحتاج العدادات أو وحدات PLC أو الأصول الميدانية إلى إرسال بيانات تشغيلية إلى منصة رقمية حديثة.", ja: "既存のメーター、PLC、現場資産の運用データを現代的なデジタルプラットフォームへ送る必要がある場合に利用します。" },
+    roleTitle: { en: "Industrial bridge", tr: "Endüstriyel köprü", de: "Industrielle Brücke", fr: "Passerelle industrielle", es: "Puente industrial", it: "Ponte industriale", ar: "جسر صناعي", ja: "産業ブリッジ" },
+    role: { en: byCategory.industrial.role, tr: "Makine tarafı verileri API'ler, PostgreSQL, web panelleri ve mobil operasyon araçlarıyla buluşturur.", de: "Es verbindet maschinenseitige Daten mit APIs, PostgreSQL, Web-Dashboards und mobilen Betriebstools.", fr: "Il relie les données côté machine aux API, PostgreSQL, tableaux de bord web et outils mobiles opérationnels.", es: "Conecta datos del lado máquina con APIs, PostgreSQL, paneles web y herramientas móviles operativas.", it: "Collega i dati lato macchina ad API, PostgreSQL, dashboard web e strumenti operativi mobile.", ar: "يربط بيانات جانب الآلة بواجهات API وPostgreSQL ولوحات الويب وأدوات التشغيل على الجوال.", ja: "機械側データをAPI、PostgreSQL、Webダッシュボード、モバイル運用ツールにつなぎます。" },
+    delivered: { tr: ["Register eşlemesi ve cihaz yapılandırması", "API veri alımı ve PostgreSQL şeması", "Yönetim paneli, raporlama ve entegrasyonlar"], de: ["Register-Mapping und Gerätekonfiguration", "API-Ingestion und PostgreSQL-Schema", "Admin-Dashboard, Reporting und Integrationen"], fr: ["Mapping registres et configuration appareil", "Ingestion API et schéma PostgreSQL", "Panneau admin, reporting et intégrations"], es: ["Mapeo de registros y configuración de dispositivo", "Ingesta API y esquema PostgreSQL", "Panel admin, informes e integraciones"], it: ["Mapping registri e configurazione dispositivo", "Ingestion API e schema PostgreSQL", "Pannello admin, report e integrazioni"], ar: ["تعيين السجلات وإعداد الجهاز", "استقبال API ومخطط PostgreSQL", "لوحة إدارة وتقارير وتكاملات"], ja: ["レジスタマッピングとデバイス設定", "API取り込みとPostgreSQLスキーマ", "管理パネル、レポート、連携"] },
+  },
+};
+const defaultDecisionI18n = {
+  useTitle: { en: "Field monitoring", tr: "Saha izleme", de: "Feldüberwachung", fr: "Surveillance terrain", es: "Monitorización de campo", it: "Monitoraggio sul campo", ar: "مراقبة ميدانية", ja: "現場監視" },
+  use: { en: "Use this product where physical-world data must be measured, transmitted and turned into operational decisions.", tr: "Fiziksel verilerin ölçülmesi, iletilmesi ve operasyonel kararlara dönüştürülmesi gereken yapılarda bu ürünü kullanın.", de: "Setzen Sie dieses Produkt ein, wenn Felddaten gemessen, übertragen und in Entscheidungen überführt werden müssen.", fr: "Utilisez ce produit lorsque les données physiques doivent être mesurées, transmises et transformées en décisions opérationnelles.", es: "Use este producto cuando los datos físicos deban medirse, transmitirse y convertirse en decisiones operativas.", it: "Usa questo prodotto quando i dati fisici devono essere misurati, trasmessi e trasformati in decisioni operative.", ar: "استخدم هذا المنتج عندما يجب قياس البيانات الفيزيائية وإرسالها وتحويلها إلى قرارات تشغيلية.", ja: "現場データを計測し、送信し、運用判断につなげる必要がある構成で利用できます。" },
+  roleTitle: { en: "Telemetry source", tr: "Telemetri kaynağı", de: "Telemetriequelle", fr: "Source de télémétrie", es: "Fuente de telemetría", it: "Sorgente di telemetria", ar: "مصدر القياس عن بعد", ja: "テレメトリソース" },
+  role: { en: "It feeds the digital layer with structured measurements, events and device state.", tr: "Yapılandırılmış ölçüm, olay ve cihaz durumu verilerini dijital katmana taşır.", de: "Es speist die digitale Ebene mit strukturierten Messungen, Ereignissen und Gerätestatus.", fr: "Il alimente la couche numérique avec mesures, événements et état d'appareil structurés.", es: "Alimenta la capa digital con mediciones, eventos y estado de dispositivo estructurados.", it: "Alimenta il livello digitale con misure, eventi e stato dispositivo strutturati.", ar: "يغذّي الطبقة الرقمية بقياسات وأحداث وحالة جهاز منظّمة.", ja: "構造化された計測値、イベント、デバイス状態をデジタル層へ供給します。" },
+  delivered: { tr: ["Firmware ve bağlantı yapılandırması", "Backend veri alımı ve PostgreSQL modeli", "Panel, mobil ve uyarı iş akışı"], de: ["Firmware- und Konnektivitätskonfiguration", "Backend-Ingestion und PostgreSQL-Modell", "Dashboard-, Mobile- und Alarm-Workflow"], fr: ["Configuration firmware et connectivité", "Ingestion backend et modèle PostgreSQL", "Dashboard, mobile et workflow d'alertes"], es: ["Configuración de firmware y conectividad", "Ingesta backend y modelo PostgreSQL", "Panel, móvil y flujo de alertas"], it: ["Configurazione firmware e connettività", "Ingestion backend e modello PostgreSQL", "Dashboard, mobile e flusso di avvisi"], ar: ["إعداد البرامج الثابتة والاتصال", "استقبال البيانات في الخلفية ونموذج PostgreSQL", "لوحة تحكم وتطبيق جوال وسير عمل للتنبيهات"], ja: ["ファームウェアと通信設定", "バックエンド取り込みとPostgreSQLモデル", "ダッシュボード、モバイル、アラート運用"] },
+};
+if (locale !== "en") {
+  const locDecision = decisionI18n[product.category] || defaultDecisionI18n;
+  decision.useTitle = pickText(locDecision.useTitle);
+  decision.use = pickText(locDecision.use);
+  decision.roleTitle = pickText(locDecision.roleTitle);
+  decision.role = pickText(locDecision.role);
+  decision.delivered = locDecision.delivered?.[locale] || locDecision.delivered?.tr || decision.delivered;
 }
 
-if (locale !== "en") {
-  const localizedDecision = {
-    useTitle: { tr: "Saha izleme ve bağlı ürün kullanımı", de: "Feldüberwachung und vernetzte Produktnutzung", fr: "Surveillance terrain et usage connecté", es: "Monitorización de campo y producto conectado", it: "Monitoraggio sul campo e prodotto connesso", ar: "مراقبة ميدانية واستخدام منتج متصل", ja: "現場監視と接続製品の活用" },
-    use: { tr: "Bu ürünü fiziksel dünyadan gelen verilerin güvenilir şekilde ölçülmesi, iletilmesi ve operasyonel kararlara dönüştürülmesi gereken yapılarda kullanın.", de: "Setzen Sie dieses Produkt ein, wenn physische Felddaten zuverlässig gemessen, übertragen und in operative Entscheidungen überführt werden müssen.", fr: "Utilisez ce produit lorsque les données physiques doivent être mesurées, transmises et transformées en décisions opérationnelles.", es: "Use este producto cuando los datos físicos deban medirse, transmitirse y convertirse en decisiones operativas.", it: "Usa questo prodotto quando i dati fisici devono essere misurati, trasmessi e trasformati in decisioni operative.", ar: "استخدم هذا المنتج عندما تحتاج بيانات العالم الحقيقي إلى القياس والإرسال والتحويل إلى قرارات تشغيلية.", ja: "現場データを計測し、送信し、運用判断につなげる必要がある構成で利用できます。" },
-    roleTitle: { tr: "Telemetri kaynağı", de: "Telemetriequelle", fr: "Source de télémétrie", es: "Fuente de telemetría", it: "Sorgente di telemetria", ar: "مصدر القياس عن بعد", ja: "テレメトリソース" },
-    role: { tr: "Cihaz katmanından gelen ölçüm ve olay verilerini dijital sisteme taşıyan saha sinyalidir.", de: "Es liefert Mess- und Ereignisdaten aus der Geräteebene in das digitale System.", fr: "Il transmet les mesures et événements du terrain vers le système numérique.", es: "Lleva mediciones y eventos desde la capa de dispositivo hacia el sistema digital.", it: "Porta misure ed eventi dal livello dispositivo al sistema digitale.", ar: "ينقل القياسات والأحداث من طبقة الجهاز إلى النظام الرقمي.", ja: "デバイス層の計測値やイベントをデジタルシステムへ送る現場信号です。" },
-    delivered: {
-      tr: ["Cihaz ve bağlantı yapılandırması", "Backend veri alımı ve PostgreSQL modeli", "Dashboard, mobil ve alarm iş akışı"],
-      de: ["Geräte- und Konnektivitätskonfiguration", "Backend-Ingestion und PostgreSQL-Modell", "Dashboard-, Mobile- und Alarm-Workflow"],
-      fr: ["Configuration dispositif et connectivité", "Ingestion backend et modèle PostgreSQL", "Dashboard, mobile et workflow d'alertes"],
-      es: ["Configuración de dispositivo y conectividad", "Ingesta backend y modelo PostgreSQL", "Dashboard, móvil y flujo de alertas"],
-      it: ["Configurazione dispositivo e connettività", "Ingestion backend e modello PostgreSQL", "Dashboard, mobile e flusso di avvisi"],
-      ar: ["إعداد الجهاز والاتصال", "استقبال البيانات في الخلفية ونموذج PostgreSQL", "لوحة تحكم وتطبيق جوال وسير عمل للتنبيهات"],
-      ja: ["デバイスと通信設定", "バックエンド取り込みとPostgreSQLモデル", "ダッシュボード、モバイル、アラート運用"],
-    },
-  };
-  decision.useTitle = pickText(localizedDecision.useTitle);
-  decision.use = pickText(localizedDecision.use);
-  decision.roleTitle = pickText(localizedDecision.roleTitle);
-  decision.role = pickText(localizedDecision.role);
-  decision.delivered = localizedDecision.delivered[locale] || localizedDecision.delivered.tr;
+if (titleLower.includes("panic")) {
+  decision.useTitle = locale === "tr" ? "Güvenlik ve acil durum süreçleri" : "Safety and emergency workflows";
+  decision.use = locale === "tr"
+    ? "Operatörlerin fiziksel acil durum tetikleyicisiyle uzaktan uyarı ve müdahale süreçlerine bağlanması gereken alanlarda kullanın."
+    : "Use this device where operators need a physical emergency trigger connected to remote alerts and response workflows.";
+}
+if (titleLower.includes("modbus")) {
+  decision.useTitle = locale === "tr" ? "Eski ekipman entegrasyonu" : "Legacy equipment integration";
+  decision.roleTitle = locale === "tr" ? "Modbus-to-platform bridge" : "Modbus-to-platform bridge";
+}
+if (titleLower.includes("ultrasonic") || titleLower.includes("level")) {
+  decision.useTitle = locale === "tr" ? "Tank, rögar ve seviye izleme" : "Tank, manhole and level monitoring";
+  decision.use = locale === "tr"
+    ? "Dağınık saha varlıklarında seviye, mesafe veya doluluk durumunun uzaktan izlenmesi gereken uygulamalarda kullanın."
+    : "Use this product where level, distance or fill state must be monitored remotely across distributed field assets.";
+}
+if (titleLower.includes("soil")) {
+  decision.useTitle = locale === "tr" ? "Tarım ve saha araştırması" : "Agriculture and field research";
 }
 
 const detailBlocks = Array.isArray(product.detailBlocks) ? product.detailBlocks.filter((block: any) => block && block.visible !== false) : [];
@@ -233,7 +332,7 @@ const extraSpecGroups = structuredSpecGroups.slice(1);
 
 const productAiIntro = pickText({
   en: `${product.title} is a WillowSoft ${product.category || "IoT"} product for connected field telemetry.`,
-  tr: `${product.title}, bağlı saha telemetrisi için geliştirilen bir WillowSoft ${product.category || "IoT"} ürünüdür.`,
+  tr: `${product.title}, saha telemetrisi için geliştirilmiş bir WillowSoft IoT ürünüdür.`,
   de: `${product.title} ist ein WillowSoft-${product.category || "IoT"}-Produkt für vernetzte Feldtelemetrie.`,
   fr: `${product.title} est un produit WillowSoft ${product.category || "IoT"} pour la télémétrie terrain connectée.`,
   es: `${product.title} es un producto WillowSoft ${product.category || "IoT"} para telemetría de campo conectada.`,
@@ -855,7 +954,7 @@ const getT = (key: keyof typeof t) => {
               </ul>
             ) : (
               <p class="ws-side-card-copy">
-                {locale === 'tr' ? "Saha kullanımı ve üretim entegrasyonu için sade, güvenilir bir yapı." :
+                {locale === 'tr' ? "Saha kullanımı ve seri üretim entegrasyonu için sade, güvenilir bir yapı." :
                  locale === 'de' ? "Eine einfache und zuverlässige Struktur für Feldeinsatz und Produktionsintegration." :
                  "A compact, reliable setup for field use and production integration."}
               </p>

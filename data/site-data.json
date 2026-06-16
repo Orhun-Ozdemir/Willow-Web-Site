@@ -11,7 +11,7 @@
       "ar",
       "ja"
     ],
-    "updatedAt": "2026-06-16T22:52:45.058Z"
+    "updatedAt": "2026-06-16T23:21:52.707Z"
   },
   "companyFacts": {
     "founded": "2020",
@@ -792,8 +792,8 @@
         "tr": {
           "type": "LoRaWAN Kablosuz Modül",
           "title": "WillowBee LoRaWAN Modülü",
-          "description": "Endüstriyel LoRaWAN uç düğümleri (endpoint) geliştirmek için tasarlanmış bir LoRaWAN modülüdür. STM32WL Cortex-M4 tabanlı olup MCU ve LoRa radyosunu tek çip üzerinde birleştirir; LoRaWAN uç düğümü geliştirme için gereken yazılım ve donanım özelliklerini tek bir modülde toplayarak geliştiricilerin hızla ürün oluşturmasını sağlar.",
-          "shortDescription": "Düşük güçlü sensör uç düğümleri ve gömülü uygulamalar için endüstriyel sınıf, LoRaWAN özellikli MCU modülü."
+          "description": "Endüstriyel LoRaWAN uç noktaları geliştirmek için tasarlanmış modüldür. STM32WL Cortex-M4 tabanlıdır; MCU ile LoRa radyosunu tek çipte birleştirir. LoRaWAN uç nokta geliştirmek için gereken yazılım ve donanım özelliklerini tek modülde toplayarak ürün geliştirmeyi hızlandırır.",
+          "shortDescription": "Düşük güçlü sensör uç noktaları ve gömülü uygulamalar için endüstriyel sınıf LoRaWAN MCU modülü."
         }
       },
       "sortOrder": 10,
@@ -929,8 +929,8 @@
       "localized": {
         "tr": {
           "type": "LoRaWAN Ultrasonik Mesafe/Seviye Sensörü",
-          "title": "LoRaWAN Ultrasonik Mesafe/Seviye Sensörü",
-          "description": "WS-O-X-AI-UD-1 sensörü, ağır dış ortam şartlarına dayanıklı ve kullanıma hazır bir ultrasonik mesafe sensörüdür. Sıvı, silo, kar ve rögar seviyelerini izlemek için hazırlanan sensör duvara ya da herhangi bir yüzeye monte edilebilir. 19000 mAh pil ile 10 yıla kadar çalışabilir. LoRaWAN® ağ geçidi ve IoT Cloud çözümü ile birleştiğinde kullanıcılar tüm sensör verilerini uzaktan ve görsel olarak izleyebilir ve yönetebilir. LoRaWAN protokolünü destekleyen tüm LoRaWAN ağ geçitleriyle uyumlu çalışır.",
+          "title": "LoRaWAN Ultrasonik Mesafe ve Seviye Sensörü",
+          "description": "WS-O-X-AI-UD-1, ağır dış ortam koşullarına dayanıklı, kullanıma hazır bir ultrasonik mesafe sensörüdür. Sıvı, silo, kar ve rögar seviyelerini izlemek üzere duvara veya herhangi bir yüzeye monte edilebilir. 19.000 mAh pil ile 10 yıla kadar çalışabilir. LoRaWAN ağ geçidi ve IoT bulut çözümüyle birleştiğinde tüm sensör verileri uzaktan izlenebilir ve yönetilebilir. LoRaWAN protokolünü destekleyen tüm ağ geçitleriyle uyumludur.",
           "applications": [
             {
               "icon": "water",
@@ -942,7 +942,7 @@
             },
             {
               "icon": "water",
-              "label": "Kar seviyesi ölçümü"
+              "label": "Kar yüksekliği ölçümü"
             },
             {
               "icon": "water",
@@ -950,7 +950,7 @@
             },
             {
               "icon": "barn",
-              "label": "Tahıl ve hububat depo seviye izleme"
+              "label": "Tahıl ve hububat deposu seviye izleme"
             },
             {
               "icon": "water",
@@ -965,7 +965,7 @@
               "label": "Yağmur suyu drenaj izleme"
             }
           ],
-          "shortDescription": "Ağır dış ortam şartlarına dayanıklı ultrasonik mesafe/seviye sensörü. Sıvı, silo, kar ve rögar seviyelerini izlemek için tasarlanmıştır."
+          "shortDescription": "Zorlu dış ortam koşullarına dayanıklı ultrasonik mesafe ve seviye sensörü; sıvı, silo, kar ve rögar seviyelerini izlemek için tasarlandı."
         }
       },
       "sortOrder": 20,
@@ -1093,7 +1093,7 @@
         "tr": {
           "type": "LoRaWAN İç Ortam Hava Kalitesi Sensörü",
           "title": "LoRaWAN İç Ortam Hava Kalitesi Sensörü",
-          "description": "TVOC, eCO2 ve sıcaklığı ölçerek IoT tabanlı bina ve ortam izleme için kullanılan LoRaWAN iç ortam hava kalitesi sensörü. Veriler LoRaWAN üzerinden uzaktan izleme platformlarına aktarılır.",
+          "description": "TVOC, eCO₂ ve sıcaklığı ölçerek bina ve ortam izleme için kullanılan LoRaWAN iç ortam hava kalitesi sensörüdür. Veriler LoRaWAN üzerinden uzaktan izleme platformlarına aktarılır.",
           "applications": [
             {
               "icon": "building",
@@ -1128,7 +1128,7 @@
               "label": "Oteller ve konaklama binaları"
             }
           ],
-          "shortDescription": "TVOC, eCO2 ve sıcaklığı ölçerek IoT tabanlı bina ve ortam izleme sağlayan LoRaWAN hava kalitesi sensörü."
+          "shortDescription": "TVOC, eCO₂ ve sıcaklığı ölçerek bina ve ortam izleme sağlayan LoRaWAN hava kalitesi sensörü."
         }
       },
       "sortOrder": 30,
@@ -1265,7 +1265,7 @@
         "tr": {
           "type": "IP67 LoRaWAN GPS Modülü",
           "title": "IP67 LoRaWAN GPS Modülü",
-          "description": "Enlem, boylam, rakım ve hız ölçer. Kompakt kullanım için entegre LoRa ve GPS antenlerine sahiptir. Veriler LoRaWAN üzerinden uzaktan izleme platformlarına iletilir.",
+          "description": "Enlem, boylam, rakım ve hız ölçer. Kompakt kullanım için entegre LoRa ve GPS antenleri vardır. Veriler LoRaWAN üzerinden uzaktan izleme platformlarına iletilir.",
           "applications": [
             {
               "icon": "carShield",
@@ -1288,7 +1288,7 @@
               "label": "Lojistik ve tedarik zinciri takibi"
             }
           ],
-          "shortDescription": "Enlem, boylam, rakım ve hız ölçen; entegre LoRa ve GPS antenli kompakt LoRaWAN takip modülü."
+          "shortDescription": "Enlem, boylam, rakım ve hız ölçen; entegre LoRa ve GPS antenli kompakt takip modülü."
         }
       },
       "sortOrder": 40,
@@ -1371,7 +1371,7 @@
         "tr": {
           "type": "IP67 Endüstriyel LoRaWAN Panik Butonu",
           "title": "IP67 Endüstriyel LoRaWAN Panik Butonu",
-          "description": "Aktive edildiğinde merkezi izleme birimine acil durum uyarısı gönderir. Sağlık müdahaleleri veya güvenlik amaçlı kullanım için idealdir. IP67 koruma sınıfıyla iç ve dış mekanlara duvara monte edilebilir.",
+          "description": "Devreye alındığında merkezi izleme birimine acil durum uyarısı gönderir. Sağlık müdahalesi ve güvenlik senaryoları için uygundur. IP67 koruma sınıfıyla iç ve dış mekâna duvara monte edilebilir.",
           "applications": [
             {
               "icon": "building",
@@ -1398,7 +1398,7 @@
               "label": "Diğer bina ve sahalar"
             }
           ],
-          "shortDescription": "Aktive edildiğinde merkezi izleme birimine acil durum uyarısı gönderen LoRaWAN panik butonu."
+          "shortDescription": "Devreye alındığında merkezi izleme birimine acil durum uyarısı gönderen LoRaWAN panik butonu."
         }
       },
       "sortOrder": 50,
@@ -1505,7 +1505,7 @@
         "tr": {
           "type": "LoRaWAN Kapı Açık/Kapalı Sensörü",
           "title": "LoRaWAN Kapı Açık/Kapalı Sensörü",
-          "description": "Kapı durumunu (açık/kapalı olaylarını) izler. Kapıların, dolapların, çekmecelerin ve pencerelerin uzaktan izlenmesi için idealdir. İç ve dış mekan seçenekleriyle sunulur.",
+          "description": "Kapıların açık ve kapalı olma durumunu izler. Kapı, dolap, çekmece ve pencerelerin uzaktan takibi için uygundur. İç ve dış mekân seçenekleriyle sunulur.",
           "applications": [
             {
               "icon": "building",
@@ -1540,7 +1540,7 @@
               "label": "Pencere açılış/kapanışlarının uzaktan izlenmesi"
             }
           ],
-          "shortDescription": "Kapı durumunu (açık/kapalı olaylarını) izleyen LoRaWAN sensörü; kapı, dolap, çekmece ve pencerelerin uzaktan izlenmesi için idealdir."
+          "shortDescription": "Kapı, dolap, çekmece ve pencerelerin açık/kapalı durumunu uzaktan izleyen LoRaWAN sensörü."
         }
       },
       "sortOrder": 60,
@@ -1652,8 +1652,8 @@
       "localized": {
         "tr": {
           "type": "LoRaWAN Açı/Eğim Sensörü",
-          "title": "LoRaWAN Açı/Eğim Sensörü",
-          "description": "Willow Software'in WS-O-X-AI-TS-1 sensörü, ağır dış ortam şartlarına dayanıklı, 3 eksendeki ivme ve açı değerlerini ölçüp LoRaWAN protokolü üzerinden gönderen bir sensördür. İstinat duvarları, düşme ve devrilme riski bulunan noktalar ve 2G'ye kadar titreşim ölçümleri için kullanılabilir. Montaj aparatıyla birlikte gelir ve 19000 mAh pil ile 10 yıla kadar çalışabilir. LoRaWAN ağ geçidi ve IoT Cloud çözümüyle entegre olduğunda kullanıcılar tüm sensör verilerini uzaktan ve görsel olarak izleyebilir.",
+          "title": "LoRaWAN Eğim Sensörü",
+          "description": "WS-O-X-AI-TS-1, ağır dış ortam koşullarına dayanıklı bir sensördür. 3 eksendeki ivme ve açı değerlerini ölçerek LoRaWAN üzerinden iletir. İstinat duvarları, devrilme riski taşıyan noktalar ve 2G'ye kadar titreşim ölçümleri için kullanılabilir. Montaj aparatıyla birlikte gelir; 19.000 mAh pil ile 10 yıla kadar çalışabilir.",
           "applications": [
             {
               "icon": "carShield",
@@ -1684,7 +1684,7 @@
               "label": "Endüstriyel makineler"
             }
           ],
-          "shortDescription": "3 eksenli ivme ve açı (eğim) değerlerini ölçüp LoRaWAN üzerinden ileten dış ortam sensörü."
+          "shortDescription": "3 eksenli ivme ve eğim değerlerini ölçüp LoRaWAN üzerinden ileten dış ortam sensörü."
         }
       },
       "sortOrder": 70,
@@ -1768,7 +1768,7 @@
         "tr": {
           "type": "LoRaWAN Sıcaklık ve Nem Sensörü",
           "title": "LoRaWAN Sıcaklık ve Nem Sensörü",
-          "description": "Willow Software'in WS-O-X-AI-TH-1 sensörü, ağır dış ortam şartlarına dayanıklı ve kullanıma hazır bir sıcaklık ve nem sensörüdür. LoRaWAN® teknolojisini kullanarak dış ortam sıcaklık ve nem ölçüm verilerini aktaran kompakt bir ortam izleme sensörüdür. 10000 mAh pil ile 10 yıla kadar çalışabilir ve LoRaWAN protokolünü destekleyen tüm LoRaWAN ağ geçitleriyle uyumlu çalışır.",
+          "description": "WS-O-X-AI-TH-1, ağır dış ortam koşullarına dayanıklı, kullanıma hazır bir sıcaklık ve nem sensörüdür. LoRaWAN teknolojisiyle dış ortam sıcaklık ve nem verilerini iletir. 10.000 mAh pil ile 10 yıla kadar çalışabilir; LoRaWAN destekleyen tüm ağ geçitleriyle uyumludur.",
           "applications": [
             {
               "icon": "building",
@@ -1795,7 +1795,7 @@
               "label": "Seralar"
             }
           ],
-          "shortDescription": "Dış ortamda sıcaklık ve nemi hassas şekilde ölçen, gerçek zamanlı uzaktan izleme sunan LoRaWAN sensörü."
+          "shortDescription": "Dış ortamda sıcaklık ve nemi hassas biçimde ölçen, gerçek zamanlı uzaktan izleme sunan LoRaWAN sensörü."
         }
       },
       "sortOrder": 80,
@@ -1912,7 +1912,7 @@
         "tr": {
           "type": "IP67 Endüstriyel LoRaWAN Modbus Sensörü",
           "title": "IP67 Endüstriyel LoRaWAN Modbus Sensörü",
-          "description": "Kullanıcı tanımlı Modbus register'larını okur/yazar ve LoRaWAN üzerinden kablosuz bir Modbus RTU geçiş (pass-through) köprüsü oluşturur. Endüstriyel ekipmanların kablosuz uzaktan izlenmesi için idealdir.",
+          "description": "Tanımlanabilir Modbus register'larını okur/yazar ve LoRaWAN üzerinden kablosuz Modbus RTU geçiş köprüsü oluşturur. Endüstriyel ekipmanların kablosuz uzaktan izlenmesi için uygundur.",
           "applications": [
             {
               "icon": "factory",
@@ -2074,7 +2074,7 @@
         "tr": {
           "type": "Dış Ortam LoRaWAN Toprak Nemi Sensörü",
           "title": "Dış Ortam LoRaWAN Toprak Nemi Sensörü",
-          "description": "Toprak sıcaklığını ve toprak nemini ölçer. Veriler LoRaWAN üzerinden iletilir; akıllı tarım uygulamaları, seralar ve bahçeler için idealdir.",
+          "description": "Toprak sıcaklığını ve toprak nemini ölçer. Veriler LoRaWAN üzerinden iletilir; akıllı tarım, seralar ve bahçeler için uygundur.",
           "applications": [
             {
               "icon": "sprout",
@@ -2097,7 +2097,7 @@
               "label": "Çiftlikler"
             }
           ],
-          "shortDescription": "Toprak nemi ve toprak sıcaklığını ölçen, akıllı tarım için ideal LoRaWAN sensörü."
+          "shortDescription": "Toprak nemi ve toprak sıcaklığını ölçen, akıllı tarım uygulamaları için ideal LoRaWAN sensörü."
         }
       },
       "sortOrder": 100,
@@ -2205,7 +2205,7 @@
         "tr": {
           "type": "IP67 LoRaWAN Sıvı Basınç Sensörü",
           "title": "IP67 LoRaWAN Sıvı Basınç Sensörü",
-          "description": "Boru ve tank sistemlerindeki sıvı basıncını ölçer. Zorlu çalışma koşulları için uygundur ve veriler LoRaWAN üzerinden uzaktan izlenir.",
+          "description": "Boru ve tank sistemlerindeki sıvı basıncını ölçer. Zorlu çalışma koşullarına uygundur; veriler LoRaWAN üzerinden uzaktan izlenir.",
           "applications": [
             {
               "icon": "activity",
@@ -2326,7 +2326,7 @@
         "tr": {
           "type": "Dış Ortam LoRaWAN Anemometre",
           "title": "Dış Ortam LoRaWAN Anemometre",
-          "description": "Dış ortamda rüzgar hızını ölçer. Zorlu koşullar için tasarlanmıştır ve veriler LoRaWAN üzerinden uzaktan izleme platformlarına iletilir.",
+          "description": "Dış ortamda rüzgar hızını ölçer. Zorlu saha koşulları için tasarlanmıştır; veriler LoRaWAN üzerinden uzaktan izleme platformlarına iletilir.",
           "applications": [
             {
               "icon": "cloud",
@@ -2353,7 +2353,7 @@
               "label": "Çiftlikler"
             }
           ],
-          "shortDescription": "Dış ortamda rüzgar hızını ölçen, zorlu koşullar için tasarlanmış LoRaWAN anemometre."
+          "shortDescription": "Dış ortamda rüzgâr hızını ölçen, zorlu saha koşulları için tasarlanmış LoRaWAN anemometre."
         }
       },
       "sortOrder": 120,
@@ -2374,9 +2374,14 @@
       ],
       "localized": {
         "tr": {
-          "title": "",
-          "summary": "",
-          "deliverables": ""
+          "title": "Gömülü Donanım Tasarımı",
+          "summary": "PCB tasarımı, sensör geliştirme, sağlam IoT ağ geçitleri ve düşük güçlü donanım.",
+          "deliverables": [
+            "Şematik",
+            "PCB tasarımı",
+            "Prototip",
+            "Seri üretim desteği"
+          ]
         },
         "de": {
           "title": "",
@@ -2422,9 +2427,14 @@
       ],
       "localized": {
         "tr": {
-          "title": "",
-          "summary": "",
-          "deliverables": ""
+          "title": "Firmware Geliştirme",
+          "summary": "MCU, RTOS, bare-metal yazılım, LoRaWAN yığını ve cihaz sürücüleri.",
+          "deliverables": [
+            "Firmware mimarisi",
+            "Sürücüler",
+            "OTA stratejisi",
+            "Güç optimizasyonu"
+          ]
         },
         "de": {
           "title": "",
@@ -2470,9 +2480,14 @@
       ],
       "localized": {
         "tr": {
-          "title": "",
-          "summary": "",
-          "deliverables": ""
+          "title": "Backend API",
+          "summary": "REST API, WebSocket, telemetri alımı, kimlik doğrulama ve raporlama.",
+          "deliverables": [
+            "API tasarımı",
+            "Telemetri hattı",
+            "Kimlik doğrulama",
+            "Raporlama"
+          ]
         },
         "de": {
           "title": "",
@@ -2518,9 +2533,14 @@
       ],
       "localized": {
         "tr": {
-          "title": "",
-          "summary": "",
-          "deliverables": ""
+          "title": "PostgreSQL ve Veritabanı Mimarisi",
+          "summary": "Cihaz verisi modelleme, zaman serisi verileri, raporlama tabloları ve panel sorguları.",
+          "deliverables": [
+            "Şema",
+            "İndeksler",
+            "Zaman serisi modeli",
+            "Sorgu optimizasyonu"
+          ]
         },
         "de": {
           "title": "",
@@ -2566,9 +2586,14 @@
       ],
       "localized": {
         "tr": {
-          "title": "",
-          "summary": "",
-          "deliverables": ""
+          "title": "Web Platformu / Yönetim Paneli",
+          "summary": "Web panelleri, yönetim arayüzleri, müşteri portalları ve izleme ekranları.",
+          "deliverables": [
+            "Dashboard",
+            "Yönetim paneli",
+            "Rol bazlı erişim",
+            "Operasyon arayüzü"
+          ]
         },
         "de": {
           "title": "",
@@ -2614,9 +2639,14 @@
       ],
       "localized": {
         "tr": {
-          "title": "",
-          "summary": "",
-          "deliverables": ""
+          "title": "Mobil Uygulama Geliştirme",
+          "summary": "Saha operasyonları, sensör izleme, anlık bildirimler, çevrimdışı çalışma ve mağaza yayını için native iOS (Swift), native Android (Kotlin) ve Flutter uygulamaları.",
+          "deliverables": [
+            "Mobil uygulama",
+            "Bildirimler",
+            "Çevrimdışı senaryolar",
+            "Saha kullanıcı deneyimi"
+          ]
         },
         "de": {
           "title": "",
@@ -2662,9 +2692,14 @@
       ],
       "localized": {
         "tr": {
-          "title": "",
-          "summary": "",
-          "deliverables": ""
+          "title": "VR / Simülasyon",
+          "summary": "Endüstriyel eğitim, ürün tanıtımları, dijital ikiz ve simülasyon sunumları.",
+          "deliverables": [
+            "VR demosu",
+            "Eğitim akışı",
+            "Simülasyon sahnesi",
+            "Ürün sunumu"
+          ]
         },
         "de": {
           "title": "",
@@ -2710,9 +2745,14 @@
       ],
       "localized": {
         "tr": {
-          "title": "",
-          "summary": "",
-          "deliverables": ""
+          "title": "IoT Bulutu / Telemetri",
+          "summary": "Cihaz filosu izleme, alarmlar, entegrasyonlar ve uzaktan veri görselleştirme.",
+          "deliverables": [
+            "Filo görünümü",
+            "Alarmlar",
+            "Entegrasyonlar",
+            "Uzaktan izleme"
+          ]
         },
         "de": {
           "title": "",
@@ -2759,39 +2799,46 @@
       "featured": true,
       "localized": {
         "tr": {
-          "title": "WillowSoft, Embedded World 2026'da Yer Alıyor",
+          "title": "WillowSoft, Embedded World 2026'da",
           "content": "<p>WillowSoft ile 10-12 Mart 2026'da Nürnberg'de buluşun; gömülü sistemler, kablosuz bağlantı ve IoT ürün teslimi konularını birlikte konuşalım.</p>\n<p>Bu etkinlik haberi, WillowSoft'un endüstriyel teknoloji ekosistemlerindeki aktif varlığını ve sahaya hazır bağlı ürün odağını gösterir.</p>",
-          "excerpt": "WillowSoft ile 10-12 Mart 2026'da Nürnberg'de buluşun; gömülü sistemler, kablosuz bağlantı ve IoT ürün teslimi konularını birlikte konuşalım."
+          "excerpt": "WillowSoft, Nürnberg'de düşük güçlü gömülü firmware, kablosuz bağlantı ve telemetri panolarını sergileyecek.",
+          "category": "Etkinlik"
         },
         "de": {
-          "title": "WillowSoft stellt auf der Embedded World 2026 aus",
+          "title": "WillowSoft auf der Embedded World 2026",
           "content": "<p>Treffen Sie WillowSoft vom 10. bis 12. Maerz 2026 in Nuernberg, um ueber Embedded Systems, Wireless Connectivity und IoT-Produktlieferung zu sprechen.</p>\n<p>Dieses Event-Update zeigt WillowSofts aktive Rolle in industriellen Technologie-Oekosystemen und den Fokus auf feldbereite Connected Products.</p>",
-          "excerpt": "Treffen Sie WillowSoft vom 10. bis 12. Maerz 2026 in Nuernberg, um ueber Embedded Systems, Wireless Connectivity und IoT-Produktlieferung zu sprechen."
+          "excerpt": "WillowSoft präsentiert in Nürnberg energiesparende Embedded-Firmware, drahtlose Konnektivität und Telemetrie-Dashboards.",
+          "category": "Veranstaltung"
         },
         "fr": {
-          "title": "WillowSoft expose a Embedded World 2026",
+          "title": "WillowSoft à Embedded World 2026",
           "content": "<p>Retrouvez WillowSoft a Nuremberg du 10 au 12 mars 2026 pour echanger sur les systemes embarques, la connectivite sans fil et la livraison de produits IoT.</p>\n<p>Cette actualite evenementielle montre la presence active de WillowSoft dans les ecosystemes industriels et son focus sur les produits connectes prets terrain.</p>",
-          "excerpt": "Retrouvez WillowSoft a Nuremberg du 10 au 12 mars 2026 pour echanger sur les systemes embarques, la connectivite sans fil et la livraison de produits IoT."
+          "excerpt": "WillowSoft présentera à Nuremberg des firmwares embarqués basse consommation, la connectivité sans fil et des tableaux de bord de télémétrie.",
+          "category": "Événement"
         },
         "es": {
-          "title": "WillowSoft expondra en Embedded World 2026",
+          "title": "WillowSoft en Embedded World 2026",
           "content": "<p>Reunase con WillowSoft en Nuremberg del 10 al 12 de marzo de 2026 para hablar sobre sistemas embebidos, conectividad inalambrica y entrega de productos IoT.</p>\n<p>Esta actualizacion de evento muestra la presencia activa de WillowSoft en ecosistemas industriales y su foco en productos conectados listos para campo.</p>",
-          "excerpt": "Reunase con WillowSoft en Nuremberg del 10 al 12 de marzo de 2026 para hablar sobre sistemas embebidos, conectividad inalambrica y entrega de productos IoT."
+          "excerpt": "WillowSoft mostrará en Núremberg firmware embebido de bajo consumo, conectividad inalámbrica y paneles de telemetría.",
+          "category": "Evento"
         },
         "it": {
-          "title": "WillowSoft espone a Embedded World 2026",
+          "title": "WillowSoft a Embedded World 2026",
           "content": "<p>Incontra WillowSoft a Norimberga dal 10 al 12 marzo 2026 per parlare di sistemi embedded, connettivita wireless e delivery di prodotti IoT.</p>\n<p>Questo aggiornamento evento mostra la presenza attiva di WillowSoft negli ecosistemi industriali e il focus su prodotti connessi pronti per il campo.</p>",
-          "excerpt": "Incontra WillowSoft a Norimberga dal 10 al 12 marzo 2026 per parlare di sistemi embedded, connettivita wireless e delivery di prodotti IoT."
+          "excerpt": "WillowSoft presenterà a Norimberga firmware embedded a basso consumo, connettività wireless e dashboard di telemetria.",
+          "category": "Evento"
         },
         "ar": {
-          "title": "WillowSoft تشارك في Embedded World 2026",
+          "title": "WillowSoft في معرض Embedded World 2026",
           "content": "<p>التقوا WillowSoft في نورمبرغ بين 10 و12 مارس 2026 لمناقشة الأنظمة المضمنة والاتصال اللاسلكي وتسليم منتجات IoT.</p>\n<p>يوضح هذا الخبر حضور WillowSoft النشط في منظومات التقنية الصناعية وتركيزها على المنتجات المتصلة الجاهزة للميدان.</p>",
-          "excerpt": "التقوا WillowSoft في نورمبرغ بين 10 و12 مارس 2026 لمناقشة الأنظمة المضمنة والاتصال اللاسلكي وتسليم منتجات IoT."
+          "excerpt": "ستعرض WillowSoft في نورمبرغ برامج ثابتة مدمجة منخفضة الطاقة واتصالاً لاسلكياً ولوحات قياس عن بُعد.",
+          "category": "فعالية"
         },
         "ja": {
           "title": "WillowSoft、Embedded World 2026 に出展",
           "content": "<p>2026年3月10日から12日までニュルンベルクで、組込みシステム、無線接続、IoT製品デリバリーについて WillowSoft とご相談ください。</p>\n<p>このイベント更新は、産業技術エコシステムにおける WillowSoft の活動と、現場対応できるコネクテッド製品への注力を示します。</p>",
-          "excerpt": "2026年3月10日から12日までニュルンベルクで、組込みシステム、無線接続、IoT製品デリバリーについて WillowSoft とご相談ください。"
+          "excerpt": "WillowSoft はニュルンベルクで、低消費電力の組み込みファームウェア、無線接続、テレメトリダッシュボードを展示します。",
+          "category": "イベント"
         },
         "en": {
           "title": "WillowSoft is Exhibiting at Embedded World 2026",
@@ -2812,39 +2859,46 @@
       "featured": true,
       "localized": {
         "tr": {
-          "title": "WillowSoft Londra'da Birleşik Krallık Operasyonlarını Başlattı",
+          "title": "WillowSoft, Londra'da Birleşik Krallık Operasyonlarını Başlattı",
           "content": "<p>WillowSoft, Birleşik Krallık ve Avrupa müşterilerine üretim odaklı gömülü sistem ve IoT geliştirme desteği vermek için Londra operasyonlarını başlattı.</p>\n<p>Bu şirket dönüm noktası, WillowSoft'un operasyonel zeminini güçlendirir ve müşterilere uzun vadeli ürün teslimi için daha net bir partner sunar.</p>",
-          "excerpt": "WillowSoft, Birleşik Krallık ve Avrupa müşterilerine üretim odaklı gömülü sistem ve IoT geliştirme desteği vermek için Londra operasyonlarını başlattı."
+          "excerpt": "Londra operasyonu, Birleşik Krallık ve Avrupa'daki müşterilere bağlı ürün mühendisliği hizmetleri sunar.",
+          "category": "Şirket"
         },
         "de": {
-          "title": "WillowSoft startet UK-Operationen in London",
+          "title": "WillowSoft startet UK-Geschäft in London",
           "content": "<p>WillowSoft expandiert nach London, um Kunden in Grossbritannien und Europa bei produktionsorientierter Embedded- und IoT-Entwicklung zu unterstuetzen.</p>\n<p>Dieser Unternehmensmeilenstein staerkt WillowSofts operative Basis und gibt Kunden einen klareren Partner fuer langfristige Produktlieferung.</p>",
-          "excerpt": "WillowSoft expandiert nach London, um Kunden in Grossbritannien und Europa bei produktionsorientierter Embedded- und IoT-Entwicklung zu unterstuetzen."
+          "excerpt": "Der Standort London unterstützt Kunden in Großbritannien und Europa mit Engineering-Services für vernetzte Produkte.",
+          "category": "Unternehmen"
         },
         "fr": {
-          "title": "WillowSoft lance ses operations UK a Londres",
+          "title": "WillowSoft lance ses opérations britanniques à Londres",
           "content": "<p>WillowSoft s'implante a Londres afin d'accompagner les clients britanniques et europeens sur le developpement embedded et IoT oriente production.</p>\n<p>Ce jalon d'entreprise renforce la base operationnelle de WillowSoft et donne aux clients un partenaire plus clair pour la livraison produit long terme.</p>",
-          "excerpt": "WillowSoft s'implante a Londres afin d'accompagner les clients britanniques et europeens sur le developpement embedded et IoT oriente production."
+          "excerpt": "L'antenne de Londres accompagne les clients britanniques et européens avec des services d'ingénierie de produits connectés.",
+          "category": "Entreprise"
         },
         "es": {
-          "title": "WillowSoft inicia operaciones en Reino Unido desde Londres",
+          "title": "WillowSoft inicia sus operaciones en el Reino Unido en Londres",
           "content": "<p>WillowSoft se expande a Londres para apoyar a clientes del Reino Unido y Europa con desarrollo embedded e IoT orientado a produccion.</p>\n<p>Este hito corporativo fortalece la base operativa de WillowSoft y ofrece a los clientes un socio mas claro para entregas de producto a largo plazo.</p>",
-          "excerpt": "WillowSoft se expande a Londres para apoyar a clientes del Reino Unido y Europa con desarrollo embedded e IoT orientado a produccion."
+          "excerpt": "La operación de Londres da soporte a clientes del Reino Unido y Europa con servicios de ingeniería de productos conectados.",
+          "category": "Empresa"
         },
         "it": {
-          "title": "WillowSoft avvia le operazioni UK a Londra",
+          "title": "WillowSoft avvia le operazioni nel Regno Unito a Londra",
           "content": "<p>WillowSoft si espande a Londra per supportare clienti UK ed europei nello sviluppo embedded e IoT orientato alla produzione.</p>\n<p>Questo traguardo aziendale rafforza la base operativa di WillowSoft e offre ai clienti un partner piu chiaro per delivery di prodotto a lungo termine.</p>",
-          "excerpt": "WillowSoft si espande a Londra per supportare clienti UK ed europei nello sviluppo embedded e IoT orientato alla produzione."
+          "excerpt": "La sede di Londra supporta i clienti del Regno Unito e d'Europa con servizi di ingegneria di prodotti connessi.",
+          "category": "Azienda"
         },
         "ar": {
           "title": "WillowSoft تطلق عملياتها في المملكة المتحدة من لندن",
           "content": "<p>تتوسع WillowSoft إلى لندن لدعم عملاء المملكة المتحدة وأوروبا في تطوير الأنظمة المضمنة ومنتجات IoT الموجهة للإنتاج.</p>\n<p>تعزز هذه المحطة المؤسسية قاعدة WillowSoft التشغيلية وتمنح العملاء شريكاً أوضح لتسليم المنتجات على المدى الطويل.</p>",
-          "excerpt": "تتوسع WillowSoft إلى لندن لدعم عملاء المملكة المتحدة وأوروبا في تطوير الأنظمة المضمنة ومنتجات IoT الموجهة للإنتاج."
+          "excerpt": "تدعم عمليات لندن عملاء المملكة المتحدة وأوروبا بخدمات هندسة المنتجات المتصلة.",
+          "category": "الشركة"
         },
         "ja": {
           "title": "WillowSoft、ロンドンで英国事業を開始",
           "content": "<p>WillowSoft はロンドンに拠点を広げ、英国および欧州の顧客に生産志向の組込み・IoT開発を提供します。</p>\n<p>この企業マイルストーンは WillowSoft の事業基盤を強化し、長期的な製品デリバリーに向けた明確なパートナー像を示します。</p>",
-          "excerpt": "WillowSoft はロンドンに拠点を広げ、英国および欧州の顧客に生産志向の組込み・IoT開発を提供します。"
+          "excerpt": "ロンドン拠点は、コネクテッド製品のエンジニアリングサービスで英国および欧州の顧客を支援します。",
+          "category": "会社"
         },
         "en": {
           "title": "WillowSoft Launches UK Operations in London",
@@ -2865,39 +2919,46 @@
       "featured": false,
       "localized": {
         "tr": {
-          "title": "Bakan Varank Ziyaretinde IIoT İnovasyonu Sergilendi",
+          "title": "Bakan Varank'ın Muğla Teknopark Ziyareti",
           "content": "<p>WillowSoft, Bakan Mustafa Varank'ın Muğla Teknopark ziyaretinde IIoT ve embedded technology yeteneklerini sundu.</p>\n<p>Bu saha güncellemesi, ekosistem etkileşimini, paydaş güvenini ve WillowSoft'un teknik yetkinliğini gerçek ortamlarda gösterebilme gücünü vurgular.</p>",
-          "excerpt": "WillowSoft, Bakan Mustafa Varank'ın Muğla Teknopark ziyaretinde IIoT ve gömülü teknoloji yeteneklerini sundu."
+          "excerpt": "WillowSoft, ziyaret sırasında LoRaWAN sensör çözümlerini ve yerel IoT mühendislik yeteneklerini sundu.",
+          "category": "Kanıt"
         },
         "de": {
-          "title": "IIoT-Innovation beim Besuch von Minister Varank vorgestellt",
+          "title": "Besuch von Minister Varank im Mugla Teknopark",
           "content": "<p>WillowSoft praesentierte beim Besuch von Minister Mustafa Varank im Mugla Teknopark Kompetenzen in IIoT und Embedded Technology.</p>\n<p>Dieses Field-Update hebt Oekosystem-Engagement, Stakeholder-Vertrauen und WillowSofts Faehigkeit hervor, technische Kompetenz real zu zeigen.</p>",
-          "excerpt": "WillowSoft praesentierte beim Besuch von Minister Mustafa Varank im Mugla Teknopark Kompetenzen in IIoT und Embedded Technology."
+          "excerpt": "WillowSoft präsentierte beim Besuch LoRaWAN-Sensorlösungen und lokale IoT-Engineering-Kompetenzen.",
+          "category": "Beleg"
         },
         "fr": {
-          "title": "Innovation IIoT presentee lors de la visite du ministre Varank",
+          "title": "Visite du ministre Varank au Mugla Teknopark",
           "content": "<p>WillowSoft a presente ses capacites IIoT et embedded technology lors de la visite du ministre Mustafa Varank a Mugla Teknopark.</p>\n<p>Cette mise a jour terrain souligne l'engagement ecosysteme, la confiance des parties prenantes et la capacite de WillowSoft a presenter ses competences en conditions reelles.</p>",
-          "excerpt": "WillowSoft a presente ses capacites IIoT et embedded technology lors de la visite du ministre Mustafa Varank a Mugla Teknopark."
+          "excerpt": "WillowSoft a présenté lors de la visite des solutions de capteurs LoRaWAN et ses compétences locales en ingénierie IoT.",
+          "category": "Preuve"
         },
         "es": {
-          "title": "Innovacion IIoT durante la visita del ministro Varank",
+          "title": "Visita del ministro Varank al Mugla Teknopark",
           "content": "<p>WillowSoft presento sus capacidades de IIoT y embedded technology durante la visita del ministro Mustafa Varank a Mugla Teknopark.</p>\n<p>Esta actualizacion de campo destaca el compromiso del ecosistema, la confianza de los stakeholders y la capacidad de WillowSoft para mostrar competencia tecnica en entornos reales.</p>",
-          "excerpt": "WillowSoft presento sus capacidades de IIoT y embedded technology durante la visita del ministro Mustafa Varank a Mugla Teknopark."
+          "excerpt": "Durante la visita, WillowSoft presentó soluciones de sensores LoRaWAN y capacidades locales de ingeniería IoT.",
+          "category": "Prueba"
         },
         "it": {
-          "title": "Innovazione IIoT durante la visita del ministro Varank",
+          "title": "Visita del ministro Varank al Mugla Teknopark",
           "content": "<p>WillowSoft ha presentato capacita IIoT ed embedded technology durante la visita del ministro Mustafa Varank a Mugla Teknopark.</p>\n<p>Questo aggiornamento sul campo evidenzia engagement dell'ecosistema, fiducia degli stakeholder e capacita di WillowSoft di mostrare competenze tecniche in contesti reali.</p>",
-          "excerpt": "WillowSoft ha presentato capacita IIoT ed embedded technology durante la visita del ministro Mustafa Varank a Mugla Teknopark."
+          "excerpt": "Durante la visita, WillowSoft ha presentato soluzioni di sensori LoRaWAN e competenze locali di ingegneria IoT.",
+          "category": "Prova"
         },
         "ar": {
-          "title": "عرض ابتكارات IIoT خلال زيارة الوزير فارانك",
+          "title": "زيارة الوزير وارانك إلى مجمّع موغلا التقني",
           "content": "<p>قدمت WillowSoft قدراتها في IIoT والتقنيات المضمنة خلال زيارة الوزير مصطفى فارانك إلى Muğla Teknopark.</p>\n<p>يسلط هذا التحديث الميداني الضوء على تفاعل المنظومة وثقة أصحاب المصلحة وقدرة WillowSoft على عرض قدراتها التقنية في بيئات حقيقية.</p>",
-          "excerpt": "قدمت WillowSoft قدراتها في IIoT والتقنيات المضمنة خلال زيارة الوزير مصطفى فارانك إلى Muğla Teknopark."
+          "excerpt": "قدّمت WillowSoft خلال الزيارة حلول مستشعرات LoRaWAN وقدرات هندسة إنترنت الأشياء المحلية.",
+          "category": "إثبات"
         },
         "ja": {
-          "title": "Varank 大臣訪問時に IIoT イノベーションを紹介",
+          "title": "ヴァランク大臣がムーラ・テクノパークを訪問",
           "content": "<p>WillowSoft は Mustafa Varank 大臣の Muğla Teknopark 訪問時に、IIoT と組込み技術の能力を紹介しました。</p>\n<p>この現場アップデートは、エコシステムとの関係、ステークホルダーの信頼、実環境で技術力を示す WillowSoft の能力を強調します。</p>",
-          "excerpt": "WillowSoft は Mustafa Varank 大臣の Muğla Teknopark 訪問時に、IIoT と組込み技術の能力を紹介しました。"
+          "excerpt": "WillowSoft は訪問時に、LoRaWAN センサーソリューションと地域の IoT エンジニアリング能力を紹介しました。",
+          "category": "実績"
         },
         "en": {
           "title": "Showcasing IIoT Innovation During Minister Varank's Visit",
@@ -2918,39 +2979,46 @@
       "featured": false,
       "localized": {
         "tr": {
-          "title": "WillowSoft WIN EURASIA 2022'de",
+          "title": "WillowSoft, WIN EURASIA'da",
           "content": "<p>WillowSoft, endüstriyel ziyaretçilerle buluşmak ve IoT, IIoT ve akıllı çözüm yeteneklerini sunmak için WIN EURASIA 2022'ye katıldı.</p>\n<p>Bu etkinlik haberi, WillowSoft'un endüstriyel teknoloji ekosistemlerindeki aktif varlığını ve sahaya hazır bağlı ürün odağını gösterir.</p>",
-          "excerpt": "WillowSoft, endüstriyel ziyaretçilerle buluşmak ve IoT, IIoT ve akıllı çözüm yeteneklerini sunmak için WIN EURASIA 2022'ye katıldı."
+          "excerpt": "Üretim ve otomasyon ekiplerine Endüstriyel IoT çözümleri ve LoRaWAN ürünleri sunuldu.",
+          "category": "Etkinlik"
         },
         "de": {
-          "title": "WillowSoft auf der WIN EURASIA 2022",
+          "title": "WillowSoft auf der WIN EURASIA",
           "content": "<p>WillowSoft nahm an der WIN EURASIA 2022 teil, um Industriebesucher zu treffen und IoT-, IIoT- und Smart-Solution-Kompetenzen zu zeigen.</p>\n<p>Dieses Event-Update zeigt WillowSofts aktive Rolle in industriellen Technologie-Oekosystemen und den Fokus auf feldbereite Connected Products.</p>",
-          "excerpt": "WillowSoft nahm an der WIN EURASIA 2022 teil, um Industriebesucher zu treffen und IoT-, IIoT- und Smart-Solution-Kompetenzen zu zeigen."
+          "excerpt": "Fertigungs- und Automatisierungsteams wurden industrielle IoT-Lösungen und LoRaWAN-Produkte vorgestellt.",
+          "category": "Veranstaltung"
         },
         "fr": {
-          "title": "WillowSoft a WIN EURASIA 2022",
+          "title": "WillowSoft à WIN EURASIA",
           "content": "<p>WillowSoft a participe a WIN EURASIA 2022 pour rencontrer les visiteurs industriels et presenter ses capacites IoT, IIoT et smart solutions.</p>\n<p>Cette actualite evenementielle montre la presence active de WillowSoft dans les ecosystemes industriels et son focus sur les produits connectes prets terrain.</p>",
-          "excerpt": "WillowSoft a participe a WIN EURASIA 2022 pour rencontrer les visiteurs industriels et presenter ses capacites IoT, IIoT et smart solutions."
+          "excerpt": "Des solutions IoT industrielles et des produits LoRaWAN ont été présentés aux équipes de fabrication et d'automatisation.",
+          "category": "Événement"
         },
         "es": {
-          "title": "WillowSoft en WIN EURASIA 2022",
+          "title": "WillowSoft en WIN EURASIA",
           "content": "<p>WillowSoft participo en WIN EURASIA 2022 para reunirse con visitantes industriales y presentar capacidades IoT, IIoT y smart solutions.</p>\n<p>Esta actualizacion de evento muestra la presencia activa de WillowSoft en ecosistemas industriales y su foco en productos conectados listos para campo.</p>",
-          "excerpt": "WillowSoft participo en WIN EURASIA 2022 para reunirse con visitantes industriales y presentar capacidades IoT, IIoT y smart solutions."
+          "excerpt": "Se presentaron soluciones de IoT industrial y productos LoRaWAN a equipos de fabricación y automatización.",
+          "category": "Evento"
         },
         "it": {
-          "title": "WillowSoft a WIN EURASIA 2022",
+          "title": "WillowSoft a WIN EURASIA",
           "content": "<p>WillowSoft ha partecipato a WIN EURASIA 2022 per incontrare visitatori industriali e presentare capacita IoT, IIoT e smart solution.</p>\n<p>Questo aggiornamento evento mostra la presenza attiva di WillowSoft negli ecosistemi industriali e il focus su prodotti connessi pronti per il campo.</p>",
-          "excerpt": "WillowSoft ha partecipato a WIN EURASIA 2022 per incontrare visitatori industriali e presentare capacita IoT, IIoT e smart solution."
+          "excerpt": "Sono state presentate soluzioni IoT industriali e prodotti LoRaWAN ai team di produzione e automazione.",
+          "category": "Evento"
         },
         "ar": {
-          "title": "WillowSoft في WIN EURASIA 2022",
+          "title": "WillowSoft في معرض WIN EURASIA",
           "content": "<p>شاركت WillowSoft في WIN EURASIA 2022 للقاء زوار القطاع الصناعي وعرض قدراتها في IoT وIIoT والحلول الذكية.</p>\n<p>يوضح هذا الخبر حضور WillowSoft النشط في منظومات التقنية الصناعية وتركيزها على المنتجات المتصلة الجاهزة للميدان.</p>",
-          "excerpt": "شاركت WillowSoft في WIN EURASIA 2022 للقاء زوار القطاع الصناعي وعرض قدراتها في IoT وIIoT والحلول الذكية."
+          "excerpt": "عُرضت حلول إنترنت الأشياء الصناعي ومنتجات LoRaWAN على فرق التصنيع والأتمتة.",
+          "category": "فعالية"
         },
         "ja": {
-          "title": "WillowSoft、WIN EURASIA 2022 に参加",
+          "title": "WillowSoft、WIN EURASIA に出展",
           "content": "<p>WillowSoft は WIN EURASIA 2022 に参加し、産業分野の来場者に IoT、IIoT、スマートソリューションの能力を紹介しました。</p>\n<p>このイベント更新は、産業技術エコシステムにおける WillowSoft の活動と、現場対応できるコネクテッド製品への注力を示します。</p>",
-          "excerpt": "WillowSoft は WIN EURASIA 2022 に参加し、産業分野の来場者に IoT、IIoT、スマートソリューションの能力を紹介しました。"
+          "excerpt": "製造・オートメーションのチームに、産業用 IoT ソリューションと LoRaWAN 製品を紹介しました。",
+          "category": "イベント"
         },
         "en": {
           "title": "WillowSoft at WIN EURASIA 2022",
@@ -3160,39 +3228,46 @@
       "featured": false,
       "localized": {
         "tr": {
-          "title": "TÜBİTAK - WillowSoft LoRaWAN Eğitim Atölyesi",
+          "title": "TÜBİTAK LoRaWAN Uç Düğüm Atölyesi",
           "content": "<p>WillowSoft, gömülü bağlantı ekipleri için LoRaWAN uç cihaz tasarımı ve eğitim atölyesi düzenlemek üzere TÜBİTAK ile çalıştı.</p>\n<p>Bu atölye haberi, WillowSoft'un eğitim kabiliyetini ve gömülü bağlantı ekiplerine uygulamalı bilgi aktarımını gösterir.</p>",
-          "excerpt": "WillowSoft, gömülü bağlantı ekipleri için LoRaWAN uç cihaz tasarımı ve eğitim atölyesi düzenlemek üzere TÜBİTAK ile çalıştı."
+          "excerpt": "WillowSoft, gömülü bağlantı ekipleri için LoRaWAN uç düğüm tasarımına ve eğitimine katkıda bulundu.",
+          "category": "Atölye"
         },
         "de": {
-          "title": "TUBITAK - WillowSoft Workshop",
+          "title": "TUBITAK LoRaWAN End-Node-Workshop",
           "content": "<p>WillowSoft arbeitete mit TUBITAK zusammen, um einen Workshop zu LoRaWAN-End-Node-Design und Training fuer Embedded-Connectivity-Teams durchzufuehren.</p>\n<p>Dieses Workshop-Update zeigt WillowSofts Trainingskompetenz und praxisnahe Wissensvermittlung fuer Embedded-Connectivity-Teams.</p>",
-          "excerpt": "WillowSoft arbeitete mit TUBITAK zusammen, um einen Workshop zu LoRaWAN-End-Node-Design und Training fuer Embedded-Connectivity-Teams durchzufuehren."
+          "excerpt": "WillowSoft trug zum LoRaWAN-End-Node-Design und zur Schulung von Embedded-Connectivity-Teams bei.",
+          "category": "Workshop"
         },
         "fr": {
-          "title": "Workshop TUBITAK - WillowSoft",
+          "title": "Atelier TUBITAK sur les nœuds finaux LoRaWAN",
           "content": "<p>WillowSoft s'est associe a TUBITAK pour organiser un workshop de design et formation LoRaWAN end-node pour les equipes embedded connectivity.</p>\n<p>Cette actualite workshop demontre la capacite de formation de WillowSoft et le transfert pratique de savoir pour les equipes embedded connectivity.</p>",
-          "excerpt": "WillowSoft s'est associe a TUBITAK pour organiser un workshop de design et formation LoRaWAN end-node pour les equipes embedded connectivity."
+          "excerpt": "WillowSoft a contribué à la conception de nœuds finaux LoRaWAN et à la formation des équipes de connectivité embarquée.",
+          "category": "Atelier"
         },
         "es": {
-          "title": "Workshop TUBITAK - WillowSoft",
+          "title": "Taller TUBITAK sobre nodos finales LoRaWAN",
           "content": "<p>WillowSoft colaboro con TUBITAK para impartir un workshop de diseno LoRaWAN end-node y formacion para equipos de embedded connectivity.</p>\n<p>Esta actualizacion de workshop demuestra la capacidad formativa de WillowSoft y la transferencia practica de conocimiento para equipos embedded connectivity.</p>",
-          "excerpt": "WillowSoft colaboro con TUBITAK para impartir un workshop de diseno LoRaWAN end-node y formacion para equipos de embedded connectivity."
+          "excerpt": "WillowSoft contribuyó al diseño de nodos finales LoRaWAN y a la formación de equipos de conectividad embebida.",
+          "category": "Taller"
         },
         "it": {
-          "title": "Workshop TUBITAK - WillowSoft",
+          "title": "Workshop TUBITAK sui nodi finali LoRaWAN",
           "content": "<p>WillowSoft ha collaborato con TUBITAK per erogare un workshop di LoRaWAN end-node design e training per team di embedded connectivity.</p>\n<p>Questo aggiornamento workshop dimostra la capacita formativa di WillowSoft e il trasferimento pratico di conoscenza per team embedded connectivity.</p>",
-          "excerpt": "WillowSoft ha collaborato con TUBITAK per erogare un workshop di LoRaWAN end-node design e training per team di embedded connectivity."
+          "excerpt": "WillowSoft ha contribuito alla progettazione di nodi finali LoRaWAN e alla formazione dei team di connettività embedded.",
+          "category": "Workshop"
         },
         "ar": {
-          "title": "ورشة TUBITAK - WillowSoft",
+          "title": "ورشة TÜBİTAK حول عُقد LoRaWAN الطرفية",
           "content": "<p>تعاونت WillowSoft مع TUBITAK لتقديم ورشة تصميم وتدريب LoRaWAN end-node لفرق الاتصال المضمن.</p>\n<p>يوضح هذا الخبر قدرة WillowSoft التدريبية ونقل المعرفة العملي لفرق الاتصال المضمن.</p>",
-          "excerpt": "تعاونت WillowSoft مع TUBITAK لتقديم ورشة تصميم وتدريب LoRaWAN end-node لفرق الاتصال المضمن."
+          "excerpt": "ساهمت WillowSoft في تصميم عُقد LoRaWAN الطرفية وتدريب فرق الاتصال المدمج.",
+          "category": "ورشة عمل"
         },
         "ja": {
-          "title": "TUBITAK - WillowSoft ワークショップ",
+          "title": "TUBITAK LoRaWAN エンドノードワークショップ",
           "content": "<p>WillowSoft は TUBITAK と連携し、組込み接続チーム向けに LoRaWAN end-node design と training workshop を実施しました。</p>\n<p>このワークショップ更新は、WillowSoft の教育力と組込み接続チームへの実践的な知識移転を示します。</p>",
-          "excerpt": "WillowSoft は TUBITAK と連携し、組込み接続チーム向けに LoRaWAN end-node design と training workshop を実施しました。"
+          "excerpt": "WillowSoft は、組み込み接続チーム向けの LoRaWAN エンドノード設計とトレーニングに貢献しました。",
+          "category": "ワークショップ"
         },
         "en": {
           "title": "TUBITAK - WillowSoft Workshop",
@@ -3515,7 +3590,7 @@
       },
       "heroLead": {
         "en": "WillowSoft builds every layer of your connected product: hardware, firmware, connectivity, backend, and interfaces — as one reliable system.",
-        "tr": "WillowSoft, bağlı ürününüzün her katmanını inşa eder: donanım, firmware, bağlantı, backend ve arayüzler — tek ve güvenilir bir sistem olarak.",
+        "tr": "WillowSoft, IoT ürününüzün tüm katmanlarını tek ekip olarak geliştirir: donanım, firmware, bağlantı, backend ve kullanıcı arayüzleri.",
         "de": "WillowSoft entwickelt jede Schicht Ihres vernetzten Produkts: Hardware, Firmware, Konnektivität, Backend und Schnittstellen — als ein zuverlässiges System.",
         "fr": "WillowSoft construit chaque couche de votre produit connecté : matériel, firmware, connectivité, backend et interfaces — comme un seul système fiable.",
         "es": "WillowSoft construye cada capa de su producto conectado: hardware, firmware, conectividad, backend e interfaces, como un único sistema fiable.",
@@ -3575,7 +3650,7 @@
       },
       "problemLeadOne": {
         "en": "Hardware teams, firmware teams, backend teams, mobile teams — each one handed off to a different vendor. The result is integration failures, missed deadlines, and products that never reach production.",
-        "tr": "Donanım, firmware, backend ve mobil ekiplerinin her biri farklı bir tedarikçiye devredilir. Sonuç: entegrasyon hataları, sarkan teslim tarihleri ve hiçbir zaman seri üretime geçemeyen ürünler.",
+        "tr": "Donanım, firmware, backend ve mobil ekipler çoğu projede farklı tedarikçilere dağıtılır. Sonuç: entegrasyon sorunları, geciken teslimatlar ve seri üretime hiç ulaşamayan ürünler.",
         "de": "Hardware-Teams, Firmware-Teams, Backend-Teams, Mobile-Teams — jedes an einen anderen Partner vergeben. Das Ergebnis: Integrationsfehler, verpasste Fristen und Produkte, die nie die Serienreife erreichen.",
         "fr": "Équipes matériel, firmware, backend, mobile — chacune confiée à un prestataire différent. Résultat : des échecs d'intégration, des délais non tenus et des produits qui n'atteignent jamais la production en série.",
         "es": "Equipos de hardware, firmware, backend, móvil: cada uno encargado a un proveedor distinto. El resultado son fallos de integración, plazos incumplidos y productos que nunca llegan a la fase de producción en serie.",
@@ -3585,7 +3660,7 @@
       },
       "problemLeadTwo": {
         "en": "WillowSoft owns every layer. One team. One contract. One working system.",
-        "tr": "WillowSoft her katmanın sahibidir. Tek ekip. Tek sözleşme. Sorunsuz çalışan tek bir sistem.",
+        "tr": "WillowSoft tüm katmanların sorumluluğunu üstlenir. Tek ekip. Tek sözleşme. Uçtan uca çalışan bir sistem.",
         "de": "WillowSoft verantwortet jede Schicht. Ein Team. Ein Vertrag. Ein funktionierendes System.",
         "fr": "WillowSoft maîtrise chaque couche. Une équipe. Un contrat. Un système qui fonctionne.",
         "es": "WillowSoft es responsable de cada capa. Un equipo. Un contrato. Un sistema que funciona.",
@@ -3705,7 +3780,7 @@
       },
       "ctaTitle": {
         "en": "Ready to build a <em class=\"hw-serif\">connected product</em> or <strong class=\"hw-display\">industrial platform</strong>?",
-        "tr": "Bir <em class=\"hw-serif\">bağlı ürün</em> ya da <strong class=\"hw-display\">endüstriyel platform</strong> kurmaya hazır mısınız?",
+        "tr": "Bir <em class=\"hw-serif\">IoT ürün</em> ya da <strong class=\"hw-display\">endüstriyel platform</strong> kurmaya hazır mısınız?",
         "de": "Bereit, ein <em class=\"hw-serif\">vernetztes Produkt</em> oder eine <strong class=\"hw-display\">industrielle Plattform</strong> zu entwickeln?",
         "fr": "Prêt à créer un <em class=\"hw-serif\">produit connecté</em> ou une <strong class=\"hw-display\">plateforme industrielle</strong> ?",
         "es": "¿Listo para crear un <em class=\"hw-serif\">producto conectado</em> o una <strong class=\"hw-display\">plataforma industrial</strong>?",
@@ -3715,7 +3790,7 @@
       },
       "ctaLead": {
         "en": "Tell us whether you need hardware, firmware, backend, PostgreSQL, mobile app, web dashboard, website, VR simulation, or the complete system.",
-        "tr": "Donanım, firmware, backend, PostgreSQL, mobil uygulama, web yönetim paneli, web sitesi, VR simülasyonu veya uçtan uca tüm sistem mimarisi konusundaki ihtiyaçlarınızı bizimle paylaşın.",
+        "tr": "Donanım, firmware, backend, PostgreSQL, mobil uygulama, web yönetim paneli, kurumsal web sitesi, VR simülasyonu veya uçtan uca sistem mimarisi ihtiyaçlarınızı bizimle paylaşın.",
         "de": "Teilen Sie uns mit, ob Sie Hardware, Firmware, Backend, PostgreSQL, eine mobile App, ein Web-Dashboard, eine Website, eine VR-Simulation oder ein schlüsselfertiges Gesamtsystem benötigen.",
         "fr": "Dites-nous si vous avez besoin de matériel, firmware, backend, PostgreSQL, application mobile, tableau de bord web, site web, simulation VR ou d'une solution clé en main complète.",
         "es": "Cuéntenos si necesita hardware, firmware, backend, PostgreSQL, aplicación móvil, panel web, sitio web, simulación VR o una solución integral completa.",
@@ -3799,7 +3874,7 @@
     "news": {
       "heroEyebrow": {
         "en": "News & Proof",
-        "tr": "Haberler ve Kanıt",
+        "tr": "Haberler ve Referanslar",
         "de": "News & Belege",
         "fr": "Actualités et preuves",
         "es": "Noticias y pruebas",
@@ -3809,7 +3884,7 @@
       },
       "heroTitle": {
         "en": "Company signals that build trust.",
-        "tr": "Güven veren kurumsal adımlar.",
+        "tr": "Güven oluşturan kurumsal gelişmeler.",
         "de": "Unternehmensmeldungen, die Vertrauen schaffen.",
         "fr": "L'actualité d'entreprise qui inspire confiance.",
         "es": "Noticias corporativas que generan confianza.",
@@ -3819,7 +3894,7 @@
       },
       "heroLead": {
         "en": "Events, export milestones, workshops and engineering updates should work as proof for enterprise customers.",
-        "tr": "Etkinlikler, ihracat dönüm noktaları, atölyeler ve mühendislik güncellemeleri kurumsal müşteriler için kanıt niteliği taşır.",
+        "tr": "Etkinlikler, ihracat kilometre taşları, atölyeler ve mühendislik güncellemeleri kurumsal müşteriler için somut referanslar sunar.",
         "de": "Veranstaltungen, Exportmeilensteine, Workshops und Engineering-Updates dienen Unternehmenskunden als Beleg.",
         "fr": "Événements, jalons à l'export, ateliers et mises à jour techniques font office de preuves pour les clients entreprise.",
         "es": "Eventos, hitos de exportación, talleres y novedades de ingeniería sirven como prueba para clientes corporativos.",
@@ -3859,7 +3934,7 @@
       },
       "pipelineTitle": {
         "en": "Use news, events and product launches to drive qualified leads.",
-        "tr": "Nitelikli müşteri adayları için haberleri, etkinlikleri ve ürün lansmanlarını kullanın.",
+        "tr": "Haberler, etkinlikler ve ürün lansmanlarıyla nitelikli talep oluşturun.",
         "de": "Nutzen Sie News, Events und Produkteinführungen, um qualifizierte Leads zu gewinnen.",
         "fr": "Utilisez les actualités, événements et lancements de produits pour générer des prospects qualifiés.",
         "es": "Use noticias, eventos y lanzamientos de productos para generar oportunidades cualificadas.",
@@ -3869,7 +3944,7 @@
       },
       "pipelineLead": {
         "en": "The admin panel can add new news items without touching code. Featured updates can later be surfaced on Home and Company pages.",
-        "tr": "Yönetim paneli, koda dokunmadan yeni haber öğeleri ekleyebilir. Öne çıkan güncellemeler daha sonra Ana Sayfa ve Şirket sayfalarında gösterilebilir.",
+        "tr": "Yönetim panelinden koda dokunmadan yeni haber ekleyebilir; öne çıkan içerikleri Ana Sayfa ve Şirket bölümlerinde gösterebilirsiniz.",
         "de": "Über das Admin-Panel lassen sich neue Beiträge ohne Code hinzufügen. Ausgewählte Updates können später auf der Start- und Unternehmensseite erscheinen.",
         "fr": "Le panneau d'administration permet d'ajouter des actualités sans toucher au code. Les mises à jour en vedette peuvent ensuite apparaître sur les pages Accueil et Entreprise.",
         "es": "El panel de administración permite añadir noticias sin tocar código. Las novedades destacadas pueden mostrarse después en las páginas de Inicio y Empresa.",
@@ -3901,7 +3976,7 @@
       },
       "heroLead": {
         "en": "WillowSoft helps teams build the full product stack: embedded devices, firmware, connectivity, backend, PostgreSQL, web/admin, mobile and VR layers designed to work together.",
-        "tr": "WillowSoft, ekiplerin tüm ürün altyapısını inşa etmesine yardımcı olur: gömülü cihazlar, firmware, bağlantı, backend, PostgreSQL, web yönetim paneli, mobil ve birlikte çalışacak şekilde tasarlanmış VR katmanları.",
+        "tr": "WillowSoft, ekiplerin ürün altyapısının tamamını kurmasına yardımcı olur: gömülü cihazlar, firmware, bağlantı, backend, PostgreSQL, web yönetim paneli, mobil uygulama ve birbiriyle uyumlu VR katmanları.",
         "de": "WillowSoft hilft Teams, den gesamten Produkt-Stack aufzubauen: Embedded-Geräte, Firmware, Konnektivität, Backend, PostgreSQL, Web/Admin, Mobile- und VR-Schichten, die für das Zusammenspiel konzipiert sind.",
         "fr": "WillowSoft aide les équipes à construire l'intégralité de l'architecture produit : dispositifs embarqués, firmware, connectivité, backend, PostgreSQL, web/admin, mobile et VR, conçus pour fonctionner ensemble.",
         "es": "WillowSoft ayuda a los equipos a construir toda la arquitectura del producto: dispositivos embebidos, firmware, conectividad, backend, PostgreSQL, web/admin, móvil y capas de VR diseñadas para funcionar juntas.",
@@ -3921,7 +3996,7 @@
       },
       "processTitle": {
         "en": "A cleaner path from idea to deployed system.",
-        "tr": "Fikirden dağıtılmış sisteme daha temiz bir yol.",
+        "tr": "Fikirden devreye alınmış sisteme daha net bir yol.",
         "de": "Ein klarerer Weg von der Idee zum eingesetzten System.",
         "fr": "Un parcours plus clair de l'idée au système déployé.",
         "es": "Un camino más claro de la idea al sistema desplegado.",
@@ -3951,7 +4026,7 @@
       },
       "stackLead": {
         "en": "Behind the technology cards, animated nodes and pulses represent sensor data traveling from device to gateway, backend, database, dashboard, mobile app, and VR layer.",
-        "tr": "Teknoloji kartlarının arkasındaki hareketli düğümler ve sinyaller; cihazdan geçite, backend'e, veritabanına, yönetim paneline, mobil uygulamaya ve VR katmanına uzanan veri akışını temsil eder.",
+        "tr": "Teknoloji kartlarının arkasındaki hareketli düğümler ve sinyaller; cihazdan ağ geçidine, backend'e, veritabanına, yönetim paneline, mobil uygulamaya ve VR katmanına uzanan veri akışını simgeler.",
         "de": "Hinter den Technologiekarten repräsentieren animierte Knoten und Impulse den Fluss von Sensordaten: vom Gerät zum Gateway, Backend, zur Datenbank, zum Dashboard, zur mobilen App und zur VR-Schicht.",
         "fr": "Derrière les cartes technologiques, des nœuds animés et des impulsions représentent les données des capteurs transitant de l'appareil vers la passerelle, le backend, la base de données, le tableau de bord, l'application mobile et la couche VR.",
         "es": "Detrás de las tarjetas tecnológicas, los nodos e impulsos animados representan los datos de los sensores que viajan desde el dispositivo hasta la pasarela, el backend, la base de datos, el panel, la app móvil y la capa de VR.",
@@ -4001,7 +4076,7 @@
       },
       "vrLead": {
         "en": "VR is positioned as engineering support, not entertainment: training operators, demonstrating products, simulating maintenance, and visualizing digital twins.",
-        "tr": "VR bir eğlence aracı değil, mühendislik desteği olarak konumlandırılmıştır: operatör eğitimi, ürün tanıtımları, bakım simülasyonları ve dijital ikizlerin görselleştirilmesi.",
+        "tr": "VR eğlence aracı değil, mühendislik desteği olarak konumlandırılır: operatör eğitimi, ürün tanıtımları, bakım simülasyonları ve dijital ikiz görselleştirmesi.",
         "de": "VR wird als Unterstützung für das Engineering positioniert, nicht zur Unterhaltung: Schulung von Bedienern, Produktpräsentationen, Wartungssimulationen und Visualisierung digitaler Zwillinge.",
         "fr": "La VR est positionnée comme un outil d'ingénierie et non de divertissement : formation des opérateurs, démonstration de produits, simulation de maintenance et visualisation de jumeaux numériques.",
         "es": "La VR se plantea como un soporte de ingeniería, no como entretenimiento: formación de operarios, demostraciones de productos, simulación de mantenimiento y visualización de gemelos digitales.",
@@ -4013,33 +4088,33 @@
     "solutions": {
       "heroEyebrow": {
         "en": "Industrial IoT Solutions",
-        "tr": "Endüstriyel IoT Çözümleri",
-        "de": "Industrielle IoT-Lösungen",
-        "fr": "Solutions IoT industrielles",
-        "es": "Soluciones de IoT industrial",
-        "it": "Soluzioni IoT industriali",
-        "ar": "حلول إنترنت الأشياء الصناعي",
-        "ja": "産業用 IoT ソリューション"
+        "tr": "Çözümler",
+        "de": "Lösungen",
+        "fr": "Solutions",
+        "es": "Soluciones",
+        "it": "Soluzioni",
+        "ar": "الحلول",
+        "ja": "ソリューション"
       },
       "heroTitle": {
         "en": "Connected solutions for assets, sites and operations that cannot fail.",
-        "tr": "Başarısızlığa tahammülü olmayan varlıklar, sahalar ve operasyonlar için bağlantılı çözümler.",
-        "de": "Vernetzte Lösungen für ausfallsichere Anlagen, Standorte und Betriebe.",
-        "fr": "Solutions connectées pour les actifs, les sites et les opérations critiques.",
-        "es": "Soluciones conectadas para activos, sitios y operaciones que no pueden fallar.",
-        "it": "Soluzioni connesse per asset, siti e attività che non possono guastarsi.",
-        "ar": "حلول متصلة للأصول والمواقع والعمليات التي لا devre لها بالفشل.",
-        "ja": "停止が許されない資産、現場、運用のためのコネクテッドソリューション。"
+        "tr": "Gerçek dünya operasyonları için Endüstriyel IoT çözümleri.",
+        "de": "Industrielle IoT-Lösungen für den realen Betrieb.",
+        "fr": "Solutions IoT industrielles pour des opérations concrètes.",
+        "es": "Soluciones de IoT industrial para operaciones del mundo real.",
+        "it": "Soluzioni IoT industriali per operazioni reali.",
+        "ar": "حلول إنترنت الأشياء الصناعي لعمليات واقعية.",
+        "ja": "実運用のための産業用 IoT ソリューション。"
       },
       "heroLead": {
         "en": "WillowSoft connects field sensors, LoRaWAN devices, gateways, APIs, dashboards and mobile workflows into one reliable industrial IoT ecosystem.",
-        "tr": "WillowSoft; saha sensörlerini, LoRaWAN cihazlarını, geçitleri (gateways), API'leri, panoları ve mobil iş akışlarını tek bir güvenilir endüstriyel IoT ekosisteminde birleştirir.",
-        "de": "WillowSoft verbindet Feldsensoren, LoRaWAN-Geräte, Gateways, APIs, Dashboards und mobile Workflows zu einem zuverlässigen industriellen IoT-Ökosystem.",
-        "fr": "WillowSoft connecte les capteurs de terrain, les appareils LoRaWAN, les passerelles, les API, les tableaux de bord et les flux mobiles en un seul écosystème IoT industriel fiable.",
-        "es": "WillowSoft conecta sensores de campo, dispositivos LoRaWAN, pasarelas, API, paneles de control y flujos de trabajo móviles en un ecosistema de IoT industrial fiable.",
-        "it": "WillowSoft collega sensori sul campo, dispositivi LoRaWAN, gateway, API, dashboard e flujos di lavoro mobili in un unico ecosistema IoT industriel affidabile.",
-        "ar": "تربط WillowSoft المستشعرات الميدانية وأجهزة LoRaWAN والبوابات وواجهات برمجة التطبيقات ولوحات التحكم وسير العمل عبر الجوال في منظومة متكاملة وموثوقة لإنترنت الأشياء الصناعي.",
-        "ja": "WillowSoftは、現場のセンサー、LoRaWANデバイス、ゲートウェイ, API, ダッシュボード、モバイルワークフローを、信頼性の高い一つの産業用IoTエコシステムに接続します。"
+        "tr": "Dağınık varlıkları, binaları, makineleri, altyapıları ve lojistik sistemlerini düşük güçlü donanım ve ölçeklenebilir dijital platformlarla birbirine bağlıyoruz.",
+        "de": "Wir verbinden verteilte Anlagen, Gebäude, Maschinen, Versorgungsnetze und Logistiksysteme mit energiesparender Hardware und skalierbaren digitalen Plattformen.",
+        "fr": "Nous connectons des actifs distribués, des bâtiments, des machines, des réseaux et des systèmes logistiques grâce à du matériel basse consommation et à des plateformes numériques évolutives.",
+        "es": "Conectamos activos distribuidos, edificios, máquinas, servicios públicos y sistemas logísticos con hardware de bajo consumo y plataformas digitales escalables.",
+        "it": "Colleghiamo asset distribuiti, edifici, macchine, utility e sistemi logistici con hardware a basso consumo e piattaforme digitali scalabili.",
+        "ar": "نربط الأصول الموزّعة والمباني والآلات والمرافق وأنظمة الخدمات اللوجستية بعتاد منخفض الطاقة ومنصات رقمية قابلة للتوسّع.",
+        "ja": "分散した資産、建物、機械、インフラ、物流システムを、低消費電力ハードウェアとスケーラブルなデジタルプラットフォームで接続します。"
       },
       "heroImage": "/pdf-assets/p04_01_X9.jpg",
       "metric1Value": "15+",
@@ -4059,7 +4134,7 @@
       },
       "useCasesEyebrow": {
         "en": "Use Cases",
-        "tr": "Kullanım Alanları",
+        "tr": "Kullanım Senaryoları",
         "de": "Anwendungsfälle",
         "fr": "Cas d'usage",
         "es": "Casos de uso",
@@ -4069,17 +4144,17 @@
       },
       "useCasesTitle": {
         "en": "Designed for distributed, harsh and operationally critical environments.",
-        "tr": "Dağıtık, zorlu ve operasyonel açıdan kritik ortamlar için tasarlandı.",
-        "de": "Entwickelt für verteilte, raue und betriebskritische Umgebungen.",
-        "fr": "Conçu pour les environnements distribués, rudes et critiques.",
-        "es": "Diseñado para entornos distribuidos, hostiles y de misión crítica.",
-        "it": "Progettato per ambienti distribuiti, difficili e operativamente critici.",
-        "ar": "مُصمم للبيئات الموزعة والقاسية والحرجة عملياتياً.",
-        "ja": "分散型、過酷、かつ運用上重要な環境向けに設計。"
+        "tr": "Güvenilirliğin önem taşıdığı ortamlar için tasarlandı.",
+        "de": "Entwickelt für Umgebungen, in denen Zuverlässigkeit zählt.",
+        "fr": "Conçu pour les environnements où la fiabilité compte.",
+        "es": "Diseñado para entornos donde la fiabilidad importa.",
+        "it": "Progettato per ambienti in cui l'affidabilità conta.",
+        "ar": "مُصمّم لبيئات تكون فيها الموثوقية أساسية.",
+        "ja": "信頼性が重要な環境のために設計。"
       },
       "useCasesLead": {
         "en": "From infrastructure and factories to buildings, logistics and utilities, every solution is shaped around field conditions, data needs and response workflows.",
-        "tr": "Altyapı ve fabrikalardan binalara, lojistik ve altyapı hizmetlerine kadar her çözüm; saha koşulları, veri gereksinimleri ve müdahale iş akışlarına göre şekillenir.",
+        "tr": "Altyapıdan fabrikaya, binalardan lojistiğe ve kamu hizmetlerine kadar her çözüm; saha koşulları, veri ihtiyaçları ve müdahale süreçleri etrafında şekillenir.",
         "de": "Von Infrastrukturen und Fabriken bis hin zu Gebäuden, Logistik und Versorgungsunternehmen wird jede Lösung an die Bedingungen vor Ort, den Datenbedarf und die Reaktionsabläufe angepasst.",
         "fr": "Des infrastructures et usines aux bâtiments, à la logistique et aux services publics, chaque solution s'adapte aux conditions du terrain, aux besoins en données et aux flux d'intervention.",
         "es": "Desde infraestructuras y fábricas hasta edificios, logística y servicios públicos, cada solución se adapta a las condiciones del campo, las necesidades de datos y los flujos de respuesta.",
@@ -4131,23 +4206,53 @@
       },
       "howEyebrow": {
         "en": "How It Works",
-        "tr": "Nasıl Çalışır"
+        "tr": "Nasıl Çalışır",
+        "de": "So funktioniert es",
+        "fr": "Comment ça marche",
+        "es": "Cómo funciona",
+        "it": "Come funziona",
+        "ar": "كيف يعمل",
+        "ja": "仕組み"
       },
       "howTitle": {
         "en": "Sensors report. Gateways connect. Platforms act.",
-        "tr": "Sensörler raporlar. Geçitler bağlar. Platformlar harekete geçer."
+        "tr": "Sensörler raporlar, geçitler bağlar, platformlar harekete geçer.",
+        "de": "Sensoren melden, Gateways verbinden, Plattformen handeln.",
+        "fr": "Les capteurs remontent, les passerelles connectent, les plateformes agissent.",
+        "es": "Los sensores informan, las pasarelas conectan, las plataformas actúan.",
+        "it": "I sensori segnalano, i gateway collegano, le piattaforme agiscono.",
+        "ar": "تُبلِّغ المستشعرات، وتربط البوابات، وتتصرّف المنصات.",
+        "ja": "センサーが報告し、ゲートウェイがつなぎ、プラットフォームが動く。"
       },
       "howLead": {
         "en": "WillowSoft solutions turn field signals into operational intelligence through a complete embedded-to-cloud architecture.",
-        "tr": "WillowSoft çözümleri, uçtan buluta eksiksiz bir mimari aracılığıyla saha sinyallerini operasyonel zekaya dönüştürür."
+        "tr": "Hareketli arka plan, dağıtık saha verisini temsil eder. Gerçek sistemde her cihaz, telemetriyi API'lere, PostgreSQL'e, panolara, mobil uyarılara ve raporlama araçlarına gönderir.",
+        "de": "Der bewegte Hintergrund steht für verteilte Felddaten. Im realen System sendet jedes Gerät Telemetrie an APIs, PostgreSQL, Dashboards, mobile Benachrichtigungen und Reporting-Tools.",
+        "fr": "L'arrière-plan animé représente des données de terrain distribuées. Dans le système réel, chaque appareil envoie sa télémétrie vers des API, PostgreSQL, des tableaux de bord, des alertes mobiles et des outils de reporting.",
+        "es": "El fondo en movimiento representa datos de campo distribuidos. En el sistema real, cada dispositivo envía telemetría a API, PostgreSQL, paneles, alertas móviles y herramientas de informes.",
+        "it": "Lo sfondo in movimento rappresenta dati di campo distribuiti. Nel sistema reale, ogni dispositivo invia la telemetria ad API, PostgreSQL, dashboard, avvisi mobili e strumenti di reporting.",
+        "ar": "تمثّل الخلفية المتحركة بيانات ميدانية موزّعة. في النظام الفعلي، يرسل كل جهاز بيانات القياس إلى واجهات البرمجة وPostgreSQL ولوحات المعلومات والتنبيهات على الجوال وأدوات إعداد التقارير.",
+        "ja": "動く背景は、分散した現場データを表しています。実際のシステムでは、各デバイスがテレメトリを API、PostgreSQL、ダッシュボード、モバイル通知、レポートツールへ送信します。"
       },
       "whyEyebrow": {
         "en": "Why WillowSoft",
-        "tr": "Neden WillowSoft"
+        "tr": "Neden WillowSoft",
+        "de": "Warum WillowSoft",
+        "fr": "Pourquoi WillowSoft",
+        "es": "Por qué WillowSoft",
+        "it": "Perché WillowSoft",
+        "ar": "لماذا WillowSoft",
+        "ja": "WillowSoft が選ばれる理由"
       },
       "whyTitle": {
         "en": "Solutions are engineered around the site, not forced onto it.",
-        "tr": "Çözümler sahaya dayatılmaz; sahanın dinamiklerine göre tasarlanır."
+        "tr": "Çözümler sahaya dayatılmaz; sahanın dinamiklerine göre tasarlanır.",
+        "de": "Lösungen werden an die Gegebenheiten vor Ort angepasst, anstatt sie aufzuzwingen.",
+        "fr": "Les solutions sont conçues en fonction des réalités du terrain, et non imposées à celui-ci.",
+        "es": "Las soluciones se diseñan en función de las necesidades del terreno, no se imponen sobre él.",
+        "it": "Le soluzioni sono progettate in base alle reali esigenze del terreno, non imposte su di esso.",
+        "ar": "تُصمَّم الحلول بناءً على احتياجات الميدان, لا تُفرَض عليه.",
+        "ja": "ソリューションは現場に押し付けるのではなく、現場に合わせて設計します。"
       },
       "finalCtaEyebrow": {
         "en": "Start With Your Operation",
@@ -4375,7 +4480,7 @@
       },
       "introLead": {
         "en": "Founded in 2020, WillowSoft delivers embedded hardware and software solutions for industrial and IoT applications. The team focuses on low-power architecture, LoRa connectivity, firmware reliability, custom hardware design, backend systems, mobile and web interfaces, and production readiness.",
-        "tr": "2020'de kurulan WillowSoft, endüstriyel ve IoT uygulamaları için gömülü donanım ve yazılım çözümleri sunar. Ekip; düşük güç mimarisi, LoRa bağlantısı, firmware güvenilirliği, özel donanım tasarımı, backend sistemleri, mobil ve web arayüzleri ile üretime hazırlığa odaklanır.",
+        "tr": "2020'de kurulan WillowSoft, endüstriyel ve IoT uygulamaları için gömülü donanım ve yazılım çözümleri sunar. Ekip; düşük güç mimarisi, LoRa bağlantısı, firmware güvenilirliği, özel donanım tasarımı, backend sistemleri, mobil ve web arayüzleri ile seri üretime hazırlık konularında uzmanlaşmıştır.",
         "de": "Das 2020 gegründete Unternehmen WillowSoft liefert Embedded-Hardware- und Softwarelösungen für industrielle und IoT-Anwendungen. Das Team konzentriert sich auf energiesparende Architektur, LoRa-Konnektivität, Firmware-Zuverlässigkeit, kundenspezifisches Hardware-Design, Backend-Systeme, mobile und Web-Schnittstellen sowie Produktionsreife.",
         "fr": "Fondée en 2020, WillowSoft fournit des solutions matérielles et logicielles embarquées pour les applications industrielles et IoT. L'équipe se concentre sur l'architecture basse consommation, la connectivité LoRa, la fiabilité du firmware, la conception matérielle sur mesure, les systèmes backend, les interfaces mobiles et web, et la préparation à la production.",
         "es": "Fundada en 2020, WillowSoft ofrece soluciones de hardware y software embebidos para aplicaciones industriales e IoT. El equipo se centra en la arquitectura de bajo consumo, la conectividad LoRa, la fiabilidad del firmware, el diseño de hardware a medida, los sistemas backend, las interfaces móviles y web, y la preparación para producción.",
@@ -4497,7 +4602,7 @@
       },
       "heroLead": {
         "en": "Tell us whether you need hardware, firmware, backend API, PostgreSQL architecture, admin panel, mobile app, website, web dashboard, VR simulation, or the complete connected product ecosystem.",
-        "tr": "Donanım, firmware, backend API, PostgreSQL mimarisi, yönetim paneli, mobil uygulama, web sitesi, web panosu, VR simülasyonu veya uçtan uca tüm bağlı ürün ekosistemi konusundaki ihtiyaçlarınızı bizimle paylaşın.",
+        "tr": "Donanım, firmware, backend API, PostgreSQL mimarisi, yönetim paneli, mobil uygulama, web sitesi, web dashboard, VR simülasyonu veya uçtan uca tüm IoT sistem ihtiyaçlarınızı bizimle paylaşın.",
         "de": "Sagen Sie uns, ob Sie Hardware, Firmware, Backend-API, PostgreSQL-Architektur, Admin-Panel, mobile App, Website, Web-Dashboard, VR-Simulation oder das komplette vernetzte Produkt-Ökosystem benötigen.",
         "fr": "Dites-nous si vous avez besoin de matériel, firmware, API backend, architecture PostgreSQL, panneau d'administration, application mobile, site web, tableau de bord web, simulation VR ou d'un écosystème complet de produits connectés.",
         "es": "Cuéntenos si necesita hardware, firmware, API backend, arquitectura PostgreSQL, panel de administración, aplicación móvil, sitio web, panel web, simulación VR o un ecosistema completo de productos conectados.",
@@ -4609,7 +4714,7 @@
       },
       "formLead": {
         "en": "This form is intentionally more detailed than Contact. It helps WillowSoft understand whether you need one layer or an end-to-end connected product.",
-        "tr": "Bu form, kasıtlı olarak genel iletişim formundan daha detaylı hazırlanmıştır. WillowSoft'un tek bir katmana mı yoksa uçtan uca bağlı bir ürüne mi ihtiyacınız olduğunu anlamasına yardımcı olur.",
+        "tr": "Proje türünüzü, kapsamınızı ve zaman planınızı paylaşın. Ekibimiz keşif görüşmesiyle gereksinimleri netleştirip size özel bir yol haritası sunar.",
         "de": "Dieses Formular ist bewusst detaillierter als das Kontaktformular. Es hilft WillowSoft zu verstehen, ob Sie eine einzelne Schicht oder ein durchgängiges vernetztes Produkt benötigen.",
         "fr": "Ce formulaire est volontairement plus détaillé que le formulaire de contact. Il aide WillowSoft à déterminer si vous avez besoin d'une seule couche ou d'un produit connecté de bout en bout.",
         "es": "Este formulario es intencionadamente más detallado que el de contacto. Ayuda a WillowSoft a entender si necesita una sola capa o un producto conectado de extremo a extremo.",
@@ -4766,7 +4871,20 @@
       "servicesUsed": [],
       "featured": true,
       "sortOrder": 30,
-      "localized": {}
+      "localized": {
+        "tr": {
+          "title": "Endüstriyel IoT İzleme",
+          "headline": "Endüstriyel IoT İzleme",
+          "summary": "Endüstriyel sensörler, gömülü sistemler ve saha cihazları için uzaktan izleme.",
+          "category": "Endüstriyel IoT",
+          "bullets": [
+            "Endüstriyel tesisler",
+            "Uzaktan telemetri",
+            "Bulut veri görselleştirme",
+            "Düşük güçlü saha cihazları"
+          ]
+        }
+      }
     },
     {
       "id": "water-tank-flood-monitoring",
@@ -4792,7 +4910,20 @@
       "servicesUsed": [],
       "featured": true,
       "sortOrder": 70,
-      "localized": {}
+      "localized": {
+        "tr": {
+          "title": "Su, Tank ve Taşkın İzleme",
+          "headline": "Su, Tank ve Taşkın İzleme",
+          "summary": "Tanklar, rögarlar ve drenaj sistemleri için mesafe, seviye ve taşkın riski izleme.",
+          "category": "Su ve Seviye",
+          "bullets": [
+            "Rögar taşkınları",
+            "Su tankı seviyesi",
+            "Yağmur suyu drenajı",
+            "Endüstriyel sıvı seviyesi"
+          ]
+        }
+      }
     },
     {
       "id": "smart-building-air-quality",
@@ -4818,7 +4949,20 @@
       "servicesUsed": [],
       "featured": true,
       "sortOrder": 80,
-      "localized": {}
+      "localized": {
+        "tr": {
+          "title": "Akıllı Bina ve Hava Kalitesi",
+          "headline": "Akıllı Bina ve Hava Kalitesi",
+          "summary": "Binalar ve tesisler için hava kalitesi, sıcaklık ve çevresel izleme.",
+          "category": "Akıllı Binalar",
+          "bullets": [
+            "Ofisler",
+            "Okullar",
+            "Hastaneler",
+            "Depolar"
+          ]
+        }
+      }
     },
     {
       "id": "asset-fleet-tracking",
@@ -4844,7 +4988,20 @@
       "servicesUsed": [],
       "featured": false,
       "sortOrder": 90,
-      "localized": {}
+      "localized": {
+        "tr": {
+          "title": "Varlık ve Filo Takibi",
+          "headline": "Varlık ve Filo Takibi",
+          "summary": "Araçlar, lojistik operasyonları ve mobil varlıklar için GPS tabanlı takip.",
+          "category": "Varlık ve Lojistik",
+          "bullets": [
+            "Araç takibi",
+            "Varlık takibi",
+            "Filo izleme",
+            "Tedarik zinciri görünürlüğü"
+          ]
+        }
+      }
     },
     {
       "id": "safety-emergency-alerts",
@@ -4870,7 +5027,20 @@
       "servicesUsed": [],
       "featured": false,
       "sortOrder": 100,
-      "localized": {}
+      "localized": {
+        "tr": {
+          "title": "Güvenlik ve Acil Durum Alarmları",
+          "headline": "Güvenlik ve Acil Durum Alarmları",
+          "summary": "Endüstriyel sahalar, depolar ve binalar için anlık acil durum bildirimleri.",
+          "category": "Güvenlik",
+          "bullets": [
+            "Acil durum uyarıları",
+            "Sağlık müdahalesi",
+            "Güvenlik senaryoları",
+            "Endüstriyel tesisler"
+          ]
+        }
+      }
     },
     {
       "id": "access-door-security",
@@ -4896,7 +5066,20 @@
       "servicesUsed": [],
       "featured": false,
       "sortOrder": 110,
-      "localized": {}
+      "localized": {
+        "tr": {
+          "title": "Erişim ve Kapı Güvenliği",
+          "headline": "Erişim ve Kapı Güvenliği",
+          "summary": "Kapılar, kısıtlı alanlar, dolaplar ve pencereler için açık/kapalı izleme.",
+          "category": "Güvenlik",
+          "bullets": [
+            "Sunucu odaları",
+            "Laboratuvar kapıları",
+            "Elektrik panoları",
+            "Kısıtlı alanlar"
+          ]
+        }
+      }
     },
     {
       "id": "motion-tilt-infrastructure",
@@ -4922,7 +5105,20 @@
       "servicesUsed": [],
       "featured": false,
       "sortOrder": 120,
-      "localized": {}
+      "localized": {
+        "tr": {
+          "title": "Hareket, Eğim ve Altyapı",
+          "headline": "Hareket, Eğim ve Altyapı",
+          "summary": "Makine ve yapılar için 3 eksenli hareket, titreşim ve yer değiştirme izleme.",
+          "category": "Altyapı",
+          "bullets": [
+            "Binalar",
+            "Tüneller",
+            "Madencilik",
+            "Endüstriyel makineler"
+          ]
+        }
+      }
     },
     {
       "id": "temperature-humidity-monitoring",
@@ -4948,7 +5144,20 @@
       "servicesUsed": [],
       "featured": false,
       "sortOrder": 130,
-      "localized": {}
+      "localized": {
+        "tr": {
+          "title": "Sıcaklık ve Nem İzleme",
+          "headline": "Sıcaklık ve Nem İzleme",
+          "summary": "Operasyonlar ve tesisler için iç ve dış mekân sıcaklık-nem izleme.",
+          "category": "Çevresel İzleme",
+          "bullets": [
+            "Fabrikalar",
+            "Depolar",
+            "Seralar",
+            "İç ve dış mekân sahaları"
+          ]
+        }
+      }
     },
     {
       "id": "industrial-modbus-integration",
@@ -4974,7 +5183,20 @@
       "servicesUsed": [],
       "featured": false,
       "sortOrder": 140,
-      "localized": {}
+      "localized": {
+        "tr": {
+          "title": "Endüstriyel Bağlantı ve Modbus",
+          "headline": "Endüstriyel Bağlantı ve Modbus",
+          "summary": "Endüstriyel cihaz verilerini LoRaWAN üzerinden taşıyan kablosuz Modbus RTU köprüsü.",
+          "category": "Endüstriyel IoT",
+          "bullets": [
+            "PLC uygulamaları",
+            "Fabrikalar",
+            "Enerji izleme",
+            "Gaz ve su sayacı okuma"
+          ]
+        }
+      }
     },
     {
       "id": "smart-agriculture-monitoring",
@@ -5000,7 +5222,20 @@
       "servicesUsed": [],
       "featured": false,
       "sortOrder": 150,
-      "localized": {}
+      "localized": {
+        "tr": {
+          "title": "Akıllı Tarım İzleme",
+          "headline": "Akıllı Tarım İzleme",
+          "summary": "Toprak nemi, toprak sıcaklığı ve sera koşulları izleme.",
+          "category": "Tarım",
+          "bullets": [
+            "Akıllı tarım",
+            "Bahçeler",
+            "Seralar",
+            "Çiftlikler"
+          ]
+        }
+      }
     },
     {
       "id": "liquid-pressure-monitoring",
@@ -5026,7 +5261,20 @@
       "servicesUsed": [],
       "featured": false,
       "sortOrder": 160,
-      "localized": {}
+      "localized": {
+        "tr": {
+          "title": "Sıvı Basınç İzleme",
+          "headline": "Sıvı Basınç İzleme",
+          "summary": "Zorlu ortamlarda boru hatları, tanklar ve endüstriyel sıvı basıncı izleme.",
+          "category": "Su ve Seviye",
+          "bullets": [
+            "Boru hattı basıncı",
+            "Su tankları",
+            "Kimya tesisleri",
+            "Hidrolik sistemler"
+          ]
+        }
+      }
     },
     {
       "id": "environmental-weather-monitoring",
@@ -5052,7 +5300,20 @@
       "servicesUsed": [],
       "featured": false,
       "sortOrder": 170,
-      "localized": {}
+      "localized": {
+        "tr": {
+          "title": "Çevresel ve Hava Durumu İzleme",
+          "headline": "Çevresel ve Hava Durumu İzleme",
+          "summary": "Uzak sahalarda rüzgâr hızı ve dış ortam ölçümleri.",
+          "category": "Çevresel İzleme",
+          "bullets": [
+            "Meteoroloji istasyonları",
+            "Havalimanları",
+            "Limanlar",
+            "Çiftlikler"
+          ]
+        }
+      }
     }
   ],
   "faqs": [
@@ -5065,7 +5326,7 @@
       "localized": {
         "tr": {
           "question": "WillowSoft hangi mühendislik hizmetlerini sunar?",
-          "answer": "WillowSoft, sekiz disiplinde uçtan uca bağlı ürün mühendisliği sunar: gömülü donanım tasarımı (özel PCB, RF, düşük güç), firmware geliştirme (STM32, RTOS, OTA), backend API'leri (REST + WebSocket, kimlik doğrulama, veri alımı), PostgreSQL veritabanı mimarisi, web platformları ve yönetim panelleri, native iOS (Swift) + native Android (Kotlin) + Flutter çapraz platform mobil uygulamalar, VR ve simülasyon, ve IoT bulut telemetrisi."
+          "answer": "WillowSoft, sekiz disiplinde uçtan uca bağlı ürün mühendisliği sunar: gömülü donanım tasarımı (özel PCB, RF, düşük güç), firmware geliştirme (STM32, RTOS, OTA), backend API'ler (REST + WebSocket, kimlik doğrulama, veri alımı), PostgreSQL veritabanı mimarisi, web platformları ve yönetim panelleri, native iOS (Swift) + native Android (Kotlin) + Flutter cross-platform mobil uygulamalar, VR ve simülasyon, ayrıca IoT bulut telemetrisi."
         },
         "de": {
           "question": "Welche Engineering-Leistungen bietet WillowSoft an?",
@@ -5101,8 +5362,8 @@
       "sortOrder": 20,
       "localized": {
         "tr": {
-          "question": "WillowSoft uçtan uca eksiksiz bağlı ürünler teslim ediyor mu?",
-          "answer": "Evet. WillowSoft, bağlı bir ürünün tüm katmanlarını üstlenir — donanım, firmware, RF/LoRaWAN bağlantısı, backend, veritabanı, mobil ve web arayüzleri — böylece müşterilerin birden fazla tedarikçiyi koordine etmesine veya kopuk ekipler arasında gereksinimleri tercüme etmesine gerek kalmaz."
+          "question": "WillowSoft uçtan uca eksiksiz bağlı ürün teslim ediyor mu?",
+          "answer": "Evet. WillowSoft, bağlı bir ürünün tüm katmanlarını üstlenir — donanım, firmware, RF/LoRaWAN bağlantısı, backend, veritabanı, mobil ve web arayüzleri — böylece müşterilerin birden fazla tedarikçiyi koordine etmesine veya kopuk ekipler arasında gereksinimleri çevirmesine gerek kalmaz."
         },
         "de": {
           "question": "Liefert WillowSoft vollständige vernetzte Produkte end-to-end?",
@@ -5250,7 +5511,7 @@
       "localized": {
         "tr": {
           "question": "Tipik bir proje süresi nedir?",
-          "answer": "Donanım prototipleri genellikle 4–8 hafta sürer. Eksiksiz bağlı ürün sistemleri (donanım + firmware + backend + pano + mobil) genellikle başlangıçtan sahaya hazır dağıtıma kadar 4–6 ay sürer."
+          "answer": "Donanım prototipleri genellikle 4-8 hafta sürer. Eksiksiz bağlı ürün sistemleri (donanım + firmware + backend + dashboard + mobil) genellikle başlangıçtan sahaya hazır dağıtıma kadar 4-6 ay sürer."
         },
         "de": {
           "question": "Wie sieht ein typischer Projektzeitplan aus?",
@@ -5583,7 +5844,7 @@
       "localized": {
         "tr": {
           "question": "Tipik proje süresi nedir?",
-          "answer": "Donanım prototipleri genellikle 4–8 hafta sürer. Eksiksiz bağlı ürün sistemleri (donanım + firmware + backend + pano + mobil) genellikle başlangıçtan sahaya hazır dağıtıma kadar 4–6 ay sürer."
+          "answer": "Donanım prototipleri genellikle 4-8 hafta sürer. Eksiksiz bağlı ürün sistemleri (donanım + firmware + backend + dashboard + mobil) genellikle başlangıçtan sahaya hazır dağıtıma kadar 4-6 ay sürer."
         },
         "de": {
           "question": "Wie lang ist der typische Projektzeitplan?",
@@ -5620,7 +5881,7 @@
       "localized": {
         "tr": {
           "question": "WillowSoft devam eden bir projeye yarı yolda katılabilir mi?",
-          "answer": "Evet. WillowSoft, eksik katmanları tamamlamak için tıkanmış projeleri düzenli olarak devralır — firmware güvenilirliği, backend yeniden inşaları, mobil veya yönetim panelleri ya da üretim için donanım revizyonları."
+          "answer": "Evet. WillowSoft, eksik katmanları tamamlamak için tıkanmış projeleri düzenli olarak devralır — firmware güvenilirliği, backend yeniden inşası, mobil veya admin panel geliştirmeleri ya da üretim için donanım revizyonları."
         },
         "de": {
           "question": "Kann WillowSoft einem laufenden Projekt mitten im Verlauf beitreten?",

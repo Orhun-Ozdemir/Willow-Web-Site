@@ -21,7 +21,7 @@ const root = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 const dataFile = path.join(root, "data", "site-data.json");
 const i18nDir = path.join(root, "scripts", "i18n");
 
-const COLLECTIONS = ["faqs", "solutions", "news", "products", "clients"];
+const COLLECTIONS = ["faqs", "solutions", "news", "products", "services", "clients", "glossary"];
 
 const data = JSON.parse(await readFile(dataFile, "utf8"));
 const stats = { ui: 0, pageContent: 0, collections: 0, warnings: [] };

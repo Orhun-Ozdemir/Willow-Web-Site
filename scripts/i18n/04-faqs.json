@@ -11,7 +11,7 @@
         "ja": "WillowSoft はどのようなエンジニアリングサービスを提供していますか？"
       },
       "answer": {
-        "tr": "WillowSoft, sekiz disiplinde uçtan uca bağlı ürün mühendisliği sunar: gömülü donanım tasarımı (özel PCB, RF, düşük güç), firmware geliştirme (STM32, RTOS, OTA), backend API'leri (REST + WebSocket, kimlik doğrulama, veri alımı), PostgreSQL veritabanı mimarisi, web platformları ve yönetim panelleri, native iOS (Swift) + native Android (Kotlin) + Flutter çapraz platform mobil uygulamalar, VR ve simülasyon, ve IoT bulut telemetrisi.",
+        "tr": "WillowSoft, sekiz disiplinde uçtan uca bağlı ürün mühendisliği sunar: gömülü donanım tasarımı (özel PCB, RF, düşük güç), firmware geliştirme (STM32, RTOS, OTA), backend API'ler (REST + WebSocket, kimlik doğrulama, veri alımı), PostgreSQL veritabanı mimarisi, web platformları ve yönetim panelleri, native iOS (Swift) + native Android (Kotlin) + Flutter cross-platform mobil uygulamalar, VR ve simülasyon, ayrıca IoT bulut telemetrisi.",
         "de": "WillowSoft bietet durchgängiges Engineering für vernetzte Produkte in acht Disziplinen: Embedded-Hardware-Design (kundenspezifische PCB, RF, Low-Power), Firmware-Entwicklung (STM32, RTOS, OTA), Backend-APIs (REST + WebSocket, Authentifizierung, Datenaufnahme), PostgreSQL-Datenbankarchitektur, Webplattformen und Admin-Panels, native iOS- (Swift) + native Android- (Kotlin) + Flutter-Cross-Platform-Apps, VR und Simulation sowie IoT-Cloud-Telemetrie.",
         "fr": "WillowSoft assure l'ingénierie de produits connectés de bout en bout dans huit disciplines : conception de matériel embarqué (PCB sur mesure, RF, basse consommation), développement de firmware (STM32, RTOS, OTA), API backend (REST + WebSocket, authentification, ingestion), architecture de base de données PostgreSQL, plateformes web et panneaux d'administration, applications mobiles natives iOS (Swift) + Android (Kotlin) + Flutter multiplateformes, VR et simulation, et télémétrie IoT dans le cloud.",
         "es": "WillowSoft ofrece ingeniería integral de productos conectados en ocho disciplinas: diseño de hardware embebido (PCB a medida, RF, bajo consumo), desarrollo de firmware (STM32, RTOS, OTA), API backend (REST + WebSocket, autenticación, ingesta), arquitectura de base de datos PostgreSQL, plataformas web y paneles de administración, apps móviles nativas de iOS (Swift) + Android (Kotlin) + Flutter multiplataforma, VR y simulación, y telemetría IoT en la nube.",
@@ -22,7 +22,7 @@
     },
     "faq-services-does-willowsoft-deliver-complete-connected-products-end-to-e": {
       "question": {
-        "tr": "WillowSoft uçtan uca eksiksiz bağlı ürünler teslim ediyor mu?",
+        "tr": "WillowSoft uçtan uca eksiksiz bağlı ürün teslim ediyor mu?",
         "de": "Liefert WillowSoft vollständige vernetzte Produkte end-to-end?",
         "fr": "WillowSoft livre-t-il des produits connectés complets de bout en bout ?",
         "es": "¿WillowSoft entrega productos conectados completos de extremo a extremo?",
@@ -31,7 +31,7 @@
         "ja": "WillowSoft はコネクテッド製品をエンドツーエンドで一貫して提供しますか？"
       },
       "answer": {
-        "tr": "Evet. WillowSoft, bağlı bir ürünün tüm katmanlarını üstlenir — donanım, firmware, RF/LoRaWAN bağlantısı, backend, veritabanı, mobil ve web arayüzleri — böylece müşterilerin birden fazla tedarikçiyi koordine etmesine veya kopuk ekipler arasında gereksinimleri tercüme etmesine gerek kalmaz.",
+        "tr": "Evet. WillowSoft, bağlı bir ürünün tüm katmanlarını üstlenir — donanım, firmware, RF/LoRaWAN bağlantısı, backend, veritabanı, mobil ve web arayüzleri — böylece müşterilerin birden fazla tedarikçiyi koordine etmesine veya kopuk ekipler arasında gereksinimleri çevirmesine gerek kalmaz.",
         "de": "Ja. WillowSoft verantwortet jede Schicht eines vernetzten Produkts — Hardware, Firmware, RF/LoRaWAN-Konnektivität, Backend, Datenbank, mobile und Web-Schnittstellen —, sodass Kunden weder mehrere Anbieter koordinieren noch Anforderungen zwischen getrennten Teams übersetzen müssen.",
         "fr": "Oui. WillowSoft maîtrise chaque couche d'un produit connecté — matériel, firmware, connectivité RF/LoRaWAN, backend, base de données, interfaces mobiles et web —, de sorte que les clients n'ont pas à coordonner plusieurs fournisseurs ni à traduire les exigences entre des équipes cloisonnées.",
         "es": "Sí. WillowSoft es responsable de cada capa de un producto conectado: hardware, firmware, conectividad RF/LoRaWAN, backend, base de datos, interfaces móviles y web, de modo que los clientes no necesitan coordinar varios proveedores ni traducir requisitos entre equipos desconectados.",
@@ -111,7 +111,7 @@
         "ja": "プロジェクトの一般的な期間はどのくらいですか？"
       },
       "answer": {
-        "tr": "Donanım prototipleri genellikle 4–8 hafta sürer. Eksiksiz bağlı ürün sistemleri (donanım + firmware + backend + pano + mobil) genellikle başlangıçtan sahaya hazır dağıtıma kadar 4–6 ay sürer.",
+        "tr": "Donanım prototipleri genellikle 4-8 hafta sürer. Eksiksiz bağlı ürün sistemleri (donanım + firmware + backend + dashboard + mobil) genellikle başlangıçtan sahaya hazır dağıtıma kadar 4-6 ay sürer.",
         "de": "Hardware-Prototypen dauern in der Regel 4–8 Wochen. Komplette vernetzte Produktsysteme (Hardware + Firmware + Backend + Dashboard + Mobile) dauern in der Regel 4–6 Monate vom Kickoff bis zum feldreifen Einsatz.",
         "fr": "Les prototypes matériels prennent généralement 4 à 8 semaines. Les systèmes de produits connectés complets (matériel + firmware + backend + tableau de bord + mobile) prennent généralement 4 à 6 mois, du lancement au déploiement prêt pour le terrain.",
         "es": "Los prototipos de hardware suelen tardar de 4 a 8 semanas. Los sistemas completos de producto conectado (hardware + firmware + backend + panel + móvil) suelen tardar de 4 a 6 meses desde el inicio hasta el despliegue listo para campo.",
@@ -291,7 +291,7 @@
         "ja": "プロジェクトの一般的な期間はどのくらいですか？"
       },
       "answer": {
-        "tr": "Donanım prototipleri genellikle 4–8 hafta sürer. Eksiksiz bağlı ürün sistemleri (donanım + firmware + backend + pano + mobil) genellikle başlangıçtan sahaya hazır dağıtıma kadar 4–6 ay sürer.",
+        "tr": "Donanım prototipleri genellikle 4-8 hafta sürer. Eksiksiz bağlı ürün sistemleri (donanım + firmware + backend + dashboard + mobil) genellikle başlangıçtan sahaya hazır dağıtıma kadar 4-6 ay sürer.",
         "de": "Hardware-Prototypen dauern in der Regel 4–8 Wochen. Komplette vernetzte Produktsysteme (Hardware + Firmware + Backend + Dashboard + Mobile) dauern in der Regel 4–6 Monate vom Kickoff bis zum feldreifen Einsatz.",
         "fr": "Les prototypes matériels prennent généralement 4 à 8 semaines. Les systèmes de produits connectés complets (matériel + firmware + backend + tableau de bord + mobile) prennent généralement 4 à 6 mois, du lancement au déploiement prêt pour le terrain.",
         "es": "Los prototipos de hardware suelen tardar de 4 a 8 semanas. Los sistemas completos de producto conectado (hardware + firmware + backend + panel + móvil) suelen tardar de 4 a 6 meses desde el inicio hasta el despliegue listo para campo.",
@@ -311,7 +311,7 @@
         "ja": "WillowSoft は進行中のプロジェクトに途中から参加できますか？"
       },
       "answer": {
-        "tr": "Evet. WillowSoft, eksik katmanları tamamlamak için tıkanmış projeleri düzenli olarak devralır — firmware güvenilirliği, backend yeniden inşaları, mobil veya yönetim panelleri ya da üretim için donanım revizyonları.",
+        "tr": "Evet. WillowSoft, eksik katmanları tamamlamak için tıkanmış projeleri düzenli olarak devralır — firmware güvenilirliği, backend yeniden inşası, mobil veya admin panel geliştirmeleri ya da üretim için donanım revizyonları.",
         "de": "Ja. WillowSoft übernimmt regelmäßig ins Stocken geratene Projekte, um fehlende Schichten zu liefern — Firmware-Zuverlässigkeit, Backend-Neuaufbauten, Mobile- oder Admin-Panels oder Hardware-Respins für die Produktion.",
         "fr": "Oui. WillowSoft reprend régulièrement des projets bloqués pour livrer les couches manquantes — fiabilité du firmware, reconstruction de backend, applications mobiles ou panneaux d'administration, ou re-conception matérielle pour la production.",
         "es": "Sí. WillowSoft asume con regularidad proyectos estancados para entregar las capas que faltan: fiabilidad del firmware, reconstrucción de backend, apps móviles o paneles de administración, o rediseños de hardware para producción.",

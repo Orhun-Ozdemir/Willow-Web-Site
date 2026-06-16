@@ -20,7 +20,7 @@
         "ja": "<em class=\"hw-serif\">ベアメタル</em>から<strong class=\"hw-display\">ダッシュボード</strong>まで — <span class=\"hw-muted\">複数のベンダーに分散することなく。</span>"
       },
       "heroLead": {
-        "tr": "WillowSoft, bağlı ürününüzün her katmanını inşa eder: donanım, firmware, bağlantı, backend ve arayüzler — tek ve güvenilir bir sistem olarak.",
+        "tr": "WillowSoft, IoT ürününüzün tüm katmanlarını tek ekip olarak geliştirir: donanım, firmware, bağlantı, backend ve arayüzler.",
         "de": "WillowSoft entwickelt jede Schicht Ihres vernetzten Produkts: Hardware, Firmware, Konnektivität, Backend und Schnittstellen — als ein zuverlässiges System.",
         "fr": "WillowSoft construit chaque couche de votre produit connecté : matériel, firmware, connectivité, backend et interfaces — comme un seul système fiable.",
         "es": "WillowSoft construye cada capa de su producto conectado: hardware, firmware, conectividad, backend e interfaces, como un único sistema fiable.",
@@ -191,7 +191,7 @@
         "ja": "明確さから始める"
       },
       "ctaTitle": {
-        "tr": "Bir <em class=\"hw-serif\">bağlı ürün</em> ya da <strong class=\"hw-display\">endüstriyel platform</strong> kurmaya hazır mısınız?",
+        "tr": "Bir <em class=\"hw-serif\">IoT ürün</em> ya da <strong class=\"hw-display\">endüstriyel platform</strong> kurmaya hazır mısınız?",
         "de": "Bereit, ein <em class=\"hw-serif\">vernetztes Produkt</em> oder eine <strong class=\"hw-display\">industrielle Plattform</strong> zu entwickeln?",
         "fr": "Prêt à créer un <em class=\"hw-serif\">produit connecté</em> ou une <strong class=\"hw-display\">plateforme industrielle</strong> ?",
         "es": "¿Listo para crear un <em class=\"hw-serif\">producto conectado</em> o una <strong class=\"hw-display\">plataforma industrial</strong>?",

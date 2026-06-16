@@ -36,7 +36,7 @@ const SOURCE_LABEL: Record<Locale, string> = {
 const AI_SHORT_FALLBACKS: Record<string, Partial<Record<Locale, string>>> = {
   home: {
     en: "WillowSoft designs connected products from embedded hardware and firmware to backend APIs, PostgreSQL databases, dashboards, mobile apps and VR simulation layers.",
-    tr: "WillowSoft; gömülü donanım ve firmware'den backend API, PostgreSQL, dashboard, mobil uygulama ve VR simülasyon katmanlarına kadar bağlı ürünler geliştirir.",
+    tr: "WillowSoft; gömülü donanım ve firmware'den backend API, PostgreSQL, panel, mobil uygulama ve VR simülasyon katmanlarına kadar IoT ürünleri geliştirir.",
     de: "WillowSoft entwickelt vernetzte Produkte von Embedded-Hardware und Firmware bis zu Backend-APIs, PostgreSQL, Dashboards, mobilen Apps und VR-Simulationen.",
     fr: "WillowSoft conçoit des produits connectés, du matériel embarqué et firmware aux API backend, PostgreSQL, tableaux de bord, applications mobiles et simulations VR.",
     es: "WillowSoft diseña productos conectados desde hardware embebido y firmware hasta APIs backend, PostgreSQL, dashboards, apps móviles y simulación VR.",
@@ -56,7 +56,7 @@ const AI_SHORT_FALLBACKS: Record<string, Partial<Record<Locale, string>>> = {
   },
   services: {
     en: "WillowSoft delivers connected-product engineering across hardware, firmware, RF/LoRaWAN, backend APIs, PostgreSQL, web dashboards, mobile apps and VR simulation.",
-    tr: "WillowSoft; donanım, firmware, RF/LoRaWAN, backend API, PostgreSQL, web dashboard, mobil uygulama ve VR simülasyon katmanlarında bağlı ürün mühendisliği sunar.",
+    tr: "WillowSoft; donanım, firmware, RF/LoRaWAN, backend API, PostgreSQL, web paneli, mobil uygulama ve VR simülasyon katmanlarında IoT mühendisliği sunar.",
   },
   solutions: {
     en: "WillowSoft builds industry IoT solutions for industrial monitoring, smart infrastructure, energy, logistics, healthcare and field telemetry by combining devices, connectivity and software.",
@@ -64,7 +64,7 @@ const AI_SHORT_FALLBACKS: Record<string, Partial<Record<Locale, string>>> = {
   },
   contact: {
     en: "Use the WillowSoft contact page for engineering inquiries, office information, supplier communication, NDAs and discovery calls for connected product projects.",
-    tr: "WillowSoft iletişim sayfası; mühendislik talepleri, ofis bilgileri, tedarikçi iletişimi, NDA ve bağlı ürün keşif görüşmeleri için kullanılır.",
+    tr: "WillowSoft iletişim sayfası; mühendislik talepleri, ofis bilgileri, tedarikçi iletişimi, gizlilik sözleşmeleri ve IoT proje keşif görüşmeleri için kullanılır.",
   },
   startProject: {
     en: "The Start Project form collects product idea, required layers, timeline, budget and contact details so WillowSoft can prepare a practical engineering discovery plan.",
@@ -81,8 +81,8 @@ const FAQ_FALLBACKS: Record<string, Partial<Record<Locale, AiFaqItem[]>>> = {
     ],
     tr: [
       { question: "WillowSoft ne yapar?", answer: AI_SHORT_FALLBACKS.home.tr || "" },
-      { question: "WillowSoft hangi katmanları teslim edebilir?", answer: "WillowSoft; gömülü donanım, firmware, RF bağlantı, backend API, PostgreSQL veritabanı, dashboard, mobil uygulama, admin panel ve VR simülasyon katmanlarını teslim edebilir." },
-      { question: "WillowSoft kimler için uygundur?", answer: "WillowSoft; endüstriyel IoT cihazları, saha telemetrisi, LoRaWAN ürünleri, bağlı dashboard'lar veya uçtan uca donanım-yazılım platformları geliştiren şirketler için uygundur." },
+      { question: "WillowSoft hangi katmanları teslim edebilir?", answer: "WillowSoft; gömülü donanım, firmware, RF bağlantı, backend API, PostgreSQL veritabanı, panel, mobil uygulama, yönetim arayüzü ve VR simülasyon katmanlarını teslim edebilir." },
+      { question: "WillowSoft kimler için uygundur?", answer: "WillowSoft; endüstriyel IoT cihazları, saha telemetrisi, LoRaWAN ürünleri, operasyon panelleri veya uçtan uca donanım-yazılım platformları geliştiren şirketler için uygundur." },
     ],
   },
   products: {
@@ -94,7 +94,7 @@ const FAQ_FALLBACKS: Record<string, Partial<Record<Locale, AiFaqItem[]>>> = {
     tr: [
       { question: "Hangi WillowSoft ürünü seçilmeli?", answer: "Özel cihaz geliştirme için modüller, telemetri için çevresel sensörler, olay ve varlık durumu için takip cihazları, Modbus veya makine verisi entegrasyonu için endüstriyel arayüzler seçilir." },
       { question: "WillowSoft ürünleri dashboard ve API ile entegre edilebilir mi?", answer: "Evet. WillowSoft ürünleri firmware, LoRaWAN payload tasarımı, backend veri alımı, PostgreSQL şeması, dashboard, alarm ve mobil iş akışlarıyla birlikte çalışabilir." },
-      { question: "WillowSoft ürünleri sadece donanım mı?", answer: "Hayır. Ürünler tekil donanım olarak veya yazılım, bulut, veritabanı ve operatör arayüzleri içeren eksiksiz bağlı ürün yığını içinde değerlendirilebilir." },
+      { question: "WillowSoft ürünleri sadece donanım mı?", answer: "Hayır. Ürünler yalnızca donanım olarak veya yazılım, bulut, veritabanı ve operatör arayüzlerini kapsayan eksiksiz bir IoT yığını içinde değerlendirilebilir." },
     ],
   },
 };

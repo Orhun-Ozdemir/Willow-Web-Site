@@ -1,0 +1,130 @@
+{
+  "services": {
+    "embedded-hardware": {
+      "title": { "tr": "Gömülü Donanım Tasarımı" },
+      "summary": { "tr": "PCB tasarımı, sensör geliştirme, sağlam IoT ağ geçitleri ve düşük güçlü donanım." },
+      "deliverables": { "tr": ["Şematik", "PCB tasarımı", "Prototip", "Seri üretim desteği"] }
+    },
+    "firmware": {
+      "title": { "tr": "Firmware Geliştirme" },
+      "summary": { "tr": "MCU, RTOS, bare-metal yazılım, LoRaWAN yığını ve cihaz sürücüleri." },
+      "deliverables": { "tr": ["Firmware mimarisi", "Sürücüler", "OTA stratejisi", "Güç optimizasyonu"] }
+    },
+    "backend-api": {
+      "title": { "tr": "Backend API" },
+      "summary": { "tr": "REST API, WebSocket, telemetri alımı, kimlik doğrulama ve raporlama." },
+      "deliverables": { "tr": ["API tasarımı", "Telemetri hattı", "Kimlik doğrulama", "Raporlama"] }
+    },
+    "postgresql": {
+      "title": { "tr": "PostgreSQL ve Veritabanı Mimarisi" },
+      "summary": { "tr": "Cihaz verisi modelleme, zaman serisi verileri, raporlama tabloları ve panel sorguları." },
+      "deliverables": { "tr": ["Şema", "İndeksler", "Zaman serisi modeli", "Sorgu optimizasyonu"] }
+    },
+    "web-admin": {
+      "title": { "tr": "Web Platformu / Yönetim Paneli" },
+      "summary": { "tr": "Web panelleri, yönetim arayüzleri, müşteri portalları ve izleme ekranları." },
+      "deliverables": { "tr": ["Dashboard", "Yönetim paneli", "Rol bazlı erişim", "Operasyon arayüzü"] }
+    },
+    "mobile": {
+      "title": { "tr": "Mobil Uygulama Geliştirme" },
+      "summary": { "tr": "Saha operasyonları, sensör izleme, anlık bildirimler, çevrimdışı çalışma ve mağaza yayını için native iOS (Swift), native Android (Kotlin) ve Flutter uygulamaları." },
+      "deliverables": { "tr": ["Mobil uygulama", "Bildirimler", "Çevrimdışı senaryolar", "Saha kullanıcı deneyimi"] }
+    },
+    "vr": {
+      "title": { "tr": "VR / Simülasyon" },
+      "summary": { "tr": "Endüstriyel eğitim, ürün tanıtımları, dijital ikiz ve simülasyon sunumları." },
+      "deliverables": { "tr": ["VR demosu", "Eğitim akışı", "Simülasyon sahnesi", "Ürün sunumu"] }
+    },
+    "telemetry": {
+      "title": { "tr": "IoT Bulutu / Telemetri" },
+      "summary": { "tr": "Cihaz filosu izleme, alarmlar, entegrasyonlar ve uzaktan veri görselleştirme." },
+      "deliverables": { "tr": ["Filo görünümü", "Alarmlar", "Entegrasyonlar", "Uzaktan izleme"] }
+    }
+  },
+  "solutions": {
+    "industrial-iot-monitoring": {
+      "title": { "tr": "Endüstriyel IoT İzleme" },
+      "headline": { "tr": "Endüstriyel IoT İzleme" },
+      "summary": { "tr": "Endüstriyel sensörler, gömülü sistemler ve saha cihazları için uzaktan izleme." },
+      "category": { "tr": "Endüstriyel IoT" },
+      "bullets": { "tr": ["Endüstriyel tesisler", "Uzaktan telemetri", "Bulut veri görselleştirme", "Düşük güçlü saha cihazları"] }
+    },
+    "water-tank-flood-monitoring": {
+      "title": { "tr": "Su, Tank ve Taşkın İzleme" },
+      "headline": { "tr": "Su, Tank ve Taşkın İzleme" },
+      "summary": { "tr": "Tanklar, rögarlar ve drenaj sistemleri için mesafe, seviye ve taşkın riski izleme." },
+      "category": { "tr": "Su ve Seviye" },
+      "bullets": { "tr": ["Rögar taşkınları", "Su tankı seviyesi", "Yağmur suyu drenajı", "Endüstriyel sıvı seviyesi"] }
+    },
+    "smart-building-air-quality": {
+      "title": { "tr": "Akıllı Bina ve Hava Kalitesi" },
+      "headline": { "tr": "Akıllı Bina ve Hava Kalitesi" },
+      "summary": { "tr": "Binalar ve tesisler için hava kalitesi, sıcaklık ve çevresel izleme." },
+      "category": { "tr": "Akıllı Binalar" },
+      "bullets": { "tr": ["Ofisler", "Okullar", "Hastaneler", "Depolar"] }
+    },
+    "asset-fleet-tracking": {
+      "title": { "tr": "Varlık ve Filo Takibi" },
+      "headline": { "tr": "Varlık ve Filo Takibi" },
+      "summary": { "tr": "Araçlar, lojistik operasyonları ve mobil varlıklar için GPS tabanlı takip." },
+      "category": { "tr": "Varlık ve Lojistik" },
+      "bullets": { "tr": ["Araç takibi", "Varlık takibi", "Filo izleme", "Tedarik zinciri görünürlüğü"] }
+    },
+    "safety-emergency-alerts": {
+      "title": { "tr": "Güvenlik ve Acil Durum Alarmları" },
+      "headline": { "tr": "Güvenlik ve Acil Durum Alarmları" },
+      "summary": { "tr": "Endüstriyel sahalar, depolar ve binalar için anlık acil durum bildirimleri." },
+      "category": { "tr": "Güvenlik" },
+      "bullets": { "tr": ["Acil durum uyarıları", "Sağlık müdahalesi", "Güvenlik senaryoları", "Endüstriyel tesisler"] }
+    },
+    "access-door-security": {
+      "title": { "tr": "Erişim ve Kapı Güvenliği" },
+      "headline": { "tr": "Erişim ve Kapı Güvenliği" },
+      "summary": { "tr": "Kapılar, kısıtlı alanlar, dolaplar ve pencereler için açık/kapalı izleme." },
+      "category": { "tr": "Güvenlik" },
+      "bullets": { "tr": ["Sunucu odaları", "Laboratuvar kapıları", "Elektrik panoları", "Kısıtlı alanlar"] }
+    },
+    "motion-tilt-infrastructure": {
+      "title": { "tr": "Hareket, Eğim ve Altyapı" },
+      "headline": { "tr": "Hareket, Eğim ve Altyapı" },
+      "summary": { "tr": "Makine ve yapılar için 3 eksenli hareket, titreşim ve yer değiştirme izleme." },
+      "category": { "tr": "Altyapı" },
+      "bullets": { "tr": ["Binalar", "Tüneller", "Madencilik", "Endüstriyel makineler"] }
+    },
+    "temperature-humidity-monitoring": {
+      "title": { "tr": "Sıcaklık ve Nem İzleme" },
+      "headline": { "tr": "Sıcaklık ve Nem İzleme" },
+      "summary": { "tr": "Operasyonlar ve tesisler için iç ve dış mekân sıcaklık-nem izleme." },
+      "category": { "tr": "Çevresel İzleme" },
+      "bullets": { "tr": ["Fabrikalar", "Depolar", "Seralar", "İç ve dış mekân sahaları"] }
+    },
+    "industrial-modbus-integration": {
+      "title": { "tr": "Endüstriyel Bağlantı ve Modbus" },
+      "headline": { "tr": "Endüstriyel Bağlantı ve Modbus" },
+      "summary": { "tr": "Endüstriyel cihaz verilerini LoRaWAN üzerinden taşıyan kablosuz Modbus RTU köprüsü." },
+      "category": { "tr": "Endüstriyel IoT" },
+      "bullets": { "tr": ["PLC uygulamaları", "Fabrikalar", "Enerji izleme", "Gaz ve su sayacı okuma"] }
+    },
+    "smart-agriculture-monitoring": {
+      "title": { "tr": "Akıllı Tarım İzleme" },
+      "headline": { "tr": "Akıllı Tarım İzleme" },
+      "summary": { "tr": "Toprak nemi, toprak sıcaklığı ve sera koşulları izleme." },
+      "category": { "tr": "Tarım" },
+      "bullets": { "tr": ["Akıllı tarım", "Bahçeler", "Seralar", "Çiftlikler"] }
+    },
+    "liquid-pressure-monitoring": {
+      "title": { "tr": "Sıvı Basınç İzleme" },
+      "headline": { "tr": "Sıvı Basınç İzleme" },
+      "summary": { "tr": "Zorlu ortamlarda boru hatları, tanklar ve endüstriyel sıvı basıncı izleme." },
+      "category": { "tr": "Su ve Seviye" },
+      "bullets": { "tr": ["Boru hattı basıncı", "Su tankları", "Kimya tesisleri", "Hidrolik sistemler"] }
+    },
+    "environmental-weather-monitoring": {
+      "title": { "tr": "Çevresel ve Hava Durumu İzleme" },
+      "headline": { "tr": "Çevresel ve Hava Durumu İzleme" },
+      "summary": { "tr": "Uzak sahalarda rüzgâr hızı ve dış ortam ölçümleri." },
+      "category": { "tr": "Çevresel İzleme" },
+      "bullets": { "tr": ["Meteoroloji istasyonları", "Havalimanları", "Limanlar", "Çiftlikler"] }
+    }
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "pageContent": {
+    "news": {
+      "heroEyebrow": { "tr": "Haberler ve Referanslar" },
+      "heroTitle": { "tr": "Güven oluşturan kurumsal gelişmeler." },
+      "heroLead": { "tr": "Etkinlikler, ihracat kilometre taşları, atölyeler ve mühendislik güncellemeleri kurumsal müşteriler için somut referanslar sunar." },
+      "latestTitle": { "tr": "WillowSoft'un sahada aktif olduğunun kanıtı." },
+      "pipelineEyebrow": { "tr": "Referansları fırsata dönüştürün" },
+      "pipelineTitle": { "tr": "Haberler, etkinlikler ve ürün lansmanlarıyla nitelikli talep oluşturun." },
+      "pipelineLead": { "tr": "Yönetim panelinden koda dokunmadan yeni haber ekleyebilir; öne çıkan içerikleri Ana Sayfa ve Şirket bölümlerinde gösterebilirsiniz." }
+    },
+    "home": {
+      "heroLead": { "tr": "WillowSoft, IoT ürününüzün tüm katmanlarını tek ekip olarak geliştirir: donanım, firmware, bağlantı, backend ve kullanıcı arayüzleri." },
+      "problemLeadOne": { "tr": "Donanım, firmware, backend ve mobil ekipler çoğu projede farklı tedarikçilere dağıtılır. Sonuç: entegrasyon sorunları, geciken teslimatlar ve seri üretime hiç ulaşamayan ürünler." },
+      "problemLeadTwo": { "tr": "WillowSoft tüm katmanların sorumluluğunu üstlenir. Tek ekip. Tek sözleşme. Uçtan uca çalışan bir sistem." },
+      "ecosystemTitle": { "tr": "<strong class=\"hw-display\">Tek</strong> sistem. <em class=\"hw-serif\">Beş katman</em>." },
+      "ctaLead": { "tr": "Donanım, firmware, backend, PostgreSQL, mobil uygulama, web yönetim paneli, kurumsal web sitesi, VR simülasyonu veya uçtan uca sistem mimarisi ihtiyaçlarınızı bizimle paylaşın." }
+    },
+    "services": {
+      "heroLead": { "tr": "WillowSoft, ekiplerin ürün altyapısının tamamını kurmasına yardımcı olur: gömülü cihazlar, firmware, bağlantı, backend, PostgreSQL, web yönetim paneli, mobil uygulama ve birbiriyle uyumlu VR katmanları." },
+      "processTitle": { "tr": "Fikirden devreye alınmış sisteme daha net bir yol." },
+      "stackLead": { "tr": "Teknoloji kartlarının arkasındaki hareketli düğümler ve sinyaller; cihazdan ağ geçidine, backend'e, veritabanına, yönetim paneline, mobil uygulamaya ve VR katmanına uzanan veri akışını simgeler." },
+      "vrLead": { "tr": "VR eğlence aracı değil, mühendislik desteği olarak konumlandırılır: operatör eğitimi, ürün tanıtımları, bakım simülasyonları ve dijital ikiz görselleştirmesi." }
+    },
+    "solutions": {
+      "heroLead": { "tr": "Dağınık varlıkları, binaları, makineleri, altyapıları ve lojistik sistemlerini düşük güçlü donanım ve ölçeklenebilir dijital platformlarla birbirine bağlıyoruz." },
+      "useCasesLead": { "tr": "Altyapıdan fabrikaya, binalardan lojistiğe ve kamu hizmetlerine kadar her çözüm; saha koşulları, veri ihtiyaçları ve müdahale süreçleri etrafında şekillenir." }
+    },
+    "company": {
+      "introLead": { "tr": "2020'de kurulan WillowSoft, endüstriyel ve IoT uygulamaları için gömülü donanım ve yazılım çözümleri sunar. Ekip; düşük güç mimarisi, LoRa bağlantısı, firmware güvenilirliği, özel donanım tasarımı, backend sistemleri, mobil ve web arayüzleri ile seri üretime hazırlık konularında uzmanlaşmıştır." }
+    },
+    "startProject": {
+      "formLead": { "tr": "Proje türünüzü, kapsamınızı ve zaman planınızı paylaşın. Ekibimiz keşif görüşmesiyle gereksinimleri netleştirip size özel bir yol haritası sunar." }
+    }
+  }
+}
