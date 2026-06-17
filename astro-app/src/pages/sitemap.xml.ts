@@ -33,35 +33,37 @@ export const GET: APIRoute = async () => {
 
   const pushLocalizedSet = (
     hrefFor: (locale: Locale) => string,
-    extra: Partial<UrlEntry> = {},
+    extraFor: (locale: Locale) => Partial<UrlEntry> = () => ({}),
   ) => {
     const alternates = locales.map((l) => ({ hreflang: l as string, href: hrefFor(l) }));
     alternates.push({ hreflang: "x-default", href: hrefFor("en") });
     for (const locale of locales) {
-      entries.push({ loc: hrefFor(locale), alternates, lastmod, ...extra });
+      entries.push({ loc: hrefFor(locale), alternates, lastmod, ...extraFor(locale) });
     }
   };
 
   for (const page of STATIC_PAGES) {
-    const seoEn = content.pageSeo?.[page.key]?.en || {};
-    pushLocalizedSet((l) => `${SITE_ORIGIN}/${l}${page.subPath}`, {
-      changefreq: seoEn.changefreq,
-      priority: seoEn.priority,
-    });
+    const seoByLocale = content.pageSeo?.[page.key] || {};
+    const seoEn = seoByLocale.en || {};
+    // Use each locale's own changefreq/priority, falling back to the English entry.
+    pushLocalizedSet((l) => `${SITE_ORIGIN}/${l}${page.subPath}`, (l) => ({
+      changefreq: seoByLocale[l]?.changefreq || seoEn.changefreq,
+      priority: seoByLocale[l]?.priority || seoEn.priority,
+    }));
   }
 
   for (const product of content.products || []) {
     const slug = product.slug || product.id;
-    pushLocalizedSet((l) => `${SITE_ORIGIN}/${l}/products/${slug}`, {
+    pushLocalizedSet((l) => `${SITE_ORIGIN}/${l}/products/${slug}`, () => ({
       changefreq: "monthly",
       priority: "0.7",
-    });
+    }));
   }
 
   for (const item of content.news || []) {
     pushLocalizedSet(
       (l) => `${SITE_ORIGIN}/${l}/news/${localizedValue(item.slug, l) || item.slug?.en || item.id}`,
-      { changefreq: "yearly", priority: "0.5", lastmod: item.date || lastmod },
+      () => ({ changefreq: "yearly", priority: "0.5", lastmod: item.date || lastmod }),
     );
   }
 

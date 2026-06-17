@@ -1,16 +1,33 @@
 import type { APIRoute } from "astro";
 import { getServiceClient, hasSupabaseEnv, SUPABASE_URL } from "@/lib/supabase";
+import { getSession } from "@/lib/auth";
 import fs from "node:fs";
 import path from "node:path";
 
 export const prerender = false;
 
+// Only authenticated admins may upload, and only known-safe file types/locations.
+const ALLOWED_EXTENSIONS = new Set([
+  ".jpg", ".jpeg", ".png", ".webp", ".gif", ".avif", ".svg", ".pdf",
+]);
+const MAX_FILE_BYTES = 15 * 1024 * 1024; // 15 MB
+// Folder must be a simple relative path (optionally nested), no traversal, no leading slash.
+const SAFE_FOLDER_RE = /^[a-z0-9][a-z0-9/_-]*$/;
+
 export const POST: APIRoute = async ({ request }) => {
   try {
+    const session = getSession(request.headers.get("cookie"));
+    if (!session) {
+      return new Response(JSON.stringify({ ok: false, error: "Unauthorized" }), {
+        status: 401,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
+
     const formData = await request.formData();
     const file = formData.get("file") as File;
     const folder = (formData.get("folder") as string) || "uploads";
-    
+
     if (!file || !file.name) {
       return new Response(JSON.stringify({ ok: false, error: "No file uploaded or invalid file" }), {
         status: 400,
@@ -18,11 +35,38 @@ export const POST: APIRoute = async ({ request }) => {
       });
     }
 
+    if (!SAFE_FOLDER_RE.test(folder) || folder.includes("..")) {
+      return new Response(JSON.stringify({ ok: false, error: "Invalid upload folder" }), {
+        status: 400,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
+
+    const extension = path.extname(file.name).toLowerCase();
+    if (!ALLOWED_EXTENSIONS.has(extension)) {
+      return new Response(JSON.stringify({ ok: false, error: `File type not allowed: ${extension || "unknown"}` }), {
+        status: 400,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
+
+    if (typeof file.size === "number" && file.size > MAX_FILE_BYTES) {
+      return new Response(JSON.stringify({ ok: false, error: "File too large (max 15 MB)" }), {
+        status: 413,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
+
     const arrayBuffer = await file.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
-    
+    if (buffer.byteLength > MAX_FILE_BYTES) {
+      return new Response(JSON.stringify({ ok: false, error: "File too large (max 15 MB)" }), {
+        status: 413,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
+
     const originalName = file.name;
-    const extension = path.extname(originalName).toLowerCase();
     const baseName = path.basename(originalName, path.extname(originalName))
       .toLowerCase()
       .replace(/[^a-z0-9]+/g, "-")

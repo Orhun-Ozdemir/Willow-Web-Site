@@ -4,7 +4,18 @@ import { getSession } from "@/lib/auth";
 
 export const prerender = false;
 
-export const GET: APIRoute = async () => {
+export const GET: APIRoute = async ({ request }) => {
+  // This endpoint returns the full CMS payload, including admin-only settings such as
+  // companyFacts.googleTranslateApiKey. It is consumed only by the admin UI, so require
+  // an authenticated session — otherwise the secrets would be world-readable.
+  const session = getSession(request.headers.get("cookie"));
+  if (!session) {
+    return new Response(JSON.stringify({ ok: false, error: "Unauthorized" }), {
+      status: 401,
+      headers: { "Content-Type": "application/json" },
+    });
+  }
+
   try {
     // Admin reads must never receive the bundled placeholder fallback — otherwise a
     // transient Supabase hiccup could be saved back over real data. On failure this

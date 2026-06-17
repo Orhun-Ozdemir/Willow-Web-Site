@@ -7,10 +7,14 @@ const adminUser = (typeof process !== "undefined" ? process.env?.ADMIN_USER : un
 const adminPasswordEnv = (typeof process !== "undefined" ? process.env?.ADMIN_PASSWORD : undefined) || import.meta.env.ADMIN_PASSWORD;
 const adminPassword = adminPasswordEnv || "willow-admin-2026";
 
-const secret =
+const providedSecret =
   (typeof process !== "undefined" ? process.env?.SESSION_SECRET : undefined) ||
-  import.meta.env.SESSION_SECRET ||
-  "willow-session-secret-dev-only";
+  import.meta.env.SESSION_SECRET;
+const secret = providedSecret || "willow-session-secret-dev-only";
+// In production the baked-in dev secret must NEVER be used — otherwise anyone could
+// forge a valid `willow_admin` token (HMAC of public data with a public key) and bypass
+// login entirely. When unset in prod we hard-fail session creation/validation instead.
+const secretIsInsecure = !providedSecret && import.meta.env.PROD;
 
 // ── Password hashing (PBKDF2, used for creating new admin users) ─────────────
 
@@ -48,6 +52,9 @@ function sign(payload: string): string {
 }
 
 export function createSession(username: string): { token: string; expiresAt: number } {
+  if (secretIsInsecure) {
+    throw new Error("SESSION_SECRET is not configured in production — refusing to issue a forgeable session.");
+  }
   const expiresAt = Date.now() + sessionTtlMs;
   const payload = `${username}:${expiresAt}`;
   const sig = sign(payload);
@@ -56,6 +63,7 @@ export function createSession(username: string): { token: string; expiresAt: num
 }
 
 export function getSession(cookieHeader: string | null): { user: string; expiresAt: number } | null {
+  if (secretIsInsecure) return null;
   if (!cookieHeader) return null;
   const match = cookieHeader.match(/willow_admin=([^;]+)/);
   if (!match) return null;
