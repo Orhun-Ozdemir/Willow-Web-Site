@@ -6,7 +6,10 @@ export const prerender = false;
 
 export const GET: APIRoute = async () => {
   try {
-    const data = await loadContent();
+    // Admin reads must never receive the bundled placeholder fallback — otherwise a
+    // transient Supabase hiccup could be saved back over real data. On failure this
+    // throws and the admin shows a load error instead.
+    const data = await loadContent({ allowFallback: false });
     return new Response(JSON.stringify(data), {
       status: 200,
       headers: { "Content-Type": "application/json" },

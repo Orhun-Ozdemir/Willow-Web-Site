@@ -10,6 +10,14 @@ let cachedContent: any = null;
 let lastFetchTime = 0;
 const TTL_MS = 60000; // 60 seconds cache
 
+/** Tags a payload as bundled fallback (not real DB data) so consumers/loggers can tell. */
+function markFallback(content: any) {
+  if (content && typeof content === "object") {
+    Object.defineProperty(content, "_fallback", { value: true, enumerable: false });
+  }
+  return content;
+}
+
 function normalizeContentShape(content: any) {
   if (!content) return content;
   return {
@@ -21,16 +29,33 @@ function normalizeContentShape(content: any) {
 }
 
 /**
- * Loads content from Supabase. Fallbacks to local JSON if no Supabase env is found.
+ * Loads content from Supabase. Falls back to the bundled local JSON when Supabase
+ * is unavailable — but ONLY when `allowFallback` is true (the default, used by the
+ * public site for resilience).
+ *
+ * The admin MUST call this with `{ allowFallback: false }`. The bundled JSON contains
+ * placeholder/seed data; if the admin ever loaded it and saved, it would overwrite the
+ * real database with placeholders (this is exactly how the team members were lost).
+ * With fallback disabled, a Supabase hiccup surfaces as a thrown error the admin can
+ * show ("yüklenemedi"), instead of silently serving editable placeholder data.
  */
-export async function loadContent(): Promise<any> {
-  if (!hasSupabaseEnv) {
+export async function loadContent(opts: { allowFallback?: boolean } = {}): Promise<any> {
+  const allowFallback = opts.allowFallback !== false;
+
+  const bundledFallback = () => {
     try {
-      return normalizeContentShape(JSON.parse(fs.readFileSync(dataFile, "utf8")));
+      return markFallback(normalizeContentShape(JSON.parse(fs.readFileSync(dataFile, "utf8"))));
     } catch (err: any) {
       console.warn("Failed to read local dataFile, using bundled fallback:", err.message);
-      return normalizeContentShape(localSiteData || {});
+      return markFallback(normalizeContentShape(localSiteData || {}));
     }
+  };
+
+  if (!hasSupabaseEnv) {
+    if (!allowFallback) {
+      throw new Error("Supabase env not configured — refusing to serve local fallback to the admin.");
+    }
+    return bundledFallback();
   }
 
   const now = Date.now();
@@ -40,32 +65,50 @@ export async function loadContent(): Promise<any> {
 
   const supabase = getPublicClient();
 
-  const collections = ["products", "news", "services", "solutions", "clients", "faqs", "glossary"];
-  const singletons = ["page_content", "page_seo", "translations"];
+  let results;
+  try {
+    results = await Promise.all([
+      supabase.from("products").select("*").order("sort_order"),
+      supabase.from("news").select("*").order("sort_order"),
+      supabase.from("services").select("*").order("sort_order"),
+      supabase.from("solutions").select("*").order("sort_order"),
+      supabase.from("clients").select("*").order("sort_order"),
+      supabase.from("faqs").select("*").order("sort_order"),
+      supabase.from("glossary").select("*").order("sort_order"),
+      supabase.from("page_content").select("*"),
+      supabase.from("page_seo").select("*"),
+      supabase.from("translations").select("*"),
+      supabase.from("company_facts").select("data").eq("id", 1).single(),
+      supabase.from("site_meta").select("data").eq("id", 1).single()
+    ]);
+  } catch (err: any) {
+    // Network/transport failure (Promise rejected). Never let this become editable
+    // placeholder data for the admin.
+    if (!allowFallback) throw err;
+    console.warn("Supabase query failed, falling back to bundled site-data:", err?.message || err);
+    return bundledFallback();
+  }
 
   const [
-    { data: prods }, { data: nws }, { data: serv }, { data: sol }, { data: cli }, { data: fq }, { data: glos },
+    { data: prods, error: prodsErr }, { data: nws }, { data: serv }, { data: sol }, { data: cli }, { data: fq }, { data: glos },
     { data: pContent }, { data: pSeo }, { data: trns },
-    { data: compFacts }, { data: sMeta }
-  ] = await Promise.all([
-    supabase.from("products").select("*").order("sort_order"),
-    supabase.from("news").select("*").order("sort_order"),
-    supabase.from("services").select("*").order("sort_order"),
-    supabase.from("solutions").select("*").order("sort_order"),
-    supabase.from("clients").select("*").order("sort_order"),
-    supabase.from("faqs").select("*").order("sort_order"),
-    supabase.from("glossary").select("*").order("sort_order"),
-    supabase.from("page_content").select("*"),
-    supabase.from("page_seo").select("*"),
-    supabase.from("translations").select("*"),
-    supabase.from("company_facts").select("data").eq("id", 1).single(),
-    supabase.from("site_meta").select("data").eq("id", 1).single()
-  ]);
+    { data: compFacts, error: compErr }, { data: sMeta, error: metaErr }
+  ] = results;
 
-  // If Supabase returned no products or failed, fall back to the bundled site-data JSON.
-  if ((!prods || prods.length === 0) && localSiteData) {
-    console.warn("Supabase returned no products or failed. Falling back to local site-data.");
-    return normalizeContentShape(localSiteData);
+  // Distinguish a genuine query ERROR from a genuinely EMPTY (but successful) result.
+  // A transient error must NOT be mistaken for "the DB legitimately has this (placeholder) data".
+  const hadError = Boolean(prodsErr || compErr || metaErr);
+  const productsEmpty = !prods || prods.length === 0;
+
+  if (hadError || productsEmpty) {
+    if (!allowFallback) {
+      throw new Error(
+        `Supabase read failed or returned empty (${hadError ? "query error" : "no products"}). ` +
+        "Refusing to serve bundled fallback to the admin to avoid overwriting real data."
+      );
+    }
+    console.warn("Supabase returned an error or no products. Falling back to local site-data.");
+    return bundledFallback();
   }
 
   const mapCollection = (rows: any[] | null) =>
@@ -102,7 +145,13 @@ export async function loadContent(): Promise<any> {
  * This is a heavy operation (full sync) mimicking the original file write.
  */
 export async function saveContent(data: any): Promise<void> {
+  if (data && (data as any)._fallback) {
+    throw new Error("Refusing to save: payload is bundled fallback data, not real DB content.");
+  }
   if (!hasSupabaseEnv) {
+    if (!import.meta.env.DEV) {
+      throw new Error("Supabase env not configured — refusing to write to ephemeral local file in production.");
+    }
     data.meta = { ...(data.meta || {}), updatedAt: new Date().toISOString() };
     fs.writeFileSync(dataFile, JSON.stringify(data, null, 2) + "\n", "utf8");
     cachedContent = data;
@@ -181,7 +230,13 @@ export async function saveContent(data: any): Promise<void> {
  * Saves a single section of the content.
  */
 export async function saveContentSection(section: string, sectionData: any): Promise<void> {
+  if (sectionData && (sectionData as any)._fallback) {
+    throw new Error("Refusing to save: section payload is bundled fallback data, not real DB content.");
+  }
   if (!hasSupabaseEnv) {
+    if (!import.meta.env.DEV) {
+      throw new Error("Supabase env not configured — refusing to write to ephemeral local file in production.");
+    }
     let fullData: any = {};
     try {
       fullData = JSON.parse(fs.readFileSync(dataFile, "utf8"));
