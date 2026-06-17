@@ -1,6 +1,8 @@
 import type { APIRoute } from "astro";
 import { getSession } from "@/lib/auth";
 import { getServiceClient } from "@/lib/supabase";
+import { resolveAdminProfile, getRequestMeta } from "@/lib/admin-auth";
+import { logAdminAction } from "@/lib/audit";
 
 export const prerender = false;
 
@@ -37,6 +39,19 @@ export const PATCH: APIRoute = async ({ params, request }) => {
       createdAt: data.created_at,
       updatedAt: data.updated_at,
     };
+
+    const profile = await resolveAdminProfile(session.user);
+    const reqMeta = getRequestMeta(request);
+    void logAdminAction(profile, {
+      action: "lead.update",
+      resource: "leads",
+      resourceId: id,
+      metadata: {
+        status: body.status,
+        noteUpdated: body.internalNote !== undefined,
+      },
+      ...reqMeta,
+    });
     
     return json({ ok: true, lead: responseLead });
   } catch (error: any) {
@@ -55,6 +70,15 @@ export const DELETE: APIRoute = async ({ params, request }) => {
     
     if (error) throw new Error(error.message);
     if (count === 0) return json({ ok: false, error: "Lead not found" }, 404);
+
+    const profile = await resolveAdminProfile(session.user);
+    const reqMeta = getRequestMeta(request);
+    void logAdminAction(profile, {
+      action: "lead.delete",
+      resource: "leads",
+      resourceId: id,
+      ...reqMeta,
+    });
     
     return json({ ok: true });
   } catch (error: any) {

@@ -1,5 +1,7 @@
 import type { APIRoute } from "astro";
 import { verifyCredentials, createSession } from "@/lib/auth";
+import { resolveAdminProfile, getRequestMeta } from "@/lib/admin-auth";
+import { logAdminAction } from "@/lib/audit";
 
 export const prerender = false;
 
@@ -17,8 +19,16 @@ export const POST: APIRoute = async ({ request }) => {
       });
     }
 
+    const profile = await resolveAdminProfile(username);
+    const meta = getRequestMeta(request);
+    void logAdminAction(profile, {
+      action: "auth.login",
+      resource: "auth",
+      ...meta,
+    });
+
     const { token } = createSession(username);
-    return new Response(JSON.stringify({ ok: true, user: { name: username } }), {
+    return new Response(JSON.stringify({ ok: true, user: { name: username, role: profile.role } }), {
       status: 200,
       headers: {
         "Content-Type": "application/json",

@@ -1,6 +1,8 @@
 import type { APIRoute } from "astro";
 import { getServiceClient, hasSupabaseEnv, SUPABASE_URL } from "@/lib/supabase";
 import { getSession } from "@/lib/auth";
+import { resolveAdminProfile, getRequestMeta } from "@/lib/admin-auth";
+import { logAdminAction } from "@/lib/audit";
 import fs from "node:fs";
 import path from "node:path";
 
@@ -97,6 +99,15 @@ export const POST: APIRoute = async ({ request }) => {
       }
 
       const publicUrl = `${SUPABASE_URL}/storage/v1/object/public/assets/${storagePath}`;
+      const profile = await resolveAdminProfile(session.user);
+      const meta = getRequestMeta(request);
+      void logAdminAction(profile, {
+        action: "media.upload",
+        resource: "assets",
+        resourceId: storagePath,
+        metadata: { filename, folder, size: file.size },
+        ...meta,
+      });
       return new Response(JSON.stringify({ ok: true, url: publicUrl, filename }), {
         status: 200,
         headers: { "Content-Type": "application/json" },
@@ -112,6 +123,14 @@ export const POST: APIRoute = async ({ request }) => {
       fs.writeFileSync(localFilePath, buffer);
       
       const publicUrl = `assets/uploads/${filename}`;
+      const profile = await resolveAdminProfile(session.user);
+      const meta = getRequestMeta(request);
+      void logAdminAction(profile, {
+        action: "media.upload",
+        resource: "assets",
+        metadata: { filename, folder, size: file.size },
+        ...meta,
+      });
       return new Response(JSON.stringify({ ok: true, url: publicUrl, filename }), {
         status: 200,
         headers: { "Content-Type": "application/json" },

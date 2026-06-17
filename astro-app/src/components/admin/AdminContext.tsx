@@ -3,6 +3,8 @@
 import { createContext, useContext, useState, useEffect, useCallback, useMemo, type ReactNode } from "react";
 
 
+import type { AdminRole } from "@/lib/permissions";
+
 interface AdminContextValue {
   content: any;
   leads: any[];
@@ -47,7 +49,10 @@ export function AdminProvider({ children }: { children: ReactNode }) {
           window.location.href = "/admin";
           return;
         }
-        setSession(sessionData.user);
+        setSession({
+          ...sessionData.user,
+          role: (sessionData.user?.role as AdminRole) || "super_admin",
+        });
 
         const contentRes = await fetch("/api/content");
         const contentData = await contentRes.json();

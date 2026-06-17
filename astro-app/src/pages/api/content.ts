@@ -1,6 +1,8 @@
 import type { APIRoute } from "astro";
 import { loadContent, saveContent, saveContentSection } from "@/lib/content";
 import { getSession } from "@/lib/auth";
+import { resolveAdminProfile, getRequestMeta } from "@/lib/admin-auth";
+import { logAdminAction } from "@/lib/audit";
 
 export const prerender = false;
 
@@ -52,6 +54,18 @@ export const PUT: APIRoute = async ({ request }) => {
     } else {
       await saveContent(body);
     }
+
+    const profile = await resolveAdminProfile(session.user);
+    const meta = getRequestMeta(request);
+    void logAdminAction(profile, {
+      action: "content.update",
+      resource: section || "all",
+      metadata: {
+        section: section || "all",
+        itemCount: Array.isArray(body) ? body.length : 1,
+      },
+      ...meta,
+    });
 
     return new Response(JSON.stringify({ ok: true, content: body }), {
       status: 200,

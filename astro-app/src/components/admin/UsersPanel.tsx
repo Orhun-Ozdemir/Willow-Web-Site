@@ -6,8 +6,16 @@ interface AdminUser {
   id: string;
   username: string;
   active: boolean;
+  role?: string;
   created_at: string;
 }
+
+const ROLE_LABELS: Record<string, string> = {
+  super_admin: "Süper Admin",
+  content_editor: "İçerik Editörü",
+  sales: "Satış",
+  viewer: "Görüntüleyici",
+};
 
 export default function UsersPanel() {
   const [users, setUsers] = useState<AdminUser[]>([]);
@@ -16,6 +24,7 @@ export default function UsersPanel() {
 
   const [newUsername, setNewUsername] = useState("");
   const [newPassword, setNewPassword] = useState("");
+  const [newRole, setNewRole] = useState("content_editor");
   const [adding, setAdding] = useState(false);
   const [addError, setAddError] = useState("");
 
@@ -49,13 +58,14 @@ export default function UsersPanel() {
       const res = await fetch("/api/admin/users", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username: newUsername, password: newPassword }),
+        body: JSON.stringify({ username: newUsername, password: newPassword, role: newRole }),
       });
       const data = await res.json();
       if (data.ok) {
         setUsers((prev) => [...prev, data.user]);
         setNewUsername("");
         setNewPassword("");
+        setNewRole("content_editor");
       } else {
         setAddError(data.error || "Hata oluştu.");
       }
@@ -64,6 +74,16 @@ export default function UsersPanel() {
     } finally {
       setAdding(false);
     }
+  }
+
+  async function updateRole(user: AdminUser, role: string) {
+    const res = await fetch(`/api/admin/users/${user.id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ role }),
+    });
+    const data = await res.json();
+    if (data.ok) setUsers((prev) => prev.map((u) => (u.id === user.id ? data.user : u)));
   }
 
   async function toggleActive(user: AdminUser) {
@@ -133,6 +153,18 @@ export default function UsersPanel() {
               style={{ padding: "8px 10px", border: "1px solid #d1d5db", borderRadius: 8, fontSize: 13, background: "#f9fafb" }}
             />
           </div>
+          <div style={{ display: "flex", flexDirection: "column", gap: 4, flex: "1 1 140px" }}>
+            <label style={{ fontSize: 11, fontWeight: 600, color: "#6b7280", textTransform: "uppercase" }}>Rol</label>
+            <select
+              value={newRole}
+              onChange={(e) => setNewRole(e.target.value)}
+              style={{ padding: "8px 10px", border: "1px solid #d1d5db", borderRadius: 8, fontSize: 13, background: "#f9fafb" }}
+            >
+              {Object.entries(ROLE_LABELS).map(([k, v]) => (
+                <option key={k} value={k}>{v}</option>
+              ))}
+            </select>
+          </div>
           <button
             type="submit"
             disabled={adding}
@@ -169,6 +201,9 @@ export default function UsersPanel() {
                   <span style={{ fontSize: 10, fontWeight: 700, padding: "2px 8px", borderRadius: 20, background: user.active ? "#dcfce7" : "#f3f4f6", color: user.active ? "#16a34a" : "#9ca3af" }}>
                     {user.active ? "Aktif" : "Pasif"}
                   </span>
+                  <span style={{ fontSize: 10, fontWeight: 700, padding: "2px 8px", borderRadius: 20, background: "#eef2ff", color: "#3730a3" }}>
+                    {ROLE_LABELS[user.role || "super_admin"] || user.role}
+                  </span>
                 </div>
                 <p style={{ fontSize: 11, color: "#9ca3af", margin: "2px 0 0" }}>
                   Eklenme: {new Date(user.created_at).toLocaleDateString("tr-TR")}
@@ -192,7 +227,16 @@ export default function UsersPanel() {
                   {pwError && <span style={{ fontSize: 11, color: "#ef4444" }}>{pwError}</span>}
                 </div>
               ) : (
-                <div style={{ display: "flex", gap: 8 }}>
+                <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
+                  <select
+                    value={user.role || "super_admin"}
+                    onChange={(e) => updateRole(user, e.target.value)}
+                    style={{ padding: "6px 8px", border: "1px solid #e5e7eb", borderRadius: 7, fontSize: 12 }}
+                  >
+                    {Object.entries(ROLE_LABELS).map(([k, v]) => (
+                      <option key={k} value={k}>{v}</option>
+                    ))}
+                  </select>
                   <button
                     onClick={() => { setChangingPw(user.id); setNewPw(""); setPwError(""); }}
                     style={{ padding: "6px 12px", background: "#f9fafb", border: "1px solid #e5e7eb", borderRadius: 7, fontSize: 12, fontWeight: 600, color: "#374151", cursor: "pointer" }}
@@ -223,17 +267,7 @@ export default function UsersPanel() {
         <p style={{ fontSize: 12, fontWeight: 700, color: "#64748b", marginBottom: 10, textTransform: "uppercase", letterSpacing: "0.05em" }}>
           Supabase'de tablo yoksa — SQL Editor'da çalıştır:
         </p>
-        <pre style={{ fontSize: 11, color: "#334155", background: "#e2e8f0", borderRadius: 8, padding: "12px 14px", overflowX: "auto", margin: 0, lineHeight: 1.6 }}>{`create table admin_users (
-  id uuid primary key default gen_random_uuid(),
-  username text unique not null,
-  password_hash text not null,
-  active boolean default true,
-  created_at timestamptz default now()
-);
-
--- Service role only — disable public access
-alter table admin_users enable row level security;
-create policy "deny_all" on admin_users using (false);`}</pre>
+        <pre style={{ fontSize: 11, color: "#334155", background: "#e2e8f0", borderRadius: 8, padding: "12px 14px", overflowX: "auto", margin: 0, lineHeight: 1.6 }}>{`-- supabase/migrations/0004_audit_and_roles.sql dosyasını çalıştırın`}</pre>
       </div>
     </div>
   );
