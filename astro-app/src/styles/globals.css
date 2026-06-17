@@ -2513,7 +2513,10 @@ body[data-page="products"] .product-card img {
   max-height: 248px;
   object-fit: contain;
   object-position: center;
-  filter: drop-shadow(0 22px 26px rgba(16, 31, 92, 0.16));
+  /* No per-image drop-shadow: several product photos have an opaque white
+     background, and a drop-shadow on an opaque rectangle draws a visible grey
+     "card-in-card" box. The card's own box-shadow already provides depth, and
+     multiply blends the white photo backgrounds cleanly into the white figure. */
 }
 
 body[data-page="products"] .product-card figure img[src*="pdf-assets"],

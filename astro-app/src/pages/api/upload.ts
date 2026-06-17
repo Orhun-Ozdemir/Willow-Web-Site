@@ -77,16 +77,20 @@ export const POST: APIRoute = async ({ request }) => {
 
     if (hasSupabaseEnv) {
       const supabase = getServiceClient();
+      // Upload the web File (Blob) directly rather than a Node Buffer. On Vercel's
+      // serverless runtime the bundled supabase-js sends a Node Buffer unreliably,
+      // which surfaces as a Storage 400; a Blob is sent correctly in every runtime.
       const { data, error } = await supabase.storage
         .from("assets")
-        .upload(storagePath, buffer, {
+        .upload(storagePath, file, {
           contentType: file.type || "image/jpeg",
           upsert: true,
         });
 
       if (error) {
-        console.error("Supabase storage upload error:", error);
-        return new Response(JSON.stringify({ ok: false, error: error.message }), {
+        const status = (error as any).statusCode || (error as any).status;
+        console.error("Supabase storage upload error:", status, error.message, error);
+        return new Response(JSON.stringify({ ok: false, error: error.message, status }), {
           status: 500,
           headers: { "Content-Type": "application/json" },
         });

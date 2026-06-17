@@ -87,3 +87,4 @@ data/bot-events.json
 *.pid
 astro-app/.vercel/
 astro-app/dist/
+.vercel
