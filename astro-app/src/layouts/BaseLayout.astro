@@ -312,8 +312,11 @@ const skipLabel = skipLabels[locale] || skipLabels.en;
       }
 
       // 5. WEBGL HERO SHADER
+      // Intentionally runs regardless of prefers-reduced-motion: the hero's animated
+      // background is a core brand element the owner wants visible for all users.
+      // (Reveal/scroll/counter motion below still honors reduced-motion.)
       var shaderCanvas = document.querySelector(".hero-shader-canvas");
-      if (shaderCanvas && !reducedMotion) {
+      if (shaderCanvas) {
         var gl = shaderCanvas.getContext("webgl", { antialias: false, premultipliedAlpha: false }) || shaderCanvas.getContext("experimental-webgl");
         if (gl) {
           var vertSrc = "attribute vec2 aPos; void main(){ gl_Position = vec4(aPos, 0.0, 1.0); }";
