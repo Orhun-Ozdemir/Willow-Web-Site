@@ -27,9 +27,9 @@
   --accent-violet-rgb: 112, 77, 255;
   --accent-warm: #ff6b3d;
   --accent-warm-rgb: 255, 107, 61;
-  --shader-base: #faf8ff;
-  --shader-bloom-a: #ffffff;
-  --shader-bloom-b: #bbc3ff;
+  --shader-base: #eef2ff;
+  --shader-bloom-a: #b8d4ff;
+  --shader-bloom-b: #9eb0ff;
   --shader-accent: #132175;
   --shader-electric: #18a7ff;
   --shader-violet: #704dff;
@@ -55,6 +55,12 @@ body[data-page="home"] {
   --accent-soft: rgba(26, 163, 196, 0.10);
   --accent-glow: rgba(26, 163, 196, 0.22);
   --accent-rgb: 26, 163, 196;
+  --shader-base: #e8eeff;
+  --shader-bloom-a: #9ecfff;
+  --shader-bloom-b: #8a9cff;
+  --shader-electric: #12b5ff;
+  --shader-violet: #7a52ff;
+  --shader-warm: #ff7a45;
 }
 
 body[data-page="contact"],
@@ -646,10 +652,9 @@ select {
 }
 
 .motion-hero .hero-shader-canvas {
-  /* Let the animation breathe across to the left, keeping the right a touch more vivid
-     and the far-left light enough for the hero copy / eyebrow to stay legible. */
-  -webkit-mask-image: linear-gradient(90deg, rgba(0,0,0,0.34) 0%, rgba(0,0,0,0.30) 26%, rgba(0,0,0,0.60) 50%, #000 74%);
-          mask-image: linear-gradient(90deg, rgba(0,0,0,0.34) 0%, rgba(0,0,0,0.30) 26%, rgba(0,0,0,0.60) 50%, #000 74%);
+  /* Keep left copy legible while letting the sweep reach the full hero width. */
+  -webkit-mask-image: linear-gradient(90deg, rgba(0,0,0,0.62) 0%, rgba(0,0,0,0.72) 32%, rgba(0,0,0,0.86) 58%, #000 76%);
+          mask-image: linear-gradient(90deg, rgba(0,0,0,0.62) 0%, rgba(0,0,0,0.72) 32%, rgba(0,0,0,0.86) 58%, #000 76%);
 }
 
 .hero-inner,
@@ -9172,34 +9177,49 @@ body[data-page="home"] .section {
 
 @keyframes homeHeroLightSweep {
   0% {
-    background-position: 0 0, 128% 50%;
-    transform: translate3d(8%, 0, 0) rotate(1.2deg) scale(1.06);
+    background-position: 0 0, 118% 44%;
+    transform: translate3d(22%, 0, 0) rotate(1.15deg) scale(1.1);
   }
 
   100% {
-    background-position: 0 0, -42% 44%;
-    transform: translate3d(-8%, 0, 0) rotate(-0.9deg) scale(1.05);
+    background-position: 0 0, -108% 56%;
+    transform: translate3d(-28%, 0, 0) rotate(-0.85deg) scale(1.08);
   }
 }
 
 body[data-page="home"] .motion-hero::after {
-  inset: -14% -20%;
+  inset: -22% -28%;
   background:
-    linear-gradient(180deg, rgba(250, 248, 255, 0) 0%, rgba(250, 248, 255, 0.08) 100%),
+    linear-gradient(180deg, rgba(250, 248, 255, 0) 0%, rgba(250, 248, 255, 0.02) 100%),
     repeating-linear-gradient(
       116deg,
-      rgba(255, 255, 255, 0) 0 3.2%,
-      rgba(255, 255, 255, 0.64) 3.9% 4.9%,
-      rgba(var(--accent-rgb), 0.17) 5.1% 6.9%,
-      rgba(112, 77, 255, 0.15) 7.4% 9.1%,
-      rgba(24, 167, 255, 0.19) 9.6% 12%,
-      rgba(255, 255, 255, 0.42) 12.5% 13.8%,
-      rgba(255, 255, 255, 0) 15% 19.5%
+      rgba(255, 255, 255, 0) 0 0.5%,
+      rgba(var(--accent-rgb), 0.52) 0.7% 1.8%,
+      rgba(255, 255, 255, 0) 2% 2.8%,
+      rgba(112, 77, 255, 0.48) 3% 4.1%,
+      rgba(255, 255, 255, 0) 4.3% 5.1%,
+      rgba(24, 167, 255, 0.54) 5.3% 6.4%,
+      rgba(255, 255, 255, 0) 6.6% 7.4%,
+      rgba(215, 154, 43, 0.38) 7.6% 8.7%,
+      rgba(255, 255, 255, 0) 8.9% 9.7%,
+      rgba(112, 77, 255, 0.44) 9.9% 11%,
+      rgba(255, 255, 255, 0) 11.2% 12%,
+      rgba(var(--accent-rgb), 0.46) 12.2% 13.3%,
+      rgba(255, 255, 255, 0) 13.5% 14.3%,
+      rgba(24, 167, 255, 0.42) 14.5% 15.6%,
+      rgba(255, 255, 255, 0) 15.8% 16.6%,
+      rgba(215, 154, 43, 0.34) 16.8% 17.9%,
+      rgba(255, 255, 255, 0) 18.1% 100%
     );
-  background-size: auto, 118% 210%;
-  background-position: 0 0, 128% 50%;
+  background-size: auto, 82% 250%;
+  background-position: 0 0, 118% 44%;
   animation: homeHeroLightSweep 6.8s cubic-bezier(0.34, 0, 0.14, 1) infinite alternate;
-  opacity: 0.8;
+  mix-blend-mode: normal;
+  opacity: 0.38;
+}
+
+body[data-page="home"] .motion-hero .hero-shader-canvas {
+  filter: saturate(1.72) contrast(1.08);
 }
 
 body[data-page="home"] .section.tight {
