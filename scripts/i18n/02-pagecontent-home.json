@@ -209,6 +209,33 @@
         "ar": "أحدث <em class=\"hw-serif\">الأخبار والمدونة</em> <span class=\"hw-muted\">من عالم</span> <strong class=\"hw-display\">WillowSoft</strong>.",
         "ja": "<strong class=\"hw-display\">WillowSoft</strong> からの<span class=\"hw-muted\">最新の</span><em class=\"hw-serif\">ニュースとブログ</em>。"
       },
+      "faqEyebrow": {
+        "tr": "SSS",
+        "de": "FAQ",
+        "fr": "FAQ",
+        "es": "FAQ",
+        "it": "FAQ",
+        "ar": "الأسئلة الشائعة",
+        "ja": "FAQ"
+      },
+      "faqTitle": {
+        "tr": "Merak Edilenler",
+        "de": "Häufige Fragen",
+        "fr": "Questions fréquentes",
+        "es": "Preguntas frecuentes",
+        "it": "Domande frequenti",
+        "ar": "ما يهمك معرفته",
+        "ja": "よくあるご質問"
+      },
+      "faqLead": {
+        "tr": "Uçtan uca ürün geliştirme süreçlerimiz, hazır IoT donanımlarımız ve iş modellerimiz hakkında kısa cevaplar.",
+        "de": "Kurze Antworten zu End-to-End-Produktentwicklung, IoT-Hardware und Geschäftsmodellen.",
+        "fr": "Réponses courtes sur nos processus de développement produit, notre matériel IoT et nos modèles d'affaires.",
+        "es": "Respuestas breves sobre desarrollo integral de producto, hardware IoT y modelos de negocio.",
+        "it": "Risposte brevi su sviluppo prodotto end-to-end, hardware IoT e modelli di business.",
+        "ar": "إجابات مختصرة عن تطوير المنتجات، عتاد IoT الجاهز ونماذج الأعمال.",
+        "ja": "製品開発、IoT ハードウェア、ビジネスモデルに関する簡潔な回答です。"
+      },
       "ctaEyebrow": {
         "tr": "Netlikle başlayın",
         "de": "Mit Klarheit beginnen",

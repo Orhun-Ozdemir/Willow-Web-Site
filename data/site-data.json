@@ -4345,6 +4345,36 @@
         "it": "Dicci se hai bisogno di hardware, firmware, backend, PostgreSQL, app mobile, dashboard web, sito web, simulazione VR o architettura di sistema completa.",
         "ar": "أخبرنا إن كنت بحاجة إلى عتاد، أو firmware، أو backend، أو PostgreSQL، أو تطبيق جوال، أو dashboard ويب، أو موقع إلكتروني، أو محاكاة VR، أو بنية نظام متكاملة.",
         "ja": "ハードウェア、ファームウェア、バックエンド、PostgreSQL、モバイルアプリ、Web ダッシュボード、Web サイト、VR シミュレーション、またはシステム全体の設計が必要かをお聞かせください。"
+      },
+      "faqEyebrow": {
+        "en": "FAQ",
+        "tr": "SSS",
+        "de": "FAQ",
+        "fr": "FAQ",
+        "es": "FAQ",
+        "it": "FAQ",
+        "ar": "الأسئلة الشائعة",
+        "ja": "FAQ"
+      },
+      "faqTitle": {
+        "en": "Common Questions",
+        "tr": "Merak Edilenler",
+        "de": "Häufige Fragen",
+        "fr": "Questions fréquentes",
+        "es": "Preguntas frecuentes",
+        "it": "Domande frequenti",
+        "ar": "ما يهمك معرفته",
+        "ja": "よくあるご質問"
+      },
+      "faqLead": {
+        "en": "Short answers about our end-to-end product development, ready-made IoT hardware and business models.",
+        "tr": "Uçtan uca ürün geliştirme süreçlerimiz, hazır IoT donanımlarımız ve iş modellerimiz hakkında kısa cevaplar.",
+        "de": "Kurze Antworten zu End-to-End-Produktentwicklung, IoT-Hardware und Geschäftsmodellen.",
+        "fr": "Réponses courtes sur nos processus de développement produit, notre matériel IoT et nos modèles d'affaires.",
+        "es": "Respuestas breves sobre desarrollo integral de producto, hardware IoT y modelos de negocio.",
+        "it": "Risposte brevi su sviluppo prodotto end-to-end, hardware IoT e modelli di business.",
+        "ar": "إجابات مختصرة عن تطوير المنتجات، عتاد IoT الجاهز ونماذج الأعمال.",
+        "ja": "製品開発、IoT ハードウェア、ビジネスモデルに関する簡潔な回答です。"
       }
     },
     "products": {
@@ -6297,6 +6327,117 @@
     }
   ],
   "faqs": [
+    {
+      "id": "faq-home-what-does-willowsoft-do",
+      "page": "home",
+      "question": "What does WillowSoft do?",
+      "answer": "WillowSoft delivers ready-made industrial IoT solutions, builds custom hardware and software from scratch, and implements cloud platforms that process field data.",
+      "sortOrder": 10,
+      "localized": {
+        "tr": {
+          "question": "WillowSoft ne yapar?",
+          "answer": "Endüstriyel ihtiyaçlara yönelik hazır IoT çözümleri sunar, sıfırdan özel donanım/yazılım geliştirir ve sahadaki veriyi işleyen bulut platformları kurar."
+        },
+        "de": {
+          "question": "Was macht WillowSoft?",
+          "answer": "WillowSoft liefert fertige industrielle IoT-Lösungen, entwickelt kundenspezifische Hardware und Software von Grund auf und baut Cloud-Plattformen zur Verarbeitung von Felddaten."
+        },
+        "fr": {
+          "question": "Que fait WillowSoft ?",
+          "answer": "WillowSoft propose des solutions IoT industrielles prêtes à l'emploi, développe du matériel et des logiciels sur mesure et met en place des plateformes cloud pour traiter les données terrain."
+        },
+        "es": {
+          "question": "¿Qué hace WillowSoft?",
+          "answer": "WillowSoft ofrece soluciones IoT industriales listas para usar, desarrolla hardware y software a medida desde cero e implementa plataformas en la nube que procesan datos de campo."
+        },
+        "it": {
+          "question": "Cosa fa WillowSoft?",
+          "answer": "WillowSoft offre soluzioni IoT industriali pronte, sviluppa hardware e software personalizzati da zero e realizza piattaforme cloud che elaborano i dati sul campo."
+        },
+        "ar": {
+          "question": "ماذا تفعل WillowSoft؟",
+          "answer": "تقدّم WillowSoft حلول IoT صناعية جاهزة، وتطوّر عتادًا وبرمجيات مخصصة من الصفر، وتبني منصات سحابية لمعالجة بيانات الميدان."
+        },
+        "ja": {
+          "question": "WillowSoft は何をしていますか？",
+          "answer": "WillowSoft は産業向け IoT ソリューションを提供し、カスタムのハードウェアとソフトウェアを一から開発し、現場データを処理するクラウドプラットフォームを構築します。"
+        }
+      }
+    },
+    {
+      "id": "faq-home-product-development-stages",
+      "page": "home",
+      "question": "Which product development stages can WillowSoft handle?",
+      "answer": "From schematic design to PCB production, embedded firmware, cloud APIs and user interfaces — WillowSoft completes every layer under one roof.",
+      "sortOrder": 20,
+      "localized": {
+        "tr": {
+          "question": "Ürün geliştirme sürecinin hangi aşamaları yapılabilir?",
+          "answer": "Şematik tasarımdan PCB üretimine, gömülü yazılımdan bulut API'lerine ve kullanıcı arayüzlerine kadar tüm katmanları tek çatı altında tamamlıyoruz."
+        },
+        "de": {
+          "question": "Welche Phasen der Produktentwicklung übernimmt WillowSoft?",
+          "answer": "Vom Schaltplan über PCB-Produktion, Embedded-Firmware, Cloud-APIs bis zu Benutzeroberflächen — WillowSoft liefert alle Layer aus einer Hand."
+        },
+        "fr": {
+          "question": "Quelles étapes du développement produit WillowSoft prend-il en charge ?",
+          "answer": "De la conception schématique à la production PCB, du firmware embarqué aux API cloud et interfaces utilisateur — WillowSoft couvre toutes les couches sous un même toit."
+        },
+        "es": {
+          "question": "¿Qué etapas del desarrollo de producto puede cubrir WillowSoft?",
+          "answer": "Desde el diseño esquemático y la producción de PCB hasta firmware embebido, APIs en la nube e interfaces de usuario: WillowSoft completa todas las capas bajo un mismo techo."
+        },
+        "it": {
+          "question": "Quali fasi di sviluppo prodotto può gestire WillowSoft?",
+          "answer": "Dalla progettazione schematica alla produzione PCB, dal firmware embedded alle API cloud e alle interfacce utente: WillowSoft completa tutti i layer sotto un unico tetto."
+        },
+        "ar": {
+          "question": "ما مراحل تطوير المنتج التي يمكن لـ WillowSoft تنفيذها؟",
+          "answer": "من التصميم المخططي إلى إنتاج PCB، ومن البرمجيات المدمجة إلى واجهات API السحابية وواجهات المستخدم — نُنجز كل الطبقات تحت سقف واحد."
+        },
+        "ja": {
+          "question": "製品開発のどの段階に対応できますか？",
+          "answer": "回路設計から PCB 製造、組み込みファームウェア、クラウド API、ユーザーインターフェースまで、すべてのレイヤーを一つのチームで完結します。"
+        }
+      }
+    },
+    {
+      "id": "faq-home-who-is-willowsoft-for",
+      "page": "home",
+      "question": "Who is the right solution partner for?",
+      "answer": "WillowSoft is a fit for businesses that want a complete, fast, market-ready system from a single partner instead of splitting hardware and software across multiple vendors.",
+      "sortOrder": 30,
+      "localized": {
+        "tr": {
+          "question": "WillowSoft kimler için doğru çözüm ortağıdır?",
+          "answer": "Donanım ve yazılım süreçlerini farklı yüklenicilere bölmek yerine tüm sistemi tek bir çözüm ortağından eksiksiz, hızlı ve pazara hazır şekilde teslim almak isteyen işletmeler için uygundur."
+        },
+        "de": {
+          "question": "Für wen ist WillowSoft der richtige Lösungspartner?",
+          "answer": "Für Unternehmen, die statt Hardware und Software auf mehrere Dienstleister zu verteilen, ein vollständiges, schnelles und marktreifes System von einem Partner erhalten möchten."
+        },
+        "fr": {
+          "question": "Pour qui WillowSoft est-il le bon partenaire ?",
+          "answer": "Pour les entreprises qui préfèrent recevoir un système complet, rapide et prêt pour le marché d'un seul partenaire plutôt que de répartir hardware et software entre plusieurs prestataires."
+        },
+        "es": {
+          "question": "¿Para quién es WillowSoft el socio adecuado?",
+          "answer": "Para empresas que prefieren recibir un sistema completo, rápido y listo para el mercado de un solo socio en lugar de dividir hardware y software entre varios proveedores."
+        },
+        "it": {
+          "question": "Per chi è WillowSoft il partner giusto?",
+          "answer": "Per le aziende che vogliono un sistema completo, rapido e pronto per il mercato da un unico partner, invece di dividere hardware e software tra più fornitori."
+        },
+        "ar": {
+          "question": "لمن تُعد WillowSoft الشريك المناسب؟",
+          "answer": "للشركات التي تريد استلام نظام متكامل وسريع وجاهز للسوق من شريك واحد بدلًا من تقسيم العتاد والبرمجيات بين عدة موردين."
+        },
+        "ja": {
+          "question": "WillowSoft はどんな企業に向いていますか？",
+          "answer": "ハードウェアとソフトウェアを複数ベンダーに分けず、完全で迅速、市場投入可能なシステムを単一パートナーから受け取りたい企業向けです。"
+        }
+      }
+    },
     {
       "id": "faq-services-what-engineering-services-does-willowsoft-offer",
       "page": "services",

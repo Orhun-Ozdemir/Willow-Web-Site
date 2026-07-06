@@ -75,14 +75,14 @@ const AI_SHORT_FALLBACKS: Record<string, Partial<Record<Locale, string>>> = {
 const FAQ_FALLBACKS: Record<string, Partial<Record<Locale, AiFaqItem[]>>> = {
   home: {
     en: [
-      { question: "What does WillowSoft do?", answer: AI_SHORT_FALLBACKS.home.en || "" },
-      { question: "Which layers can WillowSoft deliver?", answer: "WillowSoft can deliver embedded hardware, firmware, RF connectivity, backend APIs, PostgreSQL databases, dashboards, mobile applications, admin panels and VR simulation layers." },
-      { question: "Who is WillowSoft for?", answer: "WillowSoft is for companies building industrial IoT devices, field telemetry systems, LoRaWAN products, connected dashboards or complete hardware-plus-software platforms." },
+      { question: "What does WillowSoft do?", answer: "WillowSoft delivers ready-made industrial IoT solutions, builds custom hardware and software from scratch, and implements cloud platforms that process field data." },
+      { question: "Which product development stages can WillowSoft handle?", answer: "From schematic design to PCB production, embedded firmware, cloud APIs and user interfaces — WillowSoft completes every layer under one roof." },
+      { question: "Who is WillowSoft the right solution partner for?", answer: "Businesses that want a complete, fast, market-ready system from a single partner instead of splitting hardware and software across multiple vendors." },
     ],
     tr: [
-      { question: "WillowSoft ne yapar?", answer: AI_SHORT_FALLBACKS.home.tr || "" },
-      { question: "WillowSoft hangi katmanları teslim edebilir?", answer: "WillowSoft; gömülü donanım, firmware, RF bağlantı, backend API, PostgreSQL veritabanı, panel, mobil uygulama, yönetim arayüzü ve VR simülasyon katmanlarını teslim edebilir." },
-      { question: "WillowSoft kimler için uygundur?", answer: "WillowSoft; endüstriyel IoT cihazları, saha telemetrisi, LoRaWAN ürünleri, operasyon panelleri veya uçtan uca donanım-yazılım platformları geliştiren şirketler için uygundur." },
+      { question: "WillowSoft ne yapar?", answer: "Endüstriyel ihtiyaçlara yönelik hazır IoT çözümleri sunar, sıfırdan özel donanım/yazılım geliştirir ve sahadaki veriyi işleyen bulut platformları kurar." },
+      { question: "Ürün geliştirme sürecinin hangi aşamaları yapılabilir?", answer: "Şematik tasarımdan PCB üretimine, gömülü yazılımdan bulut API'lerine ve kullanıcı arayüzlerine kadar tüm katmanları tek çatı altında tamamlıyoruz." },
+      { question: "WillowSoft kimler için doğru çözüm ortağıdır?", answer: "Donanım ve yazılım süreçlerini farklı yüklenicilere bölmek yerine tüm sistemi tek bir çözüm ortağından eksiksiz, hızlı ve pazara hazır şekilde teslim almak isteyen işletmeler için uygundur." },
     ],
   },
   products: {

@@ -20,6 +20,7 @@ export const HOME_LAYOUT: PageLayoutBlock[] = [
   { id: "products", label: "Ürünler", tone: "light", variant: "home-products", fields: ["productsEyebrow", "productsTitle", "productsLead"] },
   { id: "industries", label: "Sektörler", tone: "soft", variant: "home-industries", fields: ["industriesEyebrow", "industriesTitle"], cards: [0, 1, 2, 3].map((i) => ({ index: i, titleKey: `industryLane_${i}_title`, descKey: `industryLane_${i}_desc` })) },
   { id: "news", label: "Haberler", tone: "light", variant: "home-news", fields: ["newsEyebrow", "newsTitle"] },
+  { id: "faq", label: "SSS", tone: "soft", variant: "home-faq", fields: ["faqEyebrow", "faqTitle", "faqLead"] },
   { id: "cta", label: "CTA", tone: "cta", variant: "home-cta", fields: ["ctaEyebrow", "ctaTitle", "ctaLead", "ctaCta"] },
 ];
 

@@ -328,18 +328,21 @@ export default function HomePageMirror({
             </section>
           </Hit>
 
-          {/* FAQ (static) */}
-          <section className="section soft services-faq-section">
-            <div className="section-inner">
-              <div className="section-head center">
-                <p className="eyebrow">FAQ</p>
-                <h2 className="page-title">WillowSoft FAQ</h2>
+          {/* FAQ */}
+          <Hit id="faq" active={activeBlockId === "faq"} onClick={() => onSelectBlock("faq")}>
+            <section className="section soft services-faq-section">
+              <div className="section-inner">
+                <div className="section-head center">
+                  {v("faqEyebrow") && <p className="eyebrow">{v("faqEyebrow")}</p>}
+                  <h2 className="page-title" dangerouslySetInnerHTML={{ __html: html("faqTitle") || "Merak Edilenler" }} />
+                  {v("faqLead") && <p className="section-lead">{v("faqLead")}</p>}
+                </div>
+                <div className="ws-pc-mirror-faq">
+                  <span /><span /><span />
+                </div>
               </div>
-              <div className="ws-pc-mirror-faq">
-                <span /><span /><span />
-              </div>
-            </div>
-          </section>
+            </section>
+          </Hit>
 
           {/* CTA */}
           <Hit id="cta" active={activeBlockId === "cta"} onClick={() => onSelectBlock("cta")}>

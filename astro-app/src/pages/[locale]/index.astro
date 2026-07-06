@@ -39,6 +39,18 @@ const labels: Record<string, Record<string, string>> = {
   viewProducts: { en: "Browse Products", tr: "Ürünlere Göz At", de: "Produkte durchsuchen", fr: "Parcourir les produits", es: "Ver productos", it: "Sfoglia i prodotti", ar: "تصفح المنتجات", ja: "製品カタログを見る" },
   viewNews: { en: "View News", tr: "Haberleri Görüntüle", de: "News anzeigen", fr: "Voir les actualités", es: "Ver noticias", it: "Vedi le news", ar: "عرض الأخبار", ja: "ニュースを見る" },
   talkEngineering: { en: "Talk to Engineering", tr: "Mühendislerimizle Görüşün", de: "Mit Engineering sprechen", fr: "Parler à l'ingénierie", es: "Hablar con ingeniería", it: "Parla con il team", ar: "تحدث إلى الهندسة", ja: "技術チームへ相談" },
+  faqEyebrow: { en: "FAQ", tr: "SSS", de: "FAQ", fr: "FAQ", es: "FAQ", it: "FAQ", ar: "الأسئلة الشائعة", ja: "FAQ" },
+  faqTitle: { en: "Common Questions", tr: "Merak Edilenler", de: "Häufige Fragen", fr: "Questions fréquentes", es: "Preguntas frecuentes", it: "Domande frequenti", ar: "ما يهمك معرفته", ja: "よくあるご質問" },
+  faqLead: {
+    en: "Short answers about our end-to-end product development, ready-made IoT hardware and business models.",
+    tr: "Uçtan uca ürün geliştirme süreçlerimiz, hazır IoT donanımlarımız ve iş modellerimiz hakkında kısa cevaplar.",
+    de: "Kurze Antworten zu End-to-End-Produktentwicklung, IoT-Hardware und Geschäftsmodellen.",
+    fr: "Réponses courtes sur nos processus de développement produit, notre matériel IoT et nos modèles d'affaires.",
+    es: "Respuestas breves sobre desarrollo integral de producto, hardware IoT y modelos de negocio.",
+    it: "Risposte brevi su sviluppo prodotto end-to-end, hardware IoT e modelli di business.",
+    ar: "إجابات مختصرة عن تطوير المنتجات، عتاد IoT الجاهز ونماذج الأعمال.",
+    ja: "製品開発、IoT ハードウェア、ビジネスモデルに関する簡潔な回答です。",
+  },
 };
 
 const getLabel = (key: string) => labels[key]?.[locale] || labels[key]?.en || key;
@@ -449,9 +461,11 @@ const homeSchema = appendSchemaNodes({
     <section class="section soft services-faq-section" id="faq">
       <div class="section-inner">
         <div class="section-head reveal center" style={{ marginBottom: "36px" }}>
-          <p class="eyebrow">FAQ</p>
-          <h2 class="page-title">WillowSoft FAQ</h2>
-          <p class="section-lead" style={{ maxWidth: "720px", marginLeft: "auto", marginRight: "auto" }}>{aiAnswer}</p>
+          <p class="eyebrow">{getVal("faqEyebrow") || getLabel("faqEyebrow")}</p>
+          <h2 class="page-title">{getVal("faqTitle") || getLabel("faqTitle")}</h2>
+          <p class="section-lead" style={{ maxWidth: "720px", marginLeft: "auto", marginRight: "auto" }}>
+            {getVal("faqLead") || getLabel("faqLead")}
+          </p>
         </div>
         <FaqAccordion faqs={content.faqs || []} pageKey="home" locale={locale} fallbackFaqs={homeFallbackFaqs} />
       </div>
