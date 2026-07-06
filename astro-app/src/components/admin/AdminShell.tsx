@@ -78,7 +78,7 @@ const TABS: { section: string; items: { key: Tab; label: string }[] }[] = [
       { key: "glossary", label: "Sözlük" },
       { key: "solutions", label: "Çözümler" },
       { key: "clients", label: "Müşteriler" },
-      { key: "company", label: "Şirket Sayfası" },
+      { key: "company", label: "Hakkımızda" },
       { key: "services_page", label: "Hizmetler Sayfası" },
     ],
   },

@@ -125,7 +125,7 @@ export function AdminProvider({ children }: { children: ReactNode }) {
       pageContent: "Sayfa İçeriği",
       pageSeo: "SEO Ayarları",
       translations: "Çeviriler",
-      companyFacts: "Şirket Bilgileri",
+      companyFacts: "Hakkımızda",
       meta: "Site Ayarları"
     };
 

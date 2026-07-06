@@ -23,14 +23,14 @@ const REVIEWED_BY: Record<Locale, string> = {
 };
 
 const SOURCE_LABEL: Record<Locale, string> = {
-  en: "Company product and service data",
-  tr: "Şirket ürün ve hizmet verileri",
-  de: "Unternehmens-, Produkt- und Servicedaten",
-  fr: "Données produits et services de l'entreprise",
-  es: "Datos de productos y servicios de la empresa",
-  it: "Dati aziendali, di prodotto e servizio",
-  ar: "بيانات الشركة والمنتجات والخدمات",
-  ja: "会社・製品・サービスデータ",
+  en: "About us, product and service data",
+  tr: "Hakkımızda, ürün ve hizmet verileri",
+  de: "Über uns, Produkt- und Servicedaten",
+  fr: "À propos, données produits et services",
+  es: "Sobre nosotros, datos de productos y servicios",
+  it: "Chi siamo, dati di prodotto e servizio",
+  ar: "من نحن، بيانات المنتجات والخدمات",
+  ja: "会社概要・製品・サービスデータ",
 };
 
 const AI_SHORT_FALLBACKS: Record<string, Partial<Record<Locale, string>>> = {

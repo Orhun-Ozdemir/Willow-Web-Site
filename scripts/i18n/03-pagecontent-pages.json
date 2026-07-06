@@ -82,13 +82,13 @@
         "ja": "ニュース、イベント、製品発表を活用して、有望なリードを獲得します。"
       },
       "pipelineLead": {
-        "tr": "Yönetim paneli, koda dokunmadan yeni haber öğeleri ekleyebilir. Öne çıkan güncellemeler daha sonra Ana Sayfa ve Şirket sayfalarında gösterilebilir.",
-        "de": "Über das Admin-Panel lassen sich neue Beiträge ohne Code hinzufügen. Ausgewählte Updates können später auf der Start- und Unternehmensseite erscheinen.",
-        "fr": "Le panneau d'administration permet d'ajouter des actualités sans toucher au code. Les mises à jour en vedette peuvent ensuite apparaître sur les pages Accueil et Entreprise.",
-        "es": "El panel de administración permite añadir noticias sin tocar código. Las novedades destacadas pueden mostrarse después en las páginas de Inicio y Empresa.",
-        "it": "Il pannello di amministrazione consente di aggiungere notizie senza toccare il codice. Gli aggiornamenti in evidenza possono poi comparire nelle pagine Home e Azienda.",
-        "ar": "تتيح لوحة الإدارة إضافة أخبار جديدة دون تعديل الشيفرة. ويمكن لاحقًا إبراز التحديثات المميزة في صفحتَي الرئيسية والشركة.",
-        "ja": "管理パネルからコードに触れずに新しいニュースを追加できます。注目の更新は後でホームや会社ページに表示できます。"
+        "tr": "Yönetim paneli, koda dokunmadan yeni haber öğeleri ekleyebilir. Öne çıkan güncellemeler daha sonra Ana Sayfa ve Hakkımızda sayfalarında gösterilebilir.",
+        "de": "Über das Admin-Panel lassen sich neue Beiträge ohne Code hinzufügen. Ausgewählte Updates können später auf der Start- und Über-uns-Seite erscheinen.",
+        "fr": "Le panneau d'administration permet d'ajouter des actualités sans toucher au code. Les mises à jour en vedette peuvent ensuite apparaître sur les pages Accueil et À propos.",
+        "es": "El panel de administración permite añadir noticias sin tocar código. Las novedades destacadas pueden mostrarse después en las páginas de Inicio y Sobre nosotros.",
+        "it": "Il pannello di amministrazione consente di aggiungere notizie senza toccare il codice. Gli aggiornamenti in evidenza possono poi comparire nelle pagine Home e Chi siamo.",
+        "ar": "تتيح لوحة الإدارة إضافة أخبار جديدة دون تعديل الشيفرة. ويمكن لاحقًا إبراز التحديثات المميزة في صفحتَي الرئيسية ومن نحن.",
+        "ja": "管理パネルからコードに触れずに新しいニュースを追加できます。注目の更新は後でホームや会社概要ページに表示できます。"
       }
     },
     "services": {
@@ -220,7 +220,7 @@
         "ar": "مبادئ هندسية لا نساوم عليها.",
         "ja": "私たちが妥協しないエンジニアリングの原則。"
       },
-      "historyEyebrow": { "tr": "Şirket Tarihi", "de": "Unternehmensgeschichte", "fr": "Histoire de l'entreprise", "es": "Historia de la empresa", "it": "Storia dell'azienda", "ar": "تاريخ الشركة", "ja": "会社の沿革" },
+      "historyEyebrow": { "tr": "Tarihçemiz", "de": "Unsere Geschichte", "fr": "Notre histoire", "es": "Nuestra historia", "it": "La nostra storia", "ar": "تاريخنا", "ja": "沿革" },
       "historyTitle": {
         "tr": "Ar-Ge köklerinden küresel dağıtıma.",
         "de": "Von F&E-Wurzeln zum globalen Einsatz.",

@@ -3150,7 +3150,7 @@
           "title": "WillowSoft, Londra'da Birleşik Krallık Operasyonlarını Başlattı",
           "content": "<p>WillowSoft, Birleşik Krallık ve Avrupa müşterilerine üretim odaklı gömülü sistem ve IoT geliştirme desteği vermek için Londra operasyonlarını başlattı.</p>\n<p>Bu şirket dönüm noktası, WillowSoft'un operasyonel zeminini güçlendirir ve müşterilere uzun vadeli ürün teslimi için daha net bir partner sunar.</p>",
           "excerpt": "Londra operasyonu, Birleşik Krallık ve Avrupa'daki müşterilere bağlı ürün mühendisliği hizmetleri sunar.",
-          "category": "Şirket"
+          "category": "Kurumsal"
         },
         "de": {
           "title": "WillowSoft startet UK-Geschäft in London",
@@ -3690,7 +3690,7 @@
       "nav.services": "Services",
       "nav.products": "Products",
       "nav.news": "News",
-      "nav.company": "Company",
+      "nav.company": "About Us",
       "nav.contact": "Contact",
       "cta.start": "Start Project",
       "cta.viewDetails": "View Details",
@@ -3711,7 +3711,7 @@
       "nav.services": "Hizmetler",
       "nav.products": "Ürünler",
       "nav.news": "Haberler",
-      "nav.company": "Şirket",
+      "nav.company": "Hakkımızda",
       "nav.contact": "İletişim",
       "cta.start": "Projeye Başla",
       "cta.viewDetails": "Detayları Gör",
@@ -3732,7 +3732,7 @@
       "nav.services": "Leistungen",
       "nav.products": "Produkte",
       "nav.news": "Neuigkeiten",
-      "nav.company": "Unternehmen",
+      "nav.company": "Über uns",
       "nav.contact": "Kontakt",
       "cta.start": "Projekt starten",
       "cta.viewDetails": "Details ansehen",
@@ -3753,7 +3753,7 @@
       "nav.services": "Services",
       "nav.products": "Produits",
       "nav.news": "Actualités",
-      "nav.company": "Entreprise",
+      "nav.company": "À propos",
       "nav.contact": "Contact",
       "cta.start": "Démarrer un projet",
       "cta.viewDetails": "Voir les détails",
@@ -3774,7 +3774,7 @@
       "nav.services": "Servicios",
       "nav.products": "Productos",
       "nav.news": "Noticias",
-      "nav.company": "Empresa",
+      "nav.company": "Sobre nosotros",
       "nav.contact": "Contacto",
       "cta.start": "Iniciar proyecto",
       "cta.viewDetails": "Ver detalles",
@@ -3795,7 +3795,7 @@
       "nav.services": "Servizi",
       "nav.products": "Prodotti",
       "nav.news": "Notizie",
-      "nav.company": "Azienda",
+      "nav.company": "Chi siamo",
       "nav.contact": "Contatti",
       "cta.start": "Avvia progetto",
       "cta.viewDetails": "Vedi dettagli",
@@ -3816,7 +3816,7 @@
       "nav.services": "الخدمات",
       "nav.products": "المنتجات",
       "nav.news": "الأخبار",
-      "nav.company": "الشركة",
+      "nav.company": "من نحن",
       "nav.contact": "اتصل بنا",
       "cta.start": "ابدأ مشروعًا",
       "cta.viewDetails": "عرض التفاصيل",
@@ -3837,7 +3837,7 @@
       "nav.services": "サービス",
       "nav.products": "製品",
       "nav.news": "ニュース",
-      "nav.company": "会社情報",
+      "nav.company": "会社概要",
       "nav.contact": "お問い合わせ",
       "cta.start": "プロジェクトを開始",
       "cta.viewDetails": "詳細を見る",
@@ -4231,14 +4231,14 @@
         "ja": "ニュース、イベント、製品発表を活用して、有望なリードを獲得します。"
       },
       "pipelineLead": {
-        "en": "The admin panel can add new news items without touching code. Featured updates can later be surfaced on Home and Company pages.",
-        "tr": "Yönetim panelinden koda dokunmadan yeni haber ekleyebilir; öne çıkan içerikleri Ana Sayfa ve Şirket bölümlerinde gösterebilirsiniz.",
-        "de": "Über das Admin-Panel lassen sich neue Beiträge ohne Code hinzufügen. Ausgewählte Updates können später auf der Start- und Unternehmensseite erscheinen.",
-        "fr": "Le panneau d'administration permet d'ajouter des actualités sans toucher au code. Les mises à jour en vedette peuvent ensuite apparaître sur les pages Accueil et Entreprise.",
-        "es": "El panel de administración permite añadir noticias sin tocar código. Las novedades destacadas pueden mostrarse después en las páginas de Inicio y Empresa.",
-        "it": "Il pannello di amministrazione consente di aggiungere notizie senza toccare il codice. Gli aggiornamenti in evidenza possono poi comparire nelle pagine Home e Azienda.",
-        "ar": "تتيح لوحة الإدارة إضافة أخبار جديدة دون تعديل الشيفرة. ويمكن لاحقًا إبراز التحديثات المميزة في صفحتَي الرئيسية والشركة.",
-        "ja": "管理パネルからコードに触れずに新しいニュースを追加できます。注目の更新は後でホームや会社ページに表示できます。"
+        "en": "The admin panel can add new news items without touching code. Featured updates can later be surfaced on Home and About Us pages.",
+        "tr": "Yönetim panelinden koda dokunmadan yeni haber ekleyebilir; öne çıkan içerikleri Ana Sayfa ve Hakkımızda bölümlerinde gösterebilirsiniz.",
+        "de": "Über das Admin-Panel lassen sich neue Beiträge ohne Code hinzufügen. Ausgewählte Updates können später auf der Start- und Über-uns-Seite erscheinen.",
+        "fr": "Le panneau d'administration permet d'ajouter des actualités sans toucher au code. Les mises à jour en vedette peuvent ensuite apparaître sur les pages Accueil et À propos.",
+        "es": "El panel de administración permite añadir noticias sin tocar código. Las novedades destacadas pueden mostrarse después en las páginas de Inicio y Sobre nosotros.",
+        "it": "Il pannello di amministrazione consente di aggiungere notizie senza toccare il codice. Gli aggiornamenti in evidenza possono poi comparire nelle pagine Home e Chi siamo.",
+        "ar": "تتيح لوحة الإدارة إضافة أخبار جديدة دون تعديل الشيفرة. ويمكن لاحقًا إبراز التحديثات المميزة في صفحتَي الرئيسية ومن نحن.",
+        "ja": "管理パネルからコードに触れずに新しいニュースを追加できます。注目の更新は後でホームや会社概要ページに表示できます。"
       }
     },
     "services": {
@@ -4797,14 +4797,14 @@
         "ja": "私たちが妥協しないエンジニアリングの原則。"
       },
       "historyEyebrow": {
-        "en": "Company History",
-        "tr": "Şirket Tarihi",
-        "de": "Unternehmensgeschichte",
-        "fr": "Histoire de l'entreprise",
-        "es": "Historia de la empresa",
-        "it": "Storia dell'azienda",
-        "ar": "تاريخ الشركة",
-        "ja": "会社の沿革"
+        "en": "Our History",
+        "tr": "Tarihçemiz",
+        "de": "Unsere Geschichte",
+        "fr": "Notre histoire",
+        "es": "Nuestra historia",
+        "it": "La nostra storia",
+        "ar": "تاريخنا",
+        "ja": "沿革"
       },
       "historyTitle": {
         "en": "From R&D roots to global deployment.",

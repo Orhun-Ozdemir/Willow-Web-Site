@@ -34,6 +34,7 @@ const UI_KEY_LABELS: Record<string, string> = {
   faqTitle:            "SSS Başlığı",
   contactTitle:        "İletişim Başlığı",
   startProject:        "Proje Başlat (buton/link)",
+  "nav.company":       "Menü: Hakkımızda (navigasyon)",
 };
 
 function FactField({

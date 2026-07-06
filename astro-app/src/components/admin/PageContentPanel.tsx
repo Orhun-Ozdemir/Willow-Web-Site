@@ -374,11 +374,11 @@ export default function PageContentPanel() {
               {locales.map((loc) => {
                 const info = LOCALE_INFO[loc] ?? { flag: "🌐", name: loc };
                 const isSource = loc === SOURCE_LANG;
-                const value = getVal(activeField, loc);
+                const rawValue = pageData[activeField]?.[loc] || "";
                 const suggestion = !isSource ? suggestions[loc] : undefined;
                 const isTranslating = translating.has(loc);
-                const isEmpty = !isSource && !value && !suggestion;
-                const isFilled = !isSource && !!value;
+                const isEmpty = !rawValue.trim() && !suggestion;
+                const isFilled = !!rawValue.trim();
 
                 return (
                   <div
@@ -396,10 +396,10 @@ export default function PageContentPanel() {
                           "text-amber-700"
                         }`}>{info.name}</span>
                         {isSource && <span className="text-[9px] bg-[#132175] text-white px-1.5 py-0.5 rounded font-bold">KAYNAK</span>}
-                        {isFilled && !isSource && <span className="text-[9px] text-green-600">✓</span>}
-                        {isEmpty && !isSource && <span className="text-[9px] text-amber-500 font-bold">BOŞ</span>}
+                        {isFilled && <span className="text-[9px] text-green-600">✓</span>}
+                        {isEmpty && <span className="text-[9px] text-amber-500 font-bold">BOŞ</span>}
                       </div>
-                      {!isSource && !value && !suggestion && sourceText && (
+                      {!isSource && !rawValue.trim() && !suggestion && sourceText && (
                         <button
                           onClick={() => translateOne(loc)}
                           disabled={isTranslating || translating.size > 0}
@@ -430,34 +430,32 @@ export default function PageContentPanel() {
                     {/* Input */}
                     {activeMeta?.type === "long" ? (
                       <textarea
-                        value={isSource ? value : (pageData[activeField]?.[loc] || "")}
-                        onChange={isSource ? undefined : (e) => updateField(activeField, loc, e.target.value)}
-                        readOnly={isSource}
+                        value={rawValue}
+                        onChange={(e) => updateField(activeField, loc, e.target.value)}
                         rows={3}
-                        placeholder={isSource ? "" : `${info.name} çevirisi...`}
+                        placeholder={isSource ? "İngilizce metin..." : `${info.name} çevirisi...`}
                         dir={loc === "ar" ? "rtl" : "ltr"}
-                        className={`w-full p-2.5 border rounded-lg text-sm outline-none resize-none transition ${
+                        className={`w-full p-2.5 border rounded-lg text-sm outline-none resize-none transition focus:border-[#1aa3c4] ${
                           isSource
-                            ? "bg-transparent border-[#c7d2fe] text-[#132175] font-semibold cursor-default"
+                            ? "bg-white border-[#c7d2fe] text-[#132175] font-semibold"
                             : isFilled
-                              ? "bg-gray-50 border-green-200 text-gray-800 focus:border-[#1aa3c4]"
-                              : "bg-gray-50 border-amber-200 text-gray-800 focus:border-[#1aa3c4]"
+                              ? "bg-gray-50 border-green-200 text-gray-800"
+                              : "bg-gray-50 border-amber-200 text-gray-800"
                         }`}
                       />
                     ) : (
                       <input
                         type="text"
-                        value={isSource ? value : (pageData[activeField]?.[loc] || "")}
-                        onChange={isSource ? undefined : (e) => updateField(activeField, loc, e.target.value)}
-                        readOnly={isSource}
-                        placeholder={isSource ? "" : `${info.name} çevirisi...`}
+                        value={rawValue}
+                        onChange={(e) => updateField(activeField, loc, e.target.value)}
+                        placeholder={isSource ? "İngilizce metin..." : `${info.name} çevirisi...`}
                         dir={loc === "ar" ? "rtl" : "ltr"}
-                        className={`w-full p-2.5 border rounded-lg text-sm outline-none transition ${
+                        className={`w-full p-2.5 border rounded-lg text-sm outline-none transition focus:border-[#1aa3c4] ${
                           isSource
-                            ? "bg-transparent border-[#c7d2fe] text-[#132175] font-semibold cursor-default"
+                            ? "bg-white border-[#c7d2fe] text-[#132175] font-semibold"
                             : isFilled
-                              ? "bg-gray-50 border-green-200 text-gray-800 focus:border-[#1aa3c4]"
-                              : "bg-gray-50 border-amber-200 text-gray-800 focus:border-[#1aa3c4]"
+                              ? "bg-gray-50 border-green-200 text-gray-800"
+                              : "bg-gray-50 border-amber-200 text-gray-800"
                         }`}
                       />
                     )}

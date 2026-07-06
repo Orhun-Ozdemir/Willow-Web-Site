@@ -314,12 +314,10 @@ const getSvg = (name: string, size = 20) => {
       <div class="company-container">
         <div class="company-grid-timeline-head">
           <div>
-            <span class="eyebrow">{locale === 'tr' ? 'Şirket Geçmişi' : 'Company history'}</span>
-            <h2 class="ws-h2" style="margin-top: 18px;">
-              {locale === 'tr'
-                ? <>Ar-Ge köklerinden <span class="serif-accent">küresel</span> dağıtıma.</>
-                : <>From R&D roots to <span class="serif-accent">global</span> deployment.</>}
-            </h2>
+            <span class="eyebrow">{getVal("historyEyebrow") || (locale === 'tr' ? 'Tarihçemiz' : 'Our history')}</span>
+            <h2 class="ws-h2" style="margin-top: 18px;" set:html={getVal("historyTitle") || (locale === 'tr'
+                ? 'Ar-Ge köklerinden <span class="serif-accent">küresel</span> dağıtıma.'
+                : 'From R&D roots to <span class="serif-accent">global</span> deployment.')} />
           </div>
           <p class="ws-lead" style="align-self: end; padding-bottom: 4px;">
             {locale === 'tr' 
@@ -350,7 +348,7 @@ const getSvg = (name: string, size = 20) => {
               ))}
             </div>
           </div>
-          <ol class="timeline-accessible-list" aria-label={locale === 'tr' ? 'Şirket zaman çizelgesi' : 'Company timeline'}>
+          <ol class="timeline-accessible-list" aria-label={locale === 'tr' ? 'Tarihçe zaman çizelgesi' : locale === 'de' ? 'Zeitleiste' : locale === 'fr' ? 'Chronologie' : locale === 'es' ? 'Línea de tiempo' : locale === 'it' ? 'Cronologia' : locale === 'ar' ? 'الجدول الزمني' : locale === 'ja' ? '沿革タイムライン' : 'History timeline'}>
             {sortedTimeline.map((item: any, i: number) => {
               const isLast = i === sortedTimeline.length - 1;
               return (
