@@ -363,7 +363,7 @@ const skipLabel = skipLabels[locale] || skipLabels.en;
             "  col=mix(col,uAccent,energy*stage*0.58); col=mix(col,uElectric,ribbonA*stage*rightField*0.66);",
             "  col=mix(col,uElectric,ribbonA*stage*trailField*0.22);",
             "  col=mix(col,uViolet,ribbonB*stage*energyField*0.42); col=mix(col,uWarm,ribbonC*stage*max(rightField,trailField*0.45)*topField*0.36);",
-            "  col+=uElectric*ribbon*(0.10*rightField+0.05*trailField)*stage; return col;",
+            "  col+=uElectric*ribbon*0.10*rightField*stage; return col;",
             "}",
             "void main(){",
             "  vec2 uv=gl_FragCoord.xy/uResolution.xy; float t=uTime*mix(1.0,0.0,uReduceMotion);",

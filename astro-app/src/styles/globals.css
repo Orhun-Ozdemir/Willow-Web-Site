@@ -28,7 +28,7 @@
   --accent-warm: #ff6b3d;
   --accent-warm-rgb: 255, 107, 61;
   --shader-base: #faf8ff;
-  --shader-bloom-a: #dfe0ff;
+  --shader-bloom-a: #ffffff;
   --shader-bloom-b: #bbc3ff;
   --shader-accent: #132175;
   --shader-electric: #18a7ff;
@@ -9189,10 +9189,12 @@ body[data-page="home"] .motion-hero::after {
     repeating-linear-gradient(
       116deg,
       rgba(255, 255, 255, 0) 0 3.2%,
-      rgba(var(--accent-rgb), 0.17) 3.9% 6.9%,
+      rgba(255, 255, 255, 0.64) 3.9% 4.9%,
+      rgba(var(--accent-rgb), 0.17) 5.1% 6.9%,
       rgba(112, 77, 255, 0.15) 7.4% 9.1%,
       rgba(24, 167, 255, 0.19) 9.6% 12%,
-      rgba(255, 255, 255, 0) 12.5% 19.5%
+      rgba(255, 255, 255, 0.42) 12.5% 13.8%,
+      rgba(255, 255, 255, 0) 15% 19.5%
     );
   background-size: auto, 118% 210%;
   background-position: 0 0, 128% 50%;
