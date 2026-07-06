@@ -152,61 +152,10 @@ const categoryName = (cat: string) =>
       </div>
     </section>
 
-    <!-- AI Answer -->
-    {aiAnswer && (
-      <section class="section tight">
-        <div class="section-inner">
-          <AIAnswerBlock answer={aiAnswer} locale={locale} meta={aiMeta} />
-        </div>
-      </section>
-    )}
-
-    <!-- Use Cases Section -->
-    <section class="section solution-market-section">
-      <div class="section-inner">
-        <div class="section-head reveal product-headline">
-          <div>
-            <p class="eyebrow">{getVal("useCasesEyebrow") || getLabel("useCases")}</p>
-            <h2>{getVal("useCasesTitle") || "Designed for distributed, harsh and operationally critical environments."}</h2>
-            <p class="section-lead">
-              {getVal("useCasesLead") || "From infrastructure and factories to buildings, logistics and utilities, every solution is shaped around field conditions, data needs and response workflows."}
-            </p>
-          </div>
-
-          <a class="btn btn-secondary btn-small" href={`/${locale}/start-project`}>{getLabel("startWithSite")}</a>
-        </div>
-
-        {solutionCategories.length > 2 && (
-          <div class="solution-filter-bar reveal" data-solution-filter data-cms-solution-filter>
-            {solutionCategories.map((cat: string, i: number) => (
-              <button class={`sol-filter-btn${i === 0 ? " active" : ""}`} data-cat={cat}>
-                {categoryName(cat)}
-              </button>
-            ))}
-          </div>
-        )}
-
-        <div class="solutions-showcase-frame reveal delay-2">
-          <div class="solutions-showcase-side">
-            <span>{getVal("showcaseEyebrow") || getLabel("operationalCoverage")}</span>
-            <h3>{getVal("showcaseTitle")}</h3>
-            <p>
-              {getVal("showcaseLead")}
-            </p>
-          </div>
-
-          <div class="solution-case-grid" data-cms-solutions>
-            {solutions.map((s: any, idx: number) => (
-              <SolutionCard solution={s} locale={locale} index={idx} allProducts={allProducts} />
-            ))}
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Selector Grid -->
+    <!-- Selector Grid (path finder — before use-case catalog) -->
     <section class="section soft solution-selector-section">
       <div class="section-inner">
+        <AIAnswerBlock answer={aiAnswer} locale={locale} meta={aiMeta} />
         <div class="section-head center reveal">
           <p class="eyebrow">{getVal("selectorEyebrow")}</p>
           <h2>{getVal("selectorTitle")}</h2>
@@ -232,7 +181,6 @@ const categoryName = (cat: string) =>
               );
             })
           ) : (
-            // Fallback hardcoded if missing
             <>
               <article class="solution-decision-card reveal">
                 <div class="decision-icon">01</div>
@@ -279,12 +227,55 @@ const categoryName = (cat: string) =>
       </div>
     </section>
 
+    <!-- Use Cases Section -->
+    <section class="section solution-market-section">
+      <div class="section-inner">
+        <div class="section-head reveal product-headline">
+          <div>
+            <p class="eyebrow">{getVal("useCasesEyebrow") || getLabel("useCases")}</p>
+            <h2>{getVal("useCasesTitle") || "Designed for distributed, harsh and operationally critical environments."}</h2>
+            <p class="section-lead">
+              {getVal("useCasesLead") || "From infrastructure and factories to buildings, logistics and utilities, every solution is shaped around field conditions, data needs and response workflows."}
+            </p>
+          </div>
+
+          <a class="btn btn-secondary btn-small" href={`/${locale}/start-project`}>{getLabel("startWithSite")}</a>
+        </div>
+
+        {solutionCategories.length > 2 && (
+          <div class="solution-filter-bar reveal" data-solution-filter data-cms-solution-filter>
+            {solutionCategories.map((cat: string, i: number) => (
+              <button class={`sol-filter-btn${i === 0 ? " active" : ""}`} data-cat={cat}>
+                {categoryName(cat)}
+              </button>
+            ))}
+          </div>
+        )}
+
+        <div class="solutions-showcase-frame reveal delay-2">
+          <div class="solutions-showcase-side">
+            <span>{getVal("showcaseEyebrow") || getLabel("operationalCoverage")}</span>
+            <h3>{getVal("showcaseTitle")}</h3>
+            <p>
+              {getVal("showcaseLead")}
+            </p>
+          </div>
+
+          <div class="solution-case-grid" data-cms-solutions>
+            {solutions.map((s: any, idx: number) => (
+              <SolutionCard solution={s} locale={locale} index={idx} allProducts={allProducts} />
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- Data Flow Architecture -->
     <section class="section dark solutions-architecture-section">
       <canvas class="signal-canvas" data-density="36" data-color="35, 168, 216"></canvas>
 
       <div class="section-inner">
-        <div class="section-head center reveal" style={{ marginBottom: "40px" }}>
+        <div class="section-head center reveal" style={{ marginBottom: "32px" }}>
           <p class="eyebrow">{getVal("howEyebrow")}</p>
           <h2 class="page-title">{getVal("howTitle")}</h2>
           <p class="section-lead">
@@ -419,7 +410,7 @@ const categoryName = (cat: string) =>
     <!-- FAQ -->
     <section class="section soft services-faq-section" id="faq">
       <div class="section-inner">
-        <div class="section-head reveal center" style={{ marginBottom: "36px" }}>
+        <div class="section-head reveal center" style={{ marginBottom: "24px" }}>
           <p class="eyebrow">{getLabel("faqEyebrow")}</p>
           <h2 class="page-title">{getLabel("faqTitle")}</h2>
           <p class="section-lead" style={{ maxWidth: "720px", marginLeft: "auto", marginRight: "auto" }}>

@@ -33,8 +33,8 @@ export const PRODUCTS_LAYOUT: PageLayoutBlock[] = [
 
 export const SOLUTIONS_LAYOUT: PageLayoutBlock[] = [
   { id: "hero", label: "Hero", tone: "hero", variant: "solutions-hero", fields: ["heroEyebrow", "heroTitle", "heroLead", "heroImage", "metric1Value", "metric1Label", "metric2Value", "metric2Label", "metric3Value", "metric3Label"] },
-  { id: "useCases", label: "Kullanım Alanları", tone: "light", variant: "use-cases", fields: ["useCasesEyebrow", "useCasesTitle", "useCasesLead", "showcaseEyebrow", "showcaseTitle", "showcaseLead"], placeholder: { count: 6, columns: 3 } },
   { id: "selector", label: "Yol Seçici", tone: "soft", variant: "decision-cards", fields: ["selectorEyebrow", "selectorTitle", "selectorLead"], arrayKey: "selectorCards" },
+  { id: "useCases", label: "Kullanım Alanları", tone: "light", variant: "use-cases", fields: ["useCasesEyebrow", "useCasesTitle", "useCasesLead", "showcaseEyebrow", "showcaseTitle", "showcaseLead"], placeholder: { count: 6, columns: 3 } },
   { id: "how", label: "Nasıl Çalışır", tone: "dark", variant: "flow-nodes", fields: ["howEyebrow", "howTitle", "howLead"], arrayKey: "howItWorksSteps" },
   { id: "why", label: "Neden Biz", tone: "soft", variant: "principle-cards", fields: ["whyEyebrow", "whyTitle"], arrayKey: "whyCards" },
   { id: "finalCta", label: "CTA", tone: "cta", variant: "split-cta", fields: ["finalCtaEyebrow", "finalCtaTitle", "finalCtaLead", "finalCtaButton"] },
