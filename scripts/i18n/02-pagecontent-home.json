@@ -137,13 +137,13 @@
         "ja": "コネクテッド製品の完全なエコシステム"
       },
       "ecosystemTitle": {
-        "tr": "<strong class=\"hw-display\">Tek</strong> sistem. <em class=\"hw-serif\">Beş katman</em>.",
-        "de": "<strong class=\"hw-display\">Ein</strong> System. <em class=\"hw-serif\">Fünf Schichten</em>.",
-        "fr": "<strong class=\"hw-display\">Un</strong> système. <em class=\"hw-serif\">Cinq couches</em>.",
-        "es": "<strong class=\"hw-display\">Un</strong> sistema. <em class=\"hw-serif\">Cinco capas</em>.",
-        "it": "<strong class=\"hw-display\">Un</strong> sistema. <em class=\"hw-serif\">Cinque livelli</em>.",
-        "ar": "<strong class=\"hw-display\">نظام</strong> واحد. <em class=\"hw-serif\">خمس طبقات</em>.",
-        "ja": "<strong class=\"hw-display\">1つ</strong>のシステム。<em class=\"hw-serif\">5つのレイヤー</em>。"
+        "tr": "<strong class=\"hw-display\">Tek</strong> sistem. <em class=\"hw-serif\">Her katman</em>.",
+        "de": "<strong class=\"hw-display\">Ein</strong> System. <em class=\"hw-serif\">Jede Schicht</em>.",
+        "fr": "<strong class=\"hw-display\">Un</strong> système. <em class=\"hw-serif\">Chaque couche</em>.",
+        "es": "<strong class=\"hw-display\">Un</strong> sistema. <em class=\"hw-serif\">Cada capa</em>.",
+        "it": "<strong class=\"hw-display\">Un</strong> sistema. <em class=\"hw-serif\">Ogni livello</em>.",
+        "ar": "<strong class=\"hw-display\">نظام</strong> واحد. <em class=\"hw-serif\">كل طبقة</em>.",
+        "ja": "<strong class=\"hw-display\">1つ</strong>のシステム。<em class=\"hw-serif\">すべてのレイヤー</em>。"
       },
       "productsEyebrow": {
         "tr": "Kanıtlanmış Donanım Portföyü",

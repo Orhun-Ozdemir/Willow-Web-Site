@@ -2,6 +2,7 @@
 
 import { useCallback, useMemo, useState } from "react";
 import { locales, type Locale } from "@/lib/cms";
+import HomePageMirror, { type MirrorCard } from "./HomePageMirror";
 import { useAdmin } from "./AdminContext";
 
 // ── Pages ─────────────────────────────────────────────────────────────────────
@@ -100,7 +101,7 @@ function getMeta(key: string): FieldMeta {
 }
 
 // ── Home page layout (visual map) ─────────────────────────────────────────────
-type CardPair = { titleKey: string; descKey: string; index: number };
+type CardPair = MirrorCard;
 
 type LayoutBlock = {
   id: string;
@@ -112,8 +113,8 @@ type LayoutBlock = {
 
 const HOME_LAYOUT: LayoutBlock[] = [
   { id: "hero", label: "Hero", tone: "hero", fields: ["heroEyebrow", "heroTitle", "heroLead", "heroCta", "heroCtaSecondary"] },
-  { id: "trust", label: "Güven", tone: "light", fields: ["trustEyebrow", "trustTitle", "trustLead"] },
   { id: "serviceRail", label: "Yetenek Kartları", tone: "soft", cards: [0, 1, 2, 3].map((i) => ({ index: i, titleKey: `serviceRail_${i}_title`, descKey: `serviceRail_${i}_desc` })) },
+  { id: "trust", label: "Güven", tone: "light", fields: ["trustEyebrow", "trustTitle", "trustLead"] },
   { id: "ecosystem", label: "Ekosistem", tone: "dark", fields: ["ecosystemEyebrow", "ecosystemTitle", "ecosystemLead"], cards: [0, 1, 2, 3, 4].map((i) => ({ index: i, titleKey: `flowNode_${i}_title`, descKey: `flowNode_${i}_desc` })) },
   { id: "products", label: "Ürünler", tone: "light", fields: ["productsEyebrow", "productsTitle", "productsLead"] },
   { id: "industries", label: "Sektörler", tone: "soft", fields: ["industriesEyebrow", "industriesTitle"] },
@@ -125,14 +126,6 @@ const HOME_EXTRA_KEYS = [
   ...[0, 1, 2, 3].flatMap((i) => [`serviceRail_${i}_title`, `serviceRail_${i}_desc`]),
   ...[0, 1, 2, 3, 4].flatMap((i) => [`flowNode_${i}_title`, `flowNode_${i}_desc`]),
 ];
-
-const TONE_STYLES: Record<LayoutBlock["tone"], string> = {
-  hero: "bg-gradient-to-br from-[#132175] to-[#1aa3c4] text-white",
-  light: "bg-white border border-gray-200",
-  soft: "bg-[#f5f8fb] border border-[#dfe5ed]",
-  dark: "bg-[#101a2e] text-white border border-[#1e2d4a]",
-  cta: "bg-gradient-to-r from-[#132175] to-[#26348b] text-white",
-};
 
 const SOURCE_LANG: Locale = "en";
 const TARGET_LOCALES = locales.filter((l) => l !== SOURCE_LANG);
@@ -166,53 +159,6 @@ function StatusDot({ status }: { status: "all" | "partial" | "empty" }) {
   if (status === "all") return <span className="ws-pc-status ws-pc-status--ok">✓</span>;
   if (status === "partial") return <span className="ws-pc-status ws-pc-status--warn">◐</span>;
   return <span className="ws-pc-status ws-pc-status--empty">○</span>;
-}
-
-// ── Mini page wireframe ───────────────────────────────────────────────────────
-function PageWireframe({
-  blocks, activeId, onSelect, data, locale,
-}: {
-  blocks: LayoutBlock[];
-  activeId: string | null;
-  onSelect: (id: string) => void;
-  data: Record<string, any>;
-  locale: Locale;
-}) {
-  return (
-    <div className="ws-pc-wireframe">
-      <p className="ws-pc-wireframe-label">Sayfa haritası</p>
-      <div className="ws-pc-wireframe-canvas">
-        {blocks.map((block) => {
-          const active = activeId === block.id;
-          const cardCount = block.cards?.length ?? 0;
-          return (
-            <button
-              key={block.id}
-              type="button"
-              onClick={() => onSelect(block.id)}
-              className={`ws-pc-wire-block ${TONE_STYLES[block.tone]} ${active ? "is-active" : ""}`}
-            >
-              <span className="ws-pc-wire-block-label">{block.label}</span>
-              {block.cards && cardCount > 0 && (
-                <span className="ws-pc-wire-cards">
-                  {block.cards.map((card) => (
-                    <span key={card.titleKey} className="ws-pc-wire-card-pill" title={cardLabel(data, card, locale)}>
-                      {cardLabel(data, card, locale).slice(0, 12)}
-                    </span>
-                  ))}
-                </span>
-              )}
-              {block.fields && !block.cards && (
-                <span className="ws-pc-wire-lines">
-                  <span /><span /><span />
-                </span>
-              )}
-            </button>
-          );
-        })}
-      </div>
-    </div>
-  );
 }
 
 // ── Content card picker ───────────────────────────────────────────────────────
@@ -445,61 +391,6 @@ function CardLocaleEditor({
 }
 
 // ── Live mini preview ─────────────────────────────────────────────────────────
-function HomeMiniPreview({
-  data, locale, activeBlockId, activeField, activeCard, onSelectBlock,
-}: {
-  data: Record<string, any>;
-  locale: Locale;
-  activeBlockId: string | null;
-  activeField: string | null;
-  activeCard: CardPair | null;
-  onSelectBlock: (id: string) => void;
-}) {
-  const val = (k: string) => stripHtml((data[k]?.[locale] || data[k]?.en || "").trim());
-
-  return (
-    <div className="ws-pc-mini-preview">
-      {HOME_LAYOUT.map((block) => {
-        const active = activeBlockId === block.id;
-        return (
-          <button
-            key={block.id}
-            type="button"
-            onClick={() => onSelectBlock(block.id)}
-            className={`ws-pc-preview-block ${TONE_STYLES[block.tone]} ${active ? "is-active" : ""}`}
-          >
-            <span className="ws-pc-preview-eyebrow">{block.label}</span>
-            {block.fields?.slice(0, 2).map((k) => {
-              const v = val(k);
-              if (!v) return null;
-              const highlighted = activeField === k;
-              return (
-                <p key={k} className={`ws-pc-preview-line ${k.includes("Title") || k.includes("heroTitle") ? "is-title" : ""} ${highlighted ? "is-highlight" : ""}`}>
-                  {v.slice(0, 80)}
-                </p>
-              );
-            })}
-            {block.cards && (
-              <div className="ws-pc-preview-cards">
-                {block.cards.map((card) => {
-                  const t = cardLabel(data, card, locale);
-                  const highlighted = activeCard?.titleKey === card.titleKey;
-                  return (
-                    <span key={card.titleKey} className={`ws-pc-preview-card ${highlighted ? "is-highlight" : ""}`}>
-                      <b>{t}</b>
-                      <small>{stripHtml((data[card.descKey]?.[locale] || data[card.descKey]?.en || "").trim()).slice(0, 48)}</small>
-                    </span>
-                  );
-                })}
-              </div>
-            )}
-          </button>
-        );
-      })}
-    </div>
-  );
-}
-
 // ── Main ──────────────────────────────────────────────────────────────────────
 export default function PageContentPanel() {
   const { content, setContent } = useAdmin();
@@ -569,6 +460,12 @@ export default function PageContentPanel() {
     }
   };
 
+  const selectCard = (blockId: string, card: CardPair) => {
+    setActiveBlockId(blockId);
+    setActiveCard(card);
+    setActiveField(null);
+  };
+
   const selectField = (key: string) => {
     setActiveField(key);
     setActiveCard(null);
@@ -605,14 +502,30 @@ export default function PageContentPanel() {
           })}
         </div>
 
-        {isHome && activeBlock && (
-          <PageWireframe
-            blocks={HOME_LAYOUT}
-            activeId={activeBlockId}
-            onSelect={selectBlock}
-            data={pageData}
-            locale={previewLocale}
-          />
+        {isHome && (
+          <div className="ws-pc-map-panel">
+            <div className="ws-pc-map-head">
+              <p className="ws-pc-wireframe-label">Sayfa haritası</p>
+              <select
+                value={previewLocale}
+                onChange={(e) => setPreviewLocale(e.target.value as Locale)}
+                className="ws-pc-locale-select"
+              >
+                {locales.map((l) => (
+                  <option key={l} value={l}>{LOCALE_INFO[l]?.flag} {l.toUpperCase()}</option>
+                ))}
+              </select>
+            </div>
+            <HomePageMirror
+              data={pageData}
+              locale={previewLocale}
+              activeBlockId={activeBlockId}
+              activeCard={activeCard}
+              onSelectBlock={selectBlock}
+              onSelectCard={selectCard}
+            />
+            <p className="ws-pc-preview-hint">Bölüme veya karta tıklayarak düzenleyin.</p>
+          </div>
         )}
 
         {!isHome && genericSections.order.length > 0 && (
@@ -691,46 +604,54 @@ export default function PageContentPanel() {
         </div>
       </main>
 
-      {/* Right: mini preview */}
+      {/* Right: quick section nav on home */}
       <aside className="ws-pc-preview-panel">
-        <div className="ws-pc-preview-head">
-          <p className="ws-pc-sidebar-label">Ön izleme</p>
-          <select
-            value={previewLocale}
-            onChange={(e) => setPreviewLocale(e.target.value as Locale)}
-            className="ws-pc-locale-select"
-          >
-            {locales.map((l) => (
-              <option key={l} value={l}>{LOCALE_INFO[l]?.flag} {l.toUpperCase()}</option>
-            ))}
-          </select>
-        </div>
-        <div className="ws-pc-preview-scroll">
-          {isHome ? (
-            <HomeMiniPreview
-              data={pageData}
-              locale={previewLocale}
-              activeBlockId={activeBlockId}
-              activeField={activeField}
-              activeCard={activeCard}
-              onSelectBlock={selectBlock}
-            />
-          ) : (
-            <div className="ws-pc-generic-preview">
-              {genericSections.order.map((section) => (
-                <div key={section} className="ws-pc-generic-preview-section">
-                  <p className="ws-pc-preview-eyebrow">{section}</p>
-                  {genericSections.map[section].map((k) => {
-                    const v = stripHtml((pageData[k]?.[previewLocale] || pageData[k]?.en || "").trim());
-                    if (!v) return null;
-                    return <p key={k} className={`ws-pc-preview-line ${activeField === k ? "is-highlight" : ""}`}>{v}</p>;
-                  })}
-                </div>
+        {isHome ? (
+          <>
+            <p className="ws-pc-sidebar-label">Bölümler</p>
+            <div className="ws-pc-section-nav">
+              {HOME_LAYOUT.map((block) => (
+                <button
+                  key={block.id}
+                  type="button"
+                  onClick={() => selectBlock(block.id)}
+                  className={`ws-pc-section-nav-btn ${activeBlockId === block.id ? "is-active" : ""}`}
+                >
+                  {block.label}
+                </button>
               ))}
             </div>
-          )}
-        </div>
-        <p className="ws-pc-preview-hint">Bölüme tıklayarak doğrudan açabilirsiniz.</p>
+          </>
+        ) : (
+          <>
+            <div className="ws-pc-preview-head">
+              <p className="ws-pc-sidebar-label">Ön izleme</p>
+              <select
+                value={previewLocale}
+                onChange={(e) => setPreviewLocale(e.target.value as Locale)}
+                className="ws-pc-locale-select"
+              >
+                {locales.map((l) => (
+                  <option key={l} value={l}>{LOCALE_INFO[l]?.flag} {l.toUpperCase()}</option>
+                ))}
+              </select>
+            </div>
+            <div className="ws-pc-preview-scroll">
+              <div className="ws-pc-generic-preview">
+                {genericSections.order.map((section) => (
+                  <div key={section} className="ws-pc-generic-preview-section">
+                    <p className="ws-pc-preview-eyebrow">{section}</p>
+                    {genericSections.map[section].map((k) => {
+                      const v = stripHtml((pageData[k]?.[previewLocale] || pageData[k]?.en || "").trim());
+                      if (!v) return null;
+                      return <p key={k} className={`ws-pc-preview-line ${activeField === k ? "is-highlight" : ""}`}>{v}</p>;
+                    })}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </>
+        )}
       </aside>
     </div>
   );

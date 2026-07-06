@@ -13,7 +13,7 @@
       "heroLead": { "tr": "WillowSoft, IoT ürününüzün tüm katmanlarını tek ekip olarak geliştirir: donanım, firmware, bağlantı, backend ve kullanıcı arayüzleri." },
       "problemLeadOne": { "tr": "Donanım, firmware, backend ve mobil ekipler çoğu projede farklı tedarikçilere dağıtılır. Sonuç: entegrasyon sorunları, geciken teslimatlar ve seri üretime hiç ulaşamayan ürünler." },
       "problemLeadTwo": { "tr": "WillowSoft tüm katmanların sorumluluğunu üstlenir. Tek ekip. Tek sözleşme. Uçtan uca çalışan bir sistem." },
-      "ecosystemTitle": { "tr": "<strong class=\"hw-display\">Tek</strong> sistem. <em class=\"hw-serif\">Beş katman</em>." },
+      "ecosystemTitle": { "tr": "<strong class=\"hw-display\">Tek</strong> sistem. <em class=\"hw-serif\">Her katman</em>." },
       "ctaLead": { "tr": "Donanım, firmware, backend, PostgreSQL, mobil uygulama, web yönetim paneli, kurumsal web sitesi, VR simülasyonu veya uçtan uca sistem mimarisi ihtiyaçlarınızı bizimle paylaşın." }
     },
     "services": {
