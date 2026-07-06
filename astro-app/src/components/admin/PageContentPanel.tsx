@@ -2,7 +2,10 @@
 
 import { useCallback, useMemo, useState } from "react";
 import { locales, type Locale } from "@/lib/cms";
-import HomePageMirror, { type MirrorCard } from "./HomePageMirror";
+import HomePageMirror from "./HomePageMirror";
+import PageMirror from "./PageMirror";
+import type { MirrorCard } from "./mirrorShared";
+import { HOME_EXTRA_KEYS, HOME_LAYOUT, firstEditableBlock, layoutForPage } from "./pageLayouts";
 import { useAdmin } from "./AdminContext";
 
 // ── Pages ─────────────────────────────────────────────────────────────────────
@@ -102,39 +105,58 @@ const FIELD_META: Record<string, FieldMeta> = {
   softwareTitle: { label: "Başlık", section: "Yazılım", hint: "", type: "short" },
   catalogEyebrow: { label: "Üst Etiket", section: "Katalog", hint: "", type: "short" },
   catalogTitle: { label: "Başlık", section: "Katalog", hint: "", type: "short" },
+  featuredEyebrow: { label: "Üst Etiket", section: "Öne Çıkan", hint: "", type: "short" },
+  featuredTitle: { label: "Başlık", section: "Öne Çıkan", hint: "", type: "short" },
+  useCasesEyebrow: { label: "Üst Etiket", section: "Kullanım Alanları", hint: "", type: "short" },
+  useCasesLead: { label: "Açıklama", section: "Kullanım Alanları", hint: "", type: "long" },
+  showcaseEyebrow: { label: "Vitrin Etiket", section: "Kullanım Alanları", hint: "", type: "short" },
+  showcaseTitle: { label: "Vitrin Başlık", section: "Kullanım Alanları", hint: "", type: "short" },
+  showcaseLead: { label: "Vitrin Açıklama", section: "Kullanım Alanları", hint: "", type: "long" },
+  selectorEyebrow: { label: "Üst Etiket", section: "Yol Seçici", hint: "", type: "short" },
+  selectorTitle: { label: "Başlık", section: "Yol Seçici", hint: "", type: "short" },
+  selectorLead: { label: "Açıklama", section: "Yol Seçici", hint: "", type: "long" },
+  finalCtaEyebrow: { label: "Üst Etiket", section: "CTA", hint: "", type: "short" },
+  finalCtaTitle: { label: "Başlık", section: "CTA", hint: "", type: "short" },
+  finalCtaLead: { label: "Açıklama", section: "CTA", hint: "", type: "long" },
+  finalCtaButton: { label: "Buton", section: "CTA", hint: "", type: "button" },
+  serviceSystemEyebrow: { label: "Üst Etiket", section: "Hizmet Katmanları", hint: "", type: "short" },
+  serviceSystemTitle: { label: "Başlık", section: "Hizmet Katmanları", hint: "", type: "short" },
+  serviceSystemLead: { label: "Açıklama", section: "Hizmet Katmanları", hint: "", type: "long" },
+  deliverablesEyebrow: { label: "Üst Etiket", section: "Teslimatlar", hint: "", type: "short" },
+  deliverablesTitle: { label: "Başlık", section: "Teslimatlar", hint: "", type: "short" },
+  deliverablesLead: { label: "Açıklama", section: "Teslimatlar", hint: "", type: "long" },
+  handoffTitle: { label: "Devir Başlık", section: "Teslimatlar", hint: "", type: "short" },
+  handoffDesc: { label: "Devir Açıklama", section: "Teslimatlar", hint: "", type: "long" },
+  processEyebrow: { label: "Üst Etiket", section: "Süreç", hint: "", type: "short" },
+  processTitle: { label: "Başlık", section: "Süreç", hint: "", type: "short" },
+  ctaPrimaryButton: { label: "Ana Buton", section: "CTA", hint: "", type: "button" },
+  ctaSecondaryButton: { label: "İkincil Buton", section: "CTA", hint: "", type: "button" },
+  latestEyebrow: { label: "Üst Etiket", section: "Arşiv", hint: "", type: "short" },
+  latestTitle: { label: "Başlık", section: "Arşiv", hint: "", type: "short" },
+  pipelineEyebrow: { label: "Üst Etiket", section: "CTA", hint: "", type: "short" },
+  pipelineTitle: { label: "Başlık", section: "CTA", hint: "", type: "short" },
+  pipelineLead: { label: "Açıklama", section: "CTA", hint: "", type: "long" },
+  introEyebrow: { label: "Üst Etiket", section: "Giriş", hint: "", type: "short" },
+  introTitle: { label: "Başlık", section: "Giriş", hint: "", type: "short" },
+  introLead: { label: "Açıklama", section: "Giriş", hint: "", type: "long" },
+  principlesEyebrow: { label: "Üst Etiket", section: "İlkeler", hint: "", type: "short" },
+  principlesTitle: { label: "Başlık", section: "İlkeler", hint: "", type: "short" },
+  historyEyebrow: { label: "Üst Etiket", section: "Tarihçe", hint: "", type: "short" },
+  historyTitle: { label: "Başlık", section: "Tarihçe", hint: "", type: "short" },
+  workWithEyebrow: { label: "Üst Etiket", section: "İş Ortakları", hint: "", type: "short" },
+  workWithTitle: { label: "Başlık", section: "İş Ortakları", hint: "", type: "short" },
+  directTitle: { label: "Doğrudan Başlık", section: "İletişim", hint: "", type: "short" },
+  directLead: { label: "Doğrudan Açıklama", section: "İletişim", hint: "", type: "long" },
+  formEyebrow: { label: "Form Etiket", section: "Form", hint: "", type: "short" },
+  formTitle: { label: "Form Başlık", section: "Form", hint: "", type: "short" },
+  formLead: { label: "Form Açıklama", section: "Form", hint: "", type: "long" },
 };
 
 function getMeta(key: string): FieldMeta {
   return FIELD_META[key] ?? { label: key, section: "Diğer", hint: "", type: "short" };
 }
 
-// ── Home page layout (visual map) ─────────────────────────────────────────────
 type CardPair = MirrorCard;
-
-type LayoutBlock = {
-  id: string;
-  label: string;
-  tone: "hero" | "light" | "soft" | "dark" | "cta";
-  fields?: string[];
-  cards?: CardPair[];
-};
-
-const HOME_LAYOUT: LayoutBlock[] = [
-  { id: "hero", label: "Hero", tone: "hero", fields: ["heroEyebrow", "heroTitle", "heroLead", "heroCta", "heroCtaSecondary"] },
-  { id: "serviceRail", label: "Yetenek Kartları", tone: "soft", cards: [0, 1, 2, 3].map((i) => ({ index: i, titleKey: `serviceRail_${i}_title`, descKey: `serviceRail_${i}_desc` })) },
-  { id: "trust", label: "Güven", tone: "light", fields: ["trustEyebrow", "trustTitle", "trustLead"] },
-  { id: "ecosystem", label: "Ekosistem", tone: "dark", fields: ["ecosystemEyebrow", "ecosystemTitle", "ecosystemLead"], cards: [0, 1, 2, 3, 4].map((i) => ({ index: i, titleKey: `flowNode_${i}_title`, descKey: `flowNode_${i}_desc` })) },
-  { id: "products", label: "Ürünler", tone: "light", fields: ["productsEyebrow", "productsTitle", "productsLead"] },
-  { id: "industries", label: "Sektörler", tone: "soft", fields: ["industriesEyebrow", "industriesTitle"], cards: [0, 1, 2, 3].map((i) => ({ index: i, titleKey: `industryLane_${i}_title`, descKey: `industryLane_${i}_desc` })) },
-  { id: "news", label: "Haberler", tone: "light", fields: ["newsEyebrow", "newsTitle"] },
-  { id: "cta", label: "CTA", tone: "cta", fields: ["ctaEyebrow", "ctaTitle", "ctaLead", "ctaCta"] },
-];
-
-const HOME_EXTRA_KEYS = [
-  ...[0, 1, 2, 3].flatMap((i) => [`serviceRail_${i}_title`, `serviceRail_${i}_desc`]),
-  ...[0, 1, 2, 3, 4].flatMap((i) => [`flowNode_${i}_title`, `flowNode_${i}_desc`]),
-  ...[0, 1, 2, 3].flatMap((i) => [`industryLane_${i}_title`, `industryLane_${i}_desc`]),
-];
 
 const SOURCE_LANG: Locale = "en";
 const TARGET_LOCALES = locales.filter((l) => l !== SOURCE_LANG);
@@ -412,6 +434,8 @@ export default function PageContentPanel() {
   const pageContent = content?.pageContent || {};
   const pageData = pageContent[selectedPage] || {};
 
+  const pageLayout = useMemo(() => layoutForPage(selectedPage), [selectedPage]);
+  const hasLayout = pageLayout.length > 0;
   const isHome = selectedPage === "home";
 
   const allKeys = useMemo(() => {
@@ -419,18 +443,7 @@ export default function PageContentPanel() {
     return Object.keys(pageData).sort();
   }, [isHome, pageData]);
 
-  const genericSections = useMemo(() => {
-    const order: string[] = [];
-    const map: Record<string, string[]> = {};
-    for (const k of allKeys) {
-      const s = getMeta(k).section;
-      if (!map[s]) { map[s] = []; order.push(s); }
-      map[s].push(k);
-    }
-    return { order, map };
-  }, [allKeys]);
-
-  const activeBlock = isHome ? HOME_LAYOUT.find((b) => b.id === activeBlockId) ?? null : null;
+  const activeBlock = pageLayout.find((b) => b.id === activeBlockId) ?? null;
 
   const updateField = useCallback((key: string, loc: Locale, value: string) => {
     setContent((c: any) => {
@@ -444,21 +457,22 @@ export default function PageContentPanel() {
 
   const selectPage = (key: string) => {
     setSelectedPage(key);
-    if (key === "home") {
-      setActiveBlockId("hero");
-      setActiveField("heroEyebrow");
-      setActiveCard(null);
+    const { blockId, field } = firstEditableBlock(key);
+    const layout = layoutForPage(key);
+    const block = layout.find((b) => b.id === blockId);
+    setActiveBlockId(blockId);
+    if (block?.cards?.length) {
+      setActiveCard(block.cards[0]);
+      setActiveField(null);
     } else {
-      setActiveBlockId(null);
-      const firstKey = Object.keys(pageContent[key] || {})[0] ?? null;
-      setActiveField(firstKey);
       setActiveCard(null);
+      setActiveField(field);
     }
   };
 
   const selectBlock = (id: string) => {
-    const block = HOME_LAYOUT.find((b) => b.id === id);
-    if (!block) return;
+    const block = pageLayout.find((b) => b.id === id);
+    if (!block || block.static) return;
     setActiveBlockId(id);
     if (block.cards?.length) {
       setActiveCard(block.cards[0]);
@@ -511,7 +525,7 @@ export default function PageContentPanel() {
           })}
         </div>
 
-        {isHome && (
+        {hasLayout && (
           <div className="ws-pc-map-panel">
             <div className="ws-pc-map-head">
               <p className="ws-pc-wireframe-label">Sayfa haritası</p>
@@ -525,44 +539,35 @@ export default function PageContentPanel() {
                 ))}
               </select>
             </div>
-            <HomePageMirror
-              data={pageData}
-              locale={previewLocale}
-              activeBlockId={activeBlockId}
-              activeCard={activeCard}
-              onSelectBlock={selectBlock}
-              onSelectCard={selectCard}
-            />
+            {isHome ? (
+              <HomePageMirror
+                data={pageData}
+                locale={previewLocale}
+                activeBlockId={activeBlockId}
+                activeCard={activeCard}
+                onSelectBlock={selectBlock}
+                onSelectCard={selectCard}
+              />
+            ) : (
+              <PageMirror
+                pageKey={selectedPage}
+                layout={pageLayout}
+                data={pageData}
+                locale={previewLocale}
+                activeBlockId={activeBlockId}
+                activeCard={activeCard}
+                onSelectBlock={selectBlock}
+                onSelectCard={selectCard}
+              />
+            )}
             <p className="ws-pc-preview-hint">Bölüme veya karta tıklayarak düzenleyin.</p>
-          </div>
-        )}
-
-        {!isHome && genericSections.order.length > 0 && (
-          <div className="ws-pc-generic-sections">
-            <p className="ws-pc-wireframe-label">Bölümler</p>
-            {genericSections.order.map((section) => (
-              <div key={section} className="ws-pc-generic-section">
-                <p className="ws-pc-generic-section-title">{section}</p>
-                {genericSections.map[section].map((k) => (
-                  <button
-                    key={k}
-                    type="button"
-                    onClick={() => selectField(k)}
-                    className={`ws-pc-field-chip ${activeField === k ? "is-active" : ""}`}
-                  >
-                    <span>{getMeta(k).label}</span>
-                    <StatusDot status={fieldStatus(pageData, k)} />
-                  </button>
-                ))}
-              </div>
-            ))}
           </div>
         )}
       </aside>
 
       {/* Center: editor */}
       <main className="ws-pc-main">
-        {isHome && activeBlock && (
+        {activeBlock && (
           <div className="ws-pc-block-header">
             <div>
               <p className="ws-pc-block-kicker">{pageInfo?.label}</p>
@@ -576,7 +581,7 @@ export default function PageContentPanel() {
           </div>
         )}
 
-        {isHome && activeBlock?.fields && activeBlock.fields.length > 0 && (
+        {activeBlock?.fields && activeBlock.fields.length > 0 && (
           <div className="ws-pc-field-chips">
             {activeBlock.fields.map((k) => (
               <button
@@ -592,7 +597,7 @@ export default function PageContentPanel() {
           </div>
         )}
 
-        {isHome && activeBlock?.cards && activeBlock.cards.length > 0 && (
+        {activeBlock?.cards && activeBlock.cards.length > 0 && (
           <ContentCardGrid
             cards={activeBlock.cards}
             data={pageData}
@@ -615,52 +620,24 @@ export default function PageContentPanel() {
 
       {/* Right: quick section nav on home */}
       <aside className="ws-pc-preview-panel">
-        {isHome ? (
+        {hasLayout ? (
           <>
             <p className="ws-pc-sidebar-label">Bölümler</p>
             <div className="ws-pc-section-nav">
-              {HOME_LAYOUT.map((block) => (
+              {pageLayout.map((block) => (
                 <button
                   key={block.id}
                   type="button"
                   onClick={() => selectBlock(block.id)}
-                  className={`ws-pc-section-nav-btn ${activeBlockId === block.id ? "is-active" : ""}`}
+                  disabled={block.static}
+                  className={`ws-pc-section-nav-btn ${activeBlockId === block.id ? "is-active" : ""} ${block.static ? "is-static" : ""}`}
                 >
                   {block.label}
                 </button>
               ))}
             </div>
           </>
-        ) : (
-          <>
-            <div className="ws-pc-preview-head">
-              <p className="ws-pc-sidebar-label">Ön izleme</p>
-              <select
-                value={previewLocale}
-                onChange={(e) => setPreviewLocale(e.target.value as Locale)}
-                className="ws-pc-locale-select"
-              >
-                {locales.map((l) => (
-                  <option key={l} value={l}>{LOCALE_INFO[l]?.flag} {l.toUpperCase()}</option>
-                ))}
-              </select>
-            </div>
-            <div className="ws-pc-preview-scroll">
-              <div className="ws-pc-generic-preview">
-                {genericSections.order.map((section) => (
-                  <div key={section} className="ws-pc-generic-preview-section">
-                    <p className="ws-pc-preview-eyebrow">{section}</p>
-                    {genericSections.map[section].map((k) => {
-                      const v = stripHtml((pageData[k]?.[previewLocale] || pageData[k]?.en || "").trim());
-                      if (!v) return null;
-                      return <p key={k} className={`ws-pc-preview-line ${activeField === k ? "is-highlight" : ""}`}>{v}</p>;
-                    })}
-                  </div>
-                ))}
-              </div>
-            </div>
-          </>
-        )}
+        ) : null}
       </aside>
     </div>
   );

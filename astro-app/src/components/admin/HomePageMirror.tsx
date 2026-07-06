@@ -7,7 +7,7 @@ import { flowNodesFromPageContent, industryLanesFromPageContent, serviceRailFrom
 const MIRROR_SCALE = 0.255;
 const MIRROR_WIDTH = 1180;
 
-export type MirrorCard = { titleKey: string; descKey: string; index: number };
+export type { MirrorCard } from "./mirrorShared";
 
 type RailItem = { title: string; desc: string; titleKey: string; descKey: string; index: number };
 

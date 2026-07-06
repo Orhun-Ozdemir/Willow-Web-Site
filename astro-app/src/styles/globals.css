@@ -4303,6 +4303,87 @@ body[data-page="products"] .product-card:hover img {
   color: #fff;
 }
 
+.ws-pc-section-nav-btn.is-static {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.ws-pc-mirror-form-ph {
+  min-height: 180px;
+  border: 1.5px dashed var(--line);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.7);
+  display: grid;
+  place-items: center;
+  color: var(--muted);
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.ws-pc-mirror .solutions-hero-premium {
+  min-height: 280px;
+  position: relative;
+  background: var(--ws-navy-950);
+}
+
+.ws-pc-mirror .solutions-hero-bg,
+.ws-pc-mirror .hero-media {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, #0d1b3e, #1a3a6b);
+  opacity: 0.5;
+}
+
+.ws-pc-mirror .solutions-hero-inner {
+  position: relative;
+  padding: 32px;
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 20px;
+}
+
+.ws-pc-mirror .news-proof-strip {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.ws-pc-mirror .news-featured-card {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 16px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: #fff;
+}
+
+.ws-pc-mirror .news-featured-card figure {
+  min-height: 120px;
+  background: #eef2f8;
+}
+
+.ws-pc-mirror .office-contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.ws-pc-mirror .office-contact-card {
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: #fff;
+}
+
+.ws-pc-mirror .intake-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
 .ws-pc-wireframe-canvas {
   display: grid;
   gap: 6px;

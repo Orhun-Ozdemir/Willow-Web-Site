@@ -1,0 +1,149 @@
+"use client";
+
+import { useLayoutEffect, useRef, useState, type ReactNode } from "react";
+import type { Locale } from "@/lib/cms";
+
+export const MIRROR_SCALE = 0.255;
+export const MIRROR_WIDTH = 1180;
+
+export type MirrorCard = { titleKey: string; descKey: string; index: number };
+
+export function stripHtml(value: string) {
+  return value.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
+}
+
+export function locVal(data: Record<string, any>, key: string, locale: Locale) {
+  return (data[key]?.[locale] || data[key]?.en || "").trim();
+}
+
+export function locItem(data: Record<string, any>, item: any, key: string, locale: Locale) {
+  const localized = item?.localized?.[locale]?.[key];
+  if (localized) return String(localized).trim();
+  const direct = locVal({ [key]: item?.[key] }, key, locale);
+  if (direct) return direct;
+  return String(item?.[key] || "").trim();
+}
+
+export function fieldEyebrow(fields: string[] = []) {
+  return fields.find((f) => /Eyebrow$/i.test(f));
+}
+
+export function fieldTitle(fields: string[] = []) {
+  return fields.find((f) => /Title$/i.test(f) && !/Eyebrow/i.test(f));
+}
+
+export function fieldLead(fields: string[] = []) {
+  return fields.find((f) => /Lead$/i.test(f));
+}
+
+export function Hit({
+  id, active, onClick, className, children,
+}: {
+  id: string;
+  active: boolean;
+  onClick: () => void;
+  className?: string;
+  children: ReactNode;
+}) {
+  return (
+    <div
+      role="button"
+      tabIndex={0}
+      onClick={onClick}
+      onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") onClick(); }}
+      className={`ws-pc-mirror-hit ${active ? "is-active" : ""} ${className || ""}`}
+      data-block={id}
+    >
+      {children}
+    </div>
+  );
+}
+
+export function MirrorShell({ children, deps }: { children: ReactNode; deps?: unknown[] }) {
+  const innerRef = useRef<HTMLDivElement>(null);
+  const [shellHeight, setShellHeight] = useState(0);
+
+  useLayoutEffect(() => {
+    const el = innerRef.current;
+    if (!el) return;
+    const update = () => setShellHeight(el.offsetHeight * MIRROR_SCALE);
+    update();
+    const ro = new ResizeObserver(update);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, deps ?? [children]);
+
+  return (
+    <div className="ws-pc-mirror-viewport">
+      <div
+        className="ws-pc-mirror-shell"
+        style={{ width: MIRROR_WIDTH * MIRROR_SCALE, height: shellHeight || undefined }}
+      >
+        <div
+          ref={innerRef}
+          className="ws-pc-mirror"
+          style={{
+            width: MIRROR_WIDTH,
+            transform: `scale(${MIRROR_SCALE})`,
+            transformOrigin: "top left",
+          }}
+        >
+          {children}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function SectionHead({
+  data, locale, fields, center = false, h1 = false,
+}: {
+  data: Record<string, any>;
+  locale: Locale;
+  fields?: string[];
+  center?: boolean;
+  h1?: boolean;
+}) {
+  const eyebrowKey = fieldEyebrow(fields);
+  const titleKey = fieldTitle(fields);
+  const leadKey = fieldLead(fields);
+  const eyebrow = eyebrowKey ? locVal(data, eyebrowKey, locale) : "";
+  const title = titleKey ? locVal(data, titleKey, locale) : "";
+  const lead = leadKey ? locVal(data, leadKey, locale) : "";
+  const Tag = h1 ? "h1" : "h2";
+
+  return (
+    <div className={`section-head ${center ? "center" : ""}`}>
+      {eyebrow && <p className="eyebrow">{eyebrow}</p>}
+      {title && <Tag dangerouslySetInnerHTML={{ __html: title }} />}
+      {lead && <p className="section-lead">{lead}</p>}
+    </div>
+  );
+}
+
+export function PlaceholderGrid({ count = 4, columns = 4, tall = false }: { count?: number; columns?: number; tall?: boolean }) {
+  const cls = columns === 3 ? "grid grid-3" : columns === 2 ? "grid grid-2" : "grid grid-4";
+  return (
+    <div className={cls}>
+      {Array.from({ length: count }, (_, i) => (
+        <div key={i} className={`ws-pc-mirror-ph-card ${tall ? "tall" : ""}`} />
+      ))}
+    </div>
+  );
+}
+
+export function StaticFaq() {
+  return (
+    <section className="section soft services-faq-section">
+      <div className="section-inner">
+        <div className="section-head center">
+          <p className="eyebrow">FAQ</p>
+          <h2 className="page-title">Sıkça Sorulan</h2>
+        </div>
+        <div className="ws-pc-mirror-faq">
+          <span /><span /><span />
+        </div>
+      </div>
+    </section>
+  );
+}
