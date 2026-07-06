@@ -27,9 +27,9 @@
   --accent-violet-rgb: 112, 77, 255;
   --accent-warm: #ff6b3d;
   --accent-warm-rgb: 255, 107, 61;
-  --shader-base: #eef2ff;
-  --shader-bloom-a: #b8d4ff;
-  --shader-bloom-b: #9eb0ff;
+  --shader-base: #faf8ff;
+  --shader-bloom-a: #ffffff;
+  --shader-bloom-b: #bbc3ff;
   --shader-accent: #132175;
   --shader-electric: #18a7ff;
   --shader-violet: #704dff;
@@ -55,12 +55,6 @@ body[data-page="home"] {
   --accent-soft: rgba(26, 163, 196, 0.10);
   --accent-glow: rgba(26, 163, 196, 0.22);
   --accent-rgb: 26, 163, 196;
-  --shader-base: #eef2ff;
-  --shader-bloom-a: #dce8ff;
-  --shader-bloom-b: #b8c8ff;
-  --shader-electric: #12b5ff;
-  --shader-violet: #7a52ff;
-  --shader-warm: #ff7a45;
 }
 
 body[data-page="contact"],
@@ -652,9 +646,10 @@ select {
 }
 
 .motion-hero .hero-shader-canvas {
-  /* Keep left copy legible while letting the sweep reach the full hero width. */
-  -webkit-mask-image: linear-gradient(90deg, rgba(0,0,0,0.62) 0%, rgba(0,0,0,0.72) 32%, rgba(0,0,0,0.86) 58%, #000 76%);
-          mask-image: linear-gradient(90deg, rgba(0,0,0,0.62) 0%, rgba(0,0,0,0.72) 32%, rgba(0,0,0,0.86) 58%, #000 76%);
+  /* Let the animation breathe across to the left, keeping the right a touch more vivid
+     and the far-left light enough for the hero copy / eyebrow to stay legible. */
+  -webkit-mask-image: linear-gradient(90deg, rgba(0,0,0,0.34) 0%, rgba(0,0,0,0.30) 26%, rgba(0,0,0,0.60) 50%, #000 74%);
+          mask-image: linear-gradient(90deg, rgba(0,0,0,0.34) 0%, rgba(0,0,0,0.30) 26%, rgba(0,0,0,0.60) 50%, #000 74%);
 }
 
 .hero-inner,
@@ -9177,48 +9172,34 @@ body[data-page="home"] .section {
 
 @keyframes homeHeroLightSweep {
   0% {
-    background-position: 0 0, 118% 44%;
+    background-position: 0 0, 128% 50%;
+    transform: translate3d(8%, 0, 0) rotate(1.2deg) scale(1.06);
   }
 
   100% {
-    background-position: 0 0, -108% 56%;
+    background-position: 0 0, -42% 44%;
+    transform: translate3d(-8%, 0, 0) rotate(-0.9deg) scale(1.05);
   }
 }
 
 body[data-page="home"] .motion-hero::after {
-  inset: -20% -26%;
-  transform: rotate(1deg) scale(1.04);
+  inset: -14% -20%;
   background:
-    linear-gradient(180deg, rgba(250, 248, 255, 0) 0%, rgba(250, 248, 255, 0.06) 100%),
+    linear-gradient(180deg, rgba(250, 248, 255, 0) 0%, rgba(250, 248, 255, 0.08) 100%),
     repeating-linear-gradient(
       116deg,
-      rgba(255, 255, 255, 0) 0 1.2%,
-      rgba(255, 255, 255, 0.46) 1.4% 1.7%,
-      rgba(var(--accent-rgb), 0.36) 1.9% 3.0%,
-      rgba(255, 255, 255, 0.40) 3.2% 3.5%,
-      rgba(112, 77, 255, 0.32) 3.7% 4.8%,
-      rgba(255, 255, 255, 0.38) 5.0% 5.3%,
-      rgba(24, 167, 255, 0.38) 5.5% 6.6%,
-      rgba(255, 255, 255, 0.38) 6.8% 7.1%,
-      rgba(215, 154, 43, 0.28) 7.3% 8.4%,
-      rgba(255, 255, 255, 0.40) 8.6% 8.9%,
-      rgba(112, 77, 255, 0.30) 9.1% 10.2%,
-      rgba(255, 255, 255, 0.38) 10.4% 10.7%,
-      rgba(var(--accent-rgb), 0.32) 10.9% 12.0%,
-      rgba(255, 255, 255, 0.36) 12.2% 12.5%,
-      rgba(24, 167, 255, 0.30) 12.7% 13.8%,
-      rgba(255, 255, 255, 0) 14% 100%
+      rgba(255, 255, 255, 0) 0 3.2%,
+      rgba(255, 255, 255, 0.64) 3.9% 4.9%,
+      rgba(var(--accent-rgb), 0.17) 5.1% 6.9%,
+      rgba(112, 77, 255, 0.15) 7.4% 9.1%,
+      rgba(24, 167, 255, 0.19) 9.6% 12%,
+      rgba(255, 255, 255, 0.42) 12.5% 13.8%,
+      rgba(255, 255, 255, 0) 15% 19.5%
     );
-  background-size: auto, 86% 220%;
-  background-position: 0 0, 118% 44%;
-  animation: homeHeroLightSweep 7.4s cubic-bezier(0.34, 0, 0.14, 1) infinite alternate;
-  mix-blend-mode: screen;
-  opacity: 0.68;
-  will-change: background-position;
-}
-
-body[data-page="home"] .motion-hero .hero-shader-canvas {
-  filter: none;
+  background-size: auto, 118% 210%;
+  background-position: 0 0, 128% 50%;
+  animation: homeHeroLightSweep 6.8s cubic-bezier(0.34, 0, 0.14, 1) infinite alternate;
+  opacity: 0.8;
 }
 
 body[data-page="home"] .section.tight {
