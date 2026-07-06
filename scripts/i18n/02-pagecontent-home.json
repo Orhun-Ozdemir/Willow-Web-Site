@@ -155,13 +155,13 @@
         "ja": "実績あるハードウェアポートフォリオ"
       },
       "productsTitle": {
-        "tr": "<span class=\"hw-muted\">Endüstriyel</span> <strong class=\"hw-display\">izleme</strong> <span class=\"hw-muted\">için sahaya hazır</span> <em class=\"hw-serif\">LoRaWAN</em> ürünleri.",
-        "de": "Feldtaugliche <em class=\"hw-serif\">LoRaWAN</em>-Produkte <span class=\"hw-muted\">für die industrielle</span> <strong class=\"hw-display\">Überwachung</strong>.",
-        "fr": "Des produits <em class=\"hw-serif\">LoRaWAN</em> prêts pour le terrain <span class=\"hw-muted\">pour la</span> <strong class=\"hw-display\">surveillance</strong> industrielle.",
-        "es": "Productos <em class=\"hw-serif\">LoRaWAN</em> listos para el campo <span class=\"hw-muted\">para la</span> <strong class=\"hw-display\">monitorización</strong> industrial.",
-        "it": "Prodotti <em class=\"hw-serif\">LoRaWAN</em> pronti per il campo <span class=\"hw-muted\">per il</span> <strong class=\"hw-display\">monitoraggio</strong> industriale.",
-        "ar": "منتجات <em class=\"hw-serif\">LoRaWAN</em> جاهزة للميدان <span class=\"hw-muted\">من أجل</span> <strong class=\"hw-display\">المراقبة</strong> الصناعية.",
-        "ja": "現場対応の <em class=\"hw-serif\">LoRaWAN</em> 製品で、<span class=\"hw-muted\">産業用の</span><strong class=\"hw-display\">モニタリング</strong>を。"
+        "tr": "<strong class=\"hw-display\">Dijital Dönüşüm</strong> <span class=\"hw-muted\">için sahaya hazır</span> <em class=\"hw-serif\">LoRaWAN</em> <strong class=\"hw-display\">ürünleri</strong>.",
+        "de": "<strong class=\"hw-display\">Digitale Transformation</strong> <span class=\"hw-muted\">mit feldtauglichen</span> <em class=\"hw-serif\">LoRaWAN</em><strong class=\"hw-display\">-Produkten</strong>.",
+        "fr": "<strong class=\"hw-display\">Transformation digitale</strong> <span class=\"hw-muted\">avec des produits</span> <em class=\"hw-serif\">LoRaWAN</em> <strong class=\"hw-display\">prêts pour le terrain</strong>.",
+        "es": "<strong class=\"hw-display\">Transformación digital</strong> <span class=\"hw-muted\">con productos</span> <em class=\"hw-serif\">LoRaWAN</em> <strong class=\"hw-display\">listos para el campo</strong>.",
+        "it": "<strong class=\"hw-display\">Trasformazione digitale</strong> <span class=\"hw-muted\">con prodotti</span> <em class=\"hw-serif\">LoRaWAN</em> <strong class=\"hw-display\">pronti per il campo</strong>.",
+        "ar": "<strong class=\"hw-display\">التحول الرقمي</strong> <span class=\"hw-muted\">مع منتجات</span> <em class=\"hw-serif\">LoRaWAN</em> <strong class=\"hw-display\">جاهزة للميدان</strong>.",
+        "ja": "<strong class=\"hw-display\">デジタルトランスフォーメーション</strong><span class=\"hw-muted\">向けの現場対応</span> <em class=\"hw-serif\">LoRaWAN</em> <strong class=\"hw-display\">製品</strong>。"
       },
       "industriesEyebrow": {
         "tr": "Hizmet Verilen Sektörler",

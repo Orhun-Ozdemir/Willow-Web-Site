@@ -1,8 +1,11 @@
 "use client";
 
-import type { ReactNode } from "react";
+import { useLayoutEffect, useRef, useState, type ReactNode } from "react";
 
 import { flowNodesFromPageContent, serviceRailFromPageContent, type Locale } from "@/lib/cms";
+
+const MIRROR_SCALE = 0.255;
+const MIRROR_WIDTH = 1180;
 
 export type MirrorCard = { titleKey: string; descKey: string; index: number };
 
@@ -101,9 +104,36 @@ export default function HomePageMirror({
 
   const cardActive = (titleKey: string) => activeCard?.titleKey === titleKey;
 
+  const innerRef = useRef<HTMLDivElement>(null);
+  const [shellHeight, setShellHeight] = useState(0);
+
+  useLayoutEffect(() => {
+    const el = innerRef.current;
+    if (!el) return;
+
+    const update = () => setShellHeight(el.offsetHeight * MIRROR_SCALE);
+
+    update();
+    const ro = new ResizeObserver(update);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [data, locale]);
+
   return (
     <div className="ws-pc-mirror-viewport">
-      <div className="ws-pc-mirror">
+      <div
+        className="ws-pc-mirror-shell"
+        style={{ width: MIRROR_WIDTH * MIRROR_SCALE, height: shellHeight || undefined }}
+      >
+        <div
+          ref={innerRef}
+          className="ws-pc-mirror"
+          style={{
+            width: MIRROR_WIDTH,
+            transform: `scale(${MIRROR_SCALE})`,
+            transformOrigin: "top left",
+          }}
+        >
         <main id="mirror-main">
           {/* Hero */}
           <Hit id="hero" active={activeBlockId === "hero"} onClick={() => onSelectBlock("hero")}>
@@ -301,6 +331,7 @@ export default function HomePageMirror({
             </section>
           </Hit>
         </main>
+        </div>
       </div>
     </div>
   );
