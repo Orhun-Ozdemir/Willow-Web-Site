@@ -6,7 +6,7 @@ import FaqAccordion from "@/components/FaqAccordion.astro";
 import AIAnswerBlock from "@/components/AIAnswerBlock.astro";
 import { loadContent } from "@/lib/content";
 import { pageSeo, ORGANIZATION_SCHEMA, WEBSITE_SCHEMA } from "@/lib/seo";
-import { localizedValue, locales, resolveLocale, type Locale } from "@/lib/cms";
+import { localizedValue, locales, resolveLocale, serviceRailFromPageContent, type Locale } from "@/lib/cms";
 import { aiAnswerForPage, aiMetaForPage, appendSchemaNodes, fallbackFaqsForPage, faqItemsForPage, faqSchemaNode } from "@/lib/ai-search";
 
 export const prerender = false;
@@ -46,24 +46,65 @@ const getLabel = (key: string) => labels[key]?.[locale] || labels[key]?.en || ke
 type L10n = Record<string, string>;
 const loc = (m: L10n) => m[locale] || m.en;
 
-const serviceRail: { title: L10n; desc: L10n }[] = [
+const DEFAULT_SERVICE_RAIL: { title: L10n; desc: L10n }[] = [
   {
-    title: { en: "Embedded", tr: "Gömülü Sistemler", de: "Embedded", fr: "Embarqué", es: "Embebido", it: "Embedded", ar: "الأنظمة المدمجة", ja: "組み込み" },
-    desc: { en: "Hardware, firmware, RF and low-power architecture.", tr: "Donanım, gömülü yazılım, RF ve düşük güç mimarisi.", de: "Hardware, Firmware, HF und Low-Power-Architektur.", fr: "Matériel, firmware, RF et architecture basse consommation.", es: "Hardware, firmware, RF y arquitectura de bajo consumo.", it: "Hardware, firmware, RF e architettura a basso consumo.", ar: "العتاد والبرامج الثابتة والترددات اللاسلكية وبنية الطاقة المنخفضة.", ja: "ハードウェア、ファームウェア、RF、低消費電力設計。" },
+    title: { en: "Embedded Systems", tr: "Gömülü Sistemler", de: "Embedded-Systeme", fr: "Systèmes embarqués", es: "Sistemas embebidos", it: "Sistemi embedded", ar: "الأنظمة المدمجة", ja: "組み込みシステム" },
+    desc: {
+      en: "Hardware design, embedded firmware, LoRa and low-power IoT architectures.",
+      tr: "Donanım tasarımı, gömülü yazılım, LoRa ve düşük güç tüketimli IoT mimarileri.",
+      de: "Hardware-Design, Embedded-Firmware, LoRa und energieeffiziente IoT-Architekturen.",
+      fr: "Conception hardware, firmware embarqué, LoRa et architectures IoT basse consommation.",
+      es: "Diseño de hardware, firmware embebido, LoRa y arquitecturas IoT de bajo consumo.",
+      it: "Progettazione hardware, firmware embedded, LoRa e architetture IoT a basso consumo.",
+      ar: "تصميم العتاد، والبرامج الثابتة المدمجة، وLoRa، وبنى IoT منخفضة الطاقة.",
+      ja: "ハードウェア設計、組み込みファームウェア、LoRa、低消費電力IoTアーキテクチャ。",
+    },
   },
   {
-    title: { en: "Platform", tr: "Platform", de: "Plattform", fr: "Plateforme", es: "Plataforma", it: "Piattaforma", ar: "المنصة", ja: "プラットフォーム" },
-    desc: { en: "Backend APIs, PostgreSQL, dashboards and admin panels.", tr: "Backend API'ler, PostgreSQL, kontrol panelleri ve yönetim ekranları.", de: "Backend-APIs, PostgreSQL, Dashboards und Admin-Panels.", fr: "API backend, PostgreSQL, tableaux de bord et panneaux d'administration.", es: "APIs de backend, PostgreSQL, paneles de control y administración.", it: "API backend, PostgreSQL, dashboard e pannelli di amministrazione.", ar: "واجهات برمجة خلفية وPostgreSQL ولوحات تحكم وإدارة.", ja: "バックエンドAPI、PostgreSQL、ダッシュボード、管理画面。" },
+    title: { en: "Prototyping & PCB Manufacturing", tr: "Prototipleme & PCB Üretimi", de: "Prototyping & PCB-Fertigung", fr: "Prototypage & fabrication PCB", es: "Prototipado y fabricación PCB", it: "Prototipazione e produzione PCB", ar: "النماذج الأولية وإنتاج PCB", ja: "試作・PCB製造" },
+    desc: {
+      en: "End-to-end prototyping and production from component sourcing to SMD/TH assembly.",
+      tr: "Komponent tedariğinden SMD/TH dizgiye uçtan uca prototip ve seri üretim süreçleri.",
+      de: "Prototyping und Serienfertigung von der Komponentenbeschaffung bis zur SMD/TH-Bestückung.",
+      fr: "Prototypage et production de l'approvisionnement composants à l'assemblage CMS/traversants.",
+      es: "Prototipado y producción en serie desde el abastecimiento de componentes hasta montaje SMD/TH.",
+      it: "Prototipazione e produzione in serie dall'approvvigionamento componenti all'assemblaggio SMD/TH.",
+      ar: "نماذج أولية وعمليات إنتاج متكاملة من توريد المكونات إلى تجميع SMD/TH.",
+      ja: "部品調達からSMD/TH実装まで、試作から量産まで一貫対応。",
+    },
   },
   {
-    title: { en: "Interfaces", tr: "Arayüzler", de: "Schnittstellen", fr: "Interfaces", es: "Interfaces", it: "Interfacce", ar: "الواجهات", ja: "インターフェース" },
-    desc: { en: "Mobile apps, web portals and product websites.", tr: "Mobil uygulamalar, web portalları ve ürün siteleri.", de: "Mobile Apps, Webportale und Produkt-Websites.", fr: "Applications mobiles, portails web et sites produits.", es: "Aplicaciones móviles, portales web y sitios de producto.", it: "App mobili, portali web e siti di prodotto.", ar: "تطبيقات الجوال وبوابات الويب ومواقع المنتجات.", ja: "モバイルアプリ、Webポータル、製品サイト。" },
+    title: { en: "Cloud Software & Admin Dashboards", tr: "Bulut Yazılım & Yönetim Panelleri", de: "Cloud-Software & Admin-Dashboards", fr: "Logiciel cloud & tableaux de bord", es: "Software en la nube y paneles de administración", it: "Software cloud e pannelli di gestione", ar: "البرمجيات السحابية ولوحات الإدارة", ja: "クラウドソフトウェア・管理画面" },
+    desc: {
+      en: "Backend architectures, database management, real-time web portals and mobile applications.",
+      tr: "Backend mimarileri, veri tabanı yönetimi, gerçek zamanlı web portalları ve mobil uygulamalar.",
+      de: "Backend-Architekturen, Datenbankmanagement, Echtzeit-Webportale und Mobile Apps.",
+      fr: "Architectures backend, gestion de bases de données, portails web temps réel et applications mobiles.",
+      es: "Arquitecturas backend, gestión de bases de datos, portales web en tiempo real y aplicaciones móviles.",
+      it: "Architetture backend, gestione database, portali web in tempo reale e app mobile.",
+      ar: "بنى backend، وإدارة قواعد البيانات، وبوابات ويب فورية وتطبيقات جوال.",
+      ja: "バックエンド設計、データベース管理、リアルタイムWebポータル、モバイルアプリ。",
+    },
   },
   {
-    title: { en: "Simulation", tr: "Simülasyon", de: "Simulation", fr: "Simulation", es: "Simulación", it: "Simulazione", ar: "المحاكاة", ja: "シミュレーション" },
-    desc: { en: "VR training, product demos and digital twin views.", tr: "VR eğitimleri, ürün demoları ve dijital ikiz görünümleri.", de: "VR-Training, Produktdemos und Digital-Twin-Ansichten.", fr: "Formation VR, démos produits et vues de jumeau numérique.", es: "Entrenamiento VR, demos de producto y vistas de gemelo digital.", it: "Formazione VR, demo di prodotto e viste digital twin.", ar: "تدريب الواقع الافتراضي وعروض المنتجات والتوأم الرقمي.", ja: "VRトレーニング、製品デモ、デジタルツイン。" },
+    title: { en: "Digital Twin & Simulation", tr: "Dijital İkiz & Simülasyon", de: "Digital Twin & Simulation", fr: "Jumeau numérique & simulation", es: "Gemelo digital y simulación", it: "Digital twin e simulazione", ar: "التوأم الرقمي والمحاكاة", ja: "デジタルツイン・シミュレーション" },
+    desc: {
+      en: "Industrial digital twin applications, VR-based technical training simulations and interactive product demos.",
+      tr: "Endüstriyel dijital ikiz uygulamaları, VR tabanlı teknik eğitim simülasyonları ve etkileşimli ürün demoları.",
+      de: "Industrielle Digital-Twin-Anwendungen, VR-basierte Trainingssimulationen und interaktive Produktdemos.",
+      fr: "Applications de jumeau numérique industriel, simulations de formation technique en VR et démos produits interactives.",
+      es: "Aplicaciones de gemelo digital industrial, simulaciones de formación técnica en VR y demos interactivas de producto.",
+      it: "Applicazioni digital twin industriali, simulazioni di formazione tecnica in VR e demo prodotto interattive.",
+      ar: "تطبيقات التوأم الرقمي الصناعي، ومحاكاة تدريب تقني بـ VR، وعروض منتجات تفاعلية.",
+      ja: "産業向けデジタルツイン、VR技術研修シミュレーション、インタラクティブ製品デモ。",
+    },
   },
 ];
+
+const cmsServiceRail = serviceRailFromPageContent(pageContent, locale);
+const serviceRail = cmsServiceRail.length > 0
+  ? cmsServiceRail
+  : DEFAULT_SERVICE_RAIL.map((item) => ({ title: loc(item.title), desc: loc(item.desc) }));
 
 const trustChips: L10n[] = [
   { en: "Industrial Automation", tr: "Endüstriyel Otomasyon", de: "Industrieautomation", fr: "Automatisation industrielle", es: "Automatización industrial", it: "Automazione industriale", ar: "الأتمتة الصناعية", ja: "産業オートメーション" },
@@ -203,7 +244,7 @@ const homeSchema = appendSchemaNodes({
         <AIAnswerBlock answer={aiAnswer} locale={locale} meta={aiMeta} />
         <div class="service-rail reveal">
           {serviceRail.map((item, idx) => (
-            <article><span class="service-number">{String(idx + 1).padStart(2, "0")}</span><h3>{loc(item.title)}</h3><p>{loc(item.desc)}</p></article>
+            <article><span class="service-number">{String(idx + 1).padStart(2, "0")}</span><h3>{item.title}</h3><p>{item.desc}</p></article>
           ))}
         </div>
       </div>

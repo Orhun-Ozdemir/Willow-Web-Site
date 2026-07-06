@@ -42,6 +42,14 @@ const FIELD_META: Record<string, FieldMeta> = {
   trustEyebrow:       { label: "Küçük Üst Etiket",           section: "Güven / İstatistik Bölümü", hint: "",                                                             type: "short"  },
   trustTitle:         { label: "Bölüm Başlığı",              section: "Güven / İstatistik Bölümü", hint: "",                                                             type: "short"  },
   trustLead:          { label: "Bölüm Açıklaması",           section: "Güven / İstatistik Bölümü", hint: "",                                                             type: "long"   },
+  serviceRail_0_title:{ label: "Yetenek 1 — Başlık",         section: "Yetenek Alanları (4 Kart)", hint: "Ana sayfadaki ilk yetenek kartı.",                            type: "short"  },
+  serviceRail_0_desc: { label: "Yetenek 1 — Açıklama",       section: "Yetenek Alanları (4 Kart)", hint: "",                                                             type: "long"   },
+  serviceRail_1_title:{ label: "Yetenek 2 — Başlık",         section: "Yetenek Alanları (4 Kart)", hint: "",                                                             type: "short"  },
+  serviceRail_1_desc: { label: "Yetenek 2 — Açıklama",       section: "Yetenek Alanları (4 Kart)", hint: "",                                                             type: "long"   },
+  serviceRail_2_title:{ label: "Yetenek 3 — Başlık",         section: "Yetenek Alanları (4 Kart)", hint: "",                                                             type: "short"  },
+  serviceRail_2_desc: { label: "Yetenek 3 — Açıklama",       section: "Yetenek Alanları (4 Kart)", hint: "",                                                             type: "long"   },
+  serviceRail_3_title:{ label: "Yetenek 4 — Başlık",         section: "Yetenek Alanları (4 Kart)", hint: "",                                                             type: "short"  },
+  serviceRail_3_desc: { label: "Yetenek 4 — Açıklama",       section: "Yetenek Alanları (4 Kart)", hint: "",                                                             type: "long"   },
   ecosystemEyebrow:   { label: "Küçük Üst Etiket",           section: "Ekosistem Bölümü",          hint: "",                                                             type: "short"  },
   ecosystemTitle:     { label: "Bölüm Başlığı",              section: "Ekosistem Bölümü",          hint: "HTML destekler.",                                              type: "short"  },
   ecosystemLead:      { label: "Bölüm Açıklaması",           section: "Ekosistem Bölümü",          hint: "",                                                             type: "long"   },
@@ -140,6 +148,13 @@ function PreviewSections({ data, locale, activeKey }: {
 const SOURCE_LANG: Locale = "en";
 const TARGET_LOCALES = locales.filter((l) => l !== SOURCE_LANG);
 
+const HOME_SERVICE_RAIL_KEYS = [
+  "serviceRail_0_title", "serviceRail_0_desc",
+  "serviceRail_1_title", "serviceRail_1_desc",
+  "serviceRail_2_title", "serviceRail_2_desc",
+  "serviceRail_3_title", "serviceRail_3_desc",
+];
+
 export default function PageContentPanel() {
   const { content, setContent } = useAdmin();
   const [selectedPage, setSelectedPage] = useState("home");
@@ -152,7 +167,11 @@ export default function PageContentPanel() {
 
   const pageContent = content?.pageContent || {};
   const pageData = pageContent[selectedPage] || {};
-  const keys = Object.keys(pageData).sort();
+  const keys = (
+    selectedPage === "home"
+      ? [...new Set([...Object.keys(pageData), ...HOME_SERVICE_RAIL_KEYS])]
+      : Object.keys(pageData)
+  ).sort();
 
   // Group fields by section
   const sectionOrder: string[] = [];

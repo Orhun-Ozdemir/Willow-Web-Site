@@ -30,6 +30,28 @@ export function localizedValue(map: any, locale: Locale): string {
   return map[locale] || map.en || "";
 }
 
+export interface ServiceRailItem {
+  title: string;
+  desc: string;
+}
+
+/** Reads home page service-rail cards from pageContent (`serviceRail_0_title`, `serviceRail_0_desc`, …). */
+export function serviceRailFromPageContent(
+  pageContent: Record<string, any> | undefined,
+  locale: Locale,
+  maxItems = 8,
+): ServiceRailItem[] {
+  if (!pageContent) return [];
+  const items: ServiceRailItem[] = [];
+  for (let i = 0; i < maxItems; i++) {
+    const title = localizedValue(pageContent[`serviceRail_${i}_title`], locale).trim();
+    const desc = localizedValue(pageContent[`serviceRail_${i}_desc`], locale).trim();
+    if (!title && !desc) break;
+    items.push({ title, desc });
+  }
+  return items;
+}
+
 export function normalizeLocalizedList(value: any): string[] {
   if (Array.isArray(value)) return value;
   if (typeof value === "string") return value.split(/[\n,]+/g).map((item) => item.trim()).filter(Boolean);

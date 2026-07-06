@@ -3916,6 +3916,86 @@
         "ar": "تدعم WillowSoft المنتجات المتصلة في مجالات الأتمتة الصناعية والرعاية الصحية والطاقة والاتصالات والخدمات اللوجستية وتقنيات المستهلك.",
         "ja": "WillowSoftは、産業オートメーション、ヘルスケア、エネルギー、通信、物流、コンシューマー技術の各分野でコネクテッド製品を支援します。"
       },
+      "serviceRail_0_title": {
+        "en": "Embedded Systems",
+        "tr": "Gömülü Sistemler",
+        "de": "Embedded-Systeme",
+        "fr": "Systèmes embarqués",
+        "es": "Sistemas embebidos",
+        "it": "Sistemi embedded",
+        "ar": "الأنظمة المدمجة",
+        "ja": "組み込みシステム"
+      },
+      "serviceRail_0_desc": {
+        "en": "Hardware design, embedded firmware, LoRa and low-power IoT architectures.",
+        "tr": "Donanım tasarımı, gömülü yazılım, LoRa ve düşük güç tüketimli IoT mimarileri.",
+        "de": "Hardware-Design, Embedded-Firmware, LoRa und energieeffiziente IoT-Architekturen.",
+        "fr": "Conception hardware, firmware embarqué, LoRa et architectures IoT basse consommation.",
+        "es": "Diseño de hardware, firmware embebido, LoRa y arquitecturas IoT de bajo consumo.",
+        "it": "Progettazione hardware, firmware embedded, LoRa e architetture IoT a basso consumo.",
+        "ar": "تصميم العتاد، والبرامج الثابتة المدمجة، وLoRa، وبنى IoT منخفضة الطاقة.",
+        "ja": "ハードウェア設計、組み込みファームウェア、LoRa、低消費電力IoTアーキテクチャ。"
+      },
+      "serviceRail_1_title": {
+        "en": "Prototyping & PCB Manufacturing",
+        "tr": "Prototipleme & PCB Üretimi",
+        "de": "Prototyping & PCB-Fertigung",
+        "fr": "Prototypage & fabrication PCB",
+        "es": "Prototipado y fabricación PCB",
+        "it": "Prototipazione e produzione PCB",
+        "ar": "النماذج الأولية وإنتاج PCB",
+        "ja": "試作・PCB製造"
+      },
+      "serviceRail_1_desc": {
+        "en": "End-to-end prototyping and production from component sourcing to SMD/TH assembly.",
+        "tr": "Komponent tedariğinden SMD/TH dizgiye uçtan uca prototip ve seri üretim süreçleri.",
+        "de": "Prototyping und Serienfertigung von der Komponentenbeschaffung bis zur SMD/TH-Bestückung.",
+        "fr": "Prototypage et production de l'approvisionnement composants à l'assemblage CMS/traversants.",
+        "es": "Prototipado y producción en serie desde el abastecimiento de componentes hasta montaje SMD/TH.",
+        "it": "Prototipazione e produzione in serie dall'approvvigionamento componenti all'assemblaggio SMD/TH.",
+        "ar": "نماذج أولية وعمليات إنتاج متكاملة من توريد المكونات إلى تجميع SMD/TH.",
+        "ja": "部品調達からSMD/TH実装まで、試作から量産まで一貫対応。"
+      },
+      "serviceRail_2_title": {
+        "en": "Cloud Software & Admin Dashboards",
+        "tr": "Bulut Yazılım & Yönetim Panelleri",
+        "de": "Cloud-Software & Admin-Dashboards",
+        "fr": "Logiciel cloud & tableaux de bord",
+        "es": "Software en la nube y paneles de administración",
+        "it": "Software cloud e pannelli di gestione",
+        "ar": "البرمجيات السحابية ولوحات الإدارة",
+        "ja": "クラウドソフトウェア・管理画面"
+      },
+      "serviceRail_2_desc": {
+        "en": "Backend architectures, database management, real-time web portals and mobile applications.",
+        "tr": "Backend mimarileri, veri tabanı yönetimi, gerçek zamanlı web portalları ve mobil uygulamalar.",
+        "de": "Backend-Architekturen, Datenbankmanagement, Echtzeit-Webportale und Mobile Apps.",
+        "fr": "Architectures backend, gestion de bases de données, portails web temps réel et applications mobiles.",
+        "es": "Arquitecturas backend, gestión de bases de datos, portales web en tiempo real y aplicaciones móviles.",
+        "it": "Architetture backend, gestione database, portali web in tempo reale e app mobile.",
+        "ar": "بنى backend، وإدارة قواعد البيانات، وبوابات ويب فورية وتطبيقات جوال.",
+        "ja": "バックエンド設計、データベース管理、リアルタイムWebポータル、モバイルアプリ。"
+      },
+      "serviceRail_3_title": {
+        "en": "Digital Twin & Simulation",
+        "tr": "Dijital İkiz & Simülasyon",
+        "de": "Digital Twin & Simulation",
+        "fr": "Jumeau numérique & simulation",
+        "es": "Gemelo digital y simulación",
+        "it": "Digital twin e simulazione",
+        "ar": "التوأم الرقمي والمحاكاة",
+        "ja": "デジタルツイン・シミュレーション"
+      },
+      "serviceRail_3_desc": {
+        "en": "Industrial digital twin applications, VR-based technical training simulations and interactive product demos.",
+        "tr": "Endüstriyel dijital ikiz uygulamaları, VR tabanlı teknik eğitim simülasyonları ve etkileşimli ürün demoları.",
+        "de": "Industrielle Digital-Twin-Anwendungen, VR-basierte Trainingssimulationen und interaktive Produktdemos.",
+        "fr": "Applications de jumeau numérique industriel, simulations de formation technique en VR et démos produits interactives.",
+        "es": "Aplicaciones de gemelo digital industrial, simulaciones de formación técnica en VR y demos interactivas de producto.",
+        "it": "Applicazioni digital twin industriali, simulazioni di formazione tecnica in VR e demo prodotto interattive.",
+        "ar": "تطبيقات التوأم الرقمي الصناعي، ومحاكاة تدريب تقني بـ VR، وعروض منتجات تفاعلية.",
+        "ja": "産業向けデジタルツイン、VR技術研修シミュレーション、インタラクティブ製品デモ。"
+      },
       "problemEyebrow": {
         "en": "The Real Problem",
         "tr": "Asıl Sorun",
