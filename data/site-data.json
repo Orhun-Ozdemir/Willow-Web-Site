@@ -4196,6 +4196,86 @@
         "ar": "<strong class=\"hw-display\">التحول الرقمي</strong> <span class=\"hw-muted\">مع منتجات</span> <em class=\"hw-serif\">LoRaWAN</em> <strong class=\"hw-display\">جاهزة للميدان</strong>.",
         "ja": "<strong class=\"hw-display\">デジタルトランスフォーメーション</strong><span class=\"hw-muted\">向けの現場対応</span> <em class=\"hw-serif\">LoRaWAN</em> <strong class=\"hw-display\">製品</strong>。"
       },
+      "industryLane_0_title": {
+        "en": "Smart Infrastructure",
+        "tr": "Akıllı Altyapı",
+        "de": "Smarte Infrastruktur",
+        "fr": "Infrastructures intelligentes",
+        "es": "Infraestructura inteligente",
+        "it": "Infrastrutture intelligenti",
+        "ar": "البنية التحتية الذكية",
+        "ja": "スマートインフラ"
+      },
+      "industryLane_0_desc": {
+        "en": "Field sensors designed for flood prevention, reservoir tracking and smart lighting systems.",
+        "tr": "Taşkın önleme, su deposu takibi ve akıllı aydınlatma sistemleri için tasarlanmış saha sensörleri.",
+        "de": "Feldsensoren für Hochwasserschutz, Wassertanküberwachung und intelligente Beleuchtungssysteme.",
+        "fr": "Capteurs de terrain conçus pour la prévention des inondations, le suivi des réservoirs et l'éclairage intelligent.",
+        "es": "Sensores de campo diseñados para prevención de inundaciones, seguimiento de depósitos y sistemas de alumbrado inteligente.",
+        "it": "Sensori da campo progettati per prevenzione allagamenti, monitoraggio serbatoi e illuminazione intelligente.",
+        "ar": "مستشعرات ميدانية مصممة لمنع الفيضانات وتتبع خزانات المياه وأنظمة الإنارة الذكية.",
+        "ja": "洪水防止、貯水池監視、スマート照明システム向けに設計された現場センサー。"
+      },
+      "industryLane_1_title": {
+        "en": "Industrial Monitoring",
+        "tr": "Endüstriyel İzleme",
+        "de": "Industrielle Überwachung",
+        "fr": "Surveillance industrielle",
+        "es": "Monitoreo industrial",
+        "it": "Monitoraggio industriale",
+        "ar": "المراقبة الصناعية",
+        "ja": "産業モニタリング"
+      },
+      "industryLane_1_desc": {
+        "en": "Machine data, predictive maintenance, factories, warehouses and energy systems.",
+        "tr": "Makine verileri, kestirimci bakım, fabrikalar, depolar ve enerji sistemleri.",
+        "de": "Maschinendaten, vorausschauende Wartung, Fabriken, Lager und Energiesysteme.",
+        "fr": "Données machines, maintenance prédictive, usines, entrepôts et systèmes énergétiques.",
+        "es": "Datos de máquinas, mantenimiento predictivo, fábricas, almacenes y sistemas energéticos.",
+        "it": "Dati macchina, manutenzione predittiva, fabbriche, magazzini e sistemi energetici.",
+        "ar": "بيانات الآلات والصيانة التنبؤية والمصانع والمستودعات وأنظمة الطاقة.",
+        "ja": "機械データ、予知保全、工場、倉庫、エネルギーシステム。"
+      },
+      "industryLane_2_title": {
+        "en": "MedTech & Healthcare",
+        "tr": "MedTech ve Sağlık",
+        "de": "MedTech & Gesundheit",
+        "fr": "MedTech & Santé",
+        "es": "MedTech y Salud",
+        "it": "MedTech e Sanità",
+        "ar": "التقنية الطبية والرعاية الصحية",
+        "ja": "医療・ヘルスケア"
+      },
+      "industryLane_2_desc": {
+        "en": "Low-power wireless sensor nodes for hospitals, laboratories and care units.",
+        "tr": "Hastane, laboratuvar ve bakım üniteleri için düşük güçlü kablosuz sensör düğümleri.",
+        "de": "Energieeffiziente drahtlose Sensorknoten für Krankenhäuser, Labore und Pflegeeinheiten.",
+        "fr": "Nœuds capteurs sans fil basse consommation pour hôpitaux, laboratoires et unités de soins.",
+        "es": "Nodos sensores inalámbricos de bajo consumo para hospitales, laboratorios y unidades de cuidados.",
+        "it": "Nodi sensore wireless a basso consumo per ospedali, laboratori e unità di cura.",
+        "ar": "عقد استشعار لاسلكية منخفضة الطاقة للمستشفيات والمختبرات ووحدات الرعاية.",
+        "ja": "病院、研究所、ケアユニット向けの低消費電力ワイヤレスセンサーノード。"
+      },
+      "industryLane_3_title": {
+        "en": "Logistics & Telecom",
+        "tr": "Lojistik ve Telekom",
+        "de": "Logistik & Telekom",
+        "fr": "Logistique & Télécoms",
+        "es": "Logística y Telecomunicaciones",
+        "it": "Logistica e Telecomunicazioni",
+        "ar": "اللوجستيات والاتصالات",
+        "ja": "物流・通信"
+      },
+      "industryLane_3_desc": {
+        "en": "Smart devices designed for asset tracking, GNSS positioning and mobile operations.",
+        "tr": "Varlık takibi, GNSS tabanlı konumlandırma ve mobil operasyonlar için tasarlanmış akıllı cihazlar.",
+        "de": "Intelligente Geräte für Asset-Tracking, GNSS-Positionierung und mobile Einsätze.",
+        "fr": "Appareils intelligents conçus pour le suivi d'actifs, le positionnement GNSS et les opérations mobiles.",
+        "es": "Dispositivos inteligentes diseñados para seguimiento de activos, posicionamiento GNSS y operaciones móviles.",
+        "it": "Dispositivi intelligenti progettati per tracciamento asset, posizionamento GNSS e operazioni mobili.",
+        "ar": "أجهزة ذكية مصممة لتتبع الأصول وتحديد المواقع GNSS والعمليات المتنقلة.",
+        "ja": "資産追跡、GNSS測位、移動オペレーション向けに設計されたスマートデバイス。"
+      },
       "industriesEyebrow": {
         "en": "Industries Served",
         "tr": "Hizmet Verilen Sektörler",

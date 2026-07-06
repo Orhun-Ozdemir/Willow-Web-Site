@@ -2,7 +2,7 @@
 
 import { useLayoutEffect, useRef, useState, type ReactNode } from "react";
 
-import { flowNodesFromPageContent, serviceRailFromPageContent, type Locale } from "@/lib/cms";
+import { flowNodesFromPageContent, industryLanesFromPageContent, serviceRailFromPageContent, type Locale } from "@/lib/cms";
 
 const MIRROR_SCALE = 0.255;
 const MIRROR_WIDTH = 1180;
@@ -39,6 +39,27 @@ function buildServiceRail(data: Record<string, any>, locale: Locale): RailItem[]
   }));
 }
 
+const INDUSTRY_ICONS = ["🏙️", "⚙️", "🩺", "📦"];
+
+function buildIndustryLanes(data: Record<string, any>, locale: Locale): RailItem[] {
+  const cms = industryLanesFromPageContent(data, locale);
+  if (cms.length > 0) {
+    return cms.map((item, index) => ({
+      title: item.title,
+      desc: item.desc,
+      titleKey: `industryLane_${index}_title`,
+      descKey: `industryLane_${index}_desc`,
+      index,
+    }));
+  }
+  return [0, 1, 2, 3].map((i) => ({
+    title: `Sektör ${i + 1}`,
+    desc: "",
+    titleKey: `industryLane_${i}_title`,
+    descKey: `industryLane_${i}_desc`,
+    index: i,
+  }));
+}
 function buildFlowNodes(data: Record<string, any>, locale: Locale): RailItem[] {
   const cms = flowNodesFromPageContent(data, locale);
   if (cms.length > 0) {
@@ -101,6 +122,7 @@ export default function HomePageMirror({
   const html = (key: string) => locVal(data, key, locale);
   const serviceRail = buildServiceRail(data, locale);
   const flowNodes = buildFlowNodes(data, locale);
+  const industryLanes = buildIndustryLanes(data, locale);
 
   const cardActive = (titleKey: string) => activeCard?.titleKey === titleKey;
 
@@ -269,11 +291,18 @@ export default function HomePageMirror({
                   <h2 dangerouslySetInnerHTML={{ __html: html("industriesTitle") || "Sektörler" }} />
                 </div>
                 <div className="industry-lanes">
-                  {["🏙️", "⚙️", "🩺", "📦"].map((icon, i) => (
-                    <article key={i} className="industry-lane">
-                      <div className="industry-lane-icon">{icon}</div>
-                      <h3>Sektör {i + 1}</h3>
-                      <p>Örnek açıklama metni</p>
+                  {industryLanes.map((lane, i) => (
+                    <article
+                      key={lane.titleKey}
+                      className={`industry-lane ${cardActive(lane.titleKey) ? "mirror-card-active" : ""}`}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onSelectCard("industries", { titleKey: lane.titleKey, descKey: lane.descKey, index: lane.index });
+                      }}
+                    >
+                      <div className="industry-lane-icon">{INDUSTRY_ICONS[i] || "📦"}</div>
+                      <h3>{lane.title || "—"}</h3>
+                      <p>{lane.desc || "—"}</p>
                     </article>
                   ))}
                 </div>

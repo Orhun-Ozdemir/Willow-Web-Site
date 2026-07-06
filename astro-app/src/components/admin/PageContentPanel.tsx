@@ -66,7 +66,15 @@ const FIELD_META: Record<string, FieldMeta> = {
   productsTitle: { label: "Başlık", section: "Ürünler", hint: "", type: "short" },
   productsLead: { label: "Açıklama", section: "Ürünler", hint: "", type: "long" },
   industriesEyebrow: { label: "Üst Etiket", section: "Sektörler", hint: "", type: "short" },
-  industriesTitle: { label: "Başlık", section: "Sektörler", hint: "", type: "short" },
+  industriesTitle: { label: "Başlık", section: "Sektörler", hint: "HTML destekler.", type: "short" },
+  industryLane_0_title: { label: "Başlık", section: "Sektör Kartları (4)", hint: "Akıllı Altyapı", type: "short" },
+  industryLane_0_desc: { label: "Açıklama", section: "Sektör Kartları (4)", hint: "", type: "long" },
+  industryLane_1_title: { label: "Başlık", section: "Sektör Kartları (4)", hint: "Endüstriyel İzleme", type: "short" },
+  industryLane_1_desc: { label: "Açıklama", section: "Sektör Kartları (4)", hint: "", type: "long" },
+  industryLane_2_title: { label: "Başlık", section: "Sektör Kartları (4)", hint: "MedTech ve Sağlık", type: "short" },
+  industryLane_2_desc: { label: "Açıklama", section: "Sektör Kartları (4)", hint: "", type: "long" },
+  industryLane_3_title: { label: "Başlık", section: "Sektör Kartları (4)", hint: "Lojistik ve Telekom", type: "short" },
+  industryLane_3_desc: { label: "Açıklama", section: "Sektör Kartları (4)", hint: "", type: "long" },
   newsEyebrow: { label: "Üst Etiket", section: "Haberler", hint: "", type: "short" },
   newsTitle: { label: "Başlık", section: "Haberler", hint: "", type: "short" },
   ctaEyebrow: { label: "Üst Etiket", section: "CTA", hint: "", type: "short" },
@@ -117,7 +125,7 @@ const HOME_LAYOUT: LayoutBlock[] = [
   { id: "trust", label: "Güven", tone: "light", fields: ["trustEyebrow", "trustTitle", "trustLead"] },
   { id: "ecosystem", label: "Ekosistem", tone: "dark", fields: ["ecosystemEyebrow", "ecosystemTitle", "ecosystemLead"], cards: [0, 1, 2, 3, 4].map((i) => ({ index: i, titleKey: `flowNode_${i}_title`, descKey: `flowNode_${i}_desc` })) },
   { id: "products", label: "Ürünler", tone: "light", fields: ["productsEyebrow", "productsTitle", "productsLead"] },
-  { id: "industries", label: "Sektörler", tone: "soft", fields: ["industriesEyebrow", "industriesTitle"] },
+  { id: "industries", label: "Sektörler", tone: "soft", fields: ["industriesEyebrow", "industriesTitle"], cards: [0, 1, 2, 3].map((i) => ({ index: i, titleKey: `industryLane_${i}_title`, descKey: `industryLane_${i}_desc` })) },
   { id: "news", label: "Haberler", tone: "light", fields: ["newsEyebrow", "newsTitle"] },
   { id: "cta", label: "CTA", tone: "cta", fields: ["ctaEyebrow", "ctaTitle", "ctaLead", "ctaCta"] },
 ];
@@ -125,6 +133,7 @@ const HOME_LAYOUT: LayoutBlock[] = [
 const HOME_EXTRA_KEYS = [
   ...[0, 1, 2, 3].flatMap((i) => [`serviceRail_${i}_title`, `serviceRail_${i}_desc`]),
   ...[0, 1, 2, 3, 4].flatMap((i) => [`flowNode_${i}_title`, `flowNode_${i}_desc`]),
+  ...[0, 1, 2, 3].flatMap((i) => [`industryLane_${i}_title`, `industryLane_${i}_desc`]),
 ];
 
 const SOURCE_LANG: Locale = "en";

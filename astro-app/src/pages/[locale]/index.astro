@@ -6,7 +6,7 @@ import FaqAccordion from "@/components/FaqAccordion.astro";
 import AIAnswerBlock from "@/components/AIAnswerBlock.astro";
 import { loadContent } from "@/lib/content";
 import { pageSeo, ORGANIZATION_SCHEMA, WEBSITE_SCHEMA } from "@/lib/seo";
-import { flowNodesFromPageContent, localizedValue, locales, resolveLocale, serviceRailFromPageContent, type Locale } from "@/lib/cms";
+import { flowNodesFromPageContent, industryLanesFromPageContent, localizedValue, locales, resolveLocale, serviceRailFromPageContent, type Locale } from "@/lib/cms";
 import { aiAnswerForPage, aiMetaForPage, appendSchemaNodes, fallbackFaqsForPage, faqItemsForPage, faqSchemaNode } from "@/lib/ai-search";
 
 export const prerender = false;
@@ -198,28 +198,75 @@ const flowNodes = cmsFlowNodes.length > 0
   ? cmsFlowNodes
   : DEFAULT_FLOW_NODES.map((item) => ({ title: loc(item.title), desc: loc(item.desc) }));
 
-const industryLanes: { icon: string; title: L10n; desc: L10n }[] = [
+const INDUSTRY_ICONS = ["🏙️", "⚙️", "🩺", "📦"];
+
+const DEFAULT_INDUSTRY_LANES: { title: L10n; desc: L10n }[] = [
   {
-    icon: "🏙️",
     title: { en: "Smart Infrastructure", tr: "Akıllı Altyapı", de: "Smarte Infrastruktur", fr: "Infrastructures intelligentes", es: "Infraestructura inteligente", it: "Infrastrutture intelligenti", ar: "البنية التحتية الذكية", ja: "スマートインフラ" },
-    desc: { en: "Flood levels, water tanks, smart lighting and public utility monitoring.", tr: "Taşkın seviyeleri, su depoları, akıllı aydınlatma ve kamu hizmeti izleme.", de: "Hochwasserpegel, Wassertanks, intelligente Beleuchtung und Überwachung öffentlicher Versorgung.", fr: "Niveaux de crue, réservoirs d'eau, éclairage intelligent et suivi des services publics.", es: "Niveles de inundación, tanques de agua, alumbrado inteligente y monitoreo de servicios públicos.", it: "Livelli di piena, serbatoi d'acqua, illuminazione intelligente e monitoraggio dei servizi pubblici.", ar: "مستويات الفيضانات وخزانات المياه والإنارة الذكية ومراقبة المرافق العامة.", ja: "洪水水位、貯水タンク、スマート照明、公共インフラの監視。" },
+    desc: {
+      en: "Field sensors designed for flood prevention, reservoir tracking and smart lighting systems.",
+      tr: "Taşkın önleme, su deposu takibi ve akıllı aydınlatma sistemleri için tasarlanmış saha sensörleri.",
+      de: "Feldsensoren für Hochwasserschutz, Wassertanküberwachung und intelligente Beleuchtungssysteme.",
+      fr: "Capteurs de terrain conçus pour la prévention des inondations, le suivi des réservoirs et l'éclairage intelligent.",
+      es: "Sensores de campo diseñados para prevención de inundaciones, seguimiento de depósitos y sistemas de alumbrado inteligente.",
+      it: "Sensori da campo progettati per prevenzione allagamenti, monitoraggio serbatoi e illuminazione intelligente.",
+      ar: "مستشعرات ميدانية مصممة لمنع الفيضانات وتتبع خزانات المياه وأنظمة الإنارة الذكية.",
+      ja: "洪水防止、貯水池監視、スマート照明システム向けに設計された現場センサー。",
+    },
   },
   {
-    icon: "⚙️",
     title: { en: "Industrial Monitoring", tr: "Endüstriyel İzleme", de: "Industrielle Überwachung", fr: "Surveillance industrielle", es: "Monitoreo industrial", it: "Monitoraggio industriale", ar: "المراقبة الصناعية", ja: "産業モニタリング" },
-    desc: { en: "Machine data, Modbus devices, factories, warehouses and energy systems.", tr: "Makine verileri, Modbus cihazları, fabrikalar, depolar ve enerji sistemleri.", de: "Maschinendaten, Modbus-Geräte, Fabriken, Lager und Energiesysteme.", fr: "Données machines, équipements Modbus, usines, entrepôts et systèmes énergétiques.", es: "Datos de máquinas, dispositivos Modbus, fábricas, almacenes y sistemas de energía.", it: "Dati macchina, dispositivi Modbus, fabbriche, magazzini e sistemi energetici.", ar: "بيانات الآلات وأجهزة Modbus والمصانع والمستودعات وأنظمة الطاقة.", ja: "機械データ、Modbus機器、工場、倉庫、エネルギーシステム。" },
+    desc: {
+      en: "Machine data, predictive maintenance, factories, warehouses and energy systems.",
+      tr: "Makine verileri, kestirimci bakım, fabrikalar, depolar ve enerji sistemleri.",
+      de: "Maschinendaten, vorausschauende Wartung, Fabriken, Lager und Energiesysteme.",
+      fr: "Données machines, maintenance prédictive, usines, entrepôts et systèmes énergétiques.",
+      es: "Datos de máquinas, mantenimiento predictivo, fábricas, almacenes y sistemas energéticos.",
+      it: "Dati macchina, manutenzione predittiva, fabbriche, magazzini e sistemi energetici.",
+      ar: "بيانات الآلات والصيانة التنبؤية والمصانع والمستودعات وأنظمة الطاقة.",
+      ja: "機械データ、予知保全、工場、倉庫、エネルギーシステム。",
+    },
   },
   {
-    icon: "🩺",
     title: { en: "MedTech & Healthcare", tr: "MedTech ve Sağlık", de: "MedTech & Gesundheit", fr: "MedTech & Santé", es: "MedTech y Salud", it: "MedTech e Sanità", ar: "التقنية الطبية والرعاية الصحية", ja: "医療・ヘルスケア" },
-    desc: { en: "Low-power sensor nodes for environmental and patient-adjacent monitoring.", tr: "Çevresel ve hasta yakını izleme için düşük güçlü sensör düğümleri.", de: "Low-Power-Sensorknoten für Umgebungs- und patientennahe Überwachung.", fr: "Capteurs basse consommation pour la surveillance environnementale et proche du patient.", es: "Nodos sensores de bajo consumo para monitoreo ambiental y cercano al paciente.", it: "Nodi sensore a basso consumo per il monitoraggio ambientale e in prossimità del paziente.", ar: "عقد استشعار منخفضة الطاقة للمراقبة البيئية والمحيطة بالمريض.", ja: "環境および患者周辺モニタリング向けの低消費電力センサーノード。" },
+    desc: {
+      en: "Low-power wireless sensor nodes for hospitals, laboratories and care units.",
+      tr: "Hastane, laboratuvar ve bakım üniteleri için düşük güçlü kablosuz sensör düğümleri.",
+      de: "Energieeffiziente drahtlose Sensorknoten für Krankenhäuser, Labore und Pflegeeinheiten.",
+      fr: "Nœuds capteurs sans fil basse consommation pour hôpitaux, laboratoires et unités de soins.",
+      es: "Nodos sensores inalámbricos de bajo consumo para hospitales, laboratorios y unidades de cuidados.",
+      it: "Nodi sensore wireless a basso consumo per ospedali, laboratori e unità di cura.",
+      ar: "عقد استشعار لاسلكية منخفضة الطاقة للمستشفيات والمختبرات ووحدات الرعاية.",
+      ja: "病院、研究所、ケアユニット向けの低消費電力ワイヤレスセンサーノード。",
+    },
   },
   {
-    icon: "📦",
-    title: { en: "Logistics & Telecoms", tr: "Lojistik ve Telekom", de: "Logistik & Telekom", fr: "Logistique & Télécoms", es: "Logística y Telecomunicaciones", it: "Logistica e Telecomunicazioni", ar: "اللوجستيات والاتصالات", ja: "物流・通信" },
-    desc: { en: "Asset tracking, GNSS, and field-connected devices for mobile operations.", tr: "Varlık takibi, GNSS ve mobil operasyonlar için sahaya bağlı cihazlar.", de: "Asset-Tracking, GNSS und feldvernetzte Geräte für mobile Einsätze.", fr: "Suivi d'actifs, GNSS et appareils connectés pour les opérations mobiles.", es: "Seguimiento de activos, GNSS y dispositivos conectados para operaciones móviles.", it: "Tracciamento asset, GNSS e dispositivi connessi per operazioni mobili.", ar: "تتبع الأصول وGNSS وأجهزة ميدانية متصلة للعمليات المتنقلة.", ja: "資産追跡、GNSS、移動オペレーション向けフィールド接続デバイス。" },
+    title: { en: "Logistics & Telecom", tr: "Lojistik ve Telekom", de: "Logistik & Telekom", fr: "Logistique & Télécoms", es: "Logística y Telecomunicaciones", it: "Logistica e Telecomunicazioni", ar: "اللوجستيات والاتصالات", ja: "物流・通信" },
+    desc: {
+      en: "Smart devices designed for asset tracking, GNSS positioning and mobile operations.",
+      tr: "Varlık takibi, GNSS tabanlı konumlandırma ve mobil operasyonlar için tasarlanmış akıllı cihazlar.",
+      de: "Intelligente Geräte für Asset-Tracking, GNSS-Positionierung und mobile Einsätze.",
+      fr: "Appareils intelligents conçus pour le suivi d'actifs, le positionnement GNSS et les opérations mobiles.",
+      es: "Dispositivos inteligentes diseñados para seguimiento de activos, posicionamiento GNSS y operaciones móviles.",
+      it: "Dispositivi intelligenti progettati per tracciamento asset, posizionamento GNSS e operazioni mobili.",
+      ar: "أجهزة ذكية مصممة لتتبع الأصول وتحديد المواقع GNSS والعمليات المتنقلة.",
+      ja: "資産追跡、GNSS測位、移動オペレーション向けに設計されたスマートデバイス。",
+    },
   },
 ];
+
+const cmsIndustryLanes = industryLanesFromPageContent(pageContent, locale);
+const industryLanes = cmsIndustryLanes.length > 0
+  ? cmsIndustryLanes.map((lane, idx) => ({
+      icon: INDUSTRY_ICONS[idx] || "📦",
+      title: lane.title,
+      desc: lane.desc,
+    }))
+  : DEFAULT_INDUSTRY_LANES.map((lane, idx) => ({
+      icon: INDUSTRY_ICONS[idx] || "📦",
+      title: loc(lane.title),
+      desc: loc(lane.desc),
+    }));
 
 const homeSchema = appendSchemaNodes({
   "@context": "https://schema.org",
@@ -374,7 +421,7 @@ const homeSchema = appendSchemaNodes({
         </div>
         <div class="industry-lanes">
           {industryLanes.map((lane, idx) => (
-            <article class={`industry-lane reveal${idx > 0 ? ` delay-${idx}` : ""}`}><div class="industry-lane-icon" aria-hidden="true">{lane.icon}</div><h3>{loc(lane.title)}</h3><p>{loc(lane.desc)}</p></article>
+            <article class={`industry-lane reveal${idx > 0 ? ` delay-${idx}` : ""}`}><div class="industry-lane-icon" aria-hidden="true">{lane.icon}</div><h3>{lane.title}</h3><p>{lane.desc}</p></article>
           ))}
         </div>
       </div>
