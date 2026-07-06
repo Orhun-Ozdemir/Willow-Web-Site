@@ -52,6 +52,23 @@ export function serviceRailFromPageContent(
   return items;
 }
 
+/** Reads home page ecosystem flow nodes from pageContent (`flowNode_0_title`, `flowNode_0_desc`, …). */
+export function flowNodesFromPageContent(
+  pageContent: Record<string, any> | undefined,
+  locale: Locale,
+  maxItems = 8,
+): ServiceRailItem[] {
+  if (!pageContent) return [];
+  const items: ServiceRailItem[] = [];
+  for (let i = 0; i < maxItems; i++) {
+    const title = localizedValue(pageContent[`flowNode_${i}_title`], locale).trim();
+    const desc = localizedValue(pageContent[`flowNode_${i}_desc`], locale).trim();
+    if (!title && !desc) break;
+    items.push({ title, desc });
+  }
+  return items;
+}
+
 export function normalizeLocalizedList(value: any): string[] {
   if (Array.isArray(value)) return value;
   if (typeof value === "string") return value.split(/[\n,]+/g).map((item) => item.trim()).filter(Boolean);

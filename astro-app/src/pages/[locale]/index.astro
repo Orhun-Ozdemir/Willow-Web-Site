@@ -6,7 +6,7 @@ import FaqAccordion from "@/components/FaqAccordion.astro";
 import AIAnswerBlock from "@/components/AIAnswerBlock.astro";
 import { loadContent } from "@/lib/content";
 import { pageSeo, ORGANIZATION_SCHEMA, WEBSITE_SCHEMA } from "@/lib/seo";
-import { localizedValue, locales, resolveLocale, serviceRailFromPageContent, type Locale } from "@/lib/cms";
+import { flowNodesFromPageContent, localizedValue, locales, resolveLocale, serviceRailFromPageContent, type Locale } from "@/lib/cms";
 import { aiAnswerForPage, aiMetaForPage, appendSchemaNodes, fallbackFaqsForPage, faqItemsForPage, faqSchemaNode } from "@/lib/ai-search";
 
 export const prerender = false;
@@ -125,28 +125,78 @@ const ecosystemLead: L10n = {
   ja: "各レイヤーは次のレイヤーを見据えて設計され、フィールドのテレメトリーが孤立したデータではなく実用的な運用ソフトウェアになります。",
 };
 
-const flowNodes: { title: L10n; desc: L10n }[] = [
+const DEFAULT_FLOW_NODES: { title: L10n; desc: L10n }[] = [
   {
     title: { en: "Hardware", tr: "Donanım", de: "Hardware", fr: "Matériel", es: "Hardware", it: "Hardware", ar: "العتاد", ja: "ハードウェア" },
-    desc: { en: "Custom PCB, sensors, power architecture.", tr: "Özel PCB, sensörler, güç mimarisi.", de: "Custom-PCB, Sensoren, Stromarchitektur.", fr: "PCB sur mesure, capteurs, architecture d'alimentation.", es: "PCB a medida, sensores, arquitectura de energía.", it: "PCB su misura, sensori, architettura di alimentazione.", ar: "لوحات PCB مخصصة ومستشعرات وبنية الطاقة.", ja: "カスタムPCB、センサー、電源設計。" },
+    desc: {
+      en: "Schematic/PCB design, smart sensor integration and low-power architecture.",
+      tr: "Şematik/PCB tasarımı, akıllı sensör entegrasyonu ve düşük güç mimarisi.",
+      de: "Schaltungs-/PCB-Design, intelligente Sensorintegration und Low-Power-Architektur.",
+      fr: "Conception schématique/PCB, intégration de capteurs intelligents et architecture basse consommation.",
+      es: "Diseño esquemático/PCB, integración de sensores inteligentes y arquitectura de bajo consumo.",
+      it: "Progettazione schematica/PCB, integrazione sensori intelligenti e architettura a basso consumo.",
+      ar: "تصميم المخططات/PCB، وتكامل المستشعرات الذكية وبنية الطاقة المنخفضة.",
+      ja: "回路図/PCB設計、スマートセンサー統合、低消費電力アーキテクチャ。",
+    },
   },
   {
-    title: { en: "Firmware", tr: "Gömülü Yazılım", de: "Firmware", fr: "Firmware", es: "Firmware", it: "Firmware", ar: "البرامج الثابتة", ja: "ファームウェア" },
-    desc: { en: "RTOS, OTA, protocols, low-power logic.", tr: "RTOS, OTA, protokoller, düşük güç mantığı.", de: "RTOS, OTA, Protokolle, Low-Power-Logik.", fr: "RTOS, OTA, protocoles, logique basse consommation.", es: "RTOS, OTA, protocolos, lógica de bajo consumo.", it: "RTOS, OTA, protocolli, logica a basso consumo.", ar: "RTOS وتحديثات OTA والبروتوكولات ومنطق الطاقة المنخفضة.", ja: "RTOS、OTA、プロトコル、低消費電力ロジック。" },
+    title: { en: "Embedded Software", tr: "Gömülü Yazılım", de: "Embedded Software", fr: "Logiciel embarqué", es: "Software embebido", it: "Software embedded", ar: "البرمجيات المدمجة", ja: "組み込みソフトウェア" },
+    desc: {
+      en: "RTOS-based firmware architecture, secure OTA and industrial protocols.",
+      tr: "RTOS tabanlı firmware mimarisi, güvenli OTA ve endüstriyel protokoller.",
+      de: "RTOS-basierte Firmware-Architektur, sichere OTA und industrielle Protokolle.",
+      fr: "Architecture firmware RTOS, OTA sécurisé et protocoles industriels.",
+      es: "Arquitectura firmware basada en RTOS, OTA seguro y protocolos industriales.",
+      it: "Architettura firmware RTOS, OTA sicuro e protocolli industriali.",
+      ar: "بنية firmware قائمة على RTOS، وOTA آمن وبروتوكولات صناعية.",
+      ja: "RTOSベースのファームウェア設計、セキュアOTA、産業プロトコル。",
+    },
   },
   {
-    title: { en: "Connectivity", tr: "Bağlantı", de: "Konnektivität", fr: "Connectivité", es: "Conectividad", it: "Connettività", ar: "الاتصال", ja: "コネクティビティ" },
-    desc: { en: "LoRaWAN, BLE, Wi-Fi, RF optimization.", tr: "LoRaWAN, BLE, Wi-Fi, RF optimizasyonu.", de: "LoRaWAN, BLE, WLAN, HF-Optimierung.", fr: "LoRaWAN, BLE, Wi-Fi, optimisation RF.", es: "LoRaWAN, BLE, Wi-Fi, optimización RF.", it: "LoRaWAN, BLE, Wi-Fi, ottimizzazione RF.", ar: "LoRaWAN وBLE وWi-Fi وتحسين الترددات.", ja: "LoRaWAN、BLE、Wi-Fi、RF最適化。" },
+    title: { en: "Wireless Connectivity", tr: "Kablosuz Bağlantı", de: "Drahtlose Konnektivität", fr: "Connectivité sans fil", es: "Conectividad inalámbrica", it: "Connettività wireless", ar: "الاتصال اللاسلكي", ja: "ワイヤレス接続" },
+    desc: {
+      en: "LoRaWAN, BLE, Wi-Fi, RF optimization.",
+      tr: "LoRaWAN, BLE, Wi-Fi, RF optimizasyonu.",
+      de: "LoRaWAN, BLE, Wi-Fi, HF-Optimierung.",
+      fr: "LoRaWAN, BLE, Wi-Fi, optimisation RF.",
+      es: "LoRaWAN, BLE, Wi-Fi, optimización RF.",
+      it: "LoRaWAN, BLE, Wi-Fi, ottimizzazione RF.",
+      ar: "LoRaWAN وBLE وWi-Fi وتحسين الترددات.",
+      ja: "LoRaWAN、BLE、Wi-Fi、RF最適化。",
+    },
   },
   {
     title: { en: "Backend", tr: "Backend", de: "Backend", fr: "Backend", es: "Backend", it: "Backend", ar: "الخلفية", ja: "バックエンド" },
-    desc: { en: "APIs, PostgreSQL, auth, integrations.", tr: "API'ler, PostgreSQL, kimlik doğrulama, entegrasyonlar.", de: "APIs, PostgreSQL, Auth, Integrationen.", fr: "API, PostgreSQL, authentification, intégrations.", es: "APIs, PostgreSQL, autenticación, integraciones.", it: "API, PostgreSQL, autenticazione, integrazioni.", ar: "واجهات برمجة وPostgreSQL ومصادقة وتكاملات.", ja: "API、PostgreSQL、認証、外部連携。" },
+    desc: {
+      en: "Scalable architectures, secure database and cloud management.",
+      tr: "Ölçeklenebilir mimariler, güvenli veri tabanı ve bulut yönetimi.",
+      de: "Skalierbare Architekturen, sichere Datenbank und Cloud-Management.",
+      fr: "Architectures évolutives, base de données sécurisée et gestion cloud.",
+      es: "Arquitecturas escalables, base de datos segura y gestión en la nube.",
+      it: "Architetture scalabili, database sicuro e gestione cloud.",
+      ar: "بنى قابلة للتوسع، وقاعدة بيانات آمنة وإدارة سحابية.",
+      ja: "スケーラブルな設計、セキュアなデータベースとクラウド管理。",
+    },
   },
   {
     title: { en: "Interfaces", tr: "Arayüzler", de: "Schnittstellen", fr: "Interfaces", es: "Interfaces", it: "Interfacce", ar: "الواجهات", ja: "インターフェース" },
-    desc: { en: "Mobile apps, dashboards, admin panels, VR.", tr: "Mobil uygulamalar, kontrol panelleri, yönetim ekranları, VR.", de: "Mobile Apps, Dashboards, Admin-Panels, VR.", fr: "Applications mobiles, tableaux de bord, panneaux d'administration, VR.", es: "Aplicaciones móviles, paneles de control, administración, VR.", it: "App mobili, dashboard, pannelli admin, VR.", ar: "تطبيقات الجوال ولوحات التحكم ولوحات الإدارة والواقع الافتراضي.", ja: "モバイルアプリ、ダッシュボード、管理画面、VR。" },
+    desc: {
+      en: "Real-time monitoring dashboards, web portals and mobile applications.",
+      tr: "Gerçek zamanlı izleme panelleri, web portalları ve mobil uygulamalar.",
+      de: "Echtzeit-Monitoring-Dashboards, Webportale und Mobile Apps.",
+      fr: "Tableaux de bord de monitoring temps réel, portails web et applications mobiles.",
+      es: "Paneles de monitoreo en tiempo real, portales web y aplicaciones móviles.",
+      it: "Dashboard di monitoraggio in tempo reale, portali web e app mobile.",
+      ar: "لوحات مراقبة فورية، وبوابات ويب وتطبيقات جوال.",
+      ja: "リアルタイム監視ダッシュボード、Webポータル、モバイルアプリ。",
+    },
   },
 ];
+
+const cmsFlowNodes = flowNodesFromPageContent(pageContent, locale);
+const flowNodes = cmsFlowNodes.length > 0
+  ? cmsFlowNodes
+  : DEFAULT_FLOW_NODES.map((item) => ({ title: loc(item.title), desc: loc(item.desc) }));
 
 const industryLanes: { icon: string; title: L10n; desc: L10n }[] = [
   {
@@ -290,7 +340,7 @@ const homeSchema = appendSchemaNodes({
         <div class="tech-flow reveal delay-1">
           <div class="flow-row">
             {flowNodes.map((node, idx) => (
-              <div class="flow-node"><small>{String(idx + 1).padStart(2, "0")}</small><strong>{loc(node.title)}</strong><span>{loc(node.desc)}</span></div>
+              <div class="flow-node"><small>{String(idx + 1).padStart(2, "0")}</small><strong>{node.title}</strong><span>{node.desc}</span></div>
             ))}
           </div>
         </div>

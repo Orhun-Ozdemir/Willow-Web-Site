@@ -3996,6 +3996,106 @@
         "ar": "تطبيقات التوأم الرقمي الصناعي، ومحاكاة تدريب تقني بـ VR، وعروض منتجات تفاعلية.",
         "ja": "産業向けデジタルツイン、VR技術研修シミュレーション、インタラクティブ製品デモ。"
       },
+      "flowNode_0_title": {
+        "en": "Hardware",
+        "tr": "Donanım",
+        "de": "Hardware",
+        "fr": "Matériel",
+        "es": "Hardware",
+        "it": "Hardware",
+        "ar": "العتاد",
+        "ja": "ハードウェア"
+      },
+      "flowNode_0_desc": {
+        "en": "Schematic/PCB design, smart sensor integration and low-power architecture.",
+        "tr": "Şematik/PCB tasarımı, akıllı sensör entegrasyonu ve düşük güç mimarisi.",
+        "de": "Schaltungs-/PCB-Design, intelligente Sensorintegration und Low-Power-Architektur.",
+        "fr": "Conception schématique/PCB, intégration de capteurs intelligents et architecture basse consommation.",
+        "es": "Diseño esquemático/PCB, integración de sensores inteligentes y arquitectura de bajo consumo.",
+        "it": "Progettazione schematica/PCB, integrazione sensori intelligenti e architettura a basso consumo.",
+        "ar": "تصميم المخططات/PCB، وتكامل المستشعرات الذكية وبنية الطاقة المنخفضة.",
+        "ja": "回路図/PCB設計、スマートセンサー統合、低消費電力アーキテクチャ。"
+      },
+      "flowNode_1_title": {
+        "en": "Embedded Software",
+        "tr": "Gömülü Yazılım",
+        "de": "Embedded Software",
+        "fr": "Logiciel embarqué",
+        "es": "Software embebido",
+        "it": "Software embedded",
+        "ar": "البرمجيات المدمجة",
+        "ja": "組み込みソフトウェア"
+      },
+      "flowNode_1_desc": {
+        "en": "RTOS-based firmware architecture, secure OTA and industrial protocols.",
+        "tr": "RTOS tabanlı firmware mimarisi, güvenli OTA ve endüstriyel protokoller.",
+        "de": "RTOS-basierte Firmware-Architektur, sichere OTA und industrielle Protokolle.",
+        "fr": "Architecture firmware RTOS, OTA sécurisé et protocoles industriels.",
+        "es": "Arquitectura firmware basada en RTOS, OTA seguro y protocolos industriales.",
+        "it": "Architettura firmware RTOS, OTA sicuro e protocolli industriali.",
+        "ar": "بنية firmware قائمة على RTOS، وOTA آمن وبروتوكولات صناعية.",
+        "ja": "RTOSベースのファームウェア設計、セキュアOTA、産業プロトコル。"
+      },
+      "flowNode_2_title": {
+        "en": "Wireless Connectivity",
+        "tr": "Kablosuz Bağlantı",
+        "de": "Drahtlose Konnektivität",
+        "fr": "Connectivité sans fil",
+        "es": "Conectividad inalámbrica",
+        "it": "Connettività wireless",
+        "ar": "الاتصال اللاسلكي",
+        "ja": "ワイヤレス接続"
+      },
+      "flowNode_2_desc": {
+        "en": "LoRaWAN, BLE, Wi-Fi, RF optimization.",
+        "tr": "LoRaWAN, BLE, Wi-Fi, RF optimizasyonu.",
+        "de": "LoRaWAN, BLE, Wi-Fi, HF-Optimierung.",
+        "fr": "LoRaWAN, BLE, Wi-Fi, optimisation RF.",
+        "es": "LoRaWAN, BLE, Wi-Fi, optimización RF.",
+        "it": "LoRaWAN, BLE, Wi-Fi, ottimizzazione RF.",
+        "ar": "LoRaWAN وBLE وWi-Fi وتحسين الترددات.",
+        "ja": "LoRaWAN、BLE、Wi-Fi、RF最適化。"
+      },
+      "flowNode_3_title": {
+        "en": "Backend",
+        "tr": "Backend",
+        "de": "Backend",
+        "fr": "Backend",
+        "es": "Backend",
+        "it": "Backend",
+        "ar": "الخلفية",
+        "ja": "バックエンド"
+      },
+      "flowNode_3_desc": {
+        "en": "Scalable architectures, secure database and cloud management.",
+        "tr": "Ölçeklenebilir mimariler, güvenli veri tabanı ve bulut yönetimi.",
+        "de": "Skalierbare Architekturen, sichere Datenbank und Cloud-Management.",
+        "fr": "Architectures évolutives, base de données sécurisée et gestion cloud.",
+        "es": "Arquitecturas escalables, base de datos segura y gestión en la nube.",
+        "it": "Architetture scalabili, database sicuro e gestione cloud.",
+        "ar": "بنى قابلة للتوسع، وقاعدة بيانات آمنة وإدارة سحابية.",
+        "ja": "スケーラブルな設計、セキュアなデータベースとクラウド管理。"
+      },
+      "flowNode_4_title": {
+        "en": "Interfaces",
+        "tr": "Arayüzler",
+        "de": "Schnittstellen",
+        "fr": "Interfaces",
+        "es": "Interfaces",
+        "it": "Interfacce",
+        "ar": "الواجهات",
+        "ja": "インターフェース"
+      },
+      "flowNode_4_desc": {
+        "en": "Real-time monitoring dashboards, web portals and mobile applications.",
+        "tr": "Gerçek zamanlı izleme panelleri, web portalları ve mobil uygulamalar.",
+        "de": "Echtzeit-Monitoring-Dashboards, Webportale und Mobile Apps.",
+        "fr": "Tableaux de bord de monitoring temps réel, portails web et applications mobiles.",
+        "es": "Paneles de monitoreo en tiempo real, portales web y aplicaciones móviles.",
+        "it": "Dashboard di monitoraggio in tempo reale, portali web e app mobile.",
+        "ar": "لوحات مراقبة فورية، وبوابات ويب وتطبيقات جوال.",
+        "ja": "リアルタイム監視ダッシュボード、Webポータル、モバイルアプリ。"
+      },
       "problemEyebrow": {
         "en": "The Real Problem",
         "tr": "Asıl Sorun",

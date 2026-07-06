@@ -53,6 +53,16 @@ const FIELD_META: Record<string, FieldMeta> = {
   ecosystemEyebrow:   { label: "Küçük Üst Etiket",           section: "Ekosistem Bölümü",          hint: "",                                                             type: "short"  },
   ecosystemTitle:     { label: "Bölüm Başlığı",              section: "Ekosistem Bölümü",          hint: "HTML destekler.",                                              type: "short"  },
   ecosystemLead:      { label: "Bölüm Açıklaması",           section: "Ekosistem Bölümü",          hint: "",                                                             type: "long"   },
+  flowNode_0_title:   { label: "Katman 1 — Başlık",          section: "Ekosistem Katmanları (5)",  hint: "Donanım katmanı başlığı.",                                     type: "short"  },
+  flowNode_0_desc:    { label: "Katman 1 — Açıklama",        section: "Ekosistem Katmanları (5)",  hint: "",                                                             type: "long"   },
+  flowNode_1_title:   { label: "Katman 2 — Başlık",          section: "Ekosistem Katmanları (5)",  hint: "Gömülü yazılım katmanı.",                                      type: "short"  },
+  flowNode_1_desc:    { label: "Katman 2 — Açıklama",        section: "Ekosistem Katmanları (5)",  hint: "",                                                             type: "long"   },
+  flowNode_2_title:   { label: "Katman 3 — Başlık",          section: "Ekosistem Katmanları (5)",  hint: "Kablosuz bağlantı katmanı.",                                   type: "short"  },
+  flowNode_2_desc:    { label: "Katman 3 — Açıklama",        section: "Ekosistem Katmanları (5)",  hint: "",                                                             type: "long"   },
+  flowNode_3_title:   { label: "Katman 4 — Başlık",          section: "Ekosistem Katmanları (5)",  hint: "Backend katmanı.",                                             type: "short"  },
+  flowNode_3_desc:    { label: "Katman 4 — Açıklama",        section: "Ekosistem Katmanları (5)",  hint: "",                                                             type: "long"   },
+  flowNode_4_title:   { label: "Katman 5 — Başlık",          section: "Ekosistem Katmanları (5)",  hint: "Arayüzler katmanı.",                                           type: "short"  },
+  flowNode_4_desc:    { label: "Katman 5 — Açıklama",        section: "Ekosistem Katmanları (5)",  hint: "",                                                             type: "long"   },
   productsEyebrow:    { label: "Küçük Üst Etiket",           section: "Ürünler Bölümü",            hint: "",                                                             type: "short"  },
   productsTitle:      { label: "Bölüm Başlığı",              section: "Ürünler Bölümü",            hint: "HTML destekler.",                                              type: "short"  },
   productsLead:       { label: "Bölüm Açıklaması",           section: "Ürünler Bölümü",            hint: "",                                                             type: "long"   },
@@ -155,6 +165,14 @@ const HOME_SERVICE_RAIL_KEYS = [
   "serviceRail_3_title", "serviceRail_3_desc",
 ];
 
+const HOME_FLOW_NODE_KEYS = [
+  "flowNode_0_title", "flowNode_0_desc",
+  "flowNode_1_title", "flowNode_1_desc",
+  "flowNode_2_title", "flowNode_2_desc",
+  "flowNode_3_title", "flowNode_3_desc",
+  "flowNode_4_title", "flowNode_4_desc",
+];
+
 export default function PageContentPanel() {
   const { content, setContent } = useAdmin();
   const [selectedPage, setSelectedPage] = useState("home");
@@ -169,7 +187,7 @@ export default function PageContentPanel() {
   const pageData = pageContent[selectedPage] || {};
   const keys = (
     selectedPage === "home"
-      ? [...new Set([...Object.keys(pageData), ...HOME_SERVICE_RAIL_KEYS])]
+      ? [...new Set([...Object.keys(pageData), ...HOME_SERVICE_RAIL_KEYS, ...HOME_FLOW_NODE_KEYS])]
       : Object.keys(pageData)
   ).sort();
 
