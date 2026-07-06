@@ -94,7 +94,16 @@ const categoryName = (cat: string) =>
         <img src={resolveAsset(getVal("heroImage") || "/pdf-assets/p04_01_X9.jpg")} alt="Industrial IoT telemetry network" loading="lazy" decoding="async" />
       </div>
 
-      <canvas class="signal-canvas" data-density="42" data-color="35, 168, 216"></canvas>
+      <canvas class="signal-canvas solutions-hero-signal" data-density="46" data-color="26, 163, 196"></canvas>
+
+      <svg class="solutions-hero-grid" aria-hidden="true" viewBox="0 0 100 100" preserveAspectRatio="none">
+        <defs>
+          <pattern id="solutionsHeroGrid" x="0" y="0" width="80" height="80" patternUnits="userSpaceOnUse">
+            <path d="M80 0H0V80" fill="none" stroke="#7fa3d8" stroke-width="1"/>
+          </pattern>
+        </defs>
+        <rect width="100%" height="100%" fill="url(#solutionsHeroGrid)"/>
+      </svg>
 
       <div class="solutions-hero-overlay"></div>
 
