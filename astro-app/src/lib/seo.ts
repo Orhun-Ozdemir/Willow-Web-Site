@@ -22,7 +22,7 @@ export const ORGANIZATION_SCHEMA = {
   alternateName: "WILLOWSOFT",
   url: SITE_ORIGIN,
   logo: `${SITE_ORIGIN}/assets/willow-mark-transparent.png`,
-  slogan: "Smart Embedded Connectivity",
+  slogan: "Embedded Systems & IoT Connectivity",
   description:
     "Embedded hardware and Industrial IoT engineering company. WillowSoft designs LoRaWAN devices, firmware, backend APIs, dashboards, mobile apps and VR layers as one connected system.",
   foundingDate: "2020",

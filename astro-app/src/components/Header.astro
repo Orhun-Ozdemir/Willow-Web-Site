@@ -1,6 +1,8 @@
 ---
 import type { Locale } from "@/lib/cms";
 import { locales, resolveLocale } from "@/lib/cms";
+import { loadContent } from "@/lib/content";
+import { brandTaglineForLocale } from "@/lib/brand-tagline";
 
 interface Props {
   locale: Locale;
@@ -9,6 +11,8 @@ interface Props {
 
 const locale = resolveLocale(Astro.props.locale, Astro.url.pathname);
 const currentPath = Astro.props.currentPath || Astro.url.pathname;
+const content = await loadContent();
+const brandTagline = brandTaglineForLocale(content?.meta, locale);
 
 const labels: Record<string, string> = { en: "EN", tr: "TR", de: "DE", fr: "FR", es: "ES", it: "IT", ar: "AR", ja: "JA" };
 const navLabels = {
@@ -22,16 +26,6 @@ const navLabels = {
   language: { en: "Language", tr: "Dil", de: "Sprache", fr: "Langue", es: "Idioma", it: "Lingua", ar: "اللغة", ja: "言語" },
   openMenu: { en: "Open menu", tr: "Menüyü aç", de: "Menü öffnen", fr: "Ouvrir le menu", es: "Abrir menú", it: "Apri menu", ar: "افتح القائمة", ja: "メニューを開く" },
   mainNavigation: { en: "Main navigation", tr: "Ana gezinme", de: "Hauptnavigation", fr: "Navigation principale", es: "Navegación principal", it: "Navigazione principale", ar: "التنقل الرئيسي", ja: "メインナビゲーション" },
-};
-const brandTagline: Record<string, string> = {
-  en: "Smart Embedded Connectivity",
-  tr: "Akıllı Gömülü Bağlantı",
-  de: "Intelligente Embedded-Konnektivität",
-  fr: "Connectivité embarquée intelligente",
-  es: "Conectividad embebida inteligente",
-  it: "Connettività embedded intelligente",
-  ar: "اتصال مدمج ذكي",
-  ja: "スマート組み込み接続",
 };
 
 const ctaLabels: Record<string, string> = {
@@ -70,7 +64,7 @@ function isActive(href: string) {
       </span>
       <span>
         <strong>WILLOWSOFT</strong>
-        <span>{brandTagline[locale] || brandTagline.en}</span>
+        <span>{brandTagline}</span>
       </span>
     </a>
 

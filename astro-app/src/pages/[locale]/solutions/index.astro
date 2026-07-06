@@ -88,13 +88,9 @@ const categoryName = (cat: string) =>
   dataPage="solutions"
 >
   <main>
-    <!-- Premium Hero -->
-    <section class="solutions-hero-premium">
-      <div class="solutions-hero-bg">
-        <img src={resolveAsset(getVal("heroImage") || "/pdf-assets/p04_01_X9.jpg")} alt="Industrial IoT telemetry network" loading="lazy" decoding="async" />
-      </div>
-
-      <canvas class="signal-canvas solutions-hero-signal" data-density="46" data-color="26, 163, 196"></canvas>
+    <!-- Premium Hero — Hakkımızda ile aynı signal-canvas animasyonu -->
+    <section class="solutions-hero-premium company-hero-c">
+      <canvas class="signal-canvas solutions-hero-signal company-hero-signal" data-density="46" data-color="26, 163, 196"></canvas>
 
       <svg class="solutions-hero-grid" aria-hidden="true" viewBox="0 0 100 100" preserveAspectRatio="none">
         <defs>
@@ -105,9 +101,7 @@ const categoryName = (cat: string) =>
         <rect width="100%" height="100%" fill="url(#solutionsHeroGrid)"/>
       </svg>
 
-      <div class="solutions-hero-overlay"></div>
-
-      <div class="solutions-hero-inner">
+      <div class="solutions-hero-inner hero-inner-c">
         <div class="solutions-hero-content reveal">
           <p class="eyebrow">{getVal("heroEyebrow") || "Industrial IoT Solutions"}</p>
 
@@ -116,8 +110,8 @@ const categoryName = (cat: string) =>
           <p>{getVal("heroLead") || "WillowSoft connects field sensors, LoRaWAN devices, gateways, APIs, dashboards and mobile workflows into one reliable industrial IoT ecosystem."}</p>
 
           <div class="solutions-hero-actions">
-            <a class="btn btn-primary" href={`/${locale}/start-project`}>{getLabel("mapCase")}</a>
-            <a class="btn btn-secondary" href={`/${locale}/products`}>{getLabel("exploreDevices")}</a>
+            <a class="ws-btn ws-btn-primary" href={`/${locale}/start-project`}>{getLabel("mapCase")}</a>
+            <a class="ws-btn ws-btn-ghost" href={`/${locale}/products`}>{getLabel("exploreDevices")}</a>
           </div>
         </div>
 

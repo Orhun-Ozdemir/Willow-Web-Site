@@ -5,6 +5,7 @@ import { locales, type Locale } from "@/lib/cms";
 import { useAdmin } from "./AdminContext";
 import LocaleTabs from "./LocaleTabs";
 import { syncOfficePhonesInFacts } from "@/lib/company-contact";
+import { DEFAULT_BRAND_TAGLINE } from "@/lib/brand-tagline";
 
 // ── Known companyFacts fields with human-readable metadata ──────────────────
 const KNOWN_FACTS: { key: string; label: string; hint: string; type?: "text" | "textarea" }[] = [
@@ -442,8 +443,11 @@ export default function SettingsPanel() {
   const { content, setContent } = useAdmin();
   const [subTab, setSubTab] = useState<"facts" | "ui" | "notifications" | "social" | "api">("facts");
   const [uiLocale, setUiLocale] = useState<Locale>("tr");
+  const [brandLocale, setBrandLocale] = useState<Locale>("tr");
 
   const facts = content?.companyFacts || {};
+  const meta = content?.meta || {};
+  const brandTagline = { ...DEFAULT_BRAND_TAGLINE, ...(meta.brandTagline || {}) };
   const translations = content?.translations || {};
   const uiStrings = translations[uiLocale] || {};
 
@@ -458,6 +462,20 @@ export default function SettingsPanel() {
       const nextFacts = syncOfficePhonesInFacts({ ...(c.companyFacts || {}), [key]: value });
       return { ...c, companyFacts: nextFacts };
     });
+  };
+
+  const updateBrandTagline = (locale: Locale, value: string) => {
+    setContent((c: any) => ({
+      ...c,
+      meta: {
+        ...(c.meta || {}),
+        brandTagline: {
+          ...DEFAULT_BRAND_TAGLINE,
+          ...(c.meta?.brandTagline || {}),
+          [locale]: value,
+        },
+      },
+    }));
   };
 
   const updateUIString = (key: string, value: string) => {
@@ -512,6 +530,28 @@ export default function SettingsPanel() {
       {/* ── Company Facts ── */}
       {subTab === "facts" && (
         <div className="space-y-4">
+          <div className="bg-white border border-gray-200 rounded-xl p-5 space-y-4">
+            <div>
+              <p className="text-sm font-semibold text-gray-800">Marka Sloganı (Header)</p>
+              <p className="mt-1 text-xs text-gray-400">
+                Logo altında görünen <strong>WILLOWSOFT</strong> altı metin. Her dil için ayrı kaydedilir ve Supabase <code className="text-[11px]">site_meta</code> tablosuna yazılır.
+              </p>
+            </div>
+            <LocaleTabs active={brandLocale} onChange={setBrandLocale} />
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              <div className="p-2 bg-gray-50 border border-gray-100 rounded text-sm text-gray-400 truncate">
+                {DEFAULT_BRAND_TAGLINE.en}
+              </div>
+              <input
+                type="text"
+                value={brandTagline[brandLocale] || ""}
+                onChange={(e) => updateBrandTagline(brandLocale, e.target.value)}
+                placeholder={DEFAULT_BRAND_TAGLINE[brandLocale]}
+                className="w-full p-2.5 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-800 outline-none focus:border-[#1aa3c4]"
+              />
+            </div>
+          </div>
+
           <div className="bg-blue-50 border border-blue-100 rounded-xl p-4 text-sm text-blue-700">
             Bu alandaki bilgiler sitenin <strong>ana sayfa, iletişim, şirket ve ürünler</strong> sayfalarında otomatik olarak kullanılır. Telefon numaralarını buradan veya Hakkımızda → Ofislerimiz sekmesinden güncelleyebilirsiniz.
           </div>

@@ -173,7 +173,9 @@ const skipLabel = skipLabels[locale] || skipLabels.en;
           var raf = 0, running = false;
           var density = Number(canvas.dataset.density || 36);
           var color = canvas.dataset.color || "35, 168, 216";
-          var isHeroCanvas = !!canvas.closest(".hero");
+          var isHeroCanvas = !!canvas.closest(".hero")
+            || !!canvas.closest(".company-hero-c")
+            || !!canvas.closest(".solutions-hero-premium");
           var DIST_MAX_SQ = 150 * 150;
 
           function clamp(value, min, max){

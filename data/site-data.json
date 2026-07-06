@@ -11,6 +11,16 @@
       "ar",
       "ja"
     ],
+    "brandTagline": {
+      "en": "Embedded Systems & IoT Connectivity",
+      "tr": "Gömülü Sistemler ve IoT Bağlantı Çözümleri",
+      "de": "Eingebettete Systeme und IoT-Konnektivität",
+      "fr": "Systèmes embarqués et connectivité IoT",
+      "es": "Sistemas embebidos y conectividad IoT",
+      "it": "Sistemi embedded e connettività IoT",
+      "ar": "الأنظمة المدمجة وحلول اتصال إنترنت الأشياء",
+      "ja": "組み込みシステムとIoT通信"
+    },
     "updatedAt": "2026-07-06T19:54:59.217Z"
   },
   "companyFacts": {
