@@ -55,9 +55,9 @@ body[data-page="home"] {
   --accent-soft: rgba(26, 163, 196, 0.10);
   --accent-glow: rgba(26, 163, 196, 0.22);
   --accent-rgb: 26, 163, 196;
-  --shader-base: #e8eeff;
-  --shader-bloom-a: #9ecfff;
-  --shader-bloom-b: #8a9cff;
+  --shader-base: #eef2ff;
+  --shader-bloom-a: #dce8ff;
+  --shader-bloom-b: #b8c8ff;
   --shader-electric: #12b5ff;
   --shader-violet: #7a52ff;
   --shader-warm: #ff7a45;
@@ -9178,48 +9178,47 @@ body[data-page="home"] .section {
 @keyframes homeHeroLightSweep {
   0% {
     background-position: 0 0, 118% 44%;
-    transform: translate3d(22%, 0, 0) rotate(1.15deg) scale(1.1);
   }
 
   100% {
     background-position: 0 0, -108% 56%;
-    transform: translate3d(-28%, 0, 0) rotate(-0.85deg) scale(1.08);
   }
 }
 
 body[data-page="home"] .motion-hero::after {
-  inset: -22% -28%;
+  inset: -20% -26%;
+  transform: rotate(1deg) scale(1.04);
   background:
-    linear-gradient(180deg, rgba(250, 248, 255, 0) 0%, rgba(250, 248, 255, 0.02) 100%),
+    linear-gradient(180deg, rgba(250, 248, 255, 0) 0%, rgba(250, 248, 255, 0.06) 100%),
     repeating-linear-gradient(
       116deg,
-      rgba(255, 255, 255, 0) 0 0.5%,
-      rgba(var(--accent-rgb), 0.52) 0.7% 1.8%,
-      rgba(255, 255, 255, 0) 2% 2.8%,
-      rgba(112, 77, 255, 0.48) 3% 4.1%,
-      rgba(255, 255, 255, 0) 4.3% 5.1%,
-      rgba(24, 167, 255, 0.54) 5.3% 6.4%,
-      rgba(255, 255, 255, 0) 6.6% 7.4%,
-      rgba(215, 154, 43, 0.38) 7.6% 8.7%,
-      rgba(255, 255, 255, 0) 8.9% 9.7%,
-      rgba(112, 77, 255, 0.44) 9.9% 11%,
-      rgba(255, 255, 255, 0) 11.2% 12%,
-      rgba(var(--accent-rgb), 0.46) 12.2% 13.3%,
-      rgba(255, 255, 255, 0) 13.5% 14.3%,
-      rgba(24, 167, 255, 0.42) 14.5% 15.6%,
-      rgba(255, 255, 255, 0) 15.8% 16.6%,
-      rgba(215, 154, 43, 0.34) 16.8% 17.9%,
-      rgba(255, 255, 255, 0) 18.1% 100%
+      rgba(255, 255, 255, 0) 0 1.2%,
+      rgba(255, 255, 255, 0.46) 1.4% 1.7%,
+      rgba(var(--accent-rgb), 0.36) 1.9% 3.0%,
+      rgba(255, 255, 255, 0.40) 3.2% 3.5%,
+      rgba(112, 77, 255, 0.32) 3.7% 4.8%,
+      rgba(255, 255, 255, 0.38) 5.0% 5.3%,
+      rgba(24, 167, 255, 0.38) 5.5% 6.6%,
+      rgba(255, 255, 255, 0.38) 6.8% 7.1%,
+      rgba(215, 154, 43, 0.28) 7.3% 8.4%,
+      rgba(255, 255, 255, 0.40) 8.6% 8.9%,
+      rgba(112, 77, 255, 0.30) 9.1% 10.2%,
+      rgba(255, 255, 255, 0.38) 10.4% 10.7%,
+      rgba(var(--accent-rgb), 0.32) 10.9% 12.0%,
+      rgba(255, 255, 255, 0.36) 12.2% 12.5%,
+      rgba(24, 167, 255, 0.30) 12.7% 13.8%,
+      rgba(255, 255, 255, 0) 14% 100%
     );
-  background-size: auto, 82% 250%;
+  background-size: auto, 86% 220%;
   background-position: 0 0, 118% 44%;
-  animation: homeHeroLightSweep 6.8s cubic-bezier(0.34, 0, 0.14, 1) infinite alternate;
-  mix-blend-mode: normal;
-  opacity: 0.38;
+  animation: homeHeroLightSweep 7.4s cubic-bezier(0.34, 0, 0.14, 1) infinite alternate;
+  mix-blend-mode: screen;
+  opacity: 0.68;
+  will-change: background-position;
 }
 
 body[data-page="home"] .motion-hero .hero-shader-canvas {
-  filter: saturate(1.72) contrast(1.08);
+  filter: none;
 }
 
 body[data-page="home"] .section.tight {
