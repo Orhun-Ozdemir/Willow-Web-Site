@@ -57,7 +57,6 @@ body[data-page="home"] {
   --accent-rgb: 26, 163, 196;
 }
 
-body[data-page="solutions"],
 body[data-page="contact"],
 body[data-page="product-air"] {
   --accent: var(--green);
@@ -97,7 +96,8 @@ body[data-page="product-bee"] {
 }
 
 body[data-page="company"],
-body[data-page="news-detail"] {
+body[data-page="news-detail"],
+body[data-page="solutions"] {
   --accent: var(--warm);
   --accent-text: #964a27;
   --accent-soft: rgba(201, 127, 95, 0.10);
@@ -115,6 +115,14 @@ body[data-page="news-detail"] {
   --ws-hero-1: #1e1b4b;
   --ws-hero-2: #312e81;
   --ws-bg: #ffffff;
+}
+
+body[data-page="solutions"] {
+  --accent: var(--green);
+  --accent-text: #2b6d2e;
+  --accent-soft: rgba(91, 166, 91, 0.10);
+  --accent-glow: rgba(91, 166, 91, 0.22);
+  --accent-rgb: 91, 166, 91;
 }
 
 body[data-page="news"] {
@@ -10055,7 +10063,8 @@ body[data-page="company"] .company-hero-c,
 body[data-page="solutions"] .company-hero-c {
   position: relative;
   overflow: hidden;
-  background: var(--ws-navy-950);
+  background: #070d19;
+  background: var(--ws-navy-950, #070d19);
 }
 
 body[data-page="company"] .company-hero-c {
