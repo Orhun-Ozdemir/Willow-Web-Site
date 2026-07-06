@@ -88,9 +88,9 @@ const categoryName = (cat: string) =>
   dataPage="solutions"
 >
   <main>
-    <!-- Premium Hero — Hakkımızda ile aynı signal-canvas animasyonu -->
-    <section class="solutions-hero-premium company-hero-c">
-      <canvas class="signal-canvas solutions-hero-signal company-hero-signal" data-density="46" data-color="26, 163, 196"></canvas>
+    <!-- Hero — Hakkımızda ile aynı company-hero-c + signal-canvas -->
+    <div class="company-hero-c" style="background: var(--ws-navy-950); position: relative; overflow: hidden;">
+      <canvas class="signal-canvas company-hero-signal" data-density="46" data-color="26, 163, 196"></canvas>
 
       <svg class="solutions-hero-grid" aria-hidden="true" viewBox="0 0 100 100" preserveAspectRatio="none">
         <defs>
@@ -101,7 +101,7 @@ const categoryName = (cat: string) =>
         <rect width="100%" height="100%" fill="url(#solutionsHeroGrid)"/>
       </svg>
 
-      <div class="solutions-hero-inner hero-inner-c">
+      <div class="solutions-hero-inner">
         <div class="solutions-hero-content reveal">
           <p class="eyebrow">{getVal("heroEyebrow") || "Industrial IoT Solutions"}</p>
 
@@ -153,7 +153,7 @@ const categoryName = (cat: string) =>
           </article>
         </div>
       </div>
-    </section>
+    </div>
 
     <!-- Selector Grid (path finder — before use-case catalog) -->
     <section class="section soft solution-selector-section">

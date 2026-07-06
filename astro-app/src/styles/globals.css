@@ -10050,13 +10050,21 @@ body[data-page="company"] .company-stat-mobile-break {
   display: none;
 }
 
-/* Hero */
+/* Hero — shared signal canvas shell (company + solutions) */
+body[data-page="company"] .company-hero-c,
+body[data-page="solutions"] .company-hero-c {
+  position: relative;
+  overflow: hidden;
+  background: var(--ws-navy-950);
+}
+
 body[data-page="company"] .company-hero-c {
   --company-hero-top-safe: 84px;
 }
 
 /* Soft signal bloom on the right so the image-less hero reads intentional */
-body[data-page="company"] .company-hero-c::after {
+body[data-page="company"] .company-hero-c::after,
+body[data-page="solutions"] .company-hero-c::after {
   content: "";
   position: absolute;
   z-index: 0;
@@ -10066,6 +10074,13 @@ body[data-page="company"] .company-hero-c::after {
   height: 124%;
   background: radial-gradient(closest-side, rgba(26, 163, 196, 0.20), transparent 72%);
   pointer-events: none;
+}
+
+body[data-page="company"] .company-hero-signal,
+body[data-page="solutions"] .company-hero-signal {
+  z-index: 2;
+  opacity: 0.48;
+  mix-blend-mode: screen;
 }
 
 body[data-page="company"] .hero-inner-c {
@@ -10093,11 +10108,6 @@ body[data-page="company"] .company-hero-img-wrap {
   overflow: hidden;
   height: 520px;
   box-shadow: 0 30px 70px rgba(7, 13, 25, 0.45);
-}
-
-body[data-page="company"] .company-hero-signal {
-  opacity: 0.42;
-  mix-blend-mode: screen;
 }
 
 body[data-page="company"] .company-hero-img-wrap::before {
@@ -13390,15 +13400,9 @@ body[data-page="solutions"] .services-faq-section {
   padding-bottom: 64px;
 }
 
-body[data-page="solutions"] .solutions-hero-premium {
-  position: relative;
+body[data-page="solutions"] .company-hero-c {
   min-height: clamp(420px, 48vh, 520px);
-  display: flex;
-  align-items: center;
-  overflow: hidden;
-  background: var(--ws-navy-950);
   color: #fff;
-  isolation: isolate;
 }
 
 body[data-page="solutions"] .solutions-hero-grid {
@@ -13409,29 +13413,6 @@ body[data-page="solutions"] .solutions-hero-grid {
   height: 100%;
   opacity: 0.06;
   pointer-events: none;
-}
-
-body[data-page="solutions"] .solutions-hero-premium::before {
-  display: none;
-}
-
-body[data-page="solutions"] .solutions-hero-premium::after {
-  content: "";
-  position: absolute;
-  z-index: 0;
-  top: -12%;
-  right: -8%;
-  width: 58%;
-  height: 124%;
-  background: radial-gradient(closest-side, rgba(26, 163, 196, 0.20), transparent 72%);
-  pointer-events: none;
-}
-
-body[data-page="solutions"] .solutions-hero-premium .signal-canvas,
-body[data-page="solutions"] .solutions-hero-signal {
-  z-index: 2;
-  opacity: 0.42;
-  mix-blend-mode: screen;
 }
 
 body[data-page="solutions"] .solutions-hero-inner {
