@@ -9189,8 +9189,7 @@ body[data-page="home"] .motion-hero::after {
     repeating-linear-gradient(
       116deg,
       rgba(255, 255, 255, 0) 0 3.2%,
-      rgba(255, 255, 255, 0.64) 3.9% 4.9%,
-      rgba(var(--accent-rgb), 0.17) 5.1% 6.9%,
+      rgba(var(--accent-rgb), 0.17) 3.9% 6.9%,
       rgba(112, 77, 255, 0.15) 7.4% 9.1%,
       rgba(24, 167, 255, 0.19) 9.6% 12%,
       rgba(255, 255, 255, 0.42) 12.5% 13.8%,
@@ -9199,6 +9198,7 @@ body[data-page="home"] .motion-hero::after {
   background-size: auto, 118% 210%;
   background-position: 0 0, 128% 50%;
   animation: homeHeroLightSweep 6.8s cubic-bezier(0.34, 0, 0.14, 1) infinite alternate;
+  mix-blend-mode: normal;
   opacity: 0.8;
 }
 
