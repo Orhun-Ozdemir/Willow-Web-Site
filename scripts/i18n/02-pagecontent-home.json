@@ -190,22 +190,24 @@
         "ja": "<em class=\"hw-serif\">信頼性</em>が<strong class=\"hw-display\">重要</strong>な環境のために設計。"
       },
       "newsEyebrow": {
-        "tr": "Haberler ve Kanıt",
-        "de": "News & Belege",
-        "fr": "Actualités et preuves",
-        "es": "Noticias y pruebas",
-        "it": "Notizie e prove",
-        "ar": "الأخبار والإثبات",
-        "ja": "ニュースと実績"
+        "en": "Latest News & Blog",
+        "tr": "Güncel Haberler ve Blog",
+        "de": "Aktuelle News & Blog",
+        "fr": "Actualités et blog",
+        "es": "Noticias y blog",
+        "it": "Notizie e blog",
+        "ar": "أحدث الأخبار والمدونة",
+        "ja": "最新ニュースとブログ"
       },
       "newsTitle": {
-        "tr": "<strong class=\"hw-display\">WillowSoft</strong> dünyasından <span class=\"hw-muted\">en yeni</span> <em class=\"hw-serif\">güncellemeler</em>.",
-        "de": "Neueste <em class=\"hw-serif\">Entwicklungen</em> <span class=\"hw-muted\">aus dem</span> <strong class=\"hw-display\">WillowSoft</strong>-Ökosystem.",
-        "fr": "Dernières <em class=\"hw-serif\">évolutions</em> <span class=\"hw-muted\">au sein de l'écosystème</span> <strong class=\"hw-display\">WillowSoft</strong>.",
-        "es": "Últimas <em class=\"hw-serif\">novedades</em> <span class=\"hw-muted\">del ecosistema</span> <strong class=\"hw-display\">WillowSoft</strong>.",
-        "it": "Ultime <em class=\"hw-serif\">novità</em> <span class=\"hw-muted\">dall'ecosistema</span> <strong class=\"hw-display\">WillowSoft</strong>.",
-        "ar": "آخر <em class=\"hw-serif\">التطورات</em> <span class=\"hw-muted\">من منظومة</span> <strong class=\"hw-display\">WillowSoft</strong>.",
-        "ja": "<strong class=\"hw-display\">WillowSoft</strong> エコシステムからの<span class=\"hw-muted\">最新の</span><em class=\"hw-serif\">動向</em>。"
+        "en": "The latest <em class=\"hw-serif\">news and blog</em> <span class=\"hw-muted\">from the</span> <strong class=\"hw-display\">WillowSoft</strong> world.",
+        "tr": "<strong class=\"hw-display\">WillowSoft</strong> dünyasından <span class=\"hw-muted\">en yeni</span> <em class=\"hw-serif\">haberler ve blog</em>.",
+        "de": "Neueste <em class=\"hw-serif\">News und Blog</em> <span class=\"hw-muted\">aus der</span> <strong class=\"hw-display\">WillowSoft</strong>-Welt.",
+        "fr": "Les dernières <em class=\"hw-serif\">actualités et articles de blog</em> <span class=\"hw-muted\">du monde</span> <strong class=\"hw-display\">WillowSoft</strong>.",
+        "es": "Las últimas <em class=\"hw-serif\">noticias y entradas del blog</em> <span class=\"hw-muted\">del mundo</span> <strong class=\"hw-display\">WillowSoft</strong>.",
+        "it": "Le ultime <em class=\"hw-serif\">notizie e articoli del blog</em> <span class=\"hw-muted\">dal mondo</span> <strong class=\"hw-display\">WillowSoft</strong>.",
+        "ar": "أحدث <em class=\"hw-serif\">الأخبار والمدونة</em> <span class=\"hw-muted\">من عالم</span> <strong class=\"hw-display\">WillowSoft</strong>.",
+        "ja": "<strong class=\"hw-display\">WillowSoft</strong> からの<span class=\"hw-muted\">最新の</span><em class=\"hw-serif\">ニュースとブログ</em>。"
       },
       "ctaEyebrow": {
         "tr": "Netlikle başlayın",
