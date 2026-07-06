@@ -2,6 +2,8 @@
 
 import type { Locale } from "@/lib/cms";
 import type { PageLayoutBlock } from "./pageLayouts";
+import { resolveAdminImageSrc } from "@/lib/admin-media";
+import { localizeSolutionItem } from "@/lib/admin-solution";
 import {
   Hit,
   MirrorShell,
@@ -28,6 +30,7 @@ export default function PageMirror({
   activeCard,
   onSelectBlock,
   onSelectCard,
+  extraData = {},
 }: {
   pageKey: string;
   layout: PageLayoutBlock[];
@@ -37,9 +40,11 @@ export default function PageMirror({
   activeCard: MirrorCard | null;
   onSelectBlock: (id: string) => void;
   onSelectCard: (blockId: string, card: MirrorCard) => void;
+  extraData?: Record<string, any>;
 }) {
   const v = (key: string) => locVal(data, key, locale);
   const cardActive = (titleKey: string) => activeCard?.titleKey === titleKey;
+  const solutionsList = Array.isArray(extraData.solutions) ? extraData.solutions : [];
 
   const renderBlock = (block: PageLayoutBlock) => {
     const active = activeBlockId === block.id;
@@ -116,15 +121,22 @@ export default function PageMirror({
           </Hit>
         );
 
-      case "solutions-hero":
+      case "solutions-hero": {
+        const heroSrc = resolveAdminImageSrc(data.heroImage);
         return (
           <Hit id={block.id} active={active} onClick={onClick}>
             <section className="solutions-hero-premium">
-              <div className="solutions-hero-bg" />
+              <div className="solutions-hero-bg mirror-hero-media">
+                {heroSrc ? <img src={heroSrc} alt="" loading="lazy" decoding="async" /> : null}
+              </div>
               <div className="solutions-hero-overlay" />
               <div className="solutions-hero-inner">
                 <div className="solutions-hero-content">
                   <SectionHead data={data} locale={locale} fields={block.fields} h1 />
+                  <div className="solutions-hero-actions mirror-btn-row">
+                    <span className="btn btn-primary">CTA</span>
+                    <span className="btn btn-secondary">CTA</span>
+                  </div>
                 </div>
                 <div className="solutions-hero-panel">
                   <span className="panel-kicker">Katmanlar</span>
@@ -134,10 +146,25 @@ export default function PageMirror({
                     ))}
                   </div>
                 </div>
+                <div className="solutions-hero-metrics">
+                  <article>
+                    <strong>{data.metric1Value || "15+"}</strong>
+                    <span>{locVal(data, "metric1Label", locale) || "Metrik"}</span>
+                  </article>
+                  <article>
+                    <strong>{data.metric2Value || "2020"}</strong>
+                    <span>{locVal(data, "metric2Label", locale) || "Metrik"}</span>
+                  </article>
+                  <article>
+                    <strong>{data.metric3Value || "24/7"}</strong>
+                    <span>{locVal(data, "metric3Label", locale) || "Metrik"}</span>
+                  </article>
+                </div>
               </div>
             </section>
           </Hit>
         );
+      }
 
       case "start-hero":
         return (
@@ -196,7 +223,9 @@ export default function PageMirror({
           </Hit>
         );
 
-      case "use-cases":
+      case "use-cases": {
+        const sorted = [...solutionsList].sort((a: any, b: any) => (a.sortOrder || 0) - (b.sortOrder || 0));
+        const cards = sorted.length ? sorted.slice(0, 6) : null;
         return (
           <Hit id={block.id} active={active} onClick={onClick}>
             <section className="section solution-market-section">
@@ -208,12 +237,43 @@ export default function PageMirror({
                     <h3 dangerouslySetInnerHTML={{ __html: v("showcaseTitle") || "Vitrin" }} />
                     <p>{v("showcaseLead")}</p>
                   </div>
-                  <PlaceholderGrid count={4} columns={2} />
+                  <div className="solution-case-grid mirror-solution-grid">
+                    {cards ? cards.map((item: any, idx: number) => {
+                      const s = localizeSolutionItem(item, locale);
+                      const imgSrc = resolveAdminImageSrc(s?.image);
+                      const headline = s?.headline || s?.title || "Çözüm";
+                      const bullets = Array.isArray(s?.bullets) ? s.bullets.slice(0, 3) : [];
+                      return (
+                        <article key={s?.id || idx} className="solution-case-card mirror-solution-card">
+                          <figure className="mirror-solution-figure">
+                            {imgSrc ? (
+                              <img src={imgSrc} alt={s?.alt || headline} loading="lazy" decoding="async" />
+                            ) : (
+                              <span className="mirror-solution-ph" />
+                            )}
+                          </figure>
+                          <div className="solution-case-body">
+                            {s?.category && <span>{s.category}</span>}
+                            <h3>{headline}</h3>
+                            {s?.summary && <p>{s.summary}</p>}
+                            {bullets.length > 0 && (
+                              <div className="solution-use-cases">
+                                {bullets.map((b: string) => <span key={b}>{b}</span>)}
+                              </div>
+                            )}
+                          </div>
+                        </article>
+                      );
+                    }) : (
+                      <PlaceholderGrid count={4} columns={2} />
+                    )}
+                  </div>
                 </div>
               </div>
             </section>
           </Hit>
         );
+      }
 
       case "decision-cards": {
         const items = arrayItems(data, block.arrayKey);
@@ -390,14 +450,20 @@ export default function PageMirror({
       case "split-cta":
         return (
           <Hit id={block.id} active={active} onClick={onClick}>
-            <section className="section dark final-cta">
-              <div className="section-inner split">
-                <div>
-                  <SectionHead data={data} locale={locale} fields={block.fields?.slice(0, 2)} />
-                </div>
-                <div>
-                  {fieldLead(block.fields) && <p className="section-lead">{v(fieldLead(block.fields)!)}</p>}
-                  <p><span className="btn btn-primary">CTA</span></p>
+            <section className={`section ${pageKey === "solutions" ? "solutions-final-cta-section" : "dark final-cta"}`}>
+              <div className={pageKey === "solutions" ? "section-inner" : "section-inner split"}>
+                <div className={pageKey === "solutions" ? "solutions-final-cta" : undefined}>
+                  <div>
+                    <SectionHead data={data} locale={locale} fields={block.fields?.slice(0, 3)} />
+                  </div>
+                  {pageKey === "solutions" ? (
+                    <span className="btn btn-primary">{v("finalCtaButton") || "CTA"}</span>
+                  ) : (
+                    <div>
+                      {fieldLead(block.fields) && <p className="section-lead">{v(fieldLead(block.fields)!)}</p>}
+                      <p><span className="btn btn-primary">CTA</span></p>
+                    </div>
+                  )}
                 </div>
               </div>
             </section>
@@ -512,7 +578,7 @@ export default function PageMirror({
   };
 
   return (
-    <MirrorShell deps={[pageKey, data, locale, layout]}>
+    <MirrorShell deps={[pageKey, data, locale, layout, extraData]}>
       <main id={`mirror-main-${pageKey}`}>
         {layout.map((block) => (
           <div key={block.id}>{renderBlock(block)}</div>

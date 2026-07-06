@@ -1,0 +1,103 @@
+{
+  "pageContent": {
+    "solutions": {
+      "heroEyebrow": {
+        "tr": "Endüstriyel IoT Çözümleri"
+      },
+      "howLead": {
+        "en": "WillowSoft solutions turn field signals into operational intelligence through a complete embedded-to-cloud architecture.",
+        "tr": "WillowSoft çözümleri, sahada toplanan sinyalleri uçtan uca gömülü-bulut mimarisiyle operasyonel içgörüye dönüştürür.",
+        "de": "WillowSoft-Lösungen verwandeln Feldsignale durch eine durchgängige Embedded-to-Cloud-Architektur in operative Erkenntnisse.",
+        "fr": "Les solutions WillowSoft transforment les signaux du terrain en intelligence opérationnelle grâce à une architecture embarquée-cloud complète.",
+        "es": "Las soluciones WillowSoft convierten las señales de campo en inteligencia operativa mediante una arquitectura completa de embebido a nube.",
+        "it": "Le soluzioni WillowSoft trasformano i segnali sul campo in intelligence operativa attraverso un'architettura completa embedded-to-cloud.",
+        "ar": "تحوّل حلول WillowSoft إشارات الميدان إلى معلومات تشغيلية عبر بنية متكاملة من الأجهزة المدمجة إلى السحابة.",
+        "ja": "WillowSoftのソリューションは、エッジからクラウドまで一貫したアーキテクチャで、現場の信号を運用インテリジェンスに変換します。"
+      },
+      "useCasesLead": {
+        "it": "Dalle infrastrutture e fabbriche agli edifici, alla logistica e alle utility, ogni soluzione è modellata in base alle condizioni sul campo, alle esigenze di dati e ai flussi di risposta.",
+        "ar": "من البنية التحتية والمصانع إلى المباني والخدمات اللوجستية والمرافق، يُشكَّل كل حل وفق ظروف الميدان واحتياجات البيانات وسير الاستجابة."
+      },
+      "metric1Label": {
+        "de": "Länder mit aktiven Einsätzen",
+        "fr": "pays avec des déploiements actifs",
+        "es": "países con despliegues activos",
+        "it": "paesi con installazioni attive",
+        "ar": "دولة بنشرات نشطة",
+        "ja": "導入実績のある国"
+      },
+      "metric2Label": {
+        "de": "F&E-orientierte technische Basis",
+        "fr": "fondation d'ingénierie axée sur la R&D",
+        "es": "base de ingeniería orientada a I+D",
+        "it": "fondamento ingegneristico orientato alla R&S",
+        "ar": "أساس هندسي يركز على البحث والتطوير",
+        "ja": "研究開発重視のエンジニアリング基盤"
+      },
+      "metric3Label": {
+        "de": "Fernüberwachung kritischer Anlagen rund um die Uhr",
+        "fr": "visibilité à distance 24/7 pour les actifs critiques",
+        "es": "visibilidad remota 24/7 para activos críticos",
+        "it": "visibilità remota 24/7 per asset critici",
+        "ar": "رؤية عن بُعد على مدار الساعة للأصول الحرجة",
+        "ja": "重要資産の24時間遠隔可視化"
+      },
+      "selectorEyebrow": {
+        "de": "Den richtigen Weg wählen",
+        "fr": "Choisir la bonne voie",
+        "es": "Elija el camino correcto",
+        "it": "Scegli la strada giusta",
+        "ar": "اختر المسار المناسب",
+        "ja": "最適な進め方を選ぶ"
+      },
+      "selectorTitle": {
+        "de": "Jede Lösung beginnt mit der operativen Frage.",
+        "fr": "Chaque solution commence par la question opérationnelle.",
+        "es": "Cada solución empieza por la pregunta operativa.",
+        "it": "Ogni soluzione parte dalla domanda operativa.",
+        "ar": "كل حل يبدأ بالسؤال التشغيلي.",
+        "ja": "すべてのソリューションは運用上の問いから始まります。"
+      },
+      "selectorLead": {
+        "de": "Starke IoT-Projekte beginnen nicht mit „welcher Sensor?“. Sie beginnen damit, was der Nutzer sehen, entscheiden oder automatisieren muss.",
+        "fr": "Les bons projets IoT ne commencent pas par « quel capteur ? ». Ils commencent par ce que l'utilisateur doit voir, décider ou automatiser.",
+        "es": "Los proyectos IoT sólidos no empiezan con «¿qué sensor?». Empiezan por lo que el usuario necesita ver, decidir o automatizar.",
+        "it": "I progetti IoT solidi non iniziano con «quale sensore?». Iniziano da ciò che l'utente deve vedere, decidere o automatizzare.",
+        "ar": "مشاريع إنترنت الأشياء القوية لا تبدأ بسؤال «أي مستشعر؟». بل بما يحتاج المستخدم لرؤيته أو اتخاذ قرار بشأنه أو أتمتته.",
+        "ja": "優れたIoTプロジェクトは「どのセンサーか？」から始まりません。利用者が見る・判断する・自動化する必要があることから始まります。"
+      },
+      "finalCtaEyebrow": {
+        "de": "Mit Ihrem Betrieb starten",
+        "fr": "Commencez par votre exploitation",
+        "es": "Empiece por su operación",
+        "it": "Inizia dalla tua operazione",
+        "ar": "ابدأ من عملياتك",
+        "ja": "御社の運用から始める"
+      },
+      "finalCtaTitle": {
+        "de": "Haben Sie einen Standort, ein Asset oder einen Prozess, der Transparenz braucht?",
+        "fr": "Vous avez un site, un actif ou un processus qui a besoin de visibilité ?",
+        "es": "¿Tiene un sitio, activo o proceso que necesita visibilidad?",
+        "it": "Avete un sito, un asset o un processo che ha bisogno di visibilità?",
+        "ar": "هل لديك موقع أو أصل أو عملية تحتاج إلى رؤية تشغيلية؟",
+        "ja": "可視化が必要なサイト、資産、プロセスはありますか？"
+      },
+      "finalCtaLead": {
+        "de": "Teilen Sie Ihre Feldbedingungen, Datenanforderungen und operativen Ziele. WillowSoft kann die passende Geräte-, Konnektivitäts- und Plattformarchitektur ableiten.",
+        "fr": "Partagez vos conditions de terrain, vos besoins en données et vos objectifs opérationnels. WillowSoft peut définir le bon appareil, la connectivité et l'architecture de plateforme.",
+        "es": "Comparta sus condiciones de campo, necesidades de datos y objetivos operativos. WillowSoft puede definir el dispositivo, la conectividad y la arquitectura de plataforma adecuados.",
+        "it": "Condividete condizioni sul campo, esigenze di dati e obiettivi operativi. WillowSoft può definire dispositivo, connettività e architettura di piattaforma.",
+        "ar": "شاركنا ظروف الميدان واحتياجات البيانات والأهداف التشغيلية. يمكن لـ WillowSoft رسم بنية الجهاز والاتصال والمنصة المناسبة.",
+        "ja": "現場条件、データ要件、運用目標をお聞かせください。WillowSoftが最適なデバイス・接続・プラットフォーム構成を提案します。"
+      },
+      "finalCtaButton": {
+        "de": "Projekt starten",
+        "fr": "Démarrer le projet",
+        "es": "Iniciar proyecto",
+        "it": "Avvia progetto",
+        "ar": "بدء المشروع",
+        "ja": "プロジェクト相談"
+      }
+    }
+  }
+}

@@ -13,24 +13,14 @@ const socialLinks: { id: string; platform: string; url: string; enabled: boolean
   (content?.companyFacts?.socialLinks || []).filter((s: any) => s.enabled && s.url);
 const labels = {
   tagline: {
-    en: "Smart Embedded Connectivity & Industrial IoT.",
-    tr: "Akıllı gömülü bağlantı ve Endüstriyel IoT.",
-    de: "Intelligente Embedded-Konnektivität und Industrial IoT.",
-    fr: "Connectivité embarquée intelligente et IoT industriel.",
-    es: "Conectividad embebida inteligente e IoT industrial.",
-    it: "Connettività embedded intelligente e Industrial IoT.",
-    ar: "اتصال مدمج ذكي وإنترنت الأشياء الصناعي.",
-    ja: "スマートな組み込み接続と産業用IoT。",
-  },
-  offices: {
-    en: "Turkey & United Kingdom offices.",
-    tr: "Türkiye ve Birleşik Krallık ofisleri.",
-    de: "Büros in der Türkei und im Vereinigten Königreich.",
-    fr: "Bureaux en Turquie et au Royaume-Uni.",
-    es: "Oficinas en Turquía y Reino Unido.",
-    it: "Uffici in Turchia e nel Regno Unito.",
-    ar: "مكاتب في تركيا والمملكة المتحدة.",
-    ja: "トルコと英国に拠点があります。",
+    en: "End-to-end industrial IoT solutions and advanced embedded system architectures.",
+    tr: "Uçtan uca endüstriyel IoT çözümleri ve ileri seviye gömülü sistem mimarileri.",
+    de: "End-to-End-Industrie-IoT-Lösungen und fortgeschrittene Embedded-System-Architekturen.",
+    fr: "Solutions IoT industrielles de bout en bout et architectures avancées de systèmes embarqués.",
+    es: "Soluciones IoT industriales integrales y arquitecturas avanzadas de sistemas embebidos.",
+    it: "Soluzioni IoT industriali end-to-end e architetture avanzate di sistemi embedded.",
+    ar: "حلول إنترنت الأشياء الصناعية المتكاملة وبنى أنظمة مدمجة متقدمة.",
+    ja: "エンドツーエンドの産業用IoTソリューションと高度な組み込みシステムアーキテクチャ。",
   },
   social: { en: "Social media links", tr: "Sosyal medya bağlantıları", de: "Social-Media-Links", fr: "Liens réseaux sociaux", es: "Enlaces de redes sociales", it: "Link social media", ar: "روابط وسائل التواصل الاجتماعي", ja: "ソーシャルメディアリンク" },
   explore: { en: "Explore", tr: "Keşfet", de: "Entdecken", fr: "Explorer", es: "Explorar", it: "Esplora", ar: "استكشف", ja: "探す" },
@@ -41,9 +31,7 @@ const labels = {
   products: { en: "Products", tr: "Ürünler", de: "Produkte", fr: "Produits", es: "Productos", it: "Prodotti", ar: "المنتجات", ja: "製品" },
   company: { en: "About Us", tr: "Hakkımızda", de: "Über uns", fr: "À propos", es: "Sobre nosotros", it: "Chi siamo", ar: "من نحن", ja: "会社概要" },
   news: { en: "News", tr: "Haberler", de: "Neuigkeiten", fr: "Actualités", es: "Noticias", it: "Notizie", ar: "الأخبار", ja: "ニュース" },
-  glossary: { en: "Glossary", tr: "Sözlük", de: "Glossar", fr: "Glossaire", es: "Glosario", it: "Glossario", ar: "المصطلحات", ja: "用語集" },
   contact: { en: "Contact", tr: "İletişim", de: "Kontakt", fr: "Contact", es: "Contacto", it: "Contatti", ar: "اتصل بنا", ja: "お問い合わせ" },
-  startProject: { en: "Start a Project", tr: "Proje Başlat", de: "Projekt starten", fr: "Démarrer un projet", es: "Iniciar un proyecto", it: "Avvia un progetto", ar: "ابدأ مشروعاً", ja: "プロジェクト相談" },
   rights: { en: "All rights reserved.", tr: "Tüm hakları saklıdır.", de: "Alle Rechte vorbehalten.", fr: "Tous droits réservés.", es: "Todos los derechos reservados.", it: "Tutti i diritti riservati.", ar: "جميع الحقوق محفوظة.", ja: "無断転載を禁じます。" },
 };
 const getLabel = (key: keyof typeof labels) => labels[key][locale] || labels[key].en;
@@ -54,13 +42,13 @@ const getLabel = (key: keyof typeof labels) => labels[key][locale] || labels[key
   <div class="footer-grid">
     <div>
       <h3>WillowSoft</h3>
-      <p>{getLabel("tagline")}<br />{getLabel("offices")}</p>
+      <p>{getLabel("tagline")}</p>
       <div class="footer-social" aria-label={getLabel("social")}>
         {socialLinks.length > 0 ? socialLinks.map((s) => (
           <a href={s.url} aria-label={s.platform} rel="noopener noreferrer" target="_blank" set:html={getSocialSvg(s.platform)} />
         )) : (
           <>
-            <a href="https://linkedin.com/company/willowsoft" aria-label="LinkedIn" rel="noopener noreferrer" target="_blank" set:html={getSocialSvg("linkedin")} />
+            <a href="https://www.linkedin.com/company/willow-software/" aria-label="LinkedIn" rel="noopener noreferrer" target="_blank" set:html={getSocialSvg("linkedin")} />
             <a href="https://github.com/willowsoft" aria-label="GitHub" rel="noopener noreferrer" target="_blank" set:html={getSocialSvg("github")} />
           </>
         )}
@@ -76,19 +64,14 @@ const getLabel = (key: keyof typeof labels) => labels[key][locale] || labels[key
       <h3>{getLabel("companyGroup")}</h3>
       <a href={`/${locale}/company`}>{getLabel("company")}</a>
       <a href={`/${locale}/news`}>{getLabel("news")}</a>
-      <a href={`/${locale}/glossary`}>{getLabel("glossary")}</a>
     </div>
     <div>
       <h3>{getLabel("contactGroup")}</h3>
       <a href={`/${locale}/contact`}>{getLabel("contact")}</a>
-      <a href={`/${locale}/start-project`}>{getLabel("startProject")}</a>
       <a href="mailto:info@willowsoft.co">info@willowsoft.co</a>
     </div>
   </div>
   <div class="footer-bottom">
     <span>© 2026 WillowSoft. {getLabel("rights")}</span>
-    <div class="footer-bottom-links">
-      <a href={`${import.meta.env.BASE_URL}admin`} class="footer-bottom-link">Yönetici Paneli</a>
-    </div>
   </div>
 </footer>

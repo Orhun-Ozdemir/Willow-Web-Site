@@ -51,6 +51,9 @@ const labels: Record<string, Record<string, string>> = {
     ar: "إجابات مختصرة عن تطوير المنتجات، عتاد IoT الجاهز ونماذج الأعمال.",
     ja: "製品開発、IoT ハードウェア、ビジネスモデルに関する簡潔な回答です。",
   },
+  ctaChoice_0: { en: "Hardware + Embedded Software", tr: "donanım+gömülü yazılım", de: "Hardware + eingebettete Software", fr: "Matériel + logiciel embarqué", es: "Hardware + software embebido", it: "Hardware + software embedded", ar: "عتاد + برمجيات مدمجة", ja: "ハードウェア＋組み込みソフトウェア" },
+  ctaChoice_1: { en: "Cloud + Database", tr: "bulut+veri tabanı", de: "Cloud + Datenbank", fr: "Cloud + base de données", es: "Nube + base de datos", it: "Cloud + database", ar: "سحابة + قاعدة بيانات", ja: "クラウド＋データベース" },
+  ctaChoice_2: { en: "Web, Mobile, Simulation", tr: "web, mobil, Simülasyon", de: "Web, Mobile, Simulation", fr: "Web, mobile, simulation", es: "Web, móvil, simulación", it: "Web, mobile, simulazione", ar: "ويب، جوال، محاكاة", ja: "Web、モバイル、シミュレーション" },
 };
 
 const getLabel = (key: string) => labels[key]?.[locale] || labels[key]?.en || key;
@@ -481,7 +484,9 @@ const homeSchema = appendSchemaNodes({
         <div class="reveal delay-1">
           <p class="section-lead">{getVal("ctaLead")}</p>
           <div class="cta-choice-grid" aria-label="Common project starting points">
-            <span>Hardware + Firmware</span><span>Backend + PostgreSQL</span><span>Web, Mobile + VR</span>
+            <span>{getVal("ctaChoice_0") || getLabel("ctaChoice_0")}</span>
+            <span>{getVal("ctaChoice_1") || getLabel("ctaChoice_1")}</span>
+            <span>{getVal("ctaChoice_2") || getLabel("ctaChoice_2")}</span>
           </div>
           <p><a class="btn btn-primary" href={`/${locale}/contact`}>{getLabel("talkEngineering")}</a></p>
         </div>

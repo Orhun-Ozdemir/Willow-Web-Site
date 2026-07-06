@@ -26,8 +26,23 @@ const devicesItems = getGlossaryItems("devices");
 const softwareItems = getGlossaryItems("software");
 
 const getNoteLabel = () => {
-  return locale === "tr" ? "WillowSoft kullanım alanları:" : "WillowSoft uses it in:";
+  const noteLabels: Record<string, string> = {
+    en: "WillowSoft uses it in:",
+    tr: "WillowSoft kullanım alanları:",
+    de: "WillowSoft setzt es ein in:",
+    fr: "WillowSoft l'utilise dans :",
+    es: "WillowSoft lo usa en:",
+    it: "WillowSoft lo usa in:",
+    ar: "تستخدمه WillowSoft في:",
+    ja: "WillowSoftでの用途：",
+  };
+  return noteLabels[locale] || noteLabels.en;
 };
+
+const labels = {
+  talkToEngineering: { en: "Talk to Engineering", tr: "Mühendislerle Görüşün", de: "Mit Engineering sprechen", fr: "Parler à l'ingénierie", es: "Hablar con ingeniería", it: "Parla con il team", ar: "تحدث إلى الهندسة", ja: "技術チームへ相談" },
+};
+const getLabel = (key: keyof typeof labels) => labels[key][locale] || labels[key].en;
 ---
 
 <PageLayout
@@ -133,7 +148,7 @@ const getNoteLabel = () => {
         </div>
         <div class="reveal delay-1">
           <p class="section-lead">{getVal("ctaLead")}</p>
-          <p><a class="btn btn-primary" href={`/${locale}/contact`}>Talk to Engineering</a></p>
+          <p><a class="btn btn-primary" href={`/${locale}/contact`}>{getLabel("talkToEngineering")}</a></p>
         </div>
       </div>
     </section>

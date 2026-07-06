@@ -1,0 +1,194 @@
+{
+  "selectorCards": {
+    "selector-1": {
+      "de": {
+        "eyebrow": "Brauchen Sie Transparenz?",
+        "title": "Fernüberwachung",
+        "body": "Für Anlagen, die schwer erreichbar sind, über mehrere Standorte verteilt sind oder noch manuell von Feldmannschaften geprüft werden.",
+        "bullets": ["Live-Telemetrie", "Anlagenstatus", "Historische Trends"]
+      },
+      "fr": {
+        "eyebrow": "Besoin de visibilité ?",
+        "title": "Supervision à distance",
+        "body": "Pour les actifs difficiles d'accès, répartis sur plusieurs sites ou encore contrôlés manuellement par les équipes terrain.",
+        "bullets": ["Télémétrie en direct", "État des actifs", "Tendances historiques"]
+      },
+      "es": {
+        "eyebrow": "¿Necesita visibilidad?",
+        "title": "Monitorización remota",
+        "body": "Para activos de difícil acceso, distribuidos en varios sitios o aún revisados manualmente por equipos de campo.",
+        "bullets": ["Telemetría en vivo", "Estado del activo", "Tendencias históricas"]
+      },
+      "it": {
+        "eyebrow": "Serve visibilità?",
+        "title": "Monitoraggio remoto",
+        "body": "Per asset difficili da raggiungere, distribuiti su più siti o ancora controllati manualmente dalle squadre sul campo.",
+        "bullets": ["Telemetria live", "Stato asset", "Trend storici"]
+      },
+      "ar": {
+        "eyebrow": "هل تحتاج رؤية؟",
+        "title": "المراقبة عن بُعد",
+        "body": "للأصول التي يصعب الوصول إليها أو الموزّعة على مواقع متعددة أو التي تُفحص يدوياً من فرق الميدان.",
+        "bullets": ["قياس مباشر", "حالة الأصل", "الاتجاهات التاريخية"]
+      },
+      "ja": {
+        "eyebrow": "可視化が必要ですか？",
+        "title": "遠隔モニタリング",
+        "body": "アクセスが難しい資産、複数拠点に分散した設備、現場チームがまだ手動で点検している対象向け。",
+        "bullets": ["ライブテレメトリ", "資産ステータス", "履歴トレンド"]
+      }
+    },
+    "selector-2": {
+      "de": {
+        "eyebrow": "Brauchen Sie Reaktion?",
+        "title": "Alarme & Workflows",
+        "body": "Für Betriebe, bei denen Füllstand, Druck, Bewegung, Panik, Tür, GPS oder Luftqualität sofortiges Handeln erfordern.",
+        "bullets": ["Schwellenwertalarme", "Mobile Benachrichtigungen", "Eskalationsabläufe"]
+      },
+      "fr": {
+        "eyebrow": "Besoin d'intervention ?",
+        "title": "Alertes et workflows",
+        "body": "Pour les opérations où niveau, pression, mouvement, panique, porte, GPS ou qualité de l'air exigent une action immédiate.",
+        "bullets": ["Alertes de seuil", "Notifications mobiles", "Flux d'escalade"]
+      },
+      "es": {
+        "eyebrow": "¿Necesita respuesta?",
+        "title": "Alertas y flujos de trabajo",
+        "body": "Para operaciones donde nivel, presión, movimiento, pánico, puerta, GPS o calidad del aire requieren acción inmediata.",
+        "bullets": ["Alertas de umbral", "Notificaciones móviles", "Flujos de escalado"]
+      },
+      "it": {
+        "eyebrow": "Serve risposta?",
+        "title": "Avvisi e workflow",
+        "body": "Per operazioni in cui livello, pressione, movimento, panico, porta, GPS o qualità dell'aria richiedono azione immediata.",
+        "bullets": ["Avvisi soglia", "Notifiche mobili", "Flussi di escalation"]
+      },
+      "ar": {
+        "eyebrow": "هل تحتاج استجابة؟",
+        "title": "التنبيهات وسير العمل",
+        "body": "للعمليات التي تتطلب تدخلاً فورياً عند أحداث المستوى أو الضغط أو الحركة أو الطوارئ أو الباب أو GPS أو جودة الهواء.",
+        "bullets": ["تنبيهات العتبة", "إشعارات جوال", "مسارات التصعيد"]
+      },
+      "ja": {
+        "eyebrow": "即応が必要ですか？",
+        "title": "アラートとワークフロー",
+        "body": "水位・圧力・動き・緊急・ドア・GPS・空気質のイベントで即時対応が必要な運用向け。",
+        "bullets": ["しきい値アラート", "モバイル通知", "エスカレーションフロー"]
+      }
+    },
+    "selector-3": {
+      "de": {
+        "eyebrow": "Brauchen Sie Integration?",
+        "title": "Industrielle Datenplattform",
+        "body": "Für Telemetrie, die Reporting-Tools, ERP-Systeme, Kundenportale, PostgreSQL oder interne APIs speisen muss.",
+        "bullets": ["Backend-APIs", "Admin-Panels", "Datenpipelines"]
+      },
+      "fr": {
+        "eyebrow": "Besoin d'intégration ?",
+        "title": "Plateforme de données industrielle",
+        "body": "Pour la télémétrie qui doit alimenter outils de reporting, ERP, portails clients, PostgreSQL ou API internes.",
+        "bullets": ["API backend", "Panneaux admin", "Pipelines de données"]
+      },
+      "es": {
+        "eyebrow": "¿Necesita integración?",
+        "title": "Plataforma de datos industrial",
+        "body": "Para telemetría que debe alimentar herramientas de informes, ERP, portales de clientes, PostgreSQL o API internas.",
+        "bullets": ["API backend", "Paneles admin", "Tuberías de datos"]
+      },
+      "it": {
+        "eyebrow": "Serve integrazione?",
+        "title": "Piattaforma dati industriale",
+        "body": "Per telemetria che deve alimentare strumenti di report, ERP, portali clienti, PostgreSQL o API interne.",
+        "bullets": ["API backend", "Pannelli admin", "Pipeline dati"]
+      },
+      "ar": {
+        "eyebrow": "هل تحتاج تكاملاً؟",
+        "title": "منصة بيانات صناعية",
+        "body": "للبيانات التي يجب أن تغذي أدوات التقارير وأنظمة ERP وبوابات العملاء وPostgreSQL أو واجهات API الداخلية.",
+        "bullets": ["واجهات برمجة خلفية", "لوحات إدارة", "مسارات بيانات"]
+      },
+      "ja": {
+        "eyebrow": "連携が必要ですか？",
+        "title": "産業データプラットフォーム",
+        "body": "レポートツール、ERP、顧客ポータル、PostgreSQL、社内APIへ送るテレメトリ向け。",
+        "bullets": ["バックエンドAPI", "管理画面", "データパイプライン"]
+      }
+    }
+  },
+  "howItWorksSteps": {
+    "step-1": {
+      "de": { "title": "Messen", "body": "Füllstand, Druck, Luftqualität, Bewegung, GPS, Temperatur, Feuchtigkeit und mehr." },
+      "fr": { "title": "Mesurer", "body": "Niveau, pression, qualité de l'air, mouvement, GPS, température, humidité et plus." },
+      "es": { "title": "Medir", "body": "Nivel, presión, calidad del aire, movimiento, GPS, temperatura, humedad y más." },
+      "it": { "title": "Misurare", "body": "Livello, pressione, qualità dell'aria, movimento, GPS, temperatura, umidità e altro." },
+      "ar": { "title": "القياس", "body": "المستوى والضغط وجودة الهواء والحركة وGPS ودرجة الحرارة والرطوبة والمزيد." },
+      "ja": { "title": "計測", "body": "水位、圧力、空気質、動き、GPS、温度、湿度など。" }
+    },
+    "step-2": {
+      "de": { "title": "Übertragen", "body": "LoRaWAN und stromsparende Kommunikationswege, abgestimmt auf die Realität vor Ort." },
+      "fr": { "title": "Transmettre", "body": "LoRaWAN et voies de communication basse consommation adaptées au terrain." },
+      "es": { "title": "Transmitir", "body": "LoRaWAN y rutas de comunicación de bajo consumo diseñadas para la realidad del sitio." },
+      "it": { "title": "Trasmettere", "body": "LoRaWAN e percorsi di comunicazione a basso consumo progettati per la realtà sul campo." },
+      "ar": { "title": "النقل", "body": "مسارات LoRaWAN واتصال منخفض الطاقة مصممة وفق واقع الموقع." },
+      "ja": { "title": "送信", "body": "現場条件に合わせた LoRaWAN と低消費電力通信。" }
+    },
+    "step-3": {
+      "de": { "title": "Verarbeiten", "body": "Backend-APIs, PostgreSQL-Speicher, Regeln, Schwellenwerte und Reporting-Logik." },
+      "fr": { "title": "Traiter", "body": "API backend, stockage PostgreSQL, règles, seuils et logique de reporting." },
+      "es": { "title": "Procesar", "body": "API backend, almacenamiento PostgreSQL, reglas, umbrales y lógica de informes." },
+      "it": { "title": "Elaborare", "body": "API backend, storage PostgreSQL, regole, soglie e logica di reportistica." },
+      "ar": { "title": "المعالجة", "body": "واجهات برمجة خلفية وتخزين PostgreSQL وقواعد وعتبات ومنطق تقارير." },
+      "ja": { "title": "処理", "body": "バックエンドAPI、PostgreSQL、ルール、しきい値、レポートロジック。" }
+    },
+    "step-4": {
+      "de": { "title": "Visualisieren", "body": "Dashboards, Karten, Admin-Panels, mobile Apps und Kundenportale." },
+      "fr": { "title": "Visualiser", "body": "Tableaux de bord, cartes, panneaux admin, applications mobiles et portails clients." },
+      "es": { "title": "Visualizar", "body": "Paneles, mapas, paneles admin, apps móviles y portales de clientes." },
+      "it": { "title": "Visualizzare", "body": "Dashboard, mappe, pannelli admin, app mobili e portali clienti." },
+      "ar": { "title": "العرض", "body": "لوحات معلومات وخرائط ولوحات إدارة وتطبيقات جوال وبوابات عملاء." },
+      "ja": { "title": "可視化", "body": "ダッシュボード、マップ、管理画面、モバイルアプリ、顧客ポータル。" }
+    },
+    "step-5": {
+      "de": { "title": "Handeln", "body": "Alarme, Workflows, Feldreaktion, Wartungsplanung und Entscheidungsunterstützung." },
+      "fr": { "title": "Agir", "body": "Alertes, workflows, intervention terrain, planification de maintenance et aide à la décision." },
+      "es": { "title": "Actuar", "body": "Alertas, flujos de trabajo, respuesta en campo, planificación de mantenimiento y apoyo a decisiones." },
+      "it": { "title": "Agire", "body": "Avvisi, workflow, risposta sul campo, pianificazione manutenzione e supporto decisionale." },
+      "ar": { "title": "الإجراء", "body": "تنبيهات وسير عمل واستجابة ميدانية وتخطيط صيانة ودعم قرار." },
+      "ja": { "title": "アクション", "body": "アラート、ワークフロー、現場対応、保守計画、意思決定支援。" }
+    }
+  },
+  "whyCards": {
+    "why-1": {
+      "de": { "title": "Low-Power-Kompetenz", "body": "Batterielaufzeit, Payload-Größe und Berichtsintervalle werden nach realen Einsatzanforderungen ausgelegt." },
+      "fr": { "title": "Expertise basse consommation", "body": "Autonomie, taille des payloads et intervalles de rapport sont conçus selon les exigences réelles du terrain." },
+      "es": { "title": "Experiencia en bajo consumo", "body": "La vida de batería, el tamaño del payload y los intervalos de informe se diseñan según requisitos reales de despliegue." },
+      "it": { "title": "Competenza low-power", "body": "Durata batteria, dimensione payload e intervalli di report sono progettati sulle reali esigenze di installazione." },
+      "ar": { "title": "خبرة الطاقة المنخفضة", "body": "عمر البطارية وحجم الحمولة وفترات الإبلاغ تُصمَّم وفق متطلبات النشر الفعلية." },
+      "ja": { "title": "低消費電力の専門性", "body": "電池寿命、ペイロードサイズ、報告間隔を実際の導入要件に合わせて設計。" }
+    },
+    "why-2": {
+      "de": { "title": "RF-bewusster Einsatz", "body": "Die Funkplanung berücksichtigt metallintensive Fabriken, Distanz, Wetter, Gehäuse und Gateway-Platzierung." },
+      "fr": { "title": "Déploiement RF maîtrisé", "body": "La planification radio tient compte des usines métalliques, de la distance, de la météo, des boîtiers et du placement des passerelles." },
+      "es": { "title": "Despliegue consciente de RF", "body": "La planificación de conectividad considera fábricas con mucho metal, distancia, clima, carcasas y ubicación de gateways." },
+      "it": { "title": "Deploy consapevole RF", "body": "La pianificazione della connettività considera fabbriche con molto metallo, distanza, meteo, involucri e posizionamento gateway." },
+      "ar": { "title": "نشر واعٍ بترددات RF", "body": "تخطيط الاتصال يراعي المصانع المعدنية والمسافة والطقس والعلب وموضع البوابات." },
+      "ja": { "title": "RFを考慮した導入", "body": "金属の多い工場、距離、天候、筐体、ゲートウェイ配置を接続計画に反映。" }
+    },
+    "why-3": {
+      "de": { "title": "Full-Stack-Verantwortung", "body": "Hardware, Firmware, Backend, Datenbank, Dashboard, Admin-Panel und mobile Workflows werden gemeinsam entworfen." },
+      "fr": { "title": "Maîtrise full stack", "body": "Matériel, firmware, backend, base de données, tableau de bord, panneau admin et workflows mobiles sont conçus ensemble." },
+      "es": { "title": "Propiedad full stack", "body": "Hardware, firmware, backend, base de datos, panel, admin y flujos móviles se diseñan en conjunto." },
+      "it": { "title": "Ownership full stack", "body": "Hardware, firmware, backend, database, dashboard, pannello admin e workflow mobili sono progettati insieme." },
+      "ar": { "title": "ملكية كاملة للمكدس", "body": "الأجهزة والبرنامج الثابت والخلفية وقاعدة البيانات واللوحة ولوحة الإدارة وسير العمل الجوال تُصمَّم معاً." },
+      "ja": { "title": "フルスタック体制", "body": "ハード、ファームウェア、バックエンド、DB、ダッシュボード、管理画面、モバイルを一体設計。" }
+    },
+    "why-4": {
+      "de": { "title": "Production-First-Denken", "body": "Jede Lösung wird an der Feldrealität gemessen — nicht nur an Prototyp-Annahmen." },
+      "fr": { "title": "Pensée production d'abord", "body": "Chaque solution est évaluée face à la réalité du terrain, pas seulement face aux hypothèses de prototype." },
+      "es": { "title": "Mentalidad producción primero", "body": "Cada solución se evalúa frente a la realidad del campo, no solo frente a supuestos de prototipo." },
+      "it": { "title": "Mentalità production-first", "body": "Ogni soluzione è valutata sulla realtà sul campo, non solo sulle ipotesi di prototipo." },
+      "ar": { "title": "تفكير الإنتاج أولاً", "body": "يُقيَّم كل حل وفق واقع الميدان، لا وفق افتراضات النموذج الأولي فقط." },
+      "ja": { "title": "量産前提の設計", "body": "各ソリューションはプロトタイプ想定だけでなく、現場の現実で評価します。" }
+    }
+  }
+}

@@ -7,6 +7,9 @@ import PageMirror from "./PageMirror";
 import type { MirrorCard } from "./mirrorShared";
 import { HOME_EXTRA_KEYS, HOME_LAYOUT, firstEditableBlock, layoutForPage } from "./pageLayouts";
 import { useAdmin } from "./AdminContext";
+import FormField from "./FormField";
+
+const SCALAR_PAGE_FIELDS = new Set(["heroImage", "metric1Value", "metric2Value", "metric3Value"]);
 
 // ── Pages ─────────────────────────────────────────────────────────────────────
 const PAGES = [
@@ -32,7 +35,7 @@ const LOCALE_INFO: Record<string, { flag: string; name: string }> = {
   ja: { flag: "🇯🇵", name: "日本語" },
 };
 
-type FieldType = "short" | "long" | "button";
+type FieldType = "short" | "long" | "button" | "image";
 interface FieldMeta { label: string; section: string; hint: string; type: FieldType; }
 
 const FIELD_META: Record<string, FieldMeta> = {
@@ -83,6 +86,9 @@ const FIELD_META: Record<string, FieldMeta> = {
   ctaEyebrow: { label: "Üst Etiket", section: "CTA", hint: "", type: "short" },
   ctaTitle: { label: "Başlık", section: "CTA", hint: "", type: "short" },
   ctaLead: { label: "Açıklama", section: "CTA", hint: "", type: "long" },
+  ctaChoice_0: { label: "Kart 1", section: "CTA", hint: "Donanım + gömülü yazılım", type: "short" },
+  ctaChoice_1: { label: "Kart 2", section: "CTA", hint: "Bulut + veri tabanı", type: "short" },
+  ctaChoice_2: { label: "Kart 3", section: "CTA", hint: "Web, mobil, simülasyon", type: "short" },
   ctaCta: { label: "Buton", section: "CTA", hint: "", type: "button" },
   faqEyebrow: { label: "Üst Etiket", section: "SSS", hint: "SSS veya Merak Edilenler", type: "short" },
   faqTitle: { label: "Başlık", section: "SSS", hint: "", type: "short" },
@@ -153,6 +159,13 @@ const FIELD_META: Record<string, FieldMeta> = {
   formEyebrow: { label: "Form Etiket", section: "Form", hint: "", type: "short" },
   formTitle: { label: "Form Başlık", section: "Form", hint: "", type: "short" },
   formLead: { label: "Form Açıklama", section: "Form", hint: "", type: "long" },
+  heroImage: { label: "Hero Görseli", section: "Hero", hint: "Sayfa üst banner görseli (yol veya URL)", type: "image" },
+  metric1Value: { label: "Metrik 1 Değeri", section: "Hero", hint: "Örn. 15+", type: "short" },
+  metric2Value: { label: "Metrik 2 Değeri", section: "Hero", hint: "Örn. 2020", type: "short" },
+  metric3Value: { label: "Metrik 3 Değeri", section: "Hero", hint: "Örn. 24/7", type: "short" },
+  metric1Label: { label: "Metrik 1 Etiketi", section: "Hero", hint: "", type: "short" },
+  metric2Label: { label: "Metrik 2 Etiketi", section: "Hero", hint: "", type: "short" },
+  metric3Label: { label: "Metrik 3 Etiketi", section: "Hero", hint: "", type: "short" },
 };
 
 function getMeta(key: string): FieldMeta {
@@ -226,6 +239,50 @@ function ContentCardGrid({
           </button>
         );
       })}
+    </div>
+  );
+}
+
+// ── Scalar field (non-localized page values) ──────────────────────────────────
+function ScalarPageFieldEditor({
+  fieldKey,
+  pageData,
+  selectedPage,
+  setContent,
+  meta,
+}: {
+  fieldKey: string;
+  pageData: Record<string, any>;
+  selectedPage: string;
+  setContent: (fn: (c: any) => any) => void;
+  meta: FieldMeta;
+}) {
+  const raw = pageData[fieldKey];
+  const value = typeof raw === "string" ? raw : raw ? String(raw) : "";
+
+  const update = (val: string) => {
+    setContent((c: any) => {
+      const pc = { ...(c.pageContent || {}) };
+      pc[selectedPage] = { ...(pc[selectedPage] || {}), [fieldKey]: val };
+      return { ...c, pageContent: pc };
+    });
+  };
+
+  return (
+    <div className="ws-pc-editor">
+      <div className="ws-pc-editor-head">
+        <div>
+          <p className="ws-pc-editor-title">{meta.label}</p>
+          {meta.hint && <p className="ws-pc-editor-hint">{meta.hint}</p>}
+        </div>
+      </div>
+      <FormField
+        label={meta.label}
+        type={meta.type === "image" ? "image" : "text"}
+        value={value}
+        onChange={update}
+        hint={meta.hint}
+      />
     </div>
   );
 }
@@ -561,6 +618,7 @@ export default function PageContentPanel() {
                 activeCard={activeCard}
                 onSelectBlock={selectBlock}
                 onSelectCard={selectCard}
+                extraData={selectedPage === "solutions" ? { solutions: content?.solutions || [] } : {}}
               />
             )}
             <p className="ws-pc-preview-hint">Bölüme veya karta tıklayarak düzenleyin.</p>
@@ -614,7 +672,17 @@ export default function PageContentPanel() {
           {activeCard ? (
             <CardLocaleEditor card={activeCard} pageData={pageData} updateField={updateField} previewLocale={previewLocale} />
           ) : activeField ? (
-            <LocaleFieldEditor fieldKey={activeField} pageData={pageData} updateField={updateField} meta={getMeta(activeField)} />
+            SCALAR_PAGE_FIELDS.has(activeField) ? (
+              <ScalarPageFieldEditor
+                fieldKey={activeField}
+                pageData={pageData}
+                selectedPage={selectedPage}
+                setContent={setContent}
+                meta={getMeta(activeField)}
+              />
+            ) : (
+              <LocaleFieldEditor fieldKey={activeField} pageData={pageData} updateField={updateField} meta={getMeta(activeField)} />
+            )
           ) : (
             <div className="ws-pc-empty">Düzenlemek için bir bölüm veya kart seçin.</div>
           )}

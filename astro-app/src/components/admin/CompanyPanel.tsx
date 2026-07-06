@@ -4,7 +4,7 @@ import { useState } from "react";
 import { type Locale } from "@/lib/cms";
 import { useAdmin } from "./AdminContext";
 import FormField from "./FormField";
-import TranslationEditor from "./TranslationEditor";
+import { syncOfficePhonesInFacts } from "@/lib/company-contact";
 
 type SubTab = "general" | "team" | "timeline" | "offices" | "expertise" | "industries";
 
@@ -278,7 +278,8 @@ export default function CompanyPanel() {
     setContent((c: any) => {
       const o = [...(c.companyFacts?.officesList || [])];
       o[idx] = { ...o[idx], [key]: val };
-      return { ...c, companyFacts: { ...c.companyFacts, officesList: o } };
+      const nextFacts = syncOfficePhonesInFacts({ ...(c.companyFacts || {}), officesList: o });
+      return { ...c, companyFacts: nextFacts };
     });
   };
 

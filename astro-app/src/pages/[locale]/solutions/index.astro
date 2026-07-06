@@ -23,6 +23,12 @@ const aiMeta = aiMetaForPage(content, "solutions", locale);
 const solutions = (content.solutions || []).sort((a: any, b: any) => (a.sortOrder || 0) - (b.sortOrder || 0));
 const allProducts = content.products || [];
 const solutionCategories = ["All", ...Array.from(new Set(solutions.map((s: any) => s.category).filter(Boolean)))];
+
+const categoryLabelMap = new Map<string, string>();
+for (const sol of solutions) {
+  const loc = localizeItem(sol, locale);
+  if (sol.category && loc.category) categoryLabelMap.set(sol.category, loc.category);
+}
 const solutionsSchema = appendSchemaNodes({
   "@context": "https://schema.org",
   "@graph": [
@@ -37,10 +43,23 @@ const howItWorksSteps = pageContent.howItWorksSteps || [];
 const whyCards = pageContent.whyCards || [];
 
 const labels = {
+  filterAll: { en: "All", tr: "Tümü", de: "Alle", fr: "Tous", es: "Todos", it: "Tutti", ar: "الكل", ja: "すべて" },
+  exploreDevices: { en: "Explore Devices", tr: "Cihazları İnceleyin", de: "Geräte entdecken", fr: "Découvrir les appareils", es: "Explorar dispositivos", it: "Esplora i dispositivi", ar: "استكشف الأجهزة", ja: "製品を見る" },
+  solutionStack: { en: "Solution Stack", tr: "Çözüm Katmanları", de: "Lösungs-Stack", fr: "Pile solution", es: "Capas de la solución", it: "Stack soluzione", ar: "طبقات الحل", ja: "ソリューション構成" },
+  stackFieldSensing: { en: "Field sensing", tr: "Saha algılama", de: "Feldsensorik", fr: "Capteurs terrain", es: "Sensado en campo", it: "Rilevamento sul campo", ar: "الاستشعار الميداني", ja: "現場センシング" },
+  stackTransmission: { en: "Low-power transmission", tr: "Düşük güç iletimi", de: "Stromsparende Übertragung", fr: "Transmission basse consommation", es: "Transmisión de bajo consumo", it: "Trasmissione a basso consumo", ar: "نقل منخفض الطاقة", ja: "低消費電力通信" },
+  stackBackend: { en: "Backend processing", tr: "Arka uç işleme", de: "Backend-Verarbeitung", fr: "Traitement backend", es: "Procesamiento backend", it: "Elaborazione backend", ar: "معالجة الخلفية", ja: "バックエンド処理" },
+  stackDashboards: { en: "Dashboards & mobile alerts", tr: "Paneller ve mobil uyarılar", de: "Dashboards & mobile Alarme", fr: "Tableaux de bord et alertes mobiles", es: "Paneles y alertas móviles", it: "Dashboard e avvisi mobili", ar: "لوحات وتنبيهات جوال", ja: "ダッシュボードとモバイル通知" },
+  startWithSite: { en: "Start with Your Site", tr: "Sahanızla Başlayın", de: "Mit Ihrem Standort starten", fr: "Commencer par votre site", es: "Empiece por su sitio", it: "Inizia dal tuo sito", ar: "ابدأ من موقعك", ja: "現場から始める" },
+  metric1: { en: "countries with active deployments", tr: "aktif kurulum yapılan ülke", de: "Länder mit aktiven Einsätzen", fr: "pays avec des déploiements actifs", es: "países con despliegues activos", it: "paesi con installazioni attive", ar: "دولة بنشرات نشطة", ja: "導入実績のある国" },
+  metric2: { en: "R&D-first engineering foundation", tr: "Ar-Ge odaklı mühendislik temeli", de: "F&E-orientierte technische Basis", fr: "fondation d'ingénierie axée sur la R&D", es: "base de ingeniería orientada a I+D", it: "fondamento ingegneristico orientato alla R&S", ar: "أساس هندسي يركز على البحث والتطوير", ja: "研究開発重視のエンジニアリング基盤" },
+  metric3: { en: "remote visibility for critical assets", tr: "kritik varlıklar için 24/7 uzaktan görünürlük", de: "Fernüberwachung kritischer Anlagen rund um die Uhr", fr: "visibilité à distance 24/7 pour les actifs critiques", es: "visibilidad remota 24/7 para activos críticos", it: "visibilità remota 24/7 per asset critici", ar: "رؤية عن بُعد على مدار الساعة للأصول الحرجة", ja: "重要資産の24時間遠隔可視化" },
+  operationalCoverage: { en: "Operational Coverage", tr: "Operasyonel Kapsam", de: "Betriebliche Abdeckung", fr: "Couverture opérationnelle", es: "Cobertura operativa", it: "Copertura operativa", ar: "التغطية التشغيلية", ja: "業務のカバー範囲" },
+  startProject: { en: "Start Project", tr: "Projeyi Başlat", de: "Projekt starten", fr: "Démarrer le projet", es: "Iniciar proyecto", it: "Avvia progetto", ar: "بدء المشروع", ja: "プロジェクト相談" },
   useCases: { en: "Use Cases", tr: "Kullanım Alanları", de: "Anwendungsbereiche", fr: "Cas d'usage", es: "Casos de uso", it: "Casi d'uso", ar: "حالات الاستخدام", ja: "ユースケース" },
   whyWillowSoft: { en: "Why WillowSoft", tr: "Neden WillowSoft", de: "Warum WillowSoft", fr: "Pourquoi WillowSoft", es: "Por qué WillowSoft", it: "Perché WillowSoft", ar: "لماذا WillowSoft", ja: "WillowSoftの強み" },
-  mapCase: { en: "Map Your Use Case", tr: "Kullanım Senaryonuzu Belirleyin", de: "Anwendung zuordnen", fr: "Cartographier votre usage", es: "Casos de uso", it: "Mappa il tuo caso", ar: "خطط لحالة استخدامك", ja: "ユースケースを相談する" },
-  faqEyebrow: { en: "Frequently asked", tr: "Sıkça sorulanlar", de: "Häufig gestellte Fragen", fr: "Questions fréquentes", es: "Preguntas frecuentes", it: "Domande frequenti", ar: "أسئلة mكررة", ja: "よくある質問" },
+  mapCase: { en: "Map Your Use Case", tr: "Kullanım Senaryonuzu Belirleyin", de: "Anwendungsfall zuordnen", fr: "Cartographier votre cas d'usage", es: "Defina su caso de uso", it: "Mappa il tuo caso d'uso", ar: "حدّد حالة الاستخدام", ja: "ユースケースを相談" },
+  faqEyebrow: { en: "Frequently asked", tr: "Sıkça sorulanlar", de: "Häufig gestellte Fragen", fr: "Questions fréquentes", es: "Preguntas frecuentes", it: "Domande frequenti", ar: "أسئلة شائعة", ja: "よくある質問" },
   faqTitle: { en: "Questions about our solutions.", tr: "Çözümlerimiz hakkında sorular.", de: "Fragen zu unseren Lösungen.", fr: "Questions sur nos solutions.", es: "Preguntas sobre nuestras soluciones.", it: "Domande sulle nostre soluzioni.", ar: "أسئلة حول حلولنا.", ja: "ソリューションに関するご質問" },
   faqLead: {
     en: "Here are the answers to the most common questions about our IoT capabilities and deployments.",
@@ -57,6 +76,9 @@ const labels = {
 const getLabel = (key: keyof typeof labels) => {
   return labels[key][locale] || labels[key]["en"];
 };
+
+const categoryName = (cat: string) =>
+  cat === "All" ? getLabel("filterAll") : (categoryLabelMap.get(cat) || cat);
 ---
 
 <PageLayout
@@ -86,29 +108,29 @@ const getLabel = (key: keyof typeof labels) => {
 
           <div class="solutions-hero-actions">
             <a class="btn btn-primary" href={`/${locale}/start-project`}>{getLabel("mapCase")}</a>
-            <a class="btn btn-secondary" href={`/${locale}/products`}>{locale === 'tr' ? 'Cihazları İnceleyin' : 'Explore Devices'}</a>
+            <a class="btn btn-secondary" href={`/${locale}/products`}>{getLabel("exploreDevices")}</a>
           </div>
         </div>
 
         <div class="solutions-hero-panel reveal delay-1">
-          <span class="panel-kicker">{locale === 'tr' ? 'Çözüm Katmanları' : 'Solution Stack'}</span>
+          <span class="panel-kicker">{getLabel("solutionStack")}</span>
 
           <div class="solution-stack-list">
             <div>
               <strong>01</strong>
-              <span>{locale === 'tr' ? 'Saha algılama' : 'Field sensing'}</span>
+              <span>{getLabel("stackFieldSensing")}</span>
             </div>
             <div>
               <strong>02</strong>
-              <span>{locale === 'tr' ? 'Düşük güç iletimi' : 'Low-power transmission'}</span>
+              <span>{getLabel("stackTransmission")}</span>
             </div>
             <div>
               <strong>03</strong>
-              <span>{locale === 'tr' ? 'Arka uç işleme' : 'Backend processing'}</span>
+              <span>{getLabel("stackBackend")}</span>
             </div>
             <div>
               <strong>04</strong>
-              <span>{locale === 'tr' ? 'Paneller ve mobil uyarılar' : 'Dashboards & mobile alerts'}</span>
+              <span>{getLabel("stackDashboards")}</span>
             </div>
           </div>
         </div>
@@ -116,15 +138,15 @@ const getLabel = (key: keyof typeof labels) => {
         <div class="solutions-hero-metrics reveal delay-2">
           <article>
             <strong>{pageContent.metric1Value || "15+"}</strong>
-            <span>{localizedValue(pageContent.metric1Label, locale) || (locale === 'tr' ? 'Aktif kurulum yapılan ülke' : 'countries with active deployments')}</span>
+            <span>{localizedValue(pageContent.metric1Label, locale) || getLabel("metric1")}</span>
           </article>
           <article>
             <strong>{pageContent.metric2Value || "2020"}</strong>
-            <span>{localizedValue(pageContent.metric2Label, locale) || (locale === 'tr' ? 'Ar-Ge odaklı mühendislik temeli' : 'R&D-first engineering foundation')}</span>
+            <span>{localizedValue(pageContent.metric2Label, locale) || getLabel("metric2")}</span>
           </article>
           <article>
             <strong>{pageContent.metric3Value || "24/7"}</strong>
-            <span>{localizedValue(pageContent.metric3Label, locale) || (locale === 'tr' ? 'kritik varlıklar için 24/7 uzaktan görünürlük' : 'remote visibility for critical assets')}</span>
+            <span>{localizedValue(pageContent.metric3Label, locale) || getLabel("metric3")}</span>
           </article>
         </div>
       </div>
@@ -151,14 +173,14 @@ const getLabel = (key: keyof typeof labels) => {
             </p>
           </div>
 
-          <a class="btn btn-secondary btn-small" href={`/${locale}/start-project`}>{locale === 'tr' ? 'Sahanızla Başlayın' : 'Start with Your Site'}</a>
+          <a class="btn btn-secondary btn-small" href={`/${locale}/start-project`}>{getLabel("startWithSite")}</a>
         </div>
 
         {solutionCategories.length > 2 && (
           <div class="solution-filter-bar reveal" data-solution-filter data-cms-solution-filter>
             {solutionCategories.map((cat: string, i: number) => (
               <button class={`sol-filter-btn${i === 0 ? " active" : ""}`} data-cat={cat}>
-                {cat === "All" ? (locale === "tr" ? "Tümü" : "All") : cat}
+                {categoryName(cat)}
               </button>
             ))}
           </div>
@@ -166,10 +188,10 @@ const getLabel = (key: keyof typeof labels) => {
 
         <div class="solutions-showcase-frame reveal delay-2">
           <div class="solutions-showcase-side">
-            <span>{getVal("showcaseEyebrow") || (locale === 'tr' ? 'Operasyonel Kapsam' : 'Operational Coverage')}</span>
-            <h3>{getVal("showcaseTitle") || (locale === 'tr' ? 'Tek bir sistem, çoklu saha gerçekliği.' : 'One system, multiple field realities.')}</h3>
+            <span>{getVal("showcaseEyebrow") || getLabel("operationalCoverage")}</span>
+            <h3>{getVal("showcaseTitle")}</h3>
             <p>
-              {getVal("showcaseLead") || (locale === 'tr' ? 'Aynı platform; izleme, uyarılar, raporlama, haritalar, varlık durumu, çevre verileri ve mevcut sistemlerle entegrasyonu destekleyebilir.' : 'The same platform can support monitoring, alerts, reporting, maps, asset status, environmental data and integration with existing systems.')}
+              {getVal("showcaseLead")}
             </p>
           </div>
 
@@ -186,9 +208,9 @@ const getLabel = (key: keyof typeof labels) => {
     <section class="section soft solution-selector-section">
       <div class="section-inner">
         <div class="section-head center reveal">
-          <p class="eyebrow">{getVal("selectorEyebrow") || (locale === 'tr' ? 'Doğru Yolu Seçin' : 'Choose the Right Path')}</p>
-          <h2>{getVal("selectorTitle") || (locale === 'tr' ? 'Her çözüm operasyonel soruyla başlar.' : 'Every solution starts with the operational question.')}</h2>
-          <p class="section-lead">{getVal("selectorLead") || "Strong IoT projects do not start with “which sensor?”. They start with what the user needs to see, decide or automate."}</p>
+          <p class="eyebrow">{getVal("selectorEyebrow")}</p>
+          <h2>{getVal("selectorTitle")}</h2>
+          <p class="section-lead">{getVal("selectorLead")}</p>
         </div>
 
         <div class="solution-decision-grid">
@@ -198,15 +220,12 @@ const getLabel = (key: keyof typeof labels) => {
               return (
                 <article class={`solution-decision-card reveal ${idx > 0 ? `delay-${idx}` : ''}`}>
                   <div class="decision-icon">{String(idx + 1).padStart(2, '0')}</div>
-                  <span>{c.eyebrow || card.eyebrow}</span>
-                  <h3>{c.title || card.title}</h3>
-                  <p>{c.body || card.body}</p>
-                  {card.bullets && card.bullets.length > 0 && (
+                  <span>{c.eyebrow}</span>
+                  <h3>{c.title}</h3>
+                  <p>{c.body}</p>
+                  {c.bullets && c.bullets.length > 0 && (
                     <ul>
-                      {card.bullets.map((b: string, bi: number) => {
-                        const locBullet = c.bullets?.[bi] || b;
-                        return <li>{locBullet}</li>;
-                      })}
+                      {c.bullets.map((b: string) => <li>{b}</li>)}
                     </ul>
                   )}
                 </article>
@@ -266,10 +285,10 @@ const getLabel = (key: keyof typeof labels) => {
 
       <div class="section-inner">
         <div class="section-head center reveal" style={{ marginBottom: "40px" }}>
-          <p class="eyebrow">{getVal("howEyebrow") || (locale === 'tr' ? 'Nasıl Çalışır' : 'How It Works')}</p>
-          <h2 class="page-title">{getVal("howTitle") || (locale === 'tr' ? 'Sensörler raporlar. Geçitler bağlar. Platformlar harekete geçer.' : 'Sensors report. Gateways connect. Platforms act.')}</h2>
+          <p class="eyebrow">{getVal("howEyebrow")}</p>
+          <h2 class="page-title">{getVal("howTitle")}</h2>
           <p class="section-lead">
-            {getVal("howLead") || "WillowSoft solutions turn field signals into operational intelligence through a complete embedded-to-cloud architecture."}
+            {getVal("howLead")}
           </p>
         </div>
 
@@ -281,8 +300,8 @@ const getLabel = (key: keyof typeof labels) => {
                 return (
                   <div class="flow-node">
                     <small>{String(idx + 1).padStart(2, '0')}</small>
-                    <strong>{s.title || step.title}</strong>
-                    <span>{s.body || step.body}</span>
+                    <strong>{s.title}</strong>
+                    <span>{s.body}</span>
                   </div>
                 );
               })
@@ -338,8 +357,8 @@ const getLabel = (key: keyof typeof labels) => {
               return (
                 <article class={`solutions-principle-card reveal ${idx > 0 ? `delay-${idx}` : ''}`}>
                   <span>{String(idx + 1).padStart(2, '0')}</span>
-                  <h3>{c.title || card.title}</h3>
-                  <p>{c.body || card.body}</p>
+                  <h3>{c.title}</h3>
+                  <p>{c.body}</p>
                 </article>
               );
             })
@@ -385,14 +404,14 @@ const getLabel = (key: keyof typeof labels) => {
       <div class="section-inner">
         <div class="solutions-final-cta reveal">
           <div>
-            <p class="eyebrow">{getVal("finalCtaEyebrow") || (locale === 'tr' ? 'Operasyonunuzla Başlayın' : 'Start With Your Operation')}</p>
-            <h2>{getVal("finalCtaTitle") || (locale === 'tr' ? 'Görünürlüğe ihtiyaç duyan bir sahanız, varlığınız veya süreciniz mi var?' : 'Have a site, asset or process that needs visibility?')}</h2>
+            <p class="eyebrow">{getVal("finalCtaEyebrow")}</p>
+            <h2>{getVal("finalCtaTitle")}</h2>
             <p>
-              {getVal("finalCtaLead") || (locale === 'tr' ? 'Saha koşullarınızı, veri ihtiyaçlarınızı ve operasyonel hedeflerinizi paylaşın. WillowSoft doğru cihaz, bağlantı ve platform mimarisini çıkarabilir.' : 'Share your field conditions, data needs and operational goals. WillowSoft can map the right device, connectivity and platform architecture.')}
+              {getVal("finalCtaLead")}
             </p>
           </div>
 
-          <a class="btn btn-primary" href={`/${locale}/start-project`}>{getVal("finalCtaButton") || (locale === 'tr' ? 'Projeyi Başlat' : 'Start Project')}</a>
+          <a class="btn btn-primary" href={`/${locale}/start-project`}>{getVal("finalCtaButton") || getLabel("startProject")}</a>
         </div>
       </div>
     </section>

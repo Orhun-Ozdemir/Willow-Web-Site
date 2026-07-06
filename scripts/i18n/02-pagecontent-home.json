@@ -246,22 +246,49 @@
         "ja": "明確さから始める"
       },
       "ctaTitle": {
-        "tr": "Bir <em class=\"hw-serif\">IoT ürün</em> ya da <strong class=\"hw-display\">endüstriyel platform</strong> kurmaya hazır mısınız?",
+        "tr": "Bir <em class=\"hw-serif\">IoT ürün</em> ya da <strong class=\"hw-display\">endüstriyel platform</strong> geliştirmeye hazır mısınız?",
         "de": "Bereit, ein <em class=\"hw-serif\">vernetztes Produkt</em> oder eine <strong class=\"hw-display\">industrielle Plattform</strong> zu entwickeln?",
-        "fr": "Prêt à créer un <em class=\"hw-serif\">produit connecté</em> ou une <strong class=\"hw-display\">plateforme industrielle</strong> ?",
-        "es": "¿Listo para crear un <em class=\"hw-serif\">producto conectado</em> o una <strong class=\"hw-display\">plataforma industrial</strong>?",
-        "it": "Pronto a creare un <em class=\"hw-serif\">prodotto connesso</em> o una <strong class=\"hw-display\">piattaforma industriale</strong>?",
-        "ar": "هل أنت مستعد لبناء <em class=\"hw-serif\">منتج متصل</em> أو <strong class=\"hw-display\">منصة صناعية</strong>؟",
-        "ja": "<em class=\"hw-serif\">コネクテッド製品</em>または<strong class=\"hw-display\">産業用プラットフォーム</strong>を構築する準備はできていますか？"
+        "fr": "Prêt à développer un <em class=\"hw-serif\">produit connecté</em> ou une <strong class=\"hw-display\">plateforme industrielle</strong> ?",
+        "es": "¿Listo para desarrollar un <em class=\"hw-serif\">producto conectado</em> o una <strong class=\"hw-display\">plataforma industrial</strong>?",
+        "it": "Pronto a sviluppare un <em class=\"hw-serif\">prodotto connesso</em> o una <strong class=\"hw-display\">piattaforma industriale</strong>?",
+        "ar": "هل أنت مستعد لتطوير <em class=\"hw-serif\">منتج متصل</em> أو <strong class=\"hw-display\">منصة صناعية</strong>؟",
+        "ja": "<em class=\"hw-serif\">コネクテッド製品</em>または<strong class=\"hw-display\">産業用プラットフォーム</strong>を開発する準備はできていますか？"
       },
       "ctaLead": {
-        "tr": "Donanım, firmware, backend, PostgreSQL, mobil uygulama, web yönetim paneli, web sitesi, VR simülasyonu veya uçtan uca tüm sistem mimarisi konusundaki ihtiyaçlarınızı bizimle paylaşın.",
-        "de": "Teilen Sie uns mit, ob Sie Hardware, Firmware, Backend, PostgreSQL, eine mobile App, ein Web-Dashboard, eine Website, eine VR-Simulation oder ein schlüsselfertiges Gesamtsystem benötigen.",
-        "fr": "Dites-nous si vous avez besoin de matériel, firmware, backend, PostgreSQL, application mobile, tableau de bord web, site web, simulation VR ou d'une solution clé en main complète.",
-        "es": "Cuéntenos si necesita hardware, firmware, backend, PostgreSQL, aplicación móvil, panel web, sitio web, simulación VR o una solución integral completa.",
-        "it": "Dicci se hai bisogno di hardware, firmware, backend, PostgreSQL, app mobile, dashboard web, sito web, simulazione VR o di una soluzione completa chiavi in mano.",
-        "ar": "أخبرنا إن كنت بحاجة إلى العتاد، أو البرامج الثابتة، أو الخلفية، أو PostgreSQL، أو تطبيق جوال، أو لوحة تحكم ويب، أو موقع إلكتروني، أو محاكاة الواقع الافتراضي، أو حل متكامل وشامل.",
-        "ja": "ハードウェア、ファームウェア、バックエンド、PostgreSQL、モバイルアプリ、Webダッシュボード、Webサイト、VRシミュレーション、あるいはすべてを網羅した包括的なシステムの中から、何が必要かお聞かせください。"
+        "tr": "Tüm mühendislik ve yazılım süreçlerini tek çatı altında toplayın. İhtiyaçlarınızı paylaşın, projenizi en doğru mimariyle hayata geçirelim.",
+        "de": "Vereinen Sie alle Engineering- und Softwareprozesse unter einem Dach. Teilen Sie Ihre Anforderungen mit – wir setzen Ihr Projekt mit der richtigen Architektur um.",
+        "fr": "Regroupez tous vos processus d’ingénierie et logiciels sous un même toit. Partagez vos besoins et donnons vie à votre projet avec l’architecture la plus adaptée.",
+        "es": "Reúna todos los procesos de ingeniería y software bajo un mismo techo. Comparta sus necesidades y pongamos su proyecto en marcha con la arquitectura adecuada.",
+        "it": "Raggruppa tutti i processi di ingegneria e software sotto un unico tetto. Condividi le tue esigenze e daremo vita al progetto con l'architettura più adatta.",
+        "ar": "اجمع كل عمليات الهندسة والبرمجيات تحت سقف واحد. شاركنا احتياجاتك، ونُحيي مشروعك بالبنية المعمارية الأنسب.",
+        "ja": "エンジニアリングとソフトウェアのすべてのプロセスを一つのチームに。ご要望をお聞かせください。最適なアーキテクチャでプロジェクトを実現します。"
+      },
+      "ctaChoice_0": {
+        "tr": "donanım+gömülü yazılım",
+        "de": "Hardware + eingebettete Software",
+        "fr": "Matériel + logiciel embarqué",
+        "es": "Hardware + software embebido",
+        "it": "Hardware + software embedded",
+        "ar": "عتاد + برمجيات مدمجة",
+        "ja": "ハードウェア＋組み込みソフトウェア"
+      },
+      "ctaChoice_1": {
+        "tr": "bulut+veri tabanı",
+        "de": "Cloud + Datenbank",
+        "fr": "Cloud + base de données",
+        "es": "Nube + base de datos",
+        "it": "Cloud + database",
+        "ar": "سحابة + قاعدة بيانات",
+        "ja": "クラウド＋データベース"
+      },
+      "ctaChoice_2": {
+        "tr": "web, mobil, Simülasyon",
+        "de": "Web, Mobile, Simulation",
+        "fr": "Web, mobile, simulation",
+        "es": "Web, móvil, simulación",
+        "it": "Web, mobile, simulazione",
+        "ar": "ويب، جوال، محاكاة",
+        "ja": "Web、モバイル、シミュレーション"
       }
     }
   }

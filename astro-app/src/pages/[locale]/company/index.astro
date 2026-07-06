@@ -3,6 +3,7 @@ import PageLayout from "@/layouts/PageLayout.astro";
 import { loadContent } from "@/lib/content";
 import { pageSeo, webPageNode, ORGANIZATION_SCHEMA, WEBSITE_SCHEMA, SITE_ORIGIN } from "@/lib/seo";
 import { localizeItem, resolveAsset, localizedValue, locales, resolveLocale, type Locale } from "@/lib/cms";
+import { officesForContact, resolveOfficePhone, syncOfficePhonesInFacts, telHref } from "@/lib/company-contact";
 
 export const prerender = false;
 
@@ -23,7 +24,8 @@ const companySchema = {
 const pageContent = content.pageContent?.company || {};
 const getVal = (key: string) => localizedValue(pageContent[key], locale);
 
-const companyFacts = content.companyFacts || {};
+const companyFacts = syncOfficePhonesInFacts(content.companyFacts || {});
+const contactOffices = officesForContact(companyFacts, locale);
 
 const cleanCmsText = (value: string) => {
   return value
@@ -109,6 +111,146 @@ const getSvg = (name: string, size = 20) => {
   const template = SVGS[name] || SVGS.globe;
   return template.replace(/SIZE/g, String(size));
 };
+
+const ui = {
+  heroEyebrow: { en: "About WillowSoft", tr: "WillowSoft Hakkında", de: "Über WillowSoft", fr: "À propos de WillowSoft", es: "Sobre WillowSoft", it: "Su WillowSoft", ar: "عن WillowSoft", ja: "WillowSoftについて" },
+  heroLine1: { en: "Smart", tr: "Akıllı", de: "Kluge", fr: "Des équipes", es: "Equipos", it: "Team", ar: "فرق", ja: "スマートな" },
+  heroAccent: { en: "Teams.", tr: "Ekipler.", de: "Teams.", fr: "intelligentes.", es: "inteligentes.", it: "intelligenti.", ar: "ذكية.", ja: "チーム。" },
+  heroLine2: { en: "Resilient Systems.", tr: "Dayanıklı Sistemler.", de: "Robuste Systeme.", fr: "Des systèmes résilients.", es: "Sistemas resilientes.", it: "Sistemi resilienti.", ar: "أنظمة مرنة.", ja: "堅牢なシステム。" },
+  startProject: { en: "Start a project", tr: "Proje başlatın", de: "Projekt starten", fr: "Démarrer un projet", es: "Iniciar proyecto", it: "Avvia un progetto", ar: "ابدأ مشروعاً", ja: "プロジェクトを始める" },
+  getInTouch: { en: "Get in touch", tr: "İletişime geçin", de: "Kontakt aufnehmen", fr: "Nous contacter", es: "Ponerse en contacto", it: "Contattaci", ar: "تواصل معنا", ja: "お問い合わせ" },
+  yearFounded: { en: "Year founded", tr: "Kuruluş Yılı", de: "Gründungsjahr", fr: "Année de création", es: "Año de fundación", it: "Anno di fondazione", ar: "سنة التأسيس", ja: "設立年" },
+  countriesDeployed: { en: "Countries deployed", tr: "Ülkeye İhracat", de: "Einsatzländer", fr: "Pays de déploiement", es: "Países de despliegue", it: "Paesi di distribuzione", ar: "دول التصدير", ja: "展開国数" },
+  continuousRnD: { en: "Continuous R&D", tr: "Sürekli Ar-Ge", de: "Kontinuierliche F&E", fr: "R&D continue", es: "I+D continua", it: "R&S continua", ar: "بحث وتطوير مستمر", ja: "継続的な研究開発" },
+  aboutUs: { en: "About us", tr: "Hakkımızda", de: "Über uns", fr: "Qui sommes-nous", es: "Sobre nosotros", it: "Chi siamo", ar: "من نحن", ja: "私たちについて" },
+  mission: { en: "MISSION", tr: "MİSYON", de: "MISSION", fr: "MISSION", es: "MISIÓN", it: "MISSIONE", ar: "المهمة", ja: "ミッション" },
+  vision: { en: "VISION", tr: "VİZYON", de: "VISION", fr: "VISION", es: "VISIÓN", it: "VISIONE", ar: "الرؤية", ja: "ビジョン" },
+  theTeam: { en: "The team", tr: "Ekibimiz", de: "Das Team", fr: "L'équipe", es: "El equipo", it: "Il team", ar: "الفريق", ja: "チーム" },
+  teamLead: {
+    en: "Our core team of hardware engineers, firmware developers, and cloud architects.",
+    tr: "Kurucu mühendislerimiz ve IIoT mimarlarımız.",
+    de: "Unser Kernteam aus Hardware-Ingenieuren, Firmware-Entwicklern und Cloud-Architekten.",
+    fr: "Notre équipe de fondation : ingénieurs hardware, développeurs firmware et architectes cloud.",
+    es: "Nuestro equipo central de ingenieros de hardware, desarrolladores de firmware y arquitectos cloud.",
+    it: "Il nostro team di ingegneri hardware, sviluppatori firmware e architetti cloud.",
+    ar: "فريقنا الأساسي من مهندسي الأجهزة ومطوري البرامج الثابتة ومهندسي السحابة.",
+    ja: "ハードウェア、ファームウェア、クラウドのコアエンジニアチーム。",
+  },
+  globalPresence: { en: "Global presence", tr: "Küresel Varlık", de: "Globale Präsenz", fr: "Présence mondiale", es: "Presencia global", it: "Presenza globale", ar: "حضور عالمي", ja: "グローバル展開" },
+  workWithUs: { en: "Work with us", tr: "Bizimle Çalışın", de: "Mit uns arbeiten", fr: "Travailler avec nous", es: "Trabaja con nosotros", it: "Lavora con noi", ar: "اعمل معنا", ja: "一緒に働く" },
+  workWithUsLead: {
+    en: "Tell us what you're building. We'll tell you how we'd approach it.",
+    tr: "Ne üretmek istediğinizi bize anlatın. Size mühendislik yaklaşımımızı sunalım.",
+    de: "Erzählen Sie uns, was Sie bauen. Wir zeigen Ihnen unseren technischen Ansatz.",
+    fr: "Dites-nous ce que vous construisez. Nous vous expliquerons notre approche d'ingénierie.",
+    es: "Cuéntenos qué está construyendo. Le explicaremos nuestro enfoque de ingeniería.",
+    it: "Raccontaci cosa stai costruendo. Ti spiegheremo il nostro approccio ingegneristico.",
+    ar: "أخبرنا بما تبنيه. وسنوضح لك كيف نتعامل معه هندسياً.",
+    ja: "作りたいものをお聞かせください。当社のエンジニアリングアプローチをご提案します。",
+  },
+  howWeWork: { en: "How we work", tr: "Nasıl Çalışırız", de: "Wie wir arbeiten", fr: "Notre façon de travailler", es: "Cómo trabajamos", it: "Come lavoriamo", ar: "كيف نعمل", ja: "私たちの進め方" },
+  historyTimeline: {
+    en: "History timeline", tr: "Tarihçe zaman çizelgesi", de: "Zeitleiste", fr: "Chronologie", es: "Línea de tiempo", it: "Cronologia", ar: "الجدول الزمني", ja: "沿革タイムライン",
+  },
+  howWeWorkTitleHtml: {
+    en: 'Engineering principles we don\'t <span class="serif-accent">compromise</span> on.',
+    tr: 'Taviz vermediğimiz mühendislik <span class="serif-accent">ilkeleri</span>.',
+    de: 'Technische Grundsätze, auf die wir nicht <span class="serif-accent">verzichten</span>.',
+    fr: 'Des principes d\'ingénierie sur lesquels nous ne <span class="serif-accent">transigeons</span> pas.',
+    es: 'Principios de ingeniería en los que no <span class="serif-accent">cedemos</span>.',
+    it: 'Principi ingegneristici su cui non <span class="serif-accent">transigiamo</span>.',
+    ar: 'مبادئ هندسية لا <span class="serif-accent">نساوم</span> عليها.',
+    ja: '譲れないエンジニアリング<span class="serif-accent">原則</span>。',
+  },
+  officesTitleHtml: {
+    en: 'Two offices. <span class="serif-accent">One</span> team.',
+    tr: 'İki ofis. <span class="serif-accent">Tek</span> ekip.',
+    de: 'Zwei Büros. <span class="serif-accent">Ein</span> Team.',
+    fr: 'Deux bureaux. <span class="serif-accent">Une</span> équipe.',
+    es: 'Dos oficinas. <span class="serif-accent">Un</span> equipo.',
+    it: 'Due uffici. <span class="serif-accent">Un</span> team.',
+    ar: 'مكتبان. <span class="serif-accent">فريق</span> واحد.',
+    ja: '2拠点。<span class="serif-accent">ひとつ</span>のチーム。',
+  },
+  ctaTitleHtml: {
+    en: 'Ready to build with a team that owns the <span class="serif-accent">full stack</span>?',
+    tr: 'Uçtan uca tüm <span class="serif-accent">katmanları</span> yöneten bir ekiple çalışmaya hazır mısınız?',
+    de: 'Bereit, mit einem Team zu bauen, das den <span class="serif-accent">gesamten Stack</span> beherrscht?',
+    fr: 'Prêt à construire avec une équipe qui maîtrise la <span class="serif-accent">pile complète</span> ?',
+    es: '¿Listo para construir con un equipo que domina el <span class="serif-accent">stack completo</span>?',
+    it: 'Pronto a costruire con un team che gestisce l\'intero <span class="serif-accent">stack</span>?',
+    ar: 'هل أنت مستعد للبناء مع فريق يتولى <span class="serif-accent">المكدس الكامل</span>؟',
+    ja: '<span class="serif-accent">フルスタック</span>を担うチームと作りませんか？',
+  },
+};
+const u = (key: keyof typeof ui) => {
+  const val = ui[key];
+  return typeof val === "object" && val !== null && locale in val
+    ? (val as Record<string, string>)[locale] || (val as Record<string, string>).en
+    : "";
+};
+
+const teamTitleHtml: Record<string, string> = {
+  en: 'Meet the people behind the <span class="serif-accent">engineering</span>.',
+  tr: 'Mühendisliğin arkasındaki <span class="serif-accent">insanlar</span>.',
+  de: 'Die <span class="serif-accent">Menschen</span> hinter der Technik.',
+  fr: 'Les <span class="serif-accent">personnes</span> derrière l\'ingénierie.',
+  es: 'Las <span class="serif-accent">personas</span> detrás de la ingeniería.',
+  it: 'Le <span class="serif-accent">persone</span> dietro l\'ingegneria.',
+  ar: 'الأشخاص وراء <span class="serif-accent">الهندسة</span>.',
+  ja: '<span class="serif-accent">エンジニアリング</span>の裏にいる人たち。',
+};
+
+const aboutBulletFallback: Record<string, string[]> = {
+  en: [
+    "Low-power architecture optimized for years of unattended operation",
+    "Custom hardware design for every enclosure, RF and power constraint",
+    "Backend, cloud and interface layers built in-house — no integration debt",
+    "Production-ready: from first prototype to certified, manufactured product",
+  ],
+  tr: [
+    "Yıllarca müdahalesiz çalışma için optimize edilmiş düşük güç tüketimli mimari",
+    "Her türlü kutu, RF ve güç kısıtlaması için özel donanım tasarımı",
+    "Kendi bünyemizde geliştirilen bulut ve arayüz katmanları — entegrasyon borcu yok",
+    "Üretime hazır: ilk prototipten sertifikalı, üretilmiş ürüne kadar",
+  ],
+  de: [
+    "Energiesparende Architektur für jahrelangen unbeaufsichtigten Betrieb",
+    "Individuelles Hardware-Design für jedes Gehäuse, RF- und Leistungsprofil",
+    "Backend, Cloud und Oberflächen intern entwickelt — ohne Integrations-Schulden",
+    "Produktionsreif: vom ersten Prototyp bis zum zertifizierten Serienprodukt",
+  ],
+  fr: [
+    "Architecture basse consommation optimisée pour des années d'exploitation autonome",
+    "Conception hardware sur mesure pour chaque boîtier, contrainte RF et alimentation",
+    "Backend, cloud et interfaces développés en interne — sans dette d'intégration",
+    "Prêt pour la production : du premier prototype au produit certifié",
+  ],
+  es: [
+    "Arquitectura de bajo consumo optimizada para años de operación sin supervisión",
+    "Diseño de hardware a medida para cada carcasa, RF y restricción de energía",
+    "Backend, nube e interfaces desarrollados internamente — sin deuda de integración",
+    "Listo para producción: del primer prototipo al producto certificado",
+  ],
+  it: [
+    "Architettura a basso consumo ottimizzata per anni di funzionamento autonomo",
+    "Hardware su misura per ogni involucro, vincolo RF e di alimentazione",
+    "Backend, cloud e interfacce sviluppati internamente — senza debito di integrazione",
+    "Pronto per la produzione: dal primo prototipo al prodotto certificato",
+  ],
+  ar: [
+    "بنية منخفضة الطاقة محسّنة لسنوات من التشغيل دون إشراف",
+    "تصميم أجهزة مخصص لكل غلاف وقيود RF والطاقة",
+    "طبقات الخلفية والسحابة والواجهات مطوّرة داخلياً — دون ديون تكامل",
+    "جاهز للإنتاج: من النموذج الأول إلى منتج معتمد ومصنّع",
+  ],
+  ja: [
+    "長期無人運用向けに最適化された低消費電力アーキテクチャ",
+    "筐体・RF・電源制約ごとのカスタムハードウェア設計",
+    "バックエンド・クラウド・UIを社内開発 — 統合負債なし",
+    "量産対応：初回プロトタイプから認証済み製品まで",
+  ],
+};
 ---
 
 <PageLayout
@@ -133,17 +275,17 @@ const getSvg = (name: string, size = 20) => {
 
       <div class="hero-inner-c">
         <div style="display: flex; flex-direction: column; gap: 28px;">
-          <span class="eyebrow" style="color: var(--ws-teal);">{locale === 'tr' ? 'WillowSoft Hakkında' : 'About WillowSoft'}</span>
+          <span class="eyebrow" style="color: var(--ws-teal);">{u("heroEyebrow")}</span>
           <h1 style="font-size: clamp(2.1rem, 4.2vw, 3.4rem); font-weight: 700; letter-spacing: -.03em; line-height: 1.02; color: #fff; margin: 0;">
-            Smart <span class="serif-accent" style="color: var(--ws-teal); font-size: 1.05em;">Teams.</span><br/>Resilient Systems.
+            {u("heroLine1")} <span class="serif-accent" style="color: var(--ws-teal); font-size: 1.05em;">{u("heroAccent")}</span><br/>{u("heroLine2")}
           </h1>
           <p style="font-size: 16px; line-height: 1.68; color: rgba(255,255,255,.62); max-width: 520px; margin: 0;">
             {getFactVal("heroSub")}
           </p>
           
           <div style="display: flex; gap: 14px; margin-top: 4px;">
-            <a href={`/${locale}/start-project`} class="ws-btn ws-btn-primary">{locale === 'tr' ? 'Proje başlatın' : 'Start a project'}</a>
-            <a href={`/${locale}/contact`} class="ws-btn ws-btn-ghost">{locale === 'tr' ? 'İletişime geçin' : 'Get in touch'}</a>
+            <a href={`/${locale}/start-project`} class="ws-btn ws-btn-primary">{u("startProject")}</a>
+            <a href={`/${locale}/contact`} class="ws-btn ws-btn-ghost">{u("getInTouch")}</a>
           </div>
         </div>
       </div>
@@ -154,15 +296,15 @@ const getSvg = (name: string, size = 20) => {
       <div class="ws-card" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); padding: 36px 16px; box-shadow: 0 20px 56px rgba(13,27,62,.12); background: #ffffff;">
         <div class="ws-stat" style="padding: 0 32px;">
           <b>{getFactVal("founded")}</b>
-          <span>{locale === 'tr' ? 'Kuruluş Yılı' : 'Year founded'}</span>
+          <span>{u("yearFounded")}</span>
         </div>
         <div class="ws-stat" style="padding: 0 32px;" id="stat-border-1">
           <b>{getFactVal("countries")}</b>
-          <span>{locale === 'tr' ? 'Ülkeye İhracat' : 'Countries deployed'}</span>
+          <span>{u("countriesDeployed")}</span>
         </div>
         <div class="ws-stat" style="padding: 0 32px;" id="stat-border-2">
           <b>6 yrs</b>
-          <span>{locale === 'tr' ? 'Sürekli Ar-Ge' : 'Continuous R&D'}</span>
+          <span>{u("continuousRnD")}</span>
         </div>
         <div class="ws-stat" style="padding: 0 32px;" id="stat-border-3">
           <b>Full-<br class="company-stat-mobile-break" />stack</b>
@@ -175,7 +317,7 @@ const getSvg = (name: string, size = 20) => {
     <section class="company-section company-about-c">
       <div class="company-container company-grid-2">
         <div style="display: flex; flex-direction: column; gap: 22px;">
-          <span class="eyebrow">{locale === 'tr' ? 'Hakkımızda' : 'About us'}</span>
+          <span class="eyebrow">{u("aboutUs")}</span>
           <h2 class="ws-h2" style="font-size: clamp(2rem, 3.4vw, 2.75rem); text-wrap: balance;">
             {getFactVal("aboutHeadline")}
           </h2>
@@ -189,17 +331,8 @@ const getSvg = (name: string, size = 20) => {
                 });
               }
               // Fallback hardcoded
-              return locale === 'tr' ? [
-                <li>Yıllarca müdahalesiz çalışma için optimize edilmiş düşük güç tüketimli mimari</li>,
-                <li>Her türlü kutu, RF ve güç kısıtlaması için özel donanım tasarımı</li>,
-                <li>Kendi bünyemizde geliştirilen bulut ve arayüz katmanları — entegrasyon borcu yok</li>,
-                <li>Üretime hazır: ilk prototipten sertifikalı, üretilmiş ürüne kadar</li>,
-              ] : [
-                <li>Low-power architecture optimized for years of unattended operation</li>,
-                <li>Custom hardware design for every enclosure, RF and power constraint</li>,
-                <li>Backend, cloud and interface layers built in-house — no integration debt</li>,
-                <li>Production-ready: from first prototype to certified, manufactured product</li>,
-              ];
+              const fallback = aboutBulletFallback[locale] || aboutBulletFallback.en;
+              return fallback.map((text) => <li>{text}</li>);
             })()}
           </ul>
         </div>
@@ -220,13 +353,13 @@ const getSvg = (name: string, size = 20) => {
     <section class="company-section company-mv-c" style="padding-top: 0;">
       <div class="company-container company-grid-2" style="gap: 20px;">
         <div style="background: linear-gradient(140deg, #1e1b4b, #132175); border-radius: 22px; padding: 56px 60px; display: flex; flex-direction: column; gap: 20px; color: #ffffff;">
-          <span style="font-size: 12px; font-weight: 800; letter-spacing: .18em; text-transform: uppercase; color: var(--ws-teal);">MISSION</span>
+          <span style="font-size: 12px; font-weight: 800; letter-spacing: .18em; text-transform: uppercase; color: var(--ws-teal);">{u("mission")}</span>
           <p style="font-size: 19px; font-weight: 600; line-height: 1.5; margin: 0; text-wrap: balance;">
             "{getFactVal("mission")}"
           </p>
         </div>
         <div style="background: #f4f6fb; border: 1.5px solid var(--ws-line); border-radius: 22px; padding: 56px 60px; display: flex; flex-direction: column; gap: 20px;">
-          <span style="font-size: 12px; font-weight: 800; letter-spacing: .18em; text-transform: uppercase; color: var(--ws-blue);">VISION</span>
+          <span style="font-size: 12px; font-weight: 800; letter-spacing: .18em; text-transform: uppercase; color: var(--ws-blue);">{u("vision")}</span>
           <p style="font-size: 19px; font-weight: 600; line-height: 1.5; color: var(--ws-ink); margin: 0; text-wrap: balance;">
             "{getFactVal("vision")}"
           </p>
@@ -238,14 +371,10 @@ const getSvg = (name: string, size = 20) => {
     <section class="company-section bg-soft company-team-section">
       <div class="company-container company-grid-team">
         <div>
-          <span class="eyebrow">{locale === 'tr' ? 'Ekibimiz' : 'The team'}</span>
-          <h2 class="ws-h2" style="margin-top: 18px;">
-            {locale === 'tr'
-              ? <>Mühendisliğin arkasındaki <span class="serif-accent">insanlar</span>.</>
-              : <>Meet the people behind the <span class="serif-accent">engineering</span>.</>}
-          </h2>
+          <span class="eyebrow">{u("theTeam")}</span>
+          <h2 class="ws-h2" style="margin-top: 18px;" set:html={teamTitleHtml[locale] || teamTitleHtml.en} />
           <p style="font-size: 16px; line-height: 1.65; color: var(--ws-body); margin-top: 16px;">
-            {locale === 'tr' ? 'Kurucu mühendislerimiz ve IIoT mimarlarımız.' : 'Our core team of hardware engineers, firmware developers, and cloud architects.'}
+            {u("teamLead")}
           </p>
         </div>
         <div class="company-team-list">
@@ -275,12 +404,8 @@ const getSvg = (name: string, size = 20) => {
       <div class="company-container">
         <div class="company-grid-principles-head">
           <div>
-            <span class="eyebrow">{locale === 'tr' ? 'Nasıl Çalışırız' : 'How we work'}</span>
-            <h2 class="ws-h2" style="margin-top: 18px;">
-              {locale === 'tr'
-                ? <>Taviz vermediğimiz mühendislik <span class="serif-accent">ilkeleri</span>.</>
-                : <>Engineering principles we don't <span class="serif-accent">compromise</span> on.</>}
-            </h2>
+            <span class="eyebrow">{u("howWeWork")}</span>
+            <h2 class="ws-h2" style="margin-top: 18px;" set:html={ui.howWeWorkTitleHtml[locale] || ui.howWeWorkTitleHtml.en} />
           </div>
           <div class="company-proof-chips">
             {(getFactList("whyUs") || []).map((w: any) => (
@@ -348,7 +473,7 @@ const getSvg = (name: string, size = 20) => {
               ))}
             </div>
           </div>
-          <ol class="timeline-accessible-list" aria-label={locale === 'tr' ? 'Tarihçe zaman çizelgesi' : locale === 'de' ? 'Zeitleiste' : locale === 'fr' ? 'Chronologie' : locale === 'es' ? 'Línea de tiempo' : locale === 'it' ? 'Cronologia' : locale === 'ar' ? 'الجدول الزمني' : locale === 'ja' ? '沿革タイムライン' : 'History timeline'}>
+          <ol class="timeline-accessible-list" aria-label={u("historyTimeline")}>
             {sortedTimeline.map((item: any, i: number) => {
               const isLast = i === sortedTimeline.length - 1;
               return (
@@ -431,12 +556,8 @@ const getSvg = (name: string, size = 20) => {
     {/* CoC_Offices */}
     <section class="company-section company-offices-c">
       <div class="company-container">
-        <span class="eyebrow">{locale === 'tr' ? 'Küresel Varlık' : 'Global presence'}</span>
-        <h2 class="ws-h2" style="margin-top: 18px; margin-bottom: 36px;">
-          {locale === 'tr'
-            ? <>İki ofis. <span class="serif-accent">Tek</span> ekip.</>
-            : <>Two offices. <span class="serif-accent">One</span> team.</>}
-        </h2>
+        <span class="eyebrow">{u("globalPresence")}</span>
+        <h2 class="ws-h2" style="margin-top: 18px; margin-bottom: 36px;" set:html={ui.officesTitleHtml[locale] || ui.officesTitleHtml.en} />
         <div class="company-offices-grid">
           {(getFactList("officesList") || []).map((o: any) => {
             const office = localizeItem(o, locale);
@@ -459,7 +580,14 @@ const getSvg = (name: string, size = 20) => {
                     <b style="font-size: 18px; font-weight: 700; color: var(--ws-ink);">{office.country}</b>
                   </div>
                   <div style="display: flex; flex-direction: column; gap: 10px; font-size: 15px; color: var(--ws-body); font-weight: 600;">
-                    {office.phone && <span style="display: flex; align-items: center; gap: 10px;"><span style="display: inline-flex; color: var(--ws-muted); flex: 0 0 auto;" set:html={getSvg('phone', 16)} />{office.phone}</span>}
+                    {resolveOfficePhone(o, companyFacts) && (
+                      <span style="display: flex; align-items: center; gap: 10px;">
+                        <span style="display: inline-flex; color: var(--ws-muted); flex: 0 0 auto;" set:html={getSvg('phone', 16)} />
+                        <a href={telHref(resolveOfficePhone(o, companyFacts))} style="color: inherit; text-decoration: none;">
+                          {resolveOfficePhone(o, companyFacts)}
+                        </a>
+                      </span>
+                    )}
                     {office.email && <span style="display: flex; align-items: center; gap: 10px;"><span style="display: inline-flex; color: var(--ws-muted); flex: 0 0 auto;" set:html={getSvg('mail', 16)} />{office.email}</span>}
                     {office.address && <span style="display: flex; align-items: center; gap: 10px;"><span style="display: inline-flex; color: var(--ws-muted); flex: 0 0 auto;" set:html={getSvg('pin', 16)} />{office.address}</span>}
                   </div>
@@ -475,23 +603,26 @@ const getSvg = (name: string, size = 20) => {
     <section class="company-section company-cta-c" style="padding-top: 0;">
       <div class="company-container company-cta-inner" style="background: linear-gradient(135deg, var(--ws-hero-1), var(--ws-hero-2)); border-radius: 24px; color: #ffffff;">
         <div>
-          <span class="eyebrow" style="color: var(--ws-teal);">{locale === 'tr' ? 'Bizimle Çalışın' : 'Work with us'}</span>
-          <h2 style="font-size: clamp(1.7rem, 3.2vw, 2.6rem); font-weight: 700; color: #fff; letter-spacing: -.02em; line-height: 1.1; margin-top: 18px; max-width: 680px; text-wrap: balance;">
-            {locale === 'tr'
-              ? <>Uçtan uca tüm <span class="serif-accent">katmanları</span> yöneten bir ekiple çalışmaya hazır mısınız?</>
-              : <>Ready to build with a team that owns the <span class="serif-accent">full stack</span>?</>}
-          </h2>
+          <span class="eyebrow" style="color: var(--ws-teal);">{u("workWithUs")}</span>
+          <h2 style="font-size: clamp(1.7rem, 3.2vw, 2.6rem); font-weight: 700; color: #fff; letter-spacing: -.02em; line-height: 1.1; margin-top: 18px; max-width: 680px; text-wrap: balance;" set:html={ui.ctaTitleHtml[locale] || ui.ctaTitleHtml.en} />
           <p style="font-size: 16px; line-height: 1.65; color: rgba(255,255,255,.68); margin-top: 16px; max-width: 520px;">
-            {locale === 'tr' ? 'Ne üretmek istediğinizi bize anlatın. Size mühendislik yaklaşımımızı sunalım.' : "Tell us what you're building. We'll tell you how we'd approach it."}
+            {u("workWithUsLead")}
           </p>
           <div style="display: flex; flex-direction: column; gap: 11px; margin-top: 28px; font-size: 15px; color: rgba(255,255,255,.7); font-weight: 600;">
-            <span style="display: flex; align-items: center; gap: 10px;"><span style="display: inline-flex; flex: 0 0 auto;" set:html={getSvg('phone', 16)} />+90 850 30 24766</span>
-            <span style="display: flex; align-items: center; gap: 10px;"><span style="display: inline-flex; flex: 0 0 auto;" set:html={getSvg('mail', 16)} />info@willowsoft.co</span>
+            {contactOffices.filter((office) => office.phone).map((office) => (
+              <span style="display: flex; align-items: center; gap: 10px;">
+                <span style="display: inline-flex; flex: 0 0 auto;" set:html={getSvg('phone', 16)} />
+                <a href={telHref(office.phone)} style="color: inherit; text-decoration: none;">
+                  {office.country}: {office.phone}
+                </a>
+              </span>
+            ))}
+            <span style="display: flex; align-items: center; gap: 10px;"><span style="display: inline-flex; flex: 0 0 auto;" set:html={getSvg('mail', 16)} />{companyFacts.email || "info@willowsoft.co"}</span>
           </div>
         </div>
         <div style="display: flex; flex-direction: column; gap: 14px; flex: 0 0 auto;">
-          <a href={`/${locale}/start-project`} class="ws-btn ws-btn-light">{locale === 'tr' ? 'Proje başlatın' : 'Start a project'}</a>
-          <a href={`/${locale}/contact`} class="ws-btn ws-btn-ghost">{locale === 'tr' ? 'İletişime geçin' : 'Get in touch'}</a>
+          <a href={`/${locale}/start-project`} class="ws-btn ws-btn-light">{u("startProject")}</a>
+          <a href={`/${locale}/contact`} class="ws-btn ws-btn-ghost">{u("getInTouch")}</a>
         </div>
       </div>
     </section>

@@ -2,11 +2,20 @@
 
 import { useState, useMemo } from "react";
 import { type Locale } from "@/lib/cms";
+import { resolveAdminImageSrc, imageInputValue } from "@/lib/admin-media";
 import { useAdmin } from "./AdminContext";
 import FormField from "./FormField";
 import TranslationEditor from "./TranslationEditor";
 
 type SubTab = "solutions" | "general" | "selector" | "flow" | "why";
+
+const SUB_TABS: { key: SubTab; label: string; desc: string; icon: string }[] = [
+  { key: "solutions", label: "Kullanım Senaryoları", desc: "Sitedeki çözüm kartları — görsel, başlık, kategori", icon: "🗂️" },
+  { key: "general", label: "Sayfa Metinleri", desc: "Hero, metrikler ve bölüm başlıkları", icon: "📝" },
+  { key: "selector", label: "Yol Seçici", desc: "“Görünürlük / müdahale / entegrasyon” kartları", icon: "🧭" },
+  { key: "flow", label: "Nasıl Çalışır", desc: "Ölç → İlet → İşle → Görselleştir → Eylem adımları", icon: "⚡" },
+  { key: "why", label: "Neden WillowSoft", desc: "Güçlü yönler / ilkeler kartları", icon: "✦" },
+];
 
 const SOLUTION_FIELDS = [
   { key: "title", label: "Başlık" },
@@ -326,31 +335,25 @@ export default function SolutionsPanel() {
 
   return (
     <div className="space-y-6">
-      {/* Sub-tabs header */}
-      <div className="flex gap-2 border-b border-gray-200 pb-px">
-        {[
-          { key: "solutions", label: "Çözüm Listesi (Use Cases)" },
-          { key: "general", label: "Genel Sayfa Metinleri" },
-          { key: "selector", label: "Seçim Grid (Selector)" },
-          { key: "flow", label: "Nasıl Çalışır (Flow)" },
-          { key: "why", label: "Neden WillowSoft" },
-        ].map((tab) => (
+      <div className="ws-sol-tabs">
+        {SUB_TABS.map((tab) => (
           <button
             key={tab.key}
+            type="button"
             onClick={() => {
-              setActiveSubTab(tab.key as SubTab);
+              setActiveSubTab(tab.key);
               setEditId(null);
               setEditingSelectorIdx(null);
               setEditingFlowIdx(null);
               setEditingWhyIdx(null);
             }}
-            className={`px-4 py-2 text-xs font-bold border-b-2 transition -mb-px ${
-              activeSubTab === tab.key
-                ? "border-[#132175] text-[#132175]"
-                : "border-transparent text-gray-400 hover:text-gray-600"
-            }`}
+            className={`ws-sol-tab ${activeSubTab === tab.key ? "is-active" : ""}`}
           >
-            {tab.label}
+            <span className="ws-sol-tab-icon" aria-hidden>{tab.icon}</span>
+            <span className="ws-sol-tab-copy">
+              <strong>{tab.label}</strong>
+              <small>{tab.desc}</small>
+            </span>
           </button>
         ))}
       </div>
@@ -363,63 +366,127 @@ export default function SolutionsPanel() {
               <button type="button" onClick={() => setEditId(null)} className="ws-back-button">
                 ← Listeye Dön
               </button>
-              <div className="bg-white border border-gray-200 rounded-xl p-6 space-y-5">
-                <div className="flex items-center justify-between border-b border-gray-200 pb-4">
-                  <h3 className="font-bold">Çözüm Düzenle: {s.title}</h3>
-                  <div className="flex gap-2">
+              <div className="ws-sol-edit-layout">
+                <div className="bg-white border border-gray-200 rounded-xl p-6 space-y-5">
+                  <div className="flex items-center justify-between border-b border-gray-200 pb-4">
+                    <h3 className="font-bold">Çözüm Düzenle</h3>
                     <button onClick={() => deleteSolution(s.id)} className="px-3 py-1.5 bg-red-950 hover:bg-red-900 text-red-400 rounded text-xs font-semibold">Sil</button>
                   </div>
-                </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <FormField label="Başlık" value={s.title || ""} onChange={(v) => updateSolution(s.id, "title", v)} />
-                  <FormField label="Slug" value={s.slug || ""} onChange={(v) => updateSolution(s.id, "slug", v)} />
-                  <FormField label="Kategori" value={s.category || ""} onChange={(v) => updateSolution(s.id, "category", v)} />
-                  <FormField label="Öne Çıkan" type="select" value={s.featured ? "true" : "false"} onChange={(v) => updateSolution(s.id, "featured", v === "true")} options={[{ value: "true", label: "Evet" }, { value: "false", label: "Hayır" }]} />
-                  <FormField label="Görsel" value={s.image || ""} onChange={(v) => updateSolution(s.id, "image", v)} placeholder="/assets/solutions/..." />
-                  <FormField label="Sıra" type="number" value={String(s.sortOrder || 0)} onChange={(v) => updateSolution(s.id, "sortOrder", parseInt(v) || 0)} />
-                  <div className="col-span-2">
-                    <FormField label="Başlık Satırı" value={s.headline || ""} onChange={(v) => updateSolution(s.id, "headline", v)} />
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <FormField label="Başlık" value={s.title || ""} onChange={(v) => updateSolution(s.id, "title", v)} />
+                    <FormField label="Slug" value={s.slug || ""} onChange={(v) => updateSolution(s.id, "slug", v)} />
+                    <FormField label="Kategori" value={s.category || ""} onChange={(v) => updateSolution(s.id, "category", v)} />
+                    <FormField label="Öne Çıkan" type="select" value={s.featured ? "true" : "false"} onChange={(v) => updateSolution(s.id, "featured", v === "true")} options={[{ value: "true", label: "Evet" }, { value: "false", label: "Hayır" }]} />
+                    <FormField label="Sıra" type="number" value={String(s.sortOrder || 0)} onChange={(v) => updateSolution(s.id, "sortOrder", parseInt(v) || 0)} />
+                    <FormField label="Görsel Alt Metni" value={s.alt || ""} onChange={(v) => updateSolution(s.id, "alt", v)} />
+                    <div className="col-span-2">
+                      <FormField
+                        label="Kapak Görseli"
+                        type="image"
+                        value={imageInputValue(s.image)}
+                        onChange={(v) => updateSolution(s.id, "image", v)}
+                        hint="Yükleyin veya assets/... yolu / tam URL girin"
+                      />
+                    </div>
+                    <div className="col-span-2">
+                      <FormField label="Başlık Satırı" value={s.headline || ""} onChange={(v) => updateSolution(s.id, "headline", v)} />
+                    </div>
+                    <div className="col-span-2">
+                      <FormField label="Özet" type="textarea" value={s.summary || ""} onChange={(v) => updateSolution(s.id, "summary", v)} rows={3} />
+                    </div>
+                    <div className="col-span-2">
+                      <FormField
+                        label="Madde İşaretleri (satır başına 1)"
+                        type="textarea"
+                        value={Array.isArray(s.bullets) ? s.bullets.join("\n") : (s.bullets || "")}
+                        onChange={(v) => updateSolution(s.id, "bullets", v)}
+                        rows={5}
+                        hint="Sitede chip veya liste olarak görünür"
+                      />
+                    </div>
                   </div>
-                  <div className="col-span-2">
-                    <FormField label="Özet" type="textarea" value={s.summary || ""} onChange={(v) => updateSolution(s.id, "summary", v)} rows={3} />
-                  </div>
-                  <div className="col-span-2">
-                    <FormField
-                      label="Madde İşaretleri (satır başına 1)"
-                      type="textarea"
-                      value={Array.isArray(s.bullets) ? s.bullets.join("\n") : (s.bullets || "")}
-                      onChange={(v) => updateSolution(s.id, "bullets", v)}
-                      rows={5}
-                      hint="Her satıra bir madde yazın. Çeviriler sekmesinden diğer dillere çevrilebilir."
-                    />
+                  <div className="border-t border-gray-200 pt-4">
+                    <h4 className="text-sm font-bold text-gray-700 mb-3">Çeviriler</h4>
+                    <TranslationEditor item={s} fields={SOLUTION_FIELDS} onChange={(locale, key, val) => updateLocalized(s.id, locale, key, val)} />
                   </div>
                 </div>
-                <div className="border-t border-gray-200 pt-4">
-                  <h4 className="text-sm font-bold text-gray-700 mb-3">Çeviriler</h4>
-                  <TranslationEditor item={s} fields={SOLUTION_FIELDS} onChange={(locale, key, val) => updateLocalized(s.id, locale, key, val)} />
-                </div>
+
+                <aside className="ws-sol-live-preview">
+                  <p className="ws-sol-live-preview-label">Sitede nasıl görünür</p>
+                  <article className="solution-case-card mirror-solution-card">
+                    <figure className="mirror-solution-figure">
+                      {resolveAdminImageSrc(s.image) ? (
+                        <img src={resolveAdminImageSrc(s.image)} alt={s.alt || s.title} />
+                      ) : (
+                        <span className="mirror-solution-ph">Görsel ekleyin</span>
+                      )}
+                    </figure>
+                    <div className="solution-case-body">
+                      {s.category && <span>{s.category}</span>}
+                      <h3>{s.headline || s.title || "Başlık"}</h3>
+                      <p>{s.summary || "Özet metni burada görünür."}</p>
+                      {Array.isArray(s.bullets) && s.bullets.length > 0 && (
+                        <div className="solution-use-cases">
+                          {s.bullets.slice(0, 4).map((b: string) => <span key={b}>{b}</span>)}
+                        </div>
+                      )}
+                    </div>
+                  </article>
+                  {s.slug && (
+                    <a
+                      href={`/tr/solutions#${encodeURIComponent(s.slug)}`}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="ws-sol-live-link"
+                    >
+                      Canlı sayfada aç ↗
+                    </a>
+                  )}
+                </aside>
               </div>
             </div>
           ) : (
-            <div className="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-lg">
-              <div className="p-4 border-b border-gray-200 flex justify-between items-center">
-                <h3 className="font-bold text-sm">Çözümler</h3>
-                <button onClick={addSolution} className="px-3 py-1.5 bg-[#132175] hover:bg-[#0e1a5e] text-white rounded text-xs font-bold">+ Yeni Çözüm</button>
+            <div className="ws-sol-page">
+              <div className="ws-sol-list-header">
+                <div>
+                  <h3>Kullanım Senaryoları</h3>
+                  <p>Her kart çözümler sayfasındaki vitrin gridinde görünür.</p>
+                </div>
+                <button onClick={addSolution} className="ws-primary-button">+ Yeni Çözüm</button>
               </div>
-              <div className="divide-y divide-gray-100">
-                {solutions.map((item: any) => (
-                  <div key={item.id} className="p-4 flex items-center justify-between hover:bg-gray-100/40 transition">
-                    <div>
-                      <p className="font-bold text-gray-800">{item.title}</p>
-                      <p className="text-xs text-gray-400">Slug: {item.slug} • Kategori: {item.category || "—"} {item.featured && "• Öne Çıkan"}</p>
-                    </div>
-                    <button onClick={() => setEditId(item.id)} className="px-3 py-1 bg-gray-100 hover:bg-gray-200 text-xs font-semibold rounded transition">Düzenle</button>
-                  </div>
-                ))}
-                {solutions.length === 0 && (
-                  <div className="p-8 text-center text-gray-400 text-sm">Henüz çözüm eklenmemiş.</div>
-                )}
-              </div>
+              {solutions.length === 0 ? (
+                <div className="ws-sol-empty">Henüz çözüm eklenmemiş.</div>
+              ) : (
+                <div className="ws-sol-grid">
+                  {[...solutions]
+                    .sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0))
+                    .map((item: any) => {
+                      const img = resolveAdminImageSrc(item.image);
+                      return (
+                        <div key={item.id} className="ws-sol-card">
+                          <div className="ws-sol-card-thumb">
+                            {img ? (
+                              <img src={img} alt={item.title} onError={(e) => { (e.target as HTMLImageElement).style.opacity = "0.25"; }} />
+                            ) : (
+                              <span className="ws-sol-card-noimg">Görsel yok</span>
+                            )}
+                            {item.featured && <span className="ws-sol-card-badge">Öne çıkan</span>}
+                          </div>
+                          <div className="ws-sol-card-body">
+                            <h4>{item.title}</h4>
+                            <p>{item.summary || "Özet girilmemiş"}</p>
+                          </div>
+                          <div className="ws-sol-card-foot">
+                            <span className="ws-sol-cat-pill">{item.category || "Kategori yok"}</span>
+                            <button type="button" onClick={() => setEditId(item.id)} className="ws-edit-button" style={{ width: "auto", padding: "8px 16px" }}>
+                              Düzenle
+                            </button>
+                          </div>
+                        </div>
+                      );
+                    })}
+                </div>
+              )}
             </div>
           )}
         </div>
@@ -428,8 +495,21 @@ export default function SolutionsPanel() {
       {/* 2. General Page texts tab */}
       {activeSubTab === "general" && (
         <div className="bg-white border border-gray-200 rounded-xl p-6 space-y-6">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <FormField label="Hero Görseli" value={solutionsPage.heroImage || ""} onChange={(v) => updateGeneralField("heroImage", v)} hint="assets/... şeklinde dosya yolu veya URL" />
+          <div>
+            <h3 className="font-bold text-[#131b2e] mb-1">Sayfa üst bölümü</h3>
+            <p className="text-sm text-gray-500 mb-4">Hero banner görseli ve istatistik değerleri (metin çevirileri aşağıda).</p>
+          </div>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <FormField label="Hero Görseli" type="image" value={imageInputValue(solutionsPage.heroImage)} onChange={(v) => updateGeneralField("heroImage", v)} hint="Çözümler sayfası üst arka plan görseli" />
+            <div className="ws-sol-hero-preview">
+              {resolveAdminImageSrc(solutionsPage.heroImage) ? (
+                <img src={resolveAdminImageSrc(solutionsPage.heroImage)} alt="Hero önizleme" />
+              ) : (
+                <span>Hero görseli seçilmedi</span>
+              )}
+            </div>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <FormField label="Metrik 1 Değeri" value={solutionsPage.metric1Value || ""} onChange={(v) => updateGeneralField("metric1Value", v)} placeholder="15+" />
             <FormField label="Metrik 2 Değeri" value={solutionsPage.metric2Value || ""} onChange={(v) => updateGeneralField("metric2Value", v)} placeholder="2020" />
             <FormField label="Metrik 3 Değeri" value={solutionsPage.metric3Value || ""} onChange={(v) => updateGeneralField("metric3Value", v)} placeholder="24/7" />
@@ -500,15 +580,17 @@ export default function SolutionsPanel() {
               <div className="divide-y divide-gray-100">
                 {[...selectorCards]
                   .sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0))
-                  .map((c: any) => {
+                  .map((c: any, displayIdx: number) => {
                     const originalIndex = selectorCards.findIndex((x: any) => x.id === c.id);
                     return (
-                      <div key={c.id} className="p-4 flex items-center justify-between hover:bg-gray-50 transition">
-                        <div>
+                      <div key={c.id} className="ws-sol-mini-row">
+                        <span className="ws-sol-mini-num">{String(displayIdx + 1).padStart(2, "0")}</span>
+                        <div className="ws-sol-mini-copy">
                           <p className="font-bold text-sm text-gray-800">{c.title}</p>
-                          <p className="text-xs text-gray-400">Üst Başlık: {c.eyebrow} • Sıra: {c.sortOrder || 0}</p>
+                          <p className="text-xs text-gray-500">{c.eyebrow}</p>
+                          <p className="text-xs text-gray-400 line-clamp-2">{c.body}</p>
                         </div>
-                        <button onClick={() => setEditingSelectorIdx(originalIndex)} className="px-3 py-1 bg-gray-100 hover:bg-gray-200 text-xs font-semibold rounded transition">Düzenle</button>
+                        <button onClick={() => setEditingSelectorIdx(originalIndex)} className="ws-edit-button" style={{ width: "auto", padding: "8px 14px" }}>Düzenle</button>
                       </div>
                     );
                   })}
@@ -563,15 +645,16 @@ export default function SolutionsPanel() {
               <div className="divide-y divide-gray-100">
                 {[...howItWorksSteps]
                   .sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0))
-                  .map((step: any) => {
+                  .map((step: any, displayIdx: number) => {
                     const originalIndex = howItWorksSteps.findIndex((x: any) => x.id === step.id);
                     return (
-                      <div key={step.id} className="p-4 flex items-center justify-between hover:bg-gray-50 transition">
-                        <div>
+                      <div key={step.id} className="ws-sol-mini-row">
+                        <span className="ws-sol-mini-num">{String(displayIdx + 1).padStart(2, "0")}</span>
+                        <div className="ws-sol-mini-copy">
                           <p className="font-bold text-sm text-gray-800">{step.title}</p>
-                          <p className="text-xs text-gray-400">Açıklama: {step.body} • Sıra: {step.sortOrder || 0}</p>
+                          <p className="text-xs text-gray-400 line-clamp-2">{step.body}</p>
                         </div>
-                        <button onClick={() => setEditingFlowIdx(originalIndex)} className="px-3 py-1 bg-gray-100 hover:bg-gray-200 text-xs font-semibold rounded transition">Düzenle</button>
+                        <button onClick={() => setEditingFlowIdx(originalIndex)} className="ws-edit-button" style={{ width: "auto", padding: "8px 14px" }}>Düzenle</button>
                       </div>
                     );
                   })}
@@ -626,15 +709,16 @@ export default function SolutionsPanel() {
               <div className="divide-y divide-gray-100">
                 {[...whyCards]
                   .sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0))
-                  .map((card: any) => {
+                  .map((card: any, displayIdx: number) => {
                     const originalIndex = whyCards.findIndex((x: any) => x.id === card.id);
                     return (
-                      <div key={card.id} className="p-4 flex items-center justify-between hover:bg-gray-50 transition">
-                        <div>
+                      <div key={card.id} className="ws-sol-mini-row">
+                        <span className="ws-sol-mini-num">{String(displayIdx + 1).padStart(2, "0")}</span>
+                        <div className="ws-sol-mini-copy">
                           <p className="font-bold text-sm text-gray-800">{card.title}</p>
-                          <p className="text-xs text-gray-400">Açıklama: {card.body} • Sıra: {card.sortOrder || 0}</p>
+                          <p className="text-xs text-gray-400 line-clamp-2">{card.body}</p>
                         </div>
-                        <button onClick={() => setEditingWhyIdx(originalIndex)} className="px-3 py-1 bg-gray-100 hover:bg-gray-200 text-xs font-semibold rounded transition">Düzenle</button>
+                        <button onClick={() => setEditingWhyIdx(originalIndex)} className="ws-edit-button" style={{ width: "auto", padding: "8px 14px" }}>Düzenle</button>
                       </div>
                     );
                   })}

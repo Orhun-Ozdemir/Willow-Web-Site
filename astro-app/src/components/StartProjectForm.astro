@@ -61,6 +61,67 @@ const labels = {
   errorMsg: { en: "Something went wrong. Please try again.", tr: "Bir şeyler yanlış gitti. Lütfen tekrar deneyin.", de: "Etwas ist schief gelaufen. Bitte versuchen Sie es erneut.", fr: "Une erreur s'est produite. Veuillez réessayer.", es: "Algo salió mal. Por favor intente de nuevo.", it: "Qualcosa è andato storto. Riprova.", ar: "حدث خطأ ما. يرجى المحاولة مرة أخرى.", ja: "エラーが発生しました。もう一度お試しください。" }
 };
 
+type LocRecord = Record<string, string>;
+const loc = (map: LocRecord) => map[locale] || map.en;
+const optLabel = (item: { label: LocRecord }) => item.label[locale] || item.label.en;
+
+const messagePlaceholder: LocRecord = {
+  en: "Describe your product idea, operational goal, current blocker, or field deployment problem...",
+  tr: "Ürün fikrinizi, operasyonel hedefinizi, mevcut engelinizi veya saha kurulum sorununuzu anlatın...",
+  de: "Beschreiben Sie Ihre Produktidee, Ihr Betriebsziel, aktuelle Hürden oder Probleme beim Feldeinsatz...",
+  fr: "Décrivez votre idée de produit, votre objectif opérationnel, votre blocage actuel ou un problème de déploiement terrain...",
+  es: "Describa su idea de producto, objetivo operativo, bloqueo actual o problema de despliegue en campo...",
+  it: "Descrivi l'idea di prodotto, l'obiettivo operativo, il blocco attuale o un problema di installazione sul campo...",
+  ar: "صف فكرة منتجك أو هدفك التشغيلي أو العائق الحالي أو مشكلة النشر الميداني...",
+  ja: "製品アイデア、運用目標、現在の課題、現場導入の問題などをご記入ください...",
+};
+
+const projectTypeOptions = [
+  { value: "End-to-End Connected Product", label: { en: "End-to-End Connected Product", tr: "Uçtan uca bağlı ürün", de: "Durchgängiges vernetztes Produkt", fr: "Produit connecté de bout en bout", es: "Producto conectado de extremo a extremo", it: "Prodotto connesso end-to-end", ar: "منتج متصل من طرف إلى طرف", ja: "エンドツーエンド接続製品" } },
+  { value: "Custom IoT Hardware", label: { en: "Custom IoT Hardware", tr: "Özel IoT donanımı", de: "Individuelle IoT-Hardware", fr: "Matériel IoT sur mesure", es: "Hardware IoT a medida", it: "Hardware IoT personalizzato", ar: "أجهزة IoT مخصصة", ja: "カスタム IoT ハードウェア" } },
+  { value: "Firmware / Connectivity", label: { en: "Firmware / Connectivity", tr: "Firmware / bağlantı katmanı", de: "Firmware / Konnektivität", fr: "Firmware / connectivité", es: "Firmware / conectividad", it: "Firmware / connettività", ar: "البرنامج الثابت / الاتصال", ja: "ファームウェア / 接続" } },
+  { value: "Backend / PostgreSQL / Admin Panel", label: { en: "Backend / PostgreSQL / Admin Panel", tr: "Backend / PostgreSQL / yönetim paneli", de: "Backend / PostgreSQL / Admin-Panel", fr: "Backend / PostgreSQL / panneau admin", es: "Backend / PostgreSQL / panel admin", it: "Backend / PostgreSQL / pannello admin", ar: "الخلفية / PostgreSQL / لوحة الإدارة", ja: "バックエンド / PostgreSQL / 管理画面" } },
+  { value: "Mobile App / Web Platform", label: { en: "Mobile App / Web Platform", tr: "Mobil uygulama / web platformu", de: "Mobile App / Web-Plattform", fr: "Application mobile / plateforme web", es: "App móvil / plataforma web", it: "App mobile / piattaforma web", ar: "تطبيق جوال / منصة ويب", ja: "モバイルアプリ / Webプラットフォーム" } },
+  { value: "Website Development", label: { en: "Website Development", tr: "Kurumsal web sitesi", de: "Website-Entwicklung", fr: "Développement de site web", es: "Desarrollo web", it: "Sviluppo sito web", ar: "تطوير موقع ويب", ja: "Webサイト開発" } },
+  { value: "VR / Simulation", label: { en: "VR / Simulation", tr: "VR / simülasyon", de: "VR / Simulation", fr: "VR / simulation", es: "VR / simulación", it: "VR / simulazione", ar: "الواقع الافتراضي / المحاكاة", ja: "VR / シミュレーション" } },
+];
+
+const statusOptions = [
+  { value: "Idea / early planning", label: { en: "Idea / early planning", tr: "Fikir / erken planlama", de: "Idee / frühe Planung", fr: "Idée / planification initiale", es: "Idea / planificación inicial", it: "Idea / pianificazione iniziale", ar: "فكرة / تخطيط مبكر", ja: "アイデア段階 / 初期計画" } },
+  { value: "Prototype exists", label: { en: "Prototype exists", tr: "Prototip mevcut", de: "Prototyp vorhanden", fr: "Prototype existant", es: "Prototipo existente", it: "Prototipo esistente", ar: "يوجد نموذج أولي", ja: "プロトタイプあり" } },
+  { value: "Hardware exists, software needed", label: { en: "Hardware exists, software needed", tr: "Donanım var, yazılım gerekiyor", de: "Hardware vorhanden, Software benötigt", fr: "Matériel existant, logiciel à développer", es: "Hardware existente, falta software", it: "Hardware esistente, serve software", ar: "الأجهزة موجودة، البرمجيات مطلوبة", ja: "ハードあり・ソフトウェアが必要" } },
+  { value: "Software exists, hardware needed", label: { en: "Software exists, hardware needed", tr: "Yazılım var, donanım gerekiyor", de: "Software vorhanden, Hardware benötigt", fr: "Logiciel existant, matériel à développer", es: "Software existente, falta hardware", it: "Software esistente, serve hardware", ar: "البرمجيات موجودة، الأجهزة مطلوبة", ja: "ソフトあり・ハードウェアが必要" } },
+  { value: "Existing system needs rebuild", label: { en: "Existing system needs rebuild", tr: "Mevcut sistem yeniden kurulmalı", de: "Bestehendes System muss neu aufgebaut werden", fr: "Système existant à reconstruire", es: "El sistema actual debe reconstruirse", it: "Sistema esistente da ricostruire", ar: "النظام الحالي يحتاج إعادة بناء", ja: "既存システムの再構築が必要" } },
+  { value: "Ready for production support", label: { en: "Ready for production support", tr: "Üretim desteğine hazır", de: "Bereit für Produktionsunterstützung", fr: "Prêt pour le support en production", es: "Listo para soporte de producción", it: "Pronto per il supporto in produzione", ar: "جاهز لدعم الإنتاج", ja: "量産サポートの準備完了" } },
+];
+
+const layerOptions = [
+  { value: "hardware", label: { en: "Hardware", tr: "Donanım", de: "Hardware", fr: "Matériel", es: "Hardware", it: "Hardware", ar: "الأجهزة", ja: "ハードウェア" } },
+  { value: "firmware", label: { en: "Firmware", tr: "Firmware", de: "Firmware", fr: "Firmware", es: "Firmware", it: "Firmware", ar: "البرنامج الثابت", ja: "ファームウェア" } },
+  { value: "backend", label: { en: "Backend API", tr: "Backend API", de: "Backend-API", fr: "API backend", es: "API backend", it: "API backend", ar: "واجهة برمجة الخلفية", ja: "バックエンド API" } },
+  { value: "postgresql", label: { en: "PostgreSQL", tr: "PostgreSQL", de: "PostgreSQL", fr: "PostgreSQL", es: "PostgreSQL", it: "PostgreSQL", ar: "PostgreSQL", ja: "PostgreSQL" } },
+  { value: "web-admin", label: { en: "Web/Admin", tr: "Web / yönetim paneli", de: "Web/Admin", fr: "Web/Admin", es: "Web/Admin", it: "Web/Admin", ar: "ويب / إدارة", ja: "Web/管理画面" } },
+  { value: "mobile", label: { en: "Mobile", tr: "Mobil", de: "Mobil", fr: "Mobile", es: "Móvil", it: "Mobile", ar: "جوال", ja: "モバイル" } },
+  { value: "website", label: { en: "Website", tr: "Web sitesi", de: "Website", fr: "Site web", es: "Sitio web", it: "Sito web", ar: "موقع ويب", ja: "Webサイト" } },
+  { value: "vr", label: { en: "VR / Simulation", tr: "VR / simülasyon", de: "VR / Simulation", fr: "VR / simulation", es: "VR / simulación", it: "VR / simulazione", ar: "VR / محاكاة", ja: "VR / シミュレーション" } },
+];
+
+const timelineOptions = [
+  { value: "Exploring options", label: { en: "Exploring options", tr: "Seçenekleri araştırıyoruz", de: "Optionen prüfen", fr: "Exploration des options", es: "Explorando opciones", it: "Valutazione opzioni", ar: "استكشاف الخيارات", ja: "選択肢を検討中" } },
+  { value: "0-3 months", label: { en: "0-3 months", tr: "0-3 ay", de: "0-3 Monate", fr: "0-3 mois", es: "0-3 meses", it: "0-3 mesi", ar: "0-3 أشهر", ja: "0〜3か月" } },
+  { value: "3-6 months", label: { en: "3-6 months", tr: "3-6 ay", de: "3-6 Monate", fr: "3-6 mois", es: "3-6 meses", it: "3-6 mesi", ar: "3-6 أشهر", ja: "3〜6か月" } },
+  { value: "6+ months", label: { en: "6+ months", tr: "6+ ay", de: "6+ Monate", fr: "6+ mois", es: "6+ meses", it: "6+ mesi", ar: "أكثر من 6 أشهر", ja: "6か月以上" } },
+  { value: "Urgent rescue project", label: { en: "Urgent rescue project", tr: "Acil kurtarma projesi", de: "Dringendes Rettungsprojekt", fr: "Projet de secours urgent", es: "Proyecto de rescate urgente", it: "Progetto di salvataggio urgente", ar: "مشروع إنقاذ عاجل", ja: "緊急対応プロジェクト" } },
+];
+
+const budgetOptions = [
+  { value: "Not sure yet", label: { en: "Not sure yet", tr: "Henüz emin değilim", de: "Noch unsicher", fr: "Pas encore sûr", es: "Aún no estoy seguro", it: "Non ancora sicuro", ar: "غير متأكد بعد", ja: "まだ未定" } },
+  { value: "Under $10k", label: { en: "Under $10k", tr: "$10k altı", de: "Unter 10.000 $", fr: "Moins de 10 000 $", es: "Menos de 10.000 $", it: "Sotto 10.000 $", ar: "أقل من 10 آلاف دولار", ja: "1万ドル未満" } },
+  { value: "$10k - $25k", label: { en: "$10k - $25k", tr: "$10k - $25k", de: "10.000 - 25.000 $", fr: "10 000 - 25 000 $", es: "10.000 - 25.000 $", it: "10.000 - 25.000 $", ar: "10-25 ألف دولار", ja: "1万〜2.5万ドル" } },
+  { value: "$25k - $75k", label: { en: "$25k - $75k", tr: "$25k - $75k", de: "25.000 - 75.000 $", fr: "25 000 - 75 000 $", es: "25.000 - 75.000 $", it: "25.000 - 75.000 $", ar: "25-75 ألف دولار", ja: "2.5万〜7.5万ドル" } },
+  { value: "$75k+", label: { en: "$75k+", tr: "$75k+", de: "75.000 $+", fr: "75 000 $+", es: "75.000 $+", it: "75.000 $+", ar: "أكثر من 75 ألف دولار", ja: "7.5万ドル以上" } },
+];
+
 const getLabel = (key: keyof typeof labels) => {
   return labels[key][locale] || labels[key]["en"];
 };
@@ -80,31 +141,24 @@ const getLabel = (key: keyof typeof labels) => {
         <textarea
           id="lpMessage"
           name="message"
-          placeholder="Describe your product idea, operational goal, current blocker, or field deployment problem..."
+          placeholder={loc(messagePlaceholder)}
           required
         ></textarea>
       </div>
       <div class="field">
         <label for="lpType">{getLabel("projectType")}</label>
         <select id="lpType" name="projectType">
-          <option value="End-to-End Connected Product">End-to-End Connected Product</option>
-          <option value="Custom IoT Hardware">Custom IoT Hardware</option>
-          <option value="Firmware / Connectivity">Firmware / Connectivity</option>
-          <option value="Backend / PostgreSQL / Admin Panel">Backend / PostgreSQL / Admin Panel</option>
-          <option value="Mobile App / Web Platform">Mobile App / Web Platform</option>
-          <option value="Website Development">Website Development</option>
-          <option value="VR / Simulation">VR / Simulation</option>
+          {projectTypeOptions.map((opt) => (
+            <option value={opt.value}>{optLabel(opt)}</option>
+          ))}
         </select>
       </div>
       <div class="field">
         <label for="lpStatus">{getLabel("currentStatus")}</label>
         <select id="lpStatus" name="currentStatus">
-          <option value="Idea / early planning">Idea / early planning</option>
-          <option value="Prototype exists">Prototype exists</option>
-          <option value="Hardware exists, software needed">Hardware exists, software needed</option>
-          <option value="Software exists, hardware needed">Software exists, hardware needed</option>
-          <option value="Existing system needs rebuild">Existing system needs rebuild</option>
-          <option value="Ready for production support">Ready for production support</option>
+          {statusOptions.map((opt) => (
+            <option value={opt.value}>{optLabel(opt)}</option>
+          ))}
         </select>
       </div>
     </fieldset>
@@ -114,23 +168,14 @@ const getLabel = (key: keyof typeof labels) => {
       <div class="field span-2">
         <label>{getLabel("layersQuestion")}</label>
         <div class="option-grid">
-          {([
-            { value: "hardware", label: "Hardware" },
-            { value: "firmware", label: "Firmware" },
-            { value: "backend", label: "Backend API" },
-            { value: "postgresql", label: "PostgreSQL" },
-            { value: "web-admin", label: "Web/Admin" },
-            { value: "mobile", label: "Mobile" },
-            { value: "website", label: "Website" },
-            { value: "vr", label: "VR / Simulation" }
-          ]).map((layer) => (
+          {layerOptions.map((layer) => (
             <label>
               <input
                 type="checkbox"
                 name="layers"
                 value={layer.value}
               />{" "}
-              {layer.label}
+              {optLabel(layer)}
             </label>
           ))}
         </div>
@@ -142,21 +187,17 @@ const getLabel = (key: keyof typeof labels) => {
       <div class="field">
         <label for="lpTimeline">{getLabel("timeline")}</label>
         <select id="lpTimeline" name="timeline">
-          <option value="Exploring options">Exploring options</option>
-          <option value="0-3 months">0-3 months</option>
-          <option value="3-6 months">3-6 months</option>
-          <option value="6+ months">6+ months</option>
-          <option value="Urgent rescue project">Urgent rescue project</option>
+          {timelineOptions.map((opt) => (
+            <option value={opt.value}>{optLabel(opt)}</option>
+          ))}
         </select>
       </div>
       <div class="field">
         <label for="lpBudget">{getLabel("budgetRange")}</label>
         <select id="lpBudget" name="budgetRange">
-          <option value="Not sure yet">Not sure yet</option>
-          <option value="Under $10k">Under $10k</option>
-          <option value="$10k - $25k">$10k - $25k</option>
-          <option value="$25k - $75k">$25k - $75k</option>
-          <option value="$75k+">$75k+</option>
+          {budgetOptions.map((opt) => (
+            <option value={opt.value}>{optLabel(opt)}</option>
+          ))}
         </select>
       </div>
     </fieldset>

@@ -11,7 +11,7 @@
       "ar",
       "ja"
     ],
-    "updatedAt": "2026-06-16T23:34:50.998Z"
+    "updatedAt": "2026-07-06T19:54:59.217Z"
   },
   "companyFacts": {
     "founded": "2020",
@@ -27,6 +27,7 @@
       "United Kingdom"
     ],
     "turkeyPhone": "+90 850 30 24766",
+    "ukPhone": "+44 20 3996 6812",
     "turkeyOfficeAddress": "Altınkale Street 40101 District Antalya, Turkey",
     "ukOfficeAddress": "East London (Wood Street, E17 3NU), UK",
     "email": "info@willowsoft.co",
@@ -245,7 +246,7 @@
         "id": "office-uk",
         "country": "United Kingdom",
         "flag": "🇬🇧",
-        "phone": "",
+        "phone": "+44 20 3996 6812",
         "email": "info@willowsoft.co",
         "address": "East London (Wood Street, E17 3NU), UK",
         "image": "assets/offices/office-uk.jpg",
@@ -463,7 +464,7 @@
       {
         "id": "linkedin",
         "platform": "LinkedIn",
-        "url": "https://linkedin.com/company/willowsoft",
+        "url": "https://www.linkedin.com/company/willow-software/",
         "enabled": true
       },
       {
@@ -4327,24 +4328,54 @@
         "ja": "明確さから始める"
       },
       "ctaTitle": {
-        "en": "Ready to build a <em class=\"hw-serif\">connected product</em> or <strong class=\"hw-display\">industrial platform</strong>?",
-        "tr": "Bir <em class=\"hw-serif\">IoT ürün</em> ya da <strong class=\"hw-display\">endüstriyel platform</strong> kurmaya hazır mısınız?",
+        "en": "Ready to develop a <em class=\"hw-serif\">connected product</em> or <strong class=\"hw-display\">industrial platform</strong>?",
+        "tr": "Bir <em class=\"hw-serif\">IoT ürün</em> ya da <strong class=\"hw-display\">endüstriyel platform</strong> geliştirmeye hazır mısınız?",
         "de": "Bereit, ein <em class=\"hw-serif\">IoT-Produkt</em> oder eine <strong class=\"hw-display\">Industrieplattform</strong> zu entwickeln?",
-        "fr": "Prêt à créer un <em class=\"hw-serif\">produit IoT</em> ou une <strong class=\"hw-display\">plateforme industrielle</strong> ?",
-        "es": "¿Listo para crear un <em class=\"hw-serif\">producto IoT</em> o una <strong class=\"hw-display\">plataforma industrial</strong>?",
-        "it": "Pronto a creare un <em class=\"hw-serif\">prodotto IoT</em> o una <strong class=\"hw-display\">piattaforma industriale</strong>?",
-        "ar": "هل أنت مستعد لبناء <em class=\"hw-serif\">منتج IoT</em> أو <strong class=\"hw-display\">منصة صناعية</strong>؟",
-        "ja": "<em class=\"hw-serif\">IoT 製品</em>または<strong class=\"hw-display\">産業用プラットフォーム</strong>を構築する準備はできていますか？"
+        "fr": "Prêt à développer un <em class=\"hw-serif\">produit IoT</em> ou une <strong class=\"hw-display\">plateforme industrielle</strong> ?",
+        "es": "¿Listo para desarrollar un <em class=\"hw-serif\">producto IoT</em> o una <strong class=\"hw-display\">plataforma industrial</strong>?",
+        "it": "Pronto a sviluppare un <em class=\"hw-serif\">prodotto IoT</em> o una <strong class=\"hw-display\">piattaforma industriale</strong>?",
+        "ar": "هل أنت مستعد لتطوير <em class=\"hw-serif\">منتج IoT</em> أو <strong class=\"hw-display\">منصة صناعية</strong>؟",
+        "ja": "<em class=\"hw-serif\">IoT 製品</em>または<strong class=\"hw-display\">産業用プラットフォーム</strong>を開発する準備はできていますか？"
       },
       "ctaLead": {
-        "en": "Tell us whether you need hardware, firmware, backend, PostgreSQL, mobile app, web dashboard, website, VR simulation, or the complete system.",
-        "tr": "Donanım, firmware, backend, PostgreSQL, mobil uygulama, web yönetim paneli, kurumsal web sitesi, VR simülasyonu veya uçtan uca sistem mimarisi ihtiyaçlarınızı bizimle paylaşın.",
-        "de": "Sagen Sie uns, ob Sie Hardware, Firmware, Backend, PostgreSQL, eine mobile App, ein Web-Dashboard, eine Website, eine VR-Simulation oder eine komplette Systemarchitektur benötigen.",
-        "fr": "Dites-nous si vous avez besoin de matériel, firmware, backend, PostgreSQL, application mobile, dashboard web, site web, simulation VR ou architecture système complète.",
-        "es": "Cuéntenos si necesita hardware, firmware, backend, PostgreSQL, app móvil, dashboard web, sitio web, simulación VR o una arquitectura de sistema completa.",
-        "it": "Dicci se hai bisogno di hardware, firmware, backend, PostgreSQL, app mobile, dashboard web, sito web, simulazione VR o architettura di sistema completa.",
-        "ar": "أخبرنا إن كنت بحاجة إلى عتاد، أو firmware، أو backend، أو PostgreSQL، أو تطبيق جوال، أو dashboard ويب، أو موقع إلكتروني، أو محاكاة VR، أو بنية نظام متكاملة.",
-        "ja": "ハードウェア、ファームウェア、バックエンド、PostgreSQL、モバイルアプリ、Web ダッシュボード、Web サイト、VR シミュレーション、またはシステム全体の設計が必要かをお聞かせください。"
+        "en": "Bring all engineering and software processes under one roof. Share your needs and we’ll bring your project to life with the right architecture.",
+        "tr": "Tüm mühendislik ve yazılım süreçlerini tek çatı altında toplayın. İhtiyaçlarınızı paylaşın, projenizi en doğru mimariyle hayata geçirelim.",
+        "de": "Vereinen Sie alle Engineering- und Softwareprozesse unter einem Dach. Teilen Sie Ihre Anforderungen mit – wir setzen Ihr Projekt mit der richtigen Architektur um.",
+        "fr": "Regroupez tous vos processus d’ingénierie et logiciels sous un même toit. Partagez vos besoins et donnons vie à votre projet avec l’architecture la plus adaptée.",
+        "es": "Reúna todos los procesos de ingeniería y software bajo un mismo techo. Comparta sus necesidades y pongamos su proyecto en marcha con la arquitectura adecuada.",
+        "it": "Raggruppa tutti i processi di ingegneria e software sotto un unico tetto. Condividi le tue esigenze e daremo vita al progetto con l'architettura più adatta.",
+        "ar": "اجمع كل عمليات الهندسة والبرمجيات تحت سقف واحد. شاركنا احتياجاتك، ونُحيي مشروعك بالبنية المعمارية الأنسب.",
+        "ja": "エンジニアリングとソフトウェアのすべてのプロセスを一つのチームに。ご要望をお聞かせください。最適なアーキテクチャでプロジェクトを実現します。"
+      },
+      "ctaChoice_0": {
+        "en": "Hardware + Embedded Software",
+        "tr": "donanım+gömülü yazılım",
+        "de": "Hardware + eingebettete Software",
+        "fr": "Matériel + logiciel embarqué",
+        "es": "Hardware + software embebido",
+        "it": "Hardware + software embedded",
+        "ar": "عتاد + برمجيات مدمجة",
+        "ja": "ハードウェア＋組み込みソフトウェア"
+      },
+      "ctaChoice_1": {
+        "en": "Cloud + Database",
+        "tr": "bulut+veri tabanı",
+        "de": "Cloud + Datenbank",
+        "fr": "Cloud + base de données",
+        "es": "Nube + base de datos",
+        "it": "Cloud + database",
+        "ar": "سحابة + قاعدة بيانات",
+        "ja": "クラウド＋データベース"
+      },
+      "ctaChoice_2": {
+        "en": "Web, Mobile, Simulation",
+        "tr": "web, mobil, Simülasyon",
+        "de": "Web, Mobile, Simulation",
+        "fr": "Web, mobile, simulation",
+        "es": "Web, móvil, simulación",
+        "it": "Web, mobile, simulazione",
+        "ar": "ويب، جوال، محاكاة",
+        "ja": "Web、モバイル、シミュレーション"
       },
       "faqEyebrow": {
         "en": "FAQ",
@@ -4447,6 +4478,16 @@
         "it": "Filtra per famiglia di prodotti.",
         "ar": "التصفية حسب عائلة المنتج.",
         "ja": "製品ファミリーで絞り込む。"
+      },
+      "catalogLead": {
+        "en": "A clear catalog to compare modules, environmental sensors, tracking and safety devices, and industrial interfaces — in the same visual language as the rest of the site.",
+        "tr": "Modüller, çevresel sensörler, takip ve güvenlik cihazları ile endüstriyel arayüzleri karşılaştırmak için net bir katalog — sitenin geri kalanıyla aynı görsel dilde.",
+        "de": "Ein übersichtlicher Katalog zum Vergleich von Modulen, Umweltsensoren, Tracking- und Sicherheitsgeräten sowie Industrieschnittstellen — im gleichen visuellen Stil wie der Rest der Website.",
+        "fr": "Un catalogue clair pour comparer modules, capteurs environnementaux, dispositifs de suivi et de sécurité, et interfaces industrielles — dans la même identité visuelle que le reste du site.",
+        "es": "Un catálogo claro para comparar módulos, sensores ambientales, dispositivos de seguimiento y seguridad, e interfaces industriales — con el mismo lenguaje visual del resto del sitio.",
+        "it": "Un catalogo chiaro per confrontare moduli, sensori ambientali, dispositivi di tracciamento e sicurezza, e interfacce industriali — nello stesso linguaggio visivo del resto del sito.",
+        "ar": "كتالوج واضح لمقارنة الوحدات والمستشعرات البيئية وأجهزة التتبع والأمان والواجهات الصناعية — بنفس الهوية البصرية لبقية الموقع.",
+        "ja": "モジュール、環境センサー、追跡・安全デバイス、産業用インターフェースを比較できる明快なカタログ — サイト全体と統一されたビジュアルで。"
       }
     },
     "news": {
@@ -4666,7 +4707,7 @@
     "solutions": {
       "heroEyebrow": {
         "en": "Industrial IoT Solutions",
-        "tr": "Çözümler",
+        "tr": "Endüstriyel IoT Çözümleri",
         "de": "Lösungen",
         "fr": "Solutions",
         "es": "Soluciones",
@@ -4698,17 +4739,35 @@
       "metric1Value": "15+",
       "metric1Label": {
         "en": "countries with active deployments",
-        "tr": "aktif kurulum yapılan ülke"
+        "tr": "aktif kurulum yapılan ülke",
+        "de": "Länder mit aktiven Einsätzen",
+        "fr": "pays avec des déploiements actifs",
+        "es": "países con despliegues activos",
+        "it": "paesi con installazioni attive",
+        "ar": "دولة بنشرات نشطة",
+        "ja": "導入実績のある国"
       },
       "metric2Value": "2020",
       "metric2Label": {
         "en": "R&D-first engineering foundation",
-        "tr": "Ar-Ge odaklı mühendislik temeli"
+        "tr": "Ar-Ge odaklı mühendislik temeli",
+        "de": "F&E-orientierte technische Basis",
+        "fr": "fondation d'ingénierie axée sur la R&D",
+        "es": "base de ingeniería orientada a I+D",
+        "it": "fondamento ingegneristico orientato alla R&S",
+        "ar": "أساس هندسي يركز على البحث والتطوير",
+        "ja": "研究開発重視のエンジニアリング基盤"
       },
       "metric3Value": "24/7",
       "metric3Label": {
         "en": "remote visibility for critical assets",
-        "tr": "kritik varlıklar için 24/7 uzaktan görünürlük"
+        "tr": "kritik varlıklar için 24/7 uzaktan görünürlük",
+        "de": "Fernüberwachung kritischer Anlagen rund um die Uhr",
+        "fr": "visibilité à distance 24/7 pour les actifs critiques",
+        "es": "visibilidad remota 24/7 para activos críticos",
+        "it": "visibilità remota 24/7 per asset critici",
+        "ar": "رؤية عن بُعد على مدار الساعة للأصول الحرجة",
+        "ja": "重要資産の24時間遠隔可視化"
       },
       "useCasesEyebrow": {
         "en": "Use Cases",
@@ -4736,8 +4795,8 @@
         "de": "Von Infrastrukturen und Fabriken bis hin zu Gebäuden, Logistik und Versorgungsunternehmen wird jede Lösung an die Bedingungen vor Ort, den Datenbedarf und die Reaktionsabläufe angepasst.",
         "fr": "Des infrastructures et usines aux bâtiments, à la logistique et aux services publics, chaque solution s'adapte aux conditions du terrain, aux besoins en données et aux flux d'intervention.",
         "es": "Desde infraestructuras y fábricas hasta edificios, logística y servicios públicos, cada solución se adapta a las condiciones del campo, las necesidades de datos y los flujos de respuesta.",
-        "it": "Dalle infrastrutture e fabbriche agli edifici, alla logistica e alle utility, ogni soluzione è modellata in base alle condizioni sul campo, alle esigenze di dati e ai flujos di risposta.",
-        "ar": "من البنية التحتية والمصانع إلى المباني والخدمات اللوجستية والمرافق، يتم تشكيل her çözüm حول الظروف Mydan ve ihtiyaçlar.",
+        "it": "Dalle infrastrutture e fabbriche agli edifici, alla logistica e alle utility, ogni soluzione è modellata in base alle condizioni sul campo, alle esigenze di dati e ai flussi di risposta.",
+        "ar": "من البنية التحتية والمصانع إلى المباني والخدمات اللوجستية والمرافق، يُشكَّل كل حل وفق ظروف الميدان واحتياجات البيانات وسير الاستجابة.",
         "ja": "インフラや工場からビル、物流、ユーティリティにいたるまで、すべてのソリューションは現場の条件、データニーズ、対応ワークフローに合わせて形作られます。"
       },
       "showcaseEyebrow": {
@@ -4772,15 +4831,33 @@
       },
       "selectorEyebrow": {
         "en": "Choose the Right Path",
-        "tr": "Doğru Yolu Seçin"
+        "tr": "Doğru Yolu Seçin",
+        "de": "Den richtigen Weg wählen",
+        "fr": "Choisir la bonne voie",
+        "es": "Elija el camino correcto",
+        "it": "Scegli la strada giusta",
+        "ar": "اختر المسار المناسب",
+        "ja": "最適な進め方を選ぶ"
       },
       "selectorTitle": {
         "en": "Every solution starts with the operational question.",
-        "tr": "Her çözüm operasyonel soruyla başlar."
+        "tr": "Her çözüm operasyonel soruyla başlar.",
+        "de": "Jede Lösung beginnt mit der operativen Frage.",
+        "fr": "Chaque solution commence par la question opérationnelle.",
+        "es": "Cada solución empieza por la pregunta operativa.",
+        "it": "Ogni soluzione parte dalla domanda operativa.",
+        "ar": "كل حل يبدأ بالسؤال التشغيلي.",
+        "ja": "すべてのソリューションは運用上の問いから始まります。"
       },
       "selectorLead": {
         "en": "Strong IoT projects do not start with “which sensor?”. They start with what the user needs to see, decide or automate.",
-        "tr": "Güçlü IoT projeleri \"hangi sensör?\" sorusuyla başlamaz. Kullanıcının neyi görmesi, neye karar vermesi veya neyi otomatikleştirmesi gerektiğiyle başlar."
+        "tr": "Güçlü IoT projeleri \"hangi sensör?\" sorusuyla başlamaz. Kullanıcının neyi görmesi, neye karar vermesi veya neyi otomatikleştirmesi gerektiğiyle başlar.",
+        "de": "Starke IoT-Projekte beginnen nicht mit „welcher Sensor?“. Sie beginnen damit, was der Nutzer sehen, entscheiden oder automatisieren muss.",
+        "fr": "Les bons projets IoT ne commencent pas par « quel capteur ? ». Ils commencent par ce que l'utilisateur doit voir, décider ou automatiser.",
+        "es": "Los proyectos IoT sólidos no empiezan con «¿qué sensor?». Empiezan por lo que el usuario necesita ver, decidir o automatizar.",
+        "it": "I progetti IoT solidi non iniziano con «quale sensore?». Iniziano da ciò che l'utente deve vedere, decidere o automatizzare.",
+        "ar": "مشاريع إنترنت الأشياء القوية لا تبدأ بسؤال «أي مستشعر؟». بل بما يحتاج المستخدم لرؤيته أو اتخاذ قرار بشأنه أو أتمتته.",
+        "ja": "優れたIoTプロジェクトは「どのセンサーか？」から始まりません。利用者が見る・判断する・自動化する必要があることから始まります。"
       },
       "howEyebrow": {
         "en": "How It Works",
@@ -4804,13 +4881,13 @@
       },
       "howLead": {
         "en": "WillowSoft solutions turn field signals into operational intelligence through a complete embedded-to-cloud architecture.",
-        "tr": "Hareketli arka plan, dağıtık saha verisini temsil eder. Gerçek sistemde her cihaz, telemetriyi API'lere, PostgreSQL'e, panolara, mobil uyarılara ve raporlama araçlarına gönderir.",
-        "de": "Der bewegte Hintergrund steht für verteilte Felddaten. Im realen System sendet jedes Gerät Telemetrie an APIs, PostgreSQL, Dashboards, mobile Benachrichtigungen und Reporting-Tools.",
-        "fr": "L'arrière-plan animé représente des données de terrain distribuées. Dans le système réel, chaque appareil envoie sa télémétrie vers des API, PostgreSQL, des tableaux de bord, des alertes mobiles et des outils de reporting.",
-        "es": "El fondo en movimiento representa datos de campo distribuidos. En el sistema real, cada dispositivo envía telemetría a API, PostgreSQL, paneles, alertas móviles y herramientas de informes.",
-        "it": "Lo sfondo in movimento rappresenta dati di campo distribuiti. Nel sistema reale, ogni dispositivo invia la telemetria ad API, PostgreSQL, dashboard, avvisi mobili e strumenti di reporting.",
-        "ar": "تمثّل الخلفية المتحركة بيانات ميدانية موزّعة. في النظام الفعلي، يرسل كل جهاز بيانات القياس إلى واجهات البرمجة وPostgreSQL ولوحات المعلومات والتنبيهات على الجوال وأدوات إعداد التقارير.",
-        "ja": "動く背景は、分散した現場データを表しています。実際のシステムでは、各デバイスがテレメトリを API、PostgreSQL、ダッシュボード、モバイル通知、レポートツールへ送信します。"
+        "tr": "WillowSoft çözümleri, sahada toplanan sinyalleri uçtan uca gömülü-bulut mimarisiyle operasyonel içgörüye dönüştürür.",
+        "de": "WillowSoft-Lösungen verwandeln Feldsignale durch eine durchgängige Embedded-to-Cloud-Architektur in operative Erkenntnisse.",
+        "fr": "Les solutions WillowSoft transforment les signaux du terrain en intelligence opérationnelle grâce à une architecture embarquée-cloud complète.",
+        "es": "Las soluciones WillowSoft convierten las señales de campo en inteligencia operativa mediante una arquitectura completa de embebido a nube.",
+        "it": "Le soluzioni WillowSoft trasformano i segnali sul campo in intelligence operativa attraverso un'architettura completa embedded-to-cloud.",
+        "ar": "تحوّل حلول WillowSoft إشارات الميدان إلى معلومات تشغيلية عبر بنية متكاملة من الأجهزة المدمجة إلى السحابة.",
+        "ja": "WillowSoftのソリューションは、エッジからクラウドまで一貫したアーキテクチャで、現場の信号を運用インテリジェンスに変換します。"
       },
       "whyEyebrow": {
         "en": "Why WillowSoft",
@@ -4834,19 +4911,43 @@
       },
       "finalCtaEyebrow": {
         "en": "Start With Your Operation",
-        "tr": "Operasyonunuzla Başlayın"
+        "tr": "Operasyonunuzla Başlayın",
+        "de": "Mit Ihrem Betrieb starten",
+        "fr": "Commencez par votre exploitation",
+        "es": "Empiece por su operación",
+        "it": "Inizia dalla tua operazione",
+        "ar": "ابدأ من عملياتك",
+        "ja": "御社の運用から始める"
       },
       "finalCtaTitle": {
         "en": "Have a site, asset or process that needs visibility?",
-        "tr": "Görünürlüğe ihtiyaç duyan bir sahanız, varlığınız veya süreciniz mi var?"
+        "tr": "Görünürlüğe ihtiyaç duyan bir sahanız, varlığınız veya süreciniz mi var?",
+        "de": "Haben Sie einen Standort, ein Asset oder einen Prozess, der Transparenz braucht?",
+        "fr": "Vous avez un site, un actif ou un processus qui a besoin de visibilité ?",
+        "es": "¿Tiene un sitio, activo o proceso que necesita visibilidad?",
+        "it": "Avete un sito, un asset o un processo che ha bisogno di visibilità?",
+        "ar": "هل لديك موقع أو أصل أو عملية تحتاج إلى رؤية تشغيلية؟",
+        "ja": "可視化が必要なサイト、資産、プロセスはありますか？"
       },
       "finalCtaLead": {
         "en": "Share your field conditions, data needs and operational goals. WillowSoft can map the right device, connectivity and platform architecture.",
-        "tr": "Saha koşullarınızı, veri ihtiyaçlarınızı ve operasyonel hedeflerinizi paylaşın. WillowSoft doğru cihaz, bağlantı ve platform mimarisini çıkarabilir."
+        "tr": "Saha koşullarınızı, veri ihtiyaçlarınızı ve operasyonel hedeflerinizi paylaşın. WillowSoft doğru cihaz, bağlantı ve platform mimarisini çıkarabilir.",
+        "de": "Teilen Sie Ihre Feldbedingungen, Datenanforderungen und operativen Ziele. WillowSoft kann die passende Geräte-, Konnektivitäts- und Plattformarchitektur ableiten.",
+        "fr": "Partagez vos conditions de terrain, vos besoins en données et vos objectifs opérationnels. WillowSoft peut définir le bon appareil, la connectivité et l'architecture de plateforme.",
+        "es": "Comparta sus condiciones de campo, necesidades de datos y objetivos operativos. WillowSoft puede definir el dispositivo, la conectividad y la arquitectura de plataforma adecuados.",
+        "it": "Condividete condizioni sul campo, esigenze di dati e obiettivi operativi. WillowSoft può definire dispositivo, connettività e architettura di piattaforma.",
+        "ar": "شاركنا ظروف الميدان واحتياجات البيانات والأهداف التشغيلية. يمكن لـ WillowSoft رسم بنية الجهاز والاتصال والمنصة المناسبة.",
+        "ja": "現場条件、データ要件、運用目標をお聞かせください。WillowSoftが最適なデバイス・接続・プラットフォーム構成を提案します。"
       },
       "finalCtaButton": {
         "en": "Start Project",
-        "tr": "Projeyi Başlat"
+        "tr": "Projeyi Başlat",
+        "de": "Projekt starten",
+        "fr": "Démarrer le projet",
+        "es": "Iniciar proyecto",
+        "it": "Avvia progetto",
+        "ar": "بدء المشروع",
+        "ja": "プロジェクト相談"
       },
       "selectorCards": [
         {
@@ -4869,6 +4970,66 @@
                 "Canlı telemetri",
                 "Varlık durumu",
                 "Geçmiş trendler"
+              ]
+            },
+            "de": {
+              "eyebrow": "Brauchen Sie Transparenz?",
+              "title": "Fernüberwachung",
+              "body": "Für Anlagen, die schwer erreichbar sind, über mehrere Standorte verteilt sind oder noch manuell von Feldmannschaften geprüft werden.",
+              "bullets": [
+                "Live-Telemetrie",
+                "Anlagenstatus",
+                "Historische Trends"
+              ]
+            },
+            "fr": {
+              "eyebrow": "Besoin de visibilité ?",
+              "title": "Supervision à distance",
+              "body": "Pour les actifs difficiles d'accès, répartis sur plusieurs sites ou encore contrôlés manuellement par les équipes terrain.",
+              "bullets": [
+                "Télémétrie en direct",
+                "État des actifs",
+                "Tendances historiques"
+              ]
+            },
+            "es": {
+              "eyebrow": "¿Necesita visibilidad?",
+              "title": "Monitorización remota",
+              "body": "Para activos de difícil acceso, distribuidos en varios sitios o aún revisados manualmente por equipos de campo.",
+              "bullets": [
+                "Telemetría en vivo",
+                "Estado del activo",
+                "Tendencias históricas"
+              ]
+            },
+            "it": {
+              "eyebrow": "Serve visibilità?",
+              "title": "Monitoraggio remoto",
+              "body": "Per asset difficili da raggiungere, distribuiti su più siti o ancora controllati manualmente dalle squadre sul campo.",
+              "bullets": [
+                "Telemetria live",
+                "Stato asset",
+                "Trend storici"
+              ]
+            },
+            "ar": {
+              "eyebrow": "هل تحتاج رؤية؟",
+              "title": "المراقبة عن بُعد",
+              "body": "للأصول التي يصعب الوصول إليها أو الموزّعة على مواقع متعددة أو التي تُفحص يدوياً من فرق الميدان.",
+              "bullets": [
+                "قياس مباشر",
+                "حالة الأصل",
+                "الاتجاهات التاريخية"
+              ]
+            },
+            "ja": {
+              "eyebrow": "可視化が必要ですか？",
+              "title": "遠隔モニタリング",
+              "body": "アクセスが難しい資産、複数拠点に分散した設備、現場チームがまだ手動で点検している対象向け。",
+              "bullets": [
+                "ライブテレメトリ",
+                "資産ステータス",
+                "履歴トレンド"
               ]
             }
           }
@@ -4894,6 +5055,66 @@
                 "Mobil bildirimler",
                 "Eskalasyon akışları"
               ]
+            },
+            "de": {
+              "eyebrow": "Brauchen Sie Reaktion?",
+              "title": "Alarme & Workflows",
+              "body": "Für Betriebe, bei denen Füllstand, Druck, Bewegung, Panik, Tür, GPS oder Luftqualität sofortiges Handeln erfordern.",
+              "bullets": [
+                "Schwellenwertalarme",
+                "Mobile Benachrichtigungen",
+                "Eskalationsabläufe"
+              ]
+            },
+            "fr": {
+              "eyebrow": "Besoin d'intervention ?",
+              "title": "Alertes et workflows",
+              "body": "Pour les opérations où niveau, pression, mouvement, panique, porte, GPS ou qualité de l'air exigent une action immédiate.",
+              "bullets": [
+                "Alertes de seuil",
+                "Notifications mobiles",
+                "Flux d'escalade"
+              ]
+            },
+            "es": {
+              "eyebrow": "¿Necesita respuesta?",
+              "title": "Alertas y flujos de trabajo",
+              "body": "Para operaciones donde nivel, presión, movimiento, pánico, puerta, GPS o calidad del aire requieren acción inmediata.",
+              "bullets": [
+                "Alertas de umbral",
+                "Notificaciones móviles",
+                "Flujos de escalado"
+              ]
+            },
+            "it": {
+              "eyebrow": "Serve risposta?",
+              "title": "Avvisi e workflow",
+              "body": "Per operazioni in cui livello, pressione, movimento, panico, porta, GPS o qualità dell'aria richiedono azione immediata.",
+              "bullets": [
+                "Avvisi soglia",
+                "Notifiche mobili",
+                "Flussi di escalation"
+              ]
+            },
+            "ar": {
+              "eyebrow": "هل تحتاج استجابة؟",
+              "title": "التنبيهات وسير العمل",
+              "body": "للعمليات التي تتطلب تدخلاً فورياً عند أحداث المستوى أو الضغط أو الحركة أو الطوارئ أو الباب أو GPS أو جودة الهواء.",
+              "bullets": [
+                "تنبيهات العتبة",
+                "إشعارات جوال",
+                "مسارات التصعيد"
+              ]
+            },
+            "ja": {
+              "eyebrow": "即応が必要ですか？",
+              "title": "アラートとワークフロー",
+              "body": "水位・圧力・動き・緊急・ドア・GPS・空気質のイベントで即時対応が必要な運用向け。",
+              "bullets": [
+                "しきい値アラート",
+                "モバイル通知",
+                "エスカレーションフロー"
+              ]
             }
           }
         },
@@ -4918,6 +5139,66 @@
                 "Yönetici panelleri",
                 "Veri hatları"
               ]
+            },
+            "de": {
+              "eyebrow": "Brauchen Sie Integration?",
+              "title": "Industrielle Datenplattform",
+              "body": "Für Telemetrie, die Reporting-Tools, ERP-Systeme, Kundenportale, PostgreSQL oder interne APIs speisen muss.",
+              "bullets": [
+                "Backend-APIs",
+                "Admin-Panels",
+                "Datenpipelines"
+              ]
+            },
+            "fr": {
+              "eyebrow": "Besoin d'intégration ?",
+              "title": "Plateforme de données industrielle",
+              "body": "Pour la télémétrie qui doit alimenter outils de reporting, ERP, portails clients, PostgreSQL ou API internes.",
+              "bullets": [
+                "API backend",
+                "Panneaux admin",
+                "Pipelines de données"
+              ]
+            },
+            "es": {
+              "eyebrow": "¿Necesita integración?",
+              "title": "Plataforma de datos industrial",
+              "body": "Para telemetría que debe alimentar herramientas de informes, ERP, portales de clientes, PostgreSQL o API internas.",
+              "bullets": [
+                "API backend",
+                "Paneles admin",
+                "Tuberías de datos"
+              ]
+            },
+            "it": {
+              "eyebrow": "Serve integrazione?",
+              "title": "Piattaforma dati industriale",
+              "body": "Per telemetria che deve alimentare strumenti di report, ERP, portali clienti, PostgreSQL o API interne.",
+              "bullets": [
+                "API backend",
+                "Pannelli admin",
+                "Pipeline dati"
+              ]
+            },
+            "ar": {
+              "eyebrow": "هل تحتاج تكاملاً؟",
+              "title": "منصة بيانات صناعية",
+              "body": "للبيانات التي يجب أن تغذي أدوات التقارير وأنظمة ERP وبوابات العملاء وPostgreSQL أو واجهات API الداخلية.",
+              "bullets": [
+                "واجهات برمجة خلفية",
+                "لوحات إدارة",
+                "مسارات بيانات"
+              ]
+            },
+            "ja": {
+              "eyebrow": "連携が必要ですか？",
+              "title": "産業データプラットフォーム",
+              "body": "レポートツール、ERP、顧客ポータル、PostgreSQL、社内APIへ送るテレメトリ向け。",
+              "bullets": [
+                "バックエンドAPI",
+                "管理画面",
+                "データパイプライン"
+              ]
             }
           }
         }
@@ -4932,6 +5213,30 @@
             "tr": {
               "title": "Ölçüm",
               "body": "Seviye, basınç, hava kalitesi, hareket, GPS, sıcaklık, nem ve daha fazlası."
+            },
+            "de": {
+              "title": "Messen",
+              "body": "Füllstand, Druck, Luftqualität, Bewegung, GPS, Temperatur, Feuchtigkeit und mehr."
+            },
+            "fr": {
+              "title": "Mesurer",
+              "body": "Niveau, pression, qualité de l'air, mouvement, GPS, température, humidité et plus."
+            },
+            "es": {
+              "title": "Medir",
+              "body": "Nivel, presión, calidad del aire, movimiento, GPS, temperatura, humedad y más."
+            },
+            "it": {
+              "title": "Misurare",
+              "body": "Livello, pressione, qualità dell'aria, movimento, GPS, temperatura, umidità e altro."
+            },
+            "ar": {
+              "title": "القياس",
+              "body": "المستوى والضغط وجودة الهواء والحركة وGPS ودرجة الحرارة والرطوبة والمزيد."
+            },
+            "ja": {
+              "title": "計測",
+              "body": "水位、圧力、空気質、動き、GPS、温度、湿度など。"
             }
           }
         },
@@ -4944,6 +5249,30 @@
             "tr": {
               "title": "İletim",
               "body": "Saha gerçekliğine göre tasarlanmış LoRaWAN ve düşük güçlü iletişim yolları."
+            },
+            "de": {
+              "title": "Übertragen",
+              "body": "LoRaWAN und stromsparende Kommunikationswege, abgestimmt auf die Realität vor Ort."
+            },
+            "fr": {
+              "title": "Transmettre",
+              "body": "LoRaWAN et voies de communication basse consommation adaptées au terrain."
+            },
+            "es": {
+              "title": "Transmitir",
+              "body": "LoRaWAN y rutas de comunicación de bajo consumo diseñadas para la realidad del sitio."
+            },
+            "it": {
+              "title": "Trasmettere",
+              "body": "LoRaWAN e percorsi di comunicazione a basso consumo progettati per la realtà sul campo."
+            },
+            "ar": {
+              "title": "النقل",
+              "body": "مسارات LoRaWAN واتصال منخفض الطاقة مصممة وفق واقع الموقع."
+            },
+            "ja": {
+              "title": "送信",
+              "body": "現場条件に合わせた LoRaWAN と低消費電力通信。"
             }
           }
         },
@@ -4956,6 +5285,30 @@
             "tr": {
               "title": "İşleme",
               "body": "Backend API'leri, PostgreSQL depolaması, kurallar, eşikler ve raporlama mantığı."
+            },
+            "de": {
+              "title": "Verarbeiten",
+              "body": "Backend-APIs, PostgreSQL-Speicher, Regeln, Schwellenwerte und Reporting-Logik."
+            },
+            "fr": {
+              "title": "Traiter",
+              "body": "API backend, stockage PostgreSQL, règles, seuils et logique de reporting."
+            },
+            "es": {
+              "title": "Procesar",
+              "body": "API backend, almacenamiento PostgreSQL, reglas, umbrales y lógica de informes."
+            },
+            "it": {
+              "title": "Elaborare",
+              "body": "API backend, storage PostgreSQL, regole, soglie e logica di reportistica."
+            },
+            "ar": {
+              "title": "المعالجة",
+              "body": "واجهات برمجة خلفية وتخزين PostgreSQL وقواعد وعتبات ومنطق تقارير."
+            },
+            "ja": {
+              "title": "処理",
+              "body": "バックエンドAPI、PostgreSQL、ルール、しきい値、レポートロジック。"
             }
           }
         },
@@ -4968,6 +5321,30 @@
             "tr": {
               "title": "Görselleştirme",
               "body": "Paneller, haritalar, yönetici panelleri, mobil uygulamalar ve müşteri portalları."
+            },
+            "de": {
+              "title": "Visualisieren",
+              "body": "Dashboards, Karten, Admin-Panels, mobile Apps und Kundenportale."
+            },
+            "fr": {
+              "title": "Visualiser",
+              "body": "Tableaux de bord, cartes, panneaux admin, applications mobiles et portails clients."
+            },
+            "es": {
+              "title": "Visualizar",
+              "body": "Paneles, mapas, paneles admin, apps móviles y portales de clientes."
+            },
+            "it": {
+              "title": "Visualizzare",
+              "body": "Dashboard, mappe, pannelli admin, app mobili e portali clienti."
+            },
+            "ar": {
+              "title": "العرض",
+              "body": "لوحات معلومات وخرائط ولوحات إدارة وتطبيقات جوال وبوابات عملاء."
+            },
+            "ja": {
+              "title": "可視化",
+              "body": "ダッシュボード、マップ、管理画面、モバイルアプリ、顧客ポータル。"
             }
           }
         },
@@ -4980,6 +5357,30 @@
             "tr": {
               "title": "Eylem",
               "body": "Uyarılar, iş akışları, saha yanıtları, bakım planlaması ve karar desteği."
+            },
+            "de": {
+              "title": "Handeln",
+              "body": "Alarme, Workflows, Feldreaktion, Wartungsplanung und Entscheidungsunterstützung."
+            },
+            "fr": {
+              "title": "Agir",
+              "body": "Alertes, workflows, intervention terrain, planification de maintenance et aide à la décision."
+            },
+            "es": {
+              "title": "Actuar",
+              "body": "Alertas, flujos de trabajo, respuesta en campo, planificación de mantenimiento y apoyo a decisiones."
+            },
+            "it": {
+              "title": "Agire",
+              "body": "Avvisi, workflow, risposta sul campo, pianificazione manutenzione e supporto decisionale."
+            },
+            "ar": {
+              "title": "الإجراء",
+              "body": "تنبيهات وسير عمل واستجابة ميدانية وتخطيط صيانة ودعم قرار."
+            },
+            "ja": {
+              "title": "アクション",
+              "body": "アラート、ワークフロー、現場対応、保守計画、意思決定支援。"
             }
           }
         }
@@ -4994,6 +5395,30 @@
             "tr": {
               "title": "Düşük Güç Uzmanlığı",
               "body": "Pil ömrü, veri paketi boyutu ve raporlama aralıkları gerçek kurulum gereksinimlerine göre tasarlanır."
+            },
+            "de": {
+              "title": "Low-Power-Kompetenz",
+              "body": "Batterielaufzeit, Payload-Größe und Berichtsintervalle werden nach realen Einsatzanforderungen ausgelegt."
+            },
+            "fr": {
+              "title": "Expertise basse consommation",
+              "body": "Autonomie, taille des payloads et intervalles de rapport sont conçus selon les exigences réelles du terrain."
+            },
+            "es": {
+              "title": "Experiencia en bajo consumo",
+              "body": "La vida de batería, el tamaño del payload y los intervalos de informe se diseñan según requisitos reales de despliegue."
+            },
+            "it": {
+              "title": "Competenza low-power",
+              "body": "Durata batteria, dimensione payload e intervalli di report sono progettati sulle reali esigenze di installazione."
+            },
+            "ar": {
+              "title": "خبرة الطاقة المنخفضة",
+              "body": "عمر البطارية وحجم الحمولة وفترات الإبلاغ تُصمَّم وفق متطلبات النشر الفعلية."
+            },
+            "ja": {
+              "title": "低消費電力の専門性",
+              "body": "電池寿命、ペイロードサイズ、報告間隔を実際の導入要件に合わせて設計。"
             }
           }
         },
@@ -5006,6 +5431,30 @@
             "tr": {
               "title": "RF Uyumlu Kurulum",
               "body": "Bağlantı planlaması; metal yoğunluklu fabrikaları, mesafeyi, hava koşullarını, muhafazaları ve geçit yerleşimini hesaba katar."
+            },
+            "de": {
+              "title": "RF-bewusster Einsatz",
+              "body": "Die Funkplanung berücksichtigt metallintensive Fabriken, Distanz, Wetter, Gehäuse und Gateway-Platzierung."
+            },
+            "fr": {
+              "title": "Déploiement RF maîtrisé",
+              "body": "La planification radio tient compte des usines métalliques, de la distance, de la météo, des boîtiers et du placement des passerelles."
+            },
+            "es": {
+              "title": "Despliegue consciente de RF",
+              "body": "La planificación de conectividad considera fábricas con mucho metal, distancia, clima, carcasas y ubicación de gateways."
+            },
+            "it": {
+              "title": "Deploy consapevole RF",
+              "body": "La pianificazione della connettività considera fabbriche con molto metallo, distanza, meteo, involucri e posizionamento gateway."
+            },
+            "ar": {
+              "title": "نشر واعٍ بترددات RF",
+              "body": "تخطيط الاتصال يراعي المصانع المعدنية والمسافة والطقس والعلب وموضع البوابات."
+            },
+            "ja": {
+              "title": "RFを考慮した導入",
+              "body": "金属の多い工場、距離、天候、筐体、ゲートウェイ配置を接続計画に反映。"
             }
           }
         },
@@ -5018,6 +5467,30 @@
             "tr": {
               "title": "Uçtan Uca Sahiplik",
               "body": "Donanım, gömülü yazılım (firmware), backend, veritabanı, pano, admin paneli ve mobil iş akışları birlikte tasarlanır."
+            },
+            "de": {
+              "title": "Full-Stack-Verantwortung",
+              "body": "Hardware, Firmware, Backend, Datenbank, Dashboard, Admin-Panel und mobile Workflows werden gemeinsam entworfen."
+            },
+            "fr": {
+              "title": "Maîtrise full stack",
+              "body": "Matériel, firmware, backend, base de données, tableau de bord, panneau admin et workflows mobiles sont conçus ensemble."
+            },
+            "es": {
+              "title": "Propiedad full stack",
+              "body": "Hardware, firmware, backend, base de datos, panel, admin y flujos móviles se diseñan en conjunto."
+            },
+            "it": {
+              "title": "Ownership full stack",
+              "body": "Hardware, firmware, backend, database, dashboard, pannello admin e workflow mobili sono progettati insieme."
+            },
+            "ar": {
+              "title": "ملكية كاملة للمكدس",
+              "body": "الأجهزة والبرنامج الثابت والخلفية وقاعدة البيانات واللوحة ولوحة الإدارة وسير العمل الجوال تُصمَّم معاً."
+            },
+            "ja": {
+              "title": "フルスタック体制",
+              "body": "ハード、ファームウェア、バックエンド、DB、ダッシュボード、管理画面、モバイルを一体設計。"
             }
           }
         },
@@ -5030,6 +5503,30 @@
             "tr": {
               "title": "Önce Üretim Yaklaşımı",
               "body": "Her çözüm sadece prototip varsayımlarına göre değil, saha gerçekliğine göre değerlendirilir."
+            },
+            "de": {
+              "title": "Production-First-Denken",
+              "body": "Jede Lösung wird an der Feldrealität gemessen — nicht nur an Prototyp-Annahmen."
+            },
+            "fr": {
+              "title": "Pensée production d'abord",
+              "body": "Chaque solution est évaluée face à la réalité du terrain, pas seulement face aux hypothèses de prototype."
+            },
+            "es": {
+              "title": "Mentalidad producción primero",
+              "body": "Cada solución se evalúa frente a la realidad del campo, no solo frente a supuestos de prototipo."
+            },
+            "it": {
+              "title": "Mentalità production-first",
+              "body": "Ogni soluzione è valutata sulla realtà sul campo, non solo sulle ipotesi di prototipo."
+            },
+            "ar": {
+              "title": "تفكير الإنتاج أولاً",
+              "body": "يُقيَّم كل حل وفق واقع الميدان، لا وفق افتراضات النموذج الأولي فقط."
+            },
+            "ja": {
+              "title": "量産前提の設計",
+              "body": "各ソリューションはプロトタイプ想定だけでなく、現場の現実で評価します。"
             }
           }
         }
@@ -5162,7 +5659,7 @@
         "en": "Contact",
         "tr": "İletişim",
         "de": "Kontakt",
-        "fr": "Contact",
+        "fr": "Nous contacter",
         "es": "Contacto",
         "it": "Contatti",
         "ar": "اتصل بنا",
@@ -5463,40 +5960,76 @@
           ]
         },
         "de": {
-          "title": "Industrial IoT Monitoring",
-          "headline": "Industrial IoT Monitoring",
+          "title": "Industrielles IoT-Monitoring",
+          "headline": "Industrielles IoT-Monitoring",
           "summary": "Remote Monitoring für Industriesensoren, Embedded Systems und Feldgeräte.",
-          "category": "Industrial IoT"
+          "category": "Industrielles IoT",
+          "bullets": [
+            "Industrieanlagen",
+            "Fern-Telemetrie",
+            "Cloud-Datenvisualisierung",
+            "Energiesparende Feldgeräte"
+          ]
         },
         "fr": {
-          "title": "Monitoring IoT industriel",
-          "headline": "Monitoring IoT industriel",
+          "title": "Supervision IoT industrielle",
+          "headline": "Supervision IoT industrielle",
           "summary": "Monitoring à distance pour capteurs industriels, systèmes embarqués et appareils terrain.",
-          "category": "IoT industriel"
+          "category": "IoT industriel",
+          "bullets": [
+            "Sites industriels",
+            "Télémétrie à distance",
+            "Visualisation cloud",
+            "Capteurs basse consommation"
+          ]
         },
         "es": {
           "title": "Monitorización IoT industrial",
           "headline": "Monitorización IoT industrial",
           "summary": "Monitorización remota para sensores industriales, sistemas embebidos y dispositivos de campo.",
-          "category": "IoT industrial"
+          "category": "IoT industrial",
+          "bullets": [
+            "Instalaciones industriales",
+            "Telemetría remota",
+            "Visualización en la nube",
+            "Dispositivos de campo de bajo consumo"
+          ]
         },
         "it": {
           "title": "Monitoraggio IoT industriale",
           "headline": "Monitoraggio IoT industriale",
           "summary": "Monitoraggio remoto per sensori industriali, sistemi embedded e dispositivi sul campo.",
-          "category": "IoT industriale"
+          "category": "IoT industriale",
+          "bullets": [
+            "Impianti industriali",
+            "Telemetria remota",
+            "Visualizzazione cloud",
+            "Dispositivi sul campo a basso consumo"
+          ]
         },
         "ar": {
           "title": "مراقبة IoT الصناعية",
           "headline": "مراقبة IoT الصناعية",
           "summary": "مراقبة عن بُعد للمستشعرات الصناعية والأنظمة embedded والأجهزة الميدانية.",
-          "category": "IoT صناعي"
+          "category": "IoT صناعي",
+          "bullets": [
+            "منشآت صناعية",
+            "قياس عن بُعد",
+            "عرض بيانات سحابية",
+            "أجهزة ميدانية منخفضة الطاقة"
+          ]
         },
         "ja": {
           "title": "産業 IoT モニタリング",
           "headline": "産業 IoT モニタリング",
           "summary": "産業用センサー、組み込みシステム、現場デバイス向けのリモート監視。",
-          "category": "産業 IoT"
+          "category": "産業 IoT",
+          "bullets": [
+            "産業施設",
+            "遠隔テレメトリ",
+            "クラウド可視化",
+            "低消費電力フィールドデバイス"
+          ]
         }
       }
     },
@@ -5541,37 +6074,73 @@
           "title": "Wasser-, Tank- und Überflutungsmonitoring",
           "headline": "Wasser-, Tank- und Überflutungsmonitoring",
           "summary": "Distanz-, Füllstand- und Überlaufrisiko-Monitoring für Tanks, Schächte und Drainagesysteme.",
-          "category": "Wasser und Füllstand"
+          "category": "Wasser und Füllstand",
+          "bullets": [
+            "Schachtüberflutung",
+            "Tankfüllstand",
+            "Regenwasserentwässerung",
+            "Industrieller Flüssigkeitsstand"
+          ]
         },
         "fr": {
           "title": "Monitoring eau, réservoirs et inondation",
           "headline": "Monitoring eau, réservoirs et inondation",
           "summary": "Suivi distance, niveau et risque de débordement pour réservoirs, regards et drainage.",
-          "category": "Eau et niveau"
+          "category": "Eau et niveau",
+          "bullets": [
+            "Inondation de regards",
+            "Niveau de réservoir",
+            "Drainage pluvial",
+            "Niveau de liquide industriel"
+          ]
         },
         "es": {
           "title": "Monitorización de agua, tanques e inundaciones",
           "headline": "Monitorización de agua, tanques e inundaciones",
           "summary": "Seguimiento de distancia, nivel y riesgo de desbordamiento para tanques, registros y drenaje.",
-          "category": "Agua y nivel"
+          "category": "Agua y nivel",
+          "bullets": [
+            "Inundación de arquetas",
+            "Nivel de tanque",
+            "Drenaje pluvial",
+            "Nivel de líquido industrial"
+          ]
         },
         "it": {
           "title": "Monitoraggio acqua, serbatoi e allagamenti",
           "headline": "Monitoraggio acqua, serbatoi e allagamenti",
           "summary": "Monitoraggio di distanza, livello e rischio trabocco per serbatoi, pozzetti e drenaggi.",
-          "category": "Acqua e livello"
+          "category": "Acqua e livello",
+          "bullets": [
+            "Allagamento pozzetti",
+            "Livello serbatoio",
+            "Drenaggio piovano",
+            "Livello liquido industriale"
+          ]
         },
         "ar": {
           "title": "مراقبة المياه والخزانات والفيضانات",
           "headline": "مراقبة المياه والخزانات والفيضانات",
           "summary": "مراقبة المسافة والمستوى وخطر الفيضان للخزانات وغرف التفتيش وأنظمة التصريف.",
-          "category": "المياه والمستوى"
+          "category": "المياه والمستوى",
+          "bullets": [
+            "فيضان المناهل",
+            "مستوى الخزان",
+            "صرف مياه الأمطار",
+            "مستوى السوائل الصناعية"
+          ]
         },
         "ja": {
           "title": "水・タンク・浸水モニタリング",
           "headline": "水・タンク・浸水モニタリング",
           "summary": "タンク、マンホール、排水システムの距離・レベル・溢水リスク監視。",
-          "category": "水・レベル"
+          "category": "水・レベル",
+          "bullets": [
+            "マンホール浸水",
+            "タンク水位",
+            "雨水排水",
+            "産業用液面"
+          ]
         }
       }
     },
@@ -5616,37 +6185,73 @@
           "title": "Smart Buildings und Luftqualität",
           "headline": "Smart Buildings und Luftqualität",
           "summary": "Luftqualität, Temperatur und Umgebungsmonitoring für Gebäude und Anlagen.",
-          "category": "Smart Buildings"
+          "category": "Smart Buildings",
+          "bullets": [
+            "Büros",
+            "Schulen",
+            "Krankenhäuser",
+            "Lagerhallen"
+          ]
         },
         "fr": {
           "title": "Smart building et qualité de l’air",
           "headline": "Smart building et qualité de l’air",
           "summary": "Qualité de l’air, température et monitoring environnemental pour bâtiments et sites.",
-          "category": "Smart buildings"
+          "category": "Bâtiments intelligents",
+          "bullets": [
+            "Bureaux",
+            "Écoles",
+            "Hôpitaux",
+            "Entrepôts"
+          ]
         },
         "es": {
           "title": "Smart building y calidad del aire",
           "headline": "Smart building y calidad del aire",
           "summary": "Calidad del aire, temperatura y monitorización ambiental para edificios e instalaciones.",
-          "category": "Smart buildings"
+          "category": "Edificios inteligentes",
+          "bullets": [
+            "Oficinas",
+            "Escuelas",
+            "Hospitales",
+            "Almacenes"
+          ]
         },
         "it": {
           "title": "Smart building e qualità dell’aria",
           "headline": "Smart building e qualità dell’aria",
           "summary": "Qualità dell’aria, temperatura e monitoraggio ambientale per edifici e impianti.",
-          "category": "Smart buildings"
+          "category": "Edifici intelligenti",
+          "bullets": [
+            "Uffici",
+            "Scuole",
+            "Ospedali",
+            "Magazzini"
+          ]
         },
         "ar": {
           "title": "المباني الذكية وجودة الهواء",
           "headline": "المباني الذكية وجودة الهواء",
           "summary": "مراقبة جودة الهواء والحرارة والبيئة للمباني والمنشآت.",
-          "category": "المباني الذكية"
+          "category": "مبانٍ ذكية",
+          "bullets": [
+            "مكاتب",
+            "مدارس",
+            "مستشفيات",
+            "مستودعات"
+          ]
         },
         "ja": {
           "title": "スマートビルと空気質",
           "headline": "スマートビルと空気質",
           "summary": "建物・施設向けの空気質、温度、環境モニタリング。",
-          "category": "スマートビル"
+          "category": "スマートビル",
+          "bullets": [
+            "オフィス",
+            "学校",
+            "病院",
+            "倉庫"
+          ]
         }
       }
     },
@@ -5691,37 +6296,73 @@
           "title": "Asset- und Flotten-Tracking",
           "headline": "Asset- und Flotten-Tracking",
           "summary": "GPS-basiertes Tracking für Fahrzeuge, Logistikprozesse und mobile Assets.",
-          "category": "Assets und Logistik"
+          "category": "Assets und Logistik",
+          "bullets": [
+            "Fahrzeugortung",
+            "Asset-Tracking",
+            "Flottenüberwachung",
+            "Lieferketten-Transparenz"
+          ]
         },
         "fr": {
           "title": "Tracking d’actifs et de flotte",
           "headline": "Tracking d’actifs et de flotte",
           "summary": "Tracking GPS pour véhicules, opérations logistiques et actifs mobiles.",
-          "category": "Actifs et logistique"
+          "category": "Actifs et logistique",
+          "bullets": [
+            "Suivi véhicules",
+            "Suivi d'actifs",
+            "Monitoring de flotte",
+            "Visibilité supply chain"
+          ]
         },
         "es": {
           "title": "Tracking de activos y flotas",
           "headline": "Tracking de activos y flotas",
           "summary": "Tracking GPS para vehículos, operaciones logísticas y activos móviles.",
-          "category": "Activos y logística"
+          "category": "Activos y logística",
+          "bullets": [
+            "Seguimiento de vehículos",
+            "Seguimiento de activos",
+            "Monitoreo de flota",
+            "Visibilidad de cadena de suministro"
+          ]
         },
         "it": {
           "title": "Tracking asset e flotte",
           "headline": "Tracking asset e flotte",
           "summary": "Tracking GPS per veicoli, logistica e asset mobili.",
-          "category": "Asset e logistica"
+          "category": "Asset e logistica",
+          "bullets": [
+            "Tracciamento veicoli",
+            "Tracciamento asset",
+            "Monitoraggio flotta",
+            "Visibilità supply chain"
+          ]
         },
         "ar": {
           "title": "تتبع الأصول والأساطيل",
           "headline": "تتبع الأصول والأساطيل",
           "summary": "تتبع GPS للمركبات وعمليات اللوجستيات والأصول المتنقلة.",
-          "category": "الأصول واللوجستيات"
+          "category": "الأصول واللوجستيات",
+          "bullets": [
+            "تتبع المركبات",
+            "تتبع الأصول",
+            "مراقبة الأسطول",
+            "رؤية سلسلة التوريد"
+          ]
         },
         "ja": {
           "title": "資産・フリートトラッキング",
           "headline": "資産・フリートトラッキング",
           "summary": "車両、物流オペレーション、モバイル資産向けの GPS トラッキング。",
-          "category": "資産・物流"
+          "category": "資産・物流",
+          "bullets": [
+            "車両追跡",
+            "資産追跡",
+            "フリート監視",
+            "サプライチェーン可視化"
+          ]
         }
       }
     },
@@ -5766,37 +6407,73 @@
           "title": "Sicherheits- und Notfallalarme",
           "headline": "Sicherheits- und Notfallalarme",
           "summary": "Sofortige Notfallmeldungen für Industrieflächen, Lager und Gebäude.",
-          "category": "Sicherheit"
+          "category": "Sicherheit",
+          "bullets": [
+            "Notfallalarme",
+            "Gesundheitsintervention",
+            "Sicherheitsszenarien",
+            "Industrieanlagen"
+          ]
         },
         "fr": {
           "title": "Alertes sécurité et urgence",
           "headline": "Alertes sécurité et urgence",
           "summary": "Notifications d’urgence instantanées pour sites industriels, entrepôts et bâtiments.",
-          "category": "Sécurité"
+          "category": "Sécurité",
+          "bullets": [
+            "Alertes d'urgence",
+            "Intervention santé",
+            "Scénarios de sécurité",
+            "Sites industriels"
+          ]
         },
         "es": {
           "title": "Alertas de seguridad y emergencia",
           "headline": "Alertas de seguridad y emergencia",
           "summary": "Alertas de emergencia instantáneas para plantas industriales, almacenes y edificios.",
-          "category": "Seguridad"
+          "category": "Seguridad",
+          "bullets": [
+            "Alertas de emergencia",
+            "Intervención sanitaria",
+            "Escenarios de seguridad",
+            "Instalaciones industriales"
+          ]
         },
         "it": {
           "title": "Allarmi sicurezza ed emergenza",
           "headline": "Allarmi sicurezza ed emergenza",
           "summary": "Notifiche di emergenza immediate per siti industriali, magazzini ed edifici.",
-          "category": "Sicurezza"
+          "category": "Sicurezza",
+          "bullets": [
+            "Allarmi di emergenza",
+            "Intervento sanitario",
+            "Scenari di sicurezza",
+            "Impianti industriali"
+          ]
         },
         "ar": {
           "title": "تنبيهات السلامة والطوارئ",
           "headline": "تنبيهات السلامة والطوارئ",
           "summary": "إشعارات طوارئ فورية للمواقع الصناعية والمستودعات والمباني.",
-          "category": "السلامة"
+          "category": "السلامة",
+          "bullets": [
+            "تنبيهات طوارئ",
+            "تدخل صحي",
+            "سيناريوهات أمنية",
+            "منشآت صناعية"
+          ]
         },
         "ja": {
           "title": "安全・緊急アラート",
           "headline": "安全・緊急アラート",
           "summary": "産業現場、倉庫、建物向けの即時緊急通知。",
-          "category": "安全"
+          "category": "安全",
+          "bullets": [
+            "緊急アラート",
+            "ヘルス対応",
+            "セキュリティシナリオ",
+            "産業施設"
+          ]
         }
       }
     },
@@ -5841,37 +6518,73 @@
           "title": "Zugang und Türsicherheit",
           "headline": "Zugang und Türsicherheit",
           "summary": "Auf/Zu-Monitoring für Türen, Schränke, gesicherte Bereiche und Fenster.",
-          "category": "Sicherheit"
+          "category": "Sicherheit",
+          "bullets": [
+            "Serverräume",
+            "Labortüren",
+            "Schaltschränke",
+            "Gesperrte Bereiche"
+          ]
         },
         "fr": {
           "title": "Accès et sécurité des portes",
           "headline": "Accès et sécurité des portes",
           "summary": "Monitoring ouverture/fermeture pour portes, armoires, zones sensibles et fenêtres.",
-          "category": "Sécurité"
+          "category": "Sécurité",
+          "bullets": [
+            "Salles serveurs",
+            "Portes de laboratoire",
+            "Armoires électriques",
+            "Zones restreintes"
+          ]
         },
         "es": {
           "title": "Acceso y seguridad de puertas",
           "headline": "Acceso y seguridad de puertas",
           "summary": "Monitorización de apertura/cierre para puertas, armarios, zonas restringidas y ventanas.",
-          "category": "Seguridad"
+          "category": "Seguridad",
+          "bullets": [
+            "Salas de servidores",
+            "Puertas de laboratorio",
+            "Cuadros eléctricos",
+            "Áreas restringidas"
+          ]
         },
         "it": {
           "title": "Accessi e sicurezza porte",
           "headline": "Accessi e sicurezza porte",
           "summary": "Monitoraggio aperto/chiuso per porte, armadi, aree riservate e finestre.",
-          "category": "Sicurezza"
+          "category": "Sicurezza",
+          "bullets": [
+            "Sale server",
+            "Porte laboratorio",
+            "Quadri elettrici",
+            "Aree riservate"
+          ]
         },
         "ar": {
           "title": "أمن الوصول والأبواب",
           "headline": "أمن الوصول والأبواب",
           "summary": "مراقبة فتح/إغلاق للأبواب والخزائن والمناطق المحمية والنوافذ.",
-          "category": "السلامة"
+          "category": "السلامة",
+          "bullets": [
+            "غرف الخوادم",
+            "أبواب المختبرات",
+            "لوحات كهربائية",
+            "مناطق محظورة"
+          ]
         },
         "ja": {
           "title": "アクセス・ドアセキュリティ",
           "headline": "アクセス・ドアセキュリティ",
           "summary": "ドア、キャビネット、制限区域、窓の開閉監視。",
-          "category": "安全"
+          "category": "安全",
+          "bullets": [
+            "サーバールーム",
+            "研究室ドア",
+            "分電盤",
+            "制限区域"
+          ]
         }
       }
     },
@@ -5916,37 +6629,73 @@
           "title": "Bewegung, Neigung und Infrastruktur",
           "headline": "Bewegung, Neigung und Infrastruktur",
           "summary": "3-Achsen-Bewegung, Vibration und Lageänderung für Maschinen und Bauwerke.",
-          "category": "Infrastruktur"
+          "category": "Infrastruktur",
+          "bullets": [
+            "Gebäude",
+            "Tunnel",
+            "Bergbau",
+            "Industriemaschinen"
+          ]
         },
         "fr": {
           "title": "Mouvement, inclinaison et infrastructure",
           "headline": "Mouvement, inclinaison et infrastructure",
           "summary": "Mouvement 3 axes, vibration et déplacement pour machines et structures.",
-          "category": "Infrastructure"
+          "category": "Infrastructure",
+          "bullets": [
+            "Bâtiments",
+            "Tunnels",
+            "Mines",
+            "Machines industrielles"
+          ]
         },
         "es": {
           "title": "Movimiento, inclinación e infraestructura",
           "headline": "Movimiento, inclinación e infraestructura",
           "summary": "Movimiento de 3 ejes, vibración y desplazamiento para máquinas y estructuras.",
-          "category": "Infraestructura"
+          "category": "Infraestructura",
+          "bullets": [
+            "Edificios",
+            "Túneles",
+            "Minería",
+            "Maquinaria industrial"
+          ]
         },
         "it": {
           "title": "Movimento, inclinazione e infrastrutture",
           "headline": "Movimento, inclinazione e infrastrutture",
           "summary": "Movimento a 3 assi, vibrazione e spostamento per macchine e strutture.",
-          "category": "Infrastrutture"
+          "category": "Infrastruttura",
+          "bullets": [
+            "Edifici",
+            "Tunnel",
+            "Miniere",
+            "Macchinari industriali"
+          ]
         },
         "ar": {
           "title": "الحركة والميل والبنية التحتية",
           "headline": "الحركة والميل والبنية التحتية",
           "summary": "حركة ثلاثية المحاور واهتزاز وتغيّر موضع للآلات والمنشآت.",
-          "category": "البنية التحتية"
+          "category": "بنية تحتية",
+          "bullets": [
+            "مبانٍ",
+            "أنفاق",
+            "تعدين",
+            "آلات صناعية"
+          ]
         },
         "ja": {
           "title": "動き・傾斜・インフラ",
           "headline": "動き・傾斜・インフラ",
           "summary": "機械・構造物向けの 3 軸動き、振動、変位監視。",
-          "category": "インフラ"
+          "category": "インフラ",
+          "bullets": [
+            "建物",
+            "トンネル",
+            "鉱山",
+            "産業機械"
+          ]
         }
       }
     },
@@ -5991,37 +6740,73 @@
           "title": "Temperatur- und Feuchtemonitoring",
           "headline": "Temperatur- und Feuchtemonitoring",
           "summary": "Innen- und Außentemperatur sowie Feuchte für Betrieb, Lager und Anlagen.",
-          "category": "Umweltmonitoring"
+          "category": "Umweltmonitoring",
+          "bullets": [
+            "Fabriken",
+            "Lagerhallen",
+            "Gewächshäuser",
+            "Innen- und Außenbereiche"
+          ]
         },
         "fr": {
           "title": "Monitoring température et humidité",
           "headline": "Monitoring température et humidité",
           "summary": "Température et humidité intérieure/extérieure pour opérations, entrepôts et sites.",
-          "category": "Monitoring environnemental"
+          "category": "Monitoring environnemental",
+          "bullets": [
+            "Usines",
+            "Entrepôts",
+            "Serres",
+            "Sites intérieurs et extérieurs"
+          ]
         },
         "es": {
           "title": "Monitorización de temperatura y humedad",
           "headline": "Monitorización de temperatura y humedad",
           "summary": "Temperatura y humedad interior/exterior para operaciones, almacenes e instalaciones.",
-          "category": "Monitorización ambiental"
+          "category": "Monitorización ambiental",
+          "bullets": [
+            "Fábricas",
+            "Almacenes",
+            "Invernaderos",
+            "Instalaciones interiores y exteriores"
+          ]
         },
         "it": {
           "title": "Monitoraggio temperatura e umidità",
           "headline": "Monitoraggio temperatura e umidità",
           "summary": "Temperatura e umidità indoor/outdoor per operations, magazzini e impianti.",
-          "category": "Monitoraggio ambientale"
+          "category": "Monitoraggio ambientale",
+          "bullets": [
+            "Fabbriche",
+            "Magazzini",
+            "Serre",
+            "Siti interni ed esterni"
+          ]
         },
         "ar": {
           "title": "مراقبة الحرارة والرطوبة",
           "headline": "مراقبة الحرارة والرطوبة",
           "summary": "حرارة ورطوبة داخلية/خارجية للعمليات والمستودعات والمنشآت.",
-          "category": "المراقبة البيئية"
+          "category": "المراقبة البيئية",
+          "bullets": [
+            "مصانع",
+            "مستودعات",
+            "بيوت زجاجية",
+            "مواقع داخلية وخارجية"
+          ]
         },
         "ja": {
           "title": "温湿度モニタリング",
           "headline": "温湿度モニタリング",
           "summary": "運用、倉庫、施設向けの屋内外温度・湿度監視。",
-          "category": "環境モニタリング"
+          "category": "環境モニタリング",
+          "bullets": [
+            "工場",
+            "倉庫",
+            "温室",
+            "屋内・屋外サイト"
+          ]
         }
       }
     },
@@ -6066,37 +6851,73 @@
           "title": "Industrielle Konnektivität und Modbus",
           "headline": "Industrielle Konnektivität und Modbus",
           "summary": "Drahtlose Modbus-RTU-Brücke, die Industriegerätedaten über LoRaWAN transportiert.",
-          "category": "Industrial IoT"
+          "category": "Industrielles IoT",
+          "bullets": [
+            "SPS-Anwendungen",
+            "Fabriken",
+            "Energiemonitoring",
+            "Gas- und Wasserzähler"
+          ]
         },
         "fr": {
           "title": "Connectivité industrielle et Modbus",
           "headline": "Connectivité industrielle et Modbus",
           "summary": "Passerelle Modbus RTU sans fil qui transporte les données industrielles via LoRaWAN.",
-          "category": "IoT industriel"
+          "category": "IoT industriel",
+          "bullets": [
+            "Applications API/PLC",
+            "Usines",
+            "Suivi énergétique",
+            "Compteurs gaz et eau"
+          ]
         },
         "es": {
           "title": "Conectividad industrial y Modbus",
           "headline": "Conectividad industrial y Modbus",
           "summary": "Puente Modbus RTU inalámbrico que transporta datos industriales vía LoRaWAN.",
-          "category": "IoT industrial"
+          "category": "IoT industrial",
+          "bullets": [
+            "Aplicaciones PLC",
+            "Fábricas",
+            "Monitoreo energético",
+            "Medición de gas y agua"
+          ]
         },
         "it": {
           "title": "Connettività industriale e Modbus",
           "headline": "Connettività industriale e Modbus",
           "summary": "Bridge Modbus RTU wireless che trasporta dati industriali via LoRaWAN.",
-          "category": "IoT industriale"
+          "category": "IoT industriale",
+          "bullets": [
+            "Applicazioni PLC",
+            "Fabbriche",
+            "Monitoraggio energia",
+            "Contatori gas e acqua"
+          ]
         },
         "ar": {
           "title": "الاتصال الصناعي وModbus",
           "headline": "الاتصال الصناعي وModbus",
           "summary": "جسر Modbus RTU لاسلكي ينقل بيانات الأجهزة الصناعية عبر LoRaWAN.",
-          "category": "IoT صناعي"
+          "category": "IoT صناعي",
+          "bullets": [
+            "تطبيقات PLC",
+            "مصانع",
+            "مراقبة الطاقة",
+            "عدادات الغاز والماء"
+          ]
         },
         "ja": {
           "title": "産業接続と Modbus",
           "headline": "産業接続と Modbus",
           "summary": "産業機器データを LoRaWAN で送るワイヤレス Modbus RTU ブリッジ。",
-          "category": "産業 IoT"
+          "category": "産業 IoT",
+          "bullets": [
+            "PLC アプリ",
+            "工場",
+            "エネルギー監視",
+            "ガス・水道メーター"
+          ]
         }
       }
     },
@@ -6141,37 +6962,73 @@
           "title": "Smart-Agriculture-Monitoring",
           "headline": "Smart-Agriculture-Monitoring",
           "summary": "Monitoring von Bodenfeuchte, Bodentemperatur und Gewächshausbedingungen.",
-          "category": "Landwirtschaft"
+          "category": "Landwirtschaft",
+          "bullets": [
+            "Smart Farming",
+            "Gärten",
+            "Gewächshäuser",
+            "Höfe"
+          ]
         },
         "fr": {
           "title": "Monitoring smart agriculture",
           "headline": "Monitoring smart agriculture",
           "summary": "Suivi humidité du sol, température du sol et conditions de serre.",
-          "category": "Agriculture"
+          "category": "Agriculture",
+          "bullets": [
+            "Agriculture intelligente",
+            "Jardins",
+            "Serres",
+            "Exploitations"
+          ]
         },
         "es": {
           "title": "Monitorización de agricultura inteligente",
           "headline": "Monitorización de agricultura inteligente",
           "summary": "Seguimiento de humedad del suelo, temperatura del suelo y condiciones de invernadero.",
-          "category": "Agricultura"
+          "category": "Agricultura",
+          "bullets": [
+            "Agricultura inteligente",
+            "Jardines",
+            "Invernaderos",
+            "Granjas"
+          ]
         },
         "it": {
           "title": "Monitoraggio smart agriculture",
           "headline": "Monitoraggio smart agriculture",
           "summary": "Monitoraggio di umidità del suolo, temperatura del suolo e condizioni serra.",
-          "category": "Agricoltura"
+          "category": "Agricoltura",
+          "bullets": [
+            "Agricoltura smart",
+            "Giardini",
+            "Serre",
+            "Aziende agricole"
+          ]
         },
         "ar": {
           "title": "مراقبة الزراعة الذكية",
           "headline": "مراقبة الزراعة الذكية",
           "summary": "مراقبة رطوبة التربة وحرارتها وظروف البيوت المحمية.",
-          "category": "الزراعة"
+          "category": "زراعة",
+          "bullets": [
+            "زراعة ذكية",
+            "حدائق",
+            "بيوت زجاجية",
+            "مزارع"
+          ]
         },
         "ja": {
           "title": "スマート農業モニタリング",
           "headline": "スマート農業モニタリング",
           "summary": "土壌水分、地温、温室環境のモニタリング。",
-          "category": "農業"
+          "category": "農業",
+          "bullets": [
+            "スマート農業",
+            "庭園",
+            "温室",
+            "農場"
+          ]
         }
       }
     },
@@ -6216,37 +7073,73 @@
           "title": "Flüssigkeitsdruck-Monitoring",
           "headline": "Flüssigkeitsdruck-Monitoring",
           "summary": "Druckmonitoring für Rohrleitungen, Tanks und industrielle Flüssigkeiten in rauen Umgebungen.",
-          "category": "Wasser und Füllstand"
+          "category": "Wasser und Füllstand",
+          "bullets": [
+            "Rohrleitungsdruck",
+            "Wassertanks",
+            "Chemieanlagen",
+            "Hydrauliksysteme"
+          ]
         },
         "fr": {
           "title": "Monitoring pression liquide",
           "headline": "Monitoring pression liquide",
           "summary": "Suivi de pression pour pipelines, réservoirs et liquides industriels en environnements difficiles.",
-          "category": "Eau et niveau"
+          "category": "Eau et niveau",
+          "bullets": [
+            "Pression de pipeline",
+            "Réservoirs d'eau",
+            "Usines chimiques",
+            "Systèmes hydrauliques"
+          ]
         },
         "es": {
           "title": "Monitorización de presión de líquidos",
           "headline": "Monitorización de presión de líquidos",
           "summary": "Seguimiento de presión para tuberías, tanques y líquidos industriales en entornos exigentes.",
-          "category": "Agua y nivel"
+          "category": "Agua y nivel",
+          "bullets": [
+            "Presión de tuberías",
+            "Tanques de agua",
+            "Plantas químicas",
+            "Sistemas hidráulicos"
+          ]
         },
         "it": {
           "title": "Monitoraggio pressione liquidi",
           "headline": "Monitoraggio pressione liquidi",
           "summary": "Monitoraggio pressione per tubazioni, serbatoi e liquidi industriali in ambienti difficili.",
-          "category": "Acqua e livello"
+          "category": "Acqua e livello",
+          "bullets": [
+            "Pressione condotte",
+            "Serbatoi acqua",
+            "Impianti chimici",
+            "Sistemi idraulici"
+          ]
         },
         "ar": {
           "title": "مراقبة ضغط السوائل",
           "headline": "مراقبة ضغط السوائل",
           "summary": "مراقبة الضغط للأنابيب والخزانات والسوائل الصناعية في بيئات قاسية.",
-          "category": "المياه والمستوى"
+          "category": "المياه والمستوى",
+          "bullets": [
+            "ضغط الأنابيب",
+            "خزانات المياه",
+            "مصانع كيميائية",
+            "أنظمة هيدروليكية"
+          ]
         },
         "ja": {
           "title": "液体圧力モニタリング",
           "headline": "液体圧力モニタリング",
           "summary": "過酷な環境における配管、タンク、産業用液体の圧力監視。",
-          "category": "水・レベル"
+          "category": "水・レベル",
+          "bullets": [
+            "配管圧力",
+            "水タンク",
+            "化学プラント",
+            "油圧システム"
+          ]
         }
       }
     },
@@ -6291,37 +7184,73 @@
           "title": "Umwelt- und Wettermonitoring",
           "headline": "Umwelt- und Wettermonitoring",
           "summary": "Windgeschwindigkeit und Outdoor-Messwerte für entfernte Standorte.",
-          "category": "Umweltmonitoring"
+          "category": "Umweltmonitoring",
+          "bullets": [
+            "Wetterstationen",
+            "Flughäfen",
+            "Häfen",
+            "Landwirtschaft"
+          ]
         },
         "fr": {
           "title": "Monitoring environnemental et météo",
           "headline": "Monitoring environnemental et météo",
           "summary": "Vitesse du vent et mesures extérieures pour sites distants.",
-          "category": "Monitoring environnemental"
+          "category": "Monitoring environnemental",
+          "bullets": [
+            "Stations météo",
+            "Aéroports",
+            "Ports",
+            "Exploitations agricoles"
+          ]
         },
         "es": {
           "title": "Monitorización ambiental y meteorológica",
           "headline": "Monitorización ambiental y meteorológica",
           "summary": "Velocidad del viento y mediciones exteriores para ubicaciones remotas.",
-          "category": "Monitorización ambiental"
+          "category": "Monitorización ambiental",
+          "bullets": [
+            "Estaciones meteorológicas",
+            "Aeropuertos",
+            "Puertos",
+            "Granjas"
+          ]
         },
         "it": {
           "title": "Monitoraggio ambientale e meteo",
           "headline": "Monitoraggio ambientale e meteo",
           "summary": "Velocità del vento e misure outdoor per siti remoti.",
-          "category": "Monitoraggio ambientale"
+          "category": "Monitoraggio ambientale",
+          "bullets": [
+            "Stazioni meteo",
+            "Aeroporti",
+            "Porti",
+            "Aziende agricole"
+          ]
         },
         "ar": {
           "title": "مراقبة البيئة والطقس",
           "headline": "مراقبة البيئة والطقس",
           "summary": "سرعة الرياح وقياسات خارجية للمواقع البعيدة.",
-          "category": "المراقبة البيئية"
+          "category": "المراقبة البيئية",
+          "bullets": [
+            "محطات الطقس",
+            "مطارات",
+            "موانئ",
+            "مزارع"
+          ]
         },
         "ja": {
           "title": "環境・気象モニタリング",
           "headline": "環境・気象モニタリング",
           "summary": "遠隔拠点向けの風速および屋外環境測定。",
-          "category": "環境モニタリング"
+          "category": "環境モニタリング",
+          "bullets": [
+            "気象観測所",
+            "空港",
+            "港湾",
+            "農場"
+          ]
         }
       }
     }

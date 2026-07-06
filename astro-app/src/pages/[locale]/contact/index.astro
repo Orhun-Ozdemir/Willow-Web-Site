@@ -7,6 +7,7 @@ import { loadContent } from "@/lib/content";
 import { pageSeo, webPageNode, ORGANIZATION_SCHEMA, WEBSITE_SCHEMA, SITE_ORIGIN } from "@/lib/seo";
 import { localizedValue, locales, resolveLocale, type Locale } from "@/lib/cms";
 import { aiAnswerForPage, aiMetaForPage, appendSchemaNodes, fallbackFaqsForPage, faqItemsForPage, faqSchemaNode } from "@/lib/ai-search";
+import { officesForContact, telHref } from "@/lib/company-contact";
 
 export const prerender = false;
 
@@ -32,6 +33,12 @@ const pageContent = content.pageContent?.contact || {};
 const getVal = (key: string) => localizedValue(pageContent[key], locale);
 
 const companyFacts = content.companyFacts || {};
+const contactOffices = officesForContact(companyFacts, locale);
+const officeTitle = (officeId: string, country: string) => {
+  if (officeId === "office-tr") return getLabel("turkeyOffice");
+  if (officeId === "office-uk") return getLabel("ukOffice");
+  return country;
+};
 
 const labels = {
   turkeyOffice: { en: "Turkey Office", tr: "Türkiye Ofisi", de: "Büro Türkei", fr: "Bureau Turquie", es: "Oficina Turquía", it: "Ufficio Turchia", ar: "مكتب تركيا", ja: "トルコオフィス" },
@@ -71,26 +78,23 @@ const getLabel = (key: keyof typeof labels) => {
           <p class="section-lead">{getVal("heroLead")}</p>
           
           <div class="office-contact-grid">
-            <article class="office-contact-card">
-              <span>{getLabel("contactUs")}</span>
-              <h3>{getLabel("turkeyOffice")}</h3>
-              <a href={`tel:${companyFacts.turkeyPhone?.replace(/\s+/g, "")}`} data-company-fact="turkeyPhone">
-                {companyFacts.turkeyPhone}
-              </a>
-              <a href={`mailto:${companyFacts.email}`} data-company-fact="email">
-                {companyFacts.email}
-              </a>
-              <p data-company-fact="turkeyOfficeAddress">{companyFacts.turkeyOfficeAddress}</p>
-            </article>
-            
-            <article class="office-contact-card">
-              <span>{getLabel("contactUs")}</span>
-              <h3>{getLabel("ukOffice")}</h3>
-              <a href={`mailto:${companyFacts.email}`} data-company-fact="email">
-                {companyFacts.email}
-              </a>
-              <p data-company-fact="ukOfficeAddress">{companyFacts.ukOfficeAddress}</p>
-            </article>
+            {contactOffices.map((office) => (
+              <article class="office-contact-card">
+                <span>{getLabel("contactUs")}</span>
+                <h3>{officeTitle(office.id, office.country)}</h3>
+                {office.phone && (
+                  <a href={telHref(office.phone)} data-company-fact={office.id === "office-tr" ? "turkeyPhone" : office.id === "office-uk" ? "ukPhone" : undefined}>
+                    {office.phone}
+                  </a>
+                )}
+                {office.email && (
+                  <a href={`mailto:${office.email}`} data-company-fact="email">
+                    {office.email}
+                  </a>
+                )}
+                {office.address && <p>{office.address}</p>}
+              </article>
+            ))}
           </div>
         </div>
         

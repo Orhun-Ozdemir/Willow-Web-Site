@@ -23,6 +23,17 @@ const navLabels = {
   openMenu: { en: "Open menu", tr: "Menüyü aç", de: "Menü öffnen", fr: "Ouvrir le menu", es: "Abrir menú", it: "Apri menu", ar: "افتح القائمة", ja: "メニューを開く" },
   mainNavigation: { en: "Main navigation", tr: "Ana gezinme", de: "Hauptnavigation", fr: "Navigation principale", es: "Navegación principal", it: "Navigazione principale", ar: "التنقل الرئيسي", ja: "メインナビゲーション" },
 };
+const brandTagline: Record<string, string> = {
+  en: "Smart Embedded Connectivity",
+  tr: "Akıllı Gömülü Bağlantı",
+  de: "Intelligente Embedded-Konnektivität",
+  fr: "Connectivité embarquée intelligente",
+  es: "Conectividad embebida inteligente",
+  it: "Connettività embedded intelligente",
+  ar: "اتصال مدمج ذكي",
+  ja: "スマート組み込み接続",
+};
+
 const ctaLabels: Record<string, string> = {
   en: "Start Project",
   tr: "Projeyi Başlat",
@@ -59,7 +70,7 @@ function isActive(href: string) {
       </span>
       <span>
         <strong>WILLOWSOFT</strong>
-        <span>Smart Embedded Connectivity</span>
+        <span>{brandTagline[locale] || brandTagline.en}</span>
       </span>
     </a>
 

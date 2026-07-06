@@ -4164,6 +4164,144 @@ body[data-page="products"] .product-card:hover img {
   background: #eef2f7;
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.65);
   overscroll-behavior: contain;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 8px 0 12px;
+}
+
+.ws-pc-mirror .section-inner,
+.ws-pc-mirror .hero-inner {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding-left: 32px;
+  padding-right: 32px;
+}
+
+.ws-pc-mirror .signal-canvas,
+.ws-pc-mirror canvas.signal-canvas {
+  display: none !important;
+}
+
+.ws-pc-mirror * {
+  animation: none !important;
+  transition: none !important;
+}
+
+.ws-pc-mirror .mirror-hero-media {
+  overflow: hidden;
+}
+
+.ws-pc-mirror .mirror-hero-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.ws-pc-mirror .solutions-hero-inner {
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+.ws-pc-mirror .solutions-hero-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.ws-pc-mirror .solutions-hero-metrics article {
+  padding: 10px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.ws-pc-mirror .solutions-showcase-frame {
+  display: grid;
+  grid-template-columns: 0.9fr 1.4fr;
+  gap: 16px;
+  align-items: start;
+}
+
+.ws-pc-mirror .mirror-solution-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.ws-pc-mirror .mirror-solution-card {
+  border: 1px solid var(--line, #e5e7eb);
+  border-radius: 14px;
+  overflow: hidden;
+  background: #fff;
+}
+
+.ws-pc-mirror .mirror-solution-figure {
+  margin: 0;
+  height: 88px;
+  background: #f1f5f9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.ws-pc-mirror .mirror-solution-figure img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ws-pc-mirror .mirror-solution-ph {
+  color: #94a3b8;
+  font-size: 0.7rem;
+  font-weight: 700;
+}
+
+.ws-pc-mirror .solution-case-body {
+  padding: 10px 12px 12px;
+}
+
+.ws-pc-mirror .solution-case-body h3 {
+  margin: 4px 0;
+  font-size: 0.82rem;
+}
+
+.ws-pc-mirror .solution-case-body p {
+  margin: 0;
+  font-size: 0.68rem;
+  line-height: 1.45;
+  color: var(--muted);
+}
+
+.ws-pc-mirror .solution-use-cases {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 8px;
+}
+
+.ws-pc-mirror .solution-use-cases span {
+  font-size: 0.58rem;
+  padding: 2px 6px;
+  border-radius: 999px;
+  background: rgba(19, 33, 117, 0.08);
+  color: #132175;
+  font-weight: 700;
+}
+
+.ws-pc-mirror .solutions-final-cta {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 16px;
+  align-items: center;
+  padding: 24px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #0d1b3e, #132175);
+  color: #fff;
 }
 
 .ws-pc-mirror-shell {
@@ -12384,6 +12522,299 @@ body[data-page="company"] .company-cta-inner {
 
 @media (max-width: 600px) {
   .ws-prod-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── Admin Solutions panel ─────────────────────────────────────────────────── */
+.ws-sol-tabs {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 10px;
+}
+
+.ws-sol-tab {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px 14px;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  background: #fff;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.ws-sol-tab:hover {
+  border-color: rgba(19, 33, 117, 0.25);
+}
+
+.ws-sol-tab.is-active {
+  border-color: #132175;
+  box-shadow: 0 8px 24px rgba(19, 33, 117, 0.1);
+  background: linear-gradient(180deg, rgba(19, 33, 117, 0.05), #fff);
+}
+
+.ws-sol-tab-icon {
+  font-size: 1.2rem;
+  line-height: 1;
+}
+
+.ws-sol-tab-copy {
+  display: grid;
+  gap: 2px;
+}
+
+.ws-sol-tab-copy strong {
+  color: #111827;
+  font-size: 13px;
+}
+
+.ws-sol-tab-copy small {
+  color: #6b7280;
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+.ws-sol-page {
+  display: grid;
+  gap: 16px;
+}
+
+.ws-sol-list-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.ws-sol-list-header h3 {
+  margin: 0 0 4px;
+  font-size: 20px;
+  font-weight: 800;
+  color: #111827;
+}
+
+.ws-sol-list-header p {
+  margin: 0;
+  color: #6b7280;
+  font-size: 13px;
+}
+
+.ws-sol-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.ws-sol-card {
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 4px 18px rgba(15, 23, 42, 0.05);
+}
+
+.ws-sol-card-thumb {
+  position: relative;
+  height: 150px;
+  background: #f8fafc;
+  border-bottom: 1px solid #f1f5f9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.ws-sol-card-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ws-sol-card-noimg {
+  color: #cbd5e1;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.ws-sol-card-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  border-radius: 999px;
+  padding: 4px 10px;
+  background: #ecfdf5;
+  color: #047857;
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.ws-sol-card-body {
+  flex: 1;
+  padding: 16px;
+  display: grid;
+  gap: 6px;
+}
+
+.ws-sol-card-body h4 {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 800;
+  color: #111827;
+}
+
+.ws-sol-card-body p {
+  margin: 0;
+  color: #6b7280;
+  font-size: 13px;
+  line-height: 1.55;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+
+.ws-sol-card-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-top: 1px solid #f1f5f9;
+}
+
+.ws-sol-cat-pill {
+  border-radius: 999px;
+  background: rgba(19, 33, 117, 0.07);
+  color: #132175;
+  padding: 5px 10px;
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.ws-sol-empty {
+  padding: 48px 32px;
+  text-align: center;
+  color: #9ca3af;
+  font-size: 14px;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+}
+
+.ws-sol-edit-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(260px, 0.8fr);
+  gap: 20px;
+  align-items: start;
+}
+
+.ws-sol-live-preview {
+  position: sticky;
+  top: 12px;
+  display: grid;
+  gap: 12px;
+}
+
+.ws-sol-live-preview-label {
+  margin: 0;
+  color: #6b7280;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.ws-sol-live-preview .mirror-solution-card {
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+}
+
+.ws-sol-live-preview .mirror-solution-figure {
+  height: 180px;
+  margin: 0;
+  background: #f1f5f9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ws-sol-live-preview .mirror-solution-figure img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ws-sol-live-link {
+  color: #132175;
+  font-size: 12px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.ws-sol-hero-preview {
+  min-height: 160px;
+  border: 1px dashed #d1d5db;
+  border-radius: 14px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f8fafc;
+  color: #94a3b8;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.ws-sol-hero-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ws-sol-mini-row {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 14px;
+  align-items: center;
+  padding: 14px 16px;
+}
+
+.ws-sol-mini-num {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  background: rgba(19, 33, 117, 0.08);
+  color: #132175;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.ws-sol-mini-copy {
+  min-width: 0;
+}
+
+@media (max-width: 1100px) {
+  .ws-sol-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .ws-sol-edit-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 700px) {
+  .ws-sol-grid {
     grid-template-columns: 1fr;
   }
 }

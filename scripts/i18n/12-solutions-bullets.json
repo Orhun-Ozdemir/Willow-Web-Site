@@ -1,0 +1,199 @@
+{
+  "solutions": {
+    "industrial-iot-monitoring": {
+      "title": {
+        "de": "Industrielles IoT-Monitoring",
+        "fr": "Supervision IoT industrielle",
+        "es": "Monitorización IoT industrial",
+        "it": "Monitoraggio IoT industriale",
+        "ar": "مراقبة IoT الصناعية",
+        "ja": "産業 IoT モニタリング"
+      },
+      "headline": {
+        "de": "Industrielles IoT-Monitoring",
+        "fr": "Supervision IoT industrielle",
+        "es": "Monitorización IoT industrial",
+        "it": "Monitoraggio IoT industriale",
+        "ar": "مراقبة IoT الصناعية",
+        "ja": "産業 IoT モニタリング"
+      },
+      "category": {
+        "de": "Industrielles IoT",
+        "fr": "IoT industriel",
+        "es": "IoT industrial",
+        "it": "IoT industriale",
+        "ar": "IoT صناعي",
+        "ja": "産業 IoT"
+      },
+      "bullets": {
+        "de": ["Industrieanlagen", "Fern-Telemetrie", "Cloud-Datenvisualisierung", "Energiesparende Feldgeräte"],
+        "fr": ["Sites industriels", "Télémétrie à distance", "Visualisation cloud", "Capteurs basse consommation"],
+        "es": ["Instalaciones industriales", "Telemetría remota", "Visualización en la nube", "Dispositivos de campo de bajo consumo"],
+        "it": ["Impianti industriali", "Telemetria remota", "Visualizzazione cloud", "Dispositivi sul campo a basso consumo"],
+        "ar": ["منشآت صناعية", "قياس عن بُعد", "عرض بيانات سحابية", "أجهزة ميدانية منخفضة الطاقة"],
+        "ja": ["産業施設", "遠隔テレメトリ", "クラウド可視化", "低消費電力フィールドデバイス"]
+      }
+    },
+    "water-tank-flood-monitoring": {
+      "bullets": {
+        "de": ["Schachtüberflutung", "Tankfüllstand", "Regenwasserentwässerung", "Industrieller Flüssigkeitsstand"],
+        "fr": ["Inondation de regards", "Niveau de réservoir", "Drainage pluvial", "Niveau de liquide industriel"],
+        "es": ["Inundación de arquetas", "Nivel de tanque", "Drenaje pluvial", "Nivel de líquido industrial"],
+        "it": ["Allagamento pozzetti", "Livello serbatoio", "Drenaggio piovano", "Livello liquido industriale"],
+        "ar": ["فيضان المناهل", "مستوى الخزان", "صرف مياه الأمطار", "مستوى السوائل الصناعية"],
+        "ja": ["マンホール浸水", "タンク水位", "雨水排水", "産業用液面"]
+      }
+    },
+    "smart-building-air-quality": {
+      "category": {
+        "de": "Smart Buildings",
+        "fr": "Bâtiments intelligents",
+        "es": "Edificios inteligentes",
+        "it": "Edifici intelligenti",
+        "ar": "مبانٍ ذكية",
+        "ja": "スマートビル"
+      },
+      "bullets": {
+        "de": ["Büros", "Schulen", "Krankenhäuser", "Lagerhallen"],
+        "fr": ["Bureaux", "Écoles", "Hôpitaux", "Entrepôts"],
+        "es": ["Oficinas", "Escuelas", "Hospitales", "Almacenes"],
+        "it": ["Uffici", "Scuole", "Ospedali", "Magazzini"],
+        "ar": ["مكاتب", "مدارس", "مستشفيات", "مستودعات"],
+        "ja": ["オフィス", "学校", "病院", "倉庫"]
+      }
+    },
+    "asset-fleet-tracking": {
+      "bullets": {
+        "de": ["Fahrzeugortung", "Asset-Tracking", "Flottenüberwachung", "Lieferketten-Transparenz"],
+        "fr": ["Suivi véhicules", "Suivi d'actifs", "Monitoring de flotte", "Visibilité supply chain"],
+        "es": ["Seguimiento de vehículos", "Seguimiento de activos", "Monitoreo de flota", "Visibilidad de cadena de suministro"],
+        "it": ["Tracciamento veicoli", "Tracciamento asset", "Monitoraggio flotta", "Visibilità supply chain"],
+        "ar": ["تتبع المركبات", "تتبع الأصول", "مراقبة الأسطول", "رؤية سلسلة التوريد"],
+        "ja": ["車両追跡", "資産追跡", "フリート監視", "サプライチェーン可視化"]
+      }
+    },
+    "safety-emergency-alerts": {
+      "bullets": {
+        "de": ["Notfallalarme", "Gesundheitsintervention", "Sicherheitsszenarien", "Industrieanlagen"],
+        "fr": ["Alertes d'urgence", "Intervention santé", "Scénarios de sécurité", "Sites industriels"],
+        "es": ["Alertas de emergencia", "Intervención sanitaria", "Escenarios de seguridad", "Instalaciones industriales"],
+        "it": ["Allarmi di emergenza", "Intervento sanitario", "Scenari di sicurezza", "Impianti industriali"],
+        "ar": ["تنبيهات طوارئ", "تدخل صحي", "سيناريوهات أمنية", "منشآت صناعية"],
+        "ja": ["緊急アラート", "ヘルス対応", "セキュリティシナリオ", "産業施設"]
+      }
+    },
+    "access-door-security": {
+      "bullets": {
+        "de": ["Serverräume", "Labortüren", "Schaltschränke", "Gesperrte Bereiche"],
+        "fr": ["Salles serveurs", "Portes de laboratoire", "Armoires électriques", "Zones restreintes"],
+        "es": ["Salas de servidores", "Puertas de laboratorio", "Cuadros eléctricos", "Áreas restringidas"],
+        "it": ["Sale server", "Porte laboratorio", "Quadri elettrici", "Aree riservate"],
+        "ar": ["غرف الخوادم", "أبواب المختبرات", "لوحات كهربائية", "مناطق محظورة"],
+        "ja": ["サーバールーム", "研究室ドア", "分電盤", "制限区域"]
+      }
+    },
+    "motion-tilt-infrastructure": {
+      "category": {
+        "de": "Infrastruktur",
+        "fr": "Infrastructure",
+        "es": "Infraestructura",
+        "it": "Infrastruttura",
+        "ar": "بنية تحتية",
+        "ja": "インフラ"
+      },
+      "bullets": {
+        "de": ["Gebäude", "Tunnel", "Bergbau", "Industriemaschinen"],
+        "fr": ["Bâtiments", "Tunnels", "Mines", "Machines industrielles"],
+        "es": ["Edificios", "Túneles", "Minería", "Maquinaria industrial"],
+        "it": ["Edifici", "Tunnel", "Miniere", "Macchinari industriali"],
+        "ar": ["مبانٍ", "أنفاق", "تعدين", "آلات صناعية"],
+        "ja": ["建物", "トンネル", "鉱山", "産業機械"]
+      }
+    },
+    "temperature-humidity-monitoring": {
+      "bullets": {
+        "de": ["Fabriken", "Lagerhallen", "Gewächshäuser", "Innen- und Außenbereiche"],
+        "fr": ["Usines", "Entrepôts", "Serres", "Sites intérieurs et extérieurs"],
+        "es": ["Fábricas", "Almacenes", "Invernaderos", "Instalaciones interiores y exteriores"],
+        "it": ["Fabbriche", "Magazzini", "Serre", "Siti interni ed esterni"],
+        "ar": ["مصانع", "مستودعات", "بيوت زجاجية", "مواقع داخلية وخارجية"],
+        "ja": ["工場", "倉庫", "温室", "屋内・屋外サイト"]
+      }
+    },
+    "industrial-modbus-integration": {
+      "category": {
+        "de": "Industrielles IoT",
+        "fr": "IoT industriel",
+        "es": "IoT industrial",
+        "it": "IoT industriale",
+        "ar": "IoT صناعي",
+        "ja": "産業 IoT"
+      },
+      "bullets": {
+        "de": ["SPS-Anwendungen", "Fabriken", "Energiemonitoring", "Gas- und Wasserzähler"],
+        "fr": ["Applications API/PLC", "Usines", "Suivi énergétique", "Compteurs gaz et eau"],
+        "es": ["Aplicaciones PLC", "Fábricas", "Monitoreo energético", "Medición de gas y agua"],
+        "it": ["Applicazioni PLC", "Fabbriche", "Monitoraggio energia", "Contatori gas e acqua"],
+        "ar": ["تطبيقات PLC", "مصانع", "مراقبة الطاقة", "عدادات الغاز والماء"],
+        "ja": ["PLC アプリ", "工場", "エネルギー監視", "ガス・水道メーター"]
+      }
+    },
+    "smart-agriculture-monitoring": {
+      "category": {
+        "de": "Landwirtschaft",
+        "fr": "Agriculture",
+        "es": "Agricultura",
+        "it": "Agricoltura",
+        "ar": "زراعة",
+        "ja": "農業"
+      },
+      "bullets": {
+        "de": ["Smart Farming", "Gärten", "Gewächshäuser", "Höfe"],
+        "fr": ["Agriculture intelligente", "Jardins", "Serres", "Exploitations"],
+        "es": ["Agricultura inteligente", "Jardines", "Invernaderos", "Granjas"],
+        "it": ["Agricoltura smart", "Giardini", "Serre", "Aziende agricole"],
+        "ar": ["زراعة ذكية", "حدائق", "بيوت زجاجية", "مزارع"],
+        "ja": ["スマート農業", "庭園", "温室", "農場"]
+      }
+    },
+    "liquid-pressure-monitoring": {
+      "bullets": {
+        "de": ["Rohrleitungsdruck", "Wassertanks", "Chemieanlagen", "Hydrauliksysteme"],
+        "fr": ["Pression de pipeline", "Réservoirs d'eau", "Usines chimiques", "Systèmes hydrauliques"],
+        "es": ["Presión de tuberías", "Tanques de agua", "Plantas químicas", "Sistemas hidráulicos"],
+        "it": ["Pressione condotte", "Serbatoi acqua", "Impianti chimici", "Sistemi idraulici"],
+        "ar": ["ضغط الأنابيب", "خزانات المياه", "مصانع كيميائية", "أنظمة هيدروليكية"],
+        "ja": ["配管圧力", "水タンク", "化学プラント", "油圧システム"]
+      }
+    },
+    "environmental-weather-monitoring": {
+      "bullets": {
+        "de": ["Wetterstationen", "Flughäfen", "Häfen", "Landwirtschaft"],
+        "fr": ["Stations météo", "Aéroports", "Ports", "Exploitations agricoles"],
+        "es": ["Estaciones meteorológicas", "Aeropuertos", "Puertos", "Granjas"],
+        "it": ["Stazioni meteo", "Aeroporti", "Porti", "Aziende agricole"],
+        "ar": ["محطات الطقس", "مطارات", "موانئ", "مزارع"],
+        "ja": ["気象観測所", "空港", "港湾", "農場"]
+      }
+    }
+  },
+  "pageContent": {
+    "products": {
+      "catalogLead": {
+        "en": "A clear catalog to compare modules, environmental sensors, tracking and safety devices, and industrial interfaces — in the same visual language as the rest of the site.",
+        "tr": "Modüller, çevresel sensörler, takip ve güvenlik cihazları ile endüstriyel arayüzleri karşılaştırmak için net bir katalog — sitenin geri kalanıyla aynı görsel dilde.",
+        "de": "Ein übersichtlicher Katalog zum Vergleich von Modulen, Umweltsensoren, Tracking- und Sicherheitsgeräten sowie Industrieschnittstellen — im gleichen visuellen Stil wie der Rest der Website.",
+        "fr": "Un catalogue clair pour comparer modules, capteurs environnementaux, dispositifs de suivi et de sécurité, et interfaces industrielles — dans la même identité visuelle que le reste du site.",
+        "es": "Un catálogo claro para comparar módulos, sensores ambientales, dispositivos de seguimiento y seguridad, e interfaces industriales — con el mismo lenguaje visual del resto del sitio.",
+        "it": "Un catalogo chiaro per confrontare moduli, sensori ambientali, dispositivi di tracciamento e sicurezza, e interfacce industriali — nello stesso linguaggio visivo del resto del sito.",
+        "ar": "كتالوج واضح لمقارنة الوحدات والمستشعرات البيئية وأجهزة التتبع والأمان والواجهات الصناعية — بنفس الهوية البصرية لبقية الموقع.",
+        "ja": "モジュール、環境センサー、追跡・安全デバイス、産業用インターフェースを比較できる明快なカタログ — サイト全体と統一されたビジュアルで。"
+      }
+    },
+    "contact": {
+      "heroEyebrow": {
+        "fr": "Nous contacter"
+      }
+    }
+  }
+}

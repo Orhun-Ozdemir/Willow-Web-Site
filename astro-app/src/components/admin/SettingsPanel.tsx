@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { locales, type Locale } from "@/lib/cms";
 import { useAdmin } from "./AdminContext";
 import LocaleTabs from "./LocaleTabs";
-import { SOCIAL_SVGS } from "@/lib/social-icons";
+import { syncOfficePhonesInFacts } from "@/lib/company-contact";
 
 // ── Known companyFacts fields with human-readable metadata ──────────────────
 const KNOWN_FACTS: { key: string; label: string; hint: string; type?: "text" | "textarea" }[] = [
@@ -12,7 +12,8 @@ const KNOWN_FACTS: { key: string; label: string; hint: string; type?: "text" | "
   { key: "happyClients",     label: "Memnun Müşteri Sayısı",  hint: "Ana sayfada istatistik olarak görünür. Örn: 200+" },
   { key: "officesWorldwide", label: "Dünya Geneli Ofis Sayısı", hint: "Ana sayfada istatistik olarak görünür. Örn: 5" },
   { key: "email",            label: "E-posta Adresi",         hint: "İletişim sayfasında ve proje başlatma formunda görünür." },
-  { key: "turkeyPhone",      label: "Türkiye Telefon",        hint: "İletişim sayfasında tıklanabilir telefon numarası olarak görünür. Örn: +90 212 000 00 00" },
+  { key: "turkeyPhone",      label: "Türkiye Telefon",        hint: "İletişim ve şirket sayfalarında TR ofis telefonu. Örn: +90 850 30 24766" },
+  { key: "ukPhone",          label: "İngiltere Telefon",      hint: "İletişim ve şirket sayfalarında UK ofis telefonu. Örn: +44 20 3996 6812" },
   { key: "turkeyOfficeAddress", label: "Türkiye Ofis Adresi", hint: "İletişim sayfasında Türkiye ofis adresi olarak görünür.", type: "textarea" },
   { key: "ukOfficeAddress",  label: "İngiltere Ofis Adresi",  hint: "İletişim sayfasında UK ofis adresi olarak görünür.", type: "textarea" },
 ];
@@ -453,7 +454,10 @@ export default function SettingsPanel() {
   const unknownFactKeys = Object.keys(facts).filter((k) => !knownKeys.includes(k) && k !== "localized").sort();
 
   const updateFact = (key: string, value: string) => {
-    setContent((c: any) => ({ ...c, companyFacts: { ...c.companyFacts, [key]: value } }));
+    setContent((c: any) => {
+      const nextFacts = syncOfficePhonesInFacts({ ...(c.companyFacts || {}), [key]: value });
+      return { ...c, companyFacts: nextFacts };
+    });
   };
 
   const updateUIString = (key: string, value: string) => {
@@ -509,7 +513,7 @@ export default function SettingsPanel() {
       {subTab === "facts" && (
         <div className="space-y-4">
           <div className="bg-blue-50 border border-blue-100 rounded-xl p-4 text-sm text-blue-700">
-            Bu alandaki bilgiler sitenin <strong>ana sayfa, iletişim ve ürünler</strong> sayfalarında otomatik olarak kullanılır. Değiştirip kaydedin, site güncellensin.
+            Bu alandaki bilgiler sitenin <strong>ana sayfa, iletişim, şirket ve ürünler</strong> sayfalarında otomatik olarak kullanılır. Telefon numaralarını buradan veya Hakkımızda → Ofislerimiz sekmesinden güncelleyebilirsiniz.
           </div>
 
           <div className="bg-white border border-gray-200 rounded-xl p-5 space-y-5">

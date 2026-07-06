@@ -355,7 +355,9 @@ export default function HomePageMirror({
                 <div>
                   {v("ctaLead") && <p className="section-lead">{v("ctaLead")}</p>}
                   <div className="cta-choice-grid">
-                    <span>Hardware</span><span>Backend</span><span>Mobile</span>
+                    <span>{v("ctaChoice_0") || "donanım+gömülü yazılım"}</span>
+                    <span>{v("ctaChoice_1") || "bulut+veri tabanı"}</span>
+                    <span>{v("ctaChoice_2") || "web, mobil, Simülasyon"}</span>
                   </div>
                   <p><span className="btn btn-primary">İletişim</span></p>
                 </div>

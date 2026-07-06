@@ -11,19 +11,43 @@
       },
       "ctaTitle": {
         "de": "Bereit, ein <em class=\"hw-serif\">IoT-Produkt</em> oder eine <strong class=\"hw-display\">Industrieplattform</strong> zu entwickeln?",
-        "fr": "Prêt à créer un <em class=\"hw-serif\">produit IoT</em> ou une <strong class=\"hw-display\">plateforme industrielle</strong> ?",
-        "es": "¿Listo para crear un <em class=\"hw-serif\">producto IoT</em> o una <strong class=\"hw-display\">plataforma industrial</strong>?",
-        "it": "Pronto a creare un <em class=\"hw-serif\">prodotto IoT</em> o una <strong class=\"hw-display\">piattaforma industriale</strong>?",
-        "ar": "هل أنت مستعد لبناء <em class=\"hw-serif\">منتج IoT</em> أو <strong class=\"hw-display\">منصة صناعية</strong>؟",
-        "ja": "<em class=\"hw-serif\">IoT 製品</em>または<strong class=\"hw-display\">産業用プラットフォーム</strong>を構築する準備はできていますか？"
+        "fr": "Prêt à développer un <em class=\"hw-serif\">produit IoT</em> ou une <strong class=\"hw-display\">plateforme industrielle</strong> ?",
+        "es": "¿Listo para desarrollar un <em class=\"hw-serif\">producto IoT</em> o una <strong class=\"hw-display\">plataforma industrial</strong>?",
+        "it": "Pronto a sviluppare un <em class=\"hw-serif\">prodotto IoT</em> o una <strong class=\"hw-display\">piattaforma industriale</strong>?",
+        "ar": "هل أنت مستعد لتطوير <em class=\"hw-serif\">منتج IoT</em> أو <strong class=\"hw-display\">منصة صناعية</strong>؟",
+        "ja": "<em class=\"hw-serif\">IoT 製品</em>または<strong class=\"hw-display\">産業用プラットフォーム</strong>を開発する準備はできていますか？"
       },
       "ctaLead": {
-        "de": "Sagen Sie uns, ob Sie Hardware, Firmware, Backend, PostgreSQL, eine mobile App, ein Web-Dashboard, eine Website, eine VR-Simulation oder eine komplette Systemarchitektur benötigen.",
-        "fr": "Dites-nous si vous avez besoin de matériel, firmware, backend, PostgreSQL, application mobile, dashboard web, site web, simulation VR ou architecture système complète.",
-        "es": "Cuéntenos si necesita hardware, firmware, backend, PostgreSQL, app móvil, dashboard web, sitio web, simulación VR o una arquitectura de sistema completa.",
-        "it": "Dicci se hai bisogno di hardware, firmware, backend, PostgreSQL, app mobile, dashboard web, sito web, simulazione VR o architettura di sistema completa.",
-        "ar": "أخبرنا إن كنت بحاجة إلى عتاد، أو firmware، أو backend، أو PostgreSQL، أو تطبيق جوال، أو dashboard ويب، أو موقع إلكتروني، أو محاكاة VR، أو بنية نظام متكاملة.",
-        "ja": "ハードウェア、ファームウェア、バックエンド、PostgreSQL、モバイルアプリ、Web ダッシュボード、Web サイト、VR シミュレーション、またはシステム全体の設計が必要かをお聞かせください。"
+        "de": "Vereinen Sie alle Engineering- und Softwareprozesse unter einem Dach. Teilen Sie Ihre Anforderungen mit – wir setzen Ihr Projekt mit der richtigen Architektur um.",
+        "fr": "Regroupez tous vos processus d’ingénierie et logiciels sous un même toit. Partagez vos besoins et donnons vie à votre projet avec l’architecture la plus adaptée.",
+        "es": "Reúna todos los procesos de ingeniería y software bajo un mismo techo. Comparta sus necesidades y pongamos su proyecto en marcha con la arquitectura adecuada.",
+        "it": "Raggruppa tutti i processi di ingegneria e software sotto un unico tetto. Condividi le tue esigenze e daremo vita al progetto con l'architettura più adatta.",
+        "ar": "اجمع كل عمليات الهندسة والبرمجيات تحت سقف واحد. شاركنا احتياجاتك، ونُحيي مشروعك بالبنية المعمارية الأنسب.",
+        "ja": "エンジニアリングとソフトウェアのすべてのプロセスを一つのチームに。ご要望をお聞かせください。最適なアーキテクチャでプロジェクトを実現します。"
+      },
+      "ctaChoice_0": {
+        "de": "Hardware + eingebettete Software",
+        "fr": "Matériel + logiciel embarqué",
+        "es": "Hardware + software embebido",
+        "it": "Hardware + software embedded",
+        "ar": "عتاد + برمجيات مدمجة",
+        "ja": "ハードウェア＋組み込みソフトウェア"
+      },
+      "ctaChoice_1": {
+        "de": "Cloud + Datenbank",
+        "fr": "Cloud + base de données",
+        "es": "Nube + base de datos",
+        "it": "Cloud + database",
+        "ar": "سحابة + قاعدة بيانات",
+        "ja": "クラウド＋データベース"
+      },
+      "ctaChoice_2": {
+        "de": "Web, Mobile, Simulation",
+        "fr": "Web, mobile, simulation",
+        "es": "Web, móvil, simulación",
+        "it": "Web, mobile, simulazione",
+        "ar": "ويب، جوال، محاكاة",
+        "ja": "Web、モバイル、シミュレーション"
       }
     },
     "services": {

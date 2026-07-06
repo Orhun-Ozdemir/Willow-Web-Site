@@ -6,6 +6,7 @@ import { localizedValue, localizeItem, locales, resolveLocale, type Locale } fro
 import { buildAlternates, DEFAULT_OG_IMAGE, ORGANIZATION_SCHEMA, WEBSITE_SCHEMA, SITE_ORIGIN } from "@/lib/seo";
 import { aiMetaForPage, appendSchemaNodes, faqSchemaNode, stripHtml, type AiFaqItem } from "@/lib/ai-search";
 import { getProductExtras } from "@/lib/product-extras";
+import { glossaryLinksForProduct, glossaryLinkLabels } from "@/lib/glossary-links";
 import { applicationIconForText, buildSpecificationGroups, canonicalizeProduct, iconKeyForText, LOCALE_NATIVE_NAMES, normalizeAssetPath, normalizeProductIconItems, normalizeProductSlug, normalizeStringList, productDocumentTypeLabel, productSlugCandidates, PRODUCT_ICON_SVG } from "@/lib/product-model";
 
 export const prerender = false;
@@ -724,7 +725,9 @@ const t = {
   keyFeatures: { en: "Key features", tr: "Öne çıkan özellikler", de: "Wichtige Eigenschaften", fr: "Caractéristiques principales", es: "Características clave", it: "Caratteristiche chiave", ar: "الميزات الرئيسية", ja: "主な特長" },
   capabilities: { en: "Capabilities", tr: "Yetenekler", de: "Fähigkeiten", fr: "Capacités", es: "Capacidades", it: "Funzionalità", ar: "القدرات", ja: "機能" },
   applications: { en: "Applications", tr: "Uygulama Alanları", de: "Anwendungen", fr: "Applications", es: "Aplicaciones", it: "Applicazioni", ar: "التطبيقات", ja: "用途" },
-  faqSubtitle: { en: "Can't find your answer? Our engineers reply within one business day.", tr: "Aradığınız cevabı bulamadınız mı? Mühendislerimiz bir iş günü içinde yanıt verir.", de: "Keine Antwort gefunden? Unsere Ingenieure antworten innerhalb eines Werktages.", fr: "Vous ne trouvez pas votre réponse ? Nos ingénieurs répondent sous un jour ouvrable.", es: "¿No encuentra la respuesta? Nuestros ingenieros responden en un día hábil.", it: "Non trovi la risposta? I nostri ingegneri rispondono entro un giorno lavorativo.", ar: "لم تجد إجابتك؟ يجيب مهندسونا خلال يوم عمل واحد.", ja: "ご不明な点はございますか？ 技術スタッフ bir iş günü içinde yanıt verir." },
+  faqSubtitle: { en: "Can't find your answer? Our engineers reply within one business day.", tr: "Aradığınız cevabı bulamadınız mı? Mühendislerimiz bir iş günü içinde yanıt verir.", de: "Keine Antwort gefunden? Unsere Ingenieure antworten innerhalb eines Werktages.", fr: "Vous ne trouvez pas votre réponse ? Nos ingénieurs répondent sous un jour ouvrable.", es: "¿No encuentra la respuesta? Nuestros ingenieros responden en un día hábil.", it: "Non trovi la risposta? I nostri ingegneri rispondono entro un giorno lavorativo.", ar: "لم تجد إجابتك؟ يجيب مهندسونا خلال يوم عمل واحد.", ja: "ご不明な点はございますか？技術チームが1営業日以内にご返信します。" },
+  faqKicker: { en: "FAQ", tr: "SSS", de: "FAQ", fr: "FAQ", es: "FAQ", it: "FAQ", ar: "الأسئلة الشائعة", ja: "FAQ" },
+  faqTitle: { en: "Frequently asked questions", tr: "Sıkça sorulan sorular", de: "Häufig gestellte Fragen", fr: "Questions fréquentes", es: "Preguntas frecuentes", it: "Domande frequenti", ar: "الأسئلة الشائعة", ja: "よくある質問" },
   askQuestion: { en: "Ask a question", tr: "Soru sorun", de: "Frage stellen", fr: "Poser une question", es: "Hacer una pregunta", it: "Fai una domanda", ar: "طرح سؤال", ja: "質問する" },
   inTheField: { en: "In the field", tr: "Sahada", de: "Im Feldeinsatz", fr: "Sur le terrain", es: "En el campo", it: "Sul campo", ar: "في الميدان", ja: "現場導入実績" },
   inTheFieldDesc: { en: "Deployed where decisions are made.", tr: "Kararların alındığı yerlerde kuruldu.", de: "Dort im Einsatz, wo Entscheidungen getroffen werden.", fr: "Déployé là où les décisions sont prises.", es: "Implementado donde se toman las decisiones.", it: "Installato dove si prendono le decisioni.", ar: "نُشرت حيث تُتخذ القرارات.", ja: "意思決定が行われる現場での運用実績。" }
@@ -733,6 +736,9 @@ const t = {
 const getT = (key: keyof typeof t) => {
   return t[key][locale] || t[key]["en"];
 };
+
+const relatedGlossaryTerms = glossaryLinksForProduct(normalizedSlug, content.glossary || [], locale);
+const glossaryHeading = glossaryLinkLabels.heading[locale] || glossaryLinkLabels.heading.en;
 ---
 
 <PageLayout
@@ -801,6 +807,14 @@ const getT = (key: keyof typeof t) => {
           </div>
           <h1 class="ws-h1">{product.title}</h1>
           <p class="ws-lead">{displayShortAnswer}</p>
+          {relatedGlossaryTerms.length > 0 && (
+            <div class="ws-glossary-links" aria-label={glossaryHeading}>
+              <span class="ws-glossary-links-label">{glossaryHeading}</span>
+              {relatedGlossaryTerms.map((term) => (
+                <a class="ws-glossary-link" href={term.href}>{term.term}</a>
+              ))}
+            </div>
+          )}
           {product.chips && product.chips.length > 0 && (
             <div class="ws-chip-row">
               {product.chips.map((chip: string) => (
@@ -1109,8 +1123,8 @@ const getT = (key: keyof typeof t) => {
       <section class="ws-faq-section" id="faq">
         <div class="section-inner" style="display: contents;">
           <div class="ws-faq-left">
-            <span class="ws-kicker">FAQ</span>
-            <h2 class="ws-h2">{locale === 'tr' ? "Sıkça sorulan sorular" : "Frequently asked questions"}</h2>
+            <span class="ws-kicker">{getT("faqKicker")}</span>
+            <h2 class="ws-h2">{getT("faqTitle")}</h2>
             <p class="ws-faq-subtitle">{getT("faqSubtitle")}</p>
             <a class="ws-btn ws-btn-secondary" href={`/${locale}/contact?product=${encodeURIComponent(slug)}&type=question`}>
               {getT("askQuestion")}
@@ -1356,6 +1370,31 @@ const getT = (key: keyof typeof t) => {
     line-height: 1.35;
     color: var(--ink);
     font-weight: 800;
+  }
+  .ws-glossary-links {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 12px;
+    margin-top: 14px;
+  }
+  .ws-glossary-links-label {
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .ws-glossary-link {
+    font-size: 0.86rem;
+    font-weight: 600;
+    color: var(--ws-teal, #1aa3c4);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(26, 163, 196, 0.35);
+  }
+  .ws-glossary-link:hover {
+    color: var(--ink);
+    border-bottom-color: currentColor;
   }
   .ws-chip-row {
     display: flex;

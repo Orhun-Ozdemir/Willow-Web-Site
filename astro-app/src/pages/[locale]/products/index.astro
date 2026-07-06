@@ -126,6 +126,7 @@ const labels = {
   filterIndustrial: { en: "Industrial Interfaces", tr: "Endüstriyel Arayüzler", de: "Industrieschnittstellen", fr: "Interfaces industrielles", es: "Interfaces industriales", it: "Interfacce industriali", ar: "واجهات صناعية", ja: "産業用コンバータ" },
 
   // FAQ Section
+  faqEyebrow: { en: "Frequently asked", tr: "Sıkça sorulanlar", de: "Häufig gestellte Fragen", fr: "Questions fréquentes", es: "Preguntas frecuentes", it: "Domande frequenti", ar: "أسئلة مكررة", ja: "よくある質問" },
   faqTitle: { en: "Questions about our products.", tr: "Ürünlerimiz hakkında sorular.", de: "Fragen zu unseren Produkten.", fr: "Questions sur nos produits.", es: "Preguntas sobre nuestros productos.", it: "Domande sui nostri prodotti.", ar: "أسئلة مكررة حول منتجاتنا.", ja: "製品に関するよくある質問" },
   faqLead: {
     en: "Here are answers to the most common questions about our LoRaWAN devices and module specifications.",
@@ -226,7 +227,7 @@ const getLabel = (key: keyof typeof labels) => {
           <div>
             <p class="eyebrow">{getVal("catalogEyebrow") || "Catalog"}</p>
             <h2>{getVal("catalogTitle")}</h2>
-            <p class="section-lead">A clean catalog view for comparing modules, environmental sensors, tracking/safety devices and industrial interfaces without changing visual language from the rest of the site.</p>
+            <p class="section-lead">{getVal("catalogLead")}</p>
           </div>
           <a class="btn btn-secondary btn-small" href={`/${locale}/contact`}>{getLabel("requestQuote")}</a>
         </div>
@@ -251,7 +252,7 @@ const getLabel = (key: keyof typeof labels) => {
     <section class="section soft services-faq-section" id="faq">
       <div class="section-inner">
         <div class="section-head reveal center" style={{ marginBottom: "36px" }}>
-          <p class="eyebrow">Frequently asked</p>
+          <p class="eyebrow">{getLabel("faqEyebrow")}</p>
           <h2 class="page-title">{getLabel("faqTitle")}</h2>
           <p class="section-lead" style={{ maxWidth: "720px", marginLeft: "auto", marginRight: "auto" }}>
             {getLabel("faqLead")}

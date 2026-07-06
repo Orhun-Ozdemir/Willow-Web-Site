@@ -21,7 +21,7 @@ export const HOME_LAYOUT: PageLayoutBlock[] = [
   { id: "industries", label: "Sektörler", tone: "soft", variant: "home-industries", fields: ["industriesEyebrow", "industriesTitle"], cards: [0, 1, 2, 3].map((i) => ({ index: i, titleKey: `industryLane_${i}_title`, descKey: `industryLane_${i}_desc` })) },
   { id: "news", label: "Haberler", tone: "light", variant: "home-news", fields: ["newsEyebrow", "newsTitle"] },
   { id: "faq", label: "SSS", tone: "soft", variant: "home-faq", fields: ["faqEyebrow", "faqTitle", "faqLead"] },
-  { id: "cta", label: "CTA", tone: "cta", variant: "home-cta", fields: ["ctaEyebrow", "ctaTitle", "ctaLead", "ctaCta"] },
+  { id: "cta", label: "CTA", tone: "cta", variant: "home-cta", fields: ["ctaEyebrow", "ctaTitle", "ctaLead", "ctaChoice_0", "ctaChoice_1", "ctaChoice_2", "ctaCta"] },
 ];
 
 export const PRODUCTS_LAYOUT: PageLayoutBlock[] = [
@@ -32,7 +32,7 @@ export const PRODUCTS_LAYOUT: PageLayoutBlock[] = [
 ];
 
 export const SOLUTIONS_LAYOUT: PageLayoutBlock[] = [
-  { id: "hero", label: "Hero", tone: "hero", variant: "solutions-hero", fields: ["heroEyebrow", "heroTitle", "heroLead"] },
+  { id: "hero", label: "Hero", tone: "hero", variant: "solutions-hero", fields: ["heroEyebrow", "heroTitle", "heroLead", "heroImage", "metric1Value", "metric1Label", "metric2Value", "metric2Label", "metric3Value", "metric3Label"] },
   { id: "useCases", label: "Kullanım Alanları", tone: "light", variant: "use-cases", fields: ["useCasesEyebrow", "useCasesTitle", "useCasesLead", "showcaseEyebrow", "showcaseTitle", "showcaseLead"], placeholder: { count: 6, columns: 3 } },
   { id: "selector", label: "Yol Seçici", tone: "soft", variant: "decision-cards", fields: ["selectorEyebrow", "selectorTitle", "selectorLead"], arrayKey: "selectorCards" },
   { id: "how", label: "Nasıl Çalışır", tone: "dark", variant: "flow-nodes", fields: ["howEyebrow", "howTitle", "howLead"], arrayKey: "howItWorksSteps" },

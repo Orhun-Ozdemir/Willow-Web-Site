@@ -54,6 +54,8 @@ export default function FormField({
       ? "team"
       : label.toLowerCase().includes("product") || label.toLowerCase().includes("ürün")
       ? "products"
+      : label.toLowerCase().includes("çözüm") || label.toLowerCase().includes("solution") || label.toLowerCase().includes("hero")
+      ? "solutions"
       : "uploads";
 
     try {
