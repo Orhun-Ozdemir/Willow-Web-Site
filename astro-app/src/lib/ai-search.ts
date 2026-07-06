@@ -115,8 +115,9 @@ export function aiAnswerForPage(content: any, pageKey: string, locale: Locale, f
   const englishSeo = content.pageSeo?.[pageKey]?.en || {};
   return stripHtml(
     seo.aiShortAnswer ||
-      englishSeo.aiShortAnswer ||
       localizedValue(AI_SHORT_FALLBACKS[pageKey], locale) ||
+      (locale === "en" ? englishSeo.aiShortAnswer : "") ||
+      englishSeo.aiShortAnswer ||
       fallback,
   );
 }

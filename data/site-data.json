@@ -7977,7 +7977,7 @@
         "schemaType": "FAQPage",
         "changefreq": "weekly",
         "priority": "1.0",
-        "aiShortAnswer": "WillowSoft is an industry-leading provider of embedded systems, LoRaWAN devices, and industrial IoT dashboard systems designed for robust field telemetry.",
+        "aiShortAnswer": "WillowSoft designs connected products from embedded hardware and firmware to backend APIs, PostgreSQL databases, dashboards, mobile apps and VR simulation layers.",
         "author": "WillowSoft Engineering Team",
         "reviewedBy": "WillowSoft Engineering Team",
         "expertiseNote": "End-to-end embedded hardware, firmware and Industrial IoT systems engineering.",
@@ -8005,7 +8005,10 @@
         "nofollow": false,
         "schemaType": "WebPage",
         "changefreq": "weekly",
-        "priority": "0.5"
+        "priority": "0.5",
+        "aiShortAnswer": "WillowSoft; gömülü donanım ve firmware'den backend API, PostgreSQL, panel, mobil uygulama ve VR simülasyon katmanlarına kadar IoT ürünleri geliştirir.",
+        "expertReviewedBy": "WillowSoft Mühendislik Ekibi",
+        "lastUpdated": "2026-06-12"
       },
       "de": {
         "seoTitle": "WillowSoft | Embedded-Hardware & Industrial-IoT-Engineering",
