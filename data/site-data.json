@@ -44,44 +44,30 @@
     "note": "Use the listed Turkey and UK office information for production contact pages.",
     "team": [
       {
-        "id": "member-orhun",
-        "name": "Orhun Özdemir",
-        "role": "Founder & CTO",
-        "bio": "Embedded hardware architect and low-power systems engineer specializing in LoRaWAN and resilient IIoT networks.",
-        "image": "assets/team/orhun.jpg",
+        "id": "member-omer-oyar",
+        "name": "Ömer Oyar",
+        "role": "Co-Founder",
+        "bio": "Co-founder of WillowSoft, focused on connected product engineering, embedded systems, and industrial IoT delivery.",
+        "image": "uploads/chatgpt-image-jun-16-2026-03-51-02-pm-1781614290724.png",
         "sortOrder": 1,
         "localized": {
           "tr": {
-            "role": "Kurucu & CTO",
-            "bio": "LoRaWAN ve dayanıklı IIoT şebekelerinde uzmanlaşmış gömülü donanım mimarı ve düşük güç sistemleri mühendisi."
+            "role": "Kurucu Ortak",
+            "bio": "WillowSoft kurucu ortağı; bağlı ürün mühendisliği, gömülü sistemler ve endüstriyel IoT teslimatına odaklanır."
           }
         }
       },
       {
-        "id": "member-team-placeholder-1",
-        "name": "Alex Martinez",
-        "role": "Lead Firmware Engineer",
-        "bio": "Firmware developer focused on RTOS, low-power scheduling, and robust wireless protocol implementations.",
-        "image": "assets/team/alex.jpg",
+        "id": "member-eren-basturk",
+        "name": "Eren Baştürk",
+        "role": "Co-Founder & Software Engineer",
+        "bio": "Co-founder and software engineer leading secure wireless device software, backend integration, and export-ready IoT platforms.",
+        "image": "uploads/chatgpt-image-jun-16-2026-03-53-40-pm-1781614439750.png",
         "sortOrder": 2,
         "localized": {
           "tr": {
-            "role": "Kıdemli Gömülü Yazılım Mühendisi",
-            "bio": "RTOS, düşük güç zamanlaması ve kararlı kablosuz protokol entegrasyonlarına odaklanmış gömülü yazılım geliştirici."
-          }
-        }
-      },
-      {
-        "id": "member-team-placeholder-2",
-        "name": "Sarah Chen",
-        "role": "Senior Cloud & IoT Architect",
-        "bio": "Cloud architect designing scalable telemetry ingestion, PostgreSQL database structures, and high-availability APIs.",
-        "image": "assets/team/sarah.jpg",
-        "sortOrder": 3,
-        "localized": {
-          "tr": {
-            "role": "Kıdemli Bulut & IoT Mimarı",
-            "bio": "Ölçeklenebilir telemetri veri alımı, PostgreSQL veritabanı yapıları ve yüksek erişilebilirlikli API'ler tasarlayan bulut mimarı."
+            "role": "Kurucu Ortak & Yazılım Mühendisi",
+            "bio": "Kurucu ortak ve yazılım mühendisi; güvenli kablosuz cihaz yazılımı, backend entegrasyonu ve ihracata hazır IoT platformlarını yönetir."
           }
         }
       }
