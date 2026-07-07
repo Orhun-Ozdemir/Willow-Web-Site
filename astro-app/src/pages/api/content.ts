@@ -1,5 +1,5 @@
 import type { APIRoute } from "astro";
-import { loadContent, saveContent, saveContentSection } from "@/lib/content";
+import { loadContent, saveContent, saveContentSection, savePageContentSlice } from "@/lib/content";
 import { getSession } from "@/lib/auth";
 import { resolveAdminProfile, getRequestMeta } from "@/lib/admin-auth";
 import { logAdminAction } from "@/lib/audit";
@@ -47,9 +47,12 @@ export const PUT: APIRoute = async ({ request }) => {
   try {
     const url = new URL(request.url);
     const section = url.searchParams.get("section");
+    const page = url.searchParams.get("page");
     const body = await request.json();
 
-    if (section) {
+    if (section === "pageContent" && page) {
+      await savePageContentSlice(page, body);
+    } else if (section) {
       await saveContentSection(section, body);
     } else {
       await saveContent(body);
@@ -62,6 +65,7 @@ export const PUT: APIRoute = async ({ request }) => {
       resource: section || "all",
       metadata: {
         section: section || "all",
+        page: page || undefined,
         itemCount: Array.isArray(body) ? body.length : 1,
       },
       ...meta,

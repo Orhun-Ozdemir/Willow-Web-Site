@@ -17,6 +17,8 @@ interface AdminContextValue {
   saving: boolean;
   saveMessage: string;
   saveContent: () => Promise<void>;
+  savePageContent: (pageKey: string) => Promise<void>;
+  isPageContentDirty: (pageKey: string) => boolean;
   updateLeadStatus: (leadId: string, status: string) => Promise<void>;
   updateLead: (leadId: string, updates: { status?: string; internalNote?: string }) => Promise<void>;
   deleteLead: (leadId: string) => Promise<void>;
@@ -156,6 +158,61 @@ export function AdminProvider({ children }: { children: ReactNode }) {
     }
   }, [initialContent, content]);
 
+  const savePageContent = useCallback(async (pageKey: string) => {
+    if (!initialContent || !content) return;
+    const pageData = content.pageContent?.[pageKey];
+    if (!pageData) return;
+    if (JSON.stringify(initialContent.pageContent?.[pageKey]) === JSON.stringify(pageData)) return;
+
+    const keyLabels: Record<string, string> = {
+      home: "Ana Sayfa",
+      products: "Ürünler",
+      solutions: "Çözümler",
+      services: "Hizmetler",
+      news: "Haberler",
+      company: "Hakkımızda",
+      contact: "İletişim",
+      startProject: "Proje Başlat",
+      glossary: "Sözlük",
+    };
+
+    setSaving(true);
+    setSaveMessage("");
+    const label = keyLabels[pageKey] || pageKey;
+    setSaveMessage(`${label} kaydediliyor...`);
+
+    try {
+      const res = await fetch(`/api/content?section=pageContent&page=${encodeURIComponent(pageKey)}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(pageData),
+      });
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.error || "Kayıt başarısız");
+      }
+
+      setInitialContent((prev: any) => ({
+        ...prev,
+        pageContent: {
+          ...prev.pageContent,
+          [pageKey]: JSON.parse(JSON.stringify(pageData)),
+        },
+      }));
+      setSaveMessage(`${label} kaydedildi ✓`);
+    } catch (err: any) {
+      setSaveMessage(`Hata: ${err.message || "Kayıt sırasında bir hata oluştu"}`);
+    } finally {
+      setSaving(false);
+      setTimeout(() => setSaveMessage(""), 4000);
+    }
+  }, [initialContent, content]);
+
+  const isPageContentDirty = useCallback((pageKey: string) => {
+    if (!initialContent || !content) return false;
+    return JSON.stringify(initialContent.pageContent?.[pageKey]) !== JSON.stringify(content.pageContent?.[pageKey]);
+  }, [initialContent, content]);
+
   const updateLead = useCallback(async (leadId: string, updates: { status?: string; internalNote?: string }) => {
     try {
       const res = await fetch(`/api/leads/${leadId}`, {
@@ -259,6 +316,8 @@ export function AdminProvider({ children }: { children: ReactNode }) {
         saving,
         saveMessage,
         saveContent,
+        savePageContent,
+        isPageContentDirty,
         updateLeadStatus,
         updateLead,
         deleteLead,

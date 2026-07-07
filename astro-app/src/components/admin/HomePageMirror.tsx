@@ -2,7 +2,7 @@
 
 import { useLayoutEffect, useRef, useState, type ReactNode } from "react";
 
-import { flowNodesFromPageContent, industryLanesFromPageContent, serviceRailFromPageContent, type Locale } from "@/lib/cms";
+import { flowNodesFromPageContent, industryLanesFromPageContent, pageButtonLabel, serviceRailFromPageContent, type Locale } from "@/lib/cms";
 import type { MirrorCard } from "./mirrorShared";
 
 export type { MirrorCard } from "./mirrorShared";
@@ -167,8 +167,8 @@ export default function HomePageMirror({
                   <h1 dangerouslySetInnerHTML={{ __html: html("heroTitle") || "Hero başlığı" }} />
                   {v("heroLead") && <p>{v("heroLead")}</p>}
                   <div className="hero-ctas">
-                    <span className="btn btn-primary">{v("heroCta") || "CTA"}</span>
-                    <span className="btn btn-secondary">{v("heroCtaSecondary") || "CTA"}</span>
+                    <span className="btn btn-primary">{pageButtonLabel(data.heroCta, locale) || v("heroCta") || "CTA"}</span>
+                    <span className="btn btn-secondary">{pageButtonLabel(data.heroCtaSecondary, locale) || v("heroCtaSecondary") || "CTA"}</span>
                   </div>
                   <div className="hero-proof">
                     <div className="proof-item"><strong>12+</strong><span>Ürün</span></div>

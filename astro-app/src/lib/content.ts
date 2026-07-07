@@ -339,3 +339,45 @@ export async function saveContentSection(section: string, sectionData: any): Pro
   cachedContent = null;
   lastFetchTime = 0;
 }
+
+/** Upsert a single page_content row (safer than rewriting every page at once). */
+export async function savePageContentSlice(page: string, data: any): Promise<void> {
+  if (!page) throw new Error("Missing page key");
+  if (data && (data as any)._fallback) {
+    throw new Error("Refusing to save: page payload is bundled fallback data.");
+  }
+
+  if (!hasSupabaseEnv) {
+    if (!import.meta.env.DEV) {
+      throw new Error("Supabase env not configured — refusing to write page content in production.");
+    }
+    let fullData: any = {};
+    try {
+      fullData = JSON.parse(fs.readFileSync(dataFile, "utf8"));
+    } catch (err: any) {
+      console.warn("Failed to read local dataFile, using bundled fallback:", err.message);
+      fullData = { ...localSiteData };
+    }
+    fullData.pageContent = { ...(fullData.pageContent || {}), [page]: data };
+    fullData.meta = { ...(fullData.meta || {}), updatedAt: new Date().toISOString() };
+    fs.writeFileSync(dataFile, JSON.stringify(fullData, null, 2) + "\n", "utf8");
+    cachedContent = fullData;
+    lastFetchTime = Date.now();
+    return;
+  }
+
+  const supabase = getServiceClient();
+  const { error } = await supabase.from("page_content").upsert({ page, data });
+  if (error) throw new Error(error.message);
+
+  if (cachedContent?.pageContent) {
+    cachedContent = {
+      ...cachedContent,
+      pageContent: { ...cachedContent.pageContent, [page]: data },
+    };
+    lastFetchTime = Date.now();
+  } else {
+    cachedContent = null;
+    lastFetchTime = 0;
+  }
+}

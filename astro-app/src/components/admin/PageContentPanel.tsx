@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { locales, type Locale } from "@/lib/cms";
 import HomePageMirror from "./HomePageMirror";
 import PageMirror from "./PageMirror";
@@ -321,7 +321,12 @@ function LocaleFieldEditor({
       });
       const data = await res.json();
       if (!data.ok) throw new Error(data.error || "Çeviri başarısız");
-      setSuggestions((prev) => ({ ...prev, ...data.translations }));
+      for (const [lang, text] of Object.entries(data.translations || {})) {
+        if (typeof text === "string" && text.trim()) {
+          updateField(fieldKey, lang as Locale, text);
+        }
+      }
+      setSuggestions({});
     } catch (e: any) {
       setTranslateError(e.message);
     } finally {
@@ -340,7 +345,12 @@ function LocaleFieldEditor({
       });
       const data = await res.json();
       if (!data.ok) throw new Error(data.error || "Çeviri başarısız");
-      setSuggestions((prev) => ({ ...prev, ...data.translations }));
+      for (const [lang, text] of Object.entries(data.translations || {})) {
+        if (typeof text === "string" && text.trim()) {
+          updateField(fieldKey, lang as Locale, text);
+        }
+      }
+      setSuggestions({});
     } catch (e: any) {
       setTranslateError(e.message);
     } finally {
@@ -487,7 +497,7 @@ function CardLocaleEditor({
 // ── Live mini preview ─────────────────────────────────────────────────────────
 // ── Main ──────────────────────────────────────────────────────────────────────
 export default function PageContentPanel() {
-  const { content, setContent } = useAdmin();
+  const { content, setContent, savePageContent, isPageContentDirty, saving, saveMessage } = useAdmin();
   const [selectedPage, setSelectedPage] = useState("home");
   const [activeBlockId, setActiveBlockId] = useState<string | null>("hero");
   const [activeField, setActiveField] = useState<string | null>("heroEyebrow");
@@ -496,6 +506,15 @@ export default function PageContentPanel() {
 
   const pageContent = content?.pageContent || {};
   const pageData = pageContent[selectedPage] || {};
+  const pageDirty = isPageContentDirty(selectedPage);
+
+  useEffect(() => {
+    if (!pageDirty || saving) return;
+    const timer = window.setTimeout(() => {
+      void savePageContent(selectedPage);
+    }, 2500);
+    return () => window.clearTimeout(timer);
+  }, [pageDirty, saving, selectedPage, pageData, savePageContent]);
 
   const pageLayout = useMemo(() => layoutForPage(selectedPage), [selectedPage]);
   const hasLayout = pageLayout.length > 0;
@@ -642,12 +661,32 @@ export default function PageContentPanel() {
             <div>
               <p className="ws-pc-block-kicker">{pageInfo?.label}</p>
               <h3 className="ws-pc-block-title">{activeBlock.label}</h3>
+              {pageDirty && (
+                <p className="mt-1 text-xs font-semibold text-amber-700">
+                  {saving ? "Kaydediliyor…" : "Kaydedilmemiş değişiklik — 2 sn içinde otomatik kaydedilir"}
+                </p>
+              )}
+              {!pageDirty && saveMessage && (
+                <p className="mt-1 text-xs font-semibold text-green-700">{saveMessage}</p>
+              )}
             </div>
-            {pageInfo?.path && (
-              <a href={pageInfo.path} target="_blank" rel="noreferrer" className="ws-pc-live-link">
-                Canlı sayfayı aç ↗
-              </a>
-            )}
+            <div className="flex items-center gap-2">
+              {pageDirty && (
+                <button
+                  type="button"
+                  onClick={() => void savePageContent(selectedPage)}
+                  disabled={saving}
+                  className="rounded-lg bg-[#132175] px-3 py-2 text-xs font-bold text-white disabled:opacity-60"
+                >
+                  {saving ? "Kaydediliyor…" : "Bu Sayfayı Kaydet"}
+                </button>
+              )}
+              {pageInfo?.path && (
+                <a href={pageInfo.path} target="_blank" rel="noreferrer" className="ws-pc-live-link">
+                  Canlı sayfayı aç ↗
+                </a>
+              )}
+            </div>
           </div>
         )}
 
