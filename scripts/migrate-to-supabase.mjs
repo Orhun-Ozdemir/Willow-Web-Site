@@ -3,8 +3,8 @@
  * One-off seed: data/*.json -> Supabase tables.
  *
  * Usage (Node 20+):
- *   SUPABASE_URL=... SUPABASE_SERVICE_ROLE_KEY=... node scripts/migrate-to-supabase.mjs
- *   # or: node --env-file=.env scripts/migrate-to-supabase.mjs
+ *   SUPABASE_URL=... SUPABASE_SERVICE_ROLE_KEY=... node scripts/migrate-to-supabase.mjs --force
+ *   # or: node --env-file=.env scripts/migrate-to-supabase.mjs --force
  *
  * Mirrors loadContent() assembly: each content row stores `data` (item minus
  * `localized`) + `localized`, plus fixed query columns. Safe to re-run (upsert).
@@ -16,6 +16,15 @@ import { fileURLToPath } from "node:url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const dataDir = path.join(__dirname, "..", "data");
+
+const force = process.argv.includes("--force");
+if (!force) {
+  console.error(
+    "Refusing to migrate: this overwrites live Supabase tables with data/*.json seed files.\n" +
+    "Re-run with --force only for intentional full re-seed."
+  );
+  process.exit(1);
+}
 
 const url = process.env.SUPABASE_URL;
 const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
