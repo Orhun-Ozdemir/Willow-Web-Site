@@ -92,7 +92,9 @@ function isActive(href: string) {
       </label>
 
       <a href={`/${locale}/start-project`} class="btn btn-primary btn-small">{ctaLabels[locale] || ctaLabels.en}</a>
-      <button class="menu-toggle" aria-expanded="false" aria-label={getLabel("openMenu")} id="menu-toggle">☰</button>
+      <button class="menu-toggle" aria-expanded="false" aria-label={getLabel("openMenu")} id="menu-toggle">
+        <span class="bar" aria-hidden="true"></span>
+      </button>
     </div>
   </nav>
 </header>
