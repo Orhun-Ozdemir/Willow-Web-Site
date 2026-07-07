@@ -5593,6 +5593,36 @@
         "ar": "تأسست WillowSoft عام 2020، وتقدّم حلول العتاد والبرمجيات المدمجة للتطبيقات الصناعية وإنترنت الأشياء. يركّز الفريق على البنية منخفضة الطاقة واتصال LoRa وموثوقية البرامج الثابتة وتصميم العتاد المخصص وأنظمة الخلفية وواجهات الجوال والويب والجاهزية للإنتاج.",
         "ja": "2020年に設立された WillowSoft は、産業用および IoT 向けの組み込みハードウェア・ソフトウェアソリューションを提供します。チームは、低消費電力アーキテクチャ、LoRa 接続、ファームウェアの信頼性、カスタムハードウェア設計、バックエンドシステム、モバイル・Web インターフェース、量産対応に注力しています。"
       },
+      "teamEyebrow": {
+        "en": "The team",
+        "tr": "Ekibimiz",
+        "de": "Das Team",
+        "fr": "L'équipe",
+        "es": "El equipo",
+        "it": "Il team",
+        "ar": "الفريق",
+        "ja": "チーム"
+      },
+      "teamTitle": {
+        "en": "Meet the people behind the <span class=\"serif-accent\">engineering</span>.",
+        "tr": "Mühendisliğin arkasındaki <span class=\"serif-accent\">insanlar</span>.",
+        "de": "Die <span class=\"serif-accent\">Menschen</span> hinter der Technik.",
+        "fr": "Les <span class=\"serif-accent\">personnes</span> derrière l'ingénierie.",
+        "es": "Las <span class=\"serif-accent\">personas</span> detrás de la ingeniería.",
+        "it": "Le <span class=\"serif-accent\">persone</span> dietro l'ingegneria.",
+        "ar": "الأشخاص وراء <span class=\"serif-accent\">الهندسة</span>.",
+        "ja": "<span class=\"serif-accent\">エンジニアリング</span>の裏にいる人たち。"
+      },
+      "teamLead": {
+        "en": "Our core team of hardware engineers, firmware developers, and cloud architects.",
+        "tr": "Kurucu mühendislerimiz ve IIoT mimarlarımız.",
+        "de": "Unser Kernteam aus Hardware-Ingenieuren, Firmware-Entwicklern und Cloud-Architekten.",
+        "fr": "Notre équipe de fondation : ingénieurs hardware, développeurs firmware et architectes cloud.",
+        "es": "Nuestro equipo central de ingenieros de hardware, desarrolladores de firmware y arquitectos cloud.",
+        "it": "Il nostro team di ingegneri hardware, sviluppatori firmware e architetti cloud.",
+        "ar": "فريقنا الأساسي من مهندسي الأجهزة ومطوري البرامج الثابتة ومهندسي السحابة.",
+        "ja": "ハードウェア、ファームウェア、クラウドのコアエンジニアチーム。"
+      },
       "principlesEyebrow": {
         "en": "How We Work",
         "tr": "Nasıl Çalışırız",

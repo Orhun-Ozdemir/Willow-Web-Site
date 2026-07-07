@@ -2,7 +2,7 @@
 import PageLayout from "@/layouts/PageLayout.astro";
 import { loadContent } from "@/lib/content";
 import { pageSeo, webPageNode, ORGANIZATION_SCHEMA, WEBSITE_SCHEMA, SITE_ORIGIN } from "@/lib/seo";
-import { localizeItem, resolveAsset, pageText, resolveLocale, type Locale } from "@/lib/cms";
+import { localizeItem, resolveAsset, pageText, itemText, resolveLocale, type Locale } from "@/lib/cms";
 import { officesForContact, resolveOfficePhone, syncOfficePhonesInFacts, telHref } from "@/lib/company-contact";
 
 export const prerender = false;
@@ -80,7 +80,12 @@ const sortByOrder = (items: any[]) => {
   });
 };
 
-const sortedTeam = sortByOrder(Array.isArray(companyFacts.team) ? companyFacts.team : [])
+const teamFromFacts = () => {
+  const localized = companyFacts.localized?.[locale]?.team;
+  const raw = Array.isArray(localized) ? localized : companyFacts.team;
+  return Array.isArray(raw) ? raw : [];
+};
+const sortedTeam = sortByOrder(teamFromFacts())
   .filter((item) => item && typeof item === "object")
   .map((item) => cleanCmsValue(localizeItem(item, locale)));
 const sortedTimeline = sortByOrder(Array.isArray(companyFacts.timeline) ? companyFacts.timeline : [])
@@ -378,10 +383,10 @@ const teamTitleHtml: Record<string, string> = {
     <section class="company-section bg-soft company-team-section">
       <div class="company-container company-grid-team">
         <div>
-          <span class="eyebrow">{u("theTeam")}</span>
-          <h2 class="ws-h2" style="margin-top: 18px;" set:html={teamTitleHtml[locale] || teamTitleHtml.en} />
+          <span class="eyebrow">{t("teamEyebrow", factText("teamEyebrow", u("theTeam")))}</span>
+          <h2 class="ws-h2" style="margin-top: 18px;" set:html={sectionTitle("teamTitle", teamTitleHtml[locale] || teamTitleHtml.en)} />
           <p style="font-size: 16px; line-height: 1.65; color: var(--ws-body); margin-top: 16px;">
-            {u("teamLead")}
+            {t("teamLead", factText("teamLead", u("teamLead")))}
           </p>
         </div>
         <div class="company-team-list">
@@ -395,9 +400,9 @@ const teamTitleHtml: Record<string, string> = {
                   )}
                 </div>
                 <div class="company-team-body">
-                  <b>{member.name}</b>
-                  <span>{member.role}</span>
-                  <p>{member.bio}</p>
+                  <b>{itemText(member, "name", locale, member.name || "")}</b>
+                  <span>{itemText(member, "role", locale, member.role || "")}</span>
+                  <p>{itemText(member, "bio", locale, member.bio || "")}</p>
                 </div>
               </div>
             );

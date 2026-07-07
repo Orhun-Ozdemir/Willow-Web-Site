@@ -550,6 +550,38 @@ export default function PageMirror({
           </Hit>
         );
 
+      case "company-team": {
+        const teamItems = arrayItems(extraData.companyFacts || {}, block.arrayKey);
+        return (
+          <Hit id={block.id} active={active} onClick={onClick}>
+            <section className="section soft company-team-section">
+              <div className="company-container company-grid-team">
+                <div>
+                  <SectionHead data={data} locale={locale} fields={block.fields} />
+                  <p className="text-xs text-gray-400 mt-3">Üye listesi: Hakkımızda → Ekibimiz sekmesinden düzenlenir.</p>
+                </div>
+                <div className="company-team-list">
+                  {teamItems.length > 0 ? teamItems.map((member: any, idx: number) => {
+                    const m = locItem(member, locale);
+                    return (
+                      <div key={member.id || idx} className="ws-card company-team-card">
+                        <div className="company-team-body">
+                          <b>{m.name || "—"}</b>
+                          <span>{m.role || ""}</span>
+                          <p>{m.bio || ""}</p>
+                        </div>
+                      </div>
+                    );
+                  }) : (
+                    <p className="text-sm text-gray-400">Henüz ekip üyesi eklenmemiş.</p>
+                  )}
+                </div>
+              </div>
+            </section>
+          </Hit>
+        );
+      }
+
       case "section":
         return (
           <Hit id={block.id} active={active} onClick={onClick}>

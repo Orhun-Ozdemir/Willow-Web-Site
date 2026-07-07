@@ -61,6 +61,7 @@ export const NEWS_LAYOUT: PageLayoutBlock[] = [
 export const COMPANY_LAYOUT: PageLayoutBlock[] = [
   { id: "hero", label: "Hero", tone: "hero", variant: "company-hero", static: true },
   { id: "intro", label: "Giriş", tone: "light", variant: "section", fields: ["introEyebrow", "introTitle", "introLead"] },
+  { id: "team", label: "Ekibimiz", tone: "soft", variant: "company-team", fields: ["teamEyebrow", "teamTitle", "teamLead"], arrayKey: "team" },
   { id: "principles", label: "İlkeler", tone: "light", variant: "section", fields: ["principlesEyebrow", "principlesTitle"] },
   { id: "history", label: "Tarihçe", tone: "soft", variant: "section", fields: ["historyEyebrow", "historyTitle"] },
   { id: "workWith", label: "İş Ortakları", tone: "light", variant: "section", fields: ["workWithEyebrow", "workWithTitle"] },

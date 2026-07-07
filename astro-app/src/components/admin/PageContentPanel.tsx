@@ -148,6 +148,9 @@ const FIELD_META: Record<string, FieldMeta> = {
   introEyebrow: { label: "Üst Etiket", section: "Giriş", hint: "", type: "short" },
   introTitle: { label: "Başlık", section: "Giriş", hint: "", type: "short" },
   introLead: { label: "Açıklama", section: "Giriş", hint: "", type: "long" },
+  teamEyebrow: { label: "Üst Etiket", section: "Ekibimiz", hint: "", type: "short" },
+  teamTitle: { label: "Başlık", section: "Ekibimiz", hint: "HTML destekler.", type: "long" },
+  teamLead: { label: "Açıklama", section: "Ekibimiz", hint: "", type: "long" },
   principlesEyebrow: { label: "Üst Etiket", section: "İlkeler", hint: "", type: "short" },
   principlesTitle: { label: "Başlık", section: "İlkeler", hint: "", type: "short" },
   historyEyebrow: { label: "Üst Etiket", section: "Tarihçe", hint: "", type: "short" },
@@ -618,7 +621,13 @@ export default function PageContentPanel() {
                 activeCard={activeCard}
                 onSelectBlock={selectBlock}
                 onSelectCard={selectCard}
-                extraData={selectedPage === "solutions" ? { solutions: content?.solutions || [] } : {}}
+                extraData={
+                  selectedPage === "solutions"
+                    ? { solutions: content?.solutions || [] }
+                    : selectedPage === "company"
+                      ? { companyFacts: content?.companyFacts || {} }
+                      : {}
+                }
               />
             )}
             <p className="ws-pc-preview-hint">Bölüme veya karta tıklayarak düzenleyin.</p>

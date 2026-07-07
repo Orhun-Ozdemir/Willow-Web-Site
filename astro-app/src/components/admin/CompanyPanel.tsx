@@ -19,6 +19,7 @@ const GENERAL_FIELDS = [
 ];
 
 const TEAM_TRANSLATION_FIELDS = [
+  { key: "name", label: "Ad Soyad" },
   { key: "role", label: "Rol" },
   { key: "bio", label: "Biyografi", type: "textarea" as const, rows: 3 },
 ];
@@ -159,7 +160,19 @@ export default function CompanyPanel() {
     });
   };
 
-  // Team Updates
+  const persistCompanyFacts = (facts: any) => {
+    saveSection("companyFacts", facts);
+  };
+
+  const closeTeamEditor = () => {
+    setContent((c: any) => {
+      const facts = { ...(c.companyFacts || {}) };
+      persistCompanyFacts(facts);
+      return c;
+    });
+    setEditingTeamIdx(null);
+  };
+
   const addTeamMember = () => {
     const id = `member-${Date.now()}`;
     const newMember = {
@@ -570,7 +583,7 @@ export default function CompanyPanel() {
                         Sil
                       </button>
                       <button
-                        onClick={() => setEditingTeamIdx(null)}
+                        onClick={closeTeamEditor}
                         className="px-3 py-1.5 bg-gray-100 hover:bg-gray-200 rounded text-xs font-semibold"
                       >
                         Listeye Dön
