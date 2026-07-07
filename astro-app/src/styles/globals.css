@@ -558,22 +558,7 @@ select {
 }
 
 .motion-hero::after {
-  background:
-    linear-gradient(180deg, rgba(250, 248, 255, 0) 0%, rgba(250, 248, 255, 0.12) 100%),
-    repeating-linear-gradient(
-      116deg,
-      rgba(255, 255, 255, 0) 0 10%,
-      rgba(255, 255, 255, 0.58) 12% 13.5%,
-      rgba(var(--accent-rgb), 0.12) 14.5% 18%,
-      rgba(112, 77, 255, 0.16) 22% 25%,
-      rgba(24, 167, 255, 0.18) 29% 33%,
-      rgba(255, 255, 255, 0) 38% 48%
-    );
-  background-size: auto, 165% 165%;
-  background-position: 0 0, 62% 46%;
-  animation: willowHeroLightSweep 8.5s cubic-bezier(0.45, 0, 0.2, 1) infinite alternate;
-  mix-blend-mode: screen;
-  opacity: 0.68;
+  display: none;
 }
 
 .hero::before {
@@ -6606,9 +6591,6 @@ html[dir="rtl"] .news-sort select {
     display: none;
   }
 
-  .motion-hero::after {
-    animation: none;
-  }
 }
 
 /* ============================================================
@@ -9168,38 +9150,6 @@ body[data-page="home"] .motion-hero .hero-proof {
 
 body[data-page="home"] .section {
   padding: 80px 0;
-}
-
-@keyframes homeHeroLightSweep {
-  0% {
-    background-position: 0 0, 128% 50%;
-    transform: translate3d(8%, 0, 0) rotate(1.2deg) scale(1.06);
-  }
-
-  100% {
-    background-position: 0 0, -42% 44%;
-    transform: translate3d(-8%, 0, 0) rotate(-0.9deg) scale(1.05);
-  }
-}
-
-body[data-page="home"] .motion-hero::after {
-  inset: -14% -20%;
-  background:
-    linear-gradient(180deg, rgba(250, 248, 255, 0) 0%, rgba(250, 248, 255, 0.08) 100%),
-    repeating-linear-gradient(
-      116deg,
-      rgba(255, 255, 255, 0) 0 3.2%,
-      rgba(255, 255, 255, 0.64) 3.9% 4.9%,
-      rgba(var(--accent-rgb), 0.17) 5.1% 6.9%,
-      rgba(112, 77, 255, 0.15) 7.4% 9.1%,
-      rgba(24, 167, 255, 0.19) 9.6% 12%,
-      rgba(255, 255, 255, 0.42) 12.5% 13.8%,
-      rgba(255, 255, 255, 0) 15% 19.5%
-    );
-  background-size: auto, 118% 210%;
-  background-position: 0 0, 128% 50%;
-  animation: homeHeroLightSweep 6.8s cubic-bezier(0.34, 0, 0.14, 1) infinite alternate;
-  opacity: 0.8;
 }
 
 body[data-page="home"] .section.tight {
