@@ -2,7 +2,7 @@
 import PageLayout from "@/layouts/PageLayout.astro";
 import { loadContent } from "@/lib/content";
 import { pageSeo } from "@/lib/seo";
-import { localizeItem, localizedValue, locales, resolveLocale, type Locale } from "@/lib/cms";
+import { localizeItem, pageText, resolveLocale, type Locale } from "@/lib/cms";
 
 export const prerender = false;
 
@@ -11,8 +11,7 @@ const content = await loadContent();
 const pageContent = content.pageContent?.glossary || {};
 const glossaryList = content.glossary || [];
 const seoProps = pageSeo(content, "glossary", locale, "/glossary", "IoT & LoRaWAN Glossary | WillowSoft", "Plain-English definitions of LoRaWAN, Modbus RTU, Industrial IoT, embedded systems, MCU, IP67, edge computing and other terms used by WillowSoft engineering.");
-
-const getVal = (key: string) => localizedValue(pageContent[key], locale);
+const t = (key: string, fallback = "") => pageText(pageContent, key, locale, fallback);
 
 const getGlossaryItems = (category: string) => {
   return glossaryList
@@ -55,9 +54,9 @@ const getLabel = (key: keyof typeof labels) => labels[key][locale] || labels[key
     <section class="hero compact">
       <canvas class="signal-canvas" data-density="28" data-color="26, 163, 196"></canvas>
       <div class="hero-inner">
-        <p class="eyebrow reveal">{getVal("heroEyebrow")}</p>
-        <h1 class="reveal delay-1" set:html={getVal("heroTitle")} />
-        <p class="reveal delay-2">{getVal("heroLead")}</p>
+        <p class="eyebrow reveal">{t("heroEyebrow")}</p>
+        <h1 class="reveal delay-1" set:html={t("heroTitle")} />
+        <p class="reveal delay-2">{t("heroLead")}</p>
       </div>
     </section>
 
@@ -65,8 +64,8 @@ const getLabel = (key: keyof typeof labels) => labels[key][locale] || labels[key
     <section class="section">
       <div class="section-inner">
         <div class="section-head reveal">
-          <p class="eyebrow">{getVal("connectivityEyebrow")}</p>
-          <h2>{getVal("connectivityTitle")}</h2>
+          <p class="eyebrow">{t("connectivityEyebrow")}</p>
+          <h2>{t("connectivityTitle")}</h2>
         </div>
         <div class="grid grid-2">
           {connectivityItems.map((item: any, index: number) => {
@@ -91,8 +90,8 @@ const getLabel = (key: keyof typeof labels) => labels[key][locale] || labels[key
     <section class="section soft">
       <div class="section-inner">
         <div class="section-head reveal">
-          <p class="eyebrow">{getVal("devicesEyebrow")}</p>
-          <h2>{getVal("devicesTitle")}</h2>
+          <p class="eyebrow">{t("devicesEyebrow")}</p>
+          <h2>{t("devicesTitle")}</h2>
         </div>
         <div class="grid grid-2">
           {devicesItems.map((item: any, index: number) => {
@@ -117,8 +116,8 @@ const getLabel = (key: keyof typeof labels) => labels[key][locale] || labels[key
     <section class="section">
       <div class="section-inner">
         <div class="section-head reveal">
-          <p class="eyebrow">{getVal("softwareEyebrow")}</p>
-          <h2>{getVal("softwareTitle")}</h2>
+          <p class="eyebrow">{t("softwareEyebrow")}</p>
+          <h2>{t("softwareTitle")}</h2>
         </div>
         <div class="grid grid-2">
           {softwareItems.map((item: any, index: number) => {

@@ -2,7 +2,7 @@
 import PageLayout from "@/layouts/PageLayout.astro";
 import { loadContent } from "@/lib/content";
 import { pageSeo, webPageNode, ORGANIZATION_SCHEMA, WEBSITE_SCHEMA, SITE_ORIGIN } from "@/lib/seo";
-import { localizeItem, resolveAsset, localizedValue, locales, resolveLocale, type Locale } from "@/lib/cms";
+import { localizeItem, resolveAsset, pageText, resolveLocale, type Locale } from "@/lib/cms";
 import { officesForContact, resolveOfficePhone, syncOfficePhonesInFacts, telHref } from "@/lib/company-contact";
 
 export const prerender = false;
@@ -22,7 +22,8 @@ const companySchema = {
   ],
 };
 const pageContent = content.pageContent?.company || {};
-const getVal = (key: string) => localizedValue(pageContent[key], locale);
+const t = (key: string, fallback = "") => pageText(pageContent, key, locale, fallback);
+const sectionTitle = (cmsKey: string, fallbackHtml: string) => t(cmsKey) || fallbackHtml;
 
 const companyFacts = syncOfficePhonesInFacts(content.companyFacts || {});
 const contactOffices = officesForContact(companyFacts, locale);
@@ -163,6 +164,50 @@ const ui = {
   historyTimeline: {
     en: "History timeline", tr: "Tarihçe zaman çizelgesi", de: "Zeitleiste", fr: "Chronologie", es: "Línea de tiempo", it: "Cronologia", ar: "الجدول الزمني", ja: "沿革タイムライン",
   },
+  historyLead: {
+    en: "Six years of steady growth — from a focused engineering studio to an internationally deployed IoT company.",
+    tr: "6 yıllık istikrarlı büyüme — odaklanmış bir mühendislik stüdyosundan uluslararası ölçekte konuşlandırılmış bir IoT şirketine.",
+    de: "Sechs Jahre stetiges Wachstum — von einem fokussierten Engineering-Studio zu einem international eingesetzten IoT-Unternehmen.",
+    fr: "Six ans de croissance régulière — d'un studio d'ingénierie ciblé à une entreprise IoT déployée à l'international.",
+    es: "Seis años de crecimiento constante — de un estudio de ingeniería enfocado a una empresa IoT desplegada internacionalmente.",
+    it: "Sei anni di crescita costante — da uno studio di ingegneria focalizzato a un'azienda IoT distribuita a livello internazionale.",
+    ar: "ست سنوات من النمو المستقر — من استوديو هندسي متخصص إلى شركة إنترنت أشياء منتشرة دولياً.",
+    ja: "着実な成長の6年間 — 集中型エンジニアリングスタジオから国際展開するIoT企業へ。",
+  },
+  expertiseEyebrow: { en: "Core expertise", tr: "Uzmanlık Alanlarımız", de: "Kernkompetenzen", fr: "Expertise clé", es: "Experiencia principal", it: "Competenze chiave", ar: "الخبرات الأساسية", ja: "コア領域" },
+  expertiseTitleHtml: {
+    en: 'What we are actually <span class="serif-accent">good</span> at.',
+    tr: 'Asıl <span class="serif-accent">iyi</span> olduğumuz işler.',
+    de: 'Worin wir wirklich <span class="serif-accent">stark</span> sind.',
+    fr: 'Ce que nous faisons vraiment <span class="serif-accent">bien</span>.',
+    es: 'En lo que realmente somos <span class="serif-accent">buenos</span>.',
+    it: 'Ciò in cui siamo davvero <span class="serif-accent">bravi</span>.',
+    ar: 'ما نتقنه <span class="serif-accent">فعلاً</span>.',
+    ja: '私たちが本当に<span class="serif-accent">得意</span>とする領域。',
+  },
+  expertiseLead: {
+    en: "Six deep competencies covering the entire IoT product lifecycle — from silicon to cloud.",
+    tr: "Silikondan buluta kadar tüm IoT ürün yaşam döngüsünü kapsayan altı temel uzmanlık katmanı.",
+    de: "Sechs Kernkompetenzen entlang des gesamten IoT-Produktlebenszyklus — vom Silizium bis zur Cloud.",
+    fr: "Six compétences couvrant tout le cycle de vie produit IoT — du silicium au cloud.",
+    es: "Seis competencias que cubren todo el ciclo de vida del producto IoT — del silicio a la nube.",
+    it: "Sei competenze che coprono l'intero ciclo di vita del prodotto IoT — dal silicio al cloud.",
+    ar: "ست كفاءات تغطي دورة حياة منتج إنترنت الأشياء بالكامل — من السيليكون إلى السحابة.",
+    ja: "シリコンからクラウドまで、IoT製品ライフサイクル全体をカバーする6つの専門領域。",
+  },
+  workWithLead: {
+    en: "From Fortune 500 industrials to fast-moving consumer brands — demanding environments where reliability is not optional.",
+    tr: "Fortune 500 endüstriyel devlerinden hızlı tüketim markalarına kadar — güvenilirliğin isteğe bağlı olmadığı zorlu çalışma koşulları.",
+    de: "Von Fortune-500-Industriellen bis zu schnelllebigen Konsummarken — anspruchsvolle Umgebungen, in denen Zuverlässigkeit keine Option ist.",
+    fr: "Des industriels du Fortune 500 aux marques grand public — des environnements exigeants où la fiabilité n'est pas optionnelle.",
+    es: "Desde industriales Fortune 500 hasta marcas de consumo — entornos exigentes donde la fiabilidad no es opcional.",
+    it: "Dai industriali Fortune 500 ai brand consumer — ambienti impegnativi in cui l'affidabilità non è opzionale.",
+    ar: "من عمالقة الصناعة إلى علامات الاستهلاك السريع — بيئات تتطلب موثوقية لا تقبل التفاوض.",
+    ja: "フォーチュン500の産業企業から消費財ブランドまで — 信頼性が不可欠な厳しい環境。",
+  },
+  rndUnit: { en: "yrs", tr: "yıl", de: "J.", fr: "ans", es: "años", it: "anni", ar: "سنة", ja: "年" },
+  fullStackValue: { en: "Full-stack", tr: "Uçtan uca", de: "Full-Stack", fr: "Full-stack", es: "Full-stack", it: "Full-stack", ar: "متكامل", ja: "フルスタック" },
+  fullStackLabel: { en: "HW · FW · Cloud", tr: "Donanım · Yazılım · Bulut", de: "HW · FW · Cloud", fr: "HW · FW · Cloud", es: "HW · FW · Cloud", it: "HW · FW · Cloud", ar: "عتاد · برمجيات · سحابة", ja: "HW · FW · Cloud" },
   howWeWorkTitleHtml: {
     en: 'Engineering principles we don\'t <span class="serif-accent">compromise</span> on.',
     tr: 'Taviz vermediğimiz mühendislik <span class="serif-accent">ilkeleri</span>.',
@@ -201,6 +246,15 @@ const u = (key: keyof typeof ui) => {
     : "";
 };
 
+const foundedYear = parseInt(String(companyFacts.founded || ""), 10);
+const stat3Value = getFactVal("stat3Value")
+  || (Number.isFinite(foundedYear) ? String(new Date().getFullYear() - foundedYear) : "");
+const stat3Display = stat3Value ? `${stat3Value} ${u("rndUnit")}` : "";
+const stat4Display = getFactVal("stat4Value") || u("fullStackValue");
+const stat4Label = getFactVal("stat4Label") || u("fullStackLabel");
+
+const factText = (key: string, fallback = "") => getFactVal(key) || fallback;
+
 const teamTitleHtml: Record<string, string> = {
   en: 'Meet the people behind the <span class="serif-accent">engineering</span>.',
   tr: 'Mühendisliğin arkasındaki <span class="serif-accent">insanlar</span>.',
@@ -210,57 +264,6 @@ const teamTitleHtml: Record<string, string> = {
   it: 'Le <span class="serif-accent">persone</span> dietro l\'ingegneria.',
   ar: 'الأشخاص وراء <span class="serif-accent">الهندسة</span>.',
   ja: '<span class="serif-accent">エンジニアリング</span>の裏にいる人たち。',
-};
-
-const aboutBulletFallback: Record<string, string[]> = {
-  en: [
-    "Low-power architecture optimized for years of unattended operation",
-    "Custom hardware design for every enclosure, RF and power constraint",
-    "Backend, cloud and interface layers built in-house — no integration debt",
-    "Production-ready: from first prototype to certified, manufactured product",
-  ],
-  tr: [
-    "Yıllarca müdahalesiz çalışma için optimize edilmiş düşük güç tüketimli mimari",
-    "Her türlü kutu, RF ve güç kısıtlaması için özel donanım tasarımı",
-    "Kendi bünyemizde geliştirilen bulut ve arayüz katmanları — entegrasyon borcu yok",
-    "Üretime hazır: ilk prototipten sertifikalı, üretilmiş ürüne kadar",
-  ],
-  de: [
-    "Energiesparende Architektur für jahrelangen unbeaufsichtigten Betrieb",
-    "Individuelles Hardware-Design für jedes Gehäuse, RF- und Leistungsprofil",
-    "Backend, Cloud und Oberflächen intern entwickelt — ohne Integrations-Schulden",
-    "Produktionsreif: vom ersten Prototyp bis zum zertifizierten Serienprodukt",
-  ],
-  fr: [
-    "Architecture basse consommation optimisée pour des années d'exploitation autonome",
-    "Conception hardware sur mesure pour chaque boîtier, contrainte RF et alimentation",
-    "Backend, cloud et interfaces développés en interne — sans dette d'intégration",
-    "Prêt pour la production : du premier prototype au produit certifié",
-  ],
-  es: [
-    "Arquitectura de bajo consumo optimizada para años de operación sin supervisión",
-    "Diseño de hardware a medida para cada carcasa, RF y restricción de energía",
-    "Backend, nube e interfaces desarrollados internamente — sin deuda de integración",
-    "Listo para producción: del primer prototipo al producto certificado",
-  ],
-  it: [
-    "Architettura a basso consumo ottimizzata per anni di funzionamento autonomo",
-    "Hardware su misura per ogni involucro, vincolo RF e di alimentazione",
-    "Backend, cloud e interfacce sviluppati internamente — senza debito di integrazione",
-    "Pronto per la produzione: dal primo prototipo al prodotto certificato",
-  ],
-  ar: [
-    "بنية منخفضة الطاقة محسّنة لسنوات من التشغيل دون إشراف",
-    "تصميم أجهزة مخصص لكل غلاف وقيود RF والطاقة",
-    "طبقات الخلفية والسحابة والواجهات مطوّرة داخلياً — دون ديون تكامل",
-    "جاهز للإنتاج: من النموذج الأول إلى منتج معتمد ومصنّع",
-  ],
-  ja: [
-    "長期無人運用向けに最適化された低消費電力アーキテクチャ",
-    "筐体・RF・電源制約ごとのカスタムハードウェア設計",
-    "バックエンド・クラウド・UIを社内開発 — 統合負債なし",
-    "量産対応：初回プロトタイプから認証済み製品まで",
-  ],
 };
 ---
 
@@ -314,12 +317,12 @@ const aboutBulletFallback: Record<string, string[]> = {
           <span>{u("countriesDeployed")}</span>
         </div>
         <div class="ws-stat" style="padding: 0 32px;" id="stat-border-2">
-          <b>6 yrs</b>
+          <b>{stat3Display}</b>
           <span>{u("continuousRnD")}</span>
         </div>
         <div class="ws-stat" style="padding: 0 32px;" id="stat-border-3">
-          <b>Full-<br class="company-stat-mobile-break" />stack</b>
-          <span>HW · FW · Cloud</span>
+          <b>{stat4Display}</b>
+          <span>{stat4Label}</span>
         </div>
       </div>
     </div>
@@ -328,29 +331,21 @@ const aboutBulletFallback: Record<string, string[]> = {
     <section class="company-section company-about-c">
       <div class="company-container company-grid-2">
         <div style="display: flex; flex-direction: column; gap: 22px;">
-          <span class="eyebrow">{u("aboutUs")}</span>
+          <span class="eyebrow">{t("introEyebrow", u("aboutUs"))}</span>
           <h2 class="ws-h2" style="font-size: clamp(2rem, 3.4vw, 2.75rem); text-wrap: balance;">
-            {getFactVal("aboutHeadline")}
+            {t("introTitle", getFactVal("aboutHeadline"))}
           </h2>
           <ul class="ws-bullets" style="margin-top: 4px;">
-            {(() => {
-              const bullets = getFactList("aboutBullets");
-              if (bullets && bullets.length > 0) {
-                return bullets.map((b: any) => {
-                  if (typeof b === "string") return <li>{b}</li>;
-                  const item = localizeItem(b, locale);
-                  return <li>{item?.text || b?.text || ""}</li>;
-                });
-              }
-              // Fallback hardcoded
-              const fallback = aboutBulletFallback[locale] || aboutBulletFallback.en;
-              return fallback.map((text) => <li>{text}</li>);
-            })()}
+            {getFactList("aboutBullets").map((b: any) => {
+              if (typeof b === "string") return <li>{b}</li>;
+              const item = localizeItem(b, locale);
+              return <li>{item?.text || b?.text || ""}</li>;
+            })}
           </ul>
         </div>
         <div style="display: flex; flex-direction: column; gap: 18px; padding-top: 8px;">
           <p style="font-size: 16px; line-height: 1.72; color: var(--ws-body); margin: 0;">
-            {getFactVal("aboutSub")}
+            {t("introLead", getFactVal("aboutSub"))}
           </p>
           <div style="display: flex; flex-wrap: wrap; gap: 9px; margin-top: 4px;">
             {((getFactList("aboutTags") as string[]) || []).map((t: string) => (
@@ -416,8 +411,8 @@ const aboutBulletFallback: Record<string, string[]> = {
       <div class="company-container">
         <div class="company-grid-principles-head">
           <div>
-            <span class="eyebrow">{u("howWeWork")}</span>
-            <h2 class="ws-h2" style="margin-top: 18px;" set:html={ui.howWeWorkTitleHtml[locale] || ui.howWeWorkTitleHtml.en} />
+            <span class="eyebrow">{t("principlesEyebrow", u("howWeWork"))}</span>
+            <h2 class="ws-h2" style="margin-top: 18px;" set:html={sectionTitle("principlesTitle", ui.howWeWorkTitleHtml[locale] || ui.howWeWorkTitleHtml.en)} />
           </div>
           <div class="company-proof-chips">
             {getFactList("whyUs").map((w: any) => {
@@ -456,15 +451,13 @@ const aboutBulletFallback: Record<string, string[]> = {
       <div class="company-container">
         <div class="company-grid-timeline-head">
           <div>
-            <span class="eyebrow">{getVal("historyEyebrow") || (locale === 'tr' ? 'Tarihçemiz' : 'Our history')}</span>
-            <h2 class="ws-h2" style="margin-top: 18px;" set:html={getVal("historyTitle") || (locale === 'tr'
+            <span class="eyebrow">{t("historyEyebrow", u("historyTimeline"))}</span>
+            <h2 class="ws-h2" style="margin-top: 18px;" set:html={sectionTitle("historyTitle", locale === 'tr'
                 ? 'Ar-Ge köklerinden <span class="serif-accent">küresel</span> dağıtıma.'
                 : 'From R&D roots to <span class="serif-accent">global</span> deployment.')} />
           </div>
           <p class="ws-lead" style="align-self: end; padding-bottom: 4px;">
-            {locale === 'tr' 
-              ? '6 yıllık istikrarlı büyüme — odaklanmış bir mühendislik stüdyosundan uluslararası ölçekte konuşlandırılmış bir IoT şirketine.' 
-              : 'Six years of steady growth — from a focused engineering studio to an internationally deployed IoT company.'}
+            {factText("historyLead", u("historyLead"))}
           </p>
         </div>
         
@@ -513,12 +506,10 @@ const aboutBulletFallback: Record<string, string[]> = {
     <section class="company-section company-expertise-c">
       <div class="company-container company-expertise-layout">
         <div class="company-expertise-copy">
-            <span class="eyebrow">{getVal("expertiseEyebrow") || (locale === 'tr' ? 'Uzmanlık Alanlarımız' : 'Core expertise')}</span>
-            <h2 class="ws-h2" style="margin-top: 18px;" set:html={getVal("expertiseTitle") || (locale === 'tr' ? 'Asıl <span class="serif-accent">iyi</span> olduğumuz işler.' : 'What we are actually <span class="serif-accent">good</span> at.')} />
+            <span class="eyebrow">{factText("expertiseEyebrow", u("expertiseEyebrow"))}</span>
+            <h2 class="ws-h2" style="margin-top: 18px;" set:html={factText("expertiseTitle", ui.expertiseTitleHtml[locale] || ui.expertiseTitleHtml.en)} />
           <p class="ws-lead">
-            {getVal("expertiseLead") || (locale === 'tr'
-              ? 'Silikondan buluta kadar tüm IoT ürün yaşam döngüsünü kapsayan altı temel uzmanlık katmanı.'
-              : 'Six deep competencies covering the entire IoT product lifecycle — from silicon to cloud.')}
+            {factText("expertiseLead", u("expertiseLead"))}
           </p>
         </div>
         <div class="company-capability-panel">
@@ -544,12 +535,10 @@ const aboutBulletFallback: Record<string, string[]> = {
     <section class="company-section bg-soft company-industries-section">
       <div class="company-container company-industries-layout">
         <div class="company-industries-copy">
-            <span class="eyebrow">{getVal("industriesEyebrow") || (locale === 'tr' ? 'Birlikte Çalıştıklarımız' : 'Who we work with')}</span>
-            <h2 class="ws-h2" style="margin-top: 18px;" set:html={getVal("industriesTitle") || (locale === 'tr' ? 'Küresel ekipler WillowSoft\'a tek bir nedenle güvenir: Sonuç <span class="serif-accent">üretiriz</span>.' : 'Global teams trust WillowSoft for one reason: we <span class="serif-accent">deliver</span>.')} />
+            <span class="eyebrow">{t("workWithEyebrow", u("workWithUs"))}</span>
+            <h2 class="ws-h2" style="margin-top: 18px;" set:html={sectionTitle("workWithTitle", locale === 'tr' ? 'Küresel ekipler WillowSoft\'a tek bir nedenle güvenir: Sonuç <span class="serif-accent">üretiriz</span>.' : 'Global teams trust WillowSoft for one reason: we <span class="serif-accent">deliver</span>.')} />
           <p class="ws-lead">
-            {getVal("industriesLead") || (locale === 'tr'
-              ? 'Fortune 500 endüstriyel devlerinden hızlı tüketim markalarına kadar — güvenilirliğin isteğe bağlı olmadığı zorlu çalışma koşulları.'
-              : 'From Fortune 500 industrials to fast-moving consumer brands — demanding environments where reliability is not optional.')}
+            {factText("workWithLead", u("workWithLead"))}
           </p>
         </div>
         <div class="company-industry-proof-list">
@@ -623,10 +612,10 @@ const aboutBulletFallback: Record<string, string[]> = {
     <section class="company-section company-cta-c" style="padding-top: 0;">
       <div class="company-container company-cta-inner" style="background: linear-gradient(135deg, var(--ws-hero-1), var(--ws-hero-2)); border-radius: 24px; color: #ffffff;">
         <div>
-          <span class="eyebrow" style="color: var(--ws-teal);">{u("workWithUs")}</span>
-          <h2 style="font-size: clamp(1.7rem, 3.2vw, 2.6rem); font-weight: 700; color: #fff; letter-spacing: -.02em; line-height: 1.1; margin-top: 18px; max-width: 680px; text-wrap: balance;" set:html={ui.ctaTitleHtml[locale] || ui.ctaTitleHtml.en} />
+          <span class="eyebrow" style="color: var(--ws-teal);">{t("ctaEyebrow", u("workWithUs"))}</span>
+          <h2 style="font-size: clamp(1.7rem, 3.2vw, 2.6rem); font-weight: 700; color: #fff; letter-spacing: -.02em; line-height: 1.1; margin-top: 18px; max-width: 680px; text-wrap: balance;" set:html={sectionTitle("ctaTitle", ui.ctaTitleHtml[locale] || ui.ctaTitleHtml.en)} />
           <p style="font-size: 16px; line-height: 1.65; color: rgba(255,255,255,.68); margin-top: 16px; max-width: 520px;">
-            {u("workWithUsLead")}
+            {t("ctaLead", u("workWithUsLead"))}
           </p>
           <div style="display: flex; flex-direction: column; gap: 11px; margin-top: 28px; font-size: 15px; color: rgba(255,255,255,.7); font-weight: 600;">
             {contactOffices.filter((office) => office.phone).map((office) => (
