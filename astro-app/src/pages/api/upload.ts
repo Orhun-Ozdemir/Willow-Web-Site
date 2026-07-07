@@ -108,7 +108,7 @@ export const POST: APIRoute = async ({ request }) => {
         metadata: { filename, folder, size: file.size },
         ...meta,
       });
-      return new Response(JSON.stringify({ ok: true, url: publicUrl, filename }), {
+      return new Response(JSON.stringify({ ok: true, url: publicUrl, path: storagePath, filename }), {
         status: 200,
         headers: { "Content-Type": "application/json" },
       });

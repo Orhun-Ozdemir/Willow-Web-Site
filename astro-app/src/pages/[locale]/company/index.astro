@@ -391,12 +391,13 @@ const teamTitleHtml: Record<string, string> = {
         </div>
         <div class="company-team-list">
           {sortedTeam.map((member: any) => {
+            const imagePath = itemText(member, "image", locale, member.image || "");
             return (
               <div class="ws-card company-team-card">
                 <div class="ws-placeholder-avatar company-team-avatar">
                   <span class="company-team-initials">{getInitials(member.name)}</span>
-                  {hasUsableImage(member.image) && (
-                    <img class="company-team-image" src={resolveAsset(member.image)} alt={member.name} loading="lazy" onerror="this.style.display='none';" />
+                  {hasUsableImage(imagePath) && (
+                    <img class="company-team-image" src={resolveAsset(imagePath)} alt={member.name} loading="lazy" onerror="this.style.display='none';" />
                   )}
                 </div>
                 <div class="company-team-body">

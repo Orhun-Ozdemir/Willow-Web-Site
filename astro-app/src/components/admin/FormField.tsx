@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { resolveAsset } from "@/lib/cms";
 
 interface FormFieldProps {
   label: string;
@@ -34,14 +35,7 @@ export default function FormField({
 
   const inputCls = `w-full p-2 bg-gray-50 border border-gray-200 rounded text-gray-800 outline-none focus:border-[#1aa3c4] ${readOnly ? "text-gray-400" : ""} ${className}`;
 
-  const getPreviewUrl = (val: string) => {
-    if (!val) return "";
-    if (/^(https?:)?\/\//i.test(val) || val.startsWith("data:")) return val;
-    const clean = val.replace(/^\/+/, "");
-    // Ensure we handle BASE_URL correctly for relative assets
-    const base = (import.meta.env.BASE_URL || "/").replace(/\/+$/, "");
-    return `${base}/${clean}`;
-  };
+  const getPreviewUrl = (val: string) => resolveAsset(val);
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -70,7 +64,7 @@ export default function FormField({
         return;
       }
 
-      onChange(data.url);
+      onChange(data.path || data.url);
     } catch {
       setUploadError("Yükleme sırasında ağ hatası oluştu.");
     } finally {

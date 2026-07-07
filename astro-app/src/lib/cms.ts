@@ -165,22 +165,75 @@ export function localizeItem(item: any, locale: Locale): any {
   return next;
 }
 
+import { SUPABASE_URL } from "./supabase";
+
+const SUPABASE_STORAGE_PREFIXES = [
+  "team/",
+  "uploads/",
+  "images/",
+  "datasheets/",
+  "products/",
+  "solutions/",
+  "news/",
+  "offices/",
+];
+
+function supabaseStorageUrl(key: string): string {
+  if (!SUPABASE_URL) return "";
+  return `${SUPABASE_URL}/storage/v1/object/public/assets/${key.replace(/^\/+/, "")}`;
+}
+
+/** Map legacy seed paths (assets/team/…) to bucket keys (team/…). */
+function legacyStorageKey(cleanPath: string): string | null {
+  if (cleanPath.startsWith("assets/team/")) return cleanPath.slice("assets/".length);
+  if (cleanPath.startsWith("assets/offices/")) return cleanPath.slice("assets/".length);
+  return null;
+}
+
+const STATIC_PUBLIC_PREFIXES = [
+  "assets/favicon.",
+  "assets/willow-mark",
+  "assets/hero-",
+  "assets/client-logos/",
+  "assets/product-cutouts/",
+  "pdf-assets/",
+];
+
+function isStaticPublicAsset(cleanPath: string): boolean {
+  if (!cleanPath.startsWith("assets/") && !cleanPath.startsWith("pdf-assets/")) return false;
+  return STATIC_PUBLIC_PREFIXES.some((prefix) => cleanPath.startsWith(prefix));
+}
+
 export function resolveAsset(path: string | undefined): string {
-  if (!path) return '';
-  
-  if (path.startsWith('http')) return path;
+  if (!path) return "";
 
-  const cleanPath = path.startsWith('/') ? path.substring(1) : path;
+  const trimmed = path.trim();
+  if (!trimmed) return "";
 
-  // If it is a local public asset in the repository, serve it directly
-  if (cleanPath.startsWith('assets/') || cleanPath.startsWith('pdf-assets/')) {
-    const baseUrl = import.meta.env.BASE_URL || '/';
-    const cleanBase = baseUrl.endsWith('/') ? baseUrl : baseUrl + '/';
+  if (/^https?:\/\//i.test(trimmed)) return trimmed;
+
+  const cleanPath = trimmed.startsWith("/") ? trimmed.slice(1) : trimmed;
+
+  if (SUPABASE_STORAGE_PREFIXES.some((prefix) => cleanPath.startsWith(prefix))) {
+    return supabaseStorageUrl(cleanPath);
+  }
+
+  const legacyKey = legacyStorageKey(cleanPath);
+  if (legacyKey) return supabaseStorageUrl(legacyKey);
+
+  if (isStaticPublicAsset(cleanPath)) {
+    const baseUrl = import.meta.env.BASE_URL || "/";
+    const cleanBase = baseUrl.endsWith("/") ? baseUrl : `${baseUrl}/`;
     return cleanBase + cleanPath;
   }
 
-  const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL || '';
-  
-  // Return absolute URL pointing to our 'assets' bucket
-  return `${supabaseUrl}/storage/v1/object/public/assets/${cleanPath}`;
+  if (cleanPath.startsWith("assets/") || cleanPath.startsWith("pdf-assets/")) {
+    const fromStorage = supabaseStorageUrl(cleanPath);
+    if (fromStorage) return fromStorage;
+    const baseUrl = import.meta.env.BASE_URL || "/";
+    const cleanBase = baseUrl.endsWith("/") ? baseUrl : `${baseUrl}/`;
+    return cleanBase + cleanPath;
+  }
+
+  return supabaseStorageUrl(cleanPath);
 }

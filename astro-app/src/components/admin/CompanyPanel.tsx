@@ -612,7 +612,7 @@ export default function CompanyPanel() {
                       type="image"
                       value={member.image || ""}
                       onChange={(v) => updateTeamMember(editingTeamIdx, "image", v)}
-                      placeholder="assets/team/..."
+                      placeholder="team/... veya tam Supabase URL"
                     />
                     <div className="col-span-2">
                       <FormField
