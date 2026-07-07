@@ -17,20 +17,25 @@ export const GET: APIRoute = async ({ request }) => {
 
   try {
     const sb = getServiceClient();
-    let result = await sb
+    const withRole = await sb
       .from("admin_users")
       .select("id, username, active, role, created_at")
       .order("created_at", { ascending: true });
 
-    if (result.error?.message?.includes("role")) {
-      result = await sb
+    let rows: Array<{ id: string; username: string; active: boolean; role?: string | null; created_at: string }> | null =
+      withRole.data;
+    if (withRole.error?.message?.includes("role")) {
+      const withoutRole = await sb
         .from("admin_users")
         .select("id, username, active, created_at")
         .order("created_at", { ascending: true });
+      if (withoutRole.error) throw withoutRole.error;
+      rows = withoutRole.data;
+    } else if (withRole.error) {
+      throw withRole.error;
     }
 
-    if (result.error) throw result.error;
-    const users = (result.data ?? []).map(withDefaultRole);
+    const users = (rows ?? []).map(withDefaultRole);
     return new Response(JSON.stringify({ ok: true, users }), { status: 200, headers: { "Content-Type": "application/json" } });
   } catch (e: any) {
     return new Response(JSON.stringify({ ok: false, error: e.message }), { status: 500, headers: { "Content-Type": "application/json" } });

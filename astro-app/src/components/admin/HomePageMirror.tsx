@@ -3,11 +3,12 @@
 import { useLayoutEffect, useRef, useState, type ReactNode } from "react";
 
 import { flowNodesFromPageContent, industryLanesFromPageContent, serviceRailFromPageContent, type Locale } from "@/lib/cms";
+import type { MirrorCard } from "./mirrorShared";
+
+export type { MirrorCard } from "./mirrorShared";
 
 const MIRROR_SCALE = 0.255;
 const MIRROR_WIDTH = 1180;
-
-export type { MirrorCard } from "./mirrorShared";
 
 type RailItem = { title: string; desc: string; titleKey: string; descKey: string; index: number };
 

@@ -6,6 +6,7 @@ import { useAdmin } from "./AdminContext";
 import LocaleTabs from "./LocaleTabs";
 import { syncOfficePhonesInFacts } from "@/lib/company-contact";
 import { DEFAULT_BRAND_TAGLINE } from "@/lib/brand-tagline";
+import { SOCIAL_SVGS } from "@/lib/social-icons";
 
 // ── Known companyFacts fields with human-readable metadata ──────────────────
 const KNOWN_FACTS: { key: string; label: string; hint: string; type?: "text" | "textarea" }[] = [
@@ -307,7 +308,9 @@ type SocialLink = { id: string; platform: string; url: string; enabled: boolean 
 function SocialLinksPanel() {
   const { content, setContent } = useAdmin();
 
-  const links: SocialLink[] = content?.companyFacts?.socialLinks || [];
+  const links: SocialLink[] = Array.isArray(content?.companyFacts?.socialLinks)
+    ? content.companyFacts.socialLinks
+    : [];
 
   function setLinks(next: SocialLink[]) {
     setContent((c: any) => ({
@@ -455,7 +458,7 @@ export default function SettingsPanel() {
   const enStrings = translations["en"] || {};
 
   const knownKeys = KNOWN_FACTS.map((f) => f.key);
-  const unknownFactKeys = Object.keys(facts).filter((k) => !knownKeys.includes(k) && k !== "localized").sort();
+  const unknownFactKeys = Object.keys(facts).filter((k) => !knownKeys.includes(k) && k !== "localized" && k !== "socialLinks").sort();
 
   const updateFact = (key: string, value: string) => {
     setContent((c: any) => {

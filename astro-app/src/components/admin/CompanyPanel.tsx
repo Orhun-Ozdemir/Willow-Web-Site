@@ -4,6 +4,7 @@ import { useState } from "react";
 import { type Locale } from "@/lib/cms";
 import { useAdmin } from "./AdminContext";
 import FormField from "./FormField";
+import TranslationEditor from "./TranslationEditor";
 import { syncOfficePhonesInFacts } from "@/lib/company-contact";
 
 type SubTab = "general" | "team" | "timeline" | "offices" | "expertise" | "industries";

@@ -20,7 +20,8 @@ const ROLE_PERMISSIONS: Record<AdminRole, AdminPermission[] | ["*"]> = {
 
 export function hasPermission(role: AdminRole, permission: AdminPermission): boolean {
   const perms = ROLE_PERMISSIONS[role] ?? ROLE_PERMISSIONS.super_admin;
-  return perms.includes("*" as AdminPermission) || (perms as AdminPermission[]).includes(permission);
+  if ((perms as readonly string[]).includes("*")) return true;
+  return (perms as AdminPermission[]).includes(permission);
 }
 
 /** Map admin shell tabs to required read permission. Omitted = visible to all authenticated admins. */
