@@ -24,10 +24,30 @@ export function resolveLocale(value: any, pathname?: string): Locale {
   return "en";
 }
 
-export function localizedValue(map: any, locale: Locale): string {
+export function localizedValue(
+  map: any,
+  locale: Locale,
+  options?: { fallbackToEn?: boolean },
+): string {
   if (!map) return "";
   if (typeof map === "string") return map;
-  return map[locale] || map.en || "";
+  const localized = map[locale];
+  if (localized) return localized;
+  if (options?.fallbackToEn === false) return "";
+  return map.en || "";
+}
+
+/** CMS button field: plain localized string or `{ label, url }` per locale. */
+export function pageButtonLabel(value: any, locale: Locale): string {
+  if (!value) return "";
+  if (typeof value === "string") return value.trim();
+  if (typeof value !== "object") return "";
+  const localized = value[locale] ?? value.en;
+  if (typeof localized === "string") return localized.trim();
+  if (localized && typeof localized === "object" && localized.label) {
+    return String(localized.label).trim();
+  }
+  return "";
 }
 
 export interface ServiceRailItem {

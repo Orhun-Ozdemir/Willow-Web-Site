@@ -59,8 +59,15 @@ const getFactVal = (key: string) => {
   return cleanCmsValue(map);
 };
 
-const getFactList = (key: string) => {
-  return cleanCmsValue(companyFacts[key] || []);
+const getFactList = (key: string): any[] => {
+  const localized = companyFacts.localized?.[locale]?.[key];
+  const raw = localized !== undefined && localized !== null ? localized : companyFacts[key];
+  const cleaned = cleanCmsValue(raw ?? []);
+  if (Array.isArray(cleaned)) return cleaned;
+  if (typeof cleaned === "string") {
+    return cleaned.split(/[\n,]+/g).map((item) => item.trim()).filter(Boolean);
+  }
+  return [];
 };
 
 const sortByOrder = (items: any[]) => {
@@ -72,8 +79,12 @@ const sortByOrder = (items: any[]) => {
   });
 };
 
-const sortedTeam = sortByOrder(getFactList("team")).map((item) => cleanCmsValue(localizeItem(item, locale)));
-const sortedTimeline = sortByOrder(getFactList("timeline")).map((item) => cleanCmsValue(localizeItem(item, locale)));
+const sortedTeam = sortByOrder(Array.isArray(companyFacts.team) ? companyFacts.team : [])
+  .filter((item) => item && typeof item === "object")
+  .map((item) => cleanCmsValue(localizeItem(item, locale)));
+const sortedTimeline = sortByOrder(Array.isArray(companyFacts.timeline) ? companyFacts.timeline : [])
+  .filter((item) => item && typeof item === "object")
+  .map((item) => cleanCmsValue(localizeItem(item, locale)));
 const timelineCopies = [0, 1, 2];
 
 const getInitials = (name: string) => {
@@ -326,8 +337,9 @@ const aboutBulletFallback: Record<string, string[]> = {
               const bullets = getFactList("aboutBullets");
               if (bullets && bullets.length > 0) {
                 return bullets.map((b: any) => {
+                  if (typeof b === "string") return <li>{b}</li>;
                   const item = localizeItem(b, locale);
-                  return <li>{item.text || b.text}</li>;
+                  return <li>{item?.text || b?.text || ""}</li>;
                 });
               }
               // Fallback hardcoded
@@ -408,25 +420,30 @@ const aboutBulletFallback: Record<string, string[]> = {
             <h2 class="ws-h2" style="margin-top: 18px;" set:html={ui.howWeWorkTitleHtml[locale] || ui.howWeWorkTitleHtml.en} />
           </div>
           <div class="company-proof-chips">
-            {(getFactList("whyUs") || []).map((w: any) => (
-              <div class="company-proof-chip">
-                <div class="ws-icbox" style="flex: 0 0 auto;" set:html={getSvg(w.icon, 20)} />
-                <span>{w.title}</span>
-              </div>
-            ))}
+            {getFactList("whyUs").map((w: any) => {
+              if (!w || typeof w !== "object") return null;
+              const chip = localizeItem(w, locale);
+              return (
+                <div class="company-proof-chip">
+                  <div class="ws-icbox" style="flex: 0 0 auto;" set:html={getSvg(chip?.icon || w.icon, 20)} />
+                  <span>{chip?.title || w.title || ""}</span>
+                </div>
+              );
+            })}
           </div>
         </div>
         <div class="company-principles-list">
-          {(getFactList("principles") || []).map((p: any) => {
+          {getFactList("principles").map((p: any) => {
+            if (!p || typeof p !== "object") return null;
             const principle = localizeItem(p, locale);
             return (
               <div class="ws-card company-principle-card">
                 <div class="company-principle-top">
-                  <span>{principle.n}</span>
-                  <div class="ws-icbox" set:html={getSvg(principle.icon, 22)} />
+                  <span>{principle?.n ?? p?.n ?? ""}</span>
+                  <div class="ws-icbox" set:html={getSvg(principle?.icon || p?.icon, 22)} />
                 </div>
-                <h3 class="ws-h3">{principle.title}</h3>
-                <p>{principle.body}</p>
+                <h3 class="ws-h3">{principle?.title || p?.title || ""}</h3>
+                <p>{principle?.body || p?.body || ""}</p>
               </div>
             );
           })}
@@ -505,15 +522,16 @@ const aboutBulletFallback: Record<string, string[]> = {
           </p>
         </div>
         <div class="company-capability-panel">
-          {sortByOrder(getFactList("expertise") || []).map((e: any, i: number) => {
+          {sortByOrder(getFactList("expertise")).map((e: any, i: number) => {
+            if (!e || typeof e !== "object") return null;
             const exp = localizeItem(e, locale);
             return (
               <div class="company-capability-row">
                 <span class="company-capability-number">{String(i + 1).padStart(2, "0")}</span>
-                <div class="ws-icbox" set:html={getSvg(exp.icon || e.icon, 24)} />
+                <div class="ws-icbox" set:html={getSvg(exp?.icon || e?.icon, 24)} />
                 <div class="company-capability-copy">
-                  <b>{exp.label || e.label}</b>
-                  <span>{exp.note || e.note}</span>
+                  <b>{exp?.label || e?.label || ""}</b>
+                  <span>{exp?.note || e?.note || ""}</span>
                 </div>
               </div>
             );
@@ -535,16 +553,17 @@ const aboutBulletFallback: Record<string, string[]> = {
           </p>
         </div>
         <div class="company-industry-proof-list">
-          {(getFactList("industries") || []).map((ind: any, i: number) => {
+          {getFactList("industries").map((ind: any, i: number) => {
+            if (!ind || typeof ind !== "object") return null;
             const industry = localizeItem(ind, locale);
             return (
               <div class="ws-card company-industry-proof">
                 <span class="company-industry-index">{String(i + 1).padStart(2, "0")}</span>
-                <div class="company-industry-icon" style={`background: ${industry.c}; color: ${industry.t};`} set:html={getSvg(industry.icon, 24)} />
+                <div class="company-industry-icon" style={`background: ${industry?.c || ind?.c || "#e8eef8"}; color: ${industry?.t || ind?.t || "#132175"};`} set:html={getSvg(industry?.icon || ind?.icon, 24)} />
                 <div class="company-industry-body">
-                  <b>{industry.name}</b>
-                  <span>{industry.tag}</span>
-                  <p>{industry.body}</p>
+                  <b>{industry?.name || ind?.name || ""}</b>
+                  <span>{industry?.tag || ind?.tag || ""}</span>
+                  <p>{industry?.body || ind?.body || ""}</p>
                 </div>
               </div>
             );
@@ -559,7 +578,8 @@ const aboutBulletFallback: Record<string, string[]> = {
         <span class="eyebrow">{u("globalPresence")}</span>
         <h2 class="ws-h2" style="margin-top: 18px; margin-bottom: 36px;" set:html={ui.officesTitleHtml[locale] || ui.officesTitleHtml.en} />
         <div class="company-offices-grid">
-          {(getFactList("officesList") || []).map((o: any) => {
+          {getFactList("officesList").map((o: any) => {
+            if (!o || typeof o !== "object") return null;
             const office = localizeItem(o, locale);
             return (
               <div class="ws-card company-office-card">

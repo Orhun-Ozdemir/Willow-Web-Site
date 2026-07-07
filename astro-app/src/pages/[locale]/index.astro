@@ -6,7 +6,7 @@ import FaqAccordion from "@/components/FaqAccordion.astro";
 import AIAnswerBlock from "@/components/AIAnswerBlock.astro";
 import { loadContent } from "@/lib/content";
 import { pageSeo, ORGANIZATION_SCHEMA, WEBSITE_SCHEMA } from "@/lib/seo";
-import { flowNodesFromPageContent, industryLanesFromPageContent, localizedValue, locales, resolveLocale, serviceRailFromPageContent, type Locale } from "@/lib/cms";
+import { flowNodesFromPageContent, industryLanesFromPageContent, localizedValue, locales, pageButtonLabel, resolveLocale, serviceRailFromPageContent, type Locale } from "@/lib/cms";
 import { aiAnswerForPage, aiMetaForPage, appendSchemaNodes, fallbackFaqsForPage, faqItemsForPage, faqSchemaNode } from "@/lib/ai-search";
 
 export const prerender = false;
@@ -57,6 +57,15 @@ const labels: Record<string, Record<string, string>> = {
 };
 
 const getLabel = (key: string) => labels[key]?.[locale] || labels[key]?.en || key;
+
+const heroCtaLabel =
+  pageButtonLabel(pageContent.heroCta, locale) ||
+  localizedValue(pageContent.heroCta, locale, { fallbackToEn: false }) ||
+  (locale === "tr" ? "Projeni Anlat" : getLabel("startProject"));
+const heroCtaSecondaryLabel =
+  pageButtonLabel(pageContent.heroCtaSecondary, locale) ||
+  localizedValue(pageContent.heroCtaSecondary, locale, { fallbackToEn: false }) ||
+  getLabel("exploreServices");
 
 type L10n = Record<string, string>;
 const loc = (m: L10n) => m[locale] || m.en;
@@ -309,8 +318,8 @@ const homeSchema = appendSchemaNodes({
           <h1 class="reveal delay-1" set:html={getVal("heroTitle") || "From <span class='serif-accent'>bare metal</span> to <span class='hw-display'>dashboard</span> — without fragmented vendors."} />
           <p class="reveal delay-2">{getVal("heroLead")}</p>
           <div class="hero-ctas reveal delay-3">
-            <a class="btn btn-primary" href={`/${locale}/start-project`}>{locale === "tr" ? "Projeni Anlat" : getLabel("startProject")}</a>
-            <a class="btn btn-secondary" href={`/${locale}/services`}>{getLabel("exploreServices")}</a>
+            <a class="btn btn-primary" href={`/${locale}/start-project`}>{heroCtaLabel}</a>
+            <a class="btn btn-secondary" href={`/${locale}/services`}>{heroCtaSecondaryLabel}</a>
           </div>
           <div class="hero-proof reveal delay-4">
             <div class="proof-item">

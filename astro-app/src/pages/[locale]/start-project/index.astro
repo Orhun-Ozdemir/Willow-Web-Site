@@ -14,7 +14,6 @@ const locale = resolveLocale(Astro.params.locale, Astro.url.pathname);
 const content = await loadContent();
 const seoProps = pageSeo(content, "startProject", locale, "/start-project", "Start Your IoT Project | WillowSoft", "Start a connected hardware, software or platform project with WillowSoft.");
 const pageContent = content.pageContent?.startProject || {};
-const getVal = (key: string) => localizedValue(pageContent[key], locale);
 const startFallbackFaqs = fallbackFaqsForPage("start-project", locale);
 const startFaqItems = faqItemsForPage(content.faqs || [], "start-project", locale, startFallbackFaqs);
 const aiAnswer = aiAnswerForPage(content, "startProject", locale, seoProps.description);
@@ -97,6 +96,15 @@ const getLabel = (key: LabelKey) => {
 const getSteps = () => {
   return labels.steps[locale] || labels.steps.en;
 };
+
+const getVal = (key: string, fallbackKey?: LabelKey) => {
+  const fromCms = localizedValue(pageContent[key], locale, { fallbackToEn: false });
+  if (fromCms) return fromCms;
+  return fallbackKey ? getLabel(fallbackKey) : "";
+};
+
+const heroLead = getVal("heroLead") || getVal("formLead") || getLabel("detailedFormLead");
+const pathsLead = getVal("pathsLead") || getLabel("afterSubmitDesc");
 ---
 
 <PageLayout
@@ -111,9 +119,9 @@ const getSteps = () => {
       <div class="services-hero-light" aria-hidden="true"></div>
       <div class="hero-inner start-hero-grid">
         <div class="start-hero-copy">
-          <p class="eyebrow reveal">{getVal("heroEyebrow") || "Start Project"}</p>
+          <p class="eyebrow reveal">{getVal("heroEyebrow")}</p>
           <h1 class="reveal delay-1">{getVal("heroTitle")}</h1>
-          <p class="reveal delay-2">{getVal("heroLead")}</p>
+          <p class="reveal delay-2">{heroLead}</p>
           <div class="hero-ctas reveal delay-3">
             <a class="btn btn-primary" href="#lead-form">{getLabel("createProjectBrief")}</a>
             <a class="btn btn-secondary" href={`/${locale}/contact`}>{getLabel("generalContact")}</a>
@@ -125,7 +133,7 @@ const getSteps = () => {
           </div>
         </div>
 
-        <aside class="brief-overview-card reveal delay-2" aria-label="Project brief overview">
+        <aside class="brief-overview-card reveal delay-2" aria-label={getLabel("brief")}>
           <p class="architecture-label">{getLabel("builderTitle")}</p>
           <h2>{getLabel("builderTitle2")}</h2>
           <div class="brief-route">
@@ -180,9 +188,9 @@ const getSteps = () => {
     <section class="section soft project-intake-section" id="lead-form" aria-labelledby="project-brief-title">
       <div class="section-inner intake-layout">
         <div class="intake-copy reveal">
-          <p class="eyebrow">{getVal("realityEyebrow") || "Project Brief"}</p>
+          <p class="eyebrow">{getVal("realityEyebrow")}</p>
           <h2 class="page-title" id="project-brief-title">{getVal("realityTitle")}</h2>
-          <p class="section-lead">{getLabel("detailedFormLead")}</p>
+          <p class="section-lead">{getVal("formLead") || getLabel("detailedFormLead")}</p>
           
           <div class="intake-route-card">
             <div>
@@ -215,7 +223,7 @@ const getSteps = () => {
         <div class="section-head reveal">
           <p class="eyebrow">{getVal("pathsEyebrow") || getLabel("afterSubmission")}</p>
           <h2 class="page-title">{getVal("pathsTitle")}</h2>
-          <p class="section-lead">{getVal("pathsLead")}</p>
+          <p class="section-lead">{pathsLead}</p>
         </div>
         <div class="process process-premium process-compact">
           <div class="process-step reveal"><div class="step-dot">1</div><article class="card process-card"><h3>{getLabel("review")}</h3><p>{getLabel("reviewDesc")}</p></article></div>

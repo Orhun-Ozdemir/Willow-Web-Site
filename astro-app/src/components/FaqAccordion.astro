@@ -22,8 +22,10 @@ const fallbackItems = fallbackFaqs.map((faq) => ({
 
 <div class="faq-list reveal delay-1">
   {filteredFaqs.map((faq: any) => {
-    const q = faq.localized?.[locale]?.question || faq.question;
-    const a = faq.localized?.[locale]?.answer || faq.answer;
+    const localized = faq.localized?.[locale];
+    const q = localized?.question || (locale === "en" ? faq.question : "");
+    const a = localized?.answer || (locale === "en" ? faq.answer : "");
+    if (!q || !a) return null;
     return (
       <details class="faq-item">
         <summary>

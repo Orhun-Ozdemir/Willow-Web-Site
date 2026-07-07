@@ -3897,6 +3897,26 @@
         "ar": "تطوّر WillowSoft جميع طبقات منتج IoT الخاص بك بفريق واحد: العتاد، والـ firmware، والاتصال، والـ backend، وواجهات المستخدم.",
         "ja": "WillowSoft は、ハードウェア、ファームウェア、通信、バックエンド、ユーザーインターフェースまで、IoT 製品のすべてのレイヤーを一つのチームで開発します。"
       },
+      "heroCta": {
+        "en": "Start Your Project",
+        "tr": "Projeni Anlat",
+        "de": "Projekt starten",
+        "fr": "Démarrer un projet",
+        "es": "Iniciar proyecto",
+        "it": "Avvia progetto",
+        "ar": "ابدأ مشروعًا",
+        "ja": "プロジェクトを開始"
+      },
+      "heroCtaSecondary": {
+        "en": "Explore Services",
+        "tr": "Hizmetleri Keşfet",
+        "de": "Dienste erkunden",
+        "fr": "Découvrir les services",
+        "es": "Explorar servicios",
+        "it": "Esplora i servizi",
+        "ar": "استكشف الخدمات",
+        "ja": "提供サービスを見る"
+      },
       "trustEyebrow": {
         "en": "Trusted by global teams",
         "tr": "Küresel ekiplerin güveni",
@@ -5737,6 +5757,16 @@
         "ar": "زوّدنا بالملخّص، وسنرسم لك مسار الهندسة.",
         "ja": "概要をお聞かせください。エンジニアリングの道筋を私たちが描きます。"
       },
+      "heroLead": {
+        "en": "Share your product idea, required layers, and timeline. WillowSoft prepares a practical engineering discovery plan.",
+        "tr": "Ürün fikrinizi, gerekli teknik katmanları ve zaman planınızı paylaşın. WillowSoft keşif görüşmesiyle kapsamı netleştirir.",
+        "de": "Teilen Sie Produktidee, benötigte Schichten und Zeitplan mit. WillowSoft klärt den Umfang im Discovery-Gespräch.",
+        "fr": "Partagez votre idée produit, les couches requises et le calendrier. WillowSoft clarifie le périmètre lors d'un appel de cadrage.",
+        "es": "Comparta su idea de producto, las capas necesarias y el calendario. WillowSoft aclara el alcance en una llamada de descubrimiento.",
+        "it": "Condividi idea di prodotto, livelli richiesti e tempistiche. WillowSoft chiarisce l'ambito in una call di discovery.",
+        "ar": "شارك فكرة المنتج والطبقات المطلوبة والجدول الزمني. توضّح WillowSoft النطاق في مكالمة استكشافية.",
+        "ja": "製品アイデア、必要なレイヤー、スケジュールを共有してください。WillowSoft がディスカバリーコールで範囲を整理します。"
+      },
       "realityEyebrow": {
         "en": "Project fit",
         "tr": "Proje Uyumu",
@@ -5776,6 +5806,16 @@
         "it": "Una prima conversazione più chiara.",
         "ar": "محادثة أولى أكثر وضوحًا.",
         "ja": "より明確な初回の対話。"
+      },
+      "pathsLead": {
+        "en": "We review your brief, clarify missing requirements, then schedule the first technical conversation around feasibility, risks, and next steps.",
+        "tr": "Özetinizi inceler, eksik gereksinimleri netleştirir ve fizibilite, riskler ile sonraki adımlar için ilk teknik görüşmeyi planlarız.",
+        "de": "Wir prüfen Ihr Briefing, klären fehlende Anforderungen und planen das erste technische Gespräch zu Machbarkeit, Risiken und nächsten Schritten.",
+        "fr": "Nous examinons votre brief, clarifions les exigences manquantes, puis planifions la première conversation technique sur faisabilité, risques et prochaines étapes.",
+        "es": "Revisamos su brief, aclaramos requisitos faltantes y programamos la primera conversación técnica sobre viabilidad, riesgos y próximos pasos.",
+        "it": "Esaminiamo il brief, chiarifichiamo i requisiti mancanti e pianifichiamo il primo colloquio tecnico su fattibilità, rischi e passi successivi.",
+        "ar": "نراجع ملخصك ونوضح المتطلبات الناقصة ثم نحدد المحادثة التقنية الأولى حول الجدوى والمخاطر والخطوات التالية.",
+        "ja": "概要を確認し、不足要件を整理したうえで、実現性・リスク・次のステップについて初回の技術面談を設定します。"
       },
       "formEyebrow": {
         "en": "Project brief",

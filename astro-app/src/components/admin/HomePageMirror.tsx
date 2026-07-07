@@ -167,8 +167,8 @@ export default function HomePageMirror({
                   <h1 dangerouslySetInnerHTML={{ __html: html("heroTitle") || "Hero başlığı" }} />
                   {v("heroLead") && <p>{v("heroLead")}</p>}
                   <div className="hero-ctas">
-                    <span className="btn btn-primary">CTA</span>
-                    <span className="btn btn-secondary">CTA</span>
+                    <span className="btn btn-primary">{v("heroCta") || "CTA"}</span>
+                    <span className="btn btn-secondary">{v("heroCtaSecondary") || "CTA"}</span>
                   </div>
                   <div className="hero-proof">
                     <div className="proof-item"><strong>12+</strong><span>Ürün</span></div>
