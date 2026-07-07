@@ -6,7 +6,7 @@ import FaqAccordion from "@/components/FaqAccordion.astro";
 import AIAnswerBlock from "@/components/AIAnswerBlock.astro";
 import { loadContent } from "@/lib/content";
 import { pageSeo, ORGANIZATION_SCHEMA, WEBSITE_SCHEMA } from "@/lib/seo";
-import { flowNodesFromPageContent, industryLanesFromPageContent, localizedValue, locales, pageButtonLabel, resolveLocale, serviceRailFromPageContent, type Locale } from "@/lib/cms";
+import { flowNodesFromPageContent, industryLanesFromPageContent, pageButtonText, pageText, resolveLocale, serviceRailFromPageContent, type Locale } from "@/lib/cms";
 import { aiAnswerForPage, aiMetaForPage, appendSchemaNodes, fallbackFaqsForPage, faqItemsForPage, faqSchemaNode } from "@/lib/ai-search";
 
 export const prerender = false;
@@ -17,7 +17,8 @@ const pageContent = content.pageContent?.home || {};
 const companyFacts = content.companyFacts || {};
 const seoProps = pageSeo(content, "home", locale, "", "WillowSoft | Embedded Hardware & Industrial IoT Engineering", "Embedded hardware and Industrial IoT engineering.");
 
-const getVal = (key: string) => localizedValue(pageContent[key], locale);
+const getLabel = (key: string) => labels[key]?.[locale] || labels[key]?.en || key;
+const getVal = (key: string, fallback = "") => pageText(pageContent, key, locale, fallback);
 const homeFallbackFaqs = fallbackFaqsForPage("home", locale);
 const homeFaqItems = faqItemsForPage(content.faqs || [], "home", locale, homeFallbackFaqs);
 const aiAnswer = aiAnswerForPage(content, "home", locale, seoProps.description);
@@ -56,16 +57,20 @@ const labels: Record<string, Record<string, string>> = {
   ctaChoice_2: { en: "Web, Mobile, Simulation", tr: "web, mobil, Simülasyon", de: "Web, Mobile, Simulation", fr: "Web, mobile, simulation", es: "Web, móvil, simulación", it: "Web, mobile, simulazione", ar: "ويب، جوال، محاكاة", ja: "Web、モバイル、シミュレーション" },
 };
 
-const getLabel = (key: string) => labels[key]?.[locale] || labels[key]?.en || key;
+const heroCtaLabel = pageButtonText(pageContent.heroCta, locale, locale === "tr" ? "Projeni Anlat" : getLabel("startProject"));
+const heroCtaSecondaryLabel = pageButtonText(pageContent.heroCtaSecondary, locale, getLabel("exploreServices"));
+const ctaCtaLabel = pageButtonText(pageContent.ctaCta, locale, getLabel("talkEngineering"));
 
-const heroCtaLabel =
-  pageButtonLabel(pageContent.heroCta, locale) ||
-  localizedValue(pageContent.heroCta, locale, { fallbackToEn: false }) ||
-  (locale === "tr" ? "Projeni Anlat" : getLabel("startProject"));
-const heroCtaSecondaryLabel =
-  pageButtonLabel(pageContent.heroCtaSecondary, locale) ||
-  localizedValue(pageContent.heroCtaSecondary, locale, { fallbackToEn: false }) ||
-  getLabel("exploreServices");
+const heroTitleFallback: L10n = {
+  en: "From <span class='serif-accent'>bare metal</span> to <span class='hw-display'>dashboard</span> — without fragmented vendors.",
+  tr: "<em class=\"hw-serif\">Yalın donanımdan</em> <strong class=\"hw-display\">yönetim paneline</strong> — <span class=\"hw-muted\">birbirinden kopuk tedarikçilerle uğraşmadan.</span>",
+  de: "Von <em class=\"hw-serif\">Bare Metal</em> bis zum <strong class=\"hw-display\">Dashboard</strong> — <span class=\"hw-muted\">ohne zersplitterte Dienstleister.</span>",
+  fr: "Du <em class=\"hw-serif\">Bare Metal</em> au <strong class=\"hw-display\">tableau de bord</strong> — <span class=\"hw-muted\">sans multiplier les prestataires.</span>",
+  es: "Del <em class=\"hw-serif\">bare metal</em> al <strong class=\"hw-display\">panel de control</strong> — <span class=\"hw-muted\">sin lidiar con múltiples proveedores.</span>",
+  it: "Dal <em class=\"hw-serif\">bare metal</em> alla <strong class=\"hw-display\">dashboard</strong> — <span class=\"hw-muted\">senza dover gestire molteplici fornitori.</span>",
+  ar: "من <em class=\"hw-serif\">العتاد الأساسي</em> إلى <strong class=\"hw-display\">لوحة التحكم</strong> — <span class=\"hw-muted\">دون موردين مُجزّأين.</span>",
+  ja: "<em class=\"hw-serif\">ベアメタル</em>から<strong class=\"hw-display\">ダッシュボード</strong>まで — <span class=\"hw-muted\">複数のベンダーに分散することなく。</span>",
+};
 
 type L10n = Record<string, string>;
 const loc = (m: L10n) => m[locale] || m.en;
@@ -315,7 +320,7 @@ const homeSchema = appendSchemaNodes({
       <div class="hero-inner hero-layout">
         <div class="hero-copy">
           <p class="eyebrow reveal">{getVal("heroEyebrow")}</p>
-          <h1 class="reveal delay-1" set:html={getVal("heroTitle") || "From <span class='serif-accent'>bare metal</span> to <span class='hw-display'>dashboard</span> — without fragmented vendors."} />
+          <h1 class="reveal delay-1" set:html={getVal("heroTitle", loc(heroTitleFallback))} />
           <p class="reveal delay-2">{getVal("heroLead")}</p>
           <div class="hero-ctas reveal delay-3">
             <a class="btn btn-primary" href={`/${locale}/start-project`}>{heroCtaLabel}</a>
@@ -406,7 +411,7 @@ const homeSchema = appendSchemaNodes({
         <div class="section-head center reveal">
           <p class="eyebrow">{getVal("ecosystemEyebrow")}</p>
           <h2 set:html={getVal("ecosystemTitle")} />
-          <p class="section-lead">{loc(ecosystemLead)}</p>
+          <p class="section-lead">{getVal("ecosystemLead", loc(ecosystemLead))}</p>
         </div>
         <div class="tech-flow reveal delay-1">
           <div class="flow-row">
@@ -425,6 +430,7 @@ const homeSchema = appendSchemaNodes({
           <div>
             <p class="eyebrow">{getVal("productsEyebrow")}</p>
             <h2 set:html={getVal("productsTitle")} />
+            {getVal("productsLead") && <p class="section-lead">{getVal("productsLead")}</p>}
           </div>
           <a class="btn btn-secondary btn-small" href={`/${locale}/products`}>{getLabel("viewProducts")}</a>
         </div>
@@ -497,7 +503,7 @@ const homeSchema = appendSchemaNodes({
             <span>{getVal("ctaChoice_1") || getLabel("ctaChoice_1")}</span>
             <span>{getVal("ctaChoice_2") || getLabel("ctaChoice_2")}</span>
           </div>
-          <p><a class="btn btn-primary" href={`/${locale}/contact`}>{getLabel("talkEngineering")}</a></p>
+          <p><a class="btn btn-primary" href={`/${locale}/contact`}>{ctaCtaLabel}</a></p>
         </div>
       </div>
     </section>

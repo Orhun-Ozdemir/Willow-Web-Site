@@ -4,7 +4,7 @@ import FaqAccordion from "@/components/FaqAccordion.astro";
 import AIAnswerBlock from "@/components/AIAnswerBlock.astro";
 import { loadContent } from "@/lib/content";
 import { pageSeo, webPageNode, ORGANIZATION_SCHEMA, WEBSITE_SCHEMA } from "@/lib/seo";
-import { localizedValue, locales, resolveLocale, type Locale } from "@/lib/cms";
+import { localizedValue, itemText, localeMapText, pageText, resolveLocale, type Locale } from "@/lib/cms";
 import { aiAnswerForPage, aiMetaForPage, appendSchemaNodes, fallbackFaqsForPage, faqItemsForPage, faqSchemaNode } from "@/lib/ai-search";
 
 export const prerender = false;
@@ -15,17 +15,11 @@ const seoProps = pageSeo(content, "services", locale, "/services", "Services | W
 const pageContent = content.pageContent?.services || {};
 const companyFacts = content.companyFacts || {};
 
-// Helper to get localized page content value
-const getVal = (key: string) => localizedValue(pageContent[key], locale);
+// Helper to get localized page content value with optional fallback
+const getVal = (key: string, fallback = "") => pageText(pageContent, key, locale, fallback);
 
-// Helper to get localized value from an item's localized map, fallback to top-level
-const getItemVal = (item: any, key: string) => {
-  const loc = item?.localized?.[locale]?.[key];
-  if (loc) return loc;
-  const direct = localizedValue(item?.[key], locale);
-  if (direct) return direct;
-  return item?.[key] || "";
-};
+// Helper to get localized value from an item's localized map with fallback
+const getItemVal = (item: any, key: string, fallback = "") => itemText(item, key, locale, fallback);
 
 const servicesFallbackFaqs = fallbackFaqsForPage("services", locale);
 const servicesFaqItems = faqItemsForPage(content.faqs || [], "services", locale, servicesFallbackFaqs);
@@ -81,6 +75,7 @@ const labels: Record<string, Record<string, string>> = {
   typicalOutputLabel: { en: "Typical output", tr: "Tipik teslimat", de: "Typische Ausgabe", fr: "Livrable type", es: "Entregable típico", it: "Output tipico", ar: "المخرجات النموذجية", ja: "主な納品物" },
   startDiscovery: { en: "Start Discovery", tr: "Keşif Başlat", de: "Entdeckung starten", fr: "Démarrer la découverte", es: "Iniciar descubrimiento", it: "Avvia scoperta", ar: "ابدأ الاستكشاف", ja: "要件定義の相談をする" },
   questionsBefore: { en: "Frequently asked", tr: "Sıkça Sorulan", de: "Häufig gestellte", fr: "Foire aux questions", es: "Preguntas frecuentes", it: "Domande frequenti", ar: "الأسئلة الشائعة", ja: "よくある質問" },
+  faqTitleFallback: { en: "Questions before you brief us.", tr: "Bize özet göndermeden önce sorular.", de: "Fragen vor dem Briefing.", fr: "Questions avant de nous envoyer le brief.", es: "Preguntas antes de enviarnos el brief.", it: "Domande prima di inviarci il brief.", ar: "أسئلة قبل إرسال الملخص.", ja: "ブリーフ前によくある質問" },
   talkToEngineering: { en: "Talk to Engineering", tr: "Mühendislerle Görüşün", de: "Mit Engineering sprechen", fr: "Parler à l'ingénierie", es: "Hablar con ingeniería", it: "Parla con il team", ar: "تحدث إلى الهندسة", ja: "技術チームへ相談" },
   startYourProject: { en: "Start Your Project", tr: "Projeye Başlayın", de: "Projekt starten", fr: "Démarrer le projet", es: "Iniciar proyecto", it: "Avvia progetto", ar: "ابدأ مشروعًا", ja: "プロジェクトを開始" },
 };
@@ -89,8 +84,6 @@ const getLabel = (key: string) => {
   return (labels[key] as any)?.[locale] || (labels[key] as any)?.["en"] || key;
 };
 
-const l = (map: Record<string, string>) => localizedValue(map, locale) || map.en || "";
-
 // CMS text with static fallback
 const txt = (cmsKey: string, fallbackKey?: string) => {
   const cms = getVal(cmsKey);
@@ -98,6 +91,8 @@ const txt = (cmsKey: string, fallbackKey?: string) => {
   if (fallbackKey && labels[fallbackKey]) return getLabel(fallbackKey);
   return "";
 };
+
+const l = (map: Record<string, string>) => localeMapText(map, locale);
 
 // ── Fallback data for service layers if CMS is empty ──
 const fallbackServiceLayers = [
@@ -207,7 +202,7 @@ const ctaPrimary = txt("ctaPrimaryButton") || getLabel("talkToEngineering");
 const ctaSecondary = txt("ctaSecondaryButton") || getLabel("startYourProject");
 
 const faqEyebrow = txt("faqEyebrow") || getLabel("questionsBefore");
-const faqTitle = txt("faqTitle") || getVal("stackTitle") || "Questions before you brief us.";
+const faqTitle = txt("faqTitle") || getVal("stackTitle") || getLabel("faqTitleFallback");
 const faqLead = txt("faqLead") || l({ en: "Engineering buyers usually arrive with the same operational questions. Here are the answers — the rest happens in the discovery call.", tr: "Teknik ekipler genelde benzer operasyon sorularıyla gelir. Kısa yanıtlar burada; geri kalanı keşif görüşmesinde netleşir.", de: "Technische Teams kommen meist mit ähnlichen operativen Fragen. Die kurzen Antworten stehen hier, der Rest klärt sich im Discovery Call.", fr: "Les équipes techniques arrivent souvent avec les mêmes questions opérationnelles. Les réponses courtes sont ici, le reste se précise en discovery call.", es: "Los equipos técnicos suelen llegar con preguntas operativas parecidas. Aquí están las respuestas cortas; el resto se aclara en la llamada de discovery.", it: "I team tecnici arrivano spesso con domande operative simili. Le risposte brevi sono qui; il resto si chiarisce nella discovery call.", ar: "تأتي الفرق التقنية غالبًا بأسئلة تشغيلية متشابهة. الإجابات المختصرة هنا، والباقي يتضح في مكالمة discovery.", ja: "技術チームからよく出る運用面の質問をまとめました。概要はここで確認でき、詳細はディスカバリーコールで詰めます。" });
 ---
 
@@ -325,10 +320,10 @@ const faqLead = txt("faqLead") || l({ en: "Engineering buyers usually arrive wit
         </div>
         <div class="service-system-grid reveal delay-1">
           {activeServiceLayers.map((layer: any, idx: number) => {
-            const title = getItemVal(layer, "title") || layer.title;
-            const headline = getItemVal(layer, "headline") || layer.headline;
-            const desc = getItemVal(layer, "description") || layer.description;
-            const output = getItemVal(layer, "output") || layer.output;
+            const title = getItemVal(layer, "title", l(layer.title));
+            const headline = getItemVal(layer, "headline", l(layer.headline));
+            const desc = getItemVal(layer, "description", l(layer.description));
+            const output = getItemVal(layer, "output", l(layer.output));
             const tags = Array.isArray(layer.tags) ? layer.tags : (typeof layer.tags === "string" ? layer.tags.split(",").map((t: string) => t.trim()).filter(Boolean) : []);
             return (
               <article class="system-layer-card">
@@ -368,8 +363,8 @@ const faqLead = txt("faqLead") || l({ en: "Engineering buyers usually arrive wit
           </div>
           <div class="deliverable-ledger reveal delay-1">
             {activeDeliverables.map((d: any) => {
-              const dTitle = getItemVal(d, "title") || d.title;
-              const dDesc = getItemVal(d, "description") || d.description;
+              const dTitle = getItemVal(d, "title", l(d.title));
+              const dDesc = getItemVal(d, "description", l(d.description));
               return (
                 <div>
                   <span>{dTitle}</span>
@@ -449,8 +444,8 @@ const faqLead = txt("faqLead") || l({ en: "Engineering buyers usually arrive wit
         </div>
         <div class="process process-premium process-compact">
           {activeProcessSteps.map((step: any, idx: number) => {
-            const stepTitle = getItemVal(step, "title") || step.title;
-            const stepDesc = getItemVal(step, "description") || step.description;
+            const stepTitle = getItemVal(step, "title", l(step.title));
+            const stepDesc = getItemVal(step, "description", l(step.description));
             const delayClass = idx === 0 ? "" : ` delay-${Math.min(idx, 3)}`;
             return (
               <div class={`process-step reveal${delayClass}`}>

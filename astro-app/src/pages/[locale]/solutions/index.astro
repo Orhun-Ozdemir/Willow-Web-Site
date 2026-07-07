@@ -5,7 +5,7 @@ import FaqAccordion from "@/components/FaqAccordion.astro";
 import AIAnswerBlock from "@/components/AIAnswerBlock.astro";
 import { loadContent } from "@/lib/content";
 import { pageSeo, webPageNode, ORGANIZATION_SCHEMA, WEBSITE_SCHEMA } from "@/lib/seo";
-import { localizedValue, resolveAsset, locales, resolveLocale, type Locale, localizeItem } from "@/lib/cms";
+import { localizedValue, localizeItem, pageText, resolveAsset, resolveLocale, type Locale } from "@/lib/cms";
 import { aiAnswerForPage, aiMetaForPage, appendSchemaNodes, fallbackFaqsForPage, faqItemsForPage, faqSchemaNode } from "@/lib/ai-search";
 
 export const prerender = false;
@@ -14,7 +14,6 @@ const locale = resolveLocale(Astro.params.locale, Astro.url.pathname);
 const content = await loadContent();
 const seoProps = pageSeo(content, "solutions", locale, "/solutions", "Solutions | WillowSoft", "Industry-specific IoT solutions.");
 const pageContent = content.pageContent?.solutions || {};
-const getVal = (key: string) => localizedValue(pageContent[key], locale);
 const solutionsFallbackFaqs = fallbackFaqsForPage("solutions", locale);
 const solutionsFaqItems = faqItemsForPage(content.faqs || [], "solutions", locale, solutionsFallbackFaqs);
 const aiAnswer = aiAnswerForPage(content, "solutions", locale, seoProps.description);
@@ -57,6 +56,12 @@ const labels = {
   operationalCoverage: { en: "Operational Coverage", tr: "Operasyonel Kapsam", de: "Betriebliche Abdeckung", fr: "Couverture opérationnelle", es: "Cobertura operativa", it: "Copertura operativa", ar: "التغطية التشغيلية", ja: "業務のカバー範囲" },
   startProject: { en: "Start Project", tr: "Projeyi Başlat", de: "Projekt starten", fr: "Démarrer le projet", es: "Iniciar proyecto", it: "Avvia progetto", ar: "بدء المشروع", ja: "プロジェクト相談" },
   useCases: { en: "Use Cases", tr: "Kullanım Alanları", de: "Anwendungsbereiche", fr: "Cas d'usage", es: "Casos de uso", it: "Casi d'uso", ar: "حالات الاستخدام", ja: "ユースケース" },
+  heroEyebrow: { en: "Industrial IoT Solutions", tr: "Endüstriyel IoT Çözümleri", de: "Industrielle IoT-Lösungen", fr: "Solutions IoT industrielles", es: "Soluciones IoT industriales", it: "Soluzioni IoT industriali", ar: "حلول IoT صناعية", ja: "産業向けIoTソリューション" },
+  heroTitle: { en: "Connected solutions for assets, sites and operations that cannot fail.", tr: "Varlıklar, sahalar ve kritik operasyonlar için bağlantılı çözümler.", de: "Vernetzte Lösungen für Anlagen, Standorte und kritische Betriebe.", fr: "Solutions connectées pour actifs, sites et opérations critiques.", es: "Soluciones conectadas para activos, sitios y operaciones críticas.", it: "Soluzioni connesse per asset, siti e operazioni critiche.", ar: "حلول متصلة للأصول والمواقع والعمليات الحرجة.", ja: "資産・拠点・ミッションクリティカルな運用向けのコネクテッドソリューション。" },
+  heroLead: { en: "WillowSoft connects field sensors, LoRaWAN devices, gateways, APIs, dashboards and mobile workflows into one reliable industrial IoT ecosystem.", tr: "WillowSoft; saha sensörleri, LoRaWAN cihazları, gateway'ler, API'ler, paneller ve mobil iş akışlarını tek bir güvenilir endüstriyel IoT ekosisteminde birleştirir.", de: "WillowSoft verbindet Feldsensoren, LoRaWAN-Geräte, Gateways, APIs, Dashboards und mobile Workflows zu einem zuverlässigen IoT-Ökosystem.", fr: "WillowSoft relie capteurs terrain, appareils LoRaWAN, passerelles, API, dashboards et workflows mobiles en un écosystème IoT industriel fiable.", es: "WillowSoft conecta sensores de campo, dispositivos LoRaWAN, gateways, APIs, paneles y flujos móviles en un ecosistema IoT industrial fiable.", it: "WillowSoft collega sensori sul campo, dispositivi LoRaWAN, gateway, API, dashboard e workflow mobili in un ecosistema IoT industriale affidabile.", ar: "تربط WillowSoft مستشعرات الميدان وأجهزة LoRaWAN والبوابات وواجهات API ولوحات التحكم وسير عمل الجوال في منظومة IoT صناعية موثوقة.", ja: "WillowSoft は、現場センサー、LoRaWAN デバイス、ゲートウェイ、API、ダッシュボード、モバイルワークフローを一つの信頼性の高い産業 IoT エコシステムに統合します。" },
+  useCasesTitle: { en: "Designed for distributed, harsh and operationally critical environments.", tr: "Dağınık, zorlu ve operasyonel olarak kritik ortamlar için tasarlandı.", de: "Für verteilte, raue und betrieblich kritische Umgebungen konzipiert.", fr: "Conçu pour des environnements distribués, exigeants et critiques.", es: "Diseñado para entornos distribuidos, exigentes y críticos.", it: "Progettato per ambienti distribuiti, severi e operativamente critici.", ar: "مصمم للبيئات الموزعة والقاسية والحرجة تشغيلياً.", ja: "分散した過酷でミッションクリティカルな環境向けに設計。" },
+  useCasesLead: { en: "From infrastructure and factories to buildings, logistics and utilities, every solution is shaped around field conditions, data needs and response workflows.", tr: "Altyapı ve fabrikalardan binalara, lojistiğe ve kamu hizmetlerine kadar her çözüm saha koşulları, veri ihtiyaçları ve müdahale akışlarına göre şekillenir.", de: "Von Infrastruktur und Fabriken bis zu Gebäuden, Logistik und Versorgung wird jede Lösung an Feldbedingungen, Datenbedarf und Reaktions-Workflows angepasst.", fr: "De l'infrastructure aux usines, bâtiments, logistique et utilities, chaque solution s'adapte au terrain, aux données et aux workflows de réponse.", es: "Desde infraestructura y fábricas hasta edificios, logística y servicios, cada solución se adapta al campo, los datos y los flujos de respuesta.", it: "Da infrastrutture e fabbriche a edifici, logistica e utility, ogni soluzione segue condizioni sul campo, dati e workflow di risposta.", ar: "من البنية التحتية والمصانع إلى المباني واللوجستيات والمرافق، يُشكَّل كل حل وفق ظروف الميدان واحتياجات البيانات وسير الاستجابة.", ja: "インフラや工場からビル、物流、ユーティリティまで、現場条件・データ要件・対応フローに合わせて設計します。" },
+  whyTitle: { en: "Solutions are engineered around the site, not forced onto it.", tr: "Çözümler sahaya zorlanmaz; sahaya göre mühendislikle tasarlanır.", de: "Lösungen werden um den Standort herum entwickelt, nicht auf ihn aufgezwungen.", fr: "Les solutions sont conçues autour du site, pas imposées.", es: "Las soluciones se diseñan alrededor del sitio, no se imponen.", it: "Le soluzioni sono progettate intorno al sito, non imposte su di esso.", ar: "تُهندَس الحلول حول الموقع، ولا تُفرَض عليه.", ja: "ソリューションは現場に合わせて設計され、無理にはめ込みません。" },
   whyWillowSoft: { en: "Why WillowSoft", tr: "Neden WillowSoft", de: "Warum WillowSoft", fr: "Pourquoi WillowSoft", es: "Por qué WillowSoft", it: "Perché WillowSoft", ar: "لماذا WillowSoft", ja: "WillowSoftの強み" },
   mapCase: { en: "Map Your Use Case", tr: "Kullanım Senaryonuzu Belirleyin", de: "Anwendungsfall zuordnen", fr: "Cartographier votre cas d'usage", es: "Defina su caso de uso", it: "Mappa il tuo caso d'uso", ar: "حدّد حالة الاستخدام", ja: "ユースケースを相談" },
   faqEyebrow: { en: "Frequently asked", tr: "Sıkça sorulanlar", de: "Häufig gestellte Fragen", fr: "Questions fréquentes", es: "Preguntas frecuentes", it: "Domande frequenti", ar: "أسئلة شائعة", ja: "よくある質問" },
@@ -76,6 +81,9 @@ const labels = {
 const getLabel = (key: keyof typeof labels) => {
   return labels[key][locale] || labels[key]["en"];
 };
+
+const pt = (key: string, labelKey: keyof typeof labels) => pageText(pageContent, key, locale, getLabel(labelKey));
+const getVal = (key: string, fallback = "") => pageText(pageContent, key, locale, fallback);
 
 const categoryName = (cat: string) =>
   cat === "All" ? getLabel("filterAll") : (categoryLabelMap.get(cat) || cat);
@@ -103,11 +111,11 @@ const categoryName = (cat: string) =>
 
       <div class="solutions-hero-inner">
         <div class="solutions-hero-content reveal">
-          <p class="eyebrow">{getVal("heroEyebrow") || "Industrial IoT Solutions"}</p>
+          <p class="eyebrow">{pt("heroEyebrow", "heroEyebrow")}</p>
 
-          <h1 set:html={getVal("heroTitle") || "Connected solutions for assets, sites and operations that cannot fail."} />
+          <h1 set:html={pt("heroTitle", "heroTitle")} />
 
-          <p>{getVal("heroLead") || "WillowSoft connects field sensors, LoRaWAN devices, gateways, APIs, dashboards and mobile workflows into one reliable industrial IoT ecosystem."}</p>
+          <p>{pt("heroLead", "heroLead")}</p>
 
           <div class="solutions-hero-actions">
             <a class="ws-btn ws-btn-primary" href={`/${locale}/start-project`}>{getLabel("mapCase")}</a>
@@ -141,15 +149,15 @@ const categoryName = (cat: string) =>
         <div class="solutions-hero-metrics reveal delay-2">
           <article>
             <strong>{pageContent.metric1Value || "15+"}</strong>
-            <span>{localizedValue(pageContent.metric1Label, locale) || getLabel("metric1")}</span>
+            <span>{localizedValue(pageContent.metric1Label, locale, { fallbackToEn: false }) || getLabel("metric1")}</span>
           </article>
           <article>
             <strong>{pageContent.metric2Value || "2020"}</strong>
-            <span>{localizedValue(pageContent.metric2Label, locale) || getLabel("metric2")}</span>
+            <span>{localizedValue(pageContent.metric2Label, locale, { fallbackToEn: false }) || getLabel("metric2")}</span>
           </article>
           <article>
             <strong>{pageContent.metric3Value || "24/7"}</strong>
-            <span>{localizedValue(pageContent.metric3Label, locale) || getLabel("metric3")}</span>
+            <span>{localizedValue(pageContent.metric3Label, locale, { fallbackToEn: false }) || getLabel("metric3")}</span>
           </article>
         </div>
       </div>
@@ -235,10 +243,10 @@ const categoryName = (cat: string) =>
       <div class="section-inner">
         <div class="section-head reveal product-headline">
           <div>
-            <p class="eyebrow">{getVal("useCasesEyebrow") || getLabel("useCases")}</p>
-            <h2>{getVal("useCasesTitle") || "Designed for distributed, harsh and operationally critical environments."}</h2>
+            <p class="eyebrow">{pt("useCasesEyebrow", "useCases")}</p>
+            <h2>{pt("useCasesTitle", "useCasesTitle")}</h2>
             <p class="section-lead">
-              {getVal("useCasesLead") || "From infrastructure and factories to buildings, logistics and utilities, every solution is shaped around field conditions, data needs and response workflows."}
+              {pt("useCasesLead", "useCasesLead")}
             </p>
           </div>
 
@@ -339,8 +347,8 @@ const categoryName = (cat: string) =>
       <div class="section-inner">
         <div class="section-head reveal">
           <div>
-            <p class="eyebrow">{getVal("whyEyebrow") || getLabel("whyWillowSoft")}</p>
-            <h2>{getVal("whyTitle") || "Solutions are engineered around the site, not forced onto it."}</h2>
+            <p class="eyebrow">{pt("whyEyebrow", "whyWillowSoft")}</p>
+            <h2>{pt("whyTitle", "whyTitle")}</h2>
           </div>
         </div>
 

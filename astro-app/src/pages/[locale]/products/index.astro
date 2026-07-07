@@ -5,7 +5,7 @@ import FaqAccordion from "@/components/FaqAccordion.astro";
 import AIAnswerBlock from "@/components/AIAnswerBlock.astro";
 import { loadContent } from "@/lib/content";
 import { pageSeo, webPageNode, ORGANIZATION_SCHEMA, WEBSITE_SCHEMA, SITE_ORIGIN } from "@/lib/seo";
-import { localizedValue, locales, resolveLocale, type Locale } from "@/lib/cms";
+import { localizedValue, pageText, resolveLocale, type Locale } from "@/lib/cms";
 import { aiAnswerForPage, aiMetaForPage, appendSchemaNodes, fallbackFaqsForPage, faqItemsForPage, faqSchemaNode } from "@/lib/ai-search";
 
 export const prerender = false;
@@ -15,7 +15,6 @@ const content = await loadContent();
 const seoProps = pageSeo(content, "products", locale, "/products", "Products | WillowSoft", "Industrial-grade LoRaWAN hardware portfolio.");
 const pageContent = content.pageContent?.products || {};
 const companyFacts = content.companyFacts || {};
-const getVal = (key: string) => localizedValue(pageContent[key], locale);
 
 const productsList = (content.products || []).filter((p: any) => p.visible !== false);
 const productsFallbackFaqs = fallbackFaqsForPage("products", locale);
@@ -120,6 +119,8 @@ const labels = {
 
   // Filters
   filterAll: { en: "All", tr: "Tümü", de: "Alle", fr: "Tous", es: "Todos", it: "Tutti", ar: "الكل", ja: "すべて" },
+  heroEyebrow: { en: "Products", tr: "Ürünler", de: "Produkte", fr: "Produits", es: "Productos", it: "Prodotti", ar: "المنتجات", ja: "製品" },
+  catalogEyebrow: { en: "Catalog", tr: "Katalog", de: "Katalog", fr: "Catalogue", es: "Catálogo", it: "Catalogo", ar: "الكتالوج", ja: "カタログ" },
   filterModules: { en: "Modules", tr: "Modüller", de: "Module", fr: "Modules", es: "Módulos", it: "Moduli", ar: "وحدات", ja: "通信モジュール" },
   filterEnvironment: { en: "Environmental", tr: "Çevresel", de: "Umweltsensoren", fr: "Environnement", es: "Ambientales", it: "Sensori ambientali", ar: "مستشعرات بيئية", ja: "環境センサ" },
   filterTracking: { en: "Tracking & Safety", tr: "Takip & Güvenlik", de: "Ortung & Sicherheit", fr: "Suivi & Sécurité", es: "Seguimiento y seguridad", it: "Tracciamento e sicurezza", ar: "تتبع وأمان", ja: "追跡・防犯デバイス" },
@@ -143,6 +144,8 @@ const labels = {
 const getLabel = (key: keyof typeof labels) => {
   return labels[key][locale] || labels[key]["en"];
 };
+
+const pt = (key: string, labelKey: keyof typeof labels) => pageText(pageContent, key, locale, getLabel(labelKey));
 ---
 
 <PageLayout
@@ -158,9 +161,9 @@ const getLabel = (key: keyof typeof labels) => {
       <div class="services-hero-light" aria-hidden="true"></div>
       <div class="hero-inner products-hero-grid">
         <div class="products-hero-copy">
-          <p class="eyebrow reveal">{getVal("heroEyebrow") || "Products"}</p>
-          <h1 class="reveal delay-1">{getVal("heroTitle")}</h1>
-          <p class="reveal delay-2">{getVal("heroLead")}</p>
+          <p class="eyebrow reveal">{pt("heroEyebrow", "heroEyebrow")}</p>
+          <h1 class="reveal delay-1">{pageText(pageContent, "heroTitle", locale)}</h1>
+          <p class="reveal delay-2">{pageText(pageContent, "heroLead", locale)}</p>
           <div class="services-hero-meta reveal delay-3" role="list" aria-label="Product portfolio facts">
             <span class="hero-meta-item" role="listitem">
               <strong data-company-fact="productsOnMarket">{companyFacts.productsOnMarket || "100+"}</strong>
@@ -225,9 +228,9 @@ const getLabel = (key: keyof typeof labels) => {
       <div class="section-inner">
         <div class="section-head reveal product-headline">
           <div>
-            <p class="eyebrow">{getVal("catalogEyebrow") || "Catalog"}</p>
-            <h2>{getVal("catalogTitle")}</h2>
-            <p class="section-lead">{getVal("catalogLead")}</p>
+            <p class="eyebrow">{pt("catalogEyebrow", "catalogEyebrow")}</p>
+            <h2>{pageText(pageContent, "catalogTitle", locale)}</h2>
+            <p class="section-lead">{pageText(pageContent, "catalogLead", locale)}</p>
           </div>
           <a class="btn btn-secondary btn-small" href={`/${locale}/contact`}>{getLabel("requestQuote")}</a>
         </div>

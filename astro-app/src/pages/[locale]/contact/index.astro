@@ -5,7 +5,7 @@ import FaqAccordion from "@/components/FaqAccordion.astro";
 import AIAnswerBlock from "@/components/AIAnswerBlock.astro";
 import { loadContent } from "@/lib/content";
 import { pageSeo, webPageNode, ORGANIZATION_SCHEMA, WEBSITE_SCHEMA, SITE_ORIGIN } from "@/lib/seo";
-import { localizedValue, locales, resolveLocale, type Locale } from "@/lib/cms";
+import { pageText, resolveLocale, type Locale } from "@/lib/cms";
 import { aiAnswerForPage, aiMetaForPage, appendSchemaNodes, fallbackFaqsForPage, faqItemsForPage, faqSchemaNode } from "@/lib/ai-search";
 import { officesForContact, telHref } from "@/lib/company-contact";
 
@@ -30,7 +30,7 @@ const contactSchema = appendSchemaNodes({
   ],
 }, [faqSchemaNode(seoProps.canonical, contactFaqItems)]);
 const pageContent = content.pageContent?.contact || {};
-const getVal = (key: string) => localizedValue(pageContent[key], locale);
+const t = (cmsKey: string, fallback: string) => pageText(pageContent, cmsKey, locale, fallback);
 
 const companyFacts = content.companyFacts || {};
 const contactOffices = officesForContact(companyFacts, locale);
@@ -44,6 +44,17 @@ const labels = {
   turkeyOffice: { en: "Turkey Office", tr: "Türkiye Ofisi", de: "Büro Türkei", fr: "Bureau Turquie", es: "Oficina Turquía", it: "Ufficio Turchia", ar: "مكتب تركيا", ja: "トルコオフィス" },
   ukOffice: { en: "UK Office", tr: "İngiltere Ofisi", de: "Büro UK", fr: "Bureau Royaume-Uni", es: "Oficina Reino Unido", it: "Ufficio Regno Unito", ar: "مكتب المملكة المتحدة", ja: "イギリスオフィス" },
   contactUs: { en: "Contact us", tr: "Bizimle iletişime geçin", de: "Kontaktieren Sie uns", fr: "Contactez-nous", es: "Contáctenos", it: "Contattaci", ar: "اتصل بنا", ja: "お問い合わせ" },
+  directTitle: { en: "Direct Connection", tr: "Doğrudan Bağlantı", de: "Direkter Kontakt", fr: "Contact direct", es: "Conexión directa", it: "Contatto diretto", ar: "تواصل مباشر", ja: "ダイレクト連絡" },
+  directLead: {
+    en: "Use the contact form for general messages, office communication and first conversations that do not yet need a full project brief.",
+    tr: "Genel mesajlar, ofis iletişimi ve henüz tam bir proje özeti gerektirmeyen ilk görüşmeler için iletişim formunu kullanın.",
+    de: "Nutzen Sie das Kontaktformular für allgemeine Nachrichten, die Kommunikation mit dem Büro und erste Gespräche, die noch kein vollständiges Projektbriefing erfordern.",
+    fr: "Utilisez le formulaire de contact pour les messages généraux, les échanges avec le bureau et les premières conversations qui ne nécessitent pas encore de brief de projet complet.",
+    es: "Use el formulario de contacto para mensajes generales, comunicación con la oficina y primeras conversaciones que aún no requieren un brief de proyecto completo.",
+    it: "Usa il modulo di contatto per messaggi generali, comunicazioni con l'ufficio e primi contatti che non richiedono ancora un brief di progetto completo.",
+    ar: "استخدم نموذج التواصل للرسائل العامة والتواصل مع المكتب والمحادثات الأولى التي لا تتطلب بعد ملخّص مشروع كامل.",
+    ja: "一般的なお問い合わせ、オフィスとの連絡、まだ詳細なプロジェクト概要を必要としない初回のご相談には、お問い合わせフォームをご利用ください。",
+  },
   faqEyebrow: { en: "Frequently asked", tr: "Sıkça sorulanlar", de: "Häufig gestellte Fragen", fr: "Questions fréquentes", es: "Preguntas frecuentes", it: "Domande frequenti", ar: "أسئلة مكررة", ja: "よくある質問" },
   faqTitle: { en: "Questions before contacting.", tr: "İletişime geçmeden önce sorular.", de: "Fragen vor dem Kontakt.", fr: "Questions avant de nous contacter.", es: "Preguntas antes de contactar.", it: "Domande prima di contattare.", ar: "أسئلة قبل الاتصال.", ja: "お問い合わせ前の質問" },
   faqLead: {
@@ -73,9 +84,16 @@ const getLabel = (key: keyof typeof labels) => {
     <section class="section soft">
       <div class="section-inner split">
         <div class="reveal">
-          <p class="eyebrow">{getLabel("contactUs")}</p>
-          <h1 class="page-title">{getVal("heroTitle")}</h1>
-          <p class="section-lead">{getVal("heroLead")}</p>
+          <p class="eyebrow">{t("heroEyebrow", getLabel("contactUs"))}</p>
+          <h1 class="page-title">{t("heroTitle", "")}</h1>
+          <p class="section-lead">{t("heroLead", "")}</p>
+
+          {(t("directTitle", getLabel("directTitle")) || t("directLead", getLabel("directLead"))) && (
+            <div class="handoff-note" style={{ marginTop: "24px" }}>
+              {t("directTitle", getLabel("directTitle")) && <strong>{t("directTitle", getLabel("directTitle"))}</strong>}
+              {t("directLead", getLabel("directLead")) && <span>{t("directLead", getLabel("directLead"))}</span>}
+            </div>
+          )}
           
           <div class="office-contact-grid">
             {contactOffices.map((office) => (

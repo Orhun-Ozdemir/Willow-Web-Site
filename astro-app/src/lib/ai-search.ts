@@ -57,18 +57,42 @@ const AI_SHORT_FALLBACKS: Record<string, Partial<Record<Locale, string>>> = {
   services: {
     en: "WillowSoft delivers connected-product engineering across hardware, firmware, RF/LoRaWAN, backend APIs, PostgreSQL, web dashboards, mobile apps and VR simulation.",
     tr: "WillowSoft; donanım, firmware, RF/LoRaWAN, backend API, PostgreSQL, web paneli, mobil uygulama ve VR simülasyon katmanlarında IoT mühendisliği sunar.",
+    de: "WillowSoft liefert Engineering für vernetzte Produkte: Hardware, Firmware, RF/LoRaWAN, Backend-APIs, PostgreSQL, Web-Dashboards, Mobile Apps und VR-Simulation.",
+    fr: "WillowSoft fournit de l'ingénierie pour produits connectés : hardware, firmware, RF/LoRaWAN, API backend, PostgreSQL, dashboards web, apps mobiles et simulation VR.",
+    es: "WillowSoft ofrece ingeniería para productos conectados: hardware, firmware, RF/LoRaWAN, API backend, PostgreSQL, dashboards web, apps móviles y simulación VR.",
+    it: "WillowSoft offre ingegneria per prodotti connessi: hardware, firmware, RF/LoRaWAN, API backend, PostgreSQL, dashboard web, app mobile e simulazione VR.",
+    ar: "تقدّم WillowSoft هندسة المنتجات المتصلة عبر العتاد والـ firmware وRF/LoRaWAN وواجهات API الخلفية وPostgreSQL ولوحات الويب وتطبيقات الجوال ومحاكاة VR.",
+    ja: "WillowSoft は、ハードウェア、ファームウェア、RF/LoRaWAN、バックエンド API、PostgreSQL、Web ダッシュボード、モバイルアプリ、VR シミュレーションまで、コネクテッド製品のエンジニアリングを提供します。",
   },
   solutions: {
     en: "WillowSoft builds industry IoT solutions for industrial monitoring, smart infrastructure, energy, logistics, healthcare and field telemetry by combining devices, connectivity and software.",
     tr: "WillowSoft; cihaz, bağlantı ve yazılımı birleştirerek endüstriyel izleme, akıllı altyapı, enerji, lojistik, sağlık ve saha telemetrisi için IoT çözümleri kurar.",
+    de: "WillowSoft baut IoT-Lösungen für Industrieüberwachung, smarte Infrastruktur, Energie, Logistik, Healthcare und Feldtelemetrie durch Geräte, Konnektivität und Software.",
+    fr: "WillowSoft construit des solutions IoT industrielles en combinant appareils, connectivité et logiciel pour monitoring, infrastructures intelligentes, énergie, logistique, santé et télémétrie terrain.",
+    es: "WillowSoft construye soluciones IoT industriales combinando dispositivos, conectividad y software para monitorización, infraestructura inteligente, energía, logística, salud y telemetría de campo.",
+    it: "WillowSoft costruisce soluzioni IoT industriali combinando dispositivi, connettività e software per monitoraggio, infrastrutture intelligenti, energia, logistica, sanità e telemetria sul campo.",
+    ar: "تبني WillowSoft حلول IoT صناعية عبر دمج الأجهزة والاتصال والبرمجيات للمراقبة الصناعية والبنية الذكية والطاقة واللوجستيات والرعاية الصحية وقياسات الميدان.",
+    ja: "WillowSoft は、デバイス、通信、ソフトウェアを組み合わせ、産業モニタリング、スマートインフラ、エネルギー、物流、ヘルスケア、現場テレメトリ向けの産業 IoT ソリューションを構築します。",
   },
   contact: {
     en: "Use the WillowSoft contact page for engineering inquiries, office information, supplier communication, NDAs and discovery calls for connected product projects.",
     tr: "WillowSoft iletişim sayfası; mühendislik talepleri, ofis bilgileri, tedarikçi iletişimi, gizlilik sözleşmeleri ve IoT proje keşif görüşmeleri için kullanılır.",
+    de: "Nutzen Sie die WillowSoft-Kontaktseite für Engineering-Anfragen, Büroinformationen, Lieferantenkommunikation, NDAs und Discovery-Gespräche.",
+    fr: "Utilisez la page contact WillowSoft pour les demandes d'ingénierie, les bureaux, les fournisseurs, les NDA et les appels de découverte.",
+    es: "Use la página de contacto de WillowSoft para consultas de ingeniería, oficinas, proveedores, NDAs y llamadas de descubrimiento.",
+    it: "Usa la pagina contatti WillowSoft per richieste tecniche, uffici, fornitori, NDA e call di discovery.",
+    ar: "استخدم صفحة تواصل WillowSoft للاستفسارات الهندسية ومعلومات المكاتب والموردين واتفاقيات السرية وجلسات الاستكشاف.",
+    ja: "WillowSoft のお問い合わせページは、技術相談、オフィス情報、サプライヤー連絡、NDA、ディスカバリーコールにご利用ください。",
   },
   startProject: {
     en: "The Start Project form collects product idea, required layers, timeline, budget and contact details so WillowSoft can prepare a practical engineering discovery plan.",
     tr: "Projeye Başla formu; ürün fikri, gerekli katmanlar, takvim, bütçe ve iletişim bilgilerini toplayarak WillowSoft'un gerçekçi mühendislik keşif planı hazırlamasını sağlar.",
+    de: "Das Formular Projekt starten erfasst Produktidee, benötigte Layer, Zeitplan, Budget und Kontaktdaten für einen praktischen Discovery-Plan.",
+    fr: "Le formulaire Démarrer un projet recueille l'idée produit, les couches requises, le calendrier, le budget et les coordonnées pour un plan de discovery.",
+    es: "El formulario Iniciar proyecto recopila la idea de producto, capas necesarias, calendario, presupuesto y datos de contacto para un plan de discovery.",
+    it: "Il modulo Avvia progetto raccoglie idea prodotto, layer richiesti, tempistiche, budget e contatti per un piano di discovery.",
+    ar: "يجمع نموذج ابدأ مشروعًا فكرة المنتج والطبقات المطلوبة والجدول الزمني والميزانية وبيانات الاتصال لخطة استكشاف هندسية.",
+    ja: "プロジェクト開始フォームは、製品アイデア、必要レイヤー、スケジュール、予算、連絡先を収集し、実用的なディスカバリープランを作成します。",
   },
 };
 
@@ -113,13 +137,18 @@ export function stripHtml(value: string): string {
 export function aiAnswerForPage(content: any, pageKey: string, locale: Locale, fallback = ""): string {
   const seo = content.pageSeo?.[pageKey]?.[locale] || {};
   const englishSeo = content.pageSeo?.[pageKey]?.en || {};
-  return stripHtml(
-    seo.aiShortAnswer ||
-      localizedValue(AI_SHORT_FALLBACKS[pageKey], locale) ||
-      (locale === "en" ? englishSeo.aiShortAnswer : "") ||
-      englishSeo.aiShortAnswer ||
-      fallback,
-  );
+  const cmsAnswer = seo.aiShortAnswer
+    ? stripHtml(seo.aiShortAnswer)
+    : "";
+  if (cmsAnswer) return cmsAnswer;
+
+  const staticFallback = stripHtml(localizedValue(AI_SHORT_FALLBACKS[pageKey], locale));
+  if (staticFallback) return staticFallback;
+
+  if (locale === "en") {
+    return stripHtml(englishSeo.aiShortAnswer || fallback);
+  }
+  return "";
 }
 
 export function aiMetaForPage(content: any, pageKey: string, locale: Locale): AiAnswerMeta {
@@ -136,6 +165,13 @@ export function fallbackFaqsForPage(pageKey: string, locale: Locale): AiFaqItem[
   return FAQ_FALLBACKS[pageKey]?.[locale] || FAQ_FALLBACKS[pageKey]?.en || [];
 }
 
+function localizedFaqField(faq: any, locale: Locale, field: "question" | "answer"): string {
+  const localized = faq.localized?.[locale]?.[field];
+  if (localized) return stripHtml(localized);
+  if (locale === "en") return stripHtml(faq[field] || "");
+  return "";
+}
+
 export function faqItemsForPage(
   faqs: any[],
   pageKey: string,
@@ -147,8 +183,8 @@ export function faqItemsForPage(
     .filter((faq: any) => faq.page === pageKey)
     .sort((a: any, b: any) => (a.sortOrder || 0) - (b.sortOrder || 0))
     .map((faq: any) => ({
-      question: stripHtml(faq.localized?.[locale]?.question || faq.question || ""),
-      answer: stripHtml(faq.localized?.[locale]?.answer || faq.answer || ""),
+      question: localizedFaqField(faq, locale, "question"),
+      answer: localizedFaqField(faq, locale, "answer"),
     }))
     .filter((faq) => faq.question && faq.answer);
 

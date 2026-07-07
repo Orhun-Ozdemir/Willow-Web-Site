@@ -37,6 +37,48 @@ export function localizedValue(
   return map.en || "";
 }
 
+/** CMS page field: current locale first, optional fallback (no silent EN from CMS). */
+export function pageText(
+  pageContent: Record<string, any> | undefined,
+  key: string,
+  locale: Locale,
+  fallback = "",
+): string {
+  const fromCms = localizedValue(pageContent?.[key], locale, { fallbackToEn: false });
+  return fromCms || fallback;
+}
+
+/** Inline locale map (`{ en, tr, ... }`) with locale-first resolution. */
+export function localeMapText(
+  map: Record<string, string> | undefined,
+  locale: Locale,
+  fallback = "",
+): string {
+  if (!map) return fallback;
+  return map[locale] || map.en || fallback;
+}
+
+/** CMS collection item field: localized map first, then optional fallback. */
+export function itemText(
+  item: any,
+  key: string,
+  locale: Locale,
+  fallback = "",
+): string {
+  if (!item) return fallback;
+  const localized = item.localized?.[locale]?.[key];
+  if (localized !== undefined && localized !== null && localized !== "") return String(localized);
+  const fromMap = localizedValue(item[key], locale, { fallbackToEn: false });
+  if (fromMap) return fromMap;
+  if (typeof item[key] === "string" && locale === "en") return item[key];
+  return fallback;
+}
+
+/** CMS button field with optional fallback label. */
+export function pageButtonText(value: any, locale: Locale, fallback = ""): string {
+  return pageButtonLabel(value, locale) || fallback;
+}
+
 /** CMS button field: plain localized string or `{ label, url }` per locale. */
 export function pageButtonLabel(value: any, locale: Locale): string {
   if (!value) return "";
@@ -64,8 +106,8 @@ export function serviceRailFromPageContent(
   if (!pageContent) return [];
   const items: ServiceRailItem[] = [];
   for (let i = 0; i < maxItems; i++) {
-    const title = localizedValue(pageContent[`serviceRail_${i}_title`], locale).trim();
-    const desc = localizedValue(pageContent[`serviceRail_${i}_desc`], locale).trim();
+    const title = localizedValue(pageContent[`serviceRail_${i}_title`], locale, { fallbackToEn: false }).trim();
+    const desc = localizedValue(pageContent[`serviceRail_${i}_desc`], locale, { fallbackToEn: false }).trim();
     if (!title && !desc) break;
     items.push({ title, desc });
   }
@@ -81,8 +123,8 @@ export function flowNodesFromPageContent(
   if (!pageContent) return [];
   const items: ServiceRailItem[] = [];
   for (let i = 0; i < maxItems; i++) {
-    const title = localizedValue(pageContent[`flowNode_${i}_title`], locale).trim();
-    const desc = localizedValue(pageContent[`flowNode_${i}_desc`], locale).trim();
+    const title = localizedValue(pageContent[`flowNode_${i}_title`], locale, { fallbackToEn: false }).trim();
+    const desc = localizedValue(pageContent[`flowNode_${i}_desc`], locale, { fallbackToEn: false }).trim();
     if (!title && !desc) break;
     items.push({ title, desc });
   }
@@ -98,8 +140,8 @@ export function industryLanesFromPageContent(
   if (!pageContent) return [];
   const items: ServiceRailItem[] = [];
   for (let i = 0; i < maxItems; i++) {
-    const title = localizedValue(pageContent[`industryLane_${i}_title`], locale).trim();
-    const desc = localizedValue(pageContent[`industryLane_${i}_desc`], locale).trim();
+    const title = localizedValue(pageContent[`industryLane_${i}_title`], locale, { fallbackToEn: false }).trim();
+    const desc = localizedValue(pageContent[`industryLane_${i}_desc`], locale, { fallbackToEn: false }).trim();
     if (!title && !desc) break;
     items.push({ title, desc });
   }
