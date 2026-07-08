@@ -6,6 +6,9 @@ import { zipSync, unzipSync, strToU8 } from "fflate";
 const MANIFEST_NAME = "manifest.json";
 const STORAGE_PREFIX = "storage/";
 
+/** Tam ZIP manifest sürümü — lib/full-backup.mjs ile senkron. */
+export const FULL_BACKUP_SCHEMA_VERSION = 2;
+
 export type BackupProgress = {
   phase: string;
   current?: number;

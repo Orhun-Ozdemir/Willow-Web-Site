@@ -6,9 +6,9 @@ import {
   buildFullBackupZip,
   restoreFullBackupZip,
   downloadBytes,
+  FULL_BACKUP_SCHEMA_VERSION,
   type BackupProgress,
 } from "@/lib/backup-client";
-import { FULL_BACKUP_SCHEMA_VERSION } from "@/lib/backup";
 
 function getDraftTs() {
   return typeof window !== "undefined" ? localStorage.getItem("willowsoft-draft-ts") : null;
