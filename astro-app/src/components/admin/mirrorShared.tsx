@@ -64,6 +64,40 @@ export function Hit({
   );
 }
 
+/** Bölüm içindeki tekil kart/adım — tıklanınca ilgili liste öğesini açar */
+export function ItemHit({
+  active,
+  onClick,
+  className,
+  children,
+}: {
+  active: boolean;
+  onClick: () => void;
+  className?: string;
+  children: ReactNode;
+}) {
+  return (
+    <div
+      role="button"
+      tabIndex={0}
+      onClick={(e) => {
+        e.stopPropagation();
+        onClick();
+      }}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          e.stopPropagation();
+          onClick();
+        }
+      }}
+      className={`ws-pc-mirror-item-hit ${active ? "is-active mirror-card-active" : ""} ${className || ""}`}
+    >
+      {children}
+    </div>
+  );
+}
+
 export function MirrorShell({ children, deps }: { children: ReactNode; deps?: unknown[] }) {
   const innerRef = useRef<HTMLDivElement>(null);
   const [shellHeight, setShellHeight] = useState(0);

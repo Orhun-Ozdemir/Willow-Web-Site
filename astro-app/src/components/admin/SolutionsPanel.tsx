@@ -1,13 +1,33 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { type Locale } from "@/lib/cms";
 import { resolveAdminImageSrc, imageInputValue } from "@/lib/admin-media";
 import { useAdmin } from "./AdminContext";
+import AdminDrawer from "./AdminDrawer";
 import FormField from "./FormField";
+import PageMirrorSidebar from "./PageMirrorSidebar";
 import TranslationEditor from "./TranslationEditor";
+import { layoutForPage } from "./pageLayouts";
 
 type SubTab = "solutions" | "general" | "selector" | "flow" | "why";
+
+const BLOCK_TO_SUBTAB: Record<string, SubTab> = {
+  hero: "general",
+  selector: "selector",
+  useCases: "solutions",
+  how: "flow",
+  why: "why",
+  finalCta: "general",
+};
+
+const SUBTAB_TO_BLOCK: Partial<Record<SubTab, string>> = {
+  general: "hero",
+  selector: "selector",
+  flow: "how",
+  why: "why",
+  solutions: "useCases",
+};
 
 const SUB_TABS: { key: SubTab; label: string; desc: string; icon: string }[] = [
   { key: "solutions", label: "Kullanım Senaryoları", desc: "Sitedeki çözüm kartları — görsel, başlık, kategori", icon: "🗂️" },
@@ -80,8 +100,19 @@ const getNextSortOrder = (items: any[]) => {
 };
 
 export default function SolutionsPanel() {
-  const { content, setContent } = useAdmin();
+  const {
+    content,
+    setContent,
+    savePageContent,
+    isPageContentDirty,
+    saveContent,
+    dirtyKeys,
+    saving,
+    saveMessage,
+  } = useAdmin();
   const [activeSubTab, setActiveSubTab] = useState<SubTab>("solutions");
+  const [activeBlockId, setActiveBlockId] = useState<string>("useCases");
+  const [activeItemId, setActiveItemId] = useState<string | null>(null);
   const [editId, setEditId] = useState<string | null>(null);
 
   // Sub-editor edit indices
@@ -101,6 +132,81 @@ export default function SolutionsPanel() {
   const selectorCards = solutionsPage.selectorCards || [];
   const howItWorksSteps = solutionsPage.howItWorksSteps || [];
   const whyCards = solutionsPage.whyCards || [];
+  const pageDirty = isPageContentDirty("solutions");
+  const solutionsDirty = dirtyKeys.includes("solutions");
+
+  const heroPreview =
+    solutionsPage.heroTitle?.tr ||
+    solutionsPage.heroTitle?.en ||
+    "Bağlı ürünler için mühendislik çözümleri.";
+
+  useEffect(() => {
+    if (!pageDirty || saving) return;
+    const timer = window.setTimeout(() => {
+      void savePageContent("solutions");
+    }, 2500);
+    return () => window.clearTimeout(timer);
+  }, [pageDirty, saving, solutionsPage, savePageContent]);
+
+  useEffect(() => {
+    if (!solutionsDirty || saving) return;
+    const timer = window.setTimeout(() => {
+      void saveContent();
+    }, 2500);
+    return () => window.clearTimeout(timer);
+  }, [solutionsDirty, saving, solutions, saveContent]);
+
+  const switchSubTab = (tab: SubTab) => {
+    setActiveSubTab(tab);
+    setEditId(null);
+    setEditingSelectorIdx(null);
+    setEditingFlowIdx(null);
+    setEditingWhyIdx(null);
+    setActiveItemId(null);
+    const block = SUBTAB_TO_BLOCK[tab];
+    if (block) setActiveBlockId(block);
+  };
+
+  const openItemEditor = (blockId: string, itemId: string) => {
+    setActiveBlockId(blockId);
+    setActiveItemId(itemId);
+    const sub = BLOCK_TO_SUBTAB[blockId];
+    if (!sub) return;
+
+    setActiveSubTab(sub);
+    setEditId(null);
+    setEditingSelectorIdx(null);
+    setEditingFlowIdx(null);
+    setEditingWhyIdx(null);
+
+    if (sub === "solutions") {
+      setEditId(itemId);
+    } else if (sub === "selector") {
+      const idx = selectorCards.findIndex((x: any) => x.id === itemId);
+      setEditingSelectorIdx(idx >= 0 ? idx : null);
+    } else if (sub === "flow") {
+      const idx = howItWorksSteps.findIndex((x: any) => x.id === itemId);
+      setEditingFlowIdx(idx >= 0 ? idx : null);
+    } else if (sub === "why") {
+      const idx = whyCards.findIndex((x: any) => x.id === itemId);
+      setEditingWhyIdx(idx >= 0 ? idx : null);
+    }
+  };
+
+  const selectMirrorBlock = (blockId: string) => {
+    setActiveBlockId(blockId);
+    setActiveItemId(null);
+    const sub = BLOCK_TO_SUBTAB[blockId];
+    if (sub) switchSubTab(sub);
+  };
+
+  const selectMirrorItem = (blockId: string, itemId: string) => {
+    openItemEditor(blockId, itemId);
+  };
+
+  const solutionsLayout = layoutForPage("solutions");
+  const activeBlockLabel = solutionsLayout.find((b) => b.id === activeBlockId)?.label ?? "Bölüm";
+  const activeSubTabMeta = SUB_TABS.find((t) => t.key === activeSubTab);
 
   // Use Case Solutions collection updates
   const updateSolution = (id: string, key: string, val: any) => {
@@ -136,6 +242,8 @@ export default function SolutionsPanel() {
       ...c,
       solutions: [...(c.solutions || []), { id, title: "Yeni Çözüm", slug: id, category: "", featured: false, headline: "", summary: "", bullets: "", localized: {} }],
     }));
+    setActiveBlockId("useCases");
+    setActiveItemId(id);
     setEditId(id);
   };
 
@@ -181,6 +289,9 @@ export default function SolutionsPanel() {
       pc.solutions = sol;
       return { ...c, pageContent: pc };
     });
+    setActiveSubTab("selector");
+    setActiveBlockId("selector");
+    setActiveItemId(id);
     setEditingSelectorIdx(selectorCards.length);
   };
 
@@ -236,6 +347,9 @@ export default function SolutionsPanel() {
       pc.solutions = sol;
       return { ...c, pageContent: pc };
     });
+    setActiveSubTab("flow");
+    setActiveBlockId("how");
+    setActiveItemId(id);
     setEditingFlowIdx(howItWorksSteps.length);
   };
 
@@ -288,6 +402,9 @@ export default function SolutionsPanel() {
       pc.solutions = sol;
       return { ...c, pageContent: pc };
     });
+    setActiveSubTab("why");
+    setActiveBlockId("why");
+    setActiveItemId(id);
     setEditingWhyIdx(whyCards.length);
   };
 
@@ -334,19 +451,79 @@ export default function SolutionsPanel() {
   }, [editId, solutions]);
 
   return (
-    <div className="space-y-6">
+    <div className="ws-pc-layout">
+      <PageMirrorSidebar
+        pageKey="solutions"
+        pageData={solutionsPage}
+        activeBlockId={activeBlockId}
+        activeItemId={activeItemId}
+        onSelectBlock={selectMirrorBlock}
+        onSelectItem={selectMirrorItem}
+        extraData={{ solutions, faqs: content?.faqs || [] }}
+        sectionNav={SUB_TABS.map((tab) => ({
+          id: tab.key,
+          label: tab.label,
+          active: activeSubTab === tab.key,
+          onClick: () => switchSubTab(tab.key),
+        }))}
+        hint="Bölüme veya karta tıklayın — sağdaki editör o alanı açar."
+      />
+
+      <main className="ws-pc-main min-w-0 space-y-6">
+      <div className="flex flex-wrap items-start justify-between gap-4 rounded-xl border border-gray-200 bg-white px-5 py-4 shadow-sm">
+        <div>
+          <p className="text-xs font-bold uppercase tracking-wide text-gray-400">/solutions sayfası</p>
+          <h2 className="mt-1 text-lg font-bold text-[#131b2e]">{heroPreview}</h2>
+          <p className="mt-2 text-sm text-gray-500">
+            {solutions.length} kullanım senaryosu · sayfa metinleri ve kart listeleri
+          </p>
+        </div>
+        <div className="flex flex-col items-end gap-2">
+          {(pageDirty || solutionsDirty) && (
+            <p className="text-xs font-semibold text-amber-700">
+              {saving ? "Kaydediliyor…" : "Kaydedilmemiş değişiklik — 2 sn içinde otomatik kaydedilir"}
+            </p>
+          )}
+          {!pageDirty && !solutionsDirty && saveMessage && (
+            <p className="text-xs font-semibold text-green-700">{saveMessage}</p>
+          )}
+          {(pageDirty || solutionsDirty) && (
+            <button
+              type="button"
+              onClick={() => {
+                if (pageDirty) void savePageContent("solutions");
+                if (solutionsDirty) void saveContent();
+              }}
+              disabled={saving}
+              className="rounded-lg bg-[#132175] px-3 py-2 text-xs font-bold text-white disabled:opacity-60"
+            >
+              {saving ? "Kaydediliyor…" : "Şimdi Kaydet"}
+            </button>
+          )}
+          <a href="/tr/solutions" target="_blank" rel="noreferrer" className="ws-pc-live-link">
+            Canlı sayfayı aç ↗
+          </a>
+        </div>
+      </div>
+
+      <div className="ws-pc-block-header">
+        <div>
+          <p className="ws-pc-block-kicker">{activeSubTabMeta?.label ?? "Çözümler"}</p>
+          <h3 className="ws-pc-block-title">{activeBlockLabel}</h3>
+          {activeItemId && (
+            <p className="mt-1 text-xs text-[#132175]">
+              Seçili öğe: <strong>{activeItemId}</strong> — sol önizlemede sarı çerçeve
+            </p>
+          )}
+        </div>
+      </div>
+
       <div className="ws-sol-tabs">
         {SUB_TABS.map((tab) => (
           <button
             key={tab.key}
             type="button"
-            onClick={() => {
-              setActiveSubTab(tab.key);
-              setEditId(null);
-              setEditingSelectorIdx(null);
-              setEditingFlowIdx(null);
-              setEditingWhyIdx(null);
-            }}
+            onClick={() => switchSubTab(tab.key)}
             className={`ws-sol-tab ${activeSubTab === tab.key ? "is-active" : ""}`}
           >
             <span className="ws-sol-tab-icon" aria-hidden>{tab.icon}</span>
@@ -362,17 +539,39 @@ export default function SolutionsPanel() {
       {activeSubTab === "solutions" && (
         <div>
           {editId !== null && s ? (
-            <div className="space-y-4">
-              <button type="button" onClick={() => setEditId(null)} className="ws-back-button">
-                ← Listeye Dön
-              </button>
-              <div className="ws-sol-edit-layout">
-                <div className="bg-white border border-gray-200 rounded-xl p-6 space-y-5">
-                  <div className="flex items-center justify-between border-b border-gray-200 pb-4">
-                    <h3 className="font-bold">Çözüm Düzenle</h3>
-                    <button onClick={() => deleteSolution(s.id)} className="px-3 py-1.5 bg-red-950 hover:bg-red-900 text-red-400 rounded text-xs font-semibold">Sil</button>
-                  </div>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <AdminDrawer
+              open
+              onClose={() => {
+                setEditId(null);
+                setActiveItemId(null);
+              }}
+              title={s.title || "Çözüm"}
+              subtitle="Kullanım senaryosu"
+              maxWidth="xl"
+              footer={
+                <div className="flex flex-wrap gap-2">
+                  <button
+                    type="button"
+                    onClick={() => deleteSolution(s.id)}
+                    className="rounded-lg bg-red-950 px-3 py-2 text-xs font-bold text-red-300 hover:bg-red-900"
+                  >
+                    Sil
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setEditId(null);
+                      setActiveItemId(null);
+                    }}
+                    className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-xs font-bold text-slate-700 hover:bg-slate-50"
+                  >
+                    Listeye Dön
+                  </button>
+                </div>
+              }
+            >
+              <div className="space-y-5">
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                     <FormField label="Başlık" value={s.title || ""} onChange={(v) => updateSolution(s.id, "title", v)} />
                     <FormField label="Slug" value={s.slug || ""} onChange={(v) => updateSolution(s.id, "slug", v)} />
                     <FormField label="Kategori" value={s.category || ""} onChange={(v) => updateSolution(s.id, "category", v)} />
@@ -406,12 +605,9 @@ export default function SolutionsPanel() {
                     </div>
                   </div>
                   <div className="border-t border-gray-200 pt-4">
-                    <h4 className="text-sm font-bold text-gray-700 mb-3">Çeviriler</h4>
                     <TranslationEditor item={s} fields={SOLUTION_FIELDS} onChange={(locale, key, val) => updateLocalized(s.id, locale, key, val)} />
                   </div>
-                </div>
-
-                <aside className="ws-sol-live-preview">
+                <aside className="ws-sol-live-preview mt-4">
                   <p className="ws-sol-live-preview-label">Sitede nasıl görünür</p>
                   <article className="solution-case-card mirror-solution-card">
                     <figure className="mirror-solution-figure">
@@ -432,19 +628,9 @@ export default function SolutionsPanel() {
                       )}
                     </div>
                   </article>
-                  {s.slug && (
-                    <a
-                      href={`/tr/solutions#${encodeURIComponent(s.slug)}`}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="ws-sol-live-link"
-                    >
-                      Canlı sayfada aç ↗
-                    </a>
-                  )}
                 </aside>
               </div>
-            </div>
+            </AdminDrawer>
           ) : (
             <div className="ws-sol-page">
               <div className="ws-sol-list-header">
@@ -478,7 +664,12 @@ export default function SolutionsPanel() {
                           </div>
                           <div className="ws-sol-card-foot">
                             <span className="ws-sol-cat-pill">{item.category || "Kategori yok"}</span>
-                            <button type="button" onClick={() => setEditId(item.id)} className="ws-edit-button" style={{ width: "auto", padding: "8px 16px" }}>
+                            <button
+                              type="button"
+                              onClick={() => openItemEditor("useCases", item.id)}
+                              className="ws-edit-button"
+                              style={{ width: "auto", padding: "8px 16px" }}
+                            >
                               Düzenle
                             </button>
                           </div>
@@ -494,12 +685,8 @@ export default function SolutionsPanel() {
 
       {/* 2. General Page texts tab */}
       {activeSubTab === "general" && (
-        <div className="bg-white border border-gray-200 rounded-xl p-6 space-y-6">
-          <div>
-            <h3 className="font-bold text-[#131b2e] mb-1">Sayfa üst bölümü</h3>
-            <p className="text-sm text-gray-500 mb-4">Hero banner görseli ve istatistik değerleri (metin çevirileri aşağıda).</p>
-          </div>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="ws-pc-editor-wrap space-y-4">
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
             <FormField label="Hero Görseli" type="image" value={imageInputValue(solutionsPage.heroImage)} onChange={(v) => updateGeneralField("heroImage", v)} hint="Çözümler sayfası üst arka plan görseli" />
             <div className="ws-sol-hero-preview">
               {resolveAdminImageSrc(solutionsPage.heroImage) ? (
@@ -509,20 +696,16 @@ export default function SolutionsPanel() {
               )}
             </div>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
             <FormField label="Metrik 1 Değeri" value={solutionsPage.metric1Value || ""} onChange={(v) => updateGeneralField("metric1Value", v)} placeholder="15+" />
             <FormField label="Metrik 2 Değeri" value={solutionsPage.metric2Value || ""} onChange={(v) => updateGeneralField("metric2Value", v)} placeholder="2020" />
             <FormField label="Metrik 3 Değeri" value={solutionsPage.metric3Value || ""} onChange={(v) => updateGeneralField("metric3Value", v)} placeholder="24/7" />
           </div>
-
-          <div className="border-t border-gray-200 pt-6">
-            <h4 className="text-xs font-bold text-gray-700 mb-3">Çözümler Sayfası Metin Çevirileri</h4>
-            <TranslationEditor
-              item={solutionsPage}
-              fields={GENERAL_FIELDS}
-              onChange={(locale, key, val) => updateGeneralLocalized(locale, key, val)}
-            />
-          </div>
+          <TranslationEditor
+            item={solutionsPage}
+            fields={GENERAL_FIELDS}
+            onChange={(locale, key, val) => updateGeneralLocalized(locale, key, val)}
+          />
         </div>
       )}
 
@@ -538,7 +721,7 @@ export default function SolutionsPanel() {
                     <h3 className="font-bold text-sm text-[#131b2e]">Kart Düzenle: {card.title}</h3>
                     <div className="flex gap-2">
                       <button onClick={() => deleteSelectorCard(card.id)} className="px-3 py-1.5 bg-red-950 hover:bg-red-900 text-red-400 rounded text-xs font-semibold">Sil</button>
-                      <button onClick={() => setEditingSelectorIdx(null)} className="px-3 py-1.5 bg-gray-100 hover:bg-gray-200 rounded text-xs font-semibold">Listeye Dön</button>
+                      <button onClick={() => { setEditingSelectorIdx(null); setActiveItemId(null); }} className="px-3 py-1.5 bg-gray-100 hover:bg-gray-200 rounded text-xs font-semibold">Listeye Dön</button>
                     </div>
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -590,7 +773,14 @@ export default function SolutionsPanel() {
                           <p className="text-xs text-gray-500">{c.eyebrow}</p>
                           <p className="text-xs text-gray-400 line-clamp-2">{c.body}</p>
                         </div>
-                        <button onClick={() => setEditingSelectorIdx(originalIndex)} className="ws-edit-button" style={{ width: "auto", padding: "8px 14px" }}>Düzenle</button>
+                        <button
+                          type="button"
+                          onClick={() => openItemEditor("selector", c.id)}
+                          className="ws-edit-button"
+                          style={{ width: "auto", padding: "8px 14px" }}
+                        >
+                          Düzenle
+                        </button>
                       </div>
                     );
                   })}
@@ -615,7 +805,7 @@ export default function SolutionsPanel() {
                     <h3 className="font-bold text-sm text-[#131b2e]">Aşama Düzenle: {step.title}</h3>
                     <div className="flex gap-2">
                       <button onClick={() => deleteFlowStep(step.id)} className="px-3 py-1.5 bg-red-950 hover:bg-red-900 text-red-400 rounded text-xs font-semibold">Sil</button>
-                      <button onClick={() => setEditingFlowIdx(null)} className="px-3 py-1.5 bg-gray-100 hover:bg-gray-200 rounded text-xs font-semibold">Listeye Dön</button>
+                      <button onClick={() => { setEditingFlowIdx(null); setActiveItemId(null); }} className="px-3 py-1.5 bg-gray-100 hover:bg-gray-200 rounded text-xs font-semibold">Listeye Dön</button>
                     </div>
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -654,7 +844,14 @@ export default function SolutionsPanel() {
                           <p className="font-bold text-sm text-gray-800">{step.title}</p>
                           <p className="text-xs text-gray-400 line-clamp-2">{step.body}</p>
                         </div>
-                        <button onClick={() => setEditingFlowIdx(originalIndex)} className="ws-edit-button" style={{ width: "auto", padding: "8px 14px" }}>Düzenle</button>
+                        <button
+                          type="button"
+                          onClick={() => openItemEditor("how", step.id)}
+                          className="ws-edit-button"
+                          style={{ width: "auto", padding: "8px 14px" }}
+                        >
+                          Düzenle
+                        </button>
                       </div>
                     );
                   })}
@@ -679,7 +876,7 @@ export default function SolutionsPanel() {
                     <h3 className="font-bold text-sm text-[#131b2e]">Özellik Düzenle: {card.title}</h3>
                     <div className="flex gap-2">
                       <button onClick={() => deleteWhyCard(card.id)} className="px-3 py-1.5 bg-red-950 hover:bg-red-900 text-red-400 rounded text-xs font-semibold">Sil</button>
-                      <button onClick={() => setEditingWhyIdx(null)} className="px-3 py-1.5 bg-gray-100 hover:bg-gray-200 rounded text-xs font-semibold">Listeye Dön</button>
+                      <button onClick={() => { setEditingWhyIdx(null); setActiveItemId(null); }} className="px-3 py-1.5 bg-gray-100 hover:bg-gray-200 rounded text-xs font-semibold">Listeye Dön</button>
                     </div>
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -718,7 +915,14 @@ export default function SolutionsPanel() {
                           <p className="font-bold text-sm text-gray-800">{card.title}</p>
                           <p className="text-xs text-gray-400 line-clamp-2">{card.body}</p>
                         </div>
-                        <button onClick={() => setEditingWhyIdx(originalIndex)} className="ws-edit-button" style={{ width: "auto", padding: "8px 14px" }}>Düzenle</button>
+                        <button
+                          type="button"
+                          onClick={() => openItemEditor("why", card.id)}
+                          className="ws-edit-button"
+                          style={{ width: "auto", padding: "8px 14px" }}
+                        >
+                          Düzenle
+                        </button>
                       </div>
                     );
                   })}
@@ -730,6 +934,7 @@ export default function SolutionsPanel() {
           )}
         </div>
       )}
+      </main>
     </div>
   );
 }

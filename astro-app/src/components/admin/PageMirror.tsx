@@ -7,6 +7,7 @@ import { resolveAdminImageSrc } from "@/lib/admin-media";
 import { localizeSolutionItem } from "@/lib/admin-solution";
 import {
   Hit,
+  ItemHit,
   MirrorShell,
   PlaceholderGrid,
   SectionHead,
@@ -46,8 +47,10 @@ export default function PageMirror({
   data,
   locale,
   activeBlockId,
+  activeItemId,
   activeCard,
   onSelectBlock,
+  onSelectItem,
   onSelectCard,
   extraData = {},
 }: {
@@ -56,13 +59,19 @@ export default function PageMirror({
   data: Record<string, any>;
   locale: Locale;
   activeBlockId: string | null;
+  activeItemId?: string | null;
   activeCard: MirrorCard | null;
   onSelectBlock: (id: string) => void;
-  onSelectCard: (blockId: string, card: MirrorCard) => void;
+  onSelectItem?: (blockId: string, itemId: string) => void;
+  onSelectCard?: (blockId: string, card: MirrorCard) => void;
   extraData?: Record<string, any>;
 }) {
   const v = (key: string) => locVal(data, key, locale);
   const cardActive = (titleKey: string) => activeCard?.titleKey === titleKey;
+  const itemActive = (id: string | undefined) => Boolean(id && activeItemId === id);
+  const pickItem = (blockId: string, item: any) => {
+    if (item?.id && onSelectItem) onSelectItem(blockId, String(item.id));
+  };
   const solutionsList = Array.isArray(extraData.solutions) ? extraData.solutions : [];
   const companyFacts = extraData.companyFacts || {};
   const pageFaqs = Array.isArray(extraData.faqs) ? extraData.faqs : [];
@@ -321,8 +330,8 @@ export default function PageMirror({
                       const imgSrc = resolveAdminImageSrc(s?.image);
                       const headline = s?.headline || s?.title || "Çözüm";
                       const bullets = Array.isArray(s?.bullets) ? s.bullets.slice(0, 3) : [];
-                      return (
-                        <article key={s?.id || idx} className="solution-case-card mirror-solution-card">
+                      const cardBody = (
+                        <>
                           <figure className="mirror-solution-figure">
                             {imgSrc ? (
                               <img src={imgSrc} alt={s?.alt || headline} loading="lazy" decoding="async" />
@@ -340,6 +349,20 @@ export default function PageMirror({
                               </div>
                             )}
                           </div>
+                        </>
+                      );
+                      return item?.id && onSelectItem ? (
+                        <ItemHit
+                          key={s?.id || idx}
+                          active={itemActive(String(item.id))}
+                          onClick={() => pickItem(block.id, item)}
+                          className="solution-case-card mirror-solution-card"
+                        >
+                          {cardBody}
+                        </ItemHit>
+                      ) : (
+                        <article key={s?.id || idx} className="solution-case-card mirror-solution-card">
+                          {cardBody}
                         </article>
                       );
                     }) : (
@@ -361,13 +384,27 @@ export default function PageMirror({
               <div className="section-inner">
                 <SectionHead data={data} locale={locale} fields={block.fields} center />
                 <div className="solution-decision-grid">
-                  {(items.length ? items : [0, 1, 2]).map((item: any, idx: number) => (
-                    <article key={idx} className="solution-decision-card">
-                      <div className="decision-icon">{String(idx + 1).padStart(2, "0")}</div>
-                      <h3>{locItem(data, item, "title", locale) || `Kart ${idx + 1}`}</h3>
-                      <p>{locItem(data, item, "body", locale)}</p>
-                    </article>
-                  ))}
+                  {(items.length ? items : [0, 1, 2]).map((item: any, idx: number) => {
+                    const cardInner = (
+                      <>
+                        <div className="decision-icon">{String(idx + 1).padStart(2, "0")}</div>
+                        <h3>{locItem(data, item, "title", locale) || `Kart ${idx + 1}`}</h3>
+                        <p>{locItem(data, item, "body", locale)}</p>
+                      </>
+                    );
+                    return item?.id && onSelectItem ? (
+                      <ItemHit
+                        key={item.id}
+                        active={itemActive(String(item.id))}
+                        onClick={() => pickItem(block.id, item)}
+                        className="solution-decision-card"
+                      >
+                        {cardInner}
+                      </ItemHit>
+                    ) : (
+                      <article key={idx} className="solution-decision-card">{cardInner}</article>
+                    );
+                  })}
                 </div>
               </div>
             </section>
@@ -384,13 +421,27 @@ export default function PageMirror({
                 <SectionHead data={data} locale={locale} fields={block.fields} center />
                 <div className="tech-flow">
                   <div className="flow-row">
-                    {(items.length ? items : [0, 1, 2, 3, 4]).map((item: any, idx: number) => (
-                      <div key={idx} className="flow-node">
-                        <small>{String(idx + 1).padStart(2, "0")}</small>
-                        <strong>{locItem(data, item, "title", locale) || "—"}</strong>
-                        <span>{locItem(data, item, "body", locale) || locItem(data, item, "description", locale)}</span>
-                      </div>
-                    ))}
+                    {(items.length ? items : [0, 1, 2, 3, 4]).map((item: any, idx: number) => {
+                      const nodeInner = (
+                        <>
+                          <small>{String(idx + 1).padStart(2, "0")}</small>
+                          <strong>{locItem(data, item, "title", locale) || "—"}</strong>
+                          <span>{locItem(data, item, "body", locale) || locItem(data, item, "description", locale)}</span>
+                        </>
+                      );
+                      return item?.id && onSelectItem ? (
+                        <ItemHit
+                          key={item.id}
+                          active={itemActive(String(item.id))}
+                          onClick={() => pickItem(block.id, item)}
+                          className="flow-node"
+                        >
+                          {nodeInner}
+                        </ItemHit>
+                      ) : (
+                        <div key={idx} className="flow-node">{nodeInner}</div>
+                      );
+                    })}
                   </div>
                 </div>
               </div>
@@ -407,13 +458,27 @@ export default function PageMirror({
               <div className="section-inner">
                 <SectionHead data={data} locale={locale} fields={block.fields} />
                 <div className="solutions-principle-grid">
-                  {(items.length ? items : [0, 1, 2, 3]).map((item: any, idx: number) => (
-                    <article key={idx} className="solutions-principle-card">
-                      <span>{String(idx + 1).padStart(2, "0")}</span>
-                      <h3>{locItem(data, item, "title", locale) || "—"}</h3>
-                      <p>{locItem(data, item, "body", locale)}</p>
-                    </article>
-                  ))}
+                  {(items.length ? items : [0, 1, 2, 3]).map((item: any, idx: number) => {
+                    const cardInner = (
+                      <>
+                        <span>{String(idx + 1).padStart(2, "0")}</span>
+                        <h3>{locItem(data, item, "title", locale) || "—"}</h3>
+                        <p>{locItem(data, item, "body", locale)}</p>
+                      </>
+                    );
+                    return item?.id && onSelectItem ? (
+                      <ItemHit
+                        key={item.id}
+                        active={itemActive(String(item.id))}
+                        onClick={() => pickItem(block.id, item)}
+                        className="solutions-principle-card"
+                      >
+                        {cardInner}
+                      </ItemHit>
+                    ) : (
+                      <article key={idx} className="solutions-principle-card">{cardInner}</article>
+                    );
+                  })}
                 </div>
               </div>
             </section>

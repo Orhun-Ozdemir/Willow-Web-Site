@@ -8,6 +8,12 @@ import type { MirrorCard } from "./mirrorShared";
 import { HOME_EXTRA_KEYS, HOME_LAYOUT, firstEditableBlock, layoutForPage } from "./pageLayouts";
 import { useAdmin } from "./AdminContext";
 import FormField from "./FormField";
+import {
+  LOCALE_INFO,
+  SOURCE_LANG,
+  TARGET_LOCALES,
+  StatusDot,
+} from "./localeEditorShared";
 
 const SCALAR_PAGE_FIELDS = new Set(["heroImage", "metric1Value", "metric2Value", "metric3Value"]);
 
@@ -29,17 +35,6 @@ const PAGES = [
   { key: "startProject", label: "Proje Başlat", icon: "🚀", path: "/tr/start-project" },
   { key: "glossary", label: "Sözlük", icon: "📖", path: "/tr/glossary" },
 ] as const;
-
-const LOCALE_INFO: Record<string, { flag: string; name: string }> = {
-  en: { flag: "🇬🇧", name: "English" },
-  tr: { flag: "🇹🇷", name: "Türkçe" },
-  de: { flag: "🇩🇪", name: "Deutsch" },
-  fr: { flag: "🇫🇷", name: "Français" },
-  es: { flag: "🇪🇸", name: "Español" },
-  it: { flag: "🇮🇹", name: "Italiano" },
-  ar: { flag: "🇸🇦", name: "العربية" },
-  ja: { flag: "🇯🇵", name: "日本語" },
-};
 
 type FieldType = "short" | "long" | "button" | "image";
 interface FieldMeta { label: string; section: string; hint: string; type: FieldType; }
@@ -183,9 +178,6 @@ function getMeta(key: string): FieldMeta {
 
 type CardPair = MirrorCard;
 
-const SOURCE_LANG: Locale = "en";
-const TARGET_LOCALES = locales.filter((l) => l !== SOURCE_LANG);
-
 function stripHtml(value: string) {
   return value.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
 }
@@ -209,12 +201,6 @@ function fieldStatus(data: Record<string, any>, key: string): "all" | "partial" 
   if (filled === TARGET_LOCALES.length) return "all";
   if (filled > 0) return "partial";
   return "empty";
-}
-
-function StatusDot({ status }: { status: "all" | "partial" | "empty" }) {
-  if (status === "all") return <span className="ws-pc-status ws-pc-status--ok">✓</span>;
-  if (status === "partial") return <span className="ws-pc-status ws-pc-status--warn">◐</span>;
-  return <span className="ws-pc-status ws-pc-status--empty">○</span>;
 }
 
 // ── Content card picker ───────────────────────────────────────────────────────

@@ -4348,6 +4348,22 @@ body[data-page="products"] .product-card:hover img {
   pointer-events: none;
 }
 
+.ws-pc-mirror .ws-pc-mirror-item-hit {
+  position: relative;
+  cursor: pointer;
+  transition: outline-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.ws-pc-mirror .ws-pc-mirror-item-hit:hover {
+  z-index: 3;
+}
+
+.ws-pc-mirror .solution-decision-card.ws-pc-mirror-item-hit,
+.ws-pc-mirror .solutions-principle-card.ws-pc-mirror-item-hit,
+.ws-pc-mirror .mirror-solution-card.ws-pc-mirror-item-hit {
+  display: block;
+}
+
 .ws-pc-mirror .service-rail article {
   min-height: 160px;
   padding: 20px 16px;
@@ -4355,7 +4371,11 @@ body[data-page="products"] .product-card:hover img {
 
 .ws-pc-mirror .service-rail article.mirror-card-active,
 .ws-pc-mirror .flow-node.mirror-card-active,
-.ws-pc-mirror .industry-lane.mirror-card-active {
+.ws-pc-mirror .industry-lane.mirror-card-active,
+.ws-pc-mirror .ws-pc-mirror-item-hit.mirror-card-active,
+.ws-pc-mirror .solution-decision-card.mirror-card-active,
+.ws-pc-mirror .solutions-principle-card.mirror-card-active,
+.ws-pc-mirror .mirror-solution-card.mirror-card-active {
   outline: 3px solid #f5c542;
   outline-offset: -3px;
   z-index: 2;

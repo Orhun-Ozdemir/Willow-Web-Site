@@ -8,10 +8,28 @@ import {
   fallbackServiceLayersAsCmsItems,
 } from "@/lib/services-page-fallbacks";
 import { useAdmin } from "./AdminContext";
+import AdminDrawer from "./AdminDrawer";
 import FormField from "./FormField";
+import PageMirrorSidebar from "./PageMirrorSidebar";
 import TranslationEditor from "./TranslationEditor";
 
 type SubTab = "layers" | "general" | "caseStudies" | "deliverables" | "process";
+
+const SUB_TABS: { key: SubTab; label: string; blockId: string | null }[] = [
+  { key: "layers", label: "Hizmet Kartları", blockId: "layers" },
+  { key: "caseStudies", label: "Vaka Analizleri", blockId: null },
+  { key: "deliverables", label: "Teslimatlar", blockId: "deliverables" },
+  { key: "process", label: "Süreç Adımları", blockId: "process" },
+  { key: "general", label: "Genel Metinler", blockId: "hero" },
+];
+
+const BLOCK_TO_SUBTAB: Record<string, SubTab> = {
+  hero: "general",
+  layers: "layers",
+  deliverables: "deliverables",
+  process: "process",
+  cta: "general",
+};
 
 const SERVICE_LAYER_FIELDS = [
   { key: "title", label: "Başlık" },
@@ -124,6 +142,7 @@ export default function ServicesPanel() {
     saveMessage,
   } = useAdmin();
   const [activeSubTab, setActiveSubTab] = useState<SubTab>("layers");
+  const [activeBlockId, setActiveBlockId] = useState<string>("layers");
   const [editingLayerIdx, setEditingLayerIdx] = useState<number | null>(null);
 
   // Case Studies
@@ -199,6 +218,19 @@ export default function ServicesPanel() {
     setEditingCaseIdx(null);
     setEditingDeliverableIdx(null);
     setEditingProcessIdx(null);
+  };
+
+  const switchSubTab = (tab: SubTab) => {
+    setActiveSubTab(tab);
+    resetSubEditors();
+    const meta = SUB_TABS.find((t) => t.key === tab);
+    if (meta?.blockId) setActiveBlockId(meta.blockId);
+  };
+
+  const selectMirrorBlock = (blockId: string) => {
+    setActiveBlockId(blockId);
+    const sub = BLOCK_TO_SUBTAB[blockId];
+    if (sub) switchSubTab(sub);
   };
 
   // ── Generic helpers ──
@@ -293,38 +325,59 @@ export default function ServicesPanel() {
     if (editIdx !== null && items[editIdx]) {
       const item = items[editIdx];
       return (
-        <div className="bg-white border border-gray-200 rounded-xl p-6 space-y-6">
-          <div className="flex items-center justify-between border-b border-gray-200 pb-4">
-            <h3 className="font-bold text-sm text-[#131b2e]">Düzenle: {item.title || "(İsimsiz)"}</h3>
-            <div className="flex gap-2">
-              <button onClick={() => deleteListItem(listKey, item.id, setEditIdx)} className="px-3 py-1.5 bg-red-950 hover:bg-red-900 text-red-400 rounded text-xs font-semibold">Sil</button>
-              <button onClick={() => setEditIdx(null)} className="px-3 py-1.5 bg-gray-100 hover:bg-gray-200 rounded text-xs font-semibold">Listeye Dön</button>
-            </div>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <FormField label="Sıra Numarası" type="number" value={String(item.sortOrder || 0)} onChange={(v) => updateListItem(listKey, editIdx, "sortOrder", parseInt(v) || 0)} />
-            {fields.map((f) => (
-              <div key={f.key} className={f.type === "textarea" ? "col-span-2" : ""}>
-                <FormField
-                  label={`${f.label} (EN)`}
-                  type={f.type || "text"}
-                  value={item[f.key] || ""}
-                  onChange={(v) => updateListItem(listKey, editIdx, f.key, v)}
-                  rows={f.rows}
+        <>
+          <AdminDrawer
+            open
+            onClose={() => setEditIdx(null)}
+            title={itemDisplayTitle(item)}
+            subtitle={listLabel}
+            maxWidth="xl"
+            footer={
+              <div className="flex flex-wrap gap-2">
+                <button
+                  type="button"
+                  onClick={() => deleteListItem(listKey, item.id, setEditIdx)}
+                  className="rounded-lg bg-red-950 px-3 py-2 text-xs font-bold text-red-300 hover:bg-red-900"
+                >
+                  Sil
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setEditIdx(null)}
+                  className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-xs font-bold text-slate-700 hover:bg-slate-50"
+                >
+                  Listeye Dön
+                </button>
+              </div>
+            }
+          >
+            <div className="space-y-6">
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <FormField label="Sıra Numarası" type="number" value={String(item.sortOrder || 0)} onChange={(v) => updateListItem(listKey, editIdx, "sortOrder", parseInt(v) || 0)} />
+                {fields.map((f) => (
+                  <div key={f.key} className={f.type === "textarea" ? "sm:col-span-2" : ""}>
+                    <FormField
+                      label={`${f.label} (EN)`}
+                      type={f.type || "text"}
+                      value={item[f.key] || ""}
+                      onChange={(v) => updateListItem(listKey, editIdx, f.key, v)}
+                      rows={f.rows}
+                    />
+                  </div>
+                ))}
+                {extraFields?.(item, editIdx)}
+              </div>
+              <div className="border-t border-gray-200 pt-4">
+                <h4 className="mb-3 text-xs font-bold text-gray-700">Çeviriler</h4>
+                <TranslationEditor
+                  item={item}
+                  fields={fields}
+                  onChange={(locale, key, val) => updateListItemLocalized(listKey, editIdx, locale, key, val)}
                 />
               </div>
-            ))}
-            {extraFields?.(item, editIdx)}
-          </div>
-          <div className="border-t border-gray-200 pt-6">
-            <h4 className="text-xs font-bold text-gray-700 mb-3">Çeviriler</h4>
-            <TranslationEditor
-              item={item}
-              fields={fields}
-              onChange={(locale, key, val) => updateListItemLocalized(listKey, editIdx, locale, key, val)}
-            />
-          </div>
-        </div>
+            </div>
+          </AdminDrawer>
+        </>
       );
     }
 
@@ -391,7 +444,22 @@ export default function ServicesPanel() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="ws-pc-layout">
+      <PageMirrorSidebar
+        pageKey="services"
+        pageData={servicesPage}
+        activeBlockId={activeBlockId}
+        onSelectBlock={selectMirrorBlock}
+        extraData={{ faqs: content?.faqs || [] }}
+        sectionNav={SUB_TABS.map((tab) => ({
+          id: tab.key,
+          label: tab.label,
+          active: activeSubTab === tab.key,
+          onClick: () => switchSubTab(tab.key),
+        }))}
+      />
+
+      <main className="ws-pc-main min-w-0 space-y-6">
       <div className="flex flex-wrap items-start justify-between gap-4 rounded-xl border border-gray-200 bg-white px-5 py-4 shadow-sm">
         <div>
           <p className="text-xs font-bold uppercase tracking-wide text-gray-400">/services sayfası</p>
@@ -433,27 +501,19 @@ export default function ServicesPanel() {
         </p>
       </div>
       {/* Sub-tabs header */}
-      <div className="flex gap-2 border-b border-gray-200 pb-px overflow-x-auto">
-        {[
-          { key: "layers", label: `Hizmet Kartları (${liveServiceCardCount})` },
-          { key: "caseStudies", label: "Vaka Analizleri" },
-          { key: "deliverables", label: "Teslimatlar" },
-          { key: "process", label: "Süreç Adımları" },
-          { key: "general", label: "Genel Sayfa Metinleri" },
-        ].map((tab) => (
+      <div className="flex gap-2 overflow-x-auto border-b border-gray-200 pb-px">
+        {SUB_TABS.map((tab) => (
           <button
             key={tab.key}
-            onClick={() => {
-              setActiveSubTab(tab.key as SubTab);
-              resetSubEditors();
-            }}
-            className={`px-4 py-2 text-xs font-bold border-b-2 transition -mb-px whitespace-nowrap ${
+            type="button"
+            onClick={() => switchSubTab(tab.key)}
+            className={`-mb-px whitespace-nowrap border-b-2 px-4 py-2 text-xs font-bold transition ${
               activeSubTab === tab.key
                 ? "border-[#132175] text-[#132175]"
                 : "border-transparent text-gray-400 hover:text-gray-600"
             }`}
           >
-            {tab.label}
+            {tab.key === "layers" ? `${tab.label} (${liveServiceCardCount})` : tab.label}
           </button>
         ))}
       </div>
@@ -554,21 +614,19 @@ export default function ServicesPanel() {
 
       {/* 5. General Page Texts */}
       {activeSubTab === "general" && (
-        <div className="bg-white border border-gray-200 rounded-xl p-6 space-y-6">
-          <div className="bg-blue-50 border border-blue-100 rounded-xl p-4 text-sm text-blue-700">
-            Hizmetler sayfasındaki genel başlıklar, açıklamalar ve buton metinleri buradan yönetilir.
-            Hero ve bölüm metinleri Supabase&apos;te kayıtlı; aşağıda dil dil düzenlenir.
+        <div className="ws-pc-editor-wrap space-y-4">
+          <div className="rounded-xl border border-blue-100 bg-blue-50 p-4 text-sm text-blue-700">
+            Hero ve bölüm başlıkları buradan düzenlenir. Aynı metinler{" "}
+            <strong>SEO &amp; Çeviriler → Sayfa Çevirileri → Hizmetler</strong> altında da görünür.
           </div>
-          <div className="border-t border-gray-200 pt-6">
-            <h4 className="text-xs font-bold text-gray-700 mb-3">Sayfa Metin Çevirileri</h4>
-            <TranslationEditor
-              item={generalEditorItem}
-              fields={GENERAL_FIELDS}
-              onChange={(locale, key, val) => updatePageLocalized(locale, key, val)}
-            />
-          </div>
+          <TranslationEditor
+            item={generalEditorItem}
+            fields={GENERAL_FIELDS}
+            onChange={(locale, key, val) => updatePageLocalized(locale, key, val)}
+          />
         </div>
       )}
+      </main>
     </div>
   );
 }

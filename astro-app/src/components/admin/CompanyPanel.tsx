@@ -1,13 +1,33 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { type Locale } from "@/lib/cms";
 import { useAdmin } from "./AdminContext";
+import AdminDrawer from "./AdminDrawer";
 import FormField from "./FormField";
+import PageMirrorSidebar from "./PageMirrorSidebar";
 import TranslationEditor from "./TranslationEditor";
 import { syncOfficePhonesInFacts } from "@/lib/company-contact";
 
 type SubTab = "general" | "team" | "timeline" | "offices" | "expertise" | "industries";
+
+const SUB_TABS: { key: SubTab; label: string; blockId: string | null }[] = [
+  { key: "general", label: "Genel Metinler", blockId: "intro" },
+  { key: "expertise", label: "Uzmanlık", blockId: null },
+  { key: "industries", label: "Sektörler", blockId: null },
+  { key: "team", label: "Ekibimiz", blockId: "team" },
+  { key: "timeline", label: "Zaman Tüneli", blockId: "history" },
+  { key: "offices", label: "Ofisler", blockId: null },
+];
+
+const BLOCK_TO_SUBTAB: Record<string, SubTab> = {
+  intro: "general",
+  team: "team",
+  history: "timeline",
+  principles: "general",
+  workWith: "general",
+  cta: "general",
+};
 
 const GENERAL_FIELDS = [
   { key: "heroSub", label: "Hero Alt Metin", type: "textarea" as const, rows: 3 },
@@ -67,8 +87,9 @@ async function saveSection(section: string, data: any) {
 }
 
 export default function CompanyPanel() {
-  const { content, setContent } = useAdmin();
+  const { content, setContent, saveContent, dirtyKeys, saving, saveMessage } = useAdmin();
   const [activeSubTab, setActiveSubTab] = useState<SubTab>("general");
+  const [activeBlockId, setActiveBlockId] = useState<string>("intro");
   
   // States for editing items
   const [editingTeamIdx, setEditingTeamIdx] = useState<number | null>(null);
@@ -78,7 +99,34 @@ export default function CompanyPanel() {
   const [editingExpertiseIdx, setEditingExpertiseIdx] = useState<number | null>(null);
 
   const facts = content?.companyFacts || {};
+  const companyPage = content?.pageContent?.company || {};
   const team = facts.team || [];
+  const companyDirty = dirtyKeys.includes("companyFacts");
+
+  useEffect(() => {
+    if (!companyDirty || saving) return;
+    const timer = window.setTimeout(() => {
+      void saveContent();
+    }, 2500);
+    return () => window.clearTimeout(timer);
+  }, [companyDirty, saving, facts, saveContent]);
+
+  const switchSubTab = (tab: SubTab) => {
+    setActiveSubTab(tab);
+    setEditingTeamIdx(null);
+    setEditingTimelineIdx(null);
+    setEditingOfficeIdx(null);
+    setEditingExpertiseIdx(null);
+    setEditingIndustryIdx(null);
+    const meta = SUB_TABS.find((t) => t.key === tab);
+    if (meta?.blockId) setActiveBlockId(meta.blockId);
+  };
+
+  const selectMirrorBlock = (blockId: string) => {
+    setActiveBlockId(blockId);
+    const sub = BLOCK_TO_SUBTAB[blockId];
+    if (sub) switchSubTab(sub);
+  };
   const timeline = facts.timeline || [];
   const officesList = facts.officesList || [];
   const expertiseList: any[] = facts.expertise || [];
@@ -405,26 +453,64 @@ export default function CompanyPanel() {
   const sortedIndustries = [...industriesList].sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
 
   return (
-    <div className="space-y-6">
-      {/* Sub-tabs header */}
-      <div className="flex gap-2 border-b border-gray-200 pb-px">
-        {[
-          { key: "general", label: "Genel Sayfa Metinleri" },
-          { key: "expertise", label: "Uzmanlık Alanları" },
-          { key: "industries", label: "Sektörler" },
-          { key: "team", label: "Ekibimiz" },
-          { key: "timeline", label: "Zaman Tüneli" },
-          { key: "offices", label: "Ofislerimiz" },
-        ].map((tab) => (
+    <div className="ws-pc-layout">
+      <PageMirrorSidebar
+        pageKey="company"
+        pageData={companyPage}
+        activeBlockId={activeBlockId}
+        onSelectBlock={selectMirrorBlock}
+        extraData={{ companyFacts: facts }}
+        sectionNav={SUB_TABS.map((tab) => ({
+          id: tab.key,
+          label: tab.label,
+          active: activeSubTab === tab.key,
+          onClick: () => switchSubTab(tab.key),
+        }))}
+      />
+
+      <main className="ws-pc-main min-w-0 space-y-6">
+      <div className="flex flex-wrap items-start justify-between gap-4 rounded-xl border border-gray-200 bg-white px-5 py-4 shadow-sm">
+        <div>
+          <p className="text-xs font-bold uppercase tracking-wide text-gray-400">/company sayfası</p>
+          <h2 className="mt-1 text-lg font-bold text-[#131b2e]">
+            {facts.aboutHeadline || "Hakkımızda"}
+          </h2>
+          <p className="mt-2 text-sm text-gray-500">
+            {team.length} ekip üyesi · şirket bilgileri ve sayfa metinleri
+          </p>
+        </div>
+        <div className="flex flex-col items-end gap-2">
+          {companyDirty && (
+            <p className="text-xs font-semibold text-amber-700">
+              {saving ? "Kaydediliyor…" : "Kaydedilmemiş değişiklik — 2 sn içinde otomatik kaydedilir"}
+            </p>
+          )}
+          {!companyDirty && saveMessage && (
+            <p className="text-xs font-semibold text-green-700">{saveMessage}</p>
+          )}
+          {companyDirty && (
+            <button
+              type="button"
+              onClick={() => void saveContent()}
+              disabled={saving}
+              className="rounded-lg bg-[#132175] px-3 py-2 text-xs font-bold text-white disabled:opacity-60"
+            >
+              {saving ? "Kaydediliyor…" : "Şimdi Kaydet"}
+            </button>
+          )}
+          <a href="/tr/company" target="_blank" rel="noreferrer" className="ws-pc-live-link">
+            Canlı sayfayı aç ↗
+          </a>
+        </div>
+      </div>
+
+      <div className="flex gap-2 overflow-x-auto border-b border-gray-200 pb-px">
+        {SUB_TABS.map((tab) => (
           <button
             key={tab.key}
-            onClick={() => {
-              setActiveSubTab(tab.key as SubTab);
-              setEditingTeamIdx(null);
-              setEditingTimelineIdx(null);
-              setEditingOfficeIdx(null);
-            }}
-            className={`px-4 py-2 text-xs font-bold border-b-2 transition -mb-px ${
+            type="button"
+            onClick={() => switchSubTab(tab.key)}
+            className={`-mb-px whitespace-nowrap border-b-2 px-4 py-2 text-xs font-bold transition ${
               activeSubTab === tab.key
                 ? "border-[#132175] text-[#132175]"
                 : "border-transparent text-gray-400 hover:text-gray-600"
@@ -502,8 +588,7 @@ export default function CompanyPanel() {
             </div>
           </div>
 
-          <div className="border-t border-gray-200 pt-6">
-            <h4 className="text-xs font-bold text-gray-700 mb-3">Genel Metin Çevirileri</h4>
+          <div className="ws-pc-editor-wrap border-t border-gray-200 pt-6">
             <TranslationEditor
               item={facts}
               fields={GENERAL_FIELDS}
@@ -572,67 +657,73 @@ export default function CompanyPanel() {
             (() => {
               const member = team[editingTeamIdx];
               return (
-                <div className="bg-white border border-gray-200 rounded-xl p-6 space-y-6">
-                  <div className="flex items-center justify-between border-b border-gray-200 pb-4">
-                    <h3 className="font-bold text-sm text-[#131b2e]">Ekip Üyesi Düzenle: {member.name}</h3>
-                    <div className="flex gap-2">
+                <AdminDrawer
+                  open
+                  onClose={closeTeamEditor}
+                  title={member.name || "Ekip üyesi"}
+                  subtitle="Ekibimiz"
+                  maxWidth="xl"
+                  footer={
+                    <div className="flex flex-wrap gap-2">
                       <button
+                        type="button"
                         onClick={() => deleteTeamMember(member.id)}
-                        className="px-3 py-1.5 bg-red-950 hover:bg-red-900 text-red-400 rounded text-xs font-semibold"
+                        className="rounded-lg bg-red-950 px-3 py-2 text-xs font-bold text-red-300 hover:bg-red-900"
                       >
                         Sil
                       </button>
                       <button
+                        type="button"
                         onClick={closeTeamEditor}
-                        className="px-3 py-1.5 bg-gray-100 hover:bg-gray-200 rounded text-xs font-semibold"
+                        className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-xs font-bold text-slate-700 hover:bg-slate-50"
                       >
                         Listeye Dön
                       </button>
                     </div>
-                  </div>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <FormField
-                      label="Ad Soyad"
-                      value={member.name || ""}
-                      onChange={(v) => updateTeamMember(editingTeamIdx, "name", v)}
-                    />
-                    <FormField
-                      label="Sıra Numarası"
-                      type="number"
-                      value={String(member.sortOrder || 0)}
-                      onChange={(v) => updateTeamMember(editingTeamIdx, "sortOrder", parseInt(v) || 0)}
-                    />
-                    <FormField
-                      label="Rol (EN)"
-                      value={member.role || ""}
-                      onChange={(v) => updateTeamMember(editingTeamIdx, "role", v)}
-                    />
-                    <FormField
-                      label="Görsel Dosya Yolu"
-                      type="image"
-                      value={member.image || ""}
-                      onChange={(v) => updateTeamMember(editingTeamIdx, "image", v)}
-                      placeholder="team/... veya tam Supabase URL"
-                    />
-                    <div className="col-span-2">
+                  }
+                >
+                  <div className="space-y-6">
+                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                       <FormField
-                        label="Biyografi (EN)"
-                        type="textarea"
-                        value={member.bio || ""}
-                        onChange={(v) => updateTeamMember(editingTeamIdx, "bio", v)}
-                        rows={2}
+                        label="Ad Soyad"
+                        value={member.name || ""}
+                        onChange={(v) => updateTeamMember(editingTeamIdx, "name", v)}
                       />
+                      <FormField
+                        label="Sıra Numarası"
+                        type="number"
+                        value={String(member.sortOrder || 0)}
+                        onChange={(v) => updateTeamMember(editingTeamIdx, "sortOrder", parseInt(v) || 0)}
+                      />
+                      <FormField
+                        label="Rol (EN)"
+                        value={member.role || ""}
+                        onChange={(v) => updateTeamMember(editingTeamIdx, "role", v)}
+                      />
+                      <FormField
+                        label="Görsel Dosya Yolu"
+                        type="image"
+                        value={member.image || ""}
+                        onChange={(v) => updateTeamMember(editingTeamIdx, "image", v)}
+                        placeholder="team/... veya tam Supabase URL"
+                      />
+                      <div className="sm:col-span-2">
+                        <FormField
+                          label="Biyografi (EN)"
+                          type="textarea"
+                          value={member.bio || ""}
+                          onChange={(v) => updateTeamMember(editingTeamIdx, "bio", v)}
+                          rows={2}
+                        />
+                      </div>
                     </div>
-                  </div>
-                  <div className="border-t border-gray-200 pt-6">
-                    <h4 className="text-xs font-bold text-gray-700 mb-3">Çeviriler</h4>
                     <TranslationEditor
                       item={member}
                       fields={TEAM_TRANSLATION_FIELDS}
                       onChange={(locale, key, val) => updateTeamLocalized(editingTeamIdx, locale, key, val)}
                     />
                   </div>
-                </div>
+                </AdminDrawer>
               );
             })()
           ) : (
@@ -1056,6 +1147,7 @@ export default function CompanyPanel() {
           )}
         </div>
       )}
+      </main>
     </div>
   );
 }
