@@ -12,7 +12,7 @@ import FormField from "./FormField";
 const SCALAR_PAGE_FIELDS = new Set(["heroImage", "metric1Value", "metric2Value", "metric3Value"]);
 
 const SERVICES_ARRAY_HINTS: Record<string, string> = {
-  serviceLayers: "Hizmet katmanları kartları",
+  serviceLayers: "Canlı hizmet kartları (serviceLayers)",
   deliverables: "Teslimat paketleri",
   processSteps: "Süreç adımları",
 };
@@ -134,9 +134,9 @@ const FIELD_META: Record<string, FieldMeta> = {
   finalCtaTitle: { label: "Başlık", section: "CTA", hint: "", type: "short" },
   finalCtaLead: { label: "Açıklama", section: "CTA", hint: "", type: "long" },
   finalCtaButton: { label: "Buton", section: "CTA", hint: "Metin + link. Varsayılan: /start-project", type: "button" },
-  serviceSystemEyebrow: { label: "Üst Etiket", section: "Hizmet Katmanları", hint: "", type: "short" },
-  serviceSystemTitle: { label: "Başlık", section: "Hizmet Katmanları", hint: "", type: "short" },
-  serviceSystemLead: { label: "Açıklama", section: "Hizmet Katmanları", hint: "", type: "long" },
+  serviceSystemEyebrow: { label: "Üst Etiket", section: "Hizmet Kartları", hint: "", type: "short" },
+  serviceSystemTitle: { label: "Başlık", section: "Hizmet Kartları", hint: "", type: "short" },
+  serviceSystemLead: { label: "Açıklama", section: "Hizmet Kartları", hint: "", type: "long" },
   deliverablesEyebrow: { label: "Üst Etiket", section: "Teslimatlar", hint: "", type: "short" },
   deliverablesTitle: { label: "Başlık", section: "Teslimatlar", hint: "", type: "short" },
   deliverablesLead: { label: "Açıklama", section: "Teslimatlar", hint: "", type: "long" },

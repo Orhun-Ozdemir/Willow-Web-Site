@@ -9,16 +9,9 @@ import {
 } from "@/lib/services-page-fallbacks";
 import { useAdmin } from "./AdminContext";
 import FormField from "./FormField";
-import ListEditorField from "./ListEditorField";
 import TranslationEditor from "./TranslationEditor";
 
-type SubTab = "catalog" | "layers" | "general" | "caseStudies" | "deliverables" | "process";
-
-const SERVICE_CATALOG_FIELDS = [
-  { key: "title", label: "Hizmet Adı" },
-  { key: "summary", label: "Özet", type: "textarea" as const, rows: 3 },
-  { key: "deliverables", label: "Teslimatlar", type: "array-items" as const, sourceArrayKey: "deliverables" },
-];
+type SubTab = "layers" | "general" | "caseStudies" | "deliverables" | "process";
 
 const SERVICE_LAYER_FIELDS = [
   { key: "title", label: "Başlık" },
@@ -126,16 +119,11 @@ export default function ServicesPanel() {
     content,
     setContent,
     savePageContent,
-    saveContent,
     isPageContentDirty,
-    dirtyKeys,
     saving,
     saveMessage,
   } = useAdmin();
-  const [activeSubTab, setActiveSubTab] = useState<SubTab>("catalog");
-  const [editingCatalogId, setEditingCatalogId] = useState<string | null>(null);
-
-  // Service Layers
+  const [activeSubTab, setActiveSubTab] = useState<SubTab>("layers");
   const [editingLayerIdx, setEditingLayerIdx] = useState<number | null>(null);
 
   // Case Studies
@@ -148,15 +136,12 @@ export default function ServicesPanel() {
   const [editingProcessIdx, setEditingProcessIdx] = useState<number | null>(null);
 
   const servicesPage = content?.pageContent?.services || {};
-  const serviceCatalog = useMemo(() => {
-    return [...(content?.services || [])].sort((a: any, b: any) => (a.sortOrder || 0) - (b.sortOrder || 0));
-  }, [content?.services]);
   const serviceLayers = servicesPage.serviceLayers || [];
+  const liveServiceCardCount = serviceLayers.length || fallbackServiceLayersAsCmsItems().length;
   const caseStudies = servicesPage.caseStudies || [];
   const deliverables = servicesPage.deliverables || [];
   const processSteps = servicesPage.processSteps || [];
   const pageDirty = isPageContentDirty("services");
-  const catalogDirty = dirtyKeys.includes("services");
   const generalEditorItem = useMemo(() => pageContentToEditorItem(servicesPage), [servicesPage]);
 
   const heroPreview =
@@ -209,59 +194,7 @@ export default function ServicesPanel() {
     setEditIdx(idx >= 0 ? idx : null);
   };
 
-  const updateCatalogService = (id: string, key: string, val: any) => {
-    setContent((c: any) => ({
-      ...c,
-      services: (c.services || []).map((item: any) => (item.id === id ? { ...item, [key]: val } : item)),
-    }));
-  };
-
-  const updateCatalogLocalized = (id: string, locale: Locale, key: string, val: any) => {
-    setContent((c: any) => ({
-      ...c,
-      services: (c.services || []).map((item: any) => {
-        if (item.id !== id) return item;
-        return {
-          ...item,
-          localized: {
-            ...item.localized,
-            [locale]: { ...(item.localized?.[locale] || {}), [key]: val },
-          },
-        };
-      }),
-    }));
-  };
-
-  const addCatalogService = () => {
-    const id = `service-${Date.now()}`;
-    setContent((c: any) => ({
-      ...c,
-      services: [
-        ...(c.services || []),
-        {
-          id,
-          title: "Yeni Hizmet",
-          summary: "",
-          deliverables: [],
-          sortOrder: getNextSortOrder(c.services || []),
-          localized: {},
-        },
-      ],
-    }));
-    setEditingCatalogId(id);
-  };
-
-  const deleteCatalogService = (id: string) => {
-    if (!confirm("Bu hizmeti silmek istediğinize emin misiniz?")) return;
-    setContent((c: any) => ({
-      ...c,
-      services: (c.services || []).filter((item: any) => item.id !== id),
-    }));
-    setEditingCatalogId(null);
-  };
-
   const resetSubEditors = () => {
-    setEditingCatalogId(null);
     setEditingLayerIdx(null);
     setEditingCaseIdx(null);
     setEditingDeliverableIdx(null);
@@ -464,22 +397,17 @@ export default function ServicesPanel() {
           <p className="text-xs font-bold uppercase tracking-wide text-gray-400">/services sayfası</p>
           <h2 className="mt-1 text-lg font-bold text-[#131b2e]">{heroPreview}</h2>
           <p className="mt-2 text-sm text-gray-500">
-            Supabase hizmet kartları: <strong>{serviceCatalog.length}</strong> ·
-            Sayfa katmanları: {serviceLayers.length || fallbackServiceLayersAsCmsItems().length}
-            {serviceLayers.length === 0 ? " (serviceLayers Supabase’te boş — canlıda kod şablonu)" : ""}
+            Canlı hizmet kartları: <strong>{liveServiceCardCount}</strong>
+            {serviceLayers.length === 0 ? " (Supabase’te henüz kayıt yok — canlıda şablon gösteriliyor)" : " (Supabase page_content.serviceLayers)"}
           </p>
         </div>
         <div className="flex flex-col items-end gap-2">
-          {(pageDirty || catalogDirty) && (
+          {pageDirty && (
             <p className="text-xs font-semibold text-amber-700">
-              {saving
-                ? "Kaydediliyor…"
-                : pageDirty
-                  ? "Sayfa içeriği — 2 sn içinde otomatik kaydedilir"
-                  : "Hizmet kartları — üstte «Değişiklikleri Kaydet» kullanın"}
+              {saving ? "Kaydediliyor…" : "Sayfa içeriği — 2 sn içinde otomatik kaydedilir"}
             </p>
           )}
-          {!pageDirty && !catalogDirty && saveMessage && (
+          {!pageDirty && saveMessage && (
             <p className="text-xs font-semibold text-green-700">{saveMessage}</p>
           )}
           {pageDirty && (
@@ -492,33 +420,22 @@ export default function ServicesPanel() {
               {saving ? "Kaydediliyor…" : "Sayfa Metinlerini Kaydet"}
             </button>
           )}
-          {catalogDirty && (
-            <button
-              type="button"
-              onClick={() => void saveContent()}
-              disabled={saving}
-              className="rounded-lg bg-emerald-700 px-3 py-2 text-xs font-bold text-white disabled:opacity-60"
-            >
-              {saving ? "Kaydediliyor…" : "Hizmet Kartlarını Kaydet"}
-            </button>
-          )}
           <a href="/tr/services" target="_blank" rel="noreferrer" className="text-xs font-semibold text-[#132175] hover:underline">
             Canlı sayfayı aç ↗
           </a>
         </div>
       </div>
       <div className="rounded-xl border border-blue-200 bg-blue-50 px-4 py-3 text-sm text-blue-950">
-        <p className="font-semibold">İki ayrı Supabase kaynağı</p>
-        <ul className="mt-2 space-y-1 text-blue-900 list-disc pl-5">
-          <li><strong>Hizmet Kartları</strong> — <code className="text-xs">services</code> tablosu (Embedded Hardware, Firmware vb.). Buradan mevcut hizmetleri görür ve yeni ekleyebilirsiniz.</li>
-          <li><strong>Sayfa Katmanları</strong> — Supabase <code className="text-xs">page_content</code> → <code className="text-xs">serviceLayers[]</code> (4 büyük katman: cihaz, cloud, arayüz, VR). <strong>Hizmet Kartları ile aynı değil.</strong></li>
-        </ul>
+        <p className="font-semibold">Hizmet Kartları = canlı /services bölümü</p>
+        <p className="mt-1 text-blue-900">
+          Ziyaretçinin gördüğü 4 büyük kart (Cihaz mühendisliği, Cloud ve veri, …) Supabase{" "}
+          <code className="text-xs">page_content.services.serviceLayers</code> içindedir. Alt hizmet etiketleri (Embedded Hardware, Firmware vb.) her kartın içinde düzenlenir.
+        </p>
       </div>
       {/* Sub-tabs header */}
       <div className="flex gap-2 border-b border-gray-200 pb-px overflow-x-auto">
         {[
-          { key: "catalog", label: `Hizmet Kartları (${serviceCatalog.length})` },
-          { key: "layers", label: "Sayfa Katmanları" },
+          { key: "layers", label: `Hizmet Kartları (${liveServiceCardCount})` },
           { key: "caseStudies", label: "Vaka Analizleri" },
           { key: "deliverables", label: "Teslimatlar" },
           { key: "process", label: "Süreç Adımları" },
@@ -541,125 +458,15 @@ export default function ServicesPanel() {
         ))}
       </div>
 
-      {/* 0. Supabase services catalog */}
-      {activeSubTab === "catalog" && (() => {
-        const editing = serviceCatalog.find((item: any) => item.id === editingCatalogId);
-        if (editing) {
-          return (
-            <div className="bg-white border border-gray-200 rounded-xl p-6 space-y-6">
-              <div className="flex items-center justify-between border-b border-gray-200 pb-4">
-                <h3 className="font-bold text-sm text-[#131b2e]">
-                  Düzenle: {itemDisplayTitle(editing)}
-                </h3>
-                <div className="flex gap-2">
-                  <button
-                    type="button"
-                    onClick={() => deleteCatalogService(editing.id)}
-                    className="px-3 py-1.5 bg-red-950 hover:bg-red-900 text-red-400 rounded text-xs font-semibold"
-                  >
-                    Sil
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setEditingCatalogId(null)}
-                    className="px-3 py-1.5 bg-gray-100 hover:bg-gray-200 rounded text-xs font-semibold"
-                  >
-                    Listeye Dön
-                  </button>
-                </div>
-              </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <FormField label="Kayıt ID" value={editing.id} onChange={() => {}} readOnly hint="Sistem kimliği — değiştirilmez." />
-                <FormField label="Sıra" type="number" value={String(editing.sortOrder ?? 0)} onChange={(v) => updateCatalogService(editing.id, "sortOrder", parseInt(v, 10) || 0)} />
-                <FormField label="Başlık (EN)" value={editing.title || ""} onChange={(v) => updateCatalogService(editing.id, "title", v)} />
-                <div className="col-span-2">
-                  <FormField label="Özet (EN)" type="textarea" rows={3} value={editing.summary || ""} onChange={(v) => updateCatalogService(editing.id, "summary", v)} />
-                </div>
-                <div className="col-span-2">
-                  <ListEditorField
-                    label="Teslimatlar (EN)"
-                    value={Array.isArray(editing.deliverables) ? editing.deliverables : []}
-                    onChange={(v) => updateCatalogService(editing.id, "deliverables", v)}
-                    placeholder="Her satır bir teslimat"
-                  />
-                </div>
-              </div>
-              <div className="border-t border-gray-200 pt-6">
-                <h4 className="text-xs font-bold text-gray-700 mb-3">Çeviriler</h4>
-                <TranslationEditor
-                  item={editing}
-                  fields={SERVICE_CATALOG_FIELDS}
-                  onChange={(locale, key, val) => updateCatalogLocalized(editing.id, locale, key, val)}
-                />
-              </div>
-            </div>
-          );
-        }
-
-        return (
-          <div className="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm">
-            <div className="p-4 border-b border-gray-200 flex justify-between items-center gap-3">
-              <div>
-                <h3 className="font-bold text-sm text-[#131b2e]">Supabase Hizmet Kartları</h3>
-                <p className="text-xs text-gray-500 mt-1">Kaynak: <code>services</code> tablosu — {serviceCatalog.length} kayıt</p>
-              </div>
-              <button
-                type="button"
-                onClick={addCatalogService}
-                className="px-3 py-1.5 bg-[#132175] hover:bg-[#0e1a5e] text-white rounded text-xs font-bold whitespace-nowrap"
-              >
-                + Yeni Hizmet Ekle
-              </button>
-            </div>
-            <div className="divide-y divide-gray-100">
-              {serviceCatalog.map((item: any) => (
-                <div key={item.id} className="p-4 flex items-center justify-between hover:bg-gray-50 transition gap-4">
-                  <div className="min-w-0">
-                    <p className="font-bold text-sm text-gray-800 truncate">{itemDisplayTitle(item)}</p>
-                    <p className="text-xs text-gray-500 truncate">{item.summary || item.localized?.tr?.summary || "—"}</p>
-                    <p className="text-xs text-gray-400 mt-1">ID: {item.id}</p>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => setEditingCatalogId(item.id)}
-                    className="px-3 py-1 bg-gray-100 hover:bg-gray-200 text-xs font-semibold rounded transition shrink-0"
-                  >
-                    Düzenle
-                  </button>
-                </div>
-              ))}
-              {serviceCatalog.length === 0 && (
-                <div className="p-8 text-center text-sm text-gray-500">
-                  Supabase&apos;te hizmet kaydı yok veya henüz yüklenmedi. «+ Yeni Hizmet Ekle» ile başlayın.
-                </div>
-              )}
-            </div>
-          </div>
-        );
-      })()}
-
-      {/* 1. Service Layers */}
-      {activeSubTab === "layers" && serviceLayers.length === 0 && (
-        <div className="rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-950">
-          <p className="font-semibold">Supabase&apos;te henüz katman kaydı yok</p>
-          <p className="mt-1 text-amber-900">
-            Hero metinleri Supabase&apos;ten geliyor (13 alan dolu). Ancak <code className="text-xs">serviceLayers</code> dizisi boş —
-            bu yüzden canlı site 4 katmanlı <strong>kod şablonunu</strong> kullanıyor (Cihaz mühendisliği, Cloud ve veri, …).
-          </p>
-          <p className="mt-2 text-xs text-amber-800">
-            «Hizmet Kartları» sekmesindeki 8 kayıt farklı bir Supabase tablosudur.
-            Buradaki 4 katmanı değiştirmek için listeden <strong>Düzenle</strong> veya <strong>+ Yeni Katman Ekle</strong> kullanın — kaydettikten sonra otomatik Supabase&apos;e gider.
-          </p>
-        </div>
-      )}
+      {/* Hizmet Kartları — canlı /services serviceLayers[] */}
       {activeSubTab === "layers" && renderListEditor(
         "serviceLayers",
         serviceLayers,
         SERVICE_LAYER_FIELDS,
         editingLayerIdx,
         setEditingLayerIdx,
-        "Hizmet Katmanları",
-        "Yeni Katman Ekle",
+        "Canlı Hizmet Kartları",
+        "Yeni Kart Ekle",
         { title: "Yeni Hizmet", headline: "", description: "", output: "", tags: "" },
         (item, idx) => (
           <div className="col-span-2" key="tags">

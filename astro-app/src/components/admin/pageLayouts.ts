@@ -44,7 +44,7 @@ export const SOLUTIONS_LAYOUT: PageLayoutBlock[] = [
 export const SERVICES_LAYOUT: PageLayoutBlock[] = [
   { id: "hero", label: "Hero", tone: "hero", variant: "hero-compact-arch", fields: ["heroEyebrow", "heroTitle", "heroLead"] },
   { id: "trust", label: "Güven", tone: "light", variant: "trusted-logos", static: true },
-  { id: "layers", label: "Hizmet Katmanları", tone: "light", variant: "service-layers", fields: ["serviceSystemEyebrow", "serviceSystemTitle", "serviceSystemLead"], arrayKey: "serviceLayers" },
+  { id: "layers", label: "Hizmet Kartları", tone: "light", variant: "service-layers", fields: ["serviceSystemEyebrow", "serviceSystemTitle", "serviceSystemLead"], arrayKey: "serviceLayers" },
   { id: "deliverables", label: "Teslimatlar", tone: "light", variant: "deliverables", fields: ["deliverablesEyebrow", "deliverablesTitle", "deliverablesLead", "handoffTitle", "handoffDesc"], arrayKey: "deliverables" },
   { id: "process", label: "Süreç", tone: "soft", variant: "process-steps", fields: ["processEyebrow", "processTitle"], arrayKey: "processSteps" },
   { id: "cta", label: "CTA", tone: "cta", variant: "services-cta", fields: ["ctaEyebrow", "ctaTitle", "ctaLead", "ctaPrimaryButton", "ctaSecondaryButton"] },

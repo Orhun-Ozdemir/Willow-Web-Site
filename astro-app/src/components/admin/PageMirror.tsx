@@ -446,7 +446,7 @@ export default function PageMirror({
                 <SectionHead data={data} locale={locale} fields={block.fields} />
                 {usingFallback && (
                   <p className="mb-3 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-900">
-                    Supabase&apos;te <code className="text-[11px]">serviceLayers</code> boş — canlıdaki şablon katmanlar gösteriliyor. Düzenlemek için <strong>Hizmetler Sayfası → Sayfa Katmanları → Şablonu Supabase&apos;e kaydet</strong>.
+                    Supabase&apos;te <code className="text-[11px]">serviceLayers</code> boş — canlıdaki şablon kartlar gösteriliyor. Düzenlemek için <strong>Hizmetler Sayfası → Hizmet Kartları → Düzenle</strong>.
                   </p>
                 )}
                 <div className="service-system-grid">
