@@ -17,7 +17,7 @@ export default function LocaleTabs({ active, onChange, filledMap, missingCountMa
   const filledCount = filledMap ? Object.values(filledMap).filter(Boolean).length : 0;
 
   return (
-    <div className="flex items-center gap-1 flex-wrap">
+    <div className="flex items-center gap-1 flex-wrap" role="tablist" aria-label="Dil sekmeleri">
       {locales.map((loc) => {
         const isFilled = filledMap?.[loc];
         const missing = missingCountMap?.[loc] ?? 0;
@@ -25,6 +25,9 @@ export default function LocaleTabs({ active, onChange, filledMap, missingCountMa
         return (
           <button
             key={loc}
+            type="button"
+            role="tab"
+            aria-selected={isActive}
             onClick={() => onChange(loc)}
             className={`relative px-2.5 py-1 rounded text-[11px] font-bold transition ${
               isActive

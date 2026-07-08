@@ -50,7 +50,12 @@ export function Hit({
       role="button"
       tabIndex={0}
       onClick={onClick}
-      onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") onClick(); }}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          onClick();
+        }
+      }}
       className={`ws-pc-mirror-hit ${active ? "is-active" : ""} ${className || ""}`}
       data-block={id}
     >
@@ -132,16 +137,52 @@ export function PlaceholderGrid({ count = 4, columns = 4, tall = false }: { coun
   );
 }
 
-export function StaticFaq() {
+export function StaticFaq({
+  data,
+  locale,
+  faqs = [],
+  pageKey = "home",
+}: {
+  data?: Record<string, any>;
+  locale?: Locale;
+  faqs?: any[];
+  pageKey?: string;
+}) {
+  const eyebrow = data && locale ? locVal(data, "faqEyebrow", locale) : "";
+  const title = data && locale ? locVal(data, "faqTitle", locale) : "";
+  const lead = data && locale ? locVal(data, "faqLead", locale) : "";
+
+  const items = faqs
+    .filter((f) => !f.page || f.page === pageKey)
+    .slice(0, 5)
+    .map((f) => {
+      if (!locale) return { q: "—", a: "" };
+      const loc = f.localized?.[locale] || f.localized?.en || {};
+      return {
+        q: String(loc.question || f.question || "—").trim(),
+        a: String(loc.answer || f.answer || "").trim(),
+      };
+    });
+
   return (
     <section className="section soft services-faq-section">
       <div className="section-inner">
         <div className="section-head center">
-          <p className="eyebrow">FAQ</p>
-          <h2 className="page-title">Sıkça Sorulan</h2>
+          {eyebrow && <p className="eyebrow">{eyebrow}</p>}
+          <h2 className="page-title" dangerouslySetInnerHTML={{ __html: title || "Merak Edilenler" }} />
+          {lead && <p className="section-lead">{lead}</p>}
         </div>
-        <div className="ws-pc-mirror-faq">
-          <span /><span /><span />
+        <div className="ws-pc-mirror-faq-list space-y-2">
+          {items.length > 0 ? items.map((item, i) => (
+            <details key={i} className="ws-pc-mirror-faq-item bg-white border border-gray-100 rounded-lg px-3 py-2 text-[11px]">
+              <summary className="font-semibold text-[#132175] cursor-pointer">{item.q}</summary>
+              {item.a && <p className="mt-1 text-gray-600 whitespace-pre-wrap">{item.a}</p>}
+            </details>
+          )) : (
+            <div className="ws-pc-mirror-faq">
+              <span /><span /><span />
+            </div>
+          )}
         </div>
       </div>
     </section>

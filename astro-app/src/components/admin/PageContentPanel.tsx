@@ -749,6 +749,10 @@ export default function PageContentPanel() {
                 data={pageData}
                 locale={previewLocale}
                 companyFacts={content?.companyFacts || {}}
+                clients={content?.clients || []}
+                products={content?.products || []}
+                news={content?.news || []}
+                faqs={content?.faqs || []}
                 activeBlockId={activeBlockId}
                 activeCard={activeCard}
                 onSelectBlock={selectBlock}
@@ -764,13 +768,11 @@ export default function PageContentPanel() {
                 activeCard={activeCard}
                 onSelectBlock={selectBlock}
                 onSelectCard={selectCard}
-                extraData={
-                  selectedPage === "solutions"
-                    ? { solutions: content?.solutions || [] }
-                    : selectedPage === "company"
-                      ? { companyFacts: content?.companyFacts || {} }
-                      : {}
-                }
+                extraData={{
+                  solutions: content?.solutions || [],
+                  companyFacts: content?.companyFacts || {},
+                  faqs: content?.faqs || [],
+                }}
               />
             )}
             <p className="ws-pc-preview-hint">Bölüme veya karta tıklayarak düzenleyin.</p>

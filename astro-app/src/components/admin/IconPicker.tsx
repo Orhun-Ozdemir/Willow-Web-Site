@@ -24,6 +24,15 @@ export default function IconPicker({ label = "İkon", value = "check", onChange 
     return () => document.removeEventListener("mousedown", handler);
   }, []);
 
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [open]);
+
   const filtered = search.trim()
     ? options.filter((o) => o.label.toLowerCase().includes(search.toLowerCase()) || o.value.toLowerCase().includes(search.toLowerCase()))
     : options;
@@ -38,26 +47,26 @@ export default function IconPicker({ label = "İkon", value = "check", onChange 
     <div ref={ref} className="relative">
       {label && <label className="block text-xs font-bold uppercase text-gray-500 mb-1">{label}</label>}
 
-      {/* Trigger */}
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
+        aria-haspopup="listbox"
+        aria-expanded={open}
         className="flex items-center gap-2 w-full p-2 bg-gray-50 border border-gray-200 rounded-lg hover:border-[#132175]/40 transition text-left"
       >
         <span
           className="w-8 h-8 shrink-0 grid place-items-center rounded-md bg-white border border-gray-200 text-[#132175]"
           dangerouslySetInnerHTML={{ __html: selected?.svg || "" }}
+          aria-hidden="true"
         />
         <span className="flex-1 text-sm text-gray-700 font-medium">{selected?.label || value}</span>
-        <svg className={`w-4 h-4 text-gray-400 transition-transform ${open ? "rotate-180" : ""}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+        <svg className={`w-4 h-4 text-gray-400 transition-transform ${open ? "rotate-180" : ""}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
           <polyline points="6 9 12 15 18 9" />
         </svg>
       </button>
 
-      {/* Dropdown grid */}
       {open && (
-        <div className="absolute z-50 mt-1 w-full bg-white border border-gray-200 rounded-xl shadow-xl p-3 space-y-2">
-          {/* Search */}
+        <div className="absolute z-50 mt-1 w-full bg-white border border-gray-200 rounded-xl shadow-xl p-3 space-y-2" role="listbox" aria-label="İkon seçimi">
           <input
             type="text"
             value={search}
@@ -67,14 +76,15 @@ export default function IconPicker({ label = "İkon", value = "check", onChange 
             className="w-full px-2.5 py-1.5 text-xs border border-gray-200 rounded-lg outline-none focus:border-[#1aa3c4] bg-gray-50"
           />
 
-          {/* Grid */}
           <div className="grid grid-cols-5 gap-1.5 max-h-64 overflow-y-auto">
             {filtered.map((o) => (
               <button
                 key={o.value}
                 type="button"
+                role="option"
+                aria-selected={o.value === value}
+                aria-label={o.label}
                 onClick={() => handleSelect(o.value)}
-                title={o.label}
                 className={`flex flex-col items-center gap-1 p-2 rounded-lg border transition ${
                   o.value === value
                     ? "border-[#132175] bg-[#132175]/8 text-[#132175]"
@@ -84,6 +94,7 @@ export default function IconPicker({ label = "İkon", value = "check", onChange 
                 <span
                   className="w-6 h-6 grid place-items-center"
                   dangerouslySetInnerHTML={{ __html: o.svg || "" }}
+                  aria-hidden="true"
                 />
                 <span className="text-[9px] font-medium text-center leading-tight truncate w-full">{o.label}</span>
               </button>

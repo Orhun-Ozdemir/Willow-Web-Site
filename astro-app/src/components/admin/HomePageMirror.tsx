@@ -2,7 +2,8 @@
 
 import { useLayoutEffect, useRef, useState, type ReactNode } from "react";
 
-import { flowNodesFromPageContent, industryLanesFromPageContent, pageButtonLabel, serviceRailFromPageContent, type Locale } from "@/lib/cms";
+import { flowNodesFromPageContent, industryLanesFromPageContent, localizeItem, pageButtonLabel, pageButtonText, pageLocaleHref, serviceRailFromPageContent, type Locale } from "@/lib/cms";
+import { resolveAdminImageSrc } from "@/lib/admin-media";
 import type { MirrorCard } from "./mirrorShared";
 
 export type { MirrorCard } from "./mirrorShared";
@@ -95,7 +96,12 @@ function Hit({
       role="button"
       tabIndex={0}
       onClick={onClick}
-      onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") onClick(); }}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          onClick();
+        }
+      }}
       className={`ws-pc-mirror-hit ${active ? "is-active" : ""} ${className || ""}`}
       data-block={id}
     >
@@ -104,15 +110,38 @@ function Hit({
   );
 }
 
-const PROOF_LABELS: Record<string, { products: string; clients: string; founded: string }> = {
-  tr: { products: "Teslim Edilen Proje", clients: "Kurumsal Müşteri", founded: "Kuruluş" },
-  en: { products: "Delivered projects", clients: "Enterprise clients", founded: "Founded" },
+const TRUST_CHIPS: Record<string, string>[] = [
+  { en: "Industrial Automation", tr: "Endüstriyel Otomasyon", de: "Industrieautomation" },
+  { en: "MedTech", tr: "MedTech" },
+  { en: "Energy", tr: "Enerji", de: "Energie" },
+  { en: "Telecom", tr: "Telekom" },
+  { en: "Smart Logistics", tr: "Akıllı Lojistik" },
+];
+
+const HOME_UI: Record<string, Record<string, string>> = {
+  viewProducts: { tr: "Ürünlere Göz At", en: "Browse Products" },
+  viewNews: { tr: "Haberleri Görüntüle", en: "View News" },
+  talkEngineering: { tr: "Mühendislerimizle Görüşün", en: "Talk to Engineering" },
+  startProject: { tr: "Projeye Başla", en: "Start Your Project" },
+  exploreServices: { tr: "Hizmetleri Keşfet", en: "Explore Services" },
 };
+
+function uiLabel(key: string, locale: Locale) {
+  return HOME_UI[key]?.[locale] || HOME_UI[key]?.en || key;
+}
+
+function chipText(chip: Record<string, string>, locale: Locale) {
+  return chip[locale] || chip.en || chip.tr || "Sektör";
+}
 
 export default function HomePageMirror({
   data,
   locale,
   companyFacts = {},
+  clients = [],
+  products = [],
+  news = [],
+  faqs = [],
   activeBlockId,
   activeCard,
   onSelectBlock,
@@ -121,6 +150,10 @@ export default function HomePageMirror({
   data: Record<string, any>;
   locale: Locale;
   companyFacts?: Record<string, any>;
+  clients?: any[];
+  products?: any[];
+  news?: any[];
+  faqs?: any[];
   activeBlockId: string | null;
   activeCard: MirrorCard | null;
   onSelectBlock: (id: string) => void;
@@ -131,7 +164,28 @@ export default function HomePageMirror({
   const serviceRail = buildServiceRail(data, locale);
   const flowNodes = buildFlowNodes(data, locale);
   const industryLanes = buildIndustryLanes(data, locale);
-  const proofLabels = PROOF_LABELS[locale] || PROOF_LABELS.en;
+  const proofLabels = {
+    products: locale === "tr" ? "Teslim Edilen Proje" : "Delivered projects",
+    clients: locale === "tr" ? "Kurumsal Müşteri" : "Enterprise clients",
+    founded: locale === "tr" ? "Kuruluş" : "Founded",
+  };
+
+  const heroCtaLabel = pageButtonText(data.heroCta, locale, pageButtonLabel(data.heroCta, locale) || v("heroCta") || uiLabel("startProject", locale));
+  const heroCtaSecondaryLabel = pageButtonText(data.heroCtaSecondary, locale, pageButtonLabel(data.heroCtaSecondary, locale) || v("heroCtaSecondary") || uiLabel("exploreServices", locale));
+  const heroCtaHref = pageLocaleHref(locale, data.heroCta, "/start-project");
+  const heroCtaSecondaryHref = pageLocaleHref(locale, data.heroCtaSecondary, "/solutions");
+  const ctaCtaLabel = pageButtonText(data.ctaCta, locale, v("ctaCta") || uiLabel("talkEngineering", locale));
+  const ctaCtaHref = pageLocaleHref(locale, data.ctaCta, "/contact");
+  const productsBtnLabel = uiLabel("viewProducts", locale);
+  const newsBtnLabel = uiLabel("viewNews", locale);
+
+  const featuredProducts = products.filter((p) => p.featured).slice(0, 4);
+  const latestNews = news.slice(0, 3);
+  const featuredClients = clients
+    .filter((c) => c.featured)
+    .sort((a: any, b: any) => (a.sortOrder || 0) - (b.sortOrder || 0))
+    .slice(0, 6);
+  const homeFaqs = faqs.filter((f) => !f.page || f.page === "home").slice(0, 5);
 
   const cardActive = (titleKey: string) => activeCard?.titleKey === titleKey;
 
@@ -175,8 +229,8 @@ export default function HomePageMirror({
                   <h1 dangerouslySetInnerHTML={{ __html: html("heroTitle") || "Hero başlığı" }} />
                   {v("heroLead") && <p>{v("heroLead")}</p>}
                   <div className="hero-ctas">
-                    <span className="btn btn-primary">{pageButtonLabel(data.heroCta, locale) || v("heroCta") || "CTA"}</span>
-                    <span className="btn btn-secondary">{pageButtonLabel(data.heroCtaSecondary, locale) || v("heroCtaSecondary") || "CTA"}</span>
+                    <span className="btn btn-primary" title={heroCtaHref}>{heroCtaLabel}</span>
+                    <span className="btn btn-secondary" title={heroCtaSecondaryHref}>{heroCtaSecondaryLabel}</span>
                   </div>
                   <div className="hero-proof">
                     <div className="proof-item"><strong>{companyFacts.productsOnMarket || "100+"}</strong><span>{proofLabels.products}</span></div>
@@ -227,13 +281,21 @@ export default function HomePageMirror({
                   <h2 dangerouslySetInnerHTML={{ __html: html("trustTitle") || "Güven bölümü" }} />
                   {v("trustLead") && <p>{v("trustLead")}</p>}
                   <div className="trust-more">
-                    <span>Sektör</span><span>Sektör</span><span>Sektör</span>
+                    {TRUST_CHIPS.slice(0, 3).map((chip, i) => (
+                      <span key={i}>{chipText(chip, locale)}</span>
+                    ))}
                   </div>
                 </div>
                 <div className="trust-stage">
                   <div className="logo-cloud">
-                    {[0, 1, 2, 3, 4, 5].map((i) => (
-                      <div key={i} className="logo-tile"><span className="ws-pc-mirror-logo-ph" /></div>
+                    {(featuredClients.length ? featuredClients : [0, 1, 2, 3, 4, 5]).map((item: any, i: number) => (
+                      <div key={item.id || i} className="logo-tile">
+                        {item.logo || item.image ? (
+                          <img src={resolveAdminImageSrc(item.logo || item.image)} alt={item.name || ""} className="max-h-8 object-contain mx-auto" />
+                        ) : (
+                          <span className="ws-pc-mirror-logo-ph" />
+                        )}
+                      </div>
                     ))}
                   </div>
                 </div>
@@ -281,10 +343,22 @@ export default function HomePageMirror({
                     {v("productsEyebrow") && <p className="eyebrow">{v("productsEyebrow")}</p>}
                     <h2 dangerouslySetInnerHTML={{ __html: html("productsTitle") || "Ürünler" }} />
                   </div>
-                  <span className="btn btn-secondary btn-small">Ürünler</span>
+                  <span className="btn btn-secondary btn-small" title={`/${locale}/products`}>{productsBtnLabel}</span>
                 </div>
                 <div className="grid grid-4 ws-pc-mirror-product-grid">
-                  {[0, 1, 2, 3].map((i) => <div key={i} className="ws-pc-mirror-ph-card" />)}
+                  {(featuredProducts.length ? featuredProducts : [0, 1, 2, 3]).map((item: any, i: number) => {
+                    if (typeof item === "number") {
+                      return <div key={i} className="ws-pc-mirror-ph-card" />;
+                    }
+                    const p = localizeItem(item, locale);
+                    const img = resolveAdminImageSrc(p?.image || p?.heroImage);
+                    return (
+                      <article key={p?.id || i} className="ws-pc-mirror-ph-card p-3 flex flex-col gap-2">
+                        {img ? <img src={img} alt="" className="h-16 object-contain" /> : null}
+                        <strong className="text-[10px] line-clamp-2">{p?.name || p?.title || "Ürün"}</strong>
+                      </article>
+                    );
+                  })}
                 </div>
               </div>
             </section>
@@ -327,10 +401,22 @@ export default function HomePageMirror({
                     {v("newsEyebrow") && <p className="eyebrow">{v("newsEyebrow")}</p>}
                     <h2 dangerouslySetInnerHTML={{ __html: html("newsTitle") || "Haberler" }} />
                   </div>
-                  <span className="btn btn-secondary btn-small">Haberler</span>
+                  <span className="btn btn-secondary btn-small" title={`/${locale}/news`}>{newsBtnLabel}</span>
                 </div>
                 <div className="grid grid-3 ws-pc-mirror-news-grid">
-                  {[0, 1, 2].map((i) => <div key={i} className="ws-pc-mirror-ph-card tall" />)}
+                  {(latestNews.length ? latestNews : [0, 1, 2]).map((item: any, i: number) => {
+                    if (typeof item === "number") {
+                      return <div key={i} className="ws-pc-mirror-ph-card tall" />;
+                    }
+                    const n = localizeItem(item, locale);
+                    const img = resolveAdminImageSrc(n?.image || n?.heroImage);
+                    return (
+                      <article key={n?.id || i} className="ws-pc-mirror-ph-card tall p-3 flex flex-col gap-2">
+                        {img ? <img src={img} alt="" className="h-14 object-cover rounded" /> : null}
+                        <strong className="text-[10px] line-clamp-2">{n?.title || n?.headline || "Haber"}</strong>
+                      </article>
+                    );
+                  })}
                 </div>
               </div>
             </section>
@@ -345,8 +431,18 @@ export default function HomePageMirror({
                   <h2 className="page-title" dangerouslySetInnerHTML={{ __html: html("faqTitle") || "Merak Edilenler" }} />
                   {v("faqLead") && <p className="section-lead">{v("faqLead")}</p>}
                 </div>
-                <div className="ws-pc-mirror-faq">
-                  <span /><span /><span />
+                <div className="ws-pc-mirror-faq-list space-y-1">
+                  {homeFaqs.length > 0 ? homeFaqs.map((f, i) => {
+                    const loc = f.localized?.[locale] || f.localized?.en || {};
+                    const q = String(loc.question || f.question || "—").trim();
+                    return (
+                      <details key={f.id || i} className="bg-white border border-gray-100 rounded px-2 py-1 text-[10px]">
+                        <summary className="font-semibold text-[#132175]">{q}</summary>
+                      </details>
+                    );
+                  }) : (
+                    <div className="ws-pc-mirror-faq"><span /><span /><span /></div>
+                  )}
                 </div>
               </div>
             </section>
@@ -367,7 +463,7 @@ export default function HomePageMirror({
                     <span>{v("ctaChoice_1") || "bulut+veri tabanı"}</span>
                     <span>{v("ctaChoice_2") || "web, mobil, Simülasyon"}</span>
                   </div>
-                  <p><span className="btn btn-primary">İletişim</span></p>
+                  <p><span className="btn btn-primary" title={ctaCtaHref}>{ctaCtaLabel}</span></p>
                 </div>
               </div>
             </section>

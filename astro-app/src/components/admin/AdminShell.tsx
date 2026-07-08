@@ -23,6 +23,7 @@ import CompanyPanel from "./CompanyPanel";
 import UsersPanel from "./UsersPanel";
 import AuditLogPanel from "./AuditLogPanel";
 import LeadDetailsDrawer from "./LeadDetailsDrawer";
+import { useBodyScrollLock } from "./useDrawerLock";
 import { canAccessTab } from "@/lib/permissions";
 import type { AdminRole } from "@/lib/permissions";
 
@@ -143,6 +144,11 @@ export default function AdminShell() {
     return () => window.removeEventListener("keydown", onKey);
   }, [isDirty, saving, saveContent]);
 
+  useBodyScrollLock(sidebarOpen);
+
+  useEffect(() => {
+    if (selectedLeadId) setSidebarOpen(false);
+  }, [selectedLeadId]);
 
   const handleLogout = async () => {
     await fetch("/api/auth/logout", { method: "POST" });
@@ -192,6 +198,7 @@ export default function AdminShell() {
                     <button
                       key={tab.key}
                       onClick={() => { setActiveTab(tab.key); setSidebarOpen(false); }}
+                      aria-current={isActive ? "page" : undefined}
                       className={`w-full text-left px-3 py-2 rounded-lg text-[13px] font-medium transition-all flex items-center gap-2.5 relative ${
                         isActive
                           ? "bg-white/15 text-white font-bold"

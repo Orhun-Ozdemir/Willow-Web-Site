@@ -1,6 +1,7 @@
 "use client";
 
 import type { Locale } from "@/lib/cms";
+import { pageButtonText, pageLocaleHref } from "@/lib/cms";
 import type { PageLayoutBlock } from "./pageLayouts";
 import { resolveAdminImageSrc } from "@/lib/admin-media";
 import { localizeSolutionItem } from "@/lib/admin-solution";
@@ -45,6 +46,17 @@ export default function PageMirror({
   const v = (key: string) => locVal(data, key, locale);
   const cardActive = (titleKey: string) => activeCard?.titleKey === titleKey;
   const solutionsList = Array.isArray(extraData.solutions) ? extraData.solutions : [];
+  const companyFacts = extraData.companyFacts || {};
+  const pageFaqs = Array.isArray(extraData.faqs) ? extraData.faqs : [];
+
+  const statLabel = (key: string, fallback: string) => {
+    const labels: Record<string, Record<string, string>> = {
+      productsOnMarket: { tr: "Teslim Edilen Proje", en: "Delivered projects" },
+      happyClients: { tr: "Kurumsal Müşteri", en: "Enterprise clients" },
+      founded: { tr: "Kuruluş", en: "Founded" },
+    };
+    return labels[key]?.[locale] || labels[key]?.en || fallback;
+  };
 
   const renderBlock = (block: PageLayoutBlock) => {
     const active = activeBlockId === block.id;
@@ -78,6 +90,22 @@ export default function PageMirror({
               <div className="hero-inner services-hero-grid">
                 <div className="services-hero-copy">
                   <SectionHead data={data} locale={locale} fields={block.fields} h1 />
+                  <div className="services-hero-meta">
+                    <span className="hero-meta-item">
+                      <strong>{companyFacts.productsOnMarket || "100+"}</strong>
+                      <span>{statLabel("productsOnMarket", "Teslim Edilen Proje")}</span>
+                    </span>
+                    <span className="hero-meta-divider" aria-hidden="true" />
+                    <span className="hero-meta-item">
+                      <strong>{companyFacts.happyClients || "41+"}</strong>
+                      <span>{statLabel("happyClients", "Kurumsal Müşteri")}</span>
+                    </span>
+                    <span className="hero-meta-divider" aria-hidden="true" />
+                    <span className="hero-meta-item">
+                      <strong>{companyFacts.founded || "2020"}</strong>
+                      <span>{statLabel("founded", "Kuruluş")}</span>
+                    </span>
+                  </div>
                 </div>
                 <div className="service-architecture">
                   <div className="architecture-deck architecture-deck-simple">
@@ -122,27 +150,24 @@ export default function PageMirror({
         );
 
       case "solutions-hero": {
-        const heroSrc = resolveAdminImageSrc(data.heroImage);
+        const heroPrimary = locale === "tr" ? "Projenizi Planlayın" : "Map your case";
+        const heroSecondary = locale === "tr" ? "Cihazları İnceleyin" : "Explore devices";
         return (
           <Hit id={block.id} active={active} onClick={onClick}>
-            <section className="solutions-hero-premium">
-              <div className="solutions-hero-bg mirror-hero-media">
-                {heroSrc ? <img src={heroSrc} alt="" loading="lazy" decoding="async" /> : null}
-              </div>
-              <div className="solutions-hero-overlay" />
+            <div className="company-hero-c" style={{ background: "#070d19", position: "relative", overflow: "hidden" }}>
               <div className="solutions-hero-inner">
                 <div className="solutions-hero-content">
-                  <SectionHead data={data} locale={locale} fields={block.fields} h1 />
+                  <SectionHead data={data} locale={locale} fields={block.fields?.filter((f) => !f.startsWith("metric"))} h1 />
                   <div className="solutions-hero-actions mirror-btn-row">
-                    <span className="btn btn-primary">CTA</span>
-                    <span className="btn btn-secondary">CTA</span>
+                    <span className="ws-btn ws-btn-primary" title={`/${locale}/start-project`}>{heroPrimary}</span>
+                    <span className="ws-btn ws-btn-ghost" title={`/${locale}/products`}>{heroSecondary}</span>
                   </div>
                 </div>
                 <div className="solutions-hero-panel">
-                  <span className="panel-kicker">Katmanlar</span>
+                  <span className="panel-kicker">{locale === "tr" ? "Katmanlar" : "Stack"}</span>
                   <div className="solution-stack-list">
                     {[1, 2, 3, 4].map((n) => (
-                      <div key={n}><strong>0{n}</strong><span>Katman</span></div>
+                      <div key={n}><strong>0{n}</strong><span>{locale === "tr" ? "Katman" : "Layer"}</span></div>
                     ))}
                   </div>
                 </div>
@@ -161,7 +186,7 @@ export default function PageMirror({
                   </article>
                 </div>
               </div>
-            </section>
+            </div>
           </Hit>
         );
       }
@@ -173,10 +198,33 @@ export default function PageMirror({
               <div className="hero-inner start-hero-grid">
                 <div className="start-hero-copy">
                   <SectionHead data={data} locale={locale} fields={block.fields} h1 />
+                  <div className="hero-ctas">
+                    <span className="btn btn-primary" title="#lead-form">{locale === "tr" ? "Proje özeti oluştur" : "Create project brief"}</span>
+                    <span className="btn btn-secondary" title={`/${locale}/contact`}>{locale === "tr" ? "Genel iletişim" : "General contact"}</span>
+                  </div>
+                  <div className="start-hero-proofline">
+                    <span>{locale === "tr" ? "Teknik kapsam" : "Technical scope"}</span>
+                    <span>{locale === "tr" ? "Katman planı" : "Layer planning"}</span>
+                    <span>{locale === "tr" ? "Mühendislik incelemesi" : "Engineering review"}</span>
+                  </div>
                 </div>
                 <aside className="brief-overview-card">
-                  <p className="architecture-label">Özet</p>
-                  <h2>Keşif planı</h2>
+                  <p className="architecture-label">{locale === "tr" ? "Keşif planı" : "Discovery plan"}</p>
+                  <h2>{locale === "tr" ? "Proje özeti" : "Project brief"}</h2>
+                  <div className="summary-metrics">
+                    <div>
+                      <strong>{companyFacts.productsOnMarket || "100+"}</strong>
+                      <span>{statLabel("productsOnMarket", "Teslim Edilen Proje")}</span>
+                    </div>
+                    <div>
+                      <strong>{companyFacts.happyClients || "41+"}</strong>
+                      <span>{statLabel("happyClients", "Kurumsal Müşteri")}</span>
+                    </div>
+                    <div>
+                      <strong>{companyFacts.founded || "2020"}</strong>
+                      <span>{statLabel("founded", "Kuruluş")}</span>
+                    </div>
+                  </div>
                 </aside>
               </div>
             </section>
@@ -188,8 +236,20 @@ export default function PageMirror({
           <Hit id={block.id} active={active} onClick={onClick}>
             <div className="company-hero-c" style={{ background: "var(--ws-navy-950)", padding: "48px 0" }}>
               <div className="hero-inner-c">
-                <p className="eyebrow" style={{ color: "var(--ws-teal)" }}>Hakkımızda</p>
-                <h1 style={{ color: "#fff", fontSize: "2.4rem", margin: 0 }}>Smart Teams.</h1>
+                <SectionHead
+                  data={data}
+                  locale={locale}
+                  fields={["heroEyebrow", "heroTitle", "heroLead"]}
+                  h1
+                />
+                {!v("heroTitle") && (
+                  <>
+                    <p className="eyebrow" style={{ color: "var(--ws-teal)" }}>{locale === "tr" ? "WillowSoft Hakkında" : "About WillowSoft"}</p>
+                    <h1 style={{ color: "#fff", fontSize: "2.4rem", margin: 0 }}>
+                      {locale === "tr" ? "Akıllı Ekipler. Dayanıklı Sistemler." : "Smart Teams. Resilient Systems."}
+                    </h1>
+                  </>
+                )}
               </div>
             </div>
           </Hit>
@@ -428,7 +488,11 @@ export default function PageMirror({
         );
       }
 
-      case "services-cta":
+      case "services-cta": {
+        const ctaPrimary = pageButtonText(data.ctaPrimaryButton, locale, v("ctaPrimaryButton") || "CTA");
+        const ctaSecondary = pageButtonText(data.ctaSecondaryButton, locale, v("ctaSecondaryButton") || "CTA");
+        const ctaPrimaryHref = pageLocaleHref(locale, data.ctaPrimaryButton, "/contact");
+        const ctaSecondaryHref = pageLocaleHref(locale, data.ctaSecondaryButton, "/start-project");
         return (
           <Hit id={block.id} active={active} onClick={onClick}>
             <section className="section soft services-cta-section">
@@ -438,14 +502,15 @@ export default function PageMirror({
                     <SectionHead data={data} locale={locale} fields={block.fields?.slice(0, 3)} />
                   </div>
                   <div className="services-cta-actions">
-                    <span className="btn btn-primary">CTA</span>
-                    <span className="btn btn-secondary">CTA</span>
+                    <span className="btn btn-primary" title={ctaPrimaryHref}>{ctaPrimary}</span>
+                    <span className="btn btn-secondary" title={ctaSecondaryHref}>{ctaSecondary}</span>
                   </div>
                 </div>
               </div>
             </section>
           </Hit>
         );
+      }
 
       case "split-cta":
         return (
@@ -562,13 +627,15 @@ export default function PageMirror({
                 </div>
                 <div className="company-team-list">
                   {teamItems.length > 0 ? teamItems.map((member: any, idx: number) => {
-                    const m = locItem(member, locale);
+                    const name = locItem(data, member, "name", locale);
+                    const role = locItem(data, member, "role", locale);
+                    const bio = locItem(data, member, "bio", locale);
                     return (
                       <div key={member.id || idx} className="ws-card company-team-card">
                         <div className="company-team-body">
-                          <b>{m.name || "—"}</b>
-                          <span>{m.role || ""}</span>
-                          <p>{m.bio || ""}</p>
+                          <b>{name || "—"}</b>
+                          <span>{role || ""}</span>
+                          <p>{bio || ""}</p>
                         </div>
                       </div>
                     );
@@ -594,7 +661,11 @@ export default function PageMirror({
         );
 
       case "static-faq":
-        return <StaticFaq key={block.id} />;
+        return (
+          <Hit id={block.id} active={active} onClick={onClick}>
+            <StaticFaq data={data} locale={locale} faqs={pageFaqs} pageKey={pageKey} />
+          </Hit>
+        );
 
       default:
         return (

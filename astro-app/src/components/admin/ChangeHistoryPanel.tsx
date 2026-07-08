@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { summarizeDiff, formatDiffValue, type DiffEntry } from "@/lib/json-diff";
 import { humanizeDiffPath } from "@/lib/snapshot-sections";
+import AdminDrawer from "./AdminDrawer";
 
 interface SnapshotListItem {
   id: string;
@@ -334,98 +335,101 @@ export default function ChangeHistoryPanel() {
 
       {/* Detail drawer */}
       {selectedId && (
-        <div className="fixed inset-0 z-50 flex justify-end">
-          <div className="absolute inset-0 bg-black/40" onClick={() => setSelectedId(null)} />
-          <div className="relative w-full max-w-lg bg-white shadow-2xl flex flex-col max-h-full overflow-hidden">
-            <div className="px-5 py-4 border-b border-gray-200 flex items-center justify-between shrink-0">
-              <div>
-                <h4 className="text-sm font-bold text-[#131b2e]">Snapshot Detayı</h4>
-                {detail && (
-                  <p className="text-[11px] text-gray-500 mt-0.5">
-                    {new Date(detail.created_at).toLocaleString("tr-TR")} · {detail.actor_name}
+        <AdminDrawer
+          open={!!selectedId}
+          onClose={() => setSelectedId(null)}
+          title="Snapshot Detayı"
+          subtitle={
+            detail
+              ? `${new Date(detail.created_at).toLocaleString("tr-TR")} · ${detail.actor_name}`
+              : detailLoading
+                ? "Yükleniyor…"
+                : undefined
+          }
+          maxWidth="md"
+          footer={
+            detail && !detailLoading ? (
+              <div className="flex flex-wrap gap-2">
+                {detail.meta?.sectionBefore != null && (
+                  <button
+                    type="button"
+                    onClick={handleRevertSection}
+                    disabled={reverting || restoring}
+                    className="px-3 py-2 bg-amber-600 hover:bg-amber-700 disabled:opacity-50 text-white rounded-lg text-xs font-bold"
+                  >
+                    {reverting ? "Geri alınıyor…" : "Bu değişikliği geri al"}
+                  </button>
+                )}
+                <button
+                  type="button"
+                  onClick={() => downloadJson(detail.content, `snapshot-${detail.id.slice(0, 8)}.json`)}
+                  className="px-3 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg text-xs font-bold"
+                >
+                  Tam JSON İndir
+                </button>
+                <button
+                  type="button"
+                  onClick={handleRestore}
+                  disabled={restoring || reverting}
+                  className="px-3 py-2 bg-gray-200 hover:bg-gray-300 disabled:opacity-50 text-gray-700 rounded-lg text-xs font-bold"
+                  title="Tüm siteyi bu snapshot anına döndürür — dikkatli kullanın"
+                >
+                  {restoring ? "Geri yükleniyor…" : "Tüm siteyi geri yükle (gelişmiş)"}
+                </button>
+              </div>
+            ) : undefined
+          }
+        >
+          {detailLoading ? (
+            <p className="text-xs text-gray-500">Yükleniyor…</p>
+          ) : detail ? (
+            <>
+              <div className="bg-[#132175]/5 border border-[#132175]/15 rounded-xl p-4">
+                <p className="text-xs font-bold text-[#132175]">{labelReason(detail.reason, detail.meta)}</p>
+                {diffEntries.length > 0 ? (
+                  <p className="text-[11px] text-gray-600 mt-2">
+                    Bu kayıtta değişen: <strong>{diffSummary.count}</strong> alan
+                    {diffSummary.truncated ? " (liste kısaltıldı)" : ""}
+                  </p>
+                ) : (
+                  <p className="text-[11px] text-gray-500 mt-2">
+                    Değişiklik özeti yok (eski kayıt). Yeni kayıtlarda önce/sonra görünür.
                   </p>
                 )}
               </div>
-              <button onClick={() => setSelectedId(null)} className="text-gray-400 hover:text-gray-700 text-lg leading-none">×</button>
-            </div>
 
-            <div className="flex-1 overflow-y-auto p-5 space-y-4">
-              {detailLoading ? (
-                <p className="text-xs text-gray-500">Yükleniyor…</p>
-              ) : detail ? (
-                <>
-                  <div className="bg-[#132175]/5 border border-[#132175]/15 rounded-xl p-4">
-                    <p className="text-xs font-bold text-[#132175]">{labelReason(detail.reason, detail.meta)}</p>
-                    {diffEntries.length > 0 ? (
-                      <p className="text-[11px] text-gray-600 mt-2">
-                        Bu kayıtta değişen: <strong>{diffSummary.count}</strong> alan
-                        {diffSummary.truncated ? " (liste kısaltıldı)" : ""}
-                      </p>
-                    ) : (
-                      <p className="text-[11px] text-gray-500 mt-2">
-                        Değişiklik özeti yok (eski kayıt). Yeni kayıtlarda önce/sonra görünür.
-                      </p>
-                    )}
-                  </div>
-
-                  {diffEntries.length > 0 && (
-                    <div className="space-y-2">
-                      <h5 className="text-xs font-bold text-gray-700">Önce → Sonra</h5>
-                      <ul className="space-y-3 max-h-80 overflow-y-auto">
-                        {diffEntries.slice(0, 40).map((entry) => (
-                          <li key={entry.path} className="text-[11px] bg-gray-50 border border-gray-100 rounded-lg p-3">
-                            <p className="font-semibold text-[#132175] mb-2">
-                              {humanizeDiffPath(entry.path, detail.meta?.sectionKey as string | undefined)}
-                            </p>
-                            <div className="grid gap-2 sm:grid-cols-2">
-                              <div className="rounded-md bg-red-50/80 border border-red-100 p-2">
-                                <p className="text-[9px] font-bold uppercase text-red-400 mb-1">Önce</p>
-                                <p className="text-gray-700 whitespace-pre-wrap break-words">{formatDiffValue(entry.before)}</p>
-                              </div>
-                              <div className="rounded-md bg-emerald-50/80 border border-emerald-100 p-2">
-                                <p className="text-[9px] font-bold uppercase text-emerald-600 mb-1">Sonra</p>
-                                <p className="text-gray-900 whitespace-pre-wrap break-words">{formatDiffValue(entry.after)}</p>
-                              </div>
-                            </div>
-                          </li>
-                        ))}
-                      </ul>
-                      {diffEntries.length > 40 && (
-                        <p className="text-[10px] text-gray-400">+{diffEntries.length - 40} alan daha…</p>
-                      )}
-                    </div>
+              {diffEntries.length > 0 && (
+                <div className="space-y-2 mt-4">
+                  <h5 className="text-xs font-bold text-gray-700">Önce → Sonra</h5>
+                  <ul className="space-y-3">
+                    {diffEntries.slice(0, 40).map((entry) => (
+                      <li key={entry.path} className="text-[11px] bg-white border border-gray-100 rounded-lg p-3">
+                        <p className="font-semibold text-[#132175] mb-2">
+                          {humanizeDiffPath(entry.path, detail.meta?.sectionKey as string | undefined)}
+                        </p>
+                        <div className="grid gap-2 sm:grid-cols-2">
+                          <div className="rounded-md bg-red-50/80 border border-red-100 p-2">
+                            <p className="text-[9px] font-bold uppercase text-red-400 mb-1">Önce</p>
+                            <p className="text-gray-700 whitespace-pre-wrap break-words">{formatDiffValue(entry.before)}</p>
+                          </div>
+                          <div className="rounded-md bg-emerald-50/80 border border-emerald-100 p-2">
+                            <p className="text-[9px] font-bold uppercase text-emerald-600 mb-1">Sonra</p>
+                            <p className="text-gray-900 whitespace-pre-wrap break-words">{formatDiffValue(entry.after)}</p>
+                          </div>
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                  {diffEntries.length > 40 && (
+                    <p className="text-[10px] text-gray-400">+{diffEntries.length - 40} alan daha…</p>
                   )}
-
-                  <div className="flex flex-wrap gap-2 pt-2">
-                    {detail.meta?.sectionBefore != null && (
-                      <button
-                        onClick={handleRevertSection}
-                        disabled={reverting || restoring}
-                        className="px-3 py-2 bg-amber-600 hover:bg-amber-700 disabled:opacity-50 text-white rounded-lg text-xs font-bold"
-                      >
-                        {reverting ? "Geri alınıyor…" : "Bu değişikliği geri al"}
-                      </button>
-                    )}
-                    <button
-                      onClick={() => downloadJson(detail.content, `snapshot-${detail.id.slice(0, 8)}.json`)}
-                      className="px-3 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg text-xs font-bold"
-                    >
-                      Tam JSON İndir
-                    </button>
-                    <button
-                      onClick={handleRestore}
-                      disabled={restoring || reverting}
-                      className="px-3 py-2 bg-gray-200 hover:bg-gray-300 disabled:opacity-50 text-gray-700 rounded-lg text-xs font-bold"
-                      title="Tüm siteyi bu snapshot anına döndürür — dikkatli kullanın"
-                    >
-                      {restoring ? "Geri yükleniyor…" : "Tüm siteyi geri yükle (gelişmiş)"}
-                    </button>
-                  </div>
-                </>
-              ) : null}
-            </div>
-          </div>
-        </div>
+                </div>
+              )}
+            </>
+          ) : (
+            <p className="text-xs text-gray-500">Kayıt bulunamadı.</p>
+          )}
+        </AdminDrawer>
       )}
     </div>
   );

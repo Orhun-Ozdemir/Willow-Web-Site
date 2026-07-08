@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useMemo } from "react";
 import { useAdmin } from "./AdminContext";
+import AdminDrawer, { DrawerCloseButton } from "./AdminDrawer";
 
 interface Note {
   id: string;
@@ -99,7 +100,7 @@ export default function LeadDetailsDrawer({ leadId, onClose }: LeadDetailsDrawer
     };
   }, [lead]);
 
-  if (!lead) return null;
+  if (!leadId || !lead) return null;
 
   const getStatusLabel = (status: string) => {
     const labels: Record<string, string> = {
@@ -310,117 +311,97 @@ export default function LeadDetailsDrawer({ leadId, onClose }: LeadDetailsDrawer
     });
   };
 
+  const drawerHeader = (
+    <div className="flex items-start justify-between gap-3">
+      <div className="space-y-1.5 min-w-0 flex-1">
+        <div className="flex items-center gap-2 flex-wrap">
+          <span className={`px-2.5 py-1 rounded-md border text-[10px] font-extrabold tracking-wider uppercase ${getStatusBadgeClass(lead.status || "new")}`}>
+            {getStatusLabel(lead.status || "new")}
+          </span>
+          <span className="text-[11px] text-gray-400 font-medium">
+            {new Date(lead.createdAt).toLocaleDateString("tr-TR", {
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+              hour: "2-digit",
+              minute: "2-digit",
+            })}
+          </span>
+        </div>
+        <h3 id="admin-drawer-title" className="text-lg font-extrabold text-[#172032] leading-tight truncate" style={{ fontFamily: "var(--font-display)" }}>
+          {lead.name || "İsimsiz Başvuru"}
+        </h3>
+        {lead.company && (
+          <p className="text-xs text-gray-500 font-semibold flex items-center gap-1.5">
+            <svg className="w-3.5 h-3.5 text-gray-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+            </svg>
+            {lead.company}
+          </p>
+        )}
+      </div>
+      <div className="flex items-center gap-2 shrink-0">
+        <div className="flex items-center gap-1.5 bg-gray-50 border border-gray-200 rounded-lg px-2.5 py-1.5">
+          <svg className="w-3 h-3 text-gray-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
+          </svg>
+          <select
+            value={lead.status || "new"}
+            onChange={(e) => handleStatusChange(e.target.value)}
+            className="bg-transparent text-xs font-bold outline-none text-gray-700 cursor-pointer max-w-[7rem]"
+            aria-label="Durum değiştir"
+          >
+            <option value="new">Yeni</option>
+            <option value="contacted">Görüşüldü</option>
+            <option value="qualified">Uygun</option>
+            <option value="won">Kazanıldı</option>
+            <option value="lost">Kapandı</option>
+            <option value="spam">Spam</option>
+          </select>
+        </div>
+        <DrawerCloseButton onClose={onClose} />
+      </div>
+    </div>
+  );
+
+  const drawerTabs = (
+    <div className="px-4 sm:px-6 flex gap-1 overflow-x-auto" role="tablist" aria-label="Mesaj detay sekmeleri">
+      {(["details", "notes", "timeline"] as const).map((tab) => {
+        const labels = { details: "Detaylar & Mesaj", notes: "Notlar & Ekler", timeline: "Aktivite Geçmişi" };
+        const isActive = activeTab === tab;
+        return (
+          <button
+            key={tab}
+            type="button"
+            role="tab"
+            aria-selected={isActive}
+            id={`lead-tab-${tab}`}
+            aria-controls={`lead-panel-${tab}`}
+            onClick={() => setActiveTab(tab)}
+            className={`relative shrink-0 py-3.5 px-2 mr-2 text-xs font-bold tracking-wide uppercase transition flex items-center gap-1.5 whitespace-nowrap ${
+              isActive ? "text-[#132175]" : "text-gray-400 hover:text-gray-600"
+            }`}
+          >
+            {isActive && <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#132175] rounded-full" />}
+            {labels[tab]}
+            {tab === "notes" && parsedNoteData.notes.length > 0 && (
+              <span className={`px-1.5 py-0.5 rounded-full text-[9px] font-extrabold ${isActive ? "bg-[#132175]/10 text-[#132175]" : "bg-gray-100 text-gray-500"}`}>
+                {parsedNoteData.notes.length}
+              </span>
+            )}
+          </button>
+        );
+      })}
+    </div>
+  );
+
   return (
-    <>
-      {/* Backdrop Overlay */}
-      <div
-        className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-40 transition-opacity"
-        onClick={onClose}
-      />
-
-      {/* Slide-over Drawer panel */}
-      <div className="fixed top-0 right-0 h-full w-full max-w-2xl bg-white shadow-2xl z-50 flex flex-col transition-transform duration-300 transform translate-x-0" style={{ borderLeft: "1px solid #e5e9f0" }}>
-
-        {/* Drawer Header */}
-        <div className="px-6 pt-5 pb-4 border-b border-gray-100 bg-white" style={{ borderTop: "3px solid #132175" }}>
-          <div className="flex items-start justify-between gap-4">
-            <div className="space-y-1.5 min-w-0">
-              <div className="flex items-center gap-2 flex-wrap">
-                <span className={`px-2.5 py-1 rounded-md border text-[10px] font-extrabold tracking-wider uppercase ${getStatusBadgeClass(lead.status || "new")}`}>
-                  {getStatusLabel(lead.status || "new")}
-                </span>
-                <span className="text-[11px] text-gray-400 font-medium">
-                  {new Date(lead.createdAt).toLocaleDateString("tr-TR", {
-                    year: "numeric",
-                    month: "long",
-                    day: "numeric",
-                    hour: "2-digit",
-                    minute: "2-digit",
-                  })}
-                </span>
-              </div>
-              <h3 className="text-lg font-extrabold text-[#172032] leading-tight truncate" style={{ fontFamily: "var(--font-display)" }}>
-                {lead.name || "İsimsiz Başvuru"}
-              </h3>
-              {lead.company && (
-                <p className="text-xs text-gray-500 font-semibold flex items-center gap-1.5">
-                  <svg className="w-3.5 h-3.5 text-gray-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                  </svg>
-                  {lead.company}
-                </p>
-              )}
-            </div>
-
-            <div className="flex items-center gap-2 shrink-0">
-              {/* Status Changer */}
-              <div className="flex items-center gap-1.5 bg-gray-50 border border-gray-200 rounded-lg px-2.5 py-1.5">
-                <svg className="w-3 h-3 text-gray-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
-                </svg>
-                <select
-                  value={lead.status || "new"}
-                  onChange={(e) => handleStatusChange(e.target.value)}
-                  className="bg-transparent text-xs font-bold outline-none text-gray-700 cursor-pointer"
-                >
-                  <option value="new">Yeni</option>
-                  <option value="contacted">Görüşüldü</option>
-                  <option value="qualified">Uygun</option>
-                  <option value="won">Kazanıldı</option>
-                  <option value="lost">Kapandı</option>
-                  <option value="spam">Spam</option>
-                </select>
-              </div>
-
-              {/* Close Button */}
-              <button
-                onClick={onClose}
-                className="p-2 rounded-lg text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition"
-                aria-label="Kapat"
-              >
-                <svg className="w-4.5 h-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
-            </div>
-          </div>
-        </div>
-
-        {/* Navigation Tabs */}
-        <div className="px-6 border-b border-gray-100 flex gap-1 bg-white">
-          {(["details", "notes", "timeline"] as const).map((tab) => {
-            const labels = { details: "Detaylar & Mesaj", notes: "Notlar & Ekler", timeline: "Aktivite Geçmişi" };
-            const isActive = activeTab === tab;
-            return (
-              <button
-                key={tab}
-                onClick={() => setActiveTab(tab)}
-                className={`relative py-3.5 px-1 mr-3 text-xs font-bold tracking-wide uppercase transition flex items-center gap-1.5 ${
-                  isActive ? "text-[#132175]" : "text-gray-400 hover:text-gray-600"
-                }`}
-              >
-                {isActive && (
-                  <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#132175] rounded-full" />
-                )}
-                {labels[tab]}
-                {tab === "notes" && parsedNoteData.notes.length > 0 && (
-                  <span className={`px-1.5 py-0.5 rounded-full text-[9px] font-extrabold ${isActive ? "bg-[#132175]/10 text-[#132175]" : "bg-gray-100 text-gray-500"}`}>
-                    {parsedNoteData.notes.length}
-                  </span>
-                )}
-              </button>
-            );
-          })}
-        </div>
-
-        {/* Scrollable Content Workspace */}
-        <div className="flex-1 overflow-y-auto p-6 bg-[#f7f8fc]">
-
+    <AdminDrawer open onClose={onClose} maxWidth="xl" header={drawerHeader} tabs={drawerTabs} labelledById="admin-drawer-title">
           {/* TAB 1: DETAILS */}
           {activeTab === "details" && (
-            <div className="space-y-6 animate-fadeIn">
+            <div className="space-y-6 animate-[adminFadeIn_200ms_ease-out]" role="tabpanel" id="lead-panel-details" aria-labelledby="lead-tab-details">
               {/* Contact Grid Card */}
-              <div className="bg-white border border-gray-150 rounded-xl p-5 shadow-xs space-y-4">
+              <div className="bg-white border border-gray-200 rounded-xl p-5 shadow-sm space-y-4">
                 <h4 className="text-xs font-bold text-gray-800 uppercase tracking-wider border-b border-gray-100 pb-2">İletişim Bilgileri</h4>
                 <div className="grid grid-cols-2 gap-4 text-xs">
                   <div>
@@ -434,12 +415,13 @@ export default function LeadDetailsDrawer({ leadId, onClose }: LeadDetailsDrawer
                   </div>
                   <div>
                     <span className="text-gray-400 font-medium block">Telefon</span>
-                    <a
-                      href={lead.phone ? `tel:${lead.phone}` : undefined}
-                      className="text-gray-800 font-semibold block mt-0.5 text-sm"
-                    >
-                      {lead.phone || "—"}
-                    </a>
+                    {lead.phone ? (
+                      <a href={`tel:${lead.phone}`} className="text-gray-800 font-semibold block mt-0.5 text-sm">
+                        {lead.phone}
+                      </a>
+                    ) : (
+                      <span className="text-gray-800 font-semibold block mt-0.5 text-sm">—</span>
+                    )}
                   </div>
                   <div>
                     <span className="text-gray-400 font-medium block">Ülke</span>
@@ -453,7 +435,7 @@ export default function LeadDetailsDrawer({ leadId, onClose }: LeadDetailsDrawer
               </div>
 
               {/* Lead Details Card */}
-              <div className="bg-white border border-gray-150 rounded-xl p-5 shadow-xs space-y-4">
+              <div className="bg-white border border-gray-200 rounded-xl p-5 shadow-sm space-y-4">
                 <h4 className="text-xs font-bold text-gray-800 uppercase tracking-wider border-b border-gray-100 pb-2">Talep Detayları</h4>
                 <div className="grid grid-cols-2 gap-4 text-xs">
                   <div>
@@ -494,7 +476,7 @@ export default function LeadDetailsDrawer({ leadId, onClose }: LeadDetailsDrawer
               </div>
 
               {/* Message Details */}
-              <div className="bg-white border border-gray-150 rounded-xl p-5 shadow-xs space-y-3">
+              <div className="bg-white border border-gray-200 rounded-xl p-5 shadow-sm space-y-3">
                 <h4 className="text-xs font-bold text-gray-800 uppercase tracking-wider border-b border-gray-100 pb-2">Gönderilen Mesaj</h4>
                 <div className="bg-slate-50 rounded-lg p-4 text-sm text-gray-700 whitespace-pre-wrap leading-relaxed border border-slate-100">
                   {lead.message || "Mesaj içeriği boş."}
@@ -505,10 +487,10 @@ export default function LeadDetailsDrawer({ leadId, onClose }: LeadDetailsDrawer
 
           {/* TAB 2: NOTES & DOCUMENTS */}
           {activeTab === "notes" && (
-            <div className="space-y-6 animate-fadeIn">
+            <div className="space-y-6 animate-[adminFadeIn_200ms_ease-out]" role="tabpanel" id="lead-panel-notes" aria-labelledby="lead-tab-notes">
               
               {/* Write Note Form */}
-              <form onSubmit={handleAddNote} className="bg-white border border-gray-150 rounded-xl p-5 shadow-xs space-y-3">
+              <form onSubmit={handleAddNote} className="bg-white border border-gray-200 rounded-xl p-5 shadow-sm space-y-3">
                 <h4 className="text-xs font-bold text-gray-800 uppercase tracking-wider">İş ile İlgili Not Ekle</h4>
                 <textarea
                   value={newNoteText}
@@ -529,14 +511,14 @@ export default function LeadDetailsDrawer({ leadId, onClose }: LeadDetailsDrawer
               </form>
 
               {/* Documents & Links Section */}
-              <div className="bg-white border border-gray-150 rounded-xl p-5 shadow-xs space-y-4">
+              <div className="bg-white border border-gray-200 rounded-xl p-5 shadow-sm space-y-4">
                 <div className="flex items-center justify-between border-b border-gray-100 pb-2">
                   <h4 className="text-xs font-bold text-gray-800 uppercase tracking-wider">Ekler ve Dokümanlar</h4>
                   <div className="flex gap-2">
                     {/* Add Link Toggle */}
                     <button
                       onClick={() => setShowAddLink(!showAddLink)}
-                      className="px-2 py-1 text-[#132175] hover:bg-slate-55 hover:text-[#0e1a5e] text-xs font-bold rounded flex items-center gap-1 transition"
+                      className="px-2 py-1 text-[#132175] hover:bg-slate-100 hover:text-[#0e1a5e] text-xs font-bold rounded flex items-center gap-1 transition"
                     >
                       <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
@@ -639,7 +621,7 @@ export default function LeadDetailsDrawer({ leadId, onClose }: LeadDetailsDrawer
                             href={doc.url}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="font-bold text-gray-750 hover:text-[#132175] hover:underline block truncate"
+                            className="font-bold text-gray-700 hover:text-[#132175] hover:underline block truncate"
                           >
                             {doc.name}
                           </a>
@@ -649,9 +631,10 @@ export default function LeadDetailsDrawer({ leadId, onClose }: LeadDetailsDrawer
                         </div>
                       </div>
                       <button
+                        type="button"
                         onClick={() => handleDeleteDocument(doc.id)}
-                        className="text-gray-400 hover:text-red-500 p-1 rounded transition opacity-0 group-hover:opacity-100"
-                        title="Dokümanı sil"
+                        className="text-gray-400 hover:text-red-500 p-1.5 rounded transition sm:opacity-60 sm:hover:opacity-100 focus:opacity-100 focus:outline-none focus:ring-2 focus:ring-red-200"
+                        aria-label={`${doc.name} dokümanını sil`}
                       >
                         <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                           <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -661,7 +644,7 @@ export default function LeadDetailsDrawer({ leadId, onClose }: LeadDetailsDrawer
                   ))}
 
                   {parsedNoteData.documents.length === 0 && (
-                    <div className="text-center py-6 text-gray-450 bg-slate-50/50 rounded-lg border border-dashed border-gray-200">
+                    <div className="text-center py-6 text-gray-400 bg-slate-50/50 rounded-lg border border-dashed border-gray-200">
                       <p className="text-xs">Henüz doküman veya harici bağlantı eklenmemiş.</p>
                     </div>
                   )}
@@ -673,9 +656,9 @@ export default function LeadDetailsDrawer({ leadId, onClose }: LeadDetailsDrawer
                 <h4 className="text-xs font-bold text-gray-800 uppercase tracking-wider pl-1">Not Geçmişi</h4>
                 <div className="space-y-3">
                   {parsedNoteData.notes.map((note) => (
-                    <div key={note.id} className="bg-white border border-gray-150 rounded-xl p-4 shadow-xs space-y-2">
+                    <div key={note.id} className="bg-white border border-gray-200 rounded-xl p-4 shadow-sm space-y-2">
                       <div className="flex items-center justify-between text-[11px] text-gray-400 font-bold border-b border-gray-100 pb-1.5">
-                        <span className="text-gray-650">{note.author}</span>
+                        <span className="text-gray-600">{note.author}</span>
                         <span>
                           {new Date(note.createdAt).toLocaleDateString("tr-TR", {
                             year: "numeric",
@@ -691,7 +674,7 @@ export default function LeadDetailsDrawer({ leadId, onClose }: LeadDetailsDrawer
                   ))}
 
                   {parsedNoteData.notes.length === 0 && (
-                    <div className="text-center py-8 text-gray-450 bg-white rounded-xl border border-gray-150">
+                    <div className="text-center py-8 text-gray-400 bg-white rounded-xl border border-gray-200">
                       <p className="text-xs">Bu talep hakkında henüz not yazılmamış.</p>
                     </div>
                   )}
@@ -703,7 +686,7 @@ export default function LeadDetailsDrawer({ leadId, onClose }: LeadDetailsDrawer
 
           {/* TAB 3: TIMELINE */}
           {activeTab === "timeline" && (
-            <div className="bg-white border border-gray-100 rounded-xl p-5 shadow-sm animate-fadeIn space-y-4">
+            <div className="bg-white border border-gray-100 rounded-xl p-5 shadow-sm animate-[adminFadeIn_200ms_ease-out] space-y-4" role="tabpanel" id="lead-panel-timeline" aria-labelledby="lead-tab-timeline">
               <h4 className="text-xs font-bold text-gray-800 uppercase tracking-wider border-b border-gray-100 pb-2">İşleyiş Geçmişi</h4>
 
               <div className="relative border-l-2 border-[#132175]/15 pl-4 ml-2 space-y-6 py-2">
@@ -753,8 +736,6 @@ export default function LeadDetailsDrawer({ leadId, onClose }: LeadDetailsDrawer
             </div>
           )}
 
-        </div>
-      </div>
-    </>
+    </AdminDrawer>
   );
 }

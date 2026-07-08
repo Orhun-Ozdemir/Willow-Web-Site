@@ -376,8 +376,11 @@ function SocialLinksPanel() {
               <div key={preset.id} className={`flex items-center gap-3 px-4 py-3 transition ${active ? "" : "opacity-50"}`}>
                 {/* Toggle butonu */}
                 <button
+                  type="button"
                   onClick={() => togglePreset(preset)}
                   title={active ? `${preset.label} devre dışı bırak` : `${preset.label} aktif et`}
+                  aria-label={active ? `${preset.label} devre dışı bırak` : `${preset.label} aktif et`}
+                  aria-pressed={active}
                   className={`w-9 h-9 rounded-xl shrink-0 transition flex items-center justify-center p-2 ${active ? "bg-[#132175] text-white" : "bg-gray-100 text-gray-400 hover:bg-gray-200"}`}
                   dangerouslySetInnerHTML={{ __html: SOCIAL_SVGS[preset.id] || preset.label.slice(0, 2) }}
                 />
@@ -498,32 +501,47 @@ export default function SettingsPanel() {
   return (
     <div className="space-y-4">
       {/* Tab switcher */}
-      <div className="flex gap-2 border-b border-gray-200 pb-0">
+      <div className="flex gap-2 border-b border-gray-200 pb-0 overflow-x-auto" role="tablist" aria-label="Ayarlar sekmeleri">
         <button
+          type="button"
+          role="tab"
+          aria-selected={subTab === "facts"}
           onClick={() => setSubTab("facts")}
           className={`px-4 py-2.5 text-sm font-semibold border-b-2 transition -mb-px ${subTab === "facts" ? "border-[#132175] text-[#132175]" : "border-transparent text-gray-400 hover:text-gray-700"}`}
         >
           📍 İletişim & İstatistikler
         </button>
         <button
+          type="button"
+          role="tab"
+          aria-selected={subTab === "ui"}
           onClick={() => setSubTab("ui")}
           className={`px-4 py-2.5 text-sm font-semibold border-b-2 transition -mb-px ${subTab === "ui" ? "border-[#132175] text-[#132175]" : "border-transparent text-gray-400 hover:text-gray-700"}`}
         >
           🔤 Buton & Arayüz Metinleri
         </button>
         <button
+          type="button"
+          role="tab"
+          aria-selected={subTab === "notifications"}
           onClick={() => setSubTab("notifications")}
           className={`px-4 py-2.5 text-sm font-semibold border-b-2 transition -mb-px ${subTab === "notifications" ? "border-[#132175] text-[#132175]" : "border-transparent text-gray-400 hover:text-gray-700"}`}
         >
           🔔 Bildirimler
         </button>
         <button
+          type="button"
+          role="tab"
+          aria-selected={subTab === "social"}
           onClick={() => setSubTab("social")}
           className={`px-4 py-2.5 text-sm font-semibold border-b-2 transition -mb-px ${subTab === "social" ? "border-[#132175] text-[#132175]" : "border-transparent text-gray-400 hover:text-gray-700"}`}
         >
           🔗 Sosyal Medya
         </button>
         <button
+          type="button"
+          role="tab"
+          aria-selected={subTab === "api"}
           onClick={() => setSubTab("api")}
           className={`px-4 py-2.5 text-sm font-semibold border-b-2 transition -mb-px ${subTab === "api" ? "border-[#132175] text-[#132175]" : "border-transparent text-gray-400 hover:text-gray-700"}`}
         >
