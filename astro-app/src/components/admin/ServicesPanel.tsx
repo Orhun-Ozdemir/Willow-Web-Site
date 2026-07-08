@@ -175,12 +175,38 @@ export default function ServicesPanel() {
   const importFallbackList = (listKey: string) => {
     const factory = FALLBACK_IMPORT[listKey];
     if (!factory) return;
-    if (!confirm("Canlı sitede görünen varsayılan içerik CMS'e yüklenecek. Devam edilsin mi?")) return;
+    if ((servicesPage[listKey] || []).length > 0) return;
+    if (!confirm("Canlı sitede görünen şablon içerik Supabase page_content tablosuna yazılacak. Devam edilsin mi?")) return;
     setContent((c: any) => {
       const pc = { ...(c.pageContent || {}) };
       pc.services = { ...(pc.services || {}), [listKey]: factory() };
       return { ...c, pageContent: pc };
     });
+  };
+
+  /** Preview satırında Düzenle: listeyi Supabase'e kopyala ve editörü aç. */
+  const beginEditListItem = (
+    listKey: string,
+    itemId: string,
+    setEditIdx: (i: number | null) => void,
+  ) => {
+    const factory = FALLBACK_IMPORT[listKey];
+    const existing: any[] = servicesPage[listKey] || [];
+
+    if (existing.length === 0 && factory) {
+      const imported = factory();
+      setContent((c: any) => {
+        const pc = { ...(c.pageContent || {}) };
+        pc.services = { ...(pc.services || {}), [listKey]: imported };
+        return { ...c, pageContent: pc };
+      });
+      const idx = imported.findIndex((x: any) => x.id === itemId);
+      setEditIdx(idx >= 0 ? idx : 0);
+      return;
+    }
+
+    const idx = existing.findIndex((x: any) => x.id === itemId);
+    setEditIdx(idx >= 0 ? idx : null);
   };
 
   const updateCatalogService = (id: string, key: string, val: any) => {
@@ -373,16 +399,17 @@ export default function ServicesPanel() {
       <div className="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm">
         {showingPreview && (
           <div className="border-b border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-950">
-            <p className="font-semibold">Canlı sitede varsayılan içerik gösteriliyor</p>
+            <p className="font-semibold">Canlı sitedeki liste — henüz Supabase&apos;e kaydedilmedi</p>
             <p className="mt-1 text-xs text-amber-900">
-              CMS listesi boş olduğu için ziyaretçiler şablondaki {preview.length} öğeyi görür. Düzenlemek için yükleyin veya sıfırdan ekleyin.
+              Her satırda <strong>Düzenle</strong> ile içeriği değiştirebilir veya <strong>+ {addLabel}</strong> ile yeni öğe ekleyebilirsiniz.
+              İlk düzenleme, canlı şablondaki {preview.length} öğeyi otomatik olarak Supabase&apos;e yazar.
             </p>
             <button
               type="button"
               onClick={() => importFallbackList(listKey)}
-              className="mt-3 rounded-lg bg-[#132175] px-3 py-2 text-xs font-bold text-white hover:bg-[#0e1a5e]"
+              className="mt-3 rounded-lg border border-amber-300 bg-white px-3 py-2 text-xs font-bold text-amber-950 hover:bg-amber-100"
             >
-              Varsayılan içeriği CMS&apos;e yükle
+              Tüm listeyi önce kaydet (onaylı)
             </button>
           </div>
         )}
@@ -400,16 +427,16 @@ export default function ServicesPanel() {
                   <div>
                     <p className="font-bold text-sm text-gray-800">{itemDisplayTitle(item)}</p>
                     <p className="text-xs text-gray-400">
-                      {showingPreview ? "Varsayılan (canlıda görünür)" : `Sıra: ${item.sortOrder || 0}`}
+                      {showingPreview ? "Şablon (Supabase’te kayıt yok)" : `Sıra: ${item.sortOrder || 0}`}
                     </p>
                   </div>
                   {showingPreview ? (
                     <button
                       type="button"
-                      onClick={() => importFallbackList(listKey)}
-                      className="px-3 py-1 bg-amber-100 hover:bg-amber-200 text-xs font-semibold rounded transition text-amber-950"
+                      onClick={() => beginEditListItem(listKey, item.id, setEditIdx)}
+                      className="px-3 py-1 bg-[#132175] hover:bg-[#0e1a5e] text-white text-xs font-semibold rounded transition"
                     >
-                      Yükle & düzenle
+                      Düzenle
                     </button>
                   ) : (
                     <button onClick={() => setEditIdx(originalIndex)} className="px-3 py-1 bg-gray-100 hover:bg-gray-200 text-xs font-semibold rounded transition">Düzenle</button>
@@ -439,7 +466,7 @@ export default function ServicesPanel() {
           <p className="mt-2 text-sm text-gray-500">
             Supabase hizmet kartları: <strong>{serviceCatalog.length}</strong> ·
             Sayfa katmanları: {serviceLayers.length || fallbackServiceLayersAsCmsItems().length}
-            {serviceLayers.length === 0 ? " (katman listesi CMS’te boş — canlıda şablon)" : ""}
+            {serviceLayers.length === 0 ? " (serviceLayers Supabase’te boş — canlıda kod şablonu)" : ""}
           </p>
         </div>
         <div className="flex flex-col items-end gap-2">
@@ -484,7 +511,7 @@ export default function ServicesPanel() {
         <p className="font-semibold">İki ayrı Supabase kaynağı</p>
         <ul className="mt-2 space-y-1 text-blue-900 list-disc pl-5">
           <li><strong>Hizmet Kartları</strong> — <code className="text-xs">services</code> tablosu (Embedded Hardware, Firmware vb.). Buradan mevcut hizmetleri görür ve yeni ekleyebilirsiniz.</li>
-          <li><strong>Sayfa Katmanları / Metinler</strong> — <code className="text-xs">page_content</code> içinde <code className="text-xs">services</code> sayfası (/services şablonu).</li>
+          <li><strong>Sayfa Katmanları</strong> — Supabase <code className="text-xs">page_content</code> → <code className="text-xs">serviceLayers[]</code> (4 büyük katman: cihaz, cloud, arayüz, VR). <strong>Hizmet Kartları ile aynı değil.</strong></li>
         </ul>
       </div>
       {/* Sub-tabs header */}
@@ -612,6 +639,19 @@ export default function ServicesPanel() {
       })()}
 
       {/* 1. Service Layers */}
+      {activeSubTab === "layers" && serviceLayers.length === 0 && (
+        <div className="rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-950">
+          <p className="font-semibold">Supabase&apos;te henüz katman kaydı yok</p>
+          <p className="mt-1 text-amber-900">
+            Hero metinleri Supabase&apos;ten geliyor (13 alan dolu). Ancak <code className="text-xs">serviceLayers</code> dizisi boş —
+            bu yüzden canlı site 4 katmanlı <strong>kod şablonunu</strong> kullanıyor (Cihaz mühendisliği, Cloud ve veri, …).
+          </p>
+          <p className="mt-2 text-xs text-amber-800">
+            «Hizmet Kartları» sekmesindeki 8 kayıt farklı bir Supabase tablosudur.
+            Buradaki 4 katmanı değiştirmek için listeden <strong>Düzenle</strong> veya <strong>+ Yeni Katman Ekle</strong> kullanın — kaydettikten sonra otomatik Supabase&apos;e gider.
+          </p>
+        </div>
+      )}
       {activeSubTab === "layers" && renderListEditor(
         "serviceLayers",
         serviceLayers,

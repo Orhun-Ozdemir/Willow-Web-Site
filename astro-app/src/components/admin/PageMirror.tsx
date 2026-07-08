@@ -446,7 +446,7 @@ export default function PageMirror({
                 <SectionHead data={data} locale={locale} fields={block.fields} />
                 {usingFallback && (
                   <p className="mb-3 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-900">
-                    CMS listesi boş — canlı sitedeki varsayılan katmanlar gösteriliyor. Düzenlemek için sol menüden <strong>Hizmetler Sayfası</strong> sekmesine gidin.
+                    Supabase&apos;te <code className="text-[11px]">serviceLayers</code> boş — canlıdaki şablon katmanlar gösteriliyor. Düzenlemek için <strong>Hizmetler Sayfası → Sayfa Katmanları → Şablonu Supabase&apos;e kaydet</strong>.
                   </p>
                 )}
                 <div className="service-system-grid">
@@ -474,7 +474,7 @@ export default function PageMirror({
                   <SectionHead data={data} locale={locale} fields={block.fields?.slice(0, 3)} />
                   {usingFallback && (
                     <p className="mb-3 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-900">
-                      CMS listesi boş — varsayılan teslimat paketleri gösteriliyor. Düzenlemek için <strong>Hizmetler Sayfası → Teslimatlar</strong>.
+                      Supabase&apos;te <code className="text-[11px]">deliverables</code> boş — şablon teslimat paketleri gösteriliyor. Düzenlemek için <strong>Hizmetler Sayfası → Teslimatlar → Şablonu Supabase&apos;e kaydet</strong>.
                     </p>
                   )}
                   <div className="deliverable-ledger">
@@ -501,7 +501,7 @@ export default function PageMirror({
                 <SectionHead data={data} locale={locale} fields={block.fields} />
                 {usingFallback && (
                   <p className="mb-3 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-900">
-                    CMS listesi boş — varsayılan süreç adımları gösteriliyor. Düzenlemek için <strong>Hizmetler Sayfası → Süreç Adımları</strong>.
+                    Supabase&apos;te <code className="text-[11px]">processSteps</code> boş — şablon süreç adımları gösteriliyor. Düzenlemek için <strong>Hizmetler Sayfası → Süreç Adımları → Şablonu Supabase&apos;e kaydet</strong>.
                   </p>
                 )}
                 <div className="process process-premium process-compact">

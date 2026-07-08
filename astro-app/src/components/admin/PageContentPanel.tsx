@@ -832,7 +832,7 @@ export default function PageContentPanel() {
             </p>
             {!Array.isArray(pageData[activeBlock.arrayKey]) || pageData[activeBlock.arrayKey].length === 0 ? (
               <p className="mt-2 text-xs text-blue-800">
-                Liste şu an boş; canlı sitede varsayılan şablon içerik gösterilir. Özelleştirmek için Hizmetler Sayfası sekmesinden «+ Ekle» kullanın.
+                Supabase&apos;te <code className="text-xs">serviceLayers</code> (veya ilgili dizi) boş; canlı sitede kod şablonu gösterilir. Düzenlemek için Hizmetler Sayfası sekmesinden «Şablonu Supabase&apos;e kaydet» veya «+ Ekle».
               </p>
             ) : null}
           </div>
