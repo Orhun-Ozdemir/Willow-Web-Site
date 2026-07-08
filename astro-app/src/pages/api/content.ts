@@ -1,8 +1,9 @@
 import type { APIRoute } from "astro";
-import { loadContent, saveContent, saveContentSection, savePageContentSlice } from "@/lib/content";
+import { loadContent, saveContent, saveContentSection, savePageContentSlice, bustContentCache } from "@/lib/content";
 import { getSession } from "@/lib/auth";
 import { resolveAdminProfile, getRequestMeta } from "@/lib/admin-auth";
 import { logAdminAction } from "@/lib/audit";
+import { createCmsSnapshot } from "@/lib/snapshots";
 
 export const prerender = false;
 
@@ -70,6 +71,15 @@ export const PUT: APIRoute = async ({ request }) => {
       },
       ...meta,
     });
+
+    void createCmsSnapshot(profile, {
+      section: section || "all",
+      page: page || undefined,
+      itemCount: Array.isArray(body) ? body.length : 1,
+      ip_hint: meta.ip_hint,
+      user_agent: meta.user_agent,
+    });
+    bustContentCache();
 
     return new Response(JSON.stringify({ ok: true, content: body }), {
       status: 200,

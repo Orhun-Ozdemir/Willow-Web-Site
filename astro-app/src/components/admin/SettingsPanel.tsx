@@ -10,9 +10,10 @@ import { SOCIAL_SVGS } from "@/lib/social-icons";
 
 // ── Known companyFacts fields with human-readable metadata ──────────────────
 const KNOWN_FACTS: { key: string; label: string; hint: string; type?: "text" | "textarea" }[] = [
-  { key: "productsOnMarket", label: "Piyasadaki Ürün Sayısı", hint: "Ana sayfa ve ürünler sayfasında istatistik olarak görünür. Örn: 120+" },
-  { key: "happyClients",     label: "Memnun Müşteri Sayısı",  hint: "Ana sayfada istatistik olarak görünür. Örn: 200+" },
-  { key: "officesWorldwide", label: "Dünya Geneli Ofis Sayısı", hint: "Ana sayfada istatistik olarak görünür. Örn: 5" },
+  { key: "productsOnMarket", label: "Teslim Edilen Proje", hint: "Ana sayfa hero, hizmetler ve proje başlat sayfalarında görünür. Örn: 100+" },
+  { key: "happyClients",     label: "Kurumsal Müşteri Sayısı", hint: "Ana sayfa hero ve diğer sayfalarda istatistik olarak görünür. Örn: 41+" },
+  { key: "founded",          label: "Kuruluş Yılı", hint: "Ana sayfa hero ve hizmetler sayfasında görünür. Örn: 2020" },
+  { key: "officesWorldwide", label: "Dünya Geneli Ofis Sayısı", hint: "Hizmetler ve proje başlat sayfalarında görünür (ana sayfa hero'da yok). Örn: 2" },
   { key: "email",            label: "E-posta Adresi",         hint: "İletişim sayfasında ve proje başlatma formunda görünür." },
   { key: "turkeyPhone",      label: "Türkiye Telefon",        hint: "İletişim ve şirket sayfalarında TR ofis telefonu. Örn: +90 850 30 24766" },
   { key: "ukPhone",          label: "İngiltere Telefon",      hint: "İletişim ve şirket sayfalarında UK ofis telefonu. Örn: +44 20 3996 6812" },

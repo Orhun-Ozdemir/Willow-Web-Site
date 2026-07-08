@@ -2,30 +2,155 @@
 
 import { useState } from "react";
 import { useAdmin } from "./AdminContext";
+import {
+  buildFullBackupZip,
+  restoreFullBackupZip,
+  downloadBytes,
+  type BackupProgress,
+} from "@/lib/backup-client";
+import { FULL_BACKUP_SCHEMA_VERSION } from "@/lib/backup";
 
 function getDraftTs() {
   return typeof window !== "undefined" ? localStorage.getItem("willowsoft-draft-ts") : null;
 }
 
+function downloadJson(data: unknown, filename: string) {
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+type RestoreScope = "content" | "full";
+
 export default function BackupsPanel() {
   const { content, setContent } = useAdmin();
   const [uploadMessage, setUploadMessage] = useState("");
+  const [dbMessage, setDbMessage] = useState("");
+  const [dbLoading, setDbLoading] = useState(false);
+  const [progress, setProgress] = useState<BackupProgress | null>(null);
   const [draftInfo, setDraftInfo] = useState<string | null>(null);
   const [hasDraft, setHasDraft] = useState(() => typeof window !== "undefined" && !!localStorage.getItem("willowsoft-draft"));
   const [draftTs, setDraftTs] = useState<string | null>(getDraftTs);
 
-  const handleDownload = () => {
-    const blob = new Blob([JSON.stringify(content, null, 2)], { type: "application/json" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
+  const handleContentDownload = () => {
     const ts = new Date().toISOString().replace(/[:.]/g, "-").slice(0, 19);
-    a.href = url;
-    a.download = `willowsoft-backup-${ts}.json`;
-    a.click();
-    URL.revokeObjectURL(url);
+    downloadJson(content, `willowsoft-content-${ts}.json`);
   };
 
-  const handleUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFullZipExport = async (scope: "content" | "full") => {
+    setDbLoading(true);
+    setDbMessage("");
+    setProgress({ phase: "db-start", message: "Veritabanı okunuyor…" });
+    try {
+      const [dbRes, storageRes] = await Promise.all([
+        fetch(`/api/admin/backups?scope=${scope}`),
+        fetch("/api/admin/backups/storage"),
+      ]);
+      if (!dbRes.ok || !storageRes.ok) {
+        const err = await dbRes.json().catch(() => ({}));
+        throw new Error(err.error || "Yedek verisi alınamadı");
+      }
+      const db = await dbRes.json();
+      const storage = await storageRes.json();
+      if (!storage.ok) throw new Error(storage.error || "Storage listesi alınamadı");
+
+      const manifest = {
+        schemaVersion: FULL_BACKUP_SCHEMA_VERSION,
+        source: "willowsoft-supabase",
+        scope,
+        createdAt: new Date().toISOString(),
+        bucket: storage.bucket,
+        tables: db.tables,
+        stats: {
+          ...db.stats,
+          storageFiles: storage.files.length,
+          storageBytes: storage.stats.totalBytes,
+        },
+        storage: storage.files,
+        includes: { database: true, storage: true, localizations: true },
+      };
+
+      const zip = await buildFullBackupZip(
+        manifest,
+        storage.supabaseUrl,
+        storage.files,
+        setProgress,
+      );
+
+      const ts = new Date().toISOString().replace(/[:.]/g, "-").slice(0, 19);
+      downloadBytes(zip, `willowsoft-full-${scope}-${ts}.zip`);
+
+      const mb = (storage.stats.totalBytes / 1024 / 1024).toFixed(1);
+      setDbMessage(
+        `Tam yedek indirildi — ${storage.files.length} storage dosyası (${mb} MB), tüm çeviriler (localized) dahil.`,
+      );
+    } catch (e: unknown) {
+      setDbMessage(`Hata: ${e instanceof Error ? e.message : "Tam yedek alınamadı"}`);
+    } finally {
+      setDbLoading(false);
+      setProgress(null);
+    }
+  };
+
+  const handleFullZipRestore = async (file: File) => {
+    const warn = [
+      "⚠️ TAM GERİ YÜKLEME",
+      "DB + Storage birebir yedekteki hâle getirilir.",
+      "Tüm localized çeviriler, görseller ve CMS verisi dahil.",
+      "Yedekte olmayan DB satırları ve storage dosyaları SİLİNİR.",
+      "",
+      'Devam için "RESTORE" yazmanız istenecek.',
+    ].join("\n");
+    if (!confirm(warn)) return;
+
+    const typed = prompt('Onaylamak için büyük harflerle "RESTORE" yazın:');
+    if (typed !== "RESTORE") {
+      setDbMessage("Geri yükleme iptal edildi.");
+      return;
+    }
+
+    setDbLoading(true);
+    setDbMessage("");
+    try {
+      const buf = await file.arrayBuffer();
+      await restoreFullBackupZip(new Uint8Array(buf), setProgress);
+      setDbMessage("Tam geri yükleme tamamlandı. Sayfa yenileniyor…");
+      setTimeout(() => window.location.reload(), 2000);
+    } catch (e: unknown) {
+      setDbMessage(`Hata: ${e instanceof Error ? e.message : "Geri yükleme başarısız"}`);
+    } finally {
+      setDbLoading(false);
+      setProgress(null);
+    }
+  };
+
+  const handleDbExport = async (scope: "content" | "full") => {
+    setDbLoading(true);
+    setDbMessage("");
+    try {
+      const res = await fetch(`/api/admin/backups?scope=${scope}`);
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        throw new Error(err.error || `HTTP ${res.status}`);
+      }
+      const data = await res.json();
+      const ts = new Date().toISOString().replace(/[:.]/g, "-").slice(0, 19);
+      downloadJson(data, `willowsoft-db-${scope}-${ts}.json`);
+      const stats = data.stats as Record<string, number> | undefined;
+      const total = stats ? Object.values(stats).reduce((a, b) => a + b, 0) : 0;
+      setDbMessage(`Veritabanı yedeği indirildi (${scope}) — ${total} satır, ${stats ? Object.keys(stats).length : 0} tablo.`);
+    } catch (e: unknown) {
+      setDbMessage(`Hata: ${e instanceof Error ? e.message : "Yedek alınamadı"}`);
+    } finally {
+      setDbLoading(false);
+    }
+  };
+
+  const handleContentUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
     setUploadMessage("");
@@ -34,6 +159,10 @@ export default function BackupsPanel() {
     reader.onload = (ev) => {
       try {
         const data = JSON.parse(ev.target?.result as string);
+        if (data?.tables && data?.schemaVersion) {
+          setUploadMessage("Bu dosya tam veritabanı yedeği — aşağıdaki «Veritabanına Geri Yükle» bölümünü kullanın.");
+          return;
+        }
         if (typeof data !== "object" || data === null || (!data.products && !data.pageContent && !data.pageSeo && !data.meta)) {
           setUploadMessage("Geçersiz dosya — beklenen içerik alanları (products, pageContent, pageSeo, meta) bulunamadı.");
           return;
@@ -42,8 +171,6 @@ export default function BackupsPanel() {
         if (!confirm(`Bu dosyadaki ${sections.length} bölüm mevcut içeriğin üzerine yazılacak:\n\n${sections.join(", ")}\n\nDevam edilsin mi? (Henüz kaydedilmez — önce gözden geçirebilirsiniz.)`)) {
           return;
         }
-        // Merge: only sections present in the file are replaced; sections not in
-        // the file are kept untouched, so a partial export can't wipe other data.
         setContent((prev: any) => ({ ...prev, ...data }));
         setUploadMessage(`Yüklendi — ${sections.length} bölüm güncellendi (${sections.join(", ")}). Kalıcı yapmak için sağ üstteki "Değişiklikleri Kaydet" butonuna basın.`);
       } catch {
@@ -52,6 +179,102 @@ export default function BackupsPanel() {
     };
     reader.readAsText(file);
     e.target.value = "";
+  };
+
+  const handleDbRestore = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    e.target.value = "";
+
+    if (file.name.endsWith(".zip")) {
+      void handleFullZipRestore(file);
+      return;
+    }
+
+    setDbMessage("");
+
+    const reader = new FileReader();
+    reader.onload = async (ev) => {
+      try {
+        const backup = JSON.parse(ev.target?.result as string);
+
+        const isDbBackup = backup?.tables && typeof backup.tables === "object";
+        const isLegacy = !isDbBackup && (backup?.products || backup?.pageContent);
+
+        if (!isDbBackup && !isLegacy) {
+          setDbMessage("Geçersiz yedek — tables (DB) veya CMS alanları (products, pageContent) gerekli.");
+          return;
+        }
+
+        const scope: RestoreScope = isLegacy
+          ? "content"
+          : backup.scope === "content"
+            ? "content"
+            : "full";
+
+        const stats = isDbBackup ? backup.stats as Record<string, number> | undefined : undefined;
+        const tableList = isDbBackup ? Object.keys(backup.tables).join(", ") : "CMS içerik tabloları";
+
+        const scopeLabel = scope === "full"
+          ? "TAM VERİTABANI (içerik + leadler + bildirimler + admin kullanıcıları + analitik)"
+          : "yalnızca site içeriği";
+
+        const warn = [
+          `⚠️ Bu işlem doğrudan Supabase'e yazılır.`,
+          `Kapsam: ${scopeLabel}`,
+          `Tablolar: ${tableList}`,
+          stats ? `Satır sayıları: ${Object.entries(stats).map(([k, v]) => `${k}=${v}`).join(", ")}` : "",
+          ``,
+          `Yedekte olmayan mevcut kayıtlar SİLİNİR (duplicate oluşmaz).`,
+          `Geri yüklemeden önce otomatik güvenlik yedeği alınır.`,
+          ``,
+          `Devam etmek için «RESTORE» yazmanız istenecek.`,
+        ].filter(Boolean).join("\n");
+
+        if (!confirm(warn)) return;
+
+        const typed = prompt('Onaylamak için büyük harflerle "RESTORE" yazın:');
+        if (typed !== "RESTORE") {
+          setDbMessage("Geri yükleme iptal edildi — onay metni eşleşmedi.");
+          return;
+        }
+
+        setDbLoading(true);
+        setDbMessage("Geri yükleniyor…");
+
+        const res = await fetch("/api/admin/backups", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ backup, confirm: "RESTORE", scope }),
+        });
+
+        const result = await res.json();
+        if (!res.ok) throw new Error(result.error || "Geri yükleme başarısız");
+
+        const summary = Object.entries(result.result?.tables || {})
+          .map(([t, s]: [string, any]) => `${t}: ${s.upserted} güncellendi, ${s.deleted} silindi`)
+          .join("; ");
+
+        setDbMessage(`Geri yükleme tamamlandı. ${summary}. Sayfa yenileniyor…`);
+        setTimeout(() => window.location.reload(), 2000);
+      } catch (err: unknown) {
+        setDbMessage(`Hata: ${err instanceof Error ? err.message : "Geri yükleme başarısız"}`);
+      } finally {
+        setDbLoading(false);
+      }
+    };
+    reader.readAsText(file);
+  };
+
+  const progressLabel = () => {
+    if (!progress) return null;
+    if (progress.phase === "storage-download" && progress.current && progress.total) {
+      return `Görseller indiriliyor: ${progress.current}/${progress.total}${progress.path ? ` — ${progress.path}` : ""}`;
+    }
+    if (progress.phase === "storage-upload" && progress.current && progress.total) {
+      return `Görseller yükleniyor: ${progress.current}/${progress.total}${progress.path ? ` — ${progress.path}` : ""}`;
+    }
+    return progress.message || progress.phase;
   };
 
   const saveDraft = () => {
@@ -92,34 +315,99 @@ export default function BackupsPanel() {
   };
 
   return (
-    <div className="space-y-6 max-w-2xl">
-      {/* Intro */}
+    <div className="space-y-6 max-w-3xl">
+      {/* Tam yedek: DB + Storage + localizations */}
+      <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-5 space-y-4">
+        <div>
+          <h3 className="text-sm font-bold text-emerald-900">Tam Site Yedeği (DB + Storage + Çeviriler)</h3>
+          <p className="text-xs text-emerald-800/80 mt-1.5 leading-relaxed">
+            Tek ZIP dosyasında <strong>her şey</strong>: tüm veritabanı tabloları (ürünler, sayfa metinleri, SEO,
+            <code className="mx-0.5">translations</code> ve her satırdaki <code className="mx-0.5">localized</code> alanları),
+            Supabase Storage görselleri (<code>uploads/</code>, <code>team/</code>, <code>news/</code> vb.).
+            Geri yükleme yedekteki hâli birebir uygular; fazlalık veya duplicate oluşmaz.
+          </p>
+        </div>
+
+        <div className="flex flex-wrap gap-2">
+          <button
+            onClick={() => handleFullZipExport("full")}
+            disabled={dbLoading}
+            className="px-4 py-2 bg-emerald-700 hover:bg-emerald-800 disabled:opacity-50 text-white rounded-lg text-xs font-bold transition"
+          >
+            {dbLoading ? "İşleniyor…" : "Tam ZIP Yedeği İndir"}
+          </button>
+          <button
+            onClick={() => handleFullZipExport("content")}
+            disabled={dbLoading}
+            className="px-4 py-2 bg-emerald-600/80 hover:bg-emerald-700 disabled:opacity-50 text-white rounded-lg text-xs font-bold transition"
+          >
+            İçerik ZIP Yedeği
+          </button>
+        </div>
+
+        {progressLabel() && (
+          <p className="text-xs text-emerald-700 font-medium animate-pulse">{progressLabel()}</p>
+        )}
+
+        <div className="border-t border-emerald-200 pt-4 space-y-2">
+          <h4 className="text-xs font-bold text-emerald-900">Tam Geri Yükle (.zip)</h4>
+          <p className="text-xs text-emerald-800/70">
+            ZIP veya JSON yedeği seçin. ZIP = DB + görseller birlikte; JSON = yalnızca veritabanı.
+          </p>
+          <label className="inline-block px-4 py-2 bg-white border border-emerald-300 hover:bg-emerald-50 rounded-lg text-xs font-bold cursor-pointer transition text-emerald-900">
+            Yedek Dosyası Seç (.zip / .json)
+            <input type="file" accept=".zip,.json" onChange={handleDbRestore} className="hidden" disabled={dbLoading} />
+          </label>
+        </div>
+
+        <div className="flex flex-wrap gap-2 border-t border-emerald-200 pt-4">
+          <button
+            onClick={() => handleDbExport("full")}
+            disabled={dbLoading}
+            className="px-3 py-1.5 bg-white border border-emerald-300 text-emerald-900 hover:bg-emerald-50 disabled:opacity-50 rounded-lg text-xs font-bold transition"
+          >
+            Yalnızca DB JSON (tam)
+          </button>
+          <button
+            onClick={() => handleDbExport("content")}
+            disabled={dbLoading}
+            className="px-3 py-1.5 bg-white border border-emerald-300 text-emerald-900 hover:bg-emerald-50 disabled:opacity-50 rounded-lg text-xs font-bold transition"
+          >
+            Yalnızca DB JSON (içerik)
+          </button>
+        </div>
+
+        {dbMessage && (
+          <p className={`text-xs font-medium ${dbMessage.includes("Hata") || dbMessage.includes("iptal") || dbMessage.includes("Geçersiz") ? "text-red-600" : "text-emerald-800"}`}>
+            {dbMessage}
+          </p>
+        )}
+      </div>
+
+      {/* CMS düzenleme akışı */}
       <div className="bg-[#132175]/5 border border-[#132175]/15 rounded-xl p-5">
-        <h3 className="text-sm font-bold text-[#132175]">Tüm site metinlerini dışa / içe aktar</h3>
+        <h3 className="text-sm font-bold text-[#132175]">İçerik Düzenleme (CMS JSON)</h3>
         <p className="text-xs text-gray-600 mt-1.5 leading-relaxed">
-          Sitenin <strong>bütün içeriği</strong> — ürünler, haberler, hizmetler, çözümler, müşteriler, SSS, sözlük,
-          sayfa metinleri, SEO ayarları, tüm dil çevirileri ve şirket bilgileri — tek bir JSON dosyasında toplanır.
-          Dosyayı indirip dışarıda düzenleyebilir veya yedek olarak saklayabilir, sonra geri yükleyerek siteyi
-          toplu güncelleyebilirsiniz.
+          Metinleri dışarıda düzenlemek için CMS formatında indirin. Yükledikten sonra
+          sağ üstteki <strong>Değişiklikleri Kaydet</strong> ile veritabanına yazılır.
+          Anında geri yükleme için yukarıdaki veritabanı yedekleme bölümünü kullanın.
         </p>
       </div>
 
-      {/* Download Backup */}
       <div className="bg-white border border-gray-200 rounded-xl p-5 space-y-3">
-        <h3 className="text-sm font-bold text-gray-800">1 · JSON İndir (Dışa Aktar)</h3>
-        <p className="text-xs text-gray-500">Tüm site metinlerini tek dosyada indirir (<code>willowsoft-backup-…json</code>). Aynı dosyayı geri yükleyerek değişiklikleri toplu uygulayabilirsiniz.</p>
-        <button onClick={handleDownload} className="px-4 py-2 bg-[#132175] hover:bg-[#0e1a5e] text-white rounded-lg text-xs font-bold transition">
-          Tüm Metinleri İndir (.json)
+        <h3 className="text-sm font-bold text-gray-800">CMS JSON İndir</h3>
+        <p className="text-xs text-gray-500">Admin panelindeki içerik görünümünü tek dosyada indirir (<code>willowsoft-content-…json</code>).</p>
+        <button onClick={handleContentDownload} className="px-4 py-2 bg-[#132175] hover:bg-[#0e1a5e] text-white rounded-lg text-xs font-bold transition">
+          CMS JSON İndir
         </button>
       </div>
 
-      {/* Upload Backup */}
       <div className="bg-white border border-gray-200 rounded-xl p-5 space-y-3">
-        <h3 className="text-sm font-bold text-gray-800">2 · JSON Yükle (İçe Aktar)</h3>
-        <p className="text-xs text-gray-500">İndirdiğiniz/düzenlediğiniz JSON dosyasını seçin. Yalnızca dosyadaki bölümler güncellenir; diğerleri korunur. Yükleme sonrası sağ üstteki <strong>"Değişiklikleri Kaydet"</strong> ile veritabanına yazılır.</p>
+        <h3 className="text-sm font-bold text-gray-800">CMS JSON Yükle (Önizleme)</h3>
+        <p className="text-xs text-gray-500">Dosyayı panele yükler; kalıcı olması için kaydetmeniz gerekir.</p>
         <label className="inline-block px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg text-xs font-bold cursor-pointer transition">
           Dosya Seç (.json)
-          <input type="file" accept=".json" onChange={handleUpload} className="hidden" />
+          <input type="file" accept=".json" onChange={handleContentUpload} className="hidden" />
         </label>
         {uploadMessage && (
           <p className={`text-xs font-medium ${uploadMessage.includes("hata") || uploadMessage.includes("Geçersiz") ? "text-red-400" : "text-[#132175]"}`}>
@@ -147,6 +435,16 @@ export default function BackupsPanel() {
           </button>
         </div>
         {draftInfo && <p className="text-xs text-gray-500">{draftInfo}</p>}
+      </div>
+
+      {/* CLI bilgisi */}
+      <div className="bg-gray-50 border border-gray-200 rounded-xl p-5 space-y-2">
+        <h3 className="text-sm font-bold text-gray-700">Komut Satırı (CI / sunucu)</h3>
+        <pre className="text-[11px] text-gray-600 bg-white border border-gray-100 rounded-lg p-3 overflow-x-auto whitespace-pre-wrap">
+{`node --env-file=.env scripts/backup-full.mjs
+node --env-file=.env scripts/restore-full.mjs backups/willowsoft-full-....zip --force
+node --env-file=.env scripts/backup-db.mjs   # yalnızca DB JSON`}
+        </pre>
       </div>
     </div>
   );

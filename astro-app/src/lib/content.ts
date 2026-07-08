@@ -10,6 +10,12 @@ let cachedContent: any = null;
 let lastFetchTime = 0;
 const TTL_MS = 60000; // 60 seconds cache
 
+/** Yedek geri yükleme sonrası önbelleği temizler. */
+export function bustContentCache(): void {
+  cachedContent = null;
+  lastFetchTime = 0;
+}
+
 /** Tags a payload as bundled fallback (not real DB data) so consumers/loggers can tell. */
 function markFallback(content: any) {
   if (content && typeof content === "object") {

@@ -3855,7 +3855,7 @@
     "home": {
       "heroEyebrow": {
         "en": "Embedded Systems • IoT • Digital Platforms",
-        "tr": "Gömülü Sistemler • IoT • Dijital Platformlar",
+        "tr": "",
         "de": "Embedded-Systeme • IoT • Digitale Plattformen",
         "fr": "Systèmes embarqués • IoT • Plateformes numériques",
         "es": "Sistemas embebidos • IoT • Plataformas digitales",
@@ -3865,7 +3865,7 @@
       },
       "heroTitle": {
         "en": "From <em class=\"hw-serif\">bare metal</em> to <strong class=\"hw-display\">dashboard</strong> — <span class=\"hw-muted\">without fragmented vendors.</span>",
-        "tr": "<em class=\"hw-serif\">Yalın donanımdan</em> <strong class=\"hw-display\">yönetim paneline</strong> — <span class=\"hw-muted\">birbirinden kopuk tedarikçilerle uğraşmadan.</span>",
+        "tr": "Endüstriyel IoT ve Gömülü Sistem Çözümleriyle<br><strong class=\"hw-display\">Dijitalleşme Yolculuğunuzun Güvenilir Teknoloji Ortağı</strong>",
         "de": "Von <em class=\"hw-serif\">Bare Metal</em> bis zum <strong class=\"hw-display\">Dashboard</strong> — <span class=\"hw-muted\">ohne zersplitterte Dienstleister.</span>",
         "fr": "Du <em class=\"hw-serif\">Bare Metal</em> au <strong class=\"hw-display\">tableau de bord</strong> — <span class=\"hw-muted\">sans multiplier les prestataires.</span>",
         "es": "Del <em class=\"hw-serif\">bare metal</em> al <strong class=\"hw-display\">panel de control</strong> — <span class=\"hw-muted\">sin lidiar con múltiples proveedores.</span>",
@@ -3875,7 +3875,7 @@
       },
       "heroLead": {
         "en": "WillowSoft builds every layer of your connected product: hardware, firmware, connectivity, backend, and interfaces — as one reliable system.",
-        "tr": "WillowSoft, IoT ürününüzün tüm katmanlarını tek ekip olarak geliştirir: donanım, firmware, bağlantı, backend ve kullanıcı arayüzleri.",
+        "tr": "WillowSoft, işletmenizin dijital dönüşümünü hızlandıracak hazır IoT ürünleri ve platformları sunar. Aynı zamanda ihtiyaçlarınıza özel ürün geliştirme süreçlerini uzman mühendislik ekibiyle yönetir: donanım tasarımı, gömülü yazılım, bulut altyapısı ve kullanıcı arayüzleri.",
         "de": "WillowSoft entwickelt alle Ebenen Ihres IoT-Produkts mit einem Team: Hardware, Firmware, Konnektivität, Backend und Benutzeroberflächen.",
         "fr": "WillowSoft développe toutes les couches de votre produit IoT avec une seule équipe : matériel, firmware, connectivité, backend et interfaces utilisateur.",
         "es": "WillowSoft desarrolla todas las capas de su producto IoT con un solo equipo: hardware, firmware, conectividad, backend e interfaces de usuario.",
@@ -3885,7 +3885,7 @@
       },
       "heroCta": {
         "en": "Start Your Project",
-        "tr": "Projeni Anlat",
+        "tr": "Ücretsiz Danışın",
         "de": "Projekt starten",
         "fr": "Démarrer un projet",
         "es": "Iniciar proyecto",
@@ -3894,8 +3894,8 @@
         "ja": "プロジェクトを開始"
       },
       "heroCtaSecondary": {
-        "en": "Explore Services",
-        "tr": "Hizmetleri Keşfet",
+        "en": "Explore Solutions",
+        "tr": "Çözümlerimizi İnceleyin",
         "de": "Dienste erkunden",
         "fr": "Découvrir les services",
         "es": "Explorar servicios",

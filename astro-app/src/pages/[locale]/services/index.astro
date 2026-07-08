@@ -4,7 +4,7 @@ import FaqAccordion from "@/components/FaqAccordion.astro";
 import AIAnswerBlock from "@/components/AIAnswerBlock.astro";
 import { loadContent } from "@/lib/content";
 import { pageSeo, webPageNode, ORGANIZATION_SCHEMA, WEBSITE_SCHEMA } from "@/lib/seo";
-import { localizedValue, itemText, localeMapText, pageText, resolveLocale, type Locale } from "@/lib/cms";
+import { itemText, localeMapText, pageButtonText, pageLocaleHref, pageText, resolveLocale, type Locale } from "@/lib/cms";
 import { aiAnswerForPage, aiMetaForPage, appendSchemaNodes, fallbackFaqsForPage, faqItemsForPage, faqSchemaNode } from "@/lib/ai-search";
 
 export const prerender = false;
@@ -53,10 +53,9 @@ const processSteps = ((pageContent.processSteps || []) as any[])
 
 // ── Fallback static labels (used when CMS fields are empty) ──
 const labels: Record<string, Record<string, string>> = {
-  productsOnMarket: { en: "Products on Market", tr: "Piyasadaki Ürünler", de: "Produkte am Markt", fr: "Produits sur le marché", es: "Productos en el mercado", it: "Prodotti sul mercato", ar: "منتج في السوق", ja: "市場実績製品" },
-  happyClients: { en: "happy clients", tr: "mutlu müşteriler", de: "zufriedene Kunden", fr: "clients satisfaits", es: "clientes satisfechos", it: "clienti felici", ar: "عميل سعيد", ja: "取引先企業数" },
+  productsOnMarket: { en: "Delivered projects", tr: "Teslim Edilen Proje", de: "Ausgelieferte Projekte", fr: "Projets livrés", es: "Proyectos entregados", it: "Progetti consegnati", ar: "مشروع مُسلّم", ja: "納品プロジェクト" },
+  happyClients: { en: "Enterprise clients", tr: "Kurumsal Müşteri", de: "Unternehmenskunden", fr: "Clients entreprises", es: "Clientes corporativos", it: "Clienti corporate", ar: "عميل مؤسسي", ja: "法人顧客" },
   founded: { en: "Founded", tr: "Kuruluş", de: "Gegründet", fr: "Fondation", es: "Fundación", it: "Fondazione", ar: "تأسست عام", ja: "設立年" },
-  officesWorldwide: { en: "offices worldwide", tr: "dünya çapında ofis", de: "Büros weltweit", fr: "bureaux dans le monde", es: "oficinas en el mundo", it: "uffici nel mondo", ar: "مكتب حول العالم", ja: "拠点数" },
   serviceArchitecture: { en: "Service architecture", tr: "Hizmet mimarisi", de: "Dienstarchitektur", fr: "Architecture de service", es: "Arquitectura de servicio", it: "Architettura dei servizi", ar: "مخطط الخدمة", ja: "サービス構成" },
   deviceToData: { en: "Device to data to interface.", tr: "Cihazdan veriye, veriden arayüze.", de: "Gerät zu Daten zu Schnittstelle.", fr: "Du dispositif aux données à l'interface.", es: "Del dispositivo a los datos a la interfaz.", it: "Dal dispositivo ai dati all'interfaccia.", ar: "من الجهاز إلى البيانات إلى الواجهة.", ja: "デバイスからデータ、インターフェースまで。" },
   device: { en: "Device", tr: "Cihaz", de: "Gerät", fr: "Dispositif", es: "Dispositivo", it: "Dispositivo", ar: "الجهاز", ja: "デバイス" },
@@ -198,8 +197,10 @@ const processTitle = txt("processTitle") || l({ en: "A cleaner path from idea to
 const ctaEyebrow = txt("ctaEyebrow") || l({ en: "Start with engineering", tr: "Mühendislikle başlayın", de: "Mit Engineering starten", fr: "Commencer avec l’ingénierie", es: "Empiece con ingeniería", it: "Parti dall’ingegneria", ar: "ابدأ من الهندسة", ja: "エンジニアリングから始める" });
 const ctaTitle = txt("ctaTitle") || l({ en: "Ready to ship a connected product that actually works in the field?", tr: "Sahada gerçekten çalışan bir IoT ürünü çıkarmaya hazır mısınız?", de: "Bereit, ein IoT-Produkt auszuliefern, das im Feld wirklich funktioniert?", fr: "Prêt à lancer un produit IoT qui fonctionne vraiment sur le terrain ?", es: "¿Listo para lanzar un producto IoT que realmente funcione en campo?", it: "Pronto a lanciare un prodotto IoT che funziona davvero sul campo?", ar: "هل أنت مستعد لإطلاق منتج IoT يعمل فعلاً في الميدان؟", ja: "現場で本当に動く IoT 製品を出荷する準備はできていますか？" });
 const ctaLead = txt("ctaLead") || l({ en: "Tell us which layer you need first — hardware, firmware, backend, mobile, web or immersive — and WillowSoft engineering will respond with a discovery plan and a realistic timeline.", tr: "Önceliğinizin hangi katman olduğunu anlatın: donanım, firmware, backend, mobil, web ya da VR/simülasyon. WillowSoft mühendislik ekibi size keşif planı ve gerçekçi bir zaman çizelgesiyle döner.", de: "Sagen Sie uns, welchen Layer Sie zuerst brauchen: Hardware, Firmware, Backend, Mobile, Web oder Immersive. WillowSoft Engineering meldet sich mit Discovery-Plan und realistischer Timeline.", fr: "Dites-nous quel layer est prioritaire : hardware, firmware, backend, mobile, web ou immersive. L’équipe engineering WillowSoft reviendra avec un plan de discovery et un calendrier réaliste.", es: "Cuéntenos qué capa necesita primero: hardware, firmware, backend, mobile, web o inmersiva. El equipo de ingeniería de WillowSoft responderá con un plan de discovery y un calendario realista.", it: "Dicci quale layer serve per primo: hardware, firmware, backend, mobile, web o immersive. Il team engineering WillowSoft risponderà con un piano di discovery e una timeline realistica.", ar: "أخبرنا أي طبقة تحتاجها أولًا: hardware أو firmware أو backend أو mobile أو web أو immersive. سيعود فريق WillowSoft الهندسي بخطة discovery وجدول زمني واقعي.", ja: "まず必要なレイヤーを教えてください。ハードウェア、ファームウェア、バックエンド、モバイル、Web、またはイマーシブ領域。WillowSoft のエンジニアリングチームが、ディスカバリープランと現実的なスケジュールを返します。" });
-const ctaPrimary = txt("ctaPrimaryButton") || getLabel("talkToEngineering");
-const ctaSecondary = txt("ctaSecondaryButton") || getLabel("startYourProject");
+const ctaPrimary = pageButtonText(pageContent.ctaPrimaryButton, locale, txt("ctaPrimaryButton") || getLabel("talkToEngineering"));
+const ctaSecondary = pageButtonText(pageContent.ctaSecondaryButton, locale, txt("ctaSecondaryButton") || getLabel("startYourProject"));
+const ctaPrimaryHref = pageLocaleHref(locale, pageContent.ctaPrimaryButton, "/contact");
+const ctaSecondaryHref = pageLocaleHref(locale, pageContent.ctaSecondaryButton, "/start-project");
 
 const faqEyebrow = txt("faqEyebrow") || getLabel("questionsBefore");
 const faqTitle = txt("faqTitle") || getVal("stackTitle") || getLabel("faqTitleFallback");
@@ -219,7 +220,7 @@ const faqLead = txt("faqLead") || l({ en: "Engineering buyers usually arrive wit
       <div class="services-hero-light" aria-hidden="true"></div>
       <div class="hero-inner services-hero-grid">
         <div class="services-hero-copy">
-          <p class="eyebrow reveal">{heroEyebrow}</p>
+          {heroEyebrow.trim() && <p class="eyebrow reveal">{heroEyebrow}</p>}
           <h1 class="reveal delay-1">{heroTitle}</h1>
           <p class="reveal delay-2">{heroLead}</p>
           <div class="services-hero-meta reveal delay-3" role="list" aria-label={getLabel("serviceCapacity")}>
@@ -234,13 +235,8 @@ const faqLead = txt("faqLead") || l({ en: "Engineering buyers usually arrive wit
             </span>
             <span class="hero-meta-divider" aria-hidden="true"></span>
             <span class="hero-meta-item" role="listitem">
-              <strong data-company-fact="founded">2020</strong>
+              <strong data-company-fact="founded">{companyFacts.founded}</strong>
               <span>{getLabel("founded")}</span>
-            </span>
-            <span class="hero-meta-divider" aria-hidden="true"></span>
-            <span class="hero-meta-item" role="listitem">
-              <strong data-company-fact="officesWorldwide">{companyFacts.officesWorldwide}</strong>
-              <span>{getLabel("officesWorldwide")}</span>
             </span>
           </div>
         </div>
@@ -485,8 +481,8 @@ const faqLead = txt("faqLead") || l({ en: "Engineering buyers usually arrive wit
             <p class="section-lead">{ctaLead}</p>
           </div>
           <div class="services-cta-actions">
-            <a class="btn btn-primary" href={`/${locale}/contact`}>{ctaPrimary}</a>
-            <a class="btn btn-secondary" href={`/${locale}/start-project`}>{ctaSecondary}</a>
+            <a class="btn btn-primary" href={ctaPrimaryHref}>{ctaPrimary}</a>
+            <a class="btn btn-secondary" href={ctaSecondaryHref}>{ctaSecondary}</a>
           </div>
         </div>
       </div>

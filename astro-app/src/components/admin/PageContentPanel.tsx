@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { locales, type Locale } from "@/lib/cms";
+import { locales, pageButtonParts, type Locale } from "@/lib/cms";
 import HomePageMirror from "./HomePageMirror";
 import PageMirror from "./PageMirror";
 import type { MirrorCard } from "./mirrorShared";
@@ -42,8 +42,8 @@ const FIELD_META: Record<string, FieldMeta> = {
   heroEyebrow: { label: "Üst Etiket", section: "Hero", hint: "Başlığın üstündeki küçük metin.", type: "short" },
   heroTitle: { label: "Ana Başlık", section: "Hero", hint: "HTML destekler.", type: "long" },
   heroLead: { label: "Alt Açıklama", section: "Hero", hint: "", type: "long" },
-  heroCta: { label: "Ana Buton", section: "Hero", hint: "", type: "button" },
-  heroCtaSecondary: { label: "İkincil Buton", section: "Hero", hint: "", type: "button" },
+  heroCta: { label: "Ana Buton", section: "Hero", hint: "Metin + link. Boş linkte şablon varsayılanı: /start-project", type: "button" },
+  heroCtaSecondary: { label: "İkincil Buton", section: "Hero", hint: "Metin + link. Boş linkte şablon varsayılanı: /solutions", type: "button" },
   trustEyebrow: { label: "Üst Etiket", section: "Güven", hint: "", type: "short" },
   trustTitle: { label: "Başlık", section: "Güven", hint: "", type: "short" },
   trustLead: { label: "Açıklama", section: "Güven", hint: "", type: "long" },
@@ -89,7 +89,7 @@ const FIELD_META: Record<string, FieldMeta> = {
   ctaChoice_0: { label: "Kart 1", section: "CTA", hint: "Donanım + gömülü yazılım", type: "short" },
   ctaChoice_1: { label: "Kart 2", section: "CTA", hint: "Bulut + veri tabanı", type: "short" },
   ctaChoice_2: { label: "Kart 3", section: "CTA", hint: "Web, mobil, simülasyon", type: "short" },
-  ctaCta: { label: "Buton", section: "CTA", hint: "", type: "button" },
+  ctaCta: { label: "Buton", section: "CTA", hint: "Metin + link. Varsayılan: /contact", type: "button" },
   faqEyebrow: { label: "Üst Etiket", section: "SSS", hint: "SSS veya Merak Edilenler", type: "short" },
   faqTitle: { label: "Başlık", section: "SSS", hint: "", type: "short" },
   faqLead: { label: "Açıklama", section: "SSS", hint: "", type: "long" },
@@ -127,7 +127,7 @@ const FIELD_META: Record<string, FieldMeta> = {
   finalCtaEyebrow: { label: "Üst Etiket", section: "CTA", hint: "", type: "short" },
   finalCtaTitle: { label: "Başlık", section: "CTA", hint: "", type: "short" },
   finalCtaLead: { label: "Açıklama", section: "CTA", hint: "", type: "long" },
-  finalCtaButton: { label: "Buton", section: "CTA", hint: "", type: "button" },
+  finalCtaButton: { label: "Buton", section: "CTA", hint: "Metin + link. Varsayılan: /start-project", type: "button" },
   serviceSystemEyebrow: { label: "Üst Etiket", section: "Hizmet Katmanları", hint: "", type: "short" },
   serviceSystemTitle: { label: "Başlık", section: "Hizmet Katmanları", hint: "", type: "short" },
   serviceSystemLead: { label: "Açıklama", section: "Hizmet Katmanları", hint: "", type: "long" },
@@ -138,8 +138,8 @@ const FIELD_META: Record<string, FieldMeta> = {
   handoffDesc: { label: "Devir Açıklama", section: "Teslimatlar", hint: "", type: "long" },
   processEyebrow: { label: "Üst Etiket", section: "Süreç", hint: "", type: "short" },
   processTitle: { label: "Başlık", section: "Süreç", hint: "", type: "short" },
-  ctaPrimaryButton: { label: "Ana Buton", section: "CTA", hint: "", type: "button" },
-  ctaSecondaryButton: { label: "İkincil Buton", section: "CTA", hint: "", type: "button" },
+  ctaPrimaryButton: { label: "Ana Buton", section: "CTA", hint: "Metin + link. Varsayılan: /contact", type: "button" },
+  ctaSecondaryButton: { label: "İkincil Buton", section: "CTA", hint: "Metin + link. Varsayılan: /start-project", type: "button" },
   latestEyebrow: { label: "Üst Etiket", section: "Arşiv", hint: "", type: "short" },
   latestTitle: { label: "Başlık", section: "Arşiv", hint: "", type: "short" },
   pipelineEyebrow: { label: "Üst Etiket", section: "CTA", hint: "", type: "short" },
@@ -286,6 +286,110 @@ function ScalarPageFieldEditor({
         onChange={update}
         hint={meta.hint}
       />
+    </div>
+  );
+}
+
+// ── Button locale editor (label + URL per locale) ─────────────────────────────
+function ButtonLocaleFieldEditor({
+  fieldKey, pageData, updateButtonField, meta,
+}: {
+  fieldKey: string;
+  pageData: Record<string, any>;
+  updateButtonField: (key: string, loc: Locale, part: "label" | "url", value: string) => void;
+  meta: FieldMeta;
+}) {
+  const [translateError, setTranslateError] = useState<string | null>(null);
+  const [translating, setTranslating] = useState<Set<string>>(new Set());
+
+  const parts = (loc: Locale) => pageButtonParts(pageData[fieldKey], loc);
+  const sourceLabel = parts(SOURCE_LANG).label;
+  const emptyTargetCount = TARGET_LOCALES.filter((l) => !parts(l).label).length;
+
+  const translateAll = async () => {
+    if (!sourceLabel) return;
+    const emptyLangs = TARGET_LOCALES.filter((l) => !parts(l).label);
+    if (!emptyLangs.length) return;
+    setTranslateError(null);
+    setTranslating(new Set(emptyLangs));
+    try {
+      const res = await fetch("/api/translate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text: sourceLabel, targetLangs: emptyLangs }),
+      });
+      const data = await res.json();
+      if (!data.ok) throw new Error(data.error || "Çeviri başarısız");
+      for (const [lang, text] of Object.entries(data.translations || {})) {
+        if (typeof text === "string" && text.trim()) {
+          updateButtonField(fieldKey, lang as Locale, "label", text);
+        }
+      }
+    } catch (e: any) {
+      setTranslateError(e.message);
+    } finally {
+      setTranslating(new Set());
+    }
+  };
+
+  return (
+    <div className="ws-pc-editor">
+      <div className="ws-pc-editor-head">
+        <div>
+          <p className="ws-pc-editor-title">{meta.label}</p>
+          {meta.hint && <p className="ws-pc-editor-hint">{meta.hint}</p>}
+        </div>
+        <div className="flex items-center gap-2">
+          {translateError && <span className="text-[10px] text-red-500">{translateError}</span>}
+          {emptyTargetCount > 0 && sourceLabel && (
+            <button type="button" onClick={translateAll} disabled={translating.size > 0} className="ws-pc-translate-btn">
+              {translating.size > 0 ? "Çevriliyor…" : `✨ Tümünü Çevir (${emptyTargetCount})`}
+            </button>
+          )}
+        </div>
+      </div>
+      <div className="divide-y divide-gray-50">
+        {locales.map((loc) => {
+          const info = LOCALE_INFO[loc] ?? { flag: "🌐", name: loc };
+          const isSource = loc === SOURCE_LANG;
+          const { label, url } = parts(loc);
+          const inputClass = isSource
+            ? "border-[#c7d2fe] bg-white text-[#132175] font-semibold"
+            : label ? "border-green-200 bg-gray-50" : "border-amber-200 bg-gray-50";
+
+          return (
+            <div key={loc} className={`px-5 py-3 ${isSource ? "bg-[#f0f4ff]" : ""}`}>
+              <div className="flex items-center gap-1.5 mb-2">
+                <span>{info.flag}</span>
+                <span className="text-[11px] font-bold">{info.name}</span>
+                {isSource && <span className="ws-pc-source-badge">KAYNAK</span>}
+              </div>
+              <div className="grid gap-2 sm:grid-cols-2">
+                <div>
+                  <label className="mb-1 block text-[10px] font-bold uppercase tracking-wide text-gray-500">Buton metni</label>
+                  <input
+                    type="text"
+                    value={label}
+                    onChange={(e) => updateButtonField(fieldKey, loc, "label", e.target.value)}
+                    dir={loc === "ar" ? "rtl" : "ltr"}
+                    className={`w-full p-2.5 border rounded-lg text-sm outline-none focus:border-[#1aa3c4] ${inputClass}`}
+                  />
+                </div>
+                <div>
+                  <label className="mb-1 block text-[10px] font-bold uppercase tracking-wide text-gray-500">Link (ör. /solutions)</label>
+                  <input
+                    type="text"
+                    value={url}
+                    onChange={(e) => updateButtonField(fieldKey, loc, "url", e.target.value)}
+                    placeholder="/start-project"
+                    className="w-full p-2.5 border border-gray-200 rounded-lg text-sm outline-none focus:border-[#1aa3c4] bg-gray-50 font-mono text-xs"
+                  />
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 }
@@ -537,6 +641,25 @@ export default function PageContentPanel() {
     });
   }, [selectedPage, setContent]);
 
+  const updateButtonField = useCallback((key: string, loc: Locale, part: "label" | "url", value: string) => {
+    setContent((c: any) => {
+      const pc = { ...c.pageContent };
+      const page = { ...pc[selectedPage] };
+      const field = { ...(page[key] || {}) };
+      const raw = field[loc];
+      const current =
+        typeof raw === "string"
+          ? { label: raw, url: "" }
+          : raw && typeof raw === "object"
+            ? { label: String(raw.label || ""), url: String(raw.url || "") }
+            : { label: "", url: "" };
+      field[loc] = { ...current, [part]: value };
+      page[key] = field;
+      pc[selectedPage] = page;
+      return { ...c, pageContent: pc };
+    });
+  }, [selectedPage, setContent]);
+
   const selectPage = (key: string) => {
     setSelectedPage(key);
     const { blockId, field } = firstEditableBlock(key);
@@ -625,6 +748,7 @@ export default function PageContentPanel() {
               <HomePageMirror
                 data={pageData}
                 locale={previewLocale}
+                companyFacts={content?.companyFacts || {}}
                 activeBlockId={activeBlockId}
                 activeCard={activeCard}
                 onSelectBlock={selectBlock}
@@ -728,6 +852,8 @@ export default function PageContentPanel() {
                 setContent={setContent}
                 meta={getMeta(activeField)}
               />
+            ) : getMeta(activeField).type === "button" ? (
+              <ButtonLocaleFieldEditor fieldKey={activeField} pageData={pageData} updateButtonField={updateButtonField} meta={getMeta(activeField)} />
             ) : (
               <LocaleFieldEditor fieldKey={activeField} pageData={pageData} updateField={updateField} meta={getMeta(activeField)} />
             )

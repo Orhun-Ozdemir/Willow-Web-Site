@@ -92,6 +92,42 @@ export function pageButtonLabel(value: any, locale: Locale): string {
   return "";
 }
 
+/** CMS button URL from `{ label, url }` per locale; plain strings use fallback. */
+export function pageButtonUrl(value: any, locale: Locale, fallback = ""): string {
+  if (!value || typeof value !== "object") return fallback;
+  const localized = value[locale] ?? value.en;
+  if (localized && typeof localized === "object" && localized.url) {
+    return String(localized.url).trim();
+  }
+  return fallback;
+}
+
+/** Locale-prefixed href for a CMS button field. */
+export function pageLocaleHref(locale: Locale, value: any, fallbackPath: string): string {
+  const path = pageButtonUrl(value, locale, fallbackPath);
+  const normalized = path.startsWith("/") ? path : `/${path}`;
+  if (normalized.startsWith(`/${locale}/`) || normalized === `/${locale}`) {
+    return normalized;
+  }
+  return `/${locale}${normalized}`;
+}
+
+/** Normalized `{ label, url }` for admin editors and previews. */
+export function pageButtonParts(value: any, locale: Locale): { label: string; url: string } {
+  if (!value) return { label: "", url: "" };
+  if (typeof value === "string") return { label: value.trim(), url: "" };
+  if (typeof value !== "object") return { label: "", url: "" };
+  const localized = value[locale] ?? value.en;
+  if (typeof localized === "string") return { label: localized.trim(), url: "" };
+  if (localized && typeof localized === "object") {
+    return {
+      label: String(localized.label || "").trim(),
+      url: String(localized.url || "").trim(),
+    };
+  }
+  return { label: "", url: "" };
+}
+
 export interface ServiceRailItem {
   title: string;
   desc: string;

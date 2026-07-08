@@ -23,6 +23,9 @@ const ACTION_LABELS: Record<string, string> = {
   "user.update": "Kullanıcı güncelleme",
   "user.delete": "Kullanıcı silme",
   "media.upload": "Dosya yükleme",
+  "snapshot.restore": "Snapshot geri yükleme",
+  "backup.export": "Yedek dışa aktarma",
+  "backup.restore": "Yedek geri yükleme",
 };
 
 function formatAction(action: string) {

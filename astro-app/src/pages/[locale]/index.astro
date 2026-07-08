@@ -6,7 +6,7 @@ import FaqAccordion from "@/components/FaqAccordion.astro";
 import AIAnswerBlock from "@/components/AIAnswerBlock.astro";
 import { loadContent } from "@/lib/content";
 import { pageSeo, ORGANIZATION_SCHEMA, WEBSITE_SCHEMA } from "@/lib/seo";
-import { flowNodesFromPageContent, industryLanesFromPageContent, pageButtonText, pageText, resolveLocale, serviceRailFromPageContent, type Locale } from "@/lib/cms";
+import { flowNodesFromPageContent, industryLanesFromPageContent, pageButtonText, pageLocaleHref, pageText, resolveLocale, serviceRailFromPageContent, type Locale } from "@/lib/cms";
 import { aiAnswerForPage, aiMetaForPage, appendSchemaNodes, fallbackFaqsForPage, faqItemsForPage, faqSchemaNode } from "@/lib/ai-search";
 
 export const prerender = false;
@@ -31,8 +31,8 @@ const featuredClients = (content.clients || [])
   .sort((a: any, b: any) => (a.sortOrder || 0) - (b.sortOrder || 0));
 
 const labels: Record<string, Record<string, string>> = {
-  productsOnMarket: { en: "Products on market", tr: "Piyasadaki ürünler", de: "Produkte am Markt", fr: "Produits sur le marché", es: "Productos en el mercado", it: "Prodotti sul mercato", ar: "منتج في السوق", ja: "市場実績製品" },
-  happyClients: { en: "Happy clients", tr: "Mutlu müşteriler", de: "Zufriedene Kunden", fr: "Clients satisfaits", es: "Clientes satisfechos", it: "Clienti felici", ar: "عميل سعيد", ja: "取引先企業数" },
+  productsOnMarket: { en: "Delivered projects", tr: "Teslim Edilen Proje", de: "Ausgelieferte Projekte", fr: "Projets livrés", es: "Proyectos entregados", it: "Progetti consegnati", ar: "مشروع مُسلّم", ja: "納品プロジェクト" },
+  happyClients: { en: "Enterprise clients", tr: "Kurumsal Müşteri", de: "Unternehmenskunden", fr: "Clients entreprises", es: "Clientes corporativos", it: "Clienti corporate", ar: "عميل مؤسسي", ja: "法人顧客" },
   founded: { en: "Founded", tr: "Kuruluş", de: "Gegründet", fr: "Fondation", es: "Fundación", it: "Fondazione", ar: "تأسست عام", ja: "設立年" },
   officesWorldwide: { en: "Offices worldwide", tr: "Dünya çapında ofis", de: "Büros weltweit", fr: "Bureaux dans le monde", es: "Oficinas en el mundo", it: "Uffici nel mondo", ar: "مكتب حول العالم", ja: "拠点数" },
   exploreServices: { en: "Explore Services", tr: "Hizmetleri Keşfet", de: "Dienste erkunden", fr: "Découvrir les services", es: "Explorar servicios", it: "Esplora i servizi", ar: "استكشف الخدمات", ja: "提供サービスを見る" },
@@ -57,13 +57,17 @@ const labels: Record<string, Record<string, string>> = {
   ctaChoice_2: { en: "Web, Mobile, Simulation", tr: "web, mobil, Simülasyon", de: "Web, Mobile, Simulation", fr: "Web, mobile, simulation", es: "Web, móvil, simulación", it: "Web, mobile, simulazione", ar: "ويب، جوال، محاكاة", ja: "Web、モバイル、シミュレーション" },
 };
 
-const heroCtaLabel = pageButtonText(pageContent.heroCta, locale, locale === "tr" ? "Projeni Anlat" : getLabel("startProject"));
-const heroCtaSecondaryLabel = pageButtonText(pageContent.heroCtaSecondary, locale, getLabel("exploreServices"));
+const heroEyebrow = getVal("heroEyebrow");
+const heroCtaLabel = pageButtonText(pageContent.heroCta, locale, locale === "tr" ? "Ücretsiz Danışın" : getLabel("startProject"));
+const heroCtaSecondaryLabel = pageButtonText(pageContent.heroCtaSecondary, locale, locale === "tr" ? "Çözümlerimizi İnceleyin" : getLabel("exploreServices"));
+const heroCtaHref = pageLocaleHref(locale, pageContent.heroCta, "/start-project");
+const heroCtaSecondaryHref = pageLocaleHref(locale, pageContent.heroCtaSecondary, "/solutions");
 const ctaCtaLabel = pageButtonText(pageContent.ctaCta, locale, getLabel("talkEngineering"));
+const ctaCtaHref = pageLocaleHref(locale, pageContent.ctaCta, "/contact");
 
 const heroTitleFallback: L10n = {
   en: "From <span class='serif-accent'>bare metal</span> to <span class='hw-display'>dashboard</span> — without fragmented vendors.",
-  tr: "<em class=\"hw-serif\">Yalın donanımdan</em> <strong class=\"hw-display\">yönetim paneline</strong> — <span class=\"hw-muted\">birbirinden kopuk tedarikçilerle uğraşmadan.</span>",
+  tr: "Endüstriyel IoT ve Gömülü Sistem Çözümleriyle<br><strong class=\"hw-display\">Dijitalleşme Yolculuğunuzun Güvenilir Teknoloji Ortağı</strong>",
   de: "Von <em class=\"hw-serif\">Bare Metal</em> bis zum <strong class=\"hw-display\">Dashboard</strong> — <span class=\"hw-muted\">ohne zersplitterte Dienstleister.</span>",
   fr: "Du <em class=\"hw-serif\">Bare Metal</em> au <strong class=\"hw-display\">tableau de bord</strong> — <span class=\"hw-muted\">sans multiplier les prestataires.</span>",
   es: "Del <em class=\"hw-serif\">bare metal</em> al <strong class=\"hw-display\">panel de control</strong> — <span class=\"hw-muted\">sin lidiar con múltiples proveedores.</span>",
@@ -319,12 +323,12 @@ const homeSchema = appendSchemaNodes({
       <canvas class="signal-canvas" data-density="42" data-color="75, 87, 170"></canvas>
       <div class="hero-inner hero-layout">
         <div class="hero-copy">
-          <p class="eyebrow reveal">{getVal("heroEyebrow")}</p>
+          {heroEyebrow.trim() && <p class="eyebrow reveal">{heroEyebrow}</p>}
           <h1 class="reveal delay-1" set:html={getVal("heroTitle", loc(heroTitleFallback))} />
           <p class="reveal delay-2">{getVal("heroLead")}</p>
           <div class="hero-ctas reveal delay-3">
-            <a class="btn btn-primary" href={`/${locale}/start-project`}>{heroCtaLabel}</a>
-            <a class="btn btn-secondary" href={`/${locale}/services`}>{heroCtaSecondaryLabel}</a>
+            <a class="btn btn-primary" href={heroCtaHref}>{heroCtaLabel}</a>
+            <a class="btn btn-secondary" href={heroCtaSecondaryHref}>{heroCtaSecondaryLabel}</a>
           </div>
           <div class="hero-proof reveal delay-4">
             <div class="proof-item">
@@ -336,12 +340,8 @@ const homeSchema = appendSchemaNodes({
               <span>{getLabel("happyClients")}</span>
             </div>
             <div class="proof-item">
-              <strong>2020</strong>
+              <strong data-company-fact="founded">{companyFacts.founded}</strong>
               <span>{getLabel("founded")}</span>
-            </div>
-            <div class="proof-item">
-              <strong data-company-fact="officesWorldwide">{companyFacts.officesWorldwide}</strong>
-              <span>{getLabel("officesWorldwide")}</span>
             </div>
           </div>
         </div>
@@ -503,7 +503,7 @@ const homeSchema = appendSchemaNodes({
             <span>{getVal("ctaChoice_1") || getLabel("ctaChoice_1")}</span>
             <span>{getVal("ctaChoice_2") || getLabel("ctaChoice_2")}</span>
           </div>
-          <p><a class="btn btn-primary" href={`/${locale}/contact`}>{ctaCtaLabel}</a></p>
+          <p><a class="btn btn-primary" href={ctaCtaHref}>{ctaCtaLabel}</a></p>
         </div>
       </div>
     </section>

@@ -5,7 +5,7 @@ import FaqAccordion from "@/components/FaqAccordion.astro";
 import AIAnswerBlock from "@/components/AIAnswerBlock.astro";
 import { loadContent } from "@/lib/content";
 import { pageSeo, webPageNode, ORGANIZATION_SCHEMA, WEBSITE_SCHEMA } from "@/lib/seo";
-import { localizedValue, localizeItem, pageText, resolveAsset, resolveLocale, type Locale } from "@/lib/cms";
+import { localizedValue, localizeItem, pageButtonText, pageLocaleHref, pageText, resolveAsset, resolveLocale, type Locale } from "@/lib/cms";
 import { aiAnswerForPage, aiMetaForPage, appendSchemaNodes, fallbackFaqsForPage, faqItemsForPage, faqSchemaNode } from "@/lib/ai-search";
 
 export const prerender = false;
@@ -84,6 +84,8 @@ const getLabel = (key: keyof typeof labels) => {
 
 const pt = (key: string, labelKey: keyof typeof labels) => pageText(pageContent, key, locale, getLabel(labelKey));
 const getVal = (key: string, fallback = "") => pageText(pageContent, key, locale, fallback);
+const finalCtaLabel = pageButtonText(pageContent.finalCtaButton, locale, getVal("finalCtaButton") || getLabel("startProject"));
+const finalCtaHref = pageLocaleHref(locale, pageContent.finalCtaButton, "/start-project");
 
 const categoryName = (cat: string) =>
   cat === "All" ? getLabel("filterAll") : (categoryLabelMap.get(cat) || cat);
@@ -413,7 +415,7 @@ const categoryName = (cat: string) =>
             </p>
           </div>
 
-          <a class="btn btn-primary" href={`/${locale}/start-project`}>{getVal("finalCtaButton") || getLabel("startProject")}</a>
+          <a class="btn btn-primary" href={finalCtaHref}>{finalCtaLabel}</a>
         </div>
       </div>
     </section>

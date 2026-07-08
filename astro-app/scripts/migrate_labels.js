@@ -1,7 +1,15 @@
+/**
+ * DANGER: Updates page_content rows in Supabase. Requires --force.
+ */
 import { createClient } from '@supabase/supabase-js';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+
+if (!process.argv.includes('--force')) {
+  console.error('Refusing to run: overwrites live page_content. Re-run with --force if intentional.');
+  process.exit(1);
+}
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);

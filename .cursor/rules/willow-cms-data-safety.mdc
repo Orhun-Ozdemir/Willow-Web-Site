@@ -1,0 +1,114 @@
+---
+description: WillowSoft CMS/Supabase veri güvenliği — 2026-07-07 canlı veri kaybı olaylarından öğrenilenler
+alwaysApply: true
+---
+
+# Willow CMS & Supabase — Asla Tekrar Etme
+
+Bu kurallar, 7 Temmuz 2026'da canlı sitede yaşanan veri/CMS hatalarından çıkarıldı. **Her CMS, admin veya Supabase görevinde uygula.**
+
+## 1. Seed/sync script'leri canlı veriyi ezer
+
+**Yapılan hata:** `node scripts/sync-page-content.mjs home` çalıştırıldı → kullanıcının Hero çevirileri `site-data.json` seed ile üzerine yazıldı.
+
+- `scripts/sync-page-content.mjs` ve `scripts/migrate-to-supabase.mjs` **yalnızca `--force` ile** çalışır; yine de çalıştırmadan önce **kullanıcıdan açık onay** al.
+- Canlı `page_content` / `company_facts` verisini repo JSON'u ile değiştirme — bu **silme** sayılır.
+- CMS düzeltmesi = kod değişikliği; veri senkronu = ayrı, riskli işlem.
+
+## 2. İki ayrı veri kaynağı — karıştırma
+
+| Admin paneli | Supabase tablosu | Örnek |
+|--------------|------------------|-------|
+| Sayfa İçeriği | `page_content` | Hero, CTA, sayfa metinleri |
+| Hakkımızda → Ekibimiz | `company_facts` | `team[]`, timeline, ofisler |
+
+- Ekip üyeleri **`page_content` değil**, `company_facts.team` içinde.
+- `admin_audit_logs`: `companyFacts` kaydı yoksa ekip verisi **hiç kaydedilmemiş** demektir.
+
+## 3. Admin kaydetme — varsayma
+
+- Sayfa İçeriği: değişiklik `savePageContent` / "Değişiklikleri Kaydet" olmadan DB'ye gitmez.
+- Hakkımızda / `CompanyPanel`: ekip düzenlemesi **"Listeye Dön" veya Kaydet** ile `saveSection("companyFacts")` çağrılmalı (bu bug düzeltildi; yine de kayıt sonrası doğrula).
+- "✨ Tümünü Çevir" önerileri alanlara yazılmadan kayıt olmaz (artık otomatik uygulanıyor; yine de kayıt adımını atla).
+
+## 4. Placeholder / seed ≠ gerçek içerik
+
+- `data/site-data.json` içindeki ekip (Alex Martinez, Sarah Chen vb.) **uydurma placeholder** — canlıya kopyalama.
+- Gerçek ekip (ör. Ömer Oyar, Eren Baştürk) yalnızca kullanıcı onayı veya Supabase'teki mevcut kayıtla güncellenir.
+- Görseller: Storage `uploads/` ve `team/` altında; `assets/team/` repoda yok → `resolveAsset()` Storage URL kullanmalı.
+
+## 5. Görsel atama — doğrula
+
+- Aynı kişinin birden fazla yüklemiş fotoğrafı olabilir; **isim eşleştirmesini kullanıcıya sor** veya görselleri incele.
+- Ömer ≠ Eren fotoğraflarını tahminle atama; yanlışsa kullanıcıdan doğru dosyayı iste veya admin'den yüklemesini iste.
+
+## 6. Düzeltme öncesi kontrol listesi
+
+Supabase/CMS değişikliği yapmadan önce:
+
+1. `admin_audit_logs` — son kayıtlar hangi `resource`?
+2. Mevcut DB değeri (`page_content`, `company_facts`) — kullanıcı verisi mi seed mi?
+3. Script çalıştıracaksan → onay + `--force` + hangi sayfa/tablonun etkileneceğini söyle
+4. Deploy sonrası canlı URL'de doğrula; "kayboldu" iddiasında önce DB'yi oku
+
+## 7. Kullanıcıya dürüst iletişim
+
+- Veri bizim script/bug ile ezildiyse **açıkça kabul et**; "kimse silmedi" deme eğer sync ezmişse.
+- Geri yükleme: Supabase PITR / yedek / Storage'da kalan `uploads/` dosyaları.
+
+## 8. CMS buton metni ≠ şablon linki (Hero 7 Temmuz)
+
+**Yapılan hata:** `heroCta` / `heroCtaSecondary` admin'den okunmaya başlandı ama `href` şablonda sabit kaldı (`/start-project`, `/services`). Kullanıcı admin'de "Çözümlerimizi İnceleyin" yazsa bile link `/services`'e gidiyordu — değişiklik "yansımıyor" sanıldı.
+
+- Admin `type: "button"` alanları yalnızca **etiket** saklar; URL alanı yok.
+- `pageButtonUrl()` var ama CMS düz string kaydettiği sürece fallback kullanılır — **şablon fallback'leri doğru olmalı**.
+- Yeni buton alanı eklerken: etiket + URL birlikte düşün (`{ label, url }` veya ayrı alan); admin ve şablonu senkron tut.
+- **Kod + sync aynı işte yapma:** CMS okuma kodu ekledikten hemen sonra `sync-page-content` çalıştırma — seed eski metinleri canlıya geri yazar.
+
+## 9. Patch script'leri de canlıyı değiştirir
+
+**Yapılan hata:** `patch-home-hero.mjs` `site-data.json`'dan okuyup Supabase'e yazdı. Seed yanlış veya güncel değilse canlı yine ezilir (tam sync kadar geniş olmasa da).
+
+- `scripts/patch-*.mjs` → Supabase'e yazıyorsa **`--force` + kullanıcı onayı** zorunlu.
+- Patch kaynağı mümkünse **kullanıcının onayladığı metin** (sohbet / admin), ikincil kaynak `site-data.json`.
+- Patch sonrası Supabase'ten okuyup doğrula; site-data ile canlı arasında fark bırakma.
+
+## 10. Admin önizleme ≠ canlı şablon
+
+**Yapılan hata:** `HomePageMirror` sabit istatistik gösteriyordu (12+, 40+, 3 ofis); canlı `index.astro` `companyFacts` kullanıyordu — admin'de farklı görünüyordu.
+
+- Önizleme bileşenleri (`HomePageMirror`, `PageMirror`, `SEOCenterPanel`) canlı şablonla **aynı veri kaynağı ve aynı koşulları** kullanmalı.
+- `SettingsPanel` ipuçları hangi sayfada gösterildiğini doğru yazmalı (ör. ofis sayısı ana sayfadan kaldırıldıysa ipucu güncellenmeli).
+
+## 11. Tehlikeli / korumasız script envanteri
+
+| Script | Risk |
+|--------|------|
+| `scripts/sync-page-content.mjs` | Tüm/sayfa `page_content` seed ile ezer — `--force` var |
+| `scripts/migrate-to-supabase.mjs` | Toplu tablo ezer — `--force` var |
+| `scripts/patch-home-hero.mjs` | `home` hero alanlarını ezer — `--force` eklendi |
+| `scripts/fill-translations.mjs` | Yalnızca yerel `site-data.json` — canlıya doğrudan gitmez ama sonraki sync riski |
+| `scripts/patch-solutions-blocks.mjs` | Yalnızca yerel JSON |
+| `astro-app/scripts/migrate_all.js` | **`--force` yok** — tüm `page_content` satırlarını günceller; çalıştırma |
+| `astro-app/scripts/migrate_labels.js` | Aynı risk — kontrol et |
+| `scripts/backup-db.mjs` | Yalnızca okur — güvenli |
+| `scripts/backup-full.mjs` | DB + Storage ZIP yedeği — güvenli (yalnızca okur) |
+| `scripts/restore-db.mjs` | Canlı tabloları yedekle eşitler — **`--force` + onay** |
+| `scripts/restore-full.mjs` | DB + Storage birebir geri yükler — **`--force` + onay** |
+
+## 13. Yedekleme / geri yükleme
+
+- Admin → **Yedek & Aktarım**: tam ZIP (DB + Storage + tüm `localized` çeviriler) veya yalnızca DB JSON.
+- ZIP yapısı: `manifest.json` + `storage/*` — geri yükleme birebir senkron (upsert + fazlalık silme).
+- `scripts/backup-full.mjs` / `scripts/restore-full.mjs` — CLI tam yedek (büyük dosyalar için önerilir).
+- `scripts/restore-full.mjs` ve admin geri yükleme öncesi otomatik güvenlik yedeği (`backups/.pre-restore/`).
+- Eski CMS JSON formatı (products, pageContent kök alanları) geriye dönük desteklenir.
+
+## 12. Şablon taraması — benzer CMS/link kopuklukları
+
+Kontrol edilirken şunlara bak:
+
+- Buton etiketi CMS'ten, `href` şablonda sabit (`services`, `contact`, `start-project` sayfaları).
+- `heroEyebrow` boşken gizlenmiyor (`start-project`, `services` vb.).
+- `companyFacts.founded` yerine sabit `2020` (`services/index.astro` hero meta).
+- Ana sayfa ofis kutusu kaldırıldı; `services` ve `start-project` hâlâ ofis istatistiği gösterebilir — bilinçli mi?

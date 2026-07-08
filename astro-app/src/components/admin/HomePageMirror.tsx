@@ -104,9 +104,15 @@ function Hit({
   );
 }
 
+const PROOF_LABELS: Record<string, { products: string; clients: string; founded: string }> = {
+  tr: { products: "Teslim Edilen Proje", clients: "Kurumsal Müşteri", founded: "Kuruluş" },
+  en: { products: "Delivered projects", clients: "Enterprise clients", founded: "Founded" },
+};
+
 export default function HomePageMirror({
   data,
   locale,
+  companyFacts = {},
   activeBlockId,
   activeCard,
   onSelectBlock,
@@ -114,6 +120,7 @@ export default function HomePageMirror({
 }: {
   data: Record<string, any>;
   locale: Locale;
+  companyFacts?: Record<string, any>;
   activeBlockId: string | null;
   activeCard: MirrorCard | null;
   onSelectBlock: (id: string) => void;
@@ -124,6 +131,7 @@ export default function HomePageMirror({
   const serviceRail = buildServiceRail(data, locale);
   const flowNodes = buildFlowNodes(data, locale);
   const industryLanes = buildIndustryLanes(data, locale);
+  const proofLabels = PROOF_LABELS[locale] || PROOF_LABELS.en;
 
   const cardActive = (titleKey: string) => activeCard?.titleKey === titleKey;
 
@@ -171,10 +179,9 @@ export default function HomePageMirror({
                     <span className="btn btn-secondary">{pageButtonLabel(data.heroCtaSecondary, locale) || v("heroCtaSecondary") || "CTA"}</span>
                   </div>
                   <div className="hero-proof">
-                    <div className="proof-item"><strong>12+</strong><span>Ürün</span></div>
-                    <div className="proof-item"><strong>40+</strong><span>Müşteri</span></div>
-                    <div className="proof-item"><strong>2020</strong><span>Kuruluş</span></div>
-                    <div className="proof-item"><strong>3</strong><span>Ofis</span></div>
+                    <div className="proof-item"><strong>{companyFacts.productsOnMarket || "100+"}</strong><span>{proofLabels.products}</span></div>
+                    <div className="proof-item"><strong>{companyFacts.happyClients || "41+"}</strong><span>{proofLabels.clients}</span></div>
+                    <div className="proof-item"><strong>{companyFacts.founded || "2020"}</strong><span>{proofLabels.founded}</span></div>
                   </div>
                 </div>
                 <aside className="hero-product-stage" aria-hidden="true">

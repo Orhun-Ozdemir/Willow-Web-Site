@@ -9,7 +9,8 @@ export type AdminPermission =
   | "media.upload"
   | "users.manage"
   | "settings.write"
-  | "backups.manage";
+  | "backups.manage"
+  | "history.manage";
 
 const ROLE_PERMISSIONS: Record<AdminRole, AdminPermission[] | ["*"]> = {
   super_admin: ["*"],
@@ -41,6 +42,7 @@ export const TAB_PERMISSIONS: Partial<Record<string, AdminPermission>> = {
   health: "content.read",
   settings: "settings.write",
   backups: "backups.manage",
+  history: "history.manage",
   users: "users.manage",
   audit: "audit.read",
 };

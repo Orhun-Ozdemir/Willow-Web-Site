@@ -80,6 +80,9 @@ assets/logo-color-hover-*.png
 assets/mobile-topbar-*.png
 assets/reference-motion-contact-sheet.jpg
 
+# DB backup files at repo root (may contain sensitive data)
+/backups/
+
 # Server runtime
 data/leads.json
 data/events.json

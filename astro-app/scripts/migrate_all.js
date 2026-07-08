@@ -1,4 +1,13 @@
+/**
+ * DANGER: Updates ALL page_content rows in Supabase. Requires --force.
+ * Usage: node --env-file=.env astro-app/scripts/migrate_all.js --force
+ */
 import { createClient } from '@supabase/supabase-js';
+
+if (!process.argv.includes('--force')) {
+  console.error('Refusing to run: overwrites live page_content. Re-run with --force if intentional.');
+  process.exit(1);
+}
 
 const supabase = createClient(
   process.env.SUPABASE_URL,
