@@ -27,6 +27,7 @@ const ACTION_LABELS: Record<string, string> = {
   "snapshot.revert_section": "Kayıt geri alma (tek bölüm)",
   "backup.export": "Yedek dışa aktarma",
   "backup.restore": "Yedek geri yükleme",
+  "storage.delete": "Storage dosyası silme",
 };
 
 function formatAction(action: string) {
