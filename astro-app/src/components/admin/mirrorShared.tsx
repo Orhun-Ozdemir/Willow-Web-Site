@@ -98,7 +98,15 @@ export function ItemHit({
   );
 }
 
-export function MirrorShell({ children, deps }: { children: ReactNode; deps?: unknown[] }) {
+export function MirrorShell({
+  children,
+  deps,
+  dataPage,
+}: {
+  children: ReactNode;
+  deps?: unknown[];
+  dataPage?: string;
+}) {
   const innerRef = useRef<HTMLDivElement>(null);
   const [shellHeight, setShellHeight] = useState(0);
 
@@ -121,6 +129,7 @@ export function MirrorShell({ children, deps }: { children: ReactNode; deps?: un
         <div
           ref={innerRef}
           className="ws-pc-mirror"
+          data-page={dataPage}
           style={{
             width: MIRROR_WIDTH,
             transform: `scale(${MIRROR_SCALE})`,

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { locales, type Locale } from "@/lib/cms";
 import PageMirror from "./PageMirror";
+import CompanyPageMirror from "./CompanyPageMirror";
 import { layoutForPage } from "./pageLayouts";
 import type { MirrorCard } from "./mirrorShared";
 import { LOCALE_INFO } from "./localeEditorShared";
@@ -65,19 +66,31 @@ export default function PageMirrorSidebar({
             ))}
           </select>
         </div>
-        <PageMirror
-          pageKey={pageKey}
-          layout={layout}
-          data={pageData}
-          locale={previewLocale}
-          activeBlockId={activeBlockId ?? undefined}
-          activeItemId={activeItemId ?? undefined}
-          activeCard={activeCard ?? undefined}
-          onSelectBlock={onSelectBlock}
-          onSelectItem={onSelectItem}
-          onSelectCard={onSelectCard}
-          extraData={extraData}
-        />
+        {pageKey === "company" ? (
+          <CompanyPageMirror
+            pageContent={pageData}
+            companyFacts={(extraData?.companyFacts as Record<string, unknown>) || {}}
+            locale={previewLocale}
+            activeBlockId={activeBlockId ?? null}
+            activeItemId={activeItemId}
+            onSelectBlock={onSelectBlock || (() => {})}
+            onSelectItem={onSelectItem}
+          />
+        ) : (
+          <PageMirror
+            pageKey={pageKey}
+            layout={layout}
+            data={pageData}
+            locale={previewLocale}
+            activeBlockId={activeBlockId ?? undefined}
+            activeItemId={activeItemId ?? undefined}
+            activeCard={activeCard ?? undefined}
+            onSelectBlock={onSelectBlock || (() => {})}
+            onSelectItem={onSelectItem}
+            onSelectCard={onSelectCard}
+            extraData={extraData}
+          />
+        )}
         <p className="ws-pc-preview-hint">{hint}</p>
       </div>
 

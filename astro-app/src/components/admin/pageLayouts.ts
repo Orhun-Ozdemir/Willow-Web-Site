@@ -59,13 +59,17 @@ export const NEWS_LAYOUT: PageLayoutBlock[] = [
 ];
 
 export const COMPANY_LAYOUT: PageLayoutBlock[] = [
-  { id: "hero", label: "Hero", tone: "hero", variant: "company-hero", static: true },
-  { id: "intro", label: "Giriş", tone: "light", variant: "section", fields: ["introEyebrow", "introTitle", "introLead"] },
-  { id: "team", label: "Ekibimiz", tone: "soft", variant: "company-team", fields: ["teamEyebrow", "teamTitle", "teamLead"], arrayKey: "team" },
-  { id: "principles", label: "İlkeler", tone: "light", variant: "section", fields: ["principlesEyebrow", "principlesTitle"] },
-  { id: "history", label: "Tarihçe", tone: "soft", variant: "section", fields: ["historyEyebrow", "historyTitle"] },
-  { id: "workWith", label: "İş Ortakları", tone: "light", variant: "section", fields: ["workWithEyebrow", "workWithTitle"] },
-  { id: "cta", label: "CTA", tone: "cta", variant: "split-cta", fields: ["ctaEyebrow", "ctaTitle", "ctaLead"] },
+  { id: "hero", label: "Hero", tone: "hero", variant: "company-page", static: true },
+  { id: "stats", label: "İstatistikler", tone: "light", variant: "company-page", static: true },
+  { id: "about", label: "Hakkımızda", tone: "light", variant: "company-page" },
+  { id: "missionVision", label: "Misyon & Vizyon", tone: "light", variant: "company-page" },
+  { id: "team", label: "Ekibimiz", tone: "soft", variant: "company-page", arrayKey: "team" },
+  { id: "principles", label: "İlkeler", tone: "light", variant: "company-page" },
+  { id: "timeline", label: "Tarihçe", tone: "soft", variant: "company-page", arrayKey: "timeline" },
+  { id: "expertise", label: "Uzmanlık", tone: "light", variant: "company-page", arrayKey: "expertise" },
+  { id: "industries", label: "Sektörler", tone: "soft", variant: "company-page", arrayKey: "industries" },
+  { id: "offices", label: "Ofisler", tone: "light", variant: "company-page", arrayKey: "officesList" },
+  { id: "cta", label: "CTA", tone: "cta", variant: "company-page" },
 ];
 
 export const CONTACT_LAYOUT: PageLayoutBlock[] = [

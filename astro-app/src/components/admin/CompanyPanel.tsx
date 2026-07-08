@@ -12,20 +12,25 @@ import { syncOfficePhonesInFacts } from "@/lib/company-contact";
 type SubTab = "general" | "team" | "timeline" | "offices" | "expertise" | "industries";
 
 const SUB_TABS: { key: SubTab; label: string; blockId: string | null }[] = [
-  { key: "general", label: "Genel Metinler", blockId: "intro" },
-  { key: "expertise", label: "Uzmanlık", blockId: null },
-  { key: "industries", label: "Sektörler", blockId: null },
+  { key: "general", label: "Genel Metinler", blockId: "hero" },
+  { key: "expertise", label: "Uzmanlık", blockId: "expertise" },
+  { key: "industries", label: "Sektörler", blockId: "industries" },
   { key: "team", label: "Ekibimiz", blockId: "team" },
-  { key: "timeline", label: "Zaman Tüneli", blockId: "history" },
-  { key: "offices", label: "Ofisler", blockId: null },
+  { key: "timeline", label: "Zaman Tüneli", blockId: "timeline" },
+  { key: "offices", label: "Ofisler", blockId: "offices" },
 ];
 
 const BLOCK_TO_SUBTAB: Record<string, SubTab> = {
-  intro: "general",
+  hero: "general",
+  stats: "general",
+  about: "general",
+  missionVision: "general",
   team: "team",
-  history: "timeline",
   principles: "general",
-  workWith: "general",
+  timeline: "timeline",
+  expertise: "expertise",
+  industries: "industries",
+  offices: "offices",
   cta: "general",
 };
 
@@ -89,7 +94,8 @@ async function saveSection(section: string, data: any) {
 export default function CompanyPanel() {
   const { content, setContent, saveContent, dirtyKeys, saving, saveMessage } = useAdmin();
   const [activeSubTab, setActiveSubTab] = useState<SubTab>("general");
-  const [activeBlockId, setActiveBlockId] = useState<string>("intro");
+  const [activeBlockId, setActiveBlockId] = useState<string>("hero");
+  const [activeItemId, setActiveItemId] = useState<string | null>(null);
   
   // States for editing items
   const [editingTeamIdx, setEditingTeamIdx] = useState<number | null>(null);
@@ -101,6 +107,12 @@ export default function CompanyPanel() {
   const facts = content?.companyFacts || {};
   const companyPage = content?.pageContent?.company || {};
   const team = facts.team || [];
+  const timeline = facts.timeline || [];
+  const officesList = facts.officesList || [];
+  const expertiseList: any[] = facts.expertise || [];
+  const industriesList: any[] = facts.industries || [];
+  const aboutBullets: any[] = facts.aboutBullets || [];
+  const [editingIndustryIdx, setEditingIndustryIdx] = useState<number | null>(null);
   const companyDirty = dirtyKeys.includes("companyFacts");
 
   useEffect(() => {
@@ -113,6 +125,7 @@ export default function CompanyPanel() {
 
   const switchSubTab = (tab: SubTab) => {
     setActiveSubTab(tab);
+    setActiveItemId(null);
     setEditingTeamIdx(null);
     setEditingTimelineIdx(null);
     setEditingOfficeIdx(null);
@@ -122,17 +135,53 @@ export default function CompanyPanel() {
     if (meta?.blockId) setActiveBlockId(meta.blockId);
   };
 
+  const openItemEditor = (blockId: string, itemId: string) => {
+    setActiveBlockId(blockId);
+    setActiveItemId(itemId);
+    const sub = BLOCK_TO_SUBTAB[blockId];
+    if (!sub) return;
+
+    setActiveSubTab(sub);
+    setEditingTeamIdx(null);
+    setEditingTimelineIdx(null);
+    setEditingOfficeIdx(null);
+    setEditingExpertiseIdx(null);
+    setEditingIndustryIdx(null);
+
+    if (sub === "team") {
+      const idx = team.findIndex((x: any) => x.id === itemId);
+      setEditingTeamIdx(idx >= 0 ? idx : null);
+    } else if (sub === "timeline") {
+      const idx = timeline.findIndex((x: any) => x.id === itemId);
+      setEditingTimelineIdx(idx >= 0 ? idx : null);
+    } else if (sub === "offices") {
+      const idx = officesList.findIndex((x: any) => x.id === itemId);
+      setEditingOfficeIdx(idx >= 0 ? idx : null);
+    } else if (sub === "expertise") {
+      const idx = expertiseList.findIndex((x: any) => x.id === itemId);
+      setEditingExpertiseIdx(idx >= 0 ? idx : null);
+    } else if (sub === "industries") {
+      const idx = industriesList.findIndex((x: any) => x.id === itemId);
+      setEditingIndustryIdx(idx >= 0 ? idx : null);
+    }
+  };
+
   const selectMirrorBlock = (blockId: string) => {
     setActiveBlockId(blockId);
+    setActiveItemId(null);
     const sub = BLOCK_TO_SUBTAB[blockId];
-    if (sub) switchSubTab(sub);
+    if (!sub) return;
+    setActiveSubTab(sub);
+    setEditingTeamIdx(null);
+    setEditingTimelineIdx(null);
+    setEditingOfficeIdx(null);
+    setEditingExpertiseIdx(null);
+    setEditingIndustryIdx(null);
   };
-  const timeline = facts.timeline || [];
-  const officesList = facts.officesList || [];
-  const expertiseList: any[] = facts.expertise || [];
-  const industriesList: any[] = facts.industries || [];
-  const aboutBullets: any[] = facts.aboutBullets || [];
-  const [editingIndustryIdx, setEditingIndustryIdx] = useState<number | null>(null);
+
+  const selectMirrorItem = (blockId: string, itemId: string) => {
+    openItemEditor(blockId, itemId);
+  };
 
   // General Field Updates
   const updateGeneralField = (key: string, value: string) => {
@@ -458,7 +507,9 @@ export default function CompanyPanel() {
         pageKey="company"
         pageData={companyPage}
         activeBlockId={activeBlockId}
+        activeItemId={activeItemId}
         onSelectBlock={selectMirrorBlock}
+        onSelectItem={selectMirrorItem}
         extraData={{ companyFacts: facts }}
         sectionNav={SUB_TABS.map((tab) => ({
           id: tab.key,
