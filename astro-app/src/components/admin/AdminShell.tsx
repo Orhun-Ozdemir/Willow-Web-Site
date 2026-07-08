@@ -113,7 +113,7 @@ const TAB_SECTIONS: Partial<Record<Tab, string[]>> = {
 };
 
 export default function AdminShell() {
-  const { session, isDirty, dirtyKeys, saving, saveMessage, saveContent, loading } = useAdmin();
+  const { session, isDirty, dirtyKeys, saving, saveMessage, saveContent, loading, isPageContentDirty } = useAdmin();
   const [activeTab, setActiveTab] = useState<Tab>("overview");
   const [selectedLeadId, setSelectedLeadId] = useState<string | null>(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -210,7 +210,8 @@ export default function AdminShell() {
                       )}
                       <TabIcon tab={tab.key} />
                       <span className="flex-1">{tab.label}</span>
-                      {(TAB_SECTIONS[tab.key] || []).some((s) => dirtyKeys.includes(s)) && (
+                      {((TAB_SECTIONS[tab.key] || []).some((s) => dirtyKeys.includes(s)) ||
+                        (tab.key === "services_page" && isPageContentDirty("services"))) && (
                         <span className="w-1.5 h-1.5 rounded-full bg-amber-400 shrink-0" title="Kaydedilmemiş değişiklik" />
                       )}
                     </button>

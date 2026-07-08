@@ -11,6 +11,12 @@ import FormField from "./FormField";
 
 const SCALAR_PAGE_FIELDS = new Set(["heroImage", "metric1Value", "metric2Value", "metric3Value"]);
 
+const SERVICES_ARRAY_HINTS: Record<string, string> = {
+  serviceLayers: "Hizmet katmanları kartları",
+  deliverables: "Teslimat paketleri",
+  processSteps: "Süreç adımları",
+};
+
 // ── Pages ─────────────────────────────────────────────────────────────────────
 const PAGES = [
   { key: "home", label: "Ana Sayfa", icon: "🏠", path: "/tr" },
@@ -47,14 +53,14 @@ const FIELD_META: Record<string, FieldMeta> = {
   trustEyebrow: { label: "Üst Etiket", section: "Güven", hint: "", type: "short" },
   trustTitle: { label: "Başlık", section: "Güven", hint: "", type: "short" },
   trustLead: { label: "Açıklama", section: "Güven", hint: "", type: "long" },
-  serviceRail_0_title: { label: "Başlık", section: "Yetenek Kartları", hint: "", type: "short" },
-  serviceRail_0_desc: { label: "Açıklama", section: "Yetenek Kartları", hint: "", type: "long" },
-  serviceRail_1_title: { label: "Başlık", section: "Yetenek Kartları", hint: "", type: "short" },
-  serviceRail_1_desc: { label: "Açıklama", section: "Yetenek Kartları", hint: "", type: "long" },
-  serviceRail_2_title: { label: "Başlık", section: "Yetenek Kartları", hint: "", type: "short" },
-  serviceRail_2_desc: { label: "Açıklama", section: "Yetenek Kartları", hint: "", type: "long" },
-  serviceRail_3_title: { label: "Başlık", section: "Yetenek Kartları", hint: "", type: "short" },
-  serviceRail_3_desc: { label: "Açıklama", section: "Yetenek Kartları", hint: "", type: "long" },
+  serviceRail_0_title: { label: "Başlık", section: "Yetenek Kartları", hint: "Yalnızca ana sayfa şeridi. /services sayfası katmanları: sol menü → Hizmetler Sayfası.", type: "short" },
+  serviceRail_0_desc: { label: "Açıklama", section: "Yetenek Kartları", hint: "Ana sayfadaki kısa kartlar; Hizmetler sayfası listesi ayrıdır.", type: "long" },
+  serviceRail_1_title: { label: "Başlık", section: "Yetenek Kartları", hint: "Yalnızca ana sayfa şeridi. /services sayfası katmanları: sol menü → Hizmetler Sayfası.", type: "short" },
+  serviceRail_1_desc: { label: "Açıklama", section: "Yetenek Kartları", hint: "Ana sayfadaki kısa kartlar; Hizmetler sayfası listesi ayrıdır.", type: "long" },
+  serviceRail_2_title: { label: "Başlık", section: "Yetenek Kartları", hint: "Yalnızca ana sayfa şeridi. /services sayfası katmanları: sol menü → Hizmetler Sayfası.", type: "short" },
+  serviceRail_2_desc: { label: "Açıklama", section: "Yetenek Kartları", hint: "Ana sayfadaki kısa kartlar; Hizmetler sayfası listesi ayrıdır.", type: "long" },
+  serviceRail_3_title: { label: "Başlık", section: "Yetenek Kartları", hint: "Yalnızca ana sayfa şeridi. /services sayfası katmanları: sol menü → Hizmetler Sayfası.", type: "short" },
+  serviceRail_3_desc: { label: "Açıklama", section: "Yetenek Kartları", hint: "Ana sayfadaki kısa kartlar; Hizmetler sayfası listesi ayrıdır.", type: "long" },
   ecosystemEyebrow: { label: "Üst Etiket", section: "Ekosistem", hint: "", type: "short" },
   ecosystemTitle: { label: "Başlık", section: "Ekosistem", hint: "HTML destekler.", type: "short" },
   ecosystemLead: { label: "Açıklama", section: "Ekosistem", hint: "", type: "long" },
@@ -813,6 +819,22 @@ export default function PageContentPanel() {
                 </a>
               )}
             </div>
+          </div>
+        )}
+
+        {selectedPage === "services" && activeBlock?.arrayKey && (
+          <div className="mx-6 mb-4 rounded-xl border border-blue-200 bg-blue-50 px-4 py-3 text-sm leading-relaxed text-blue-950">
+            <p className="font-semibold">Liste burada düzenlenmez</p>
+            <p className="mt-1 text-blue-900">
+              {SERVICES_ARRAY_HINTS[activeBlock.arrayKey] || "Bu bölümün kart listesi"},{" "}
+              <strong>İçerik → Hizmetler Sayfası</strong> sekmesinden yönetilir.
+              Ana sayfadaki «Yetenek Kartları» farklı bir içeriktir (<code className="text-xs">serviceRail_*</code>).
+            </p>
+            {!Array.isArray(pageData[activeBlock.arrayKey]) || pageData[activeBlock.arrayKey].length === 0 ? (
+              <p className="mt-2 text-xs text-blue-800">
+                Liste şu an boş; canlı sitede varsayılan şablon içerik gösterilir. Özelleştirmek için Hizmetler Sayfası sekmesinden «+ Ekle» kullanın.
+              </p>
+            ) : null}
           </div>
         )}
 

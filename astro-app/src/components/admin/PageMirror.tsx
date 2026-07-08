@@ -15,11 +15,29 @@ import {
   locVal,
 } from "./mirrorShared";
 import type { MirrorCard } from "./mirrorShared";
+import {
+  fallbackDeliverables,
+  fallbackProcessSteps,
+  fallbackServiceLayers,
+} from "@/lib/services-page-fallbacks";
 
 function arrayItems(data: Record<string, any>, key?: string) {
   if (!key) return [];
   const items = data[key];
   return Array.isArray(items) ? items : [];
+}
+
+const SERVICES_ARRAY_FALLBACKS: Record<string, readonly any[]> = {
+  serviceLayers: fallbackServiceLayers,
+  deliverables: fallbackDeliverables,
+  processSteps: fallbackProcessSteps,
+};
+
+function arrayItemsOrFallback(data: Record<string, any>, key?: string) {
+  const items = arrayItems(data, key);
+  if (items.length || !key) return { items, usingFallback: false };
+  const fallback = SERVICES_ARRAY_FALLBACKS[key];
+  return { items: fallback ? [...fallback] : [], usingFallback: Boolean(fallback?.length) };
 }
 
 export default function PageMirror({
@@ -420,14 +438,19 @@ export default function PageMirror({
         );
 
       case "service-layers": {
-        const items = arrayItems(data, block.arrayKey);
+        const { items, usingFallback } = arrayItemsOrFallback(data, block.arrayKey);
         return (
           <Hit id={block.id} active={active} onClick={onClick}>
             <section className="section tight service-capabilities-section">
               <div className="section-inner">
                 <SectionHead data={data} locale={locale} fields={block.fields} />
+                {usingFallback && (
+                  <p className="mb-3 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-900">
+                    CMS listesi boş — canlı sitedeki varsayılan katmanlar gösteriliyor. Düzenlemek için sol menüden <strong>Hizmetler Sayfası</strong> sekmesine gidin.
+                  </p>
+                )}
                 <div className="service-system-grid">
-                  {(items.length ? items : [0, 1, 2, 3]).map((item: any, idx: number) => (
+                  {items.map((item: any, idx: number) => (
                     <article key={idx} className="system-layer-card">
                       <span className="layer-index">{String(idx + 1).padStart(2, "0")}</span>
                       <h3>{locItem(data, item, "headline", locale) || locItem(data, item, "title", locale) || "—"}</h3>
@@ -442,15 +465,20 @@ export default function PageMirror({
       }
 
       case "deliverables": {
-        const items = arrayItems(data, block.arrayKey);
+        const { items, usingFallback } = arrayItemsOrFallback(data, block.arrayKey);
         return (
           <Hit id={block.id} active={active} onClick={onClick}>
             <section className="section service-outcomes-section">
               <div className="section-inner">
                 <div className="deliverables-split">
                   <SectionHead data={data} locale={locale} fields={block.fields?.slice(0, 3)} />
+                  {usingFallback && (
+                    <p className="mb-3 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-900">
+                      CMS listesi boş — varsayılan teslimat paketleri gösteriliyor. Düzenlemek için <strong>Hizmetler Sayfası → Teslimatlar</strong>.
+                    </p>
+                  )}
                   <div className="deliverable-ledger">
-                    {(items.length ? items : [0, 1, 2, 3]).map((item: any, idx: number) => (
+                    {items.map((item: any, idx: number) => (
                       <div key={idx}>
                         <span>{locItem(data, item, "title", locale) || "Teslimat"}</span>
                         <strong>{locItem(data, item, "description", locale)}</strong>
@@ -465,14 +493,19 @@ export default function PageMirror({
       }
 
       case "process-steps": {
-        const items = arrayItems(data, block.arrayKey);
+        const { items, usingFallback } = arrayItemsOrFallback(data, block.arrayKey);
         return (
           <Hit id={block.id} active={active} onClick={onClick}>
             <section className="section soft process-section">
               <div className="section-inner">
                 <SectionHead data={data} locale={locale} fields={block.fields} />
+                {usingFallback && (
+                  <p className="mb-3 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-900">
+                    CMS listesi boş — varsayılan süreç adımları gösteriliyor. Düzenlemek için <strong>Hizmetler Sayfası → Süreç Adımları</strong>.
+                  </p>
+                )}
                 <div className="process process-premium process-compact">
-                  {(items.length ? items : [0, 1, 2, 3]).map((item: any, idx: number) => (
+                  {items.map((item: any, idx: number) => (
                     <div key={idx} className="process-step">
                       <div className="step-dot">{idx + 1}</div>
                       <article className="card process-card">
