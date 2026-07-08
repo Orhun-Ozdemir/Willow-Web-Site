@@ -1,6 +1,7 @@
 import { getServiceClient } from "./supabase";
-import { loadContent, saveContent, bustContentCache } from "./content";
+import { loadContent, saveContent, saveContentSection, savePageContentSlice, bustContentCache } from "./content";
 import type { AdminProfile } from "./admin-auth";
+import { summarizeDiff, type DiffEntry } from "./json-diff";
 
 export const SNAPSHOT_RETENTION = 100;
 
@@ -8,6 +9,14 @@ export interface SnapshotMeta {
   section?: string;
   page?: string;
   itemCount?: number;
+  changeCount?: number;
+  changePaths?: string[];
+  /** Kayıt anındaki before→after diff (yalnızca ilgili bölüm) */
+  changeDiff?: DiffEntry[];
+  /** Tek bölüm geri alma — kayıt öncesi dilim */
+  sectionBefore?: unknown;
+  sectionKey?: string;
+  pageKey?: string;
   ip_hint?: string | null;
   user_agent?: string | null;
   [key: string]: unknown;
@@ -25,6 +34,7 @@ export interface SnapshotRow {
 }
 
 function buildReason(section: string | null, page: string | null): string {
+  if (section === "pre-restore") return "content.update: pre-restore";
   if (section === "pageContent" && page) return `content.update: pageContent.${page}`;
   if (section) return `content.update: ${section}`;
   return "content.update: all";
@@ -32,6 +42,7 @@ function buildReason(section: string | null, page: string | null): string {
 
 /**
  * Kayıt sonrası CMS snapshot oluşturur. Hata olursa kaydı bloklamaz.
+ * `content` verilirse DB'den tekrar okumaz; `changeDiff` meta'ya yazılır.
  */
 export async function createCmsSnapshot(
   profile: AdminProfile,
@@ -39,18 +50,34 @@ export async function createCmsSnapshot(
     section?: string | null;
     page?: string | null;
     itemCount?: number;
+    content?: Record<string, unknown>;
+    changeDiff?: DiffEntry[];
+    sectionBefore?: unknown;
     ip_hint?: string | null;
     user_agent?: string | null;
   } = {},
 ): Promise<void> {
   try {
-    const content = await loadContent({ allowFallback: false });
+    const content = opts.content ?? (await loadContent({ allowFallback: false }));
     const sb = getServiceClient();
+
+    const diffEntries = opts.changeDiff ?? [];
+    const diffSummary = summarizeDiff(diffEntries);
+    const sectionKey = opts.section && opts.section !== "all" ? opts.section : undefined;
 
     const meta: SnapshotMeta = {
       section: opts.section || undefined,
       page: opts.page || undefined,
       itemCount: opts.itemCount,
+      changeCount: diffSummary.count,
+      changePaths: diffSummary.paths,
+      changeDiff: diffEntries.slice(0, 80),
+      sectionKey,
+      pageKey: opts.page || undefined,
+      sectionBefore:
+        sectionKey && opts.sectionBefore !== undefined
+          ? JSON.parse(JSON.stringify(opts.sectionBefore))
+          : undefined,
       ip_hint: opts.ip_hint ?? null,
       user_agent: opts.user_agent ?? null,
     };
@@ -145,4 +172,29 @@ export async function restoreSnapshot(id: string): Promise<void> {
 
   await saveContent(snapshot.content);
   bustContentCache();
+}
+
+/** Yalnızca o kayıttaki bölümü meta.sectionBefore hâline döndürür (tüm site değil). */
+export async function revertSnapshotSection(id: string): Promise<{ section: string; page?: string }> {
+  const snapshot = await getSnapshot(id);
+  if (!snapshot?.meta?.sectionBefore || !snapshot.meta.sectionKey) {
+    throw new Error(
+      "Bu snapshot tek bölüm geri almayı desteklemiyor (eski kayıt veya tam site kaydı).",
+    );
+  }
+
+  const section = snapshot.meta.sectionKey;
+  const page = snapshot.meta.pageKey;
+  const before = snapshot.meta.sectionBefore;
+
+  if (section === "pageContent" && page) {
+    await savePageContentSlice(page, before);
+  } else if (section !== "all") {
+    await saveContentSection(section, before);
+  } else {
+    throw new Error("Tam site geri yüklemesi için «Tüm siteyi geri yükle» kullanın.");
+  }
+
+  bustContentCache();
+  return { section, page };
 }

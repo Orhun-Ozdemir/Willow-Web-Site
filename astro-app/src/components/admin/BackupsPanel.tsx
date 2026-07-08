@@ -9,6 +9,11 @@ import {
   FULL_BACKUP_SCHEMA_VERSION,
   type BackupProgress,
 } from "@/lib/backup-client";
+import {
+  buildLocalizationBundle,
+  isRecognizedCmsPayload,
+  mergeCmsPayload,
+} from "@/lib/localization-export";
 
 function getDraftTs() {
   return typeof window !== "undefined" ? localStorage.getItem("willowsoft-draft-ts") : null;
@@ -38,7 +43,12 @@ export default function BackupsPanel() {
 
   const handleContentDownload = () => {
     const ts = new Date().toISOString().replace(/[:.]/g, "-").slice(0, 19);
-    downloadJson(content, `willowsoft-content-${ts}.json`);
+    downloadJson(content, `willowsoft-backup-${ts}.json`);
+  };
+
+  const handleLocalizationDownload = () => {
+    const ts = new Date().toISOString().replace(/[:.]/g, "-").slice(0, 19);
+    downloadJson(buildLocalizationBundle(content), `willowsoft-localizations-${ts}.json`);
   };
 
   const handleFullZipExport = async (scope: "content" | "full") => {
@@ -163,16 +173,25 @@ export default function BackupsPanel() {
           setUploadMessage("Bu dosya tam veritabanı yedeği — aşağıdaki «Veritabanına Geri Yükle» bölümünü kullanın.");
           return;
         }
-        if (typeof data !== "object" || data === null || (!data.products && !data.pageContent && !data.pageSeo && !data.meta)) {
-          setUploadMessage("Geçersiz dosya — beklenen içerik alanları (products, pageContent, pageSeo, meta) bulunamadı.");
+        if (!isRecognizedCmsPayload(data)) {
+          setUploadMessage(
+            "Geçersiz dosya — tam CMS yedeği, çeviri paketi (willowsoft-localizations) veya en az bir içerik bölümü gerekli.",
+          );
           return;
         }
-        const sections = Object.keys(data);
-        if (!confirm(`Bu dosyadaki ${sections.length} bölüm mevcut içeriğin üzerine yazılacak:\n\n${sections.join(", ")}\n\nDevam edilsin mi? (Henüz kaydedilmez — önce gözden geçirebilirsiniz.)`)) {
+        const { next, sections } = mergeCmsPayload(content, data);
+        const label = sections.join(", ");
+        if (
+          !confirm(
+            `Bu dosya mevcut içeriğe birleştirilecek:\n\n${label}\n\nYalnızca dosyada olan bölümler güncellenir; diğerleri korunur.\n\nDevam edilsin mi? (Henüz kaydedilmez — önce gözden geçirebilirsiniz.)`,
+          )
+        ) {
           return;
         }
-        setContent((prev: any) => ({ ...prev, ...data }));
-        setUploadMessage(`Yüklendi — ${sections.length} bölüm güncellendi (${sections.join(", ")}). Kalıcı yapmak için sağ üstteki "Değişiklikleri Kaydet" butonuna basın.`);
+        setContent(() => next);
+        setUploadMessage(
+          `Yüklendi — ${sections.length} bölüm güncellendi (${label}). Kalıcı yapmak için sağ üstteki "Değişiklikleri Kaydet" butonuna basın.`,
+        );
       } catch {
         setUploadMessage("JSON ayrıştırma hatası — dosya geçerli JSON değil.");
       }
@@ -316,10 +335,70 @@ export default function BackupsPanel() {
 
   return (
     <div className="space-y-6 max-w-3xl">
+      {/* Metinler & çeviriler — önceki akış, güncellenmiş */}
+      <div className="bg-[#132175]/5 border border-[#132175]/15 rounded-xl p-5">
+        <h3 className="text-sm font-bold text-[#132175]">Metinler & Çeviriler (JSON)</h3>
+        <p className="text-xs text-gray-600 mt-1.5 leading-relaxed">
+          Sitenin <strong>tüm metin ve çeviri katmanı</strong> — sayfa metinleri (<code>pageContent</code>),
+          arayüz string&apos;leri (<code>translations</code>), ürün/haber/SSS <code>localized</code> alanları,
+          SEO metinleri ve şirket metinleri — tek JSON dosyasında toplanır. Dosyayı indirip dışarıda düzenleyip
+          geri yükleyebilirsiniz. Buton alanları artık <code>{`{ "tr": { "label": "...", "url": "/solutions" } }`}</code>{" "}
+          formatını da destekler; eski düz metin kayıtları bozulmaz.
+        </p>
+      </div>
+
+      <div className="bg-white border border-gray-200 rounded-xl p-5 space-y-3">
+        <h3 className="text-sm font-bold text-gray-800">1 · Tüm Metinleri İndir (Dışa Aktar)</h3>
+        <p className="text-xs text-gray-500">
+          Admin panelindeki tüm CMS içeriğini indirir (<code>willowsoft-backup-…json</code>). Görseller ve slug&apos;lar
+          dahil tam paket — eskiden kullandığınız akış.
+        </p>
+        <button
+          onClick={handleContentDownload}
+          className="px-4 py-2 bg-[#132175] hover:bg-[#0e1a5e] text-white rounded-lg text-xs font-bold transition"
+        >
+          Tüm Metinleri İndir (.json)
+        </button>
+      </div>
+
+      <div className="bg-white border border-gray-200 rounded-xl p-5 space-y-3">
+        <h3 className="text-sm font-bold text-gray-800">1b · Yalnızca Çevirileri İndir</h3>
+        <p className="text-xs text-gray-500">
+          Daha küçük dosya: yalnızca çeviri/metin alanları (<code>willowsoft-localizations-…json</code>).
+          Koleksiyonlarda <code>id</code> + <code>localized</code>; sayfalarda tüm dil alanları.
+        </p>
+        <button
+          onClick={handleLocalizationDownload}
+          className="px-4 py-2 bg-cyan-700 hover:bg-cyan-800 text-white rounded-lg text-xs font-bold transition"
+        >
+          Çevirileri İndir (.json)
+        </button>
+      </div>
+
+      <div className="bg-white border border-gray-200 rounded-xl p-5 space-y-3">
+        <h3 className="text-sm font-bold text-gray-800">2 · JSON Yükle (İçe Aktar)</h3>
+        <p className="text-xs text-gray-500">
+          İndirdiğiniz/düzenlediğiniz JSON dosyasını seçin. Tam yedek veya çeviri paketi olabilir.
+          Yalnızca dosyadaki bölümler güncellenir. Kalıcı kayıt için sağ üstteki{" "}
+          <strong>Değişiklikleri Kaydet</strong> gerekir.
+        </p>
+        <label className="inline-block px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg text-xs font-bold cursor-pointer transition">
+          Dosya Seç (.json)
+          <input type="file" accept=".json" onChange={handleContentUpload} className="hidden" />
+        </label>
+        {uploadMessage && (
+          <p
+            className={`text-xs font-medium ${uploadMessage.includes("hata") || uploadMessage.includes("Geçersiz") ? "text-red-400" : "text-[#132175]"}`}
+          >
+            {uploadMessage}
+          </p>
+        )}
+      </div>
+
       {/* Tam yedek: DB + Storage + localizations */}
       <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-5 space-y-4">
         <div>
-          <h3 className="text-sm font-bold text-emerald-900">Tam Site Yedeği (DB + Storage + Çeviriler)</h3>
+          <h3 className="text-sm font-bold text-emerald-900">Gelişmiş · Tam Site Yedeği (DB + Storage + Çeviriler)</h3>
           <p className="text-xs text-emerald-800/80 mt-1.5 leading-relaxed">
             Tek ZIP dosyasında <strong>her şey</strong>: tüm veritabanı tabloları (ürünler, sayfa metinleri, SEO,
             <code className="mx-0.5">translations</code> ve her satırdaki <code className="mx-0.5">localized</code> alanları),
@@ -380,38 +459,6 @@ export default function BackupsPanel() {
         {dbMessage && (
           <p className={`text-xs font-medium ${dbMessage.includes("Hata") || dbMessage.includes("iptal") || dbMessage.includes("Geçersiz") ? "text-red-600" : "text-emerald-800"}`}>
             {dbMessage}
-          </p>
-        )}
-      </div>
-
-      {/* CMS düzenleme akışı */}
-      <div className="bg-[#132175]/5 border border-[#132175]/15 rounded-xl p-5">
-        <h3 className="text-sm font-bold text-[#132175]">İçerik Düzenleme (CMS JSON)</h3>
-        <p className="text-xs text-gray-600 mt-1.5 leading-relaxed">
-          Metinleri dışarıda düzenlemek için CMS formatında indirin. Yükledikten sonra
-          sağ üstteki <strong>Değişiklikleri Kaydet</strong> ile veritabanına yazılır.
-          Anında geri yükleme için yukarıdaki veritabanı yedekleme bölümünü kullanın.
-        </p>
-      </div>
-
-      <div className="bg-white border border-gray-200 rounded-xl p-5 space-y-3">
-        <h3 className="text-sm font-bold text-gray-800">CMS JSON İndir</h3>
-        <p className="text-xs text-gray-500">Admin panelindeki içerik görünümünü tek dosyada indirir (<code>willowsoft-content-…json</code>).</p>
-        <button onClick={handleContentDownload} className="px-4 py-2 bg-[#132175] hover:bg-[#0e1a5e] text-white rounded-lg text-xs font-bold transition">
-          CMS JSON İndir
-        </button>
-      </div>
-
-      <div className="bg-white border border-gray-200 rounded-xl p-5 space-y-3">
-        <h3 className="text-sm font-bold text-gray-800">CMS JSON Yükle (Önizleme)</h3>
-        <p className="text-xs text-gray-500">Dosyayı panele yükler; kalıcı olması için kaydetmeniz gerekir.</p>
-        <label className="inline-block px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg text-xs font-bold cursor-pointer transition">
-          Dosya Seç (.json)
-          <input type="file" accept=".json" onChange={handleContentUpload} className="hidden" />
-        </label>
-        {uploadMessage && (
-          <p className={`text-xs font-medium ${uploadMessage.includes("hata") || uploadMessage.includes("Geçersiz") ? "text-red-400" : "text-[#132175]"}`}>
-            {uploadMessage}
           </p>
         )}
       </div>

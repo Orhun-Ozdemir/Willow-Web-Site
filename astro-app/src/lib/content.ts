@@ -117,8 +117,16 @@ export async function loadContent(opts: { allowFallback?: boolean } = {}): Promi
     return bundledFallback();
   }
 
-  const mapCollection = (rows: any[] | null) =>
-    (rows || []).map(r => canonicalizeProduct({ ...r.data, id: r.id, localized: r.localized || {} }));
+  const mapProductCollection = (rows: any[] | null) =>
+    (rows || []).map((r) => canonicalizeProduct({ ...r.data, id: r.id, localized: r.localized || {} }));
+
+  /** SSS, sözlük vb. — ürün canonicalizer uygulanmaz (sahte diff/veri bozulması önlenir). */
+  const mapGenericCollection = (rows: any[] | null) =>
+    (rows || []).map((r) => ({
+      ...r.data,
+      id: r.id,
+      localized: r.localized || {},
+    }));
 
   const mapSingleton = (rows: any[] | null, key: string) => {
     const obj: Record<string, any> = {};
@@ -129,13 +137,13 @@ export async function loadContent(opts: { allowFallback?: boolean } = {}): Promi
   const content = {
     meta: sMeta?.data || {},
     companyFacts: compFacts?.data || {},
-    products: mapCollection(prods),
-    news: mapCollection(nws),
-    services: mapCollection(serv),
-    solutions: mapCollection(sol),
-    clients: mapCollection(cli),
-    faqs: mapCollection(fq),
-    glossary: mapCollection(glos),
+    products: mapProductCollection(prods),
+    news: mapGenericCollection(nws),
+    services: mapGenericCollection(serv),
+    solutions: mapGenericCollection(sol),
+    clients: mapGenericCollection(cli),
+    faqs: mapGenericCollection(fq),
+    glossary: mapGenericCollection(glos),
     pageContent: mapSingleton(pContent, "page"),
     pageSeo: mapSingleton(pSeo, "page"),
     translations: mapSingleton(trns, "locale")

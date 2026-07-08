@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { diffJson, summarizeDiff, formatDiffValue, type DiffEntry } from "@/lib/json-diff";
+import { summarizeDiff, formatDiffValue, type DiffEntry } from "@/lib/json-diff";
+import { humanizeDiffPath } from "@/lib/snapshot-sections";
 
 interface SnapshotListItem {
   id: string;
@@ -9,7 +10,13 @@ interface SnapshotListItem {
   actor_name: string;
   reason: string;
   scope: string;
-  meta: Record<string, unknown>;
+  meta: Record<string, unknown> & {
+    changeCount?: number;
+    changePaths?: string[];
+    changeDiff?: DiffEntry[];
+    page?: string;
+    section?: string;
+  };
 }
 
 interface SnapshotDetail extends SnapshotListItem {
@@ -61,10 +68,10 @@ export default function ChangeHistoryPanel() {
   const [reasonFilter, setReasonFilter] = useState("");
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [detail, setDetail] = useState<SnapshotDetail | null>(null);
-  const [prevDetail, setPrevDetail] = useState<SnapshotDetail | null>(null);
   const [diffEntries, setDiffEntries] = useState<DiffEntry[]>([]);
   const [detailLoading, setDetailLoading] = useState(false);
   const [restoring, setRestoring] = useState(false);
+  const [reverting, setReverting] = useState(false);
   const [message, setMessage] = useState("");
   const limit = 20;
 
@@ -102,36 +109,71 @@ export default function ChangeHistoryPanel() {
     fetchList();
   }, [fetchList]);
 
-  const openDetail = async (id: string, prevId: string | null) => {
+  useEffect(() => {
+    const onVisible = () => {
+      if (document.visibilityState === "visible") fetchList();
+    };
+    document.addEventListener("visibilitychange", onVisible);
+    return () => document.removeEventListener("visibilitychange", onVisible);
+  }, [fetchList]);
+
+  const openDetail = async (id: string) => {
     setSelectedId(id);
     setDetailLoading(true);
     setMessage("");
     try {
-      const [curRes, prevRes] = await Promise.all([
-        fetch(`/api/admin/snapshots?id=${encodeURIComponent(id)}`),
-        prevId ? fetch(`/api/admin/snapshots?id=${encodeURIComponent(prevId)}`) : Promise.resolve(null),
-      ]);
-
+      const curRes = await fetch(`/api/admin/snapshots?id=${encodeURIComponent(id)}`);
       const curData = await curRes.json();
       if (!curRes.ok || !curData.ok) throw new Error(curData.error || "Snapshot yüklenemedi");
 
       const cur = curData.snapshot as SnapshotDetail;
       setDetail(cur);
 
-      let prev: SnapshotDetail | null = null;
-      if (prevRes) {
-        const prevData = await prevRes.json();
-        if (prevRes.ok && prevData.ok) prev = prevData.snapshot;
-      }
-      setPrevDetail(prev);
-
-      const entries = prev ? diffJson(prev.content, cur.content) : [];
-      setDiffEntries(entries);
+      const storedDiff = Array.isArray(cur.meta?.changeDiff) ? (cur.meta.changeDiff as DiffEntry[]) : [];
+      setDiffEntries(storedDiff);
     } catch (e: unknown) {
       setMessage(`Hata: ${e instanceof Error ? e.message : "Detay yüklenemedi"}`);
       setSelectedId(null);
     } finally {
       setDetailLoading(false);
+    }
+  };
+
+  const handleRevertSection = async () => {
+    if (!detail?.meta?.sectionBefore) return;
+
+    const sectionLabel = labelReason(detail.reason, detail.meta);
+    const warn = [
+      `Yalnızca bu kayıt geri alınacak: ${sectionLabel}`,
+      "Diğer bölümler (ürünler, diğer sayfalar vb.) etkilenmez.",
+      "",
+      'Devam için "REVERT" yazmanız istenecek.',
+    ].join("\n");
+
+    if (!confirm(warn)) return;
+    const typed = prompt('Onaylamak için büyük harflerle "REVERT" yazın:');
+    if (typed !== "REVERT") {
+      setMessage("Geri alma iptal edildi.");
+      return;
+    }
+
+    setReverting(true);
+    setMessage("");
+    try {
+      const res = await fetch(`/api/admin/snapshots/${detail.id}/revert`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ confirm: "REVERT" }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Geri alma başarısız");
+
+      setMessage("Değişiklik geri alındı. Sayfa yenileniyor…");
+      setTimeout(() => window.location.reload(), 1500);
+    } catch (e: unknown) {
+      setMessage(`Hata: ${e instanceof Error ? e.message : "Geri alma başarısız"}`);
+    } finally {
+      setReverting(false);
     }
   };
 
@@ -181,8 +223,8 @@ export default function ChangeHistoryPanel() {
       <div>
         <h3 className="text-lg font-bold text-[#131b2e]">Değişiklik Geçmişi</h3>
         <p className="text-xs text-gray-500 mt-1 leading-relaxed">
-          Her kayıttan sonra otomatik alınan CMS snapshot&apos;ları. Tüm çeviriler (
-          <code>localized</code>, <code>translations</code>) dahildir. Son {100} kayıt saklanır.
+          Her <strong>Değişiklikleri Kaydet</strong> sonrası yalnızca o kaydın bölümü izlenir (ör. SSS, Ana Sayfa).
+          Önce/sonra değerleri ve <strong>tek tıkla geri al</strong> burada. Tam site yedeği gelişmiş seçenektir.
         </p>
       </div>
 
@@ -236,13 +278,12 @@ export default function ChangeHistoryPanel() {
                 <th className="text-left px-4 py-3 font-bold text-gray-600">Tarih</th>
                 <th className="text-left px-4 py-3 font-bold text-gray-600">Kullanıcı</th>
                 <th className="text-left px-4 py-3 font-bold text-gray-600">İşlem</th>
+                <th className="text-left px-4 py-3 font-bold text-gray-600">Değişiklik</th>
                 <th className="text-right px-4 py-3 font-bold text-gray-600" />
               </tr>
             </thead>
             <tbody>
-              {snapshots.map((snap, idx) => {
-                const prevId = snapshots[idx + 1]?.id ?? null;
-                return (
+              {snapshots.map((snap) => (
                   <tr key={snap.id} className="border-b border-gray-100 hover:bg-gray-50/80">
                     <td className="px-4 py-3 text-gray-500 whitespace-nowrap">
                       {new Date(snap.created_at).toLocaleString("tr-TR")}
@@ -251,17 +292,21 @@ export default function ChangeHistoryPanel() {
                     <td className="px-4 py-3 text-gray-700">
                       {labelReason(snap.reason, snap.meta)}
                     </td>
+                    <td className="px-4 py-3 text-gray-500">
+                      {typeof snap.meta?.changeCount === "number"
+                        ? `${snap.meta.changeCount} alan`
+                        : "—"}
+                    </td>
                     <td className="px-4 py-3 text-right">
                       <button
-                        onClick={() => openDetail(snap.id, prevId)}
+                        onClick={() => openDetail(snap.id)}
                         className="px-3 py-1.5 bg-[#132175]/10 hover:bg-[#132175]/20 text-[#132175] rounded-lg font-bold transition"
                       >
                         İncele
                       </button>
                     </td>
                   </tr>
-                );
-              })}
+              ))}
             </tbody>
           </table>
         </div>
@@ -311,48 +356,69 @@ export default function ChangeHistoryPanel() {
                 <>
                   <div className="bg-[#132175]/5 border border-[#132175]/15 rounded-xl p-4">
                     <p className="text-xs font-bold text-[#132175]">{labelReason(detail.reason, detail.meta)}</p>
-                    {prevDetail ? (
+                    {diffEntries.length > 0 ? (
                       <p className="text-[11px] text-gray-600 mt-2">
-                        Bir önceki snapshot ile karşılaştırma:{" "}
-                        <strong>{diffSummary.count}</strong> alan değişmiş
+                        Bu kayıtta değişen: <strong>{diffSummary.count}</strong> alan
                         {diffSummary.truncated ? " (liste kısaltıldı)" : ""}
                       </p>
                     ) : (
-                      <p className="text-[11px] text-gray-500 mt-2">İlk snapshot — karşılaştırma yok.</p>
+                      <p className="text-[11px] text-gray-500 mt-2">
+                        Değişiklik özeti yok (eski kayıt). Yeni kayıtlarda önce/sonra görünür.
+                      </p>
                     )}
                   </div>
 
                   {diffEntries.length > 0 && (
                     <div className="space-y-2">
-                      <h5 className="text-xs font-bold text-gray-700">Değişen alanlar</h5>
-                      <ul className="space-y-2 max-h-64 overflow-y-auto">
-                        {diffEntries.slice(0, 30).map((entry) => (
-                          <li key={entry.path} className="text-[11px] bg-gray-50 border border-gray-100 rounded-lg p-2.5">
-                            <code className="text-[#132175] font-semibold break-all">{entry.path}</code>
-                            <div className="mt-1 text-gray-500 line-through">{formatDiffValue(entry.before)}</div>
-                            <div className="text-gray-800">{formatDiffValue(entry.after)}</div>
+                      <h5 className="text-xs font-bold text-gray-700">Önce → Sonra</h5>
+                      <ul className="space-y-3 max-h-80 overflow-y-auto">
+                        {diffEntries.slice(0, 40).map((entry) => (
+                          <li key={entry.path} className="text-[11px] bg-gray-50 border border-gray-100 rounded-lg p-3">
+                            <p className="font-semibold text-[#132175] mb-2">
+                              {humanizeDiffPath(entry.path, detail.meta?.sectionKey as string | undefined)}
+                            </p>
+                            <div className="grid gap-2 sm:grid-cols-2">
+                              <div className="rounded-md bg-red-50/80 border border-red-100 p-2">
+                                <p className="text-[9px] font-bold uppercase text-red-400 mb-1">Önce</p>
+                                <p className="text-gray-700 whitespace-pre-wrap break-words">{formatDiffValue(entry.before)}</p>
+                              </div>
+                              <div className="rounded-md bg-emerald-50/80 border border-emerald-100 p-2">
+                                <p className="text-[9px] font-bold uppercase text-emerald-600 mb-1">Sonra</p>
+                                <p className="text-gray-900 whitespace-pre-wrap break-words">{formatDiffValue(entry.after)}</p>
+                              </div>
+                            </div>
                           </li>
                         ))}
                       </ul>
-                      {diffEntries.length > 30 && (
-                        <p className="text-[10px] text-gray-400">+{diffEntries.length - 30} alan daha…</p>
+                      {diffEntries.length > 40 && (
+                        <p className="text-[10px] text-gray-400">+{diffEntries.length - 40} alan daha…</p>
                       )}
                     </div>
                   )}
 
                   <div className="flex flex-wrap gap-2 pt-2">
+                    {detail.meta?.sectionBefore != null && (
+                      <button
+                        onClick={handleRevertSection}
+                        disabled={reverting || restoring}
+                        className="px-3 py-2 bg-amber-600 hover:bg-amber-700 disabled:opacity-50 text-white rounded-lg text-xs font-bold"
+                      >
+                        {reverting ? "Geri alınıyor…" : "Bu değişikliği geri al"}
+                      </button>
+                    )}
                     <button
                       onClick={() => downloadJson(detail.content, `snapshot-${detail.id.slice(0, 8)}.json`)}
                       className="px-3 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg text-xs font-bold"
                     >
-                      JSON İndir
+                      Tam JSON İndir
                     </button>
                     <button
                       onClick={handleRestore}
-                      disabled={restoring}
-                      className="px-3 py-2 bg-emerald-700 hover:bg-emerald-800 disabled:opacity-50 text-white rounded-lg text-xs font-bold"
+                      disabled={restoring || reverting}
+                      className="px-3 py-2 bg-gray-200 hover:bg-gray-300 disabled:opacity-50 text-gray-700 rounded-lg text-xs font-bold"
+                      title="Tüm siteyi bu snapshot anına döndürür — dikkatli kullanın"
                     >
-                      {restoring ? "Geri yükleniyor…" : "Bu snapshot'a geri dön"}
+                      {restoring ? "Geri yükleniyor…" : "Tüm siteyi geri yükle (gelişmiş)"}
                     </button>
                   </div>
                 </>

@@ -24,6 +24,7 @@ const ACTION_LABELS: Record<string, string> = {
   "user.delete": "Kullanıcı silme",
   "media.upload": "Dosya yükleme",
   "snapshot.restore": "Snapshot geri yükleme",
+  "snapshot.revert_section": "Kayıt geri alma (tek bölüm)",
   "backup.export": "Yedek dışa aktarma",
   "backup.restore": "Yedek geri yükleme",
 };

@@ -4,6 +4,7 @@ import { getSession } from "@/lib/auth";
 import { resolveAdminProfile, getRequestMeta } from "@/lib/admin-auth";
 import { logAdminAction } from "@/lib/audit";
 import { createCmsSnapshot } from "@/lib/snapshots";
+import { diffSectionChange, extractSectionSlice } from "@/lib/snapshot-sections";
 
 export const prerender = false;
 
@@ -51,6 +52,10 @@ export const PUT: APIRoute = async ({ request }) => {
     const page = url.searchParams.get("page");
     const body = await request.json();
 
+    bustContentCache();
+    const contentBefore = await loadContent({ allowFallback: false });
+    const sectionBefore = extractSectionSlice(contentBefore, section, page);
+
     if (section === "pageContent" && page) {
       await savePageContentSlice(page, body);
     } else if (section) {
@@ -59,27 +64,35 @@ export const PUT: APIRoute = async ({ request }) => {
       await saveContent(body);
     }
 
+    bustContentCache();
+    const contentAfter = await loadContent({ allowFallback: false });
+    const changeDiff = diffSectionChange(contentBefore, contentAfter, section, page);
+
     const profile = await resolveAdminProfile(session.user);
     const meta = getRequestMeta(request);
-    void logAdminAction(profile, {
+
+    await logAdminAction(profile, {
       action: "content.update",
       resource: section || "all",
       metadata: {
         section: section || "all",
         page: page || undefined,
         itemCount: Array.isArray(body) ? body.length : 1,
+        changeCount: changeDiff.length,
       },
       ...meta,
     });
 
-    void createCmsSnapshot(profile, {
+    await createCmsSnapshot(profile, {
       section: section || "all",
       page: page || undefined,
       itemCount: Array.isArray(body) ? body.length : 1,
+      content: contentAfter,
+      changeDiff,
+      sectionBefore,
       ip_hint: meta.ip_hint,
       user_agent: meta.user_agent,
     });
-    bustContentCache();
 
     return new Response(JSON.stringify({ ok: true, content: body }), {
       status: 200,
