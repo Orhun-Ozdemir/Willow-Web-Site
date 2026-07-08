@@ -76,32 +76,32 @@ export default function AdminDrawer({
 
   return (
     <div
-      className="fixed inset-0 z-[60] flex justify-end"
+      className="fixed inset-0 z-[60] flex items-stretch justify-end"
       role="dialog"
       aria-modal="true"
       aria-labelledby={ariaLabelId}
     >
       <button
         type="button"
-        className="absolute inset-0 bg-slate-900/50 backdrop-blur-[2px] cursor-default"
+        className="absolute inset-0 bg-[#0a1020]/70 backdrop-blur-sm cursor-default"
         onClick={onClose}
         aria-label="Paneli kapat"
       />
 
       <div
         ref={panelRef}
-        className={`relative flex h-full w-full ${MAX_WIDTH[maxWidth]} flex-col bg-white shadow-2xl border-l border-gray-200 animate-[adminDrawerSlideIn_220ms_ease-out]`}
-        style={{ borderTop: header || title ? "3px solid #132175" : undefined }}
+        className={`relative flex h-dvh max-h-dvh w-full ${MAX_WIDTH[maxWidth]} flex-col overflow-hidden bg-white shadow-[-16px_0_48px_rgba(10,16,40,0.35)] border-l-[3px] border-l-[#132175] animate-[adminDrawerSlideIn_220ms_ease-out]`}
       >
         {(header || title) && (
-          <div className="shrink-0 border-b border-gray-100 bg-white px-5 py-4">
+          <div className="shrink-0 border-b border-[#132175]/12 bg-[#f6f8fd] px-5 py-4 z-10">
             {header ?? (
               <div className="flex items-start justify-between gap-3">
                 <div className="min-w-0">
-                  <h4 id="admin-drawer-title" className="text-sm font-bold text-[#131b2e]">
+                  <p className="text-[10px] font-bold uppercase tracking-wider text-[#132175]/70 mb-1">Detay paneli</p>
+                  <h4 id="admin-drawer-title" className="text-base font-bold text-[#0f172a]">
                     {title}
                   </h4>
-                  {subtitle && <p className="text-[11px] text-gray-500 mt-0.5">{subtitle}</p>}
+                  {subtitle && <p className="text-xs text-[#475569] mt-1">{subtitle}</p>}
                 </div>
                 <DrawerCloseButton onClose={onClose} />
               </div>
@@ -109,12 +109,19 @@ export default function AdminDrawer({
           </div>
         )}
 
-        {tabs && <div className="shrink-0 border-b border-gray-100 bg-white">{tabs}</div>}
+        {tabs && (
+          <div className="shrink-0 border-b border-[#132175]/10 bg-white z-10 shadow-[0_1px_0_rgba(19,33,117,0.06)]">
+            {tabs}
+          </div>
+        )}
 
-        <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain bg-[#f7f8fc] p-5">{children}</div>
+        <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain bg-[#eef1f8] px-5 py-4">
+          {children}
+        </div>
 
         {footer && (
-          <div className="shrink-0 border-t border-gray-200 bg-white/95 px-5 py-4 backdrop-blur-sm">
+          <div className="shrink-0 z-20 border-t-2 border-[#132175]/20 bg-white px-5 pt-4 pb-[max(1rem,env(safe-area-inset-bottom))] shadow-[0_-12px_28px_rgba(19,33,117,0.14)]">
+            <p className="text-[10px] font-bold uppercase tracking-wider text-[#132175]/60 mb-2.5">İşlemler</p>
             {footer}
           </div>
         )}
@@ -128,7 +135,7 @@ export function DrawerCloseButton({ onClose }: { onClose: () => void }) {
     <button
       type="button"
       onClick={onClose}
-      className="p-2 rounded-lg text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition shrink-0"
+      className="p-2 rounded-lg text-[#64748b] hover:text-[#0f172a] hover:bg-white border border-transparent hover:border-[#132175]/15 transition shrink-0"
       aria-label="Kapat"
     >
       <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>

@@ -379,7 +379,7 @@ export default function LeadDetailsDrawer({ leadId, onClose }: LeadDetailsDrawer
             aria-controls={`lead-panel-${tab}`}
             onClick={() => setActiveTab(tab)}
             className={`relative shrink-0 py-3.5 px-2 mr-2 text-xs font-bold tracking-wide uppercase transition flex items-center gap-1.5 whitespace-nowrap ${
-              isActive ? "text-[#132175]" : "text-gray-400 hover:text-gray-600"
+              isActive ? "text-[#132175]" : "text-slate-500 hover:text-slate-800"
             }`}
           >
             {isActive && <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#132175] rounded-full" />}

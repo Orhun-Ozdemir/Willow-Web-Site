@@ -355,7 +355,7 @@ export default function ChangeHistoryPanel() {
                     type="button"
                     onClick={handleRevertSection}
                     disabled={reverting || restoring}
-                    className="px-3 py-2 bg-amber-600 hover:bg-amber-700 disabled:opacity-50 text-white rounded-lg text-xs font-bold"
+                    className="px-3 py-2.5 bg-amber-600 hover:bg-amber-700 disabled:opacity-50 text-white rounded-lg text-xs font-bold shadow-sm"
                   >
                     {reverting ? "Geri alınıyor…" : "Bu değişikliği geri al"}
                   </button>
@@ -363,7 +363,7 @@ export default function ChangeHistoryPanel() {
                 <button
                   type="button"
                   onClick={() => downloadJson(detail.content, `snapshot-${detail.id.slice(0, 8)}.json`)}
-                  className="px-3 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg text-xs font-bold"
+                  className="px-3 py-2.5 bg-white border border-[#132175]/25 text-[#132175] hover:bg-[#132175]/5 rounded-lg text-xs font-bold shadow-sm"
                 >
                   Tam JSON İndir
                 </button>
@@ -371,7 +371,7 @@ export default function ChangeHistoryPanel() {
                   type="button"
                   onClick={handleRestore}
                   disabled={restoring || reverting}
-                  className="px-3 py-2 bg-gray-200 hover:bg-gray-300 disabled:opacity-50 text-gray-700 rounded-lg text-xs font-bold"
+                  className="px-3 py-2.5 bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 disabled:opacity-50 rounded-lg text-xs font-bold shadow-sm"
                   title="Tüm siteyi bu snapshot anına döndürür — dikkatli kullanın"
                 >
                   {restoring ? "Geri yükleniyor…" : "Tüm siteyi geri yükle (gelişmiş)"}
@@ -403,7 +403,7 @@ export default function ChangeHistoryPanel() {
                   <h5 className="text-xs font-bold text-gray-700">Önce → Sonra</h5>
                   <ul className="space-y-3">
                     {diffEntries.slice(0, 40).map((entry) => (
-                      <li key={entry.path} className="text-[11px] bg-white border border-gray-100 rounded-lg p-3">
+                          <li key={entry.path} className="text-[11px] bg-white border border-[#132175]/10 rounded-lg p-3 shadow-sm">
                         <p className="font-semibold text-[#132175] mb-2">
                           {humanizeDiffPath(entry.path, detail.meta?.sectionKey as string | undefined)}
                         </p>
