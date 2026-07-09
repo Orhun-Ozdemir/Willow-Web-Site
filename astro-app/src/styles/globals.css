@@ -10761,9 +10761,17 @@ body[data-page="solutions"] .company-hero-signal {
 
 :is(body[data-page="company"], .ws-pc-mirror[data-page="company"]) .company-office-visual {
   position: relative;
-  height: 240px;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  min-height: 260px;
+  max-height: 320px;
   overflow: hidden;
   isolation: isolate;
+}
+
+:is(body[data-page="company"], .ws-pc-mirror[data-page="company"]) .company-office-visual:has(.company-office-image) .company-office-map-layer {
+  opacity: 0;
+  pointer-events: none;
 }
 
 :is(body[data-page="company"], .ws-pc-mirror[data-page="company"]) .company-office-map-layer {
@@ -10828,11 +10836,14 @@ body[data-page="solutions"] .company-hero-signal {
 }
 
 :is(body[data-page="company"], .ws-pc-mirror[data-page="company"]) .company-office-image {
-  position: relative;
+  position: absolute;
+  inset: 0;
   z-index: 3;
+  display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: top center;
 }
 
 :is(body[data-page="company"], .ws-pc-mirror[data-page="company"]) .company-office-body {
