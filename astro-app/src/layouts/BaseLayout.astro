@@ -127,9 +127,23 @@ const skipLabel = skipLabels[locale] || skipLabels.en;
         }
       }
 
-      // 2. COUNTER ANIMATIONS
-      var counters = document.querySelectorAll("[data-count], [data-company-fact]");
+      // 2. COUNTER ANIMATIONS — only numeric marketing stats (not years, phones, emails)
+      var ANIMATE_COUNTER_FACTS = { productsOnMarket: true, happyClients: true };
+      var counters = Array.prototype.filter.call(
+        document.querySelectorAll("[data-count], [data-company-fact]"),
+        function (el) {
+          if (el.dataset.count) return true;
+          var fact = el.getAttribute("data-company-fact");
+          return !!(fact && ANIMATE_COUNTER_FACTS[fact]);
+        }
+      );
       if (counters.length > 0) {
+        var formatCounter = function (n) {
+          n = Math.round(n);
+          // tr-TR locale turns 2020 into "2.020" — keep years/stats plain below 10k
+          if (n < 10000) return String(n);
+          return n.toLocaleString("en-US");
+        };
         var animateCounter = function(el){
           var target = 0, suffix = "";
           if (el.dataset.count) {
@@ -137,17 +151,17 @@ const skipLabel = skipLabels[locale] || skipLabels.en;
             suffix = el.dataset.suffix || "";
           } else {
             var text = (el.textContent || "").trim();
-            var match = text.match(/^([\d.,]+)\s*(.*)$/);
+            var match = text.match(/^([\d.,]+)\s*(\+.*)?$/);
             if (!match) return;
-            target = parseFloat(match[1].replace(/,/g, ""));
-            suffix = match[2];
+            target = parseFloat(match[1].replace(/,/g, "").replace(/\./g, ""));
+            suffix = match[2] || "";
           }
           var duration = reducedMotion ? 1 : 1200;
           var start = performance.now();
           var tick = function(now){
             var progress = Math.min((now - start) / duration, 1);
             var eased = 1 - Math.pow(1 - progress, 3);
-            el.textContent = Math.round(target * eased).toLocaleString() + suffix;
+            el.textContent = formatCounter(target * eased) + suffix;
             if (progress < 1) requestAnimationFrame(tick);
           };
           requestAnimationFrame(tick);

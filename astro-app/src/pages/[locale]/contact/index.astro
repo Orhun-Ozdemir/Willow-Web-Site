@@ -101,12 +101,12 @@ const getLabel = (key: keyof typeof labels) => {
                 <span>{getLabel("contactUs")}</span>
                 <h3>{officeTitle(office.id, office.country)}</h3>
                 {office.phone && (
-                  <a href={telHref(office.phone)} data-company-fact={office.id === "office-tr" ? "turkeyPhone" : office.id === "office-uk" ? "ukPhone" : undefined}>
+                  <a href={telHref(office.phone)}>
                     {office.phone}
                   </a>
                 )}
                 {office.email && (
-                  <a href={`mailto:${office.email}`} data-company-fact="email">
+                  <a href={`mailto:${office.email}`}>
                     {office.email}
                   </a>
                 )}
