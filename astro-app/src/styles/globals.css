@@ -10766,11 +10766,11 @@ body[data-page="solutions"] .company-hero-signal {
 :is(body[data-page="company"], .ws-pc-mirror[data-page="company"]) .company-office-visual {
   position: relative;
   width: 100%;
-  /* Match illustration ratio; cap height so full-width cards stay balanced */
+  /* Same ratio as Antalya/London art (1448×1086) → contain fills edge-to-edge */
   aspect-ratio: 4 / 3;
   height: auto;
-  max-height: 400px;
-  min-height: 240px;
+  max-height: none;
+  min-height: 0;
   overflow: hidden;
   isolation: isolate;
   background: #f7f9fc;
@@ -10849,10 +10849,9 @@ body[data-page="solutions"] .company-hero-signal {
   display: block;
   width: 100%;
   height: 100%;
-  padding: 10px 12px;
+  padding: 0;
   box-sizing: border-box;
-  /* Full illustration, no crop/zoom — letterbox only if card is wider than 4:3 */
-  object-fit: contain;
+  object-fit: cover;
   object-position: center;
   transform: none;
 }
@@ -11010,8 +11009,8 @@ body[data-page="solutions"] .company-hero-signal {
     width: 100%;
   }
   :is(body[data-page="company"], .ws-pc-mirror[data-page="company"]) .company-office-visual {
-    max-height: 300px;
-    min-height: 220px;
+    max-height: none;
+    min-height: 0;
   }
   :is(body[data-page="company"], .ws-pc-mirror[data-page="company"]) .timeline-viewport {
     display: none;
