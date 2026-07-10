@@ -10775,10 +10775,10 @@ body[data-page="solutions"] .company-hero-signal {
 :is(body[data-page="company"], .ws-pc-mirror[data-page="company"]) .company-office-visual {
   position: relative;
   width: 100%;
-  /* Same ratio as Antalya/London art (1448×1086) → contain fills edge-to-edge */
-  aspect-ratio: 4 / 3;
+  /* Slightly shorter than native 4:3 art; cover keeps edge-to-edge fill */
+  aspect-ratio: 3 / 2;
   height: auto;
-  max-height: none;
+  max-height: 360px;
   min-height: 0;
   overflow: hidden;
   isolation: isolate;
