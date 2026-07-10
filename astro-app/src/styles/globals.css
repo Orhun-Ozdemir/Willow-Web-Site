@@ -10749,8 +10749,9 @@ body[data-page="solutions"] .company-hero-signal {
 :is(body[data-page="company"], .ws-pc-mirror[data-page="company"]) .company-offices-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 18px;
-  max-width: 700px;
+  gap: 20px;
+  max-width: none;
+  width: 100%;
 }
 
 :is(body[data-page="company"], .ws-pc-mirror[data-page="company"]) .company-office-card {
@@ -10758,15 +10759,18 @@ body[data-page="solutions"] .company-hero-signal {
   flex-direction: column;
   overflow: hidden;
   border-radius: 18px;
+  width: 100%;
+  min-width: 0;
 }
 
 :is(body[data-page="company"], .ws-pc-mirror[data-page="company"]) .company-office-visual {
   position: relative;
   width: 100%;
-  height: 248px;
-  min-height: 0;
-  max-height: none;
-  aspect-ratio: auto;
+  /* Match illustration ratio; cap height so full-width cards stay balanced */
+  aspect-ratio: 4 / 3;
+  height: auto;
+  max-height: 400px;
+  min-height: 240px;
   overflow: hidden;
   isolation: isolate;
   background: #f7f9fc;
@@ -10845,9 +10849,9 @@ body[data-page="solutions"] .company-hero-signal {
   display: block;
   width: 100%;
   height: 100%;
-  padding: 6px 8px;
+  padding: 10px 12px;
   box-sizing: border-box;
-  /* Keep full Antalya / London illustration readable — no aggressive crop/zoom */
+  /* Full illustration, no crop/zoom — letterbox only if card is wider than 4:3 */
   object-fit: contain;
   object-position: center;
   transform: none;
@@ -10857,7 +10861,7 @@ body[data-page="solutions"] .company-hero-signal {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  padding: 18px 20px 20px;
+  padding: 20px 22px 22px;
   background: #ffffff;
 }
 
@@ -11002,10 +11006,12 @@ body[data-page="solutions"] .company-hero-signal {
   }
   :is(body[data-page="company"], .ws-pc-mirror[data-page="company"]) .company-offices-grid {
     grid-template-columns: 1fr;
-    max-width: 420px;
+    max-width: none;
+    width: 100%;
   }
   :is(body[data-page="company"], .ws-pc-mirror[data-page="company"]) .company-office-visual {
-    height: 220px;
+    max-height: 300px;
+    min-height: 220px;
   }
   :is(body[data-page="company"], .ws-pc-mirror[data-page="company"]) .timeline-viewport {
     display: none;
