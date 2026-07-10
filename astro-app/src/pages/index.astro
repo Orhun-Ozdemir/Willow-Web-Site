@@ -1,3 +1,6 @@
 ---
-return Astro.redirect("/en");
+import { detectLocaleFromRequest } from "@/lib/locale-detect";
+
+const locale = detectLocaleFromRequest(Astro.request);
+return Astro.redirect(`/${locale}`);
 ---

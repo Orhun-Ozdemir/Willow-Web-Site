@@ -272,27 +272,87 @@ if (locale !== "en") {
   decision.use = pickText(locDecision.use);
   decision.roleTitle = pickText(locDecision.roleTitle);
   decision.role = pickText(locDecision.role);
-  decision.delivered = locDecision.delivered?.[locale] || locDecision.delivered?.tr || decision.delivered;
+  // Locale → English base (never Turkish as cross-locale fallback)
+  decision.delivered = locDecision.delivered?.[locale] || decision.delivered;
 }
 
 if (titleLower.includes("panic")) {
-  decision.useTitle = locale === "tr" ? "Güvenlik ve acil durum süreçleri" : "Safety and emergency workflows";
-  decision.use = locale === "tr"
-    ? "Operatörlerin fiziksel acil durum tetikleyicisiyle uzaktan uyarı ve müdahale süreçlerine bağlanması gereken alanlarda kullanın."
-    : "Use this device where operators need a physical emergency trigger connected to remote alerts and response workflows.";
+  decision.useTitle = pickText({
+    en: "Safety and emergency workflows",
+    tr: "Güvenlik ve acil durum süreçleri",
+    de: "Sicherheits- und Notfallprozesse",
+    fr: "Processus de sécurité et d'urgence",
+    es: "Flujos de seguridad y emergencia",
+    it: "Flussi di sicurezza e emergenza",
+    ar: "عمليات السلامة والطوارئ",
+    ja: "安全・緊急対応ワークフロー",
+  });
+  decision.use = pickText({
+    en: "Use this device where operators need a physical emergency trigger connected to remote alerts and response workflows.",
+    tr: "Operatörlerin fiziksel acil durum tetikleyicisiyle uzaktan uyarı ve müdahale süreçlerine bağlanması gereken alanlarda kullanın.",
+    de: "Nutzen Sie dieses Gerät, wenn Operatoren einen physischen Notfallauslöser mit Remote-Alarmen und Reaktionsabläufen verbinden müssen.",
+    fr: "Utilisez cet appareil lorsque les opérateurs ont besoin d'un déclencheur d'urgence physique lié aux alertes et workflows de réponse à distance.",
+    es: "Use este dispositivo cuando los operadores necesiten un disparador de emergencia físico conectado a alertas remotas y flujos de respuesta.",
+    it: "Usa questo dispositivo quando gli operatori necessitano di un trigger di emergenza fisico collegato ad allarmi remoti e workflow di risposta.",
+    ar: "استخدم هذا الجهاز عندما يحتاج المشغّلون إلى مُحفّز طوارئ فعلي مرتبط بتنبيهات عن بُعد وسير عمل الاستجابة.",
+    ja: "オペレーターが遠隔アラートと対応ワークフローに接続された物理的な緊急トリガーを必要とする場面で利用します。",
+  });
 }
 if (titleLower.includes("modbus")) {
-  decision.useTitle = locale === "tr" ? "Eski ekipman entegrasyonu" : "Legacy equipment integration";
-  decision.roleTitle = locale === "tr" ? "Modbus-to-platform bridge" : "Modbus-to-platform bridge";
+  decision.useTitle = pickText({
+    en: "Legacy equipment integration",
+    tr: "Eski ekipman entegrasyonu",
+    de: "Integration bestehender Anlagen",
+    fr: "Intégration d'équipements existants",
+    es: "Integración de equipos heredados",
+    it: "Integrazione di attrezzature legacy",
+    ar: "تكامل المعدات القديمة",
+    ja: "既存設備の統合",
+  });
+  decision.roleTitle = pickText({
+    en: "Modbus-to-platform bridge",
+    tr: "Modbus-to-platform bridge",
+    de: "Modbus-zu-Plattform-Brücke",
+    fr: "Pont Modbus vers plateforme",
+    es: "Puente Modbus a plataforma",
+    it: "Ponte Modbus-piattaforma",
+    ar: "جسر Modbus إلى المنصة",
+    ja: "Modbus〜プラットフォーム橋渡し",
+  });
 }
 if (titleLower.includes("ultrasonic") || titleLower.includes("level")) {
-  decision.useTitle = locale === "tr" ? "Tank, rögar ve seviye izleme" : "Tank, manhole and level monitoring";
-  decision.use = locale === "tr"
-    ? "Dağınık saha varlıklarında seviye, mesafe veya doluluk durumunun uzaktan izlenmesi gereken uygulamalarda kullanın."
-    : "Use this product where level, distance or fill state must be monitored remotely across distributed field assets.";
+  decision.useTitle = pickText({
+    en: "Tank, manhole and level monitoring",
+    tr: "Tank, rögar ve seviye izleme",
+    de: "Tank-, Schacht- und Füllstandsüberwachung",
+    fr: "Surveillance de cuves, regards et niveaux",
+    es: "Monitorización de tanques, pozos y nivel",
+    it: "Monitoraggio serbatoi, pozzetti e livello",
+    ar: "مراقبة الخزانات وغرف التفتيش والمستوى",
+    ja: "タンク・マンホール・レベル監視",
+  });
+  decision.use = pickText({
+    en: "Use this product where level, distance or fill state must be monitored remotely across distributed field assets.",
+    tr: "Dağınık saha varlıklarında seviye, mesafe veya doluluk durumunun uzaktan izlenmesi gereken uygulamalarda kullanın.",
+    de: "Nutzen Sie dieses Produkt, wenn Füllstand, Distanz oder Belegung über verteilte Feldanlagen remote überwacht werden müssen.",
+    fr: "Utilisez ce produit lorsque niveau, distance ou état de remplissage doivent être surveillés à distance sur des actifs terrain distribués.",
+    es: "Use este producto cuando el nivel, la distancia o el estado de llenado deban monitorizarse en remoto en activos de campo distribuidos.",
+    it: "Usa questo prodotto quando livello, distanza o stato di riempimento devono essere monitorati da remoto su asset sul campo distribuiti.",
+    ar: "استخدم هذا المنتج عندما يجب مراقبة المستوى أو المسافة أو حالة الامتلاء عن بُعد عبر أصول ميدانية موزّعة.",
+    ja: "分散した現場資産でレベル・距離・充填状態を遠隔監視する必要がある用途で利用します。",
+  });
 }
 if (titleLower.includes("soil")) {
-  decision.useTitle = locale === "tr" ? "Tarım ve saha araştırması" : "Agriculture and field research";
+  decision.useTitle = pickText({
+    en: "Agriculture and field research",
+    tr: "Tarım ve saha araştırması",
+    de: "Landwirtschaft und Feldforschung",
+    fr: "Agriculture et recherche terrain",
+    es: "Agricultura e investigación de campo",
+    it: "Agricoltura e ricerca sul campo",
+    ar: "الزراعة والبحث الميداني",
+    ja: "農業とフィールド研究",
+  });
 }
 
 const detailBlocks = Array.isArray(product.detailBlocks) ? product.detailBlocks.filter((block: any) => block && block.visible !== false) : [];
@@ -574,13 +634,20 @@ function getWarrantySentence(warranty: string, locale: Locale): string {
   return sentences[locale] || sentences.en;
 }
 
-const displayShortAnswer = (locale === "tr" && product.aiShortAnswer)
-  ? product.aiShortAnswer
-  : (rawProduct.localized?.[locale]?.aiShortAnswer || product.shortDescription);
+// Prefer locale-specific AI fields; root fields only for en/tr (legacy CMS), never leak TR into other locales.
+const displayShortAnswer =
+  rawProduct.localized?.[locale]?.aiShortAnswer
+  || ((locale === "en" || locale === "tr") && product.aiShortAnswer)
+  || product.shortDescription;
 
-const localizedFaq = (locale === "tr" && product.aiFAQ)
-  ? product.aiFAQ
-  : (rawProduct.localized?.[locale]?.aiFAQ && rawProduct.localized?.[locale]?.aiFAQ.length > 0 ? rawProduct.localized?.[locale]?.aiFAQ : []);
+const localizedFaq =
+  (Array.isArray(rawProduct.localized?.[locale]?.aiFAQ) && rawProduct.localized[locale].aiFAQ.length > 0
+    ? rawProduct.localized[locale].aiFAQ
+    : null)
+  || ((locale === "en" || locale === "tr") && Array.isArray(product.aiFAQ) && product.aiFAQ.length > 0
+    ? product.aiFAQ
+    : [])
+  || [];
 
 
 const ICONS: Record<string, string> = {
@@ -730,7 +797,23 @@ const t = {
   faqTitle: { en: "Frequently asked questions", tr: "Sıkça sorulan sorular", de: "Häufig gestellte Fragen", fr: "Questions fréquentes", es: "Preguntas frecuentes", it: "Domande frequenti", ar: "الأسئلة الشائعة", ja: "よくある質問" },
   askQuestion: { en: "Ask a question", tr: "Soru sorun", de: "Frage stellen", fr: "Poser une question", es: "Hacer una pregunta", it: "Fai una domanda", ar: "طرح سؤال", ja: "質問する" },
   inTheField: { en: "In the field", tr: "Sahada", de: "Im Feldeinsatz", fr: "Sur le terrain", es: "En el campo", it: "Sul campo", ar: "في الميدان", ja: "現場導入実績" },
-  inTheFieldDesc: { en: "Deployed where decisions are made.", tr: "Kararların alındığı yerlerde kuruldu.", de: "Dort im Einsatz, wo Entscheidungen getroffen werden.", fr: "Déployé là où les décisions sont prises.", es: "Implementado donde se toman las decisiones.", it: "Installato dove si prendono le decisioni.", ar: "نُشرت حيث تُتخذ القرارات.", ja: "意思決定が行われる現場での運用実績。" }
+  inTheFieldDesc: { en: "Deployed where decisions are made.", tr: "Kararların alındığı yerlerde kuruldu.", de: "Dort im Einsatz, wo Entscheidungen getroffen werden.", fr: "Déployé là où les décisions sont prises.", es: "Implementado donde se toman las decisiones.", it: "Installato dove si prendono le decisioni.", ar: "نُشرت حيث تُتخذ القرارات.", ja: "意思決定が行われる現場での運用実績。" },
+  featured: { en: "FEATURED", tr: "ÖNE ÇIKAN", de: "HIGHLIGHT", fr: "À LA UNE", es: "DESTACADO", it: "IN EVIDENZA", ar: "مميز", ja: "注目" },
+  reportedParameters: { en: "Reported Parameters", tr: "Raporlanan Parametreler", de: "Gemeldete Parameter", fr: "Paramètres rapportés", es: "Parámetros reportados", it: "Parametri riportati", ar: "المعلمات المُبلَغ عنها", ja: "報告パラメータ" },
+  extraTechBlocks: { en: "Additional technical blocks", tr: "Ek teknik bloklar", de: "Weitere technische Blöcke", fr: "Blocs techniques supplémentaires", es: "Bloques técnicos adicionales", it: "Blocchi tecnici aggiuntivi", ar: "كتل تقنية إضافية", ja: "追加の技術ブロック" },
+  customBlocksKicker: { en: "Custom Blocks", tr: "Özel bloklar", de: "Eigene Blöcke", fr: "Blocs personnalisés", es: "Bloques personalizados", it: "Blocchi personalizzati", ar: "كتل مخصّصة", ja: "カスタムブロック" },
+  customBlocksTitle: { en: "Product-specific content blocks", tr: "Ürüne özel anlatım blokları", de: "Produktspezifische Inhaltsblöcke", fr: "Blocs de contenu spécifiques au produit", es: "Bloques de contenido específicos del producto", it: "Blocchi di contenuto specifici del prodotto", ar: "كتل محتوى خاصة بالمنتج", ja: "製品固有のコンテンツブロック" },
+  whatItDoes: { en: "What it does.", tr: "Neler Yapar", de: "Was es leistet.", fr: "Ce qu'il fait.", es: "Qué hace.", it: "Cosa fa.", ar: "ماذا يفعل.", ja: "できること。" },
+  fieldFallbackCopy: {
+    en: "A compact, reliable setup for field use and production integration.",
+    tr: "Saha kullanımı ve seri üretim entegrasyonu için sade, güvenilir bir yapı.",
+    de: "Eine einfache und zuverlässige Struktur für Feldeinsatz und Produktionsintegration.",
+    fr: "Une structure simple et fiable pour l'usage terrain et l'intégration en production.",
+    es: "Una estructura simple y fiable para uso en campo e integración en producción.",
+    it: "Una struttura semplice e affidabile per uso sul campo e integrazione in produzione.",
+    ar: "بنية بسيطة وموثوقة للاستخدام الميداني والتكامل مع الإنتاج.",
+    ja: "現場利用と量産統合向けのシンプルで信頼性の高い構成。",
+  },
 };
 
 const getT = (key: keyof typeof t) => {
@@ -801,7 +884,7 @@ const glossaryHeading = glossaryLinkLabels.heading[locale] || glossaryLinkLabels
             <span class="ws-kicker">{categoryLabels[product.category]?.[locale] || product.category}</span>
             {product.featured && (
               <span class="ws-featured-badge">
-                ★ {locale === 'tr' ? 'ÖNE ÇIKAN' : locale === 'de' ? 'HIGHLIGHT' : 'FEATURED'}
+                ★ {getT("featured")}
               </span>
             )}
           </div>
@@ -968,9 +1051,7 @@ const glossaryHeading = glossaryLinkLabels.heading[locale] || glossaryLinkLabels
               </ul>
             ) : (
               <p class="ws-side-card-copy">
-                {locale === 'tr' ? "Saha kullanımı ve seri üretim entegrasyonu için sade, güvenilir bir yapı." :
-                 locale === 'de' ? "Eine einfache und zuverlässige Struktur für Feldeinsatz und Produktionsintegration." :
-                 "A compact, reliable setup for field use and production integration."}
+                {getT("fieldFallbackCopy")}
               </p>
             )}
           </article>
@@ -981,7 +1062,7 @@ const glossaryHeading = glossaryLinkLabels.heading[locale] || glossaryLinkLabels
                 <span class="ws-side-card-icon">
                   <Fragment set:html={ICONS.activity || ICONS.check} />
                 </span>
-                <h3>{locale === "tr" ? "Raporlanan Parametreler" : "Reported Parameters"}</h3>
+                <h3>{getT("reportedParameters")}</h3>
               </div>
               <ul class="ws-parameter-list">
                 {reportedParameterCards.map((x) => (
@@ -1004,7 +1085,7 @@ const glossaryHeading = glossaryLinkLabels.heading[locale] || glossaryLinkLabels
         <div class="section-inner">
           <div class="ws-section-header">
             <span class="ws-kicker">{getT("specifications")}</span>
-            <h2 class="ws-h2">{locale === "tr" ? "Ek teknik bloklar" : "Additional technical blocks"}</h2>
+            <h2 class="ws-h2">{getT("extraTechBlocks")}</h2>
           </div>
           <div class="ws-capabilities-grid">
             {extraSpecGroups.map((group: any) => (
@@ -1041,8 +1122,8 @@ const glossaryHeading = glossaryLinkLabels.heading[locale] || glossaryLinkLabels
       <section class="ws-capabilities-section">
         <div class="section-inner">
           <div class="ws-section-header">
-            <span class="ws-kicker">{locale === "tr" ? "Özel bloklar" : "Custom Blocks"}</span>
-            <h2 class="ws-h2">{locale === "tr" ? "Ürüne özel anlatım blokları" : "Product-specific content blocks"}</h2>
+            <span class="ws-kicker">{getT("customBlocksKicker")}</span>
+            <h2 class="ws-h2">{getT("customBlocksTitle")}</h2>
           </div>
           <div class="ws-capabilities-grid">
             {detailBlocks.map((block: any) => (
@@ -1073,7 +1154,7 @@ const glossaryHeading = glossaryLinkLabels.heading[locale] || glossaryLinkLabels
         <div class="section-inner">
           <div class="ws-section-header">
             <span class="ws-kicker">{paramsKicker || getT("capabilities")}</span>
-            <h2 class="ws-h2">{paramsTitle || (locale === 'tr' ? "Neler Yapar" : "What it does.")}</h2>
+            <h2 class="ws-h2">{paramsTitle || getT("whatItDoes")}</h2>
           </div>
           <div class="ws-capabilities-grid">
             {params.map(x => (

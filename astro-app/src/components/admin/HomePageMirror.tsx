@@ -131,7 +131,7 @@ function uiLabel(key: string, locale: Locale) {
 }
 
 function chipText(chip: Record<string, string>, locale: Locale) {
-  return chip[locale] || chip.en || chip.tr || "Sektör";
+  return chip[locale] || chip.en || "Sektör";
 }
 
 export default function HomePageMirror({

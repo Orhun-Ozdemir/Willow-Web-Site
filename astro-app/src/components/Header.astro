@@ -111,7 +111,8 @@ function isActive(href: string) {
   select?.addEventListener("change", (e) => {
     const nextLocale = (e.target as HTMLSelectElement).value;
     // Save preference in cookie (365 days, site-wide)
-    document.cookie = `preferred_locale=${nextLocale};path=/;max-age=${365 * 24 * 60 * 60};SameSite=Lax`;
+    const secure = location.protocol === "https:" ? ";Secure" : "";
+    document.cookie = `preferred_locale=${nextLocale};path=/;max-age=${365 * 24 * 60 * 60};SameSite=Lax${secure}`;
     const parts = window.location.pathname.split("/").filter(Boolean);
     const locales = ["en", "tr", "de", "fr", "es", "it", "ar", "ja"];
     if (locales.includes(parts[0])) parts[0] = nextLocale;

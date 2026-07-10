@@ -2,8 +2,7 @@ import { defineMiddleware } from "astro:middleware";
 import crypto from "node:crypto";
 import { getServiceClient, hasSupabaseEnv } from "./lib/supabase";
 import { locales, type Locale } from "./lib/cms";
-
-const DEFAULT_LOCALE: Locale = "en";
+import { detectLocaleFromRequest } from "./lib/locale-detect";
 
 // --- Legacy WordPress (willowsoft.co) -> new Astro URL map ---------------------
 // The old site was a WordPress/WooCommerce install with flat, mostly-Turkish
@@ -236,36 +235,7 @@ function isExemptFromLocale(pathname: string): boolean {
   return false;
 }
 
-// Pick the best matching locale: 1) cookie preference, 2) Accept-Language (by q), 3) en.
-function detectLocale(request: Request): Locale {
-  // 1. Check for saved preference cookie
-  const cookies = request.headers.get("cookie") || "";
-  const match = cookies.match(/(?:^|;\s*)preferred_locale=([a-z]{2})/);
-  if (match && locales.includes(match[1] as Locale)) {
-    return match[1] as Locale;
-  }
-
-  // 2. Fall back to Accept-Language header (highest q first)
-  const header = request.headers.get("accept-language") || "";
-  const ranked = header
-    .split(",")
-    .map((part) => {
-      const [rawTag, ...params] = part.trim().split(";");
-      const tag = (rawTag || "").trim().toLowerCase();
-      const qParam = params.find((p) => p.trim().startsWith("q="));
-      const q = qParam ? Number(qParam.split("=")[1]) : 1;
-      return { tag, q: Number.isFinite(q) ? q : 0 };
-    })
-    .filter((item) => item.tag)
-    .sort((a, b) => b.q - a.q);
-
-  for (const { tag } of ranked) {
-    if (locales.includes(tag as Locale)) return tag as Locale;
-    const base = tag.split("-")[0];
-    if (locales.includes(base as Locale)) return base as Locale;
-  }
-  return DEFAULT_LOCALE;
-}
+const detectLocale = detectLocaleFromRequest;
 
 const aiBots = [
   { name: "GPTBot (OpenAI Training)", pattern: /GPTBot/i },
