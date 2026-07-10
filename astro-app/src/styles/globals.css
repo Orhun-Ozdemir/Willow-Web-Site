@@ -10985,6 +10985,11 @@ body[data-page="solutions"] .company-hero-signal {
     gap: 24px;
     align-items: start;
   }
+  :is(body[data-page="company"], .ws-pc-mirror[data-page="company"]) .company-team-list {
+    grid-template-columns: 1fr;
+    justify-content: stretch;
+    justify-items: stretch;
+  }
   :is(body[data-page="company"], .ws-pc-mirror[data-page="company"]) .company-expertise-copy {
     position: static;
   }
@@ -11065,11 +11070,12 @@ body[data-page="solutions"] .company-hero-signal {
     width: min(var(--max), calc(100% - 32px));
   }
   :is(body[data-page="company"], .ws-pc-mirror[data-page="company"]) .company-team-list {
-    grid-template-columns: minmax(0, 300px);
-    justify-content: end;
+    grid-template-columns: 1fr;
+    justify-content: stretch;
+    justify-items: stretch;
   }
   :is(body[data-page="company"], .ws-pc-mirror[data-page="company"]) .company-team-avatar {
-    max-height: 340px;
+    max-height: 360px;
   }
   :is(body[data-page="company"], .ws-pc-mirror[data-page="company"]) .company-stats-wrap .ws-card {
     grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
