@@ -3,7 +3,7 @@ import PageLayout from "@/layouts/PageLayout.astro";
 import NewsCard from "@/components/NewsCard.astro";
 import { loadContent } from "@/lib/content";
 import { pageSeo, webPageNode, ORGANIZATION_SCHEMA, WEBSITE_SCHEMA, SITE_ORIGIN } from "@/lib/seo";
-import { localizedValue, localizeItem, pageText, resolveLocale, type Locale } from "@/lib/cms";
+import { localizedValue, localizeItem, pageText, resolveAsset, resolveLocale, type Locale } from "@/lib/cms";
 
 export const prerender = false;
 
@@ -48,11 +48,10 @@ const toTime = (value: any) => {
   return Number.isFinite(time) ? time : 0;
 };
 
-const basePath = import.meta.env.BASE_URL || "/";
 const assetPath = (value: any) => {
   if (!value || typeof value !== "string") return "";
-  if (value.startsWith("http") || value.startsWith("data:")) return value;
-  return `${basePath}${value.replace(/^\/+/, "")}`.replace(/([^:]\/)\/+/g, "$1");
+  if (value.startsWith("data:")) return value;
+  return resolveAsset(value);
 };
 
 const formatDate = (value: any, month: "short" | "long" = "short") => {

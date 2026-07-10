@@ -124,6 +124,16 @@ const HOME_UI: Record<string, Record<string, string>> = {
   talkEngineering: { tr: "Mühendislerimizle Görüşün", en: "Talk to Engineering" },
   startProject: { tr: "Projeye Başla", en: "Start Your Project" },
   exploreServices: { tr: "Hizmetleri Keşfet", en: "Explore Services" },
+  exploreSolutions: {
+    en: "Explore Solutions",
+    tr: "Çözümlerimizi İnceleyin",
+    de: "Lösungen entdecken",
+    fr: "Découvrir les solutions",
+    es: "Explorar soluciones",
+    it: "Esplora le soluzioni",
+    ar: "استكشف الحلول",
+    ja: "ソリューションを見る",
+  },
 };
 
 function uiLabel(key: string, locale: Locale) {
@@ -171,7 +181,7 @@ export default function HomePageMirror({
   };
 
   const heroCtaLabel = pageButtonText(data.heroCta, locale, pageButtonLabel(data.heroCta, locale) || v("heroCta") || uiLabel("startProject", locale));
-  const heroCtaSecondaryLabel = pageButtonText(data.heroCtaSecondary, locale, pageButtonLabel(data.heroCtaSecondary, locale) || v("heroCtaSecondary") || uiLabel("exploreServices", locale));
+  const heroCtaSecondaryLabel = pageButtonText(data.heroCtaSecondary, locale, pageButtonLabel(data.heroCtaSecondary, locale) || v("heroCtaSecondary") || uiLabel("exploreSolutions", locale));
   const heroCtaHref = pageLocaleHref(locale, data.heroCta, "/start-project");
   const heroCtaSecondaryHref = pageLocaleHref(locale, data.heroCtaSecondary, "/solutions");
   const ctaCtaLabel = pageButtonText(data.ctaCta, locale, v("ctaCta") || uiLabel("talkEngineering", locale));

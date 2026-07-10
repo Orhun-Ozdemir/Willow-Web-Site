@@ -104,12 +104,22 @@ export function pageButtonUrl(value: any, locale: Locale, fallback = ""): string
 
 /** Locale-prefixed href for a CMS button field. */
 export function pageLocaleHref(locale: Locale, value: any, fallbackPath: string): string {
-  const path = pageButtonUrl(value, locale, fallbackPath);
-  const normalized = path.startsWith("/") ? path : `/${path}`;
-  if (normalized.startsWith(`/${locale}/`) || normalized === `/${locale}`) {
-    return normalized;
+  const path = pageButtonUrl(value, locale, fallbackPath).trim();
+  if (!path) return `/${locale}${fallbackPath.startsWith("/") ? fallbackPath : `/${fallbackPath}`}`;
+
+  // External or protocol-relative URLs must not get a locale prefix.
+  if (/^(https?:)?\/\//i.test(path) || /^(mailto:|tel:)/i.test(path)) {
+    return path;
   }
-  return `/${locale}${normalized}`;
+
+  const normalized = path.startsWith("/") ? path : `/${path}`;
+  const segments = normalized.split("/").filter(Boolean);
+  const first = segments[0] as Locale | undefined;
+  if (first && locales.includes(first)) {
+    segments.shift();
+  }
+  const rest = segments.length ? `/${segments.join("/")}` : "";
+  return `/${locale}${rest}`;
 }
 
 /** Normalized `{ label, url }` for admin editors and previews. */

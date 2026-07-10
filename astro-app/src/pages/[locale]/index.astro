@@ -6,7 +6,7 @@ import FaqAccordion from "@/components/FaqAccordion.astro";
 import AIAnswerBlock from "@/components/AIAnswerBlock.astro";
 import { loadContent } from "@/lib/content";
 import { pageSeo, ORGANIZATION_SCHEMA, WEBSITE_SCHEMA } from "@/lib/seo";
-import { flowNodesFromPageContent, industryLanesFromPageContent, pageButtonText, pageLocaleHref, pageText, resolveLocale, serviceRailFromPageContent, type Locale } from "@/lib/cms";
+import { flowNodesFromPageContent, industryLanesFromPageContent, pageButtonText, pageLocaleHref, pageText, resolveAsset, resolveLocale, serviceRailFromPageContent, type Locale } from "@/lib/cms";
 import { aiAnswerForPage, aiMetaForPage, appendSchemaNodes, fallbackFaqsForPage, faqItemsForPage, faqSchemaNode } from "@/lib/ai-search";
 
 export const prerender = false;
@@ -36,6 +36,7 @@ const labels: Record<string, Record<string, string>> = {
   founded: { en: "Founded", tr: "Kuruluş", de: "Gegründet", fr: "Fondation", es: "Fundación", it: "Fondazione", ar: "تأسست عام", ja: "設立年" },
   officesWorldwide: { en: "Offices worldwide", tr: "Dünya çapında ofis", de: "Büros weltweit", fr: "Bureaux dans le monde", es: "Oficinas en el mundo", it: "Uffici nel mondo", ar: "مكتب حول العالم", ja: "拠点数" },
   exploreServices: { en: "Explore Services", tr: "Hizmetleri Keşfet", de: "Dienste erkunden", fr: "Découvrir les services", es: "Explorar servicios", it: "Esplora i servizi", ar: "استكشف الخدمات", ja: "提供サービスを見る" },
+  exploreSolutions: { en: "Explore Solutions", tr: "Çözümlerimizi İnceleyin", de: "Lösungen entdecken", fr: "Découvrir les solutions", es: "Explorar soluciones", it: "Esplora le soluzioni", ar: "استكشف الحلول", ja: "ソリューションを見る" },
   startProject: { en: "Start Your Project", tr: "Projeye Başla", de: "Projekt starten", fr: "Démarrer un projet", es: "Iniciar proyecto", it: "Avvia progetto", ar: "ابدأ مشروعًا", ja: "プロジェクトを開始" },
   viewProducts: { en: "Browse Products", tr: "Ürünlere Göz At", de: "Produkte durchsuchen", fr: "Parcourir les produits", es: "Ver productos", it: "Sfoglia i prodotti", ar: "تصفح المنتجات", ja: "製品カタログを見る" },
   viewNews: { en: "View News", tr: "Haberleri Görüntüle", de: "News anzeigen", fr: "Voir les actualités", es: "Ver noticias", it: "Vedi le news", ar: "عرض الأخبار", ja: "ニュースを見る" },
@@ -59,7 +60,7 @@ const labels: Record<string, Record<string, string>> = {
 
 const heroEyebrow = getVal("heroEyebrow");
 const heroCtaLabel = pageButtonText(pageContent.heroCta, locale, locale === "tr" ? "Ücretsiz Danışın" : getLabel("startProject"));
-const heroCtaSecondaryLabel = pageButtonText(pageContent.heroCtaSecondary, locale, locale === "tr" ? "Çözümlerimizi İnceleyin" : getLabel("exploreServices"));
+const heroCtaSecondaryLabel = pageButtonText(pageContent.heroCtaSecondary, locale, getLabel("exploreSolutions"));
 const heroCtaHref = pageLocaleHref(locale, pageContent.heroCta, "/start-project");
 const heroCtaSecondaryHref = pageLocaleHref(locale, pageContent.heroCtaSecondary, "/solutions");
 const ctaCtaLabel = pageButtonText(pageContent.ctaCta, locale, getLabel("talkEngineering"));
@@ -395,7 +396,7 @@ const homeSchema = appendSchemaNodes({
               const delay = idx * 130;
               return (
                 <div class="logo-tile" style={`--z:${z}px;--delay:${delay}ms`} title={client.name}>
-                  {client.logo ? <img src={`/${client.logo}`} alt={client.name} loading="lazy" decoding="async" /> : <strong>{client.name}</strong>}
+                  {client.logo ? <img src={resolveAsset(client.logo)} alt={client.name} loading="lazy" decoding="async" /> : <strong>{client.name}</strong>}
                 </div>
               );
             })}

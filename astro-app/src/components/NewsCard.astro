@@ -1,5 +1,5 @@
 ---
-import { localizeItem, resolveLocale, type Locale } from "@/lib/cms";
+import { localizeItem, resolveAsset, resolveLocale, type Locale } from "@/lib/cms";
 
 interface Props {
   item: any;
@@ -12,7 +12,6 @@ const { item, index, variant = "default" } = Astro.props;
 const locale = resolveLocale(Astro.props.locale, Astro.url.pathname);
 const n = localizeItem(item, locale);
 const delay = index % 3 ? ` delay-${index % 3}` : "";
-const basePath = import.meta.env.BASE_URL || "/";
 const date = n.date
   ? new Date(`${n.date}T00:00:00`).toLocaleDateString(locale, { year: "numeric", month: "short", day: "numeric" })
   : "";
@@ -33,11 +32,7 @@ const category = categoryLabels[categoryKey]?.[locale] || categoryLabels[categor
 const slug = encodeURIComponent(n.slug || n.id || "");
 const rawGalleryImage = Array.isArray(n.images) ? n.images.find((src: any) => typeof src === "string" && src.trim()) : "";
 const rawImage = typeof n.image === "string" && n.image.trim() ? n.image : rawGalleryImage || "";
-const imageSrc = rawImage
-  ? rawImage.startsWith("http") || rawImage.startsWith("data:")
-    ? rawImage
-    : `${basePath}${rawImage.replace(/^\/+/, "")}`.replace(/([^:]\/)\/+/g, "$1")
-  : "";
+const imageSrc = resolveAsset(rawImage);
 const searchable = [n.title, rawCategory, category, n.excerpt].filter(Boolean).join(" ").toLowerCase();
 const readLabel: Record<string, string> = {
   en: "Read",

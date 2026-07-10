@@ -1,5 +1,5 @@
 ---
-import { localizeItem, resolveLocale, type Locale } from "@/lib/cms";
+import { localizeItem, resolveAsset, resolveLocale, type Locale } from "@/lib/cms";
 
 interface Props {
   product: any;
@@ -12,23 +12,12 @@ const locale = resolveLocale(Astro.props.locale, Astro.url.pathname);
 const p = localizeItem(product, locale);
 const delay = index % 4 ? ` delay-${index % 4}` : "";
 const chips = (p.chips || []).slice(0, 3);
-const base = import.meta.env.BASE_URL?.replace(/\/$/, "") || "";
-
-function resolveImgUrl(url: string | undefined): string | undefined {
-  if (!url) return undefined;
-  // Full URL (https://...) — keep as-is
-  if (/^https?:\/\//i.test(url)) return url;
-  // Already has leading slash — keep as-is
-  if (url.startsWith("/")) return url;
-  // Relative path (e.g. "assets/...") — prepend base
-  return `${base}/${url}`;
-}
 
 const cutoutImage =
-  resolveImgUrl(p.cardImage) ||
-  resolveImgUrl(p.image) ||
-  `${base}/assets/product-cutouts/${p.id}.png`;
-const originalImage = resolveImgUrl(p.image) || resolveImgUrl(p.cardImage) || cutoutImage;
+  resolveAsset(p.cardImage) ||
+  resolveAsset(p.image) ||
+  resolveAsset(`assets/product-cutouts/${p.id}.png`);
+const originalImage = resolveAsset(p.image) || resolveAsset(p.cardImage) || cutoutImage;
 const detailsLabel: Record<string, string> = {
   en: "View Details",
   tr: "Detayları Gör",

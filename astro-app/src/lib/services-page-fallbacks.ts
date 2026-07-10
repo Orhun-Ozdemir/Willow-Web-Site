@@ -6,28 +6,44 @@ export const fallbackServiceLayers = [
     headline: { en: "Hardware, firmware and connectivity.", tr: "Donanım, firmware ve bağlantı.", de: "Hardware, Firmware und Konnektivität.", fr: "Hardware, firmware et connectivité.", es: "Hardware, firmware y conectividad.", it: "Hardware, firmware e connettività.", ar: "العتاد، والـ firmware، والاتصال.", ja: "ハードウェア、ファームウェア、通信。" },
     description: { en: "For teams building physical IoT products that need reliable sensing, power, RF behavior and production-ready firmware.", tr: "Güvenilir ölçüm, güç yönetimi, RF performansı ve üretime hazır firmware gerektiren fiziksel IoT ürünleri geliştiren ekipler için.", de: "Für Teams, die physische IoT-Produkte mit zuverlässiger Sensorik, Stromversorgung, RF-Verhalten und produktionsreifer Firmware entwickeln.", fr: "Pour les équipes qui développent des produits IoT physiques avec mesure fiable, gestion d’énergie, comportement RF et firmware prêt pour la production.", es: "Para equipos que desarrollan productos IoT físicos con medición fiable, gestión de energía, comportamiento RF y firmware listo para producción.", it: "Per team che sviluppano prodotti IoT fisici con sensori affidabili, gestione energia, comportamento RF e firmware pronto per la produzione.", ar: "للفرق التي تطوّر منتجات IoT فعلية تحتاج إلى قياس موثوق، وإدارة طاقة، وأداء RF، وfirmware جاهز للإنتاج.", ja: "信頼できるセンシング、電源設計、RF 挙動、量産対応ファームウェアが必要な物理 IoT 製品を開発するチーム向け。" },
     output: { en: "PCB package, firmware source, RF notes and production handoff.", tr: "PCB paketi, firmware kaynak kodu, RF notları ve üretim devri.", de: "PCB-Paket, Firmware-Quellcode, RF-Notizen und Übergabe an die Produktion.", fr: "Dossier PCB, source firmware, notes RF et transfert vers la production.", es: "Paquete PCB, código fuente de firmware, notas RF y traspaso a producción.", it: "Pacchetto PCB, sorgente firmware, note RF e handoff alla produzione.", ar: "حزمة PCB، وكود firmware، وملاحظات RF، وتسليم الإنتاج.", ja: "PCB パッケージ、ファームウェアソース、RF メモ、量産引き渡し。" },
-    tags: ["Embedded Hardware", "Firmware", "Connectivity"]
+    tags: [
+      { en: "Embedded Hardware", tr: "Gömülü Donanım", de: "Embedded Hardware", fr: "Hardware embarqué", es: "Hardware embebido", it: "Hardware embedded", ar: "عتاد مدمج", ja: "組み込みハードウェア" },
+      { en: "Firmware", tr: "Firmware", de: "Firmware", fr: "Firmware", es: "Firmware", it: "Firmware", ar: "Firmware", ja: "ファームウェア" },
+      { en: "Connectivity", tr: "Bağlantı", de: "Konnektivität", fr: "Connectivité", es: "Conectividad", it: "Connettività", ar: "الاتصال", ja: "コネクティビティ" },
+    ],
   },
   {
     title: { en: "Cloud & data", tr: "Cloud ve veri", de: "Cloud & Daten", fr: "Cloud & data", es: "Cloud y datos", it: "Cloud e dati", ar: "Cloud والبيانات", ja: "クラウドとデータ" },
     headline: { en: "Backend APIs and PostgreSQL architecture.", tr: "Backend API'ler ve PostgreSQL mimarisi.", de: "Backend-APIs und PostgreSQL-Architektur.", fr: "API backend et architecture PostgreSQL.", es: "API backend y arquitectura PostgreSQL.", it: "API backend e architettura PostgreSQL.", ar: "API backend وبنية PostgreSQL.", ja: "バックエンド API と PostgreSQL 設計。" },
     description: { en: "For products that collect device data, need authentication, reporting, alerts, dashboards and scalable operational data models.", tr: "Cihaz verisi toplayan; kimlik doğrulama, raporlama, uyarılar, dashboard'lar ve ölçeklenebilir veri modelleri gerektiren ürünler için.", de: "Für Produkte, die Gerätedaten sammeln und Authentifizierung, Reporting, Alarme, Dashboards und skalierbare Datenmodelle benötigen.", fr: "Pour les produits qui collectent des données device et nécessitent authentification, reporting, alertes, dashboards et modèles de données scalables.", es: "Para productos que recopilan datos de dispositivos y necesitan autenticación, informes, alertas, dashboards y modelos de datos escalables.", it: "Per prodotti che raccolgono dati dai dispositivi e richiedono autenticazione, reporting, allarmi, dashboard e modelli dati scalabili.", ar: "للمنتجات التي تجمع بيانات الأجهزة وتحتاج إلى مصادقة وتقارير وتنبيهات وdashboards ونماذج بيانات قابلة للتوسع.", ja: "デバイスデータを収集し、認証、レポート、アラート、ダッシュボード、スケーラブルなデータモデルが必要な製品向け。" },
     output: { en: "API contracts, database schema, auth flow and reporting queries.", tr: "API sözleşmeleri, veritabanı şeması, auth akışı ve raporlama sorguları.", de: "API-Verträge, Datenbankschema, Auth-Flow und Reporting-Abfragen.", fr: "Contrats API, schéma de base de données, flow d’authentification et requêtes de reporting.", es: "Contratos API, esquema de base de datos, flujo de autenticación y consultas de reporting.", it: "Contratti API, schema database, flusso auth e query di reporting.", ar: "عقود API، ومخطط قاعدة البيانات، ومسار auth، واستعلامات التقارير.", ja: "API 契約、データベーススキーマ、認証フロー、レポートクエリ。" },
-    tags: ["Backend API", "PostgreSQL", "IoT Cloud"]
+    tags: [
+      { en: "Backend API", tr: "Backend API", de: "Backend-API", fr: "API backend", es: "API backend", it: "API backend", ar: "API خلفية", ja: "バックエンド API" },
+      { en: "PostgreSQL", tr: "PostgreSQL", de: "PostgreSQL", fr: "PostgreSQL", es: "PostgreSQL", it: "PostgreSQL", ar: "PostgreSQL", ja: "PostgreSQL" },
+      { en: "IoT Cloud", tr: "IoT Bulut", de: "IoT Cloud", fr: "Cloud IoT", es: "Cloud IoT", it: "Cloud IoT", ar: "سحابة IoT", ja: "IoT クラウド" },
+    ],
   },
   {
     title: { en: "Operator interface", tr: "Operasyon arayüzleri", de: "Operator Interfaces", fr: "Interfaces opérateur", es: "Interfaces de operación", it: "Interfacce operative", ar: "واجهات التشغيل", ja: "運用インターフェース" },
     headline: { en: "Web platforms, admin panels and mobile apps.", tr: "Web platformları, yönetim panelleri ve mobil uygulamalar.", de: "Webplattformen, Admin-Panels und mobile Apps.", fr: "Plateformes web, panneaux admin et applications mobiles.", es: "Plataformas web, paneles admin y apps móviles.", it: "Piattaforme web, pannelli admin e app mobile.", ar: "منصات ويب، ولوحات admin، وتطبيقات جوال.", ja: "Web プラットフォーム、管理パネル、モバイルアプリ。" },
     description: { en: "For teams that need operators, customers and field technicians to actually use the connected product every day.", tr: "Operatörlerin, müşterilerin ve saha teknisyenlerinin ürünü her gün gerçekten kullanması gereken ekipler için.", de: "Für Teams, deren Operatoren, Kunden und Feldtechniker das IoT-Produkt täglich nutzen müssen.", fr: "Pour les équipes dont les opérateurs, clients et techniciens terrain doivent utiliser le produit IoT au quotidien.", es: "Para equipos cuyos operadores, clientes y técnicos de campo necesitan usar el producto IoT cada día.", it: "Per team in cui operatori, clienti e tecnici sul campo devono usare il prodotto IoT ogni giorno.", ar: "للفرق التي يحتاج فيها المشغّلون والعملاء وفنيو الميدان إلى استخدام منتج IoT يوميًا.", ja: "オペレーター、顧客、現場技術者が IoT 製品を日常的に使う必要があるチーム向け。" },
     output: { en: "Dashboards, mobile flows, user roles, alerts and portal screens.", tr: "Dashboard'lar, mobil akışlar, kullanıcı rolleri, uyarılar ve portal ekranları.", de: "Dashboards, Mobile Flows, Benutzerrollen, Alarme und Portal-Screens.", fr: "Dashboards, parcours mobiles, rôles utilisateur, alertes et écrans portail.", es: "Dashboards, flujos móviles, roles de usuario, alertas y pantallas de portal.", it: "Dashboard, flussi mobile, ruoli utente, alert e schermate portale.", ar: "Dashboards، ومسارات الجوال، وأدوار المستخدمين، والتنبيهات، وشاشات البوابة.", ja: "ダッシュボード、モバイルフロー、ユーザーロール、アラート、ポータル画面。" },
-    tags: ["Web/Admin", "Mobile Apps", "Customer Portal"]
+    tags: [
+      { en: "Web/Admin", tr: "Web/Yönetim", de: "Web/Admin", fr: "Web/Admin", es: "Web/Admin", it: "Web/Admin", ar: "ويب/إدارة", ja: "Web/管理" },
+      { en: "Mobile Apps", tr: "Mobil Uygulamalar", de: "Mobile Apps", fr: "Apps mobiles", es: "Apps móviles", it: "App mobile", ar: "تطبيقات جوال", ja: "モバイルアプリ" },
+      { en: "Customer Portal", tr: "Müşteri Portalı", de: "Kundenportal", fr: "Portail client", es: "Portal de cliente", it: "Portale clienti", ar: "بوابة العملاء", ja: "顧客ポータル" },
+    ],
   },
   {
     title: { en: "Immersive", tr: "VR ve simülasyon", de: "Immersive", fr: "Immersif", es: "Inmersivo", it: "Immersive", ar: "تجارب غامرة", ja: "イマーシブ" },
     headline: { en: "VR, simulation and digital twin experiences.", tr: "VR, simülasyon ve digital twin deneyimleri.", de: "VR, Simulation und Digital-Twin-Erlebnisse.", fr: "VR, simulation et expériences digital twin.", es: "VR, simulación y experiencias digital twin.", it: "VR, simulazione ed esperienze digital twin.", ar: "VR ومحاكاة وتجارب digital twin.", ja: "VR、シミュレーション、デジタルツイン体験。" },
     description: { en: "For products or environments that are hard to explain through flat screens, training documents or static presentations.", tr: "Düz ekranlar, eğitim dokümanları veya statik sunumlarla anlatması zor ürün ve ortamlar için.", de: "Für Produkte oder Umgebungen, die sich mit flachen Screens, Schulungsunterlagen oder statischen Präsentationen schwer erklären lassen.", fr: "Pour les produits ou environnements difficiles à expliquer avec des écrans plats, documents de formation ou présentations statiques.", es: "Para productos o entornos difíciles de explicar con pantallas planas, documentos de formación o presentaciones estáticas.", it: "Per prodotti o ambienti difficili da spiegare con schermate piatte, documenti di formazione o presentazioni statiche.", ar: "للمنتجات أو البيئات التي يصعب شرحها عبر شاشات مسطحة أو مستندات تدريب أو عروض ثابتة.", ja: "平面画面、トレーニング資料、静的なプレゼンでは説明しにくい製品や環境向け。" },
     output: { en: "Simulation scene, training flow, 3D presentation and demo assets.", tr: "Simülasyon sahnesi, eğitim akışı, 3D sunum ve demo varlıkları.", de: "Simulationsszene, Trainingsablauf, 3D-Präsentation und Demo-Assets.", fr: "Scène de simulation, parcours de formation, présentation 3D et assets de démo.", es: "Escena de simulación, flujo de formación, presentación 3D y assets de demo.", it: "Scena di simulazione, flusso training, presentazione 3D e asset demo.", ar: "مشهد محاكاة، ومسار تدريب، وعرض 3D، وملفات demo.", ja: "シミュレーションシーン、トレーニングフロー、3D プレゼン、デモアセット。" },
-    tags: ["VR Training", "Product Demo", "Digital Twin"]
+    tags: [
+      { en: "VR Training", tr: "VR Eğitim", de: "VR-Training", fr: "Formation VR", es: "Formación VR", it: "Training VR", ar: "تدريب VR", ja: "VR トレーニング" },
+      { en: "Product Demo", tr: "Ürün Demosu", de: "Produktdemo", fr: "Démo produit", es: "Demo de producto", it: "Demo prodotto", ar: "عرض المنتج", ja: "製品デモ" },
+      { en: "Digital Twin", tr: "Digital Twin", de: "Digital Twin", fr: "Jumeau numérique", es: "Gemelo digital", it: "Digital twin", ar: "توأم رقمي", ja: "デジタルツイン" },
+    ],
   },
 ];
 
@@ -94,7 +110,7 @@ export function fallbackServiceLayersAsCmsItems() {
     headline: layer.headline.en,
     description: layer.description.en,
     output: layer.output.en,
-    tags: layer.tags,
+    tags: layer.tags.map((tag) => (typeof tag === "string" ? tag : tag.en || "")).filter(Boolean),
     sortOrder: index + 1,
     localized: localizedFieldBundle({
       title: layer.title,

@@ -2,7 +2,7 @@
 import PageLayout from "@/layouts/PageLayout.astro";
 import AIAnswerBlock from "@/components/AIAnswerBlock.astro";
 import { loadContent } from "@/lib/content";
-import { localizedValue, localizeItem, locales, resolveLocale, type Locale } from "@/lib/cms";
+import { localizedValue, localizeItem, locales, resolveAsset, resolveLocale, type Locale } from "@/lib/cms";
 import { buildAlternates, DEFAULT_OG_IMAGE, ORGANIZATION_SCHEMA, WEBSITE_SCHEMA, SITE_ORIGIN } from "@/lib/seo";
 import { aiMetaForPage, appendSchemaNodes, faqSchemaNode, stripHtml, type AiFaqItem } from "@/lib/ai-search";
 import { getProductExtras } from "@/lib/product-extras";
@@ -38,8 +38,9 @@ const heroImages = Array.from(
 const heroImage = heroImages[0] || product.image;
 const productAssetUrl = (path: any, fallback = "assets/hero-industrial-iot.jpg") => {
   const normalized = normalizeAssetPath(path) || normalizeAssetPath(fallback);
+  if (!normalized) return resolveAsset(fallback);
   if (/^(https?:)?\/\//i.test(normalized) || normalized.startsWith("data:")) return normalized;
-  return `${import.meta.env.BASE_URL}${normalized}`;
+  return resolveAsset(normalized);
 };
 const heroImageUrl = productAssetUrl(heroImage);
 const fallbackHeroImageUrl = productAssetUrl("assets/hero-industrial-iot.jpg");

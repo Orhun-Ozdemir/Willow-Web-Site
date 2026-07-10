@@ -142,11 +142,11 @@ const getLabel = (key: keyof typeof labels) => labels[key][locale] || labels[key
     <section class="section dark">
       <div class="section-inner split">
         <div class="reveal">
-          <p class="eyebrow">{getVal("ctaEyebrow")}</p>
-          <h2 class="page-title">{getVal("ctaTitle")}</h2>
+          <p class="eyebrow">{t("ctaEyebrow")}</p>
+          <h2 class="page-title">{t("ctaTitle")}</h2>
         </div>
         <div class="reveal delay-1">
-          <p class="section-lead">{getVal("ctaLead")}</p>
+          <p class="section-lead">{t("ctaLead")}</p>
           <p><a class="btn btn-primary" href={`/${locale}/contact`}>{getLabel("talkToEngineering")}</a></p>
         </div>
       </div>

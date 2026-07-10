@@ -4,7 +4,7 @@ import FaqAccordion from "@/components/FaqAccordion.astro";
 import AIAnswerBlock from "@/components/AIAnswerBlock.astro";
 import { loadContent } from "@/lib/content";
 import { pageSeo, webPageNode, ORGANIZATION_SCHEMA, WEBSITE_SCHEMA } from "@/lib/seo";
-import { itemText, localeMapText, pageButtonText, pageLocaleHref, pageText, resolveLocale, type Locale } from "@/lib/cms";
+import { itemText, localeMapText, localizedValue, pageButtonText, pageLocaleHref, pageText, resolveAsset, resolveLocale, type Locale } from "@/lib/cms";
 import { aiAnswerForPage, aiMetaForPage, appendSchemaNodes, fallbackFaqsForPage, faqItemsForPage, faqSchemaNode } from "@/lib/ai-search";
 import {
   fallbackDeliverables,
@@ -226,7 +226,7 @@ const faqLead = txt("faqLead") || l({ en: "Engineering buyers usually arrive wit
           <div class="trusted-by-logos" aria-label={getLabel("customerLogos")}>
             {featuredClients.map((client: any) => (
               <div class="trusted-logo" title={client.name}>
-                {client.logo ? <img src={`/${client.logo}`} alt={client.name} loading="lazy" decoding="async" /> : <strong>{client.name}</strong>}
+                {client.logo ? <img src={resolveAsset(client.logo)} alt={client.name} loading="lazy" decoding="async" /> : <strong>{client.name}</strong>}
               </div>
             ))}
           </div>
@@ -252,7 +252,13 @@ const faqLead = txt("faqLead") || l({ en: "Engineering buyers usually arrive wit
             const headline = getItemVal(layer, "headline", l(layer.headline));
             const desc = getItemVal(layer, "description", l(layer.description));
             const output = getItemVal(layer, "output", l(layer.output));
-            const tags = Array.isArray(layer.tags) ? layer.tags : (typeof layer.tags === "string" ? layer.tags.split(",").map((t: string) => t.trim()).filter(Boolean) : []);
+            const rawTags = Array.isArray(layer.tags)
+              ? layer.tags
+              : (typeof layer.tags === "string" ? layer.tags.split(",").map((t: string) => t.trim()).filter(Boolean) : []);
+            const tags = rawTags
+              .map((tag: any) => (typeof tag === "string" ? tag : localizedValue(tag, locale)))
+              .map((tag: string) => String(tag || "").trim())
+              .filter(Boolean);
             return (
               <article class="system-layer-card">
                 <span class="layer-index">{String(idx + 1).padStart(2, "0")}</span>

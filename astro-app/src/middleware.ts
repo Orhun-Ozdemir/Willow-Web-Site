@@ -328,12 +328,10 @@ export const onRequest = defineMiddleware(async (context, next) => {
             created_at: new Date().toISOString()
           };
           
-          // Fire and forget
-          supabase.from("bot_events").insert(newEvent).then(({ error }) => {
-            if (error) console.error("Failed to log bot access to Supabase:", error.message);
-          });
-        } catch (err) {
-          console.error("Failed to setup bot access logging", err);
+          // Fire and forget — never block the response on analytics insert failures.
+          void Promise.resolve(supabase.from("bot_events").insert(newEvent)).catch(() => {});
+        } catch {
+          /* ignore bot logging setup failures */
         }
       }
     }
