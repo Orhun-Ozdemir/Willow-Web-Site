@@ -10749,7 +10749,8 @@ body[data-page="solutions"] .company-hero-signal {
 :is(body[data-page="company"], .ws-pc-mirror[data-page="company"]) .company-offices-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 20px;
+  gap: 18px;
+  max-width: 700px;
 }
 
 :is(body[data-page="company"], .ws-pc-mirror[data-page="company"]) .company-office-card {
@@ -10762,13 +10763,13 @@ body[data-page="solutions"] .company-hero-signal {
 :is(body[data-page="company"], .ws-pc-mirror[data-page="company"]) .company-office-visual {
   position: relative;
   width: 100%;
-  aspect-ratio: 2 / 1;
-  height: auto;
-  min-height: 200px;
-  max-height: 240px;
+  height: 248px;
+  min-height: 0;
+  max-height: none;
+  aspect-ratio: auto;
   overflow: hidden;
   isolation: isolate;
-  background: #ffffff;
+  background: #f7f9fc;
 }
 
 :is(body[data-page="company"], .ws-pc-mirror[data-page="company"]) .company-office-visual:has(.company-office-image) .company-office-map-layer {
@@ -10823,16 +10824,16 @@ body[data-page="solutions"] .company-hero-signal {
 
 :is(body[data-page="company"], .ws-pc-mirror[data-page="company"]) .company-map-label {
   position: absolute;
-  right: 18px;
-  bottom: 16px;
+  right: 14px;
+  bottom: 12px;
   z-index: 2;
-  max-width: calc(100% - 36px);
-  padding: 8px 11px;
+  max-width: calc(100% - 28px);
+  padding: 7px 10px;
   border: 1px solid rgba(255, 255, 255, 0.42);
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.72);
   color: var(--ws-ink);
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 850;
   backdrop-filter: blur(8px);
 }
@@ -10844,20 +10845,19 @@ body[data-page="solutions"] .company-hero-signal {
   display: block;
   width: 100%;
   height: 100%;
-  padding: 0;
+  padding: 6px 8px;
   box-sizing: border-box;
-  /* Zoom past baked-in white margins so skyline fills the frame */
-  object-fit: cover;
-  object-position: center 50%;
-  transform: scale(1.8);
-  transform-origin: center center;
+  /* Keep full Antalya / London illustration readable — no aggressive crop/zoom */
+  object-fit: contain;
+  object-position: center;
+  transform: none;
 }
 
 :is(body[data-page="company"], .ws-pc-mirror[data-page="company"]) .company-office-body {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  padding: 22px 24px 24px;
+  padding: 18px 20px 20px;
   background: #ffffff;
 }
 
@@ -11002,10 +11002,10 @@ body[data-page="solutions"] .company-hero-signal {
   }
   :is(body[data-page="company"], .ws-pc-mirror[data-page="company"]) .company-offices-grid {
     grid-template-columns: 1fr;
+    max-width: 420px;
   }
   :is(body[data-page="company"], .ws-pc-mirror[data-page="company"]) .company-office-visual {
-    min-height: 180px;
-    max-height: 210px;
+    height: 220px;
   }
   :is(body[data-page="company"], .ws-pc-mirror[data-page="company"]) .timeline-viewport {
     display: none;
