@@ -10502,9 +10502,9 @@ body[data-page="solutions"] .company-hero-signal {
 
 :is(body[data-page="company"], .ws-pc-mirror[data-page="company"]) .company-team-list {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 250px));
+  grid-template-columns: repeat(2, minmax(0, 270px));
   gap: 18px;
-  justify-content: center;
+  justify-content: end;
   justify-items: stretch;
   width: 100%;
   align-self: start;
@@ -10524,9 +10524,9 @@ body[data-page="solutions"] .company-hero-signal {
   position: relative;
   display: grid;
   place-items: center;
-  aspect-ratio: 1 / 1;
+  aspect-ratio: 4 / 5;
   min-height: 0;
-  max-height: 250px;
+  max-height: 320px;
   overflow: hidden;
 }
 
