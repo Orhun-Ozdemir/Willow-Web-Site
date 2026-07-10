@@ -10502,7 +10502,7 @@ body[data-page="solutions"] .company-hero-signal {
 
 :is(body[data-page="company"], .ws-pc-mirror[data-page="company"]) .company-team-list {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 270px));
+  grid-template-columns: repeat(2, minmax(0, 300px));
   gap: 18px;
   justify-content: end;
   justify-items: stretch;
@@ -10553,34 +10553,38 @@ body[data-page="solutions"] .company-hero-signal {
   display: flex;
   flex: 0 0 auto;
   flex-direction: column;
-  gap: 6px;
-  padding: 16px 18px 18px;
+  gap: 8px;
+  padding: 18px 20px 20px;
   background: #ffffff;
 }
 
 :is(body[data-page="company"], .ws-pc-mirror[data-page="company"]) .company-team-body b {
   color: var(--ws-ink);
-  font-size: 17px;
+  font-size: 18px;
   font-weight: 700;
-  line-height: 1.2;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
 }
 
 :is(body[data-page="company"], .ws-pc-mirror[data-page="company"]) .company-team-body span {
   color: var(--ws-blue);
-  font-size: 13.5px;
+  font-size: 14px;
   font-weight: 700;
-  line-height: 1.35;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
 }
 
 :is(body[data-page="company"], .ws-pc-mirror[data-page="company"]) .company-team-body p {
-  display: -webkit-box;
-  margin: 4px 0 0;
-  overflow: hidden;
-  color: var(--ws-body);
-  font-size: 14.5px;
-  line-height: 1.6;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3;
+  display: block;
+  margin: 2px 0 0;
+  overflow: visible;
+  color: var(--ws-ink);
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.55;
+  opacity: 0.78;
+  overflow-wrap: anywhere;
+  -webkit-line-clamp: unset;
 }
 
 /* Timeline */
