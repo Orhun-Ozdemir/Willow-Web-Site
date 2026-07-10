@@ -9,7 +9,8 @@ const DEFAULT_LOCALE: Locale = "en";
 // The old site was a WordPress/WooCommerce install with flat, mostly-Turkish
 // slugs and no locale prefix. Every indexed legacy URL is 301-redirected to its
 // closest equivalent on the new site to preserve SEO authority and backlinks.
-// The old public site was Turkish, so legacy traffic intentionally maps to /tr.
+// The old public site was Turkish, so legacy *content* URLs intentionally map to /tr.
+// The site root "/" is handled by detectLocale (cookie → Accept-Language → en), not this map.
 // Keys are lowercase, WITHOUT a trailing slash. Update GSC after launch.
 const LEGACY_REDIRECTS: Record<string, string> = {
   // Legacy sitemap endpoints -> canonical Astro sitemap
@@ -24,8 +25,7 @@ const LEGACY_REDIRECTS: Record<string, string> = {
   "/product-sitemap.xml": "/sitemap.xml",
   "/product_cat-sitemap.xml": "/sitemap.xml",
 
-  // Core sections
-  "/": "/tr",
+  // Core sections (root "/" is NOT here — locale comes from Accept-Language / cookie / en default)
   "/urunler": "/tr/products",
   "/katalog-indirin": "/tr/products",
   "/haberler": "/tr/news",
@@ -236,7 +236,7 @@ function isExemptFromLocale(pathname: string): boolean {
   return false;
 }
 
-// Pick the best matching locale: 1) cookie preference, 2) Accept-Language, 3) default.
+// Pick the best matching locale: 1) cookie preference, 2) Accept-Language (by q), 3) en.
 function detectLocale(request: Request): Locale {
   // 1. Check for saved preference cookie
   const cookies = request.headers.get("cookie") || "";
@@ -245,13 +245,23 @@ function detectLocale(request: Request): Locale {
     return match[1] as Locale;
   }
 
-  // 2. Fall back to Accept-Language header
+  // 2. Fall back to Accept-Language header (highest q first)
   const header = request.headers.get("accept-language") || "";
-  for (const part of header.split(",")) {
-    const code = part.split(";")[0].trim().toLowerCase();
-    if (!code) continue;
-    if (locales.includes(code as Locale)) return code as Locale;
-    const base = code.split("-")[0];
+  const ranked = header
+    .split(",")
+    .map((part) => {
+      const [rawTag, ...params] = part.trim().split(";");
+      const tag = (rawTag || "").trim().toLowerCase();
+      const qParam = params.find((p) => p.trim().startsWith("q="));
+      const q = qParam ? Number(qParam.split("=")[1]) : 1;
+      return { tag, q: Number.isFinite(q) ? q : 0 };
+    })
+    .filter((item) => item.tag)
+    .sort((a, b) => b.q - a.q);
+
+  for (const { tag } of ranked) {
+    if (locales.includes(tag as Locale)) return tag as Locale;
+    const base = tag.split("-")[0];
     if (locales.includes(base as Locale)) return base as Locale;
   }
   return DEFAULT_LOCALE;
