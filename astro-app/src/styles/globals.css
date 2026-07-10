@@ -10502,32 +10502,37 @@ body[data-page="solutions"] .company-hero-signal {
 
 :is(body[data-page="company"], .ws-pc-mirror[data-page="company"]) .company-team-list {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 238px), 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(2, minmax(0, 250px));
+  gap: 18px;
+  justify-content: center;
+  justify-items: stretch;
+  width: 100%;
   align-self: start;
 }
 
 :is(body[data-page="company"], .ws-pc-mirror[data-page="company"]) .company-team-card {
   display: flex;
   min-width: 0;
-  height: 100%;
+  width: 100%;
+  height: auto;
   flex-direction: column;
   overflow: hidden;
-  border-radius: 20px;
+  border-radius: 18px;
 }
 
 :is(body[data-page="company"], .ws-pc-mirror[data-page="company"]) .company-team-avatar {
   position: relative;
   display: grid;
   place-items: center;
-  aspect-ratio: 4 / 5;
-  min-height: 280px;
+  aspect-ratio: 1 / 1;
+  min-height: 0;
+  max-height: 250px;
   overflow: hidden;
 }
 
 :is(body[data-page="company"], .ws-pc-mirror[data-page="company"]) .company-team-initials {
   font-family: var(--font-display);
-  font-size: clamp(2.5rem, 5.5vw, 3.25rem);
+  font-size: clamp(2.2rem, 5vw, 2.85rem);
   font-weight: 700;
   color: var(--ws-blue);
   opacity: 0.28;
@@ -10541,15 +10546,15 @@ body[data-page="solutions"] .company-hero-signal {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: top center;
+  object-position: center 18%;
 }
 
 :is(body[data-page="company"], .ws-pc-mirror[data-page="company"]) .company-team-body {
   display: flex;
-  flex: 1;
+  flex: 0 0 auto;
   flex-direction: column;
-  gap: 7px;
-  padding: 22px 24px;
+  gap: 6px;
+  padding: 16px 18px 18px;
   background: #ffffff;
 }
 
@@ -11056,7 +11061,11 @@ body[data-page="solutions"] .company-hero-signal {
     width: min(var(--max), calc(100% - 32px));
   }
   :is(body[data-page="company"], .ws-pc-mirror[data-page="company"]) .company-team-list {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 280px);
+    justify-content: center;
+  }
+  :is(body[data-page="company"], .ws-pc-mirror[data-page="company"]) .company-team-avatar {
+    max-height: 280px;
   }
   :is(body[data-page="company"], .ws-pc-mirror[data-page="company"]) .company-stats-wrap .ws-card {
     grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
