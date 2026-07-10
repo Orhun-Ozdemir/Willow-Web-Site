@@ -10748,23 +10748,25 @@ body[data-page="solutions"] .company-hero-signal {
 
 :is(body[data-page="company"], .ws-pc-mirror[data-page="company"]) .company-offices-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  max-width: 820px;
 }
 
 :is(body[data-page="company"], .ws-pc-mirror[data-page="company"]) .company-office-card {
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  border-radius: 22px;
+  border-radius: 16px;
 }
 
 :is(body[data-page="company"], .ws-pc-mirror[data-page="company"]) .company-office-visual {
   position: relative;
   width: 100%;
-  aspect-ratio: 16 / 10;
-  min-height: 260px;
-  max-height: 320px;
+  height: 148px;
+  min-height: 0;
+  max-height: none;
+  aspect-ratio: auto;
   overflow: hidden;
   isolation: isolate;
 }
@@ -10821,16 +10823,16 @@ body[data-page="solutions"] .company-hero-signal {
 
 :is(body[data-page="company"], .ws-pc-mirror[data-page="company"]) .company-map-label {
   position: absolute;
-  right: 22px;
-  bottom: 20px;
+  right: 16px;
+  bottom: 14px;
   z-index: 2;
-  max-width: calc(100% - 44px);
-  padding: 9px 12px;
+  max-width: calc(100% - 32px);
+  padding: 7px 10px;
   border: 1px solid rgba(255, 255, 255, 0.42);
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.72);
   color: var(--ws-ink);
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 850;
   backdrop-filter: blur(8px);
 }
@@ -10842,15 +10844,17 @@ body[data-page="solutions"] .company-hero-signal {
   display: block;
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  object-position: top center;
+  padding: 16px 22px;
+  box-sizing: border-box;
+  object-fit: contain;
+  object-position: center;
 }
 
 :is(body[data-page="company"], .ws-pc-mirror[data-page="company"]) .company-office-body {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  padding: 32px;
+  gap: 10px;
+  padding: 18px 20px 20px;
   background: #ffffff;
 }
 
@@ -10992,6 +10996,13 @@ body[data-page="solutions"] .company-hero-signal {
     grid-template-columns: 1fr;
     gap: 24px;
     padding: 44px 28px;
+  }
+  :is(body[data-page="company"], .ws-pc-mirror[data-page="company"]) .company-offices-grid {
+    grid-template-columns: 1fr;
+    max-width: none;
+  }
+  :is(body[data-page="company"], .ws-pc-mirror[data-page="company"]) .company-office-visual {
+    height: 132px;
   }
   :is(body[data-page="company"], .ws-pc-mirror[data-page="company"]) .timeline-viewport {
     display: none;
