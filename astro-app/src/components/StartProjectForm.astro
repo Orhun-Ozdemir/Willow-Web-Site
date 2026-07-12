@@ -143,6 +143,7 @@ const getLabel = (key: keyof typeof labels) => {
           name="message"
           placeholder={loc(messagePlaceholder)}
           required
+          minlength="10"
         ></textarea>
       </div>
       <div class="field">
@@ -246,13 +247,15 @@ const getLabel = (key: keyof typeof labels) => {
     const resetBtn = document.getElementById('reset-btn');
 
     if (!form || !successMsg || !errorMsg || !submitBtn || !resetBtn) return;
+    if (form.dataset.bound === '1') return;
+    form.dataset.bound = '1';
 
     // Prefill product query param if any
     const urlParams = new URLSearchParams(window.location.search);
     const productSlug = urlParams.get('product');
     if (productSlug) {
       const messageField = form.querySelector('#lpMessage');
-      if (messageField) {
+      if (messageField && !messageField.value) {
         const prefillText = {
           en: `Hello, I'd like to plan a project incorporating the ${productSlug} device into our operational system.`,
           tr: `Merhaba, ${productSlug} cihazını operasyonel sistemimize dahil eden bir proje planlamak istiyorum.`,
@@ -312,8 +315,12 @@ const getLabel = (key: keyof typeof labels) => {
           successMsg.style.display = 'flex';
           form.reset();
         } else {
-          // Server rejected the submission (validation / rate limit / error):
-          // surface the real error instead of pretending it succeeded.
+          let serverMsg = '';
+          try {
+            const data = await res.json();
+            serverMsg = data?.error || '';
+          } catch {}
+          errorMsg.textContent = serverMsg || errorMsg.textContent;
           errorMsg.style.display = 'block';
         }
       } catch (err) {

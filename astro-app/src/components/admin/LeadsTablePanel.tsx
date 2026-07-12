@@ -48,10 +48,18 @@ export default function LeadsTablePanel({ onSelectLead }: LeadsTablePanelProps) 
                 <td className="p-4 text-gray-700">{lead.company || "—"}</td>
                 <td className="p-4">
                   <span className="px-2 py-0.5 rounded bg-gray-100 text-gray-700 font-semibold">
-                    {lead.projectType || lead.subject || "Soru"}
+                    {lead.projectType || lead.subject || lead.interestType || "Soru"}
                   </span>
+                  {lead.sourcePage?.includes("contact") && (
+                    <p className="text-[10px] text-gray-400 mt-1">Contact</p>
+                  )}
+                  {lead.sourcePage?.includes("start-project") && (
+                    <p className="text-[10px] text-gray-400 mt-1">Start Project</p>
+                  )}
                 </td>
-                <td className="p-4 text-gray-500 max-w-xs truncate" title={lead.message}>{lead.message}</td>
+                <td className="p-4 text-gray-500 max-w-xs truncate" title={lead.message}>
+                  {(lead.message || "").replace(/\n\n--- Project brief ---[\s\S]*$/, "") || "—"}
+                </td>
                 <td className="p-4 text-gray-500">
                   {lead.timeline && <p>Süre: {lead.timeline}</p>}
                   {lead.budgetRange && <p>Bütçe: {lead.budgetRange}</p>}

@@ -441,9 +441,15 @@ export default function LeadDetailsDrawer({ leadId, onClose }: LeadDetailsDrawer
                   <div>
                     <span className="text-gray-400 font-medium block">İlgi Türü</span>
                     <span className="px-2 py-0.5 rounded bg-gray-100 text-gray-700 font-bold inline-block mt-1">
-                      {lead.interestType || lead.projectType || "Bilinmiyor"}
+                      {lead.interestType || lead.projectType || lead.subject || "Bilinmiyor"}
                     </span>
                   </div>
+                  {lead.subject && lead.subject !== lead.interestType && lead.subject !== lead.projectType && (
+                    <div>
+                      <span className="text-gray-400 font-medium block">İletişim Konusu</span>
+                      <span className="text-gray-800 font-semibold block mt-0.5">{lead.subject}</span>
+                    </div>
+                  )}
                   {lead.productInterest && (
                     <div>
                       <span className="text-gray-400 font-medium block">İlgilenilen Ürün</span>
@@ -479,8 +485,20 @@ export default function LeadDetailsDrawer({ leadId, onClose }: LeadDetailsDrawer
               <div className="bg-white border border-gray-200 rounded-xl p-5 shadow-sm space-y-3">
                 <h4 className="text-xs font-bold text-gray-800 uppercase tracking-wider border-b border-gray-100 pb-2">Gönderilen Mesaj</h4>
                 <div className="bg-slate-50 rounded-lg p-4 text-sm text-gray-700 whitespace-pre-wrap leading-relaxed border border-slate-100">
-                  {lead.message || "Mesaj içeriği boş."}
+                  {(lead.message || "").replace(/\n\n--- Project brief ---[\s\S]*$/, "").trim() || "Mesaj içeriği boş."}
                 </div>
+                {(lead.projectType || lead.currentStatus || (lead.layers && lead.layers.length) || lead.timeline || lead.budgetRange || lead.subject) && (
+                  <div className="rounded-lg border border-slate-100 bg-white p-3 text-xs text-gray-600 space-y-1">
+                    {lead.subject && <p><span className="font-semibold text-gray-500">Konu:</span> {lead.subject}</p>}
+                    {lead.projectType && <p><span className="font-semibold text-gray-500">Kapsam:</span> {lead.projectType}</p>}
+                    {lead.currentStatus && <p><span className="font-semibold text-gray-500">Durum:</span> {lead.currentStatus}</p>}
+                    {Array.isArray(lead.layers) && lead.layers.length > 0 && (
+                      <p><span className="font-semibold text-gray-500">Katmanlar:</span> {lead.layers.join(", ")}</p>
+                    )}
+                    {lead.timeline && <p><span className="font-semibold text-gray-500">Süre:</span> {lead.timeline}</p>}
+                    {lead.budgetRange && <p><span className="font-semibold text-gray-500">Bütçe:</span> {lead.budgetRange}</p>}
+                  </div>
+                )}
               </div>
             </div>
           )}

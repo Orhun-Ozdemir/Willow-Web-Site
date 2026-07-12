@@ -22,6 +22,7 @@ export interface LeadMailData {
   layers?: string | string[];
   timeline?: string;
   budgetRange?: string;
+  subject?: string;
 }
 
 function getTransporter() {
@@ -56,6 +57,7 @@ export async function sendLeadNotification(to: string[], lead: LeadMailData) {
     ["Telefon", lead.phone],
     ["Ülke", lead.country],
     ["İlgi Alanı", lead.interestType],
+    ["Konu", lead.subject],
     ["Ürün", lead.productInterest],
     ["Hizmet", lead.serviceInterest],
     ["Kapsam", lead.projectType],
@@ -125,7 +127,10 @@ export async function sendTelegramNotification(chatIds: string[], lead: LeadMail
     if (lead.timeline)      parts.push(`▸ *Zaman Planı:* ${lead.timeline}`);
     if (lead.budgetRange)   parts.push(`▸ *Bütçe:* ${lead.budgetRange}`);
   } else {
-    if (lead.interestType)    parts.push(`💡 *İlgi:* ${lead.interestType}`);
+    if (lead.subject)         parts.push(`📝 *Konu:* ${lead.subject}`);
+    if (lead.interestType && lead.interestType !== lead.subject) {
+      parts.push(`💡 *İlgi:* ${lead.interestType}`);
+    }
     if (lead.productInterest) parts.push(`📦 *Ürün:* ${lead.productInterest}`);
     if (lead.serviceInterest) parts.push(`⚙️ *Hizmet:* ${lead.serviceInterest}`);
   }
