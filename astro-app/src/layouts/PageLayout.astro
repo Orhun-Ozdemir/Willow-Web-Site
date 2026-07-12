@@ -2,6 +2,7 @@
 import BaseLayout from "./BaseLayout.astro";
 import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
+import WhatsAppFloat from "@/components/WhatsAppFloat.astro";
 import { resolveLocale, type Locale } from "@/lib/cms";
 import type { Alternate } from "@/lib/seo";
 
@@ -27,4 +28,5 @@ const locale = resolveLocale(Astro.props.locale, Astro.url.pathname);
   <Header locale={locale} currentPath={Astro.url.pathname} />
   <slot />
   <Footer locale={locale} />
+  <WhatsAppFloat locale={locale} />
 </BaseLayout>
