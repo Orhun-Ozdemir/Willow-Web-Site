@@ -1,8 +1,5 @@
 import nodemailer from "nodemailer";
-
-// Works for both build-time (import.meta.env) and SSR runtime (process.env on Vercel/Node).
-const env = (key: string): string | undefined =>
-  (import.meta.env as any)?.[key] ?? (typeof process !== "undefined" ? process.env?.[key] : undefined);
+import { getSmtpConfig } from "./smtp-settings";
 
 export interface LeadMailData {
   name: string;
@@ -25,25 +22,34 @@ export interface LeadMailData {
   subject?: string;
 }
 
-function getTransporter() {
-  const user = env("SMTP_USER");
-  const pass = env("SMTP_PASS");
-  if (!user || !pass) throw new Error("SMTP_USER ve SMTP_PASS env değişkenleri tanımlı değil");
+async function getTransporter() {
+  const cfg = await getSmtpConfig();
+  if (!cfg.user || !cfg.pass) {
+    throw new Error("SMTP_USER ve SMTP_PASS tanımlı değil (Ayarlar → Bildirimler veya env)");
+  }
 
-  return nodemailer.createTransport({
-    host: env("SMTP_HOST") || "smtp.gmail.com",
-    port: Number(env("SMTP_PORT") || 465),
-    secure: true,
-    auth: { user, pass },
-  });
+  return {
+    transporter: nodemailer.createTransport({
+      host: cfg.host,
+      port: cfg.port,
+      secure: cfg.port === 465,
+      auth: { user: cfg.user, pass: cfg.pass },
+    }),
+    user: cfg.user,
+  };
 }
 
 export async function sendLeadNotification(to: string[], lead: LeadMailData) {
-  if (!to.length) return;
-  const user = env("SMTP_USER");
-  if (!user || !env("SMTP_PASS")) return; // e-posta yapılandırılmamış — sessizce geç
+  const recipients = [...new Set((to || []).map((e) => e.trim()).filter((e) => e.includes("@")))];
+  if (!recipients.length) return;
 
-  const transporter = getTransporter();
+  const cfg = await getSmtpConfig();
+  if (!cfg.user || !cfg.pass) {
+    console.error("Lead e-posta atlandı: SMTP yapılandırılmamış");
+    return;
+  }
+
+  const { transporter, user } = await getTransporter();
   const from = `"WillowSoft Admin" <${user}>`;
 
   const layersStr = Array.isArray(lead.layers)
@@ -76,11 +82,17 @@ export async function sendLeadNotification(to: string[], lead: LeadMailData) {
     ? `<div style="margin-top:16px;padding:14px 16px;background:#f4f6fb;border-left:4px solid #132175;border-radius:4px;font-size:14px;color:#333;white-space:pre-wrap">${lead.message}</div>`
     : "";
 
+  const isContact = !!(lead.sourcePage || "").includes("contact") && !lead.projectType;
+  const title = isContact ? "Yeni İletişim Formu" : "Yeni Form Başvurusu";
+  const mailSubject = isContact
+    ? `İletişim: ${lead.name}${lead.subject ? ` — ${lead.subject}` : ""}`
+    : `Yeni Lead: ${lead.name}${lead.company ? ` — ${lead.company}` : ""}`;
+
   const html = `
     <div style="font-family:sans-serif;max-width:600px;margin:0 auto">
       <div style="background:#132175;padding:20px 24px;border-radius:8px 8px 0 0">
-        <h2 style="color:#fff;margin:0;font-size:18px">Yeni Form Başvurusu</h2>
-        <p style="color:#a0b4e8;margin:4px 0 0;font-size:13px">WillowSoft web sitesinden yeni bir lead geldi</p>
+        <h2 style="color:#fff;margin:0;font-size:18px">${title}</h2>
+        <p style="color:#a0b4e8;margin:4px 0 0;font-size:13px">WillowSoft web sitesinden yeni bir başvuru geldi</p>
       </div>
       <div style="border:1px solid #e0e5f0;border-top:none;border-radius:0 0 8px 8px;padding:20px 24px">
         <table style="width:100%;border-collapse:collapse;font-size:14px">${rows}</table>
@@ -91,12 +103,20 @@ export async function sendLeadNotification(to: string[], lead: LeadMailData) {
     </div>
   `;
 
-  await transporter.sendMail({
-    from,
-    to: to.join(", "),
-    subject: `Yeni Lead: ${lead.name}${lead.company ? ` — ${lead.company}` : ""}`,
-    html,
-  });
+  // Send one message per recipient so Hostinger/SMTP delivers to everyone on the
+  // Ayarlar → Bildirimler list (comma-joined To: is unreliable with some providers).
+  const results = await Promise.allSettled(
+    recipients.map((addr) =>
+      transporter.sendMail({ from, to: addr, subject: mailSubject, html })
+    )
+  );
+  const failed = results.filter((r) => r.status === "rejected");
+  if (failed.length) {
+    console.error(
+      `Lead e-posta kısmi hata: ${failed.length}/${recipients.length} başarısız`,
+      failed.map((r) => (r as PromiseRejectedResult).reason?.message || r)
+    );
+  }
 }
 
 export async function sendTelegramNotification(chatIds: string[], lead: LeadMailData) {

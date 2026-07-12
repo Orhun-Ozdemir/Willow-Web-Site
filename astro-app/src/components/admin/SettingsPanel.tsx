@@ -147,7 +147,8 @@ function NotificationsPanel() {
   return (
     <div className="space-y-5">
       <div className="bg-blue-50 border border-blue-100 rounded-xl p-4 text-sm text-blue-700">
-        Siteye <strong>yeni bir lead</strong> geldiğinde aşağıdaki kanallar üzerinden otomatik bildirim gönderilir.
+        <strong>Contact</strong> ve <strong>Start Project</strong> formlarından gelen her başvuru,
+        aşağıdaki e-posta ve Telegram listesine otomatik bildirilir. Yeni kişi eklemek için bu listeyi kullanın.
       </div>
 
       {msg && (

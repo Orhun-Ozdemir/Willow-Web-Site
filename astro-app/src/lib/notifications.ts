@@ -27,19 +27,27 @@ function writeFile(data: NotifData) {
 export async function listRecipients(): Promise<NotifData> {
   if (!hasSupabaseEnv) return readFile();
 
-  const { data, error } = await getServiceClient()
-    .from(TABLE)
-    .select("id, type, value, label")
-    .order("created_at", { ascending: true });
-  if (error) throw new Error(error.message);
+  try {
+    const { data, error } = await getServiceClient()
+      .from(TABLE)
+      .select("id, type, value, label")
+      .order("created_at", { ascending: true });
+    if (error) {
+      console.error("notification_recipients okunamadı:", error.message);
+      return readFile();
+    }
 
-  const emails: EmailEntry[] = [];
-  const telegram: TelegramEntry[] = [];
-  for (const r of data || []) {
-    if (r.type === "email") emails.push({ id: r.id, email: r.value, label: r.label || "" });
-    else if (r.type === "telegram") telegram.push({ id: r.id, chatId: r.value, label: r.label || "" });
+    const emails: EmailEntry[] = [];
+    const telegram: TelegramEntry[] = [];
+    for (const r of data || []) {
+      if (r.type === "email") emails.push({ id: r.id, email: r.value, label: r.label || "" });
+      else if (r.type === "telegram") telegram.push({ id: r.id, chatId: r.value, label: r.label || "" });
+    }
+    return { emails, telegram };
+  } catch (err) {
+    console.error("listRecipients failed:", err);
+    return readFile();
   }
-  return { emails, telegram };
 }
 
 // ── Add ────────────────────────────────────────────────────────────────────────
@@ -124,19 +132,25 @@ export async function syncTelegram(token: string): Promise<{ added: TelegramEntr
 // ── Helpers for the lead-notification sender ──────────────────────────────────
 export async function getRecipientChannels(): Promise<{ emails: string[]; chatIds: string[] }> {
   const data = await listRecipients();
-  const emails = data.emails.map((e) => e.email).filter(Boolean);
-  const chatIds = data.telegram.map((t) => t.chatId).filter(Boolean);
+  const seen = new Set<string>();
+  const emails: string[] = [];
+  for (const e of data.emails.map((x) => x.email.trim()).filter(Boolean)) {
+    const key = e.toLowerCase();
+    if (seen.has(key)) continue;
+    seen.add(key);
+    emails.push(e);
+  }
+  const chatIds = [...new Set(data.telegram.map((t) => t.chatId).filter(Boolean))];
 
   const env = (key: string): string | undefined =>
     (import.meta.env as any)?.[key] ?? (typeof process !== "undefined" ? process.env?.[key] : undefined);
 
   // Always include LEAD_NOTIFICATION_EMAIL (comma-separated). Admin recipients are additive.
-  const leadEmails = (env("LEAD_NOTIFICATION_EMAIL") || "")
-    .split(",")
-    .map((e) => e.trim())
-    .filter((e) => e.includes("@"));
-  for (const e of leadEmails) {
-    if (!emails.includes(e)) emails.push(e);
+  for (const e of (env("LEAD_NOTIFICATION_EMAIL") || "").split(",").map((x) => x.trim()).filter((x) => x.includes("@"))) {
+    const key = e.toLowerCase();
+    if (seen.has(key)) continue;
+    seen.add(key);
+    emails.push(e);
   }
 
   // Last-resort fallback: SMTP login mailbox itself.

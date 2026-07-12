@@ -174,6 +174,7 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
         timeline: body.timeline, budgetRange: body.budgetRange,
       };
       const { emails, chatIds } = await getRecipientChannels();
+      console.log(`Lead bildirim alıcıları: ${emails.length} e-posta, ${chatIds.length} telegram`, emails);
       await Promise.allSettled([
         sendTelegramNotification(chatIds, mailData),
         sendLeadNotification(emails, mailData),
