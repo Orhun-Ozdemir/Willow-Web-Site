@@ -124,8 +124,20 @@ export async function syncTelegram(token: string): Promise<{ added: TelegramEntr
 // ── Helpers for the lead-notification sender ──────────────────────────────────
 export async function getRecipientChannels(): Promise<{ emails: string[]; chatIds: string[] }> {
   const data = await listRecipients();
-  return {
-    emails: data.emails.map((e) => e.email).filter(Boolean),
-    chatIds: data.telegram.map((t) => t.chatId).filter(Boolean),
-  };
+  const emails = data.emails.map((e) => e.email).filter(Boolean);
+  const chatIds = data.telegram.map((t) => t.chatId).filter(Boolean);
+
+  // Fallback when admin recipients table is empty but SMTP is configured.
+  const env = (key: string): string | undefined =>
+    (import.meta.env as any)?.[key] ?? (typeof process !== "undefined" ? process.env?.[key] : undefined);
+  if (!emails.length) {
+    const smtpUser = env("SMTP_USER")?.trim();
+    if (smtpUser && smtpUser.includes("@")) emails.push(smtpUser);
+  }
+  if (!chatIds.length) {
+    const defaultChat = env("TELEGRAM_CHAT_ID")?.trim();
+    if (defaultChat) chatIds.push(defaultChat);
+  }
+
+  return { emails, chatIds };
 }

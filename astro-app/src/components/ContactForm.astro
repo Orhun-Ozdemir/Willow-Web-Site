@@ -147,13 +147,19 @@ const subjectOptions: { value: string; label: Record<string, string> }[] = [
       submitBtn.textContent = sendingLabel;
       errorMsg.style.display = 'none';
 
+      // Never use form.name — HTMLFormElement.name is the form's name attribute, not the input.
+      const field = (n) => {
+        const el = form.elements.namedItem(n);
+        return el && typeof el.value === 'string' ? el.value : '';
+      };
+
       const formData = {
-        name: form.name.value,
-        email: form.email.value,
-        company: form.company.value,
-        subject: form.subject.value,
-        message: form.message.value,
-        website: form.website.value, // honeypot
+        name: field('name'),
+        email: field('email'),
+        company: field('company'),
+        subject: field('subject'),
+        message: field('message'),
+        website: field('website'), // honeypot
       };
 
       try {

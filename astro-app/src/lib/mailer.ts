@@ -45,6 +45,10 @@ export async function sendLeadNotification(to: string[], lead: LeadMailData) {
   const transporter = getTransporter();
   const from = `"WillowSoft Admin" <${user}>`;
 
+  const layersStr = Array.isArray(lead.layers)
+    ? lead.layers.filter(Boolean).join(", ")
+    : lead.layers || "";
+
   const rows = [
     ["Ad Soyad", lead.name],
     ["E-posta", lead.email],
@@ -54,6 +58,11 @@ export async function sendLeadNotification(to: string[], lead: LeadMailData) {
     ["İlgi Alanı", lead.interestType],
     ["Ürün", lead.productInterest],
     ["Hizmet", lead.serviceInterest],
+    ["Kapsam", lead.projectType],
+    ["Mevcut Durum", lead.currentStatus],
+    ["Katmanlar", layersStr],
+    ["Zaman Planı", lead.timeline],
+    ["Bütçe", lead.budgetRange],
     ["Kaynak Sayfa", lead.sourcePage],
     ["Dil", lead.locale],
   ]

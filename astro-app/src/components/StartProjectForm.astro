@@ -273,21 +273,27 @@ const getLabel = (key: keyof typeof labels) => {
       submitBtn.textContent = sendingLabel;
       errorMsg.style.display = 'none';
 
+      // Never use form.name — HTMLFormElement.name is the form's name attribute, not the input.
+      const field = (n) => {
+        const el = form.elements.namedItem(n);
+        return el && typeof el.value === 'string' ? el.value : '';
+      };
+
       const checkedLayers = [];
       const checkboxes = form.querySelectorAll('input[name="layers"]:checked');
       checkboxes.forEach(cb => checkedLayers.push(cb.value));
 
       const formData = {
-        message: form.message.value,
-        projectType: form.projectType.value,
-        currentStatus: form.currentStatus.value,
+        message: field('message'),
+        projectType: field('projectType'),
+        currentStatus: field('currentStatus'),
         layers: checkedLayers,
-        timeline: form.timeline.value,
-        budgetRange: form.budgetRange.value,
-        name: form.name.value,
-        email: form.email.value,
-        company: form.company.value,
-        website: form.website.value, // honeypot
+        timeline: field('timeline'),
+        budgetRange: field('budgetRange'),
+        name: field('name'),
+        email: field('email'),
+        company: field('company'),
+        website: field('website'), // honeypot
       };
 
       try {

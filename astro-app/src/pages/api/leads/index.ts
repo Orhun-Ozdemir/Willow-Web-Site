@@ -55,12 +55,29 @@ export const GET: APIRoute = async ({ request }) => {
     }
 
     // Map snake_case back to camelCase for the frontend
-    const leads = (data || []).map(l => ({
-      id: l.id, status: l.status, internalNote: l.internal_note, sourcePage: l.source_page,
-      locale: l.locale, name: l.name, company: l.company, email: l.email, phone: l.phone,
-      country: l.country, interestType: l.interest_type, productInterest: l.product_interest,
-      serviceInterest: l.service_interest, message: l.message, createdAt: l.created_at, updatedAt: l.updated_at
-    }));
+    const leads = (data || []).map(l => {
+      const message = l.message || "";
+      const brief: Record<string, string> = {};
+      const briefMatch = message.match(/--- Project brief ---\n([\s\S]*)$/);
+      if (briefMatch) {
+        for (const line of briefMatch[1].split("\n")) {
+          const m = line.match(/^(Scope|Status|Layers|Timeline|Budget|Subject):\s*(.+)$/);
+          if (m) brief[m[1]] = m[2];
+        }
+      }
+      return {
+        id: l.id, status: l.status, internalNote: l.internal_note, sourcePage: l.source_page,
+        locale: l.locale, name: l.name, company: l.company, email: l.email, phone: l.phone,
+        country: l.country, interestType: l.interest_type, productInterest: l.product_interest,
+        serviceInterest: l.service_interest, message: l.message, createdAt: l.created_at, updatedAt: l.updated_at,
+        projectType: brief.Scope || l.interest_type || "",
+        currentStatus: brief.Status || "",
+        layers: brief.Layers ? brief.Layers.split(",").map((s: string) => s.trim()) : [],
+        timeline: brief.Timeline || "",
+        budgetRange: brief.Budget || "",
+        subject: brief.Subject || "",
+      };
+    });
 
     return new Response(JSON.stringify(leads), { status: 200, headers: { "Content-Type": "application/json" } });
   } catch (err: any) {
@@ -100,6 +117,20 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
 
     const supabase = getServiceClient();
 
+    // Persist project-brief extras inside message so admin/DB keep them
+    // (dedicated columns are not on the leads table yet).
+    const briefLines: string[] = [];
+    if (body.projectType) briefLines.push(`Scope: ${body.projectType}`);
+    if (body.currentStatus) briefLines.push(`Status: ${body.currentStatus}`);
+    if (Array.isArray(body.layers) && body.layers.length) {
+      briefLines.push(`Layers: ${body.layers.join(", ")}`);
+    }
+    if (body.timeline) briefLines.push(`Timeline: ${body.timeline}`);
+    if (body.budgetRange) briefLines.push(`Budget: ${body.budgetRange}`);
+    if (body.subject) briefLines.push(`Subject: ${body.subject}`);
+    const storedMessage =
+      briefLines.length > 0 ? `${message}\n\n--- Project brief ---\n${briefLines.join("\n")}` : message;
+
     const lead = {
       id: crypto.randomUUID(),
       status: "new",
@@ -108,15 +139,15 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
       locale: body.locale || "en",
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),
-      name: body.name || "",
+      name: name,
       company: body.company || "",
-      email: body.email || "",
+      email: email,
       phone: body.phone || "",
       country: body.country || "",
       interest_type: body.interestType || body.projectType || "",
       product_interest: body.productInterest || "",
       service_interest: body.serviceInterest || "",
-      message: body.message || "",
+      message: storedMessage,
     };
 
     const { error } = await supabase.from("leads").insert(lead);
