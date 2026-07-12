@@ -21,7 +21,15 @@ export const PATCH: APIRoute = async ({ request, params }) => {
       if (String(body.password).length < 8) {
         return new Response(JSON.stringify({ ok: false, error: "Şifre en az 8 karakter olmalı." }), { status: 400, headers: { "Content-Type": "application/json" } });
       }
-      patch.password_hash = hashPassword(body.password);
+      const sbHash = getServiceClient();
+      const { data: bcryptHash, error: hashErr } = await sbHash.rpc("hash_admin_password", {
+        p_password: String(body.password),
+      });
+      if (!hashErr && typeof bcryptHash === "string" && bcryptHash.startsWith("$2")) {
+        patch.password_hash = bcryptHash;
+      } else {
+        patch.password_hash = hashPassword(body.password);
+      }
     }
     if (body.role && ["super_admin", "content_editor", "sales", "viewer"].includes(body.role)) {
       patch.role = body.role;

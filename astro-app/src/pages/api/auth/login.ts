@@ -28,11 +28,12 @@ export const POST: APIRoute = async ({ request }) => {
     });
 
     const { token } = createSession(username);
+    const secure = import.meta.env.PROD ? "; Secure" : "";
     return new Response(JSON.stringify({ ok: true, user: { name: username, role: profile.role } }), {
       status: 200,
       headers: {
         "Content-Type": "application/json",
-        "Set-Cookie": `willow_admin=${token}; Path=/; Max-Age=43200; HttpOnly; SameSite=Lax`,
+        "Set-Cookie": `willow_admin=${token}; Path=/; Max-Age=43200; HttpOnly; SameSite=Lax${secure}`,
       },
     });
   } catch {

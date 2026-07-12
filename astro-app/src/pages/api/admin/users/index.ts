@@ -57,12 +57,22 @@ export const POST: APIRoute = async ({ request }) => {
       return new Response(JSON.stringify({ ok: false, error: "Şifre en az 8 karakter olmalı." }), { status: 400, headers: { "Content-Type": "application/json" } });
     }
 
-    const password_hash = hashPassword(password);
     const role = body.role && ["super_admin", "content_editor", "sales", "viewer"].includes(body.role)
       ? body.role
       : "content_editor";
 
     const sb = getServiceClient();
+    // Prefer bcrypt (matches verify_admin_login RPC). Fall back to Node PBKDF2.
+    let password_hash: string;
+    const { data: bcryptHash, error: hashErr } = await sb.rpc("hash_admin_password", {
+      p_password: String(password),
+    });
+    if (!hashErr && typeof bcryptHash === "string" && bcryptHash.startsWith("$2")) {
+      password_hash = bcryptHash;
+    } else {
+      password_hash = hashPassword(password);
+    }
+
     let result = await sb
       .from("admin_users")
       .insert({ username: String(username).trim(), password_hash, active: true, role })

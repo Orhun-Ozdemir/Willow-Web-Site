@@ -63,7 +63,8 @@ export function AdminProvider({ children }: { children: ReactNode }) {
 
         const leadsRes = await fetch("/api/leads");
         const leadsData = await leadsRes.json();
-        setLeads(leadsRes.ok ? leadsData : []);
+        // API returns a bare array on success; { ok:false } on auth/error.
+        setLeads(leadsRes.ok && Array.isArray(leadsData) ? leadsData : []);
       } catch (err) {
         console.error(err);
       } finally {

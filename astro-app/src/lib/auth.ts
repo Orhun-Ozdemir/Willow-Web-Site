@@ -1,5 +1,5 @@
 import crypto from "node:crypto";
-import { getPublicClient } from "./supabase";
+import { getPublicClient, getServiceClient } from "./supabase";
 
 const sessionTtlMs = 1000 * 60 * 60 * 12;
 
@@ -24,25 +24,59 @@ export function hashPassword(password: string, salt?: string): string {
   return `pbkdf2:${s}:${hash}`;
 }
 
+function verifyPbkdf2(password: string, stored: string): boolean {
+  const parts = stored.split(":");
+  if (parts.length !== 3 || parts[0] !== "pbkdf2") return false;
+  const [, salt, expected] = parts;
+  const actual = crypto.pbkdf2Sync(password, salt, 100_000, 64, "sha512").toString("hex");
+  try {
+    const a = Buffer.from(actual, "hex");
+    const b = Buffer.from(expected, "hex");
+    return a.length === b.length && crypto.timingSafeEqual(a, b);
+  } catch {
+    return false;
+  }
+}
+
 // ── Credential check ──────────────────────────────────────────────────────────
 
 export async function verifyCredentials(username: string, password: string): Promise<boolean> {
+  const user = username.trim();
+  if (!user || !password) return false;
+
+  // 1) bcrypt hashes via SQL RPC (legacy `admin` user and future bcrypt rows)
   try {
     const sb = getPublicClient();
     const { data, error } = await sb.rpc("verify_admin_login", {
-      p_username: username,
+      p_username: user,
       p_password: password,
     });
     if (!error && data && data.length > 0) return true;
   } catch {
-    // fall through to env var fallback
+    // continue
+  }
+
+  // 2) PBKDF2 hashes created by admin UI (`hashPassword`) — RPC only understands bcrypt.
+  try {
+    const { data } = await getServiceClient()
+      .from("admin_users")
+      .select("password_hash, active")
+      .eq("username", user)
+      .maybeSingle();
+    if (data?.active !== false && typeof data?.password_hash === "string") {
+      if (data.password_hash.startsWith("pbkdf2:") && verifyPbkdf2(password, data.password_hash)) {
+        return true;
+      }
+    }
+  } catch {
+    // continue
   }
 
   // Fallback: env-var credentials. In production, only honor this path when an
   // ADMIN_PASSWORD is explicitly configured — never the baked-in dev default,
   // which would otherwise be a public backdoor.
   if (!adminPasswordEnv && import.meta.env.PROD) return false;
-  return username === adminUser && password === adminPassword;
+  return user === adminUser && password === adminPassword;
 }
 
 // ── HMAC-signed stateless session tokens ─────────────────────────────────────
