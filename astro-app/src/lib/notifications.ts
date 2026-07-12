@@ -127,9 +127,19 @@ export async function getRecipientChannels(): Promise<{ emails: string[]; chatId
   const emails = data.emails.map((e) => e.email).filter(Boolean);
   const chatIds = data.telegram.map((t) => t.chatId).filter(Boolean);
 
-  // Fallback when admin recipients table is empty but SMTP is configured.
   const env = (key: string): string | undefined =>
     (import.meta.env as any)?.[key] ?? (typeof process !== "undefined" ? process.env?.[key] : undefined);
+
+  // Always include LEAD_NOTIFICATION_EMAIL (comma-separated). Admin recipients are additive.
+  const leadEmails = (env("LEAD_NOTIFICATION_EMAIL") || "")
+    .split(",")
+    .map((e) => e.trim())
+    .filter((e) => e.includes("@"));
+  for (const e of leadEmails) {
+    if (!emails.includes(e)) emails.push(e);
+  }
+
+  // Last-resort fallback: SMTP login mailbox itself.
   if (!emails.length) {
     const smtpUser = env("SMTP_USER")?.trim();
     if (smtpUser && smtpUser.includes("@")) emails.push(smtpUser);
