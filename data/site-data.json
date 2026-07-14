@@ -1229,7 +1229,7 @@
       "id": "willowgps",
       "title": "WillowGPS",
       "slug": "willowgps",
-      "category": "environment",
+      "category": "tracking",
       "image": "assets/product-cutouts/willowgps.png",
       "shortDescription": "Measures latitude, longitude, elevation, speed. Integrated LoRa and GPS antennas for compact deployment.",
       "chips": [
@@ -1390,7 +1390,7 @@
       "id": "willowpanic",
       "title": "WillowPanic",
       "slug": "willowpanic",
-      "category": "industrial",
+      "category": "tracking",
       "image": "assets/product-cutouts/panic-button.png",
       "shortDescription": "Sends emergency alert to central monitoring unit when activated. Ideal for health interventions or security.",
       "chips": [
@@ -4484,24 +4484,24 @@
         "ja": "カタログ"
       },
       "catalogTitle": {
-        "en": "Filter by product family.",
-        "tr": "Ürün ailesine göre filtreleyin.",
-        "de": "Nach Produktfamilie filtern.",
-        "fr": "Filtrer par famille de produits.",
-        "es": "Filtrar por familia de productos.",
-        "it": "Filtra per famiglia di prodotti.",
-        "ar": "التصفية حسب عائلة المنتج.",
-        "ja": "製品ファミリーで絞り込む。"
+        "en": "Explore hardware by operational purpose.",
+        "tr": "Donanımı kullanım amacına göre keşfedin.",
+        "de": "Hardware nach Einsatzzweck entdecken.",
+        "fr": "Explorez le matériel selon son usage opérationnel.",
+        "es": "Explore el hardware según su propósito operativo.",
+        "it": "Esplora l'hardware in base allo scopo operativo.",
+        "ar": "استكشف الأجهزة حسب الغرض التشغيلي.",
+        "ja": "運用目的からハードウェアを探す。"
       },
       "catalogLead": {
-        "en": "A clear catalog to compare modules, environmental sensors, tracking and safety devices, and industrial interfaces — in the same visual language as the rest of the site.",
-        "tr": "Modüller, çevresel sensörler, takip ve güvenlik cihazları ile endüstriyel arayüzleri karşılaştırmak için net bir katalog — sitenin geri kalanıyla aynı görsel dilde.",
-        "de": "Ein übersichtlicher Katalog zum Vergleich von Modulen, Umweltsensoren, Tracking- und Sicherheitsgeräten sowie Industrieschnittstellen — im gleichen visuellen Stil wie der Rest der Website.",
-        "fr": "Un catalogue clair pour comparer modules, capteurs environnementaux, dispositifs de suivi et de sécurité, et interfaces industrielles — dans la même identité visuelle que le reste du site.",
-        "es": "Un catálogo claro para comparar módulos, sensores ambientales, dispositivos de seguimiento y seguridad, e interfaces industriales — con el mismo lenguaje visual del resto del sitio.",
-        "it": "Un catalogo chiaro per confrontare moduli, sensori ambientali, dispositivi di tracciamento e sicurezza, e interfacce industriali — nello stesso linguaggio visivo del resto del sito.",
-        "ar": "كتالوج واضح لمقارنة الوحدات والمستشعرات البيئية وأجهزة التتبع والأمان والواجهات الصناعية — بنفس الهوية البصرية لبقية الموقع.",
-        "ja": "モジュール、環境センサー、追跡・安全デバイス、産業用インターフェースを比較できる明快なカタログ — サイト全体と統一されたビジュアルで。"
+        "en": "Every device belongs to a clear family based on the job it performs in the field. Compare the operational role first, then the technical specification.",
+        "tr": "Her cihaz, sahada üstlendiği göreve göre net bir ürün ailesine yerleştirildi. Önce operasyonel rolü, ardından teknik özellikleri karşılaştırın.",
+        "de": "Jedes Gerät gehört entsprechend seiner Aufgabe im Feld zu einer klaren Produktfamilie. Vergleichen Sie zuerst die operative Rolle und dann die technischen Daten.",
+        "fr": "Chaque appareil appartient à une famille claire selon sa mission sur le terrain. Comparez d’abord le rôle opérationnel, puis les spécifications techniques.",
+        "es": "Cada dispositivo pertenece a una familia clara según su función en campo. Compare primero el papel operativo y después las especificaciones técnicas.",
+        "it": "Ogni dispositivo appartiene a una famiglia chiara in base al compito svolto sul campo. Confronta prima il ruolo operativo, poi le specifiche tecniche.",
+        "ar": "ينتمي كل جهاز إلى عائلة واضحة وفق مهمته في الميدان. قارن أولًا الدور التشغيلي ثم المواصفات التقنية.",
+        "ja": "各デバイスは現場で担う役割に基づいて明確な製品群に分類されています。まず運用上の役割を、次に技術仕様を比較してください。"
       }
     },
     "news": {

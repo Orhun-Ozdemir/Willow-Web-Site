@@ -8,6 +8,7 @@ import { aiMetaForPage, appendSchemaNodes, faqSchemaNode, stripHtml, type AiFaqI
 import { getProductExtras } from "@/lib/product-extras";
 import { glossaryLinksForProduct, glossaryLinkLabels } from "@/lib/glossary-links";
 import { applicationIconForText, buildSpecificationGroups, canonicalizeProduct, iconKeyForText, LOCALE_NATIVE_NAMES, normalizeAssetPath, normalizeProductIconItems, normalizeProductSlug, normalizeStringList, productDocumentTypeLabel, productSlugCandidates, PRODUCT_ICON_SVG } from "@/lib/product-model";
+import { productCategoriesFromContent, productCategoryLabel } from "@/lib/product-categories";
 
 export const prerender = false;
 
@@ -21,7 +22,10 @@ if (!rawProduct || rawProduct.visible === false) {
   return Astro.redirect(`/${locale}/products`);
 }
 
-const product = localizeItem(canonicalizeProduct(rawProduct), locale);
+const localizedProduct = localizeItem(canonicalizeProduct(rawProduct), locale);
+const product = { ...localizedProduct, category: rawProduct.category || localizedProduct.category };
+const productCategories = productCategoriesFromContent(content);
+const categoryLabel = productCategoryLabel(productCategories, String(rawProduct.category || product.category), locale);
 const seo = rawProduct.seo?.[locale] || {};
 const titleLower = (product.title || "").toLowerCase();
 const pickText = (value: any) => localizedValue(value, locale);
@@ -451,50 +455,6 @@ const productFaqItems: AiFaqItem[] = [
   { question: pickText(productFaqLabels.selectionQuestion), answer: stripHtml(fitText) },
 ].filter((item) => item.question && item.answer);
 
-// Category display names localized
-const categoryLabels: Record<string, Record<Locale, string>> = {
-  modules: {
-    en: "LoRaWAN Modules",
-    tr: "LoRaWAN Modülleri",
-    de: "LoRaWAN-Module",
-    fr: "Modules LoRaWAN",
-    es: "Módulos LoRaWAN",
-    it: "Moduli LoRaWAN",
-    ar: "وحدات LoRaWAN",
-    ja: "LoRaWANモジュール",
-  },
-  environment: {
-    en: "LoRaWAN Sensors",
-    tr: "LoRaWAN Sensörleri",
-    de: "LoRaWAN-Sensoren",
-    fr: "Capteurs LoRaWAN",
-    es: "Sensores LoRaWAN",
-    it: "Sensori LoRaWAN",
-    ar: "أجهزة استشعار LoRaWAN",
-    ja: "LoRaWANセンサー",
-  },
-  tracking: {
-    en: "LoRaWAN Tracking",
-    tr: "LoRaWAN Takip Cihazları",
-    de: "LoRaWAN-Tracking",
-    fr: "Suivi LoRaWAN",
-    es: "Seguimiento LoRaWAN",
-    it: "Tracciamento LoRaWAN",
-    ar: "تتبع LoRaWAN",
-    ja: "LoRaWANトラッキング",
-  },
-  industrial: {
-    en: "LoRaWAN Industrial",
-    tr: "LoRaWAN Endüstriyel",
-    de: "LoRaWAN-Industriell",
-    fr: "Industriel LoRaWAN",
-    es: "Industrial LoRaWAN",
-    it: "Industriale LoRaWAN",
-    ar: "LoRaWAN الصناعية",
-    ja: "LoRaWAN産業用",
-  }
-};
-
 const WS_SPEC_LABELS: Record<string, Record<string, string>> = {
   mcu: { en: "MCU", tr: "MCU", de: "MCU", fr: "MCU", es: "MCU", it: "MCU", ar: "وحدة MCU", ja: "MCU" },
   protocol: { en: "Protocol", tr: "Protokol", de: "Protokoll", fr: "Protocole", es: "Protocolo", it: "Protocollo", ar: "البروتوكول", ja: "プロトコル" },
@@ -842,7 +802,7 @@ const glossaryHeading = glossaryLinkLabels.heading[locale] || glossaryLinkLabels
       <div class="ws-breadcrumbs">
         <a href={`/${locale}/products`}>{getT("productsBreadcrumb")}</a>
         <span class="separator">/</span>
-        <a href={`/${locale}/products?category=${product.category}`}>{categoryLabels[product.category]?.[locale] || product.category}</a>
+        <a href={`/${locale}/products?category=${rawProduct.category || product.category}`}>{categoryLabel}</a>
         <span class="separator">/</span>
         <span class="current">{product.title}</span>
       </div>
@@ -882,7 +842,7 @@ const glossaryHeading = glossaryLinkLabels.heading[locale] || glossaryLinkLabels
         </div>
         <div class="ws-hero-right">
           <div class="ws-hero-meta">
-            <span class="ws-kicker">{categoryLabels[product.category]?.[locale] || product.category}</span>
+            <span class="ws-kicker">{categoryLabel}</span>
             {product.featured && (
               <span class="ws-featured-badge">
                 ★ {getT("featured")}

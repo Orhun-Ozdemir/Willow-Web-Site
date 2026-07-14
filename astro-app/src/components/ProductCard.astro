@@ -1,17 +1,26 @@
 ---
 import { localizeItem, resolveAsset, resolveLocale, type Locale } from "@/lib/cms";
+import { DEFAULT_PRODUCT_CATEGORIES, productCategoryLabel, type ProductCategory } from "@/lib/product-categories";
 
 interface Props {
   product: any;
   locale: Locale;
   index: number;
+  variant?: "default" | "catalog";
+  categories?: ProductCategory[];
 }
 
-const { product, index } = Astro.props;
+const { product, index, variant = "default", categories = DEFAULT_PRODUCT_CATEGORIES } = Astro.props;
 const locale = resolveLocale(Astro.props.locale, Astro.url.pathname);
 const p = localizeItem(product, locale);
 const delay = index % 4 ? ` delay-${index % 4}` : "";
-const chips = (p.chips || []).slice(0, 3);
+const localizeChip = (chip: string) => {
+  if (locale !== "tr") return chip;
+  return chip
+    .replace(/\b10 years\b/gi, "10 yıla kadar")
+    .replace(/\b5 years\b/gi, "5 yıla kadar");
+};
+const chips = (p.chips || []).slice(0, 3).map(localizeChip);
 
 const cutoutImage =
   resolveAsset(p.cardImage) ||
@@ -28,11 +37,16 @@ const detailsLabel: Record<string, string> = {
   ar: "عرض التفاصيل",
   ja: "詳細を見る",
 };
+// Category is a stable technical key and must never be replaced by a localized value.
+const displayCategory = String(product.category || "environment");
+const categoryLabel = productCategoryLabel(categories, displayCategory, locale);
 ---
 
-<article class={`card product-card reveal${delay}`} data-category={p.category}>
+<article class={`card product-card${variant === "catalog" ? " product-card-premium" : ""} reveal${delay}`} data-category={displayCategory} data-product={p.id}>
   <figure>
+    {variant === "catalog" && <span class="product-card-category">{categoryLabel}</span>}
     <img src={cutoutImage} alt={p.title} loading="lazy" decoding="async" onerror="this.onerror=null; this.src='/assets/willow-mark-transparent.png'; this.style.opacity='0.15';" />
+    {variant === "catalog" && <span class="product-card-index" aria-hidden="true">{String(index + 1).padStart(2, "0")}</span>}
   </figure>
   <div class="product-body">
     <h3>{p.title}</h3>
@@ -44,7 +58,8 @@ const detailsLabel: Record<string, string> = {
     </div>
     <div class="product-actions">
       <a href={`/${locale}/products/${encodeURIComponent(p.slug || p.id)}`} class="btn btn-ghost btn-small">
-        {detailsLabel[locale] || detailsLabel.en}
+        <span>{detailsLabel[locale] || detailsLabel.en}</span>
+        {variant === "catalog" && <span class="product-action-arrow" aria-hidden="true">↗</span>}
       </a>
     </div>
   </div>

@@ -25,10 +25,13 @@ export const HOME_LAYOUT: PageLayoutBlock[] = [
 ];
 
 export const PRODUCTS_LAYOUT: PageLayoutBlock[] = [
-  { id: "hero", label: "Hero", tone: "hero", variant: "hero-compact-split", fields: ["heroEyebrow", "heroTitle", "heroLead"] },
-  { id: "proof", label: "Kanıt", tone: "light", variant: "static-proof", static: true },
-  { id: "catalog", label: "Katalog", tone: "soft", variant: "catalog", fields: ["catalogEyebrow", "catalogTitle"], placeholder: { count: 8, columns: 4 } },
-  { id: "faq", label: "SSS", tone: "soft", variant: "static-faq", static: true },
+  { id: "hero", label: "Hero", tone: "hero", variant: "hero-compact-split", fields: ["heroEyebrow", "heroTitle", "heroLead", "heroPrimaryButton"] },
+  { id: "featured", label: "Öne Çıkan Ürün", tone: "hero", variant: "catalog", fields: ["featuredProductId", "featuredStatus", "featuredEyebrow", "featuredButtonLabel"], placeholder: { count: 1, columns: 1 } },
+  { id: "proof", label: "Kanıt Kartları", tone: "light", variant: "static-proof", fields: ["proofRangeLabel", "proofRangeValue", "proofRangeDescription", "proofBatteryLabel", "proofBatteryValue", "proofBatteryDescription", "proofOutdoorLabel", "proofOutdoorValue", "proofOutdoorDescription", "proofRegionsLabel", "proofRegionsValue", "proofRegionsDescription"] },
+  { id: "catalog", label: "Katalog", tone: "soft", variant: "catalog", fields: ["catalogEyebrow", "catalogTitle", "catalogLead"], placeholder: { count: 8, columns: 4 } },
+  { id: "system", label: "Ürün Mimarisi", tone: "dark", variant: "catalog", fields: ["systemEyebrow", "systemTitle", "systemLead", "systemStepOneTitle", "systemStepOneDesc", "systemStepTwoTitle", "systemStepTwoDesc", "systemStepThreeTitle", "systemStepThreeDesc", "systemStepFourTitle", "systemStepFourDesc"], placeholder: { count: 4, columns: 4 } },
+  { id: "selection", label: "Mühendislik CTA", tone: "cta", variant: "catalog", fields: ["selectionEyebrow", "selectionTitle", "selectionLead", "selectionPrimaryButton"], placeholder: { count: 1, columns: 1 } },
+  { id: "faq", label: "SSS Başlığı", tone: "soft", variant: "catalog", fields: ["faqEyebrow", "faqTitle", "faqLead"], placeholder: { count: 3, columns: 1 } },
 ];
 
 export const SOLUTIONS_LAYOUT: PageLayoutBlock[] = [

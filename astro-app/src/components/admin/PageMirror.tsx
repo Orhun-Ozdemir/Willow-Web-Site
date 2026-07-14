@@ -284,18 +284,21 @@ export default function PageMirror({
 
       case "static-proof":
         return (
-          <section className="section product-proof-section">
-            <div className="section-inner">
-              <div className="product-proof-grid">
-                {[0, 1, 2, 3].map((i) => (
-                  <article key={i} className="proof-stat-card">
-                    <span>Metrik</span>
-                    <strong>—</strong>
-                  </article>
-                ))}
+          <Hit id={block.id} active={active} onClick={onClick}>
+            <section className="section product-proof-section">
+              <div className="section-inner">
+                <div className="product-proof-grid">
+                  {["Range", "Battery", "Outdoor", "Regions"].map((name, i) => (
+                    <article key={name} className="proof-stat-card">
+                      <span>{v(block.fields?.[i * 3] || "") || name}</span>
+                      <strong>{v(block.fields?.[i * 3 + 1] || "") || "—"}</strong>
+                      <p>{v(block.fields?.[i * 3 + 2] || "")}</p>
+                    </article>
+                  ))}
+                </div>
               </div>
-            </div>
-          </section>
+            </section>
+          </Hit>
         );
 
       case "catalog":

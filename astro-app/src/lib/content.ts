@@ -181,6 +181,23 @@ export async function saveContent(data: any): Promise<void> {
     return { data: rest, localized: localized || {} };
   };
 
+  const collectionRow = (table: string, item: any) => {
+    const row: Record<string, any> = { id: item.id, ...extractLocal(item) };
+    if (["products", "news", "solutions"].includes(table)) row.slug = item.slug || null;
+    if (["products", "news", "solutions", "glossary"].includes(table)) row.category = item.category || null;
+    if (["products", "news", "solutions", "clients"].includes(table)) row.featured = Boolean(item.featured);
+    if (table === "news") row.date = item.date || null;
+    if (table === "clients") {
+      row.name = item.name || null;
+      row.industry = item.industry || null;
+      row.country = item.country || null;
+      row.logo = item.logo || null;
+    }
+    if (table === "faqs") row.page = item.page || null;
+    row.sort_order = Number(item.sortOrder ?? item.sort_order ?? 0) || 0;
+    return row;
+  };
+
   // Helper to sync a collection table
   const syncCollection = async (table: string, items: any[]) => {
     // 1. Get current IDs to detect deletions
@@ -190,7 +207,7 @@ export async function saveContent(data: any): Promise<void> {
     // 2. Upsert items
     const rows = (items || []).map(it => {
       currentIds.delete(it.id);
-      return { id: it.id, ...extractLocal(it) };
+      return collectionRow(table, it);
     });
     if (rows.length > 0) {
       await supabase.from(table).upsert(rows);
@@ -275,13 +292,30 @@ export async function saveContentSection(section: string, sectionData: any): Pro
     return { data: rest, localized: localized || {} };
   };
 
+  const collectionRow = (table: string, item: any) => {
+    const row: Record<string, any> = { id: item.id, ...extractLocal(item) };
+    if (["products", "news", "solutions"].includes(table)) row.slug = item.slug || null;
+    if (["products", "news", "solutions", "glossary"].includes(table)) row.category = item.category || null;
+    if (["products", "news", "solutions", "clients"].includes(table)) row.featured = Boolean(item.featured);
+    if (table === "news") row.date = item.date || null;
+    if (table === "clients") {
+      row.name = item.name || null;
+      row.industry = item.industry || null;
+      row.country = item.country || null;
+      row.logo = item.logo || null;
+    }
+    if (table === "faqs") row.page = item.page || null;
+    row.sort_order = Number(item.sortOrder ?? item.sort_order ?? 0) || 0;
+    return row;
+  };
+
   const syncCollection = async (table: string, items: any[]) => {
     const { data: current } = await supabase.from(table).select("id");
     const currentIds = new Set((current || []).map(r => r.id));
 
     const rows = (items || []).map(it => {
       currentIds.delete(it.id);
-      return { id: it.id, ...extractLocal(it) };
+      return collectionRow(table, it);
     });
     if (rows.length > 0) {
       await supabase.from(table).upsert(rows);

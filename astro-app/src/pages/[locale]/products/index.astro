@@ -5,8 +5,9 @@ import FaqAccordion from "@/components/FaqAccordion.astro";
 import AIAnswerBlock from "@/components/AIAnswerBlock.astro";
 import { loadContent } from "@/lib/content";
 import { pageSeo, webPageNode, ORGANIZATION_SCHEMA, WEBSITE_SCHEMA, SITE_ORIGIN } from "@/lib/seo";
-import { localizedValue, pageText, resolveLocale, type Locale } from "@/lib/cms";
+import { localizedValue, localizeItem, pageButtonParts, pageLocaleHref, pageText, resolveAsset, resolveLocale, type Locale } from "@/lib/cms";
 import { aiAnswerForPage, aiMetaForPage, appendSchemaNodes, fallbackFaqsForPage, faqItemsForPage, faqSchemaNode } from "@/lib/ai-search";
+import { productCategoriesFromContent, productCategoryText } from "@/lib/product-categories";
 
 export const prerender = false;
 
@@ -44,6 +45,10 @@ const productsSchema = appendSchemaNodes({
     },
   ],
 }, [faqSchemaNode(seoProps.canonical, productsFaqItems)]);
+
+const previewLabel = (en: string, tr: string) => ({
+  en, tr, de: en, fr: en, es: en, it: en, ar: en, ja: en,
+});
 
 const labels = {
   productsOnMarket: { en: "Products on Market", tr: "Piyasadaki Ürünler", de: "Produkte am Markt", fr: "Produits sur le marché", es: "Productos en el mercado", it: "Prodotti sul mercato", ar: "منتجات في السوق", ja: "市場実績製品" },
@@ -115,16 +120,50 @@ const labels = {
     ja: "US915、EU868、AS923、AU915など、各国の周波数プランをサポート。"
   },
 
-  requestQuote: { en: "Request Quote", tr: "Teklif Alın", de: "Angebot anfordern", fr: "Demander un devis", es: "Solicitar cotización", it: "Richiedi un preventivo", ar: "طلب عرض سعر", ja: "お見積り依頼" },
+  browseProducts: { en: "Explore Products", tr: "Ürünleri İnceleyin", de: "Produkte entdecken", fr: "Explorer les produits", es: "Explorar productos", it: "Esplora i prodotti", ar: "استكشف المنتجات", ja: "製品を見る" },
+  talkToEngineer: { en: "Talk to an Engineer", tr: "Teknik Ekiple Görüşün", de: "Mit Technik sprechen", fr: "Parler à un ingénieur", es: "Hablar con ingeniería", it: "Parla con un ingegnere", ar: "تحدث مع مهندس", ja: "技術チームに相談" },
+  productionReady: { en: "Production-ready platform", tr: "Üretime hazır platform", de: "Serienreife Plattform", fr: "Plateforme prête pour la production", es: "Plataforma lista para producción", it: "Piattaforma pronta per la produzione", ar: "منصة جاهزة للإنتاج", ja: "量産対応プラットフォーム" },
+  flagshipCta: { en: "Explore WillowBee", tr: "WillowBee'yi İnceleyin", de: "WillowBee entdecken", fr: "Découvrir WillowBee", es: "Explorar WillowBee", it: "Scopri WillowBee", ar: "استكشف WillowBee", ja: "WillowBeeを見る" },
+  selectionEyebrow: { en: "Engineering support", tr: "Mühendislik desteği", de: "Technischer Support", fr: "Support d’ingénierie", es: "Soporte de ingeniería", it: "Supporto ingegneristico", ar: "دعم هندسي", ja: "技術サポート" },
+  selectionTitle: { en: "Not sure which product fits your field application?", tr: "Saha uygulamanız için doğru üründen emin değil misiniz?", de: "Welches Produkt passt zu Ihrer Anwendung?", fr: "Quel produit convient à votre application ?", es: "¿Qué producto se adapta a su aplicación?", it: "Quale prodotto è adatto alla tua applicazione?", ar: "ما المنتج المناسب لتطبيقك؟", ja: "現場に最適な製品をお探しですか？" },
+  selectionLead: { en: "Share the measurement, environment and connectivity requirements. Our engineering team will recommend the right hardware and system architecture.", tr: "Ölçmek istediğiniz değeri, çalışma ortamını ve bağlantı ihtiyacınızı paylaşın. Mühendislik ekibimiz doğru donanımı ve sistem mimarisini birlikte belirlesin.", de: "Teilen Sie Mess-, Umgebungs- und Konnektivitätsanforderungen. Unser Team empfiehlt Hardware und Architektur.", fr: "Partagez vos besoins de mesure, d’environnement et de connectivité. Notre équipe recommandera le matériel adapté.", es: "Comparta sus requisitos de medición, entorno y conectividad. Nuestro equipo recomendará el hardware adecuado.", it: "Condividi requisiti di misura, ambiente e connettività. Il nostro team consiglierà l'hardware adatto.", ar: "شارك متطلبات القياس والبيئة والاتصال وسيوصي فريقنا بالأجهزة المناسبة.", ja: "計測対象、設置環境、通信要件を共有いただければ、最適なハードウェアと構成をご提案します。" },
+  systemEyebrow: previewLabel("Connected product architecture", "Bağlı ürün mimarisi"),
+  systemTitle: previewLabel("Hardware is only the beginning.", "Donanım yalnızca başlangıç."),
+  systemLead: previewLabel("WillowSoft combines the device, connectivity and software layers so field data becomes an operational decision.", "WillowSoft; cihaz, bağlantı ve yazılım katmanlarını birlikte geliştirir. Böylece saha verisi yalnızca toplanmaz, operasyonel karara dönüşür."),
+  systemStepOneTitle: previewLabel("Field device", "Saha cihazı"),
+  systemStepOneDesc: previewLabel("Low-power sensing and industrial enclosure", "Düşük güçlü ölçüm ve endüstriyel gövde"),
+  systemStepTwoTitle: previewLabel("LoRaWAN network", "LoRaWAN ağı"),
+  systemStepTwoDesc: previewLabel("Long-range, regional frequency support", "Uzun menzil ve bölgesel frekans desteği"),
+  systemStepThreeTitle: previewLabel("Cloud and API", "Cloud ve API"),
+  systemStepThreeDesc: previewLabel("Secure ingestion, rules and integrations", "Güvenli veri alımı, kurallar ve entegrasyonlar"),
+  systemStepFourTitle: previewLabel("Operational interface", "Operasyon arayüzü"),
+  systemStepFourDesc: previewLabel("Web, mobile, alerts and reporting", "Web, mobil, alarm ve raporlama"),
+  systemCta: previewLabel("Discuss your architecture", "Sistem mimarinizi görüşün"),
 
   // Filters
   filterAll: { en: "All", tr: "Tümü", de: "Alle", fr: "Tous", es: "Todos", it: "Tutti", ar: "الكل", ja: "すべて" },
   heroEyebrow: { en: "Products", tr: "Ürünler", de: "Produkte", fr: "Produits", es: "Productos", it: "Prodotti", ar: "المنتجات", ja: "製品" },
   catalogEyebrow: { en: "Catalog", tr: "Katalog", de: "Katalog", fr: "Catalogue", es: "Catálogo", it: "Catalogo", ar: "الكتالوج", ja: "カタログ" },
   filterModules: { en: "Modules", tr: "Modüller", de: "Module", fr: "Modules", es: "Módulos", it: "Moduli", ar: "وحدات", ja: "通信モジュール" },
-  filterEnvironment: { en: "Environmental", tr: "Çevresel", de: "Umweltsensoren", fr: "Environnement", es: "Ambientales", it: "Sensori ambientali", ar: "مستشعرات بيئية", ja: "環境センサ" },
-  filterTracking: { en: "Tracking & Safety", tr: "Takip & Güvenlik", de: "Ortung & Sicherheit", fr: "Suivi & Sécurité", es: "Seguimiento y seguridad", it: "Tracciamento e sicurezza", ar: "تتبع وأمان", ja: "追跡・防犯デバイス" },
-  filterIndustrial: { en: "Industrial Interfaces", tr: "Endüstriyel Arayüzler", de: "Industrieschnittstellen", fr: "Interfaces industrielles", es: "Interfaces industriales", it: "Interfacce industriali", ar: "واجهات صناعية", ja: "産業用コンバータ" },
+  filterEnvironment: { en: "Environment & Sensing", tr: "Çevre & Ölçüm", de: "Umwelt & Messung", fr: "Environnement & Mesure", es: "Entorno y medición", it: "Ambiente e misura", ar: "البيئة والقياس", ja: "環境・計測" },
+  filterTracking: { en: "Assets & Safety", tr: "Varlık & Güvenlik", de: "Assets & Sicherheit", fr: "Actifs & Sécurité", es: "Activos y seguridad", it: "Asset e sicurezza", ar: "الأصول والسلامة", ja: "資産・安全" },
+  filterIndustrial: { en: "Industrial Process", tr: "Endüstriyel Proses", de: "Industrieprozess", fr: "Process industriel", es: "Proceso industrial", it: "Processo industriale", ar: "العمليات الصناعية", ja: "産業プロセス" },
+  categoryLogic: {
+    en: "Product families classified by operational purpose — not enclosure shape.", tr: "Ürün aileleri; gövde biçimine göre değil, operasyonel kullanım amacına göre sınıflandırıldı.",
+    de: "Produktfamilien nach Einsatzzweck statt Gehäuseform klassifiziert.", fr: "Familles de produits classées par usage opérationnel, et non par forme de boîtier.",
+    es: "Familias de productos clasificadas por uso operativo, no por la forma de la carcasa.", it: "Famiglie di prodotti classificate per uso operativo, non per forma dell'involucro.",
+    ar: "عائلات المنتجات مصنفة حسب الغرض التشغيلي وليس شكل الهيكل.", ja: "筐体形状ではなく、運用目的によって分類した製品群です。",
+  },
+  modulesDesc: previewLabel("Embedded LoRaWAN core", "Gömülü LoRaWAN çekirdeği"),
+  environmentDesc: previewLabel("Level, air, climate and soil", "Seviye, hava, iklim ve toprak"),
+  trackingDesc: previewLabel("Location, movement and alerts", "Konum, hareket ve acil durum"),
+  industrialDesc: previewLabel("Pressure, Modbus and machine data", "Basınç, Modbus ve makine verisi"),
+  productsVisible: {
+    en: "products in view", tr: "ürün gösteriliyor", de: "Produkte angezeigt", fr: "produits affichés",
+    es: "productos mostrados", it: "prodotti visualizzati", ar: "منتجًا معروضًا", ja: "製品を表示中",
+  },
+  catalogTitlePremium: previewLabel("Explore hardware by operational purpose.", "Donanımı kullanım amacına göre keşfedin."),
+  catalogLeadPremium: previewLabel("Every device belongs to one of four clear families based on the job it performs in the field. Compare the role first, then the technical specification.", "Her cihaz, sahada üstlendiği göreve göre dört net aileden birine yerleştirildi. Önce operasyonel rolü, ardından teknik özellikleri karşılaştırın."),
 
   // FAQ Section
   faqEyebrow: { en: "Frequently asked", tr: "Sıkça sorulanlar", de: "Häufig gestellte Fragen", fr: "Questions fréquentes", es: "Preguntas frecuentes", it: "Domande frequenti", ar: "أسئلة مكررة", ja: "よくある質問" },
@@ -146,6 +185,60 @@ const getLabel = (key: keyof typeof labels) => {
 };
 
 const pt = (key: string, labelKey: keyof typeof labels) => pageText(pageContent, key, locale, getLabel(labelKey));
+
+const productSystemSteps = [
+  { number: "01", title: pt("systemStepOneTitle", "systemStepOneTitle"), desc: pt("systemStepOneDesc", "systemStepOneDesc"), code: "SENSE" },
+  { number: "02", title: pt("systemStepTwoTitle", "systemStepTwoTitle"), desc: pt("systemStepTwoDesc", "systemStepTwoDesc"), code: "CONNECT" },
+  { number: "03", title: pt("systemStepThreeTitle", "systemStepThreeTitle"), desc: pt("systemStepThreeDesc", "systemStepThreeDesc"), code: "PROCESS" },
+  { number: "04", title: pt("systemStepFourTitle", "systemStepFourTitle"), desc: pt("systemStepFourDesc", "systemStepFourDesc"), code: "ACT" },
+];
+
+const productCategories = productCategoriesFromContent(content).filter((category) => category.visible);
+const catalogCategoryFor = (product: any) => String(product.category || "environment");
+
+const catalogFamilies = [
+  { key: "all", label: getLabel("filterAll"), description: getLabel("categoryLogic"), count: productsList.length, number: "00" },
+  ...productCategories.map((category, index) => {
+    const text = productCategoryText(category, locale);
+    return {
+      key: category.key,
+      label: text.title,
+      description: text.description,
+      count: productsList.filter((product: any) => catalogCategoryFor(product) === category.key).length,
+      number: String(index + 1).padStart(2, "0"),
+    };
+  }),
+];
+
+const featuredProductId = String(pageContent.featuredProductId || "willowbee");
+const featuredProductRaw = productsList.find((product: any) => product.id === featuredProductId)
+  || productsList.find((product: any) => product.featured)
+  || productsList[0];
+const featuredProduct = localizeItem(featuredProductRaw, locale);
+const featuredImage = resolveAsset(
+  featuredProduct?.id === "willowbee"
+    ? "assets/product-cutouts/willowbee-lorawan-module.png"
+    : featuredProduct?.cardImage || featuredProduct?.image || `assets/product-cutouts/${featuredProduct?.id || "willowbee"}.png`,
+);
+const featuredChips = Array.isArray(featuredProduct?.chips) ? featuredProduct.chips.slice(0, 3) : [];
+
+const proofItems = [
+  { label: pt("proofRangeLabel", "rangeLabel"), value: pt("proofRangeValue", "rangeVal"), description: pt("proofRangeDescription", "rangeDesc") },
+  { label: pt("proofBatteryLabel", "batteryLabel"), value: pt("proofBatteryValue", "batteryVal"), description: pt("proofBatteryDescription", "batteryDesc") },
+  { label: pt("proofOutdoorLabel", "outdoorLabel"), value: pt("proofOutdoorValue", "outdoorVal"), description: pt("proofOutdoorDescription", "outdoorDesc") },
+  { label: pt("proofRegionsLabel", "regionsLabel"), value: pt("proofRegionsValue", "regionsVal"), description: pt("proofRegionsDescription", "regionsDesc") },
+];
+
+const buttonFor = (key: string, fallbackLabel: string, fallbackUrl: string) => {
+  const button = pageButtonParts(pageContent[key], locale);
+  const rawUrl = button.url || fallbackUrl;
+  return {
+    label: button.label || fallbackLabel,
+    url: rawUrl.startsWith("#") ? rawUrl : pageLocaleHref(locale, pageContent[key], fallbackUrl),
+  };
+};
+const heroPrimaryButton = buttonFor("heroPrimaryButton", getLabel("browseProducts"), "#catalog");
+const selectionPrimaryButton = buttonFor("selectionPrimaryButton", getLabel("talkToEngineer"), `/${locale}/contact`);
 ---
 
 <PageLayout
@@ -164,6 +257,9 @@ const pt = (key: string, labelKey: keyof typeof labels) => pageText(pageContent,
           <p class="eyebrow reveal">{pt("heroEyebrow", "heroEyebrow")}</p>
           <h1 class="reveal delay-1">{pageText(pageContent, "heroTitle", locale)}</h1>
           <p class="reveal delay-2">{pageText(pageContent, "heroLead", locale)}</p>
+          <div class="products-hero-actions reveal delay-3">
+            <a class="btn btn-primary" href={heroPrimaryButton.url}>{heroPrimaryButton.label}</a>
+          </div>
           <div class="services-hero-meta reveal delay-3" role="list" aria-label="Product portfolio facts">
             <span class="hero-meta-item" role="listitem">
               <strong data-company-fact="productsOnMarket">{companyFacts.productsOnMarket || "100+"}</strong>
@@ -182,13 +278,25 @@ const pt = (key: string, labelKey: keyof typeof labels) => pageText(pageContent,
           </div>
         </div>
         <aside class="product-hero-showcase reveal delay-2" aria-label="Featured WillowSoft hardware">
+          <div class="product-showcase-topline">
+            <span>{pt("featuredStatus", "productionReady")}</span>
+            <span class="product-live-dot" aria-hidden="true"></span>
+          </div>
           <div class="product-showcase-stage">
-            <img src={`${import.meta.env.BASE_URL}assets/product-cutouts/willowbee-lorawan-module.png`} alt="WillowBee LoRaWAN module" loading="lazy" decoding="async" />
+            <span class="product-orbit product-orbit-one" aria-hidden="true"></span>
+            <span class="product-orbit product-orbit-two" aria-hidden="true"></span>
+            <img src={featuredImage} alt={featuredProduct?.title || "Featured product"} loading="lazy" decoding="async" />
+            {featuredChips.map((chip: string, index: number) => (
+              <span class={`product-spec-tag product-spec-tag-${["one", "two", "three"][index]}`}>{chip}</span>
+            ))}
           </div>
           <div class="product-showcase-copy">
-            <p class="architecture-label">{getLabel("featuredHardware")}</p>
-            <h2>{getLabel("willowbeeCore")}</h2>
-            <p>{getLabel("willowbeeDesc")}</p>
+            <p class="architecture-label">{pt("featuredEyebrow", "featuredHardware")}</p>
+            <h2>{featuredProduct?.title}</h2>
+            <p>{featuredProduct?.shortDescription}</p>
+            <a class="product-showcase-link" href={`/${locale}/products/${featuredProduct?.slug || featuredProduct?.id}`}>
+              <span>{pt("featuredButtonLabel", "flagshipCta")}</span><span aria-hidden="true">↗</span>
+            </a>
           </div>
         </aside>
       </div>
@@ -199,26 +307,13 @@ const pt = (key: string, labelKey: keyof typeof labels) => pageText(pageContent,
       <div class="section-inner">
         <AIAnswerBlock answer={aiAnswer} locale={locale} meta={aiMeta} />
         <div class="product-proof-grid">
-          <article class="proof-stat-card reveal">
-            <span>{getLabel("rangeLabel")}</span>
-            <strong>{getLabel("rangeVal")}</strong>
-            <p>{getLabel("rangeDesc")}</p>
-          </article>
-          <article class="proof-stat-card reveal delay-1">
-            <span>{getLabel("batteryLabel")}</span>
-            <strong>{getLabel("batteryVal")}</strong>
-            <p>{getLabel("batteryDesc")}</p>
-          </article>
-          <article class="proof-stat-card reveal delay-2">
-            <span>{getLabel("outdoorLabel")}</span>
-            <strong>{getLabel("outdoorVal")}</strong>
-            <p>{getLabel("outdoorDesc")}</p>
-          </article>
-          <article class="proof-stat-card reveal delay-3">
-            <span>{getLabel("regionsLabel")}</span>
-            <strong>{getLabel("regionsVal")}</strong>
-            <p>{getLabel("regionsDesc")}</p>
-          </article>
+          {proofItems.map((item, index) => (
+            <article class={`proof-stat-card reveal${index ? ` delay-${index}` : ""}`}>
+              <span>{item.label}</span>
+              <strong>{item.value}</strong>
+              <p>{item.description}</p>
+            </article>
+          ))}
         </div>
       </div>
     </section>
@@ -229,24 +324,74 @@ const pt = (key: string, labelKey: keyof typeof labels) => pageText(pageContent,
         <div class="section-head reveal product-headline">
           <div>
             <p class="eyebrow">{pt("catalogEyebrow", "catalogEyebrow")}</p>
-            <h2>{pageText(pageContent, "catalogTitle", locale)}</h2>
-            <p class="section-lead">{pageText(pageContent, "catalogLead", locale)}</p>
+            <h2>{pt("catalogTitle", "catalogTitlePremium")}</h2>
+            <p class="section-lead">{pt("catalogLead", "catalogLeadPremium")}</p>
           </div>
-          <a class="btn btn-secondary btn-small" href={`/${locale}/contact`}>{getLabel("requestQuote")}</a>
         </div>
 
-        <div class="filter-bar reveal">
-          <button class="filter-btn active" data-filter="all">{getLabel("filterAll")}</button>
-          <button class="filter-btn" data-filter="modules">{getLabel("filterModules")}</button>
-          <button class="filter-btn" data-filter="environment">{getLabel("filterEnvironment")}</button>
-          <button class="filter-btn" data-filter="tracking">{getLabel("filterTracking")}</button>
-          <button class="filter-btn" data-filter="industrial">{getLabel("filterIndustrial")}</button>
+        <div class="product-atlas reveal" aria-label="Product families">
+          <div class="product-atlas-topline">
+            <span>PRODUCT ATLAS / 2026</span>
+            <span class="product-filter-status" aria-live="polite">{productsList.length} {getLabel("productsVisible")}</span>
+          </div>
+          <div class="filter-bar" role="group" aria-label="Product family filters">
+            {catalogFamilies.map((family, index) => (
+              <button class={`filter-btn${index === 0 ? " active" : ""}`} data-filter={family.key} aria-pressed={index === 0 ? "true" : "false"}>
+                <span class="filter-btn-number">{family.number}</span>
+                <span class="filter-btn-copy">
+                  <strong>{family.label}</strong>
+                  <small>{family.description}</small>
+                </span>
+                <span class="filter-btn-count">{String(family.count).padStart(2, "0")}</span>
+              </button>
+            ))}
+          </div>
         </div>
 
-        <div class="grid grid-4" data-cms-products>
+        <div class="grid grid-4 product-atlas-grid" data-cms-products>
           {productsList.map((p: any, idx: number) => (
-            <ProductCard product={p} locale={locale} index={idx} />
+            <ProductCard product={p} locale={locale} index={idx} variant="catalog" categories={productCategories} />
           ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Connected product architecture -->
+    <section class="section product-system-section">
+      <div class="section-inner">
+        <div class="product-system-head reveal">
+          <div>
+            <p class="eyebrow">{pt("systemEyebrow", "systemEyebrow")}</p>
+            <h2>{pt("systemTitle", "systemTitle")}</h2>
+          </div>
+          <div>
+            <p>{pt("systemLead", "systemLead")}</p>
+          </div>
+        </div>
+        <div class="product-system-flow">
+          {productSystemSteps.map((step) => (
+            <article class="product-system-step">
+              <div><span>{step.number}</span><small>{step.code}</small></div>
+              <h3>{step.title}</h3>
+              <p>{step.desc}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Product selection CTA -->
+    <section class="section product-selection-section">
+      <div class="section-inner">
+        <div class="product-selection-panel reveal">
+          <div class="product-selection-copy">
+            <p class="eyebrow">{pt("selectionEyebrow", "selectionEyebrow")}</p>
+            <h2>{pt("selectionTitle", "selectionTitle")}</h2>
+            <p>{pt("selectionLead", "selectionLead")}</p>
+          </div>
+          <div class="product-selection-actions">
+            <a class="btn btn-primary" href={selectionPrimaryButton.url}>{selectionPrimaryButton.label}</a>
+          </div>
         </div>
       </div>
     </section>
@@ -255,10 +400,10 @@ const pt = (key: string, labelKey: keyof typeof labels) => pageText(pageContent,
     <section class="section soft services-faq-section" id="faq">
       <div class="section-inner">
         <div class="section-head reveal center" style={{ marginBottom: "36px" }}>
-          <p class="eyebrow">{getLabel("faqEyebrow")}</p>
-          <h2 class="page-title">{getLabel("faqTitle")}</h2>
+          <p class="eyebrow">{pt("faqEyebrow", "faqEyebrow")}</p>
+          <h2 class="page-title">{pt("faqTitle", "faqTitle")}</h2>
           <p class="section-lead" style={{ maxWidth: "720px", marginLeft: "auto", marginRight: "auto" }}>
-            {getLabel("faqLead")}
+            {pt("faqLead", "faqLead")}
           </p>
         </div>
         <FaqAccordion faqs={content.faqs || []} pageKey="products" locale={locale} fallbackFaqs={productsFallbackFaqs} />
@@ -272,25 +417,54 @@ const pt = (key: string, labelKey: keyof typeof labels) => pageText(pageContent,
     const filterButtons = document.querySelectorAll('.filter-btn');
     const productCards = document.querySelectorAll('.product-card') as NodeListOf<HTMLElement>;
 
-    filterButtons.forEach(btn => {
-      btn.addEventListener('click', () => {
-        filterButtons.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        
-        const filter = (btn as HTMLButtonElement).dataset.filter;
-        productCards.forEach(card => {
-          const category = card.dataset.category;
-          if (filter === 'all' || category === filter) {
-            card.style.display = '';
-            // Re-apply reveal animations or remove delay to avoid weird layouts
-            card.style.opacity = '1';
-            card.style.transform = 'translateY(0)';
-          } else {
-            card.style.display = 'none';
-          }
-        });
+    const grid = document.querySelector('[data-cms-products]') as HTMLElement | null;
+    const status = document.querySelector('.product-filter-status') as HTMLElement | null;
+    const visibleSuffix = status?.textContent?.replace(/^\d+\s*/, '') || '';
+
+    const applyFilter = (requestedFilter: string, updateUrl = false) => {
+      const requestedButton = Array.from(filterButtons).find(
+        button => (button as HTMLButtonElement).dataset.filter === requestedFilter,
+      );
+      const activeButton = requestedButton || Array.from(filterButtons).find(
+        button => (button as HTMLButtonElement).dataset.filter === 'all',
+      );
+      const filter = (activeButton as HTMLButtonElement | undefined)?.dataset.filter || 'all';
+
+      filterButtons.forEach(button => {
+        const isActive = button === activeButton;
+        button.classList.toggle('active', isActive);
+        button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+      });
+
+      let visibleCount = 0;
+      productCards.forEach(card => {
+        const isVisible = filter === 'all' || card.dataset.category === filter;
+        card.style.display = isVisible ? '' : 'none';
+        if (isVisible) {
+          visibleCount += 1;
+          card.style.opacity = '1';
+          card.style.transform = 'translateY(0)';
+        }
+      });
+
+      grid?.classList.toggle('is-filtered', filter !== 'all');
+      if (status) status.textContent = `${visibleCount} ${visibleSuffix}`;
+
+      if (updateUrl) {
+        const nextUrl = new URL(window.location.href);
+        if (filter === 'all') nextUrl.searchParams.delete('category');
+        else nextUrl.searchParams.set('category', filter);
+        window.history.replaceState({}, '', `${nextUrl.pathname}${nextUrl.search}${nextUrl.hash}`);
+      }
+    };
+
+    filterButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        applyFilter((button as HTMLButtonElement).dataset.filter || 'all', true);
       });
     });
+
+    applyFilter(new URLSearchParams(window.location.search).get('category') || 'all');
   }
 
   // Initial setup

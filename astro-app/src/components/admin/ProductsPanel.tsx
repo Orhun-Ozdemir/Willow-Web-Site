@@ -10,24 +10,17 @@ import DetailBlocksEditor from "./DetailBlocksEditor";
 import IconListEditor from "./IconListEditor";
 import ProductDocumentsEditor from "./ProductDocumentsEditor";
 import TranslationEditor from "./TranslationEditor";
+import ProductCategoriesEditor from "./ProductCategoriesEditor";
 import { applicationIconForText, canonicalizeProduct, iconKeyForText } from "@/lib/product-model";
+import { normalizeProductCategories } from "@/lib/product-categories";
 
 const PRODUCT_FIELDS = [
   { key: "title", label: "Ürün Adı" },
-  { key: "category", label: "Kategori" },
   { key: "shortDescription", label: "Kısa Açıklama", type: "textarea" as const },
   { key: "technicalSummary", label: "Teknik Özet", type: "textarea" as const, rows: 4 },
   { key: "useCases", label: "Kullanım Alanları", type: "textarea" as const, rows: 4 },
-  { key: "specifications", label: "Teknik Özellikler", type: "textarea" as const, rows: 4 },
   { key: "applications", label: "Applications (her öğe ayrı)", type: "array-items" as const, sourceArrayKey: "applications" },
   { key: "chips", label: "Etiketler / Chips (her öğe ayrı)", type: "array-items" as const, sourceArrayKey: "chips" },
-];
-
-const CATEGORIES = [
-  { value: "modules", label: "Modules" },
-  { value: "environment", label: "Environment" },
-  { value: "tracking", label: "Tracking" },
-  { value: "industrial", label: "Industrial" },
 ];
 
 const SECTIONS = [
@@ -106,13 +99,22 @@ export default function ProductsPanel() {
   const [editId, setEditId] = useState<string | null>(null);
   const [openSections, setOpenSections] = useState<Record<string, boolean>>({ basics: true });
   const [query, setQuery] = useState("");
+  const [dragId, setDragId] = useState<string | null>(null);
+
+  const categories = useMemo(
+    () => normalizeProductCategories(content?.meta?.productCategories),
+    [content?.meta?.productCategories],
+  );
+  const categoryOptions = categories.map((category) => ({
+    value: category.key,
+    label: category.localized?.tr?.title || category.localized?.en?.title || category.key,
+  }));
 
   const products = useMemo(() => {
     const list = content?.products || [];
-    return list.map((item: any, idx: number) => ({
-      ...item,
-      id: item.id || `product-${idx}`,
-    }));
+    return list
+      .map((item: any, idx: number) => ({ ...item, id: item.id || `product-${idx}` }))
+      .sort((a: any, b: any) => Number(a.sortOrder ?? a.sort_order ?? 0) - Number(b.sortOrder ?? b.sort_order ?? 0));
   }, [content?.products]);
 
   const toggleSection = (key: string) => {
@@ -161,13 +163,14 @@ export default function ProductsPanel() {
 
   const addProduct = () => {
     const id = `product-${Date.now()}`;
+    const nextSortOrder = products.reduce((max: number, item: any) => Math.max(max, Number(item.sortOrder ?? item.sort_order ?? 0)), 0) + 10;
     setContent((c: any) => ({
       ...c,
       products: [...(c.products || []), canonicalizeProduct({
-        id, title: "Yeni Ürün", slug: id, category: "modules",
+        id, title: "Yeni Ürün", slug: id, category: categories[0]?.key || "modules",
         featured: false, shortDescription: "", image: "", images: [],
         datasheet: "", datasheet_url: "", visible: true,
-        chips: [], applications: [], specifications: {}, detailBlocks: {}, localized: {},
+        chips: [], applications: [], specifications: {}, detailBlocks: {}, localized: {}, sortOrder: nextSortOrder,
       })],
     }));
     setEditId(id);
@@ -184,6 +187,27 @@ export default function ProductsPanel() {
       return { ...c, products: list };
     });
     setEditId(null);
+  };
+
+  const reorderProduct = (sourceId: string, targetId: string) => {
+    if (!sourceId || sourceId === targetId) return;
+    setContent((current: any) => {
+      const ordered = [...(current.products || [])]
+        .sort((a: any, b: any) => Number(a.sortOrder ?? a.sort_order ?? 0) - Number(b.sortOrder ?? b.sort_order ?? 0));
+      const sourceIndex = ordered.findIndex((item: any) => item.id === sourceId);
+      const targetIndex = ordered.findIndex((item: any) => item.id === targetId);
+      if (sourceIndex < 0 || targetIndex < 0) return current;
+      const [moved] = ordered.splice(sourceIndex, 1);
+      ordered.splice(targetIndex, 0, moved);
+      return {
+        ...current,
+        products: ordered.map((item: any, index: number) => ({
+          ...item,
+          sortOrder: (index + 1) * 10,
+          sort_order: (index + 1) * 10,
+        })),
+      };
+    });
   };
 
   /* ── EDIT VIEW ── */
@@ -277,7 +301,7 @@ export default function ProductsPanel() {
                     type="select"
                     value={p.category || "modules"}
                     onChange={(v) => updateProduct(p.id, "category", v)}
-                    options={CATEGORIES}
+                    options={categoryOptions}
                   />
                 </div>
                 <div className="ws-prod-field-row">
@@ -296,6 +320,13 @@ export default function ProductsPanel() {
                     options={[{ value: "true", label: "Evet" }, { value: "false", label: "Hayır" }]}
                   />
                 </div>
+                <FormField
+                  label="Katalog Sırası"
+                  type="number"
+                  value={String(p.sortOrder ?? p.sort_order ?? 0)}
+                  onChange={(v) => updateProductFields(p.id, { sortOrder: parseInt(v) || 0, sort_order: parseInt(v) || 0 })}
+                  hint="Düşük değer önce görünür. Liste ekranında kartları sürükleyerek de sıralayabilirsiniz."
+                />
                 <FormField
                   label="Kısa Açıklama"
                   type="textarea"
@@ -535,6 +566,7 @@ export default function ProductsPanel() {
 
   return (
     <div className="ws-prod-page">
+      <ProductCategoriesEditor />
       <div className="ws-prod-list-header">
         <h3>Ürün Kataloğu</h3>
         <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
@@ -562,7 +594,20 @@ export default function ProductsPanel() {
               : "";
 
             return (
-              <div key={p.id} className="ws-prod-card">
+              <div
+                key={p.id}
+                className="ws-prod-card"
+                draggable
+                onDragStart={() => setDragId(p.id)}
+                onDragEnd={() => setDragId(null)}
+                onDragOver={(event) => event.preventDefault()}
+                onDrop={() => {
+                  if (dragId) reorderProduct(dragId, p.id);
+                  setDragId(null);
+                }}
+                style={{ opacity: dragId === p.id ? 0.55 : 1, cursor: "grab" }}
+                title="Sıralamak için sürükleyin"
+              >
                 <div className="ws-prod-card-thumb">
                   {previewUrl ? (
                     <img

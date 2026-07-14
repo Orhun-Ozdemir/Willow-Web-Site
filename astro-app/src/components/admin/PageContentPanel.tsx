@@ -15,7 +15,7 @@ import {
   StatusDot,
 } from "./localeEditorShared";
 
-const SCALAR_PAGE_FIELDS = new Set(["heroImage", "metric1Value", "metric2Value", "metric3Value"]);
+const SCALAR_PAGE_FIELDS = new Set(["heroImage", "metric1Value", "metric2Value", "metric3Value", "featuredProductId"]);
 
 const SERVICES_ARRAY_HINTS: Record<string, string> = {
   serviceLayers: "Canlı hizmet kartları (serviceLayers)",
@@ -115,8 +115,43 @@ const FIELD_META: Record<string, FieldMeta> = {
   softwareTitle: { label: "Başlık", section: "Yazılım", hint: "", type: "short" },
   catalogEyebrow: { label: "Üst Etiket", section: "Katalog", hint: "", type: "short" },
   catalogTitle: { label: "Başlık", section: "Katalog", hint: "", type: "short" },
+  catalogLead: { label: "Açıklama", section: "Katalog", hint: "", type: "long" },
+  featuredProductId: { label: "Öne Çıkan Ürün ID", section: "Öne Çıkan", hint: "Örn. willowbee. Ürün bulunamazsa ilk featured ürün kullanılır.", type: "short" },
+  featuredStatus: { label: "Durum Metni", section: "Öne Çıkan", hint: "", type: "short" },
+  featuredButtonLabel: { label: "İnceleme Butonu", section: "Öne Çıkan", hint: "", type: "short" },
   featuredEyebrow: { label: "Üst Etiket", section: "Öne Çıkan", hint: "", type: "short" },
   featuredTitle: { label: "Başlık", section: "Öne Çıkan", hint: "", type: "short" },
+  heroPrimaryButton: { label: "Ana Buton", section: "Hero", hint: "Metin + link", type: "button" },
+  heroSecondaryButton: { label: "İkincil Buton", section: "Hero", hint: "Metin + link", type: "button" },
+  proofRangeLabel: { label: "Etiket", section: "Kanıt / Mesafe", hint: "", type: "short" },
+  proofRangeValue: { label: "Değer", section: "Kanıt / Mesafe", hint: "", type: "short" },
+  proofRangeDescription: { label: "Açıklama", section: "Kanıt / Mesafe", hint: "", type: "long" },
+  proofBatteryLabel: { label: "Etiket", section: "Kanıt / Pil", hint: "", type: "short" },
+  proofBatteryValue: { label: "Değer", section: "Kanıt / Pil", hint: "", type: "short" },
+  proofBatteryDescription: { label: "Açıklama", section: "Kanıt / Pil", hint: "", type: "long" },
+  proofOutdoorLabel: { label: "Etiket", section: "Kanıt / Dış Ortam", hint: "", type: "short" },
+  proofOutdoorValue: { label: "Değer", section: "Kanıt / Dış Ortam", hint: "", type: "short" },
+  proofOutdoorDescription: { label: "Açıklama", section: "Kanıt / Dış Ortam", hint: "", type: "long" },
+  proofRegionsLabel: { label: "Etiket", section: "Kanıt / Frekans", hint: "", type: "short" },
+  proofRegionsValue: { label: "Değer", section: "Kanıt / Frekans", hint: "", type: "short" },
+  proofRegionsDescription: { label: "Açıklama", section: "Kanıt / Frekans", hint: "", type: "long" },
+  systemEyebrow: { label: "Üst Etiket", section: "Ürün Mimarisi", hint: "", type: "short" },
+  systemTitle: { label: "Başlık", section: "Ürün Mimarisi", hint: "", type: "short" },
+  systemLead: { label: "Açıklama", section: "Ürün Mimarisi", hint: "", type: "long" },
+  systemCta: { label: "Bağlantı Metni", section: "Ürün Mimarisi", hint: "", type: "short" },
+  systemStepOneTitle: { label: "Adım 1 Başlık", section: "Ürün Mimarisi", hint: "", type: "short" },
+  systemStepOneDesc: { label: "Adım 1 Açıklama", section: "Ürün Mimarisi", hint: "", type: "long" },
+  systemStepTwoTitle: { label: "Adım 2 Başlık", section: "Ürün Mimarisi", hint: "", type: "short" },
+  systemStepTwoDesc: { label: "Adım 2 Açıklama", section: "Ürün Mimarisi", hint: "", type: "long" },
+  systemStepThreeTitle: { label: "Adım 3 Başlık", section: "Ürün Mimarisi", hint: "", type: "short" },
+  systemStepThreeDesc: { label: "Adım 3 Açıklama", section: "Ürün Mimarisi", hint: "", type: "long" },
+  systemStepFourTitle: { label: "Adım 4 Başlık", section: "Ürün Mimarisi", hint: "", type: "short" },
+  systemStepFourDesc: { label: "Adım 4 Açıklama", section: "Ürün Mimarisi", hint: "", type: "long" },
+  selectionEyebrow: { label: "Üst Etiket", section: "Mühendislik CTA", hint: "", type: "short" },
+  selectionTitle: { label: "Başlık", section: "Mühendislik CTA", hint: "", type: "short" },
+  selectionLead: { label: "Açıklama", section: "Mühendislik CTA", hint: "", type: "long" },
+  selectionPrimaryButton: { label: "Ana Buton", section: "Mühendislik CTA", hint: "Metin + link", type: "button" },
+  selectionSecondaryButton: { label: "İkincil Buton", section: "Mühendislik CTA", hint: "Metin + link", type: "button" },
   useCasesEyebrow: { label: "Üst Etiket", section: "Kullanım Alanları", hint: "", type: "short" },
   useCasesLead: { label: "Açıklama", section: "Kullanım Alanları", hint: "", type: "long" },
   showcaseEyebrow: { label: "Vitrin Etiket", section: "Kullanım Alanları", hint: "", type: "short" },
@@ -197,6 +232,7 @@ function cardStatus(data: Record<string, any>, card: CardPair): "all" | "partial
 }
 
 function fieldStatus(data: Record<string, any>, key: string): "all" | "partial" | "empty" {
+  if (typeof data[key] === "string") return data[key].trim() ? "all" : "empty";
   const filled = TARGET_LOCALES.filter((l) => (data[key]?.[l] || "").trim()).length;
   if (filled === TARGET_LOCALES.length) return "all";
   if (filled > 0) return "partial";
@@ -245,12 +281,14 @@ function ScalarPageFieldEditor({
   selectedPage,
   setContent,
   meta,
+  options,
 }: {
   fieldKey: string;
   pageData: Record<string, any>;
   selectedPage: string;
   setContent: (fn: (c: any) => any) => void;
   meta: FieldMeta;
+  options?: { value: string; label: string }[];
 }) {
   const raw = pageData[fieldKey];
   const value = typeof raw === "string" ? raw : raw ? String(raw) : "";
@@ -271,13 +309,17 @@ function ScalarPageFieldEditor({
           {meta.hint && <p className="ws-pc-editor-hint">{meta.hint}</p>}
         </div>
       </div>
-      <FormField
-        label={meta.label}
-        type={meta.type === "image" ? "image" : "text"}
-        value={value}
-        onChange={update}
-        hint={meta.hint}
-      />
+      {options?.length ? (
+        <FormField label={meta.label} type="select" value={value} onChange={update} hint={meta.hint} options={options} />
+      ) : (
+        <FormField
+          label={meta.label}
+          type={meta.type === "image" ? "image" : "text"}
+          value={value}
+          onChange={update}
+          hint={meta.hint}
+        />
+      )}
     </div>
   );
 }
@@ -861,6 +903,9 @@ export default function PageContentPanel() {
                 selectedPage={selectedPage}
                 setContent={setContent}
                 meta={getMeta(activeField)}
+                options={activeField === "featuredProductId"
+                  ? (content?.products || []).filter((product: any) => product.visible !== false).map((product: any) => ({ value: product.id, label: product.title || product.id }))
+                  : undefined}
               />
             ) : getMeta(activeField).type === "button" ? (
               <ButtonLocaleFieldEditor fieldKey={activeField} pageData={pageData} updateButtonField={updateButtonField} meta={getMeta(activeField)} />
