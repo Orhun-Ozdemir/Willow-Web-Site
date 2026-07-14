@@ -117,6 +117,22 @@ export default function ProductsPanel() {
       .sort((a: any, b: any) => Number(a.sortOrder ?? a.sort_order ?? 0) - Number(b.sortOrder ?? b.sort_order ?? 0));
   }, [content?.products]);
 
+  const heroProductId = String(content?.pageContent?.products?.featuredProductId || "willowbee");
+  const heroProduct = products.find((item: any) => item.id === heroProductId) || products[0];
+
+  const updateHeroProduct = (productId: string) => {
+    setContent((current: any) => ({
+      ...current,
+      pageContent: {
+        ...(current.pageContent || {}),
+        products: {
+          ...(current.pageContent?.products || {}),
+          featuredProductId: productId,
+        },
+      },
+    }));
+  };
+
   const toggleSection = (key: string) => {
     setOpenSections((prev) => ({ ...prev, [key]: !prev[key] }));
   };
@@ -306,11 +322,12 @@ export default function ProductsPanel() {
                 </div>
                 <div className="ws-prod-field-row">
                   <FormField
-                    label="Öne Çıkan"
+                    label="Genel Öne Çıkan (Yedek Seçim)"
                     type="select"
                     value={p.featured ? "true" : "false"}
                     onChange={(v) => updateProduct(p.id, "featured", v === "true")}
                     options={[{ value: "true", label: "Evet" }, { value: "false", label: "Hayır" }]}
+                    hint="Hero ürünü ayrıca Ürünler listesinin üstündeki alandan seçilir. Bu ayar yalnızca Hero seçimi bulunamazsa yedek olarak kullanılır."
                   />
                   <FormField
                     label="Sitede Göster (Yayında)"
@@ -566,6 +583,52 @@ export default function ProductsPanel() {
 
   return (
     <div className="ws-prod-page">
+      <section className="bg-white border border-gray-200 rounded-xl p-5 shadow-sm mb-5">
+        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5">
+          <div className="max-w-2xl">
+            <div className="flex items-center gap-2 mb-2">
+              <span className="inline-flex items-center rounded-full bg-amber-50 px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-[0.12em] text-amber-700 border border-amber-200">
+                Products Hero
+              </span>
+              <span className="text-xs font-semibold text-gray-400">Öne Çıkan Ürün</span>
+            </div>
+            <h3 className="text-base font-extrabold text-gray-900 mb-1">
+              Hero'da gösterilecek ürünü seçin
+            </h3>
+            <p className="text-sm text-gray-500 leading-6">
+              Seçilen ürünün görseli, başlığı ve açıklaması Hero alanına gelir. Ürünün
+              <strong className="text-gray-700"> Etiketler</strong> alanındaki ilk üç değer özellik baloncuğu olarak gösterilir.
+            </p>
+            {heroProduct && (
+              <p className="mt-2 text-xs font-semibold text-[#132175]">
+                Şu anda: {heroProduct.title || heroProduct.id}
+                {Array.isArray(heroProduct.chips) && heroProduct.chips.length > 0
+                  ? ` · Baloncuklar: ${heroProduct.chips.slice(0, 3).join(" · ")}`
+                  : " · Baloncuk etiketi girilmemiş"}
+              </p>
+            )}
+          </div>
+          <label className="block w-full lg:w-80 shrink-0">
+            <span className="block text-xs font-bold text-gray-700 mb-2">Hero Ürünü</span>
+            <select
+              value={heroProduct?.id || ""}
+              onChange={(event) => updateHeroProduct(event.target.value)}
+              className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2.5 text-sm font-semibold text-gray-900 outline-none transition focus:border-[#132175] focus:ring-2 focus:ring-[#132175]/10"
+            >
+              {products
+                .filter((product: any) => product.visible !== false)
+                .map((product: any) => (
+                  <option key={product.id} value={product.id}>
+                    {product.title || product.id}
+                  </option>
+                ))}
+            </select>
+            <span className="mt-2 block text-[11px] leading-5 text-gray-400">
+              Değişiklikten sonra sağ üstteki “Değişiklikleri Kaydet” butonuna basın.
+            </span>
+          </label>
+        </div>
+      </section>
       <ProductCategoriesEditor />
       <div className="ws-prod-list-header">
         <h3>Ürün Kataloğu</h3>
@@ -628,6 +691,11 @@ export default function ProductsPanel() {
                 </div>
 
                 <div className="ws-prod-card-body">
+                  {p.id === heroProduct?.id && (
+                    <span className="mb-2 inline-flex rounded-full bg-amber-50 px-2 py-1 text-[10px] font-extrabold uppercase tracking-wider text-amber-700 border border-amber-200">
+                      Hero Ürünü
+                    </span>
+                  )}
                   <h4>{p.title}</h4>
                   <p>{p.shortDescription || "Açıklama girilmemiş."}</p>
                 </div>
