@@ -91,3 +91,4 @@ data/bot-events.json
 astro-app/.vercel/
 astro-app/dist/
 .vercel
+.env*
