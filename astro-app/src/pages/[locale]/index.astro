@@ -8,6 +8,8 @@ import { loadContent } from "@/lib/content";
 import { pageSeo, ORGANIZATION_SCHEMA, WEBSITE_SCHEMA } from "@/lib/seo";
 import { flowNodesFromPageContent, industryLanesFromPageContent, pageButtonText, pageLocaleHref, pageText, resolveAsset, resolveLocale, serviceRailFromPageContent, type Locale } from "@/lib/cms";
 import { aiAnswerForPage, aiMetaForPage, appendSchemaNodes, fallbackFaqsForPage, faqItemsForPage, faqSchemaNode } from "@/lib/ai-search";
+import { PRODUCT_ICON_SVG } from "@/lib/product-model";
+import "@/styles/home-precision.css";
 
 export const prerender = false;
 
@@ -231,8 +233,33 @@ const cmsFlowNodes = flowNodesFromPageContent(pageContent, locale);
 const flowNodes = cmsFlowNodes.length > 0
   ? cmsFlowNodes
   : DEFAULT_FLOW_NODES.map((item) => ({ title: loc(item.title), desc: loc(item.desc) }));
+const flowTransferCodes = ["RAW", "0x4A", "LoRa", "MQTT", "ACTION"];
+const flowIllustrationAssets = [
+  "/assets/ecosystem-hardware.png",
+  "/assets/ecosystem-embedded-software.png",
+  "/assets/ecosystem-connectivity.png",
+  "/assets/ecosystem-cloud-processing.png",
+  "/assets/ecosystem-interfaces.png",
+];
 
 const INDUSTRY_ICONS = ["🏙️", "⚙️", "🩺", "📦"];
+const industryIconKeysFor = (lane: any) => {
+  const text = `${lane?.title || ""} ${lane?.desc || ""}`.toLocaleLowerCase();
+  const has = (pattern: RegExp) => pattern.test(text);
+
+  if (has(/medtech|health|sağlık|gesund|santé|salud|salute|医療|صحة/)) return ["activity"];
+  if (has(/energy|enerji|energie|energía|energia|エネルギー|طاقة/)) return ["battery"];
+
+  const isLogistics = has(/logistic|lojistik|logistik|logistique|logística|物流|لوجست/);
+  const isTelecom = has(/telecom|telekom|télécom|telecomunic|通信|اتصالات/);
+  if (isLogistics && isTelecom) return ["map", "radio"];
+  if (isLogistics) return ["map"];
+  if (isTelecom) return ["radio"];
+
+  if (has(/industrial|endüstri|industrie|industria|産業|صناع/)) return ["factory"];
+  if (has(/infrastr|altyapı|smart city|akıllı şehir|infraestructura|infrastrutt|インフラ|بنية/)) return ["building"];
+  return ["stack"];
+};
 
 const DEFAULT_INDUSTRY_LANES: { title: L10n; desc: L10n }[] = [
   {
@@ -366,7 +393,7 @@ const homeSchema = appendSchemaNodes({
     </section>
 
     <!-- Service Rail -->
-    <section class="section tight">
+    <section class="section tight home-service-section">
       <div class="section-inner">
         <AIAnswerBlock answer={aiAnswer} locale={locale} meta={aiMeta} />
         <div class="service-rail reveal">
@@ -406,18 +433,40 @@ const homeSchema = appendSchemaNodes({
     </section>
 
     <!-- Ecosystem -->
-    <section class="section dark ecosystem-section">
-      <canvas class="signal-canvas" data-density="34" data-color="91, 166, 91"></canvas>
+    <section class="section dark ecosystem-section ecosystem-signature">
       <div class="section-inner">
-        <div class="section-head center reveal">
-          <p class="eyebrow">{getVal("ecosystemEyebrow")}</p>
-          <h2 set:html={getVal("ecosystemTitle")} />
+        <div class="ecosystem-signature-head reveal">
+          <div>
+            <p class="eyebrow">{getVal("ecosystemEyebrow")}</p>
+            <h2 set:html={getVal("ecosystemTitle")} />
+          </div>
           <p class="section-lead">{getVal("ecosystemLead", loc(ecosystemLead))}</p>
         </div>
-        <div class="tech-flow reveal delay-1">
-          <div class="flow-row">
+        <div class="tech-flow signature-tech-flow reveal delay-1">
+          <div class="flow-row signature-flow-row">
             {flowNodes.map((node, idx) => (
-              <div class="flow-node"><small>{String(idx + 1).padStart(2, "0")}</small><strong>{node.title}</strong><span>{node.desc}</span></div>
+              <article
+                class="flow-node signature-flow-node"
+                style={`--stage:${idx}`}
+                data-stage={idx}
+                data-transfer={flowTransferCodes[idx] || "DATA"}
+              >
+                <div class="signature-node-head">
+                  <small>{String(idx + 1).padStart(2, "0")}</small>
+                </div>
+                <div class={`signature-node-visual signature-node-visual--${idx}`} aria-hidden="true">
+                  <img
+                    class="signature-node-image"
+                    src={flowIllustrationAssets[idx] || flowIllustrationAssets[0]}
+                    alt=""
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  <span class="signature-visual-packet">{flowTransferCodes[idx] || "DATA"}</span>
+                </div>
+                <strong>{node.title}</strong>
+                <span class="signature-node-desc">{node.desc}</span>
+              </article>
             ))}
           </div>
         </div>
@@ -451,9 +500,18 @@ const homeSchema = appendSchemaNodes({
           <h2 set:html={getVal("industriesTitle")} />
         </div>
         <div class="industry-lanes">
-          {industryLanes.map((lane, idx) => (
-            <article class={`industry-lane reveal${idx > 0 ? ` delay-${idx}` : ""}`}><div class="industry-lane-icon" aria-hidden="true">{lane.icon}</div><h3>{lane.title}</h3><p>{lane.desc}</p></article>
-          ))}
+          {industryLanes.map((lane, idx) => {
+            const iconKeys = industryIconKeysFor(lane);
+            return (
+              <article class={`industry-lane reveal${idx > 0 ? ` delay-${idx}` : ""}`} data-industry={idx}>
+                <span class="industry-lane-index" aria-hidden="true">{String(idx + 1).padStart(2, "0")}</span>
+                <div class="industry-lane-copy"><h3>{lane.title}</h3><p>{lane.desc}</p></div>
+                <div class={`industry-lane-schematic${iconKeys.length > 1 ? " is-dual" : ""}`} aria-hidden="true">
+                  {iconKeys.map((key) => <span class="industry-icon-glyph" set:html={PRODUCT_ICON_SVG[key] || PRODUCT_ICON_SVG.stack} />)}
+                </div>
+              </article>
+            );
+          })}
         </div>
       </div>
     </section>
