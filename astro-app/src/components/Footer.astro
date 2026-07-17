@@ -34,6 +34,7 @@ const labels = {
   contact: { en: "Contact", tr: "İletişim", de: "Kontakt", fr: "Contact", es: "Contacto", it: "Contatti", ar: "اتصل بنا", ja: "お問い合わせ" },
   rights: { en: "All rights reserved.", tr: "Tüm hakları saklıdır.", de: "Alle Rechte vorbehalten.", fr: "Tous droits réservés.", es: "Todos los derechos reservados.", it: "Tutti i diritti riservati.", ar: "جميع الحقوق محفوظة.", ja: "無断転載を禁じます。" },
   privacy: { en: "Privacy", tr: "Gizlilik", de: "Datenschutz", fr: "Confidentialité", es: "Privacidad", it: "Privacy", ar: "الخصوصية", ja: "プライバシー" },
+  cookieSettings: { en: "Cookie settings", tr: "Çerez ayarları", de: "Cookie-Einstellungen", fr: "Paramètres des cookies", es: "Configuración de cookies", it: "Impostazioni cookie", ar: "إعدادات ملفات الارتباط", ja: "Cookie設定" },
 };
 const getLabel = (key: keyof typeof labels) => labels[key][locale] || labels[key].en;
 
@@ -66,6 +67,7 @@ const getLabel = (key: keyof typeof labels) => labels[key][locale] || labels[key
       <a href={`/${locale}/company`}>{getLabel("company")}</a>
       <a href={`/${locale}/news`}>{getLabel("news")}</a>
       <a href={`/${locale}/privacy`}>{getLabel("privacy")}</a>
+      <button type="button" class="footer-cookie-settings" data-cookie-settings>{getLabel("cookieSettings")}</button>
     </div>
     <div>
       <h3>{getLabel("contactGroup")}</h3>

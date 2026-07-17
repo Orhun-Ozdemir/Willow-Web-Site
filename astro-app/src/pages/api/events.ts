@@ -216,6 +216,7 @@ function normalizeEvent(event: any) {
   const analytics = event?.metadata?._analytics || {};
   return {
     ...event,
+    country: event.country || analytics.country || "",
     city: event.city || analytics.city || "",
     region: event.region || analytics.region || "",
     continent: event.continent || analytics.continent || "",
@@ -287,6 +288,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
   const durationMs = Math.max(0, Math.min(86_400_000, Math.round(Number(body.durationMs || 0))));
   const clientMetadata = cleanMetadata(body.metadata) || {};
   const analyticsMetadata = {
+    country: geo.country,
     city: geo.city,
     region: geo.region,
     continent: geo.continent,

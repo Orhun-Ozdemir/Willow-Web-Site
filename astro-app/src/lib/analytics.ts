@@ -98,7 +98,23 @@ export function isSameOriginRequest(request: Request): boolean {
   const origin = request.headers.get("origin");
   if (!origin) return !import.meta.env.PROD;
   try {
-    return new URL(origin).host === new URL(request.url).host;
+    const originUrl = new URL(origin);
+    const requestUrl = new URL(request.url);
+    const forwardedHost = request.headers.get("x-forwarded-host")?.split(",")[0].trim();
+    const requestHosts = new Set([
+      requestUrl.host.toLowerCase(),
+      request.headers.get("host")?.toLowerCase(),
+      forwardedHost?.toLowerCase(),
+    ].filter((host): host is string => Boolean(host)));
+    const originHost = originUrl.host.toLowerCase();
+
+    if (requestHosts.has(originHost)) return true;
+
+    // Vercel redirects the apex domain to www, while Astro can still expose the
+    // configured apex host inside the server function. Treat only WillowSoft's
+    // canonical apex/www pair as the same site; unrelated domains stay blocked.
+    const willowHosts = new Set(["willowsoft.co", "www.willowsoft.co"]);
+    return willowHosts.has(originHost) && [...requestHosts].some((host) => willowHosts.has(host));
   } catch {
     return false;
   }
