@@ -144,8 +144,17 @@ function summarizeEvents(events: any[], range: string) {
 
   const returningVisitors = [...visitorSessions.values()].filter((ids) => ids.size > 1).length;
   const bouncedSessions = [...sessions.values()].filter((session) => session.pages <= 1).length;
-  const averageEngagementMs = engagements.length
-    ? Math.round(engagements.reduce((sum, event) => sum + Number(event.duration_ms || 0), 0) / engagements.length)
+  const engagementByPageSession = new Map<string, { path: string; durationMs: number }>();
+  engagements.forEach((event) => {
+    const path = event.path || "/";
+    const key = `${event.session_id || event.visitor_id || "anonymous"}:${path}`;
+    const current = engagementByPageSession.get(key) || { path, durationMs: 0 };
+    current.durationMs += Number(event.duration_ms || 0);
+    engagementByPageSession.set(key, current);
+  });
+  const engagementSessions = [...engagementByPageSession.values()];
+  const averageEngagementMs = engagementSessions.length
+    ? Math.round(engagementSessions.reduce((sum, event) => sum + event.durationMs, 0) / engagementSessions.length)
     : 0;
   const conversionEvents = events.filter((event) => /_form_submit$/.test(event.event_type));
   const conversionSessions = new Set(conversionEvents.map((event) => event.session_id).filter(Boolean)).size;
@@ -159,6 +168,22 @@ function summarizeEvents(events: any[], range: string) {
     if (event.visitor_id) row.visitors.add(event.visitor_id);
     if (/_form_submit$/.test(event.event_type)) row.conversions += 1;
     dailyMap.set(day, row);
+  });
+
+  const pagePerformanceMap = new Map<string, { pageViews: number; visitors: Set<string>; sessions: Set<string>; totalEngagementMs: number; engagedSessions: number }>();
+  pageViews.forEach((event) => {
+    const path = event.path || "/";
+    const row = pagePerformanceMap.get(path) || { pageViews: 0, visitors: new Set<string>(), sessions: new Set<string>(), totalEngagementMs: 0, engagedSessions: 0 };
+    row.pageViews += 1;
+    if (event.visitor_id) row.visitors.add(event.visitor_id);
+    if (event.session_id) row.sessions.add(event.session_id);
+    pagePerformanceMap.set(path, row);
+  });
+  engagementSessions.forEach((event) => {
+    const row = pagePerformanceMap.get(event.path) || { pageViews: 0, visitors: new Set<string>(), sessions: new Set<string>(), totalEngagementMs: 0, engagedSessions: 0 };
+    row.totalEngagementMs += event.durationMs;
+    row.engagedSessions += 1;
+    pagePerformanceMap.set(event.path, row);
   });
 
   return {
@@ -183,6 +208,17 @@ function summarizeEvents(events: any[], range: string) {
     topBrowsers: countBy(pageViews, (event) => event.browser || "unknown", 8),
     topEvents: countBy(events, (event) => event.event_type, 12),
     topProducts: countBy(events.filter((event) => event.event_type === "product_view"), (event) => event.metadata?.productSlug || event.path, 10),
+    pagePerformance: [...pagePerformanceMap.entries()]
+      .map(([path, row]) => ({
+        path,
+        pageViews: row.pageViews,
+        uniqueVisitors: row.visitors.size,
+        sessions: row.sessions.size,
+        averageEngagementMs: row.engagedSessions ? Math.round(row.totalEngagementMs / row.engagedSessions) : 0,
+        totalEngagementMs: row.totalEngagementMs,
+      }))
+      .sort((a, b) => b.pageViews - a.pageViews || b.totalEngagementMs - a.totalEngagementMs)
+      .slice(0, 20),
     daily: [...dailyMap.entries()].sort((a, b) => a[0].localeCompare(b[0])).map(([date, row]) => ({
       date,
       pageViews: row.pageViews,

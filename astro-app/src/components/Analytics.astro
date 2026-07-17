@@ -133,11 +133,11 @@ const settingsText = settingsCopy[locale] || settingsCopy.en;
     if (window.__willowAnalyticsLoaded) return;
     window.__willowAnalyticsLoaded = true;
 
-    var startedAt = Date.now();
+    var activeStartedAt = document.visibilityState === "visible" ? Date.now() : 0;
+    var unsentActiveMs = 0;
     var maxScroll = 0;
     var sentScroll = {};
     var pageViewSent = false;
-    var engagementSent = false;
     var attributionKey = "willow_analytics_attribution";
 
     function readConsent() {
@@ -217,18 +217,27 @@ const settingsText = settingsCopy[locale] || settingsCopy.en;
     function sendPageView() {
       if (pageViewSent || !isGranted()) return;
       pageViewSent = true;
-      startedAt = Date.now();
+      activeStartedAt = document.visibilityState === "visible" ? Date.now() : 0;
+      unsentActiveMs = 0;
       track("page_view");
       var productMatch = location.pathname.match(/\/(?:en|tr|de|fr|es|it|ar|ja)\/products\/([^/?#]+)/);
       if (productMatch) track("product_view", { metadata: { productSlug: decodeURIComponent(productMatch[1]) } });
     }
 
+    function captureActiveTime() {
+      if (!activeStartedAt) return;
+      unsentActiveMs += Math.max(0, Date.now() - activeStartedAt);
+      activeStartedAt = 0;
+    }
+
     function sendEngagement() {
-      if (engagementSent || !pageViewSent || !isGranted()) return;
-      engagementSent = true;
+      captureActiveTime();
+      if (!pageViewSent || !isGranted() || unsentActiveMs <= 0) return;
+      var durationMs = unsentActiveMs;
+      unsentActiveMs = 0;
       track("page_engagement", {
         beacon: true,
-        durationMs: Math.max(0, Date.now() - startedAt),
+        durationMs: durationMs,
         metadata: { scrollDepth: maxScroll },
       });
     }
@@ -291,12 +300,14 @@ const settingsText = settingsCopy[locale] || settingsCopy.en;
     window.addEventListener("pagehide", sendEngagement);
     document.addEventListener("visibilitychange", function () {
       if (document.visibilityState === "hidden") sendEngagement();
+      else if (isGranted() && !activeStartedAt) activeStartedAt = Date.now();
     });
     window.addEventListener("willow:analytics-consent", function (event) {
       if (event.detail && event.detail.granted) sendPageView();
       else {
         pageViewSent = false;
-        engagementSent = false;
+        activeStartedAt = 0;
+        unsentActiveMs = 0;
       }
     });
 
