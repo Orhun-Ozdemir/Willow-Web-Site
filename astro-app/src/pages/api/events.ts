@@ -19,7 +19,7 @@ import {
 
 export const prerender = false;
 
-const RANGE_DAYS: Record<string, number> = { "7d": 7, "30d": 30, "90d": 90 };
+const RANGE_DAYS: Record<string, number> = { "1d": 1, "7d": 7, "30d": 30, "90d": 90 };
 const MAX_BODY_BYTES = 16_384;
 const RATE_WINDOW_MS = 60_000;
 const RATE_LIMIT = 120;
@@ -161,7 +161,7 @@ function summarizeEvents(events: any[], range: string) {
 
   const dailyMap = new Map<string, { pageViews: number; visitors: Set<string>; conversions: number }>();
   events.forEach((event) => {
-    const day = String(event.created_at || "").slice(0, 10);
+    const day = String(event.created_at || "").slice(0, range === "1d" ? 13 : 10);
     if (!day) return;
     const row = dailyMap.get(day) || { pageViews: 0, visitors: new Set<string>(), conversions: 0 };
     if (event.event_type === "page_view") row.pageViews += 1;
@@ -220,7 +220,7 @@ function summarizeEvents(events: any[], range: string) {
       .sort((a, b) => b.pageViews - a.pageViews || b.totalEngagementMs - a.totalEngagementMs)
       .slice(0, 20),
     daily: [...dailyMap.entries()].sort((a, b) => a[0].localeCompare(b[0])).map(([date, row]) => ({
-      date,
+      date: range === "1d" ? `${date.slice(11, 13)}:00` : date,
       pageViews: row.pageViews,
       visitors: row.visitors.size,
       conversions: row.conversions,

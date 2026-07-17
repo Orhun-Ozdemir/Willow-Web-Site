@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 
-type RangeKey = "7d" | "30d" | "90d";
+type RangeKey = "1d" | "7d" | "30d" | "90d";
 type RankedItem = { label: string; count: number };
 type DailyItem = { date: string; pageViews: number; visitors: number; conversions: number };
 type PagePerformanceItem = { path: string; pageViews: number; uniqueVisitors: number; sessions: number; averageEngagementMs: number; totalEngagementMs: number };
@@ -221,7 +221,7 @@ export default function AnalyticsPanel() {
   }, [summary, chartMax]);
 
   const pagesPerSession = summary?.sessions ? (summary.pageViews / summary.sessions).toFixed(1) : "0";
-  const rangeLabel = range === "7d" ? "Son 7 gün" : range === "30d" ? "Son 30 gün" : "Son 90 gün";
+  const rangeLabel = range === "1d" ? "Son 24 saat" : range === "7d" ? "Son 7 gün" : range === "30d" ? "Son 30 gün" : "Son 90 gün";
   const pagePerformanceMax = Math.max(1, ...(summary?.pagePerformance || []).map((page) => page.pageViews));
 
   return (
@@ -248,10 +248,10 @@ export default function AnalyticsPanel() {
               <div><p className="text-[9px] font-black uppercase tracking-[0.16em] text-white/35">Rapor aralığı</p><p className="mt-1 text-xs font-bold text-white/80">{rangeLabel}</p></div>
               <span className="rounded-full bg-emerald-400/10 px-2.5 py-1 text-[9px] font-black text-emerald-300">LIVE DATA</span>
             </div>
-            <div className="mt-3 grid grid-cols-3 gap-1 rounded-xl bg-black/15 p-1">
-              {(["7d", "30d", "90d"] as RangeKey[]).map((item) => (
+            <div className="mt-3 grid grid-cols-4 gap-1 rounded-xl bg-black/15 p-1">
+              {(["1d", "7d", "30d", "90d"] as RangeKey[]).map((item) => (
                 <button key={item} type="button" onClick={() => setRange(item)} className={`rounded-lg px-3 py-2 text-[9px] font-black transition ${range === item ? "bg-white text-[#132175] shadow-lg" : "text-white/45 hover:bg-white/[0.06] hover:text-white"}`}>
-                  {item === "7d" ? "7 Gün" : item === "30d" ? "30 Gün" : "90 Gün"}
+                  {item === "1d" ? "24 Saat" : item === "7d" ? "7 Gün" : item === "30d" ? "30 Gün" : "90 Gün"}
                 </button>
               ))}
             </div>
@@ -280,7 +280,7 @@ export default function AnalyticsPanel() {
           <section className="grid gap-3 xl:grid-cols-[minmax(0,1.85fr)_minmax(280px,.65fr)]">
             <div className="overflow-hidden rounded-[20px] border border-slate-200/80 bg-white p-4 shadow-[0_10px_32px_rgba(21,31,65,0.045)] md:p-5">
               <div className="flex flex-wrap items-start justify-between gap-4">
-                <div><p className="text-[9px] font-black uppercase tracking-[0.16em] text-indigo-500">Traffic overview</p><h4 className="mt-1.5 text-[17px] font-black tracking-tight text-[#111b3b]">Ziyaret eğilimi</h4><p className="mt-1 text-[11px] text-slate-400">Günlük page view ve tekil ziyaretçi hareketi.</p></div>
+                <div><p className="text-[9px] font-black uppercase tracking-[0.16em] text-indigo-500">Traffic overview</p><h4 className="mt-1.5 text-[17px] font-black tracking-tight text-[#111b3b]">Ziyaret eğilimi</h4><p className="mt-1 text-[11px] text-slate-400">{range === "1d" ? "Saatlik page view ve tekil ziyaretçi hareketi." : "Günlük page view ve tekil ziyaretçi hareketi."}</p></div>
                 <div className="flex items-center gap-4">
                   <span className="flex items-center gap-1.5 text-[9px] font-bold text-slate-500"><i className="h-2 w-2 rounded-full bg-[#263f9d]" /> Page view</span>
                   <span className="flex items-center gap-1.5 text-[9px] font-bold text-slate-500"><i className="h-2 w-2 rounded-full bg-[#38b9d5]" /> Ziyaretçi</span>
