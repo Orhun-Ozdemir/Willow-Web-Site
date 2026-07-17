@@ -1,0 +1,110 @@
+---
+import PageLayout from "@/layouts/PageLayout.astro";
+import { resolveLocale, type Locale } from "@/lib/cms";
+import { buildAlternates, SITE_ORIGIN } from "@/lib/seo";
+
+export const prerender = false;
+
+const locale = resolveLocale(Astro.params.locale, Astro.url.pathname);
+
+type PrivacyCopy = {
+  title: string;
+  lead: string;
+  updated: string;
+  controller: string;
+  controllerBody: string;
+  collected: string;
+  collectedBody: string;
+  purpose: string;
+  purposeBody: string;
+  retention: string;
+  retentionBody: string;
+  providers: string;
+  providersBody: string;
+  choices: string;
+  choicesBody: string;
+  rights: string;
+  rightsBody: string;
+  contact: string;
+  preferenceButton: string;
+};
+
+const copies: Record<Locale, PrivacyCopy> = {
+  en: { title: "Privacy and Analytics Notice", lead: "This notice explains how WillowSoft uses first-party analytics and how you can control your choice.", updated: "Last updated: 17 July 2026", controller: "Data controller", controllerBody: "WillowSoft processes website analytics for its own website. Privacy requests can be sent to info@willowsoft.co.", collected: "Data we collect", collectedBody: "After analytics consent, we create a random anonymous VisitorID valid for 180 days and a SessionID that expires after 30 minutes of inactivity. We may record visited pages, approximate country/region/city, device type, browser, traffic source, campaign parameters, page engagement and selected clicks. We do not record form contents, passwords, precise location or a device fingerprint.", purpose: "Purpose and legal basis", purposeBody: "Analytics is used to understand site performance, product interest and form conversions. Persistent analytics begins only after your consent. Necessary storage used for security and your consent preference operates independently from analytics.", retention: "Retention", retentionBody: "Raw analytics events are retained for up to 180 days. Anonymous aggregate reports may be kept longer because they cannot reasonably identify an individual visitor.", providers: "Service providers", providersBody: "The site is hosted on Vercel and analytics records are stored in Supabase. Approximate location is derived by the hosting platform from the incoming network request; WillowSoft does not store the full IP address in analytics events.", choices: "Your choices", choicesBody: "You may allow, reject or later withdraw analytics. Withdrawing consent deletes the analytics identifiers from your browser and stops future analytics events. It does not affect necessary site functions.", rights: "Your rights", rightsBody: "Depending on applicable law, you may request information, correction, deletion, restriction or object to processing. Because the VisitorID is anonymous, include it only if you have independently saved it; WillowSoft does not use it to discover your identity.", contact: "For privacy questions, contact info@willowsoft.co.", preferenceButton: "Use the Cookie preferences button at the bottom of the page to change your choice." },
+  tr: { title: "Gizlilik ve Analiz Bildirimi", lead: "Bu bildirim WillowSoft’un first-party Analytics kullanımını ve tercihinizi nasıl kontrol edebileceğinizi açıklar.", updated: "Son güncelleme: 17 Temmuz 2026", controller: "Veri sorumlusu", controllerBody: "WillowSoft, kendi web sitesine ait ziyaret analizlerini işler. Gizlilik taleplerinizi info@willowsoft.co adresine iletebilirsiniz.", collected: "Topladığımız veriler", collectedBody: "Analytics izninden sonra 180 gün geçerli rastgele anonim bir VisitorID ve 30 dakika hareketsizlikte sona eren bir SessionID oluştururuz. Ziyaret edilen sayfalar, yaklaşık ülke/bölge/şehir, cihaz türü, Browser, trafik kaynağı, kampanya parametreleri, sayfa etkileşimi ve belirli tıklamalar kaydedilebilir. Form içerikleri, parolalar, kesin konum veya cihaz parmak izi kaydedilmez.", purpose: "Amaç ve hukuki dayanak", purposeBody: "Analytics; site performansını, ürün ilgisini ve form dönüşümlerini anlamak için kullanılır. Kalıcı analiz yalnızca izninizden sonra başlar. Güvenlik ve izin tercihinizi saklamak için kullanılan zorunlu depolama Analytics’ten bağımsızdır.", retention: "Saklama süresi", retentionBody: "Ham Analytics event kayıtları en fazla 180 gün saklanır. Bir ziyaretçiyi makul biçimde tanımlamayan anonim toplu raporlar daha uzun süre tutulabilir.", providers: "Hizmet sağlayıcılar", providersBody: "Site Vercel üzerinde barındırılır ve Analytics kayıtları Supabase’de saklanır. Yaklaşık konum hosting platformu tarafından gelen ağ isteğinden çıkarılır; WillowSoft tam IP adresini Analytics event kayıtlarında saklamaz.", choices: "Tercihleriniz", choicesBody: "Analytics’e izin verebilir, reddedebilir veya izninizi daha sonra geri çekebilirsiniz. İzni geri çekmek Analytics kimliklerini Browser’ınızdan siler ve gelecekteki event kayıtlarını durdurur. Zorunlu site işlevleri etkilenmez.", rights: "Haklarınız", rightsBody: "Uygulanabilir mevzuata göre bilgi, düzeltme, silme, kısıtlama talep edebilir veya işlemeye itiraz edebilirsiniz. VisitorID anonim olduğundan WillowSoft bu kimliği kullanarak gerçek kimliğinizi bulmaya çalışmaz.", contact: "Gizlilik soruları için info@willowsoft.co adresinden iletişime geçebilirsiniz.", preferenceButton: "Tercihinizi değiştirmek için sayfanın altındaki Çerez tercihleri düğmesini kullanın." },
+  de: { title: "Datenschutz- und Analysehinweis", lead: "Dieser Hinweis erklärt die First-Party-Analyse von WillowSoft und Ihre Wahlmöglichkeiten.", updated: "Aktualisiert: 17. Juli 2026", controller: "Verantwortlicher", controllerBody: "WillowSoft verarbeitet Analysedaten der eigenen Website. Anfragen: info@willowsoft.co.", collected: "Erhobene Daten", collectedBody: "Nach Ihrer Einwilligung erstellen wir eine zufällige VisitorID für 180 Tage und eine SessionID für 30 Minuten Inaktivität. Erfasst werden können Seiten, ungefährer Standort, Gerät, Browser, Quelle, Kampagne, Nutzungsdauer und ausgewählte Klicks. Formularinhalte, Passwörter, genauer Standort und Fingerprints werden nicht erfasst.", purpose: "Zweck und Grundlage", purposeBody: "Die Analyse dient der Verbesserung der Website sowie der Messung von Produktinteresse und Formular-Conversions und beginnt erst nach Ihrer Einwilligung.", retention: "Speicherdauer", retentionBody: "Rohdaten werden bis zu 180 Tage gespeichert; anonyme Gesamtberichte können länger bestehen.", providers: "Dienstleister", providersBody: "Hosting erfolgt über Vercel, Speicherung über Supabase. Vollständige IP-Adressen werden nicht in Analyseereignissen gespeichert.", choices: "Ihre Wahl", choicesBody: "Sie können zustimmen, ablehnen oder Ihre Einwilligung später widerrufen. Beim Widerruf werden Analysekennungen gelöscht und künftige Erfassung beendet.", rights: "Ihre Rechte", rightsBody: "Je nach geltendem Recht können Sie Auskunft, Berichtigung, Löschung oder Einschränkung verlangen und widersprechen.", contact: "Datenschutzanfragen: info@willowsoft.co.", preferenceButton: "Ändern Sie Ihre Wahl über Cookie-Einstellungen am Seitenende." },
+  fr: { title: "Avis de confidentialité et d’analyse", lead: "Cet avis décrit l’analyse first-party de WillowSoft et vos choix.", updated: "Mise à jour : 17 juillet 2026", controller: "Responsable du traitement", controllerBody: "WillowSoft traite les données d’analyse de son propre site. Contact : info@willowsoft.co.", collected: "Données collectées", collectedBody: "Après consentement, nous créons un VisitorID aléatoire valable 180 jours et un SessionID expirant après 30 minutes d’inactivité. Pages, localisation approximative, appareil, navigateur, source, campagne, engagement et certains clics peuvent être enregistrés. Aucun contenu de formulaire, mot de passe, localisation précise ou empreinte d’appareil n’est collecté.", purpose: "Finalité et base", purposeBody: "L’analyse sert à améliorer le site et à mesurer l’intérêt produit et les conversions. Elle ne commence qu’après votre consentement.", retention: "Conservation", retentionBody: "Les événements bruts sont conservés jusqu’à 180 jours ; les rapports agrégés anonymes peuvent être conservés plus longtemps.", providers: "Prestataires", providersBody: "Le site est hébergé par Vercel et les données sont stockées dans Supabase. L’adresse IP complète n’est pas conservée dans les événements.", choices: "Vos choix", choicesBody: "Vous pouvez accepter, refuser ou retirer votre consentement. Le retrait supprime les identifiants d’analyse et arrête la collecte future.", rights: "Vos droits", rightsBody: "Selon la loi applicable, vous pouvez demander accès, rectification, suppression, limitation ou vous opposer au traitement.", contact: "Questions : info@willowsoft.co.", preferenceButton: "Modifiez votre choix via Préférences cookies en bas de page." },
+  es: { title: "Aviso de privacidad y analítica", lead: "Este aviso explica la analítica first-party de WillowSoft y tus opciones.", updated: "Actualizado: 17 de julio de 2026", controller: "Responsable", controllerBody: "WillowSoft trata la analítica de su propio sitio. Contacto: info@willowsoft.co.", collected: "Datos recopilados", collectedBody: "Tras el consentimiento creamos un VisitorID aleatorio durante 180 días y un SessionID que caduca tras 30 minutos de inactividad. Podemos registrar páginas, ubicación aproximada, dispositivo, navegador, fuente, campañas, interacción y ciertos clics. No registramos formularios, contraseñas, ubicación precisa ni huellas del dispositivo.", purpose: "Finalidad y base", purposeBody: "La analítica mejora el sitio y mide interés y conversiones; solo comienza con tu consentimiento.", retention: "Conservación", retentionBody: "Los eventos se conservan hasta 180 días; los informes agregados anónimos pueden mantenerse más tiempo.", providers: "Proveedores", providersBody: "Vercel aloja el sitio y Supabase almacena los registros. No guardamos la IP completa en los eventos.", choices: "Tus opciones", choicesBody: "Puedes aceptar, rechazar o retirar el consentimiento. Al retirarlo se eliminan los identificadores y se detiene la recopilación futura.", rights: "Tus derechos", rightsBody: "Según la ley aplicable puedes solicitar acceso, corrección, eliminación, restricción u oposición.", contact: "Consultas: info@willowsoft.co.", preferenceButton: "Cambia tu elección con Preferencias de cookies al pie de página." },
+  it: { title: "Informativa privacy e analisi", lead: "Questa informativa descrive le analisi first-party di WillowSoft e le tue scelte.", updated: "Aggiornato: 17 luglio 2026", controller: "Titolare", controllerBody: "WillowSoft tratta i dati analitici del proprio sito. Contatto: info@willowsoft.co.", collected: "Dati raccolti", collectedBody: "Dopo il consenso creiamo un VisitorID casuale valido 180 giorni e un SessionID che scade dopo 30 minuti di inattività. Possiamo registrare pagine, posizione approssimativa, dispositivo, browser, sorgente, campagne, coinvolgimento e alcuni clic. Non registriamo moduli, password, posizione precisa o fingerprint.", purpose: "Finalità e base", purposeBody: "Le analisi migliorano il sito e misurano interesse e conversioni; iniziano solo dopo il consenso.", retention: "Conservazione", retentionBody: "Gli eventi grezzi sono conservati fino a 180 giorni; i report anonimi aggregati possono durare più a lungo.", providers: "Fornitori", providersBody: "Il sito è ospitato da Vercel e i record sono archiviati in Supabase. L’IP completo non viene salvato negli eventi.", choices: "Le tue scelte", choicesBody: "Puoi accettare, rifiutare o revocare il consenso. La revoca elimina gli identificatori e interrompe la raccolta futura.", rights: "I tuoi diritti", rightsBody: "Secondo la legge applicabile puoi chiedere accesso, rettifica, cancellazione, limitazione o opposizione.", contact: "Domande: info@willowsoft.co.", preferenceButton: "Modifica la scelta tramite Preferenze cookie in fondo alla pagina." },
+  ar: { title: "إشعار الخصوصية والتحليلات", lead: "يوضح هذا الإشعار تحليلات WillowSoft المباشرة وخياراتك.", updated: "آخر تحديث: 17 يوليو 2026", controller: "مسؤول البيانات", controllerBody: "تعالج WillowSoft تحليلات موقعها فقط. للتواصل: info@willowsoft.co.", collected: "البيانات التي نجمعها", collectedBody: "بعد الموافقة ننشئ VisitorID عشوائياً لمدة 180 يوماً وSessionID ينتهي بعد 30 دقيقة من عدم النشاط. قد نسجل الصفحات والموقع التقريبي والجهاز والمتصفح والمصدر والحملة والتفاعل وبعض النقرات. لا نسجل محتوى النماذج أو كلمات المرور أو الموقع الدقيق أو بصمة الجهاز.", purpose: "الغرض والأساس", purposeBody: "تستخدم التحليلات لتحسين الموقع وقياس الاهتمام والتحويلات، ولا تبدأ إلا بعد موافقتك.", retention: "مدة الاحتفاظ", retentionBody: "تُحفظ الأحداث الخام حتى 180 يوماً، وقد تُحفظ التقارير المجمعة المجهولة مدة أطول.", providers: "مزودو الخدمة", providersBody: "تستضيف Vercel الموقع وتُخزن السجلات في Supabase. لا نخزن عنوان IP الكامل ضمن الأحداث.", choices: "خياراتك", choicesBody: "يمكنك القبول أو الرفض أو سحب الموافقة. يؤدي السحب إلى حذف معرفات التحليل وإيقاف الجمع مستقبلاً.", rights: "حقوقك", rightsBody: "وفق القانون المعمول به يمكنك طلب الوصول أو التصحيح أو الحذف أو التقييد أو الاعتراض.", contact: "للاستفسارات: info@willowsoft.co.", preferenceButton: "غيّر اختيارك من زر تفضيلات ملفات الارتباط أسفل الصفحة." },
+  ja: { title: "プライバシーと分析に関する通知", lead: "WillowSoftのファーストパーティ分析と選択方法について説明します。", updated: "更新日：2026年7月17日", controller: "データ管理者", controllerBody: "WillowSoftは自社サイトの分析データを処理します。お問い合わせ：info@willowsoft.co。", collected: "収集するデータ", collectedBody: "同意後、180日有効のランダムなVisitorIDと、30分間操作がないと失効するSessionIDを作成します。閲覧ページ、概算地域、端末、ブラウザ、流入元、キャンペーン、滞在状況、一部クリックを記録する場合があります。フォーム内容、パスワード、正確な位置、端末フィンガープリントは記録しません。", purpose: "目的と根拠", purposeBody: "サイト改善、製品関心、コンバージョン測定に使用し、同意後にのみ開始します。", retention: "保存期間", retentionBody: "生イベントは最大180日保存し、匿名の集計レポートはそれ以上保存する場合があります。", providers: "サービス提供者", providersBody: "Vercelでホスティングし、Supabaseに記録します。完全なIPアドレスはイベントに保存しません。", choices: "選択", choicesBody: "許可、拒否、後からの撤回が可能です。撤回すると分析IDを削除し、以後の収集を停止します。", rights: "権利", rightsBody: "適用法に応じて、開示、訂正、削除、制限、異議申立てを請求できます。", contact: "お問い合わせ：info@willowsoft.co。", preferenceButton: "ページ下部のCookie設定から変更できます。" },
+};
+
+const t = copies[locale] || copies.en;
+const seo = {
+  title: `${t.title} | WillowSoft`,
+  description: t.lead,
+  canonical: `${SITE_ORIGIN}/${locale}/privacy`,
+  alternates: buildAlternates("/privacy"),
+  ogTitle: `${t.title} | WillowSoft`,
+  ogDescription: t.lead,
+  noindex: false,
+};
+---
+
+<PageLayout {...seo} locale={locale} dataPage="privacy">
+  <main id="main-content" class="privacy-page">
+    <section class="privacy-hero">
+      <div class="privacy-inner">
+        <span>WILLOWSOFT · PRIVACY</span>
+        <h1>{t.title}</h1>
+        <p>{t.lead}</p>
+        <small>{t.updated}</small>
+      </div>
+    </section>
+    <section class="privacy-content">
+      <div class="privacy-inner privacy-grid">
+        {[
+          [t.controller, t.controllerBody],
+          [t.collected, t.collectedBody],
+          [t.purpose, t.purposeBody],
+          [t.retention, t.retentionBody],
+          [t.providers, t.providersBody],
+          [t.choices, t.choicesBody],
+          [t.rights, t.rightsBody],
+        ].map(([title, body], index) => (
+          <article class={index === 1 || index === 5 ? "is-wide" : ""}>
+            <span>{String(index + 1).padStart(2, "0")}</span>
+            <h2>{title}</h2>
+            <p>{body}</p>
+          </article>
+        ))}
+      </div>
+      <div class="privacy-inner privacy-contact">
+        <strong>{t.contact}</strong>
+        <p>{t.preferenceButton}</p>
+      </div>
+    </section>
+  </main>
+</PageLayout>
+
+<style>
+  .privacy-page { color: #151d3d; background: #f7f8fc; }
+  .privacy-inner { width: min(1120px, calc(100% - 40px)); margin-inline: auto; }
+  .privacy-hero { padding: clamp(96px, 12vw, 150px) 0 64px; color: white; background: radial-gradient(circle at 80% 10%, rgba(45, 188, 224, .24), transparent 30%), linear-gradient(135deg, #0b153e, #18286f); }
+  .privacy-hero span { color: #71d4eb; font-size: 11px; font-weight: 900; letter-spacing: .16em; }
+  .privacy-hero h1 { max-width: 780px; margin: 18px 0 16px; color: white; font-size: clamp(38px, 6vw, 72px); line-height: .98; letter-spacing: -.045em; }
+  .privacy-hero p { max-width: 680px; margin: 0; color: rgba(255,255,255,.72); font-size: clamp(16px, 2vw, 20px); line-height: 1.6; }
+  .privacy-hero small { display: block; margin-top: 24px; color: rgba(255,255,255,.48); }
+  .privacy-content { padding: 54px 0 90px; }
+  .privacy-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+  .privacy-grid article { padding: clamp(22px, 3vw, 34px); border: 1px solid rgba(19,33,117,.09); border-radius: 22px; background: white; box-shadow: 0 12px 34px rgba(19,33,117,.05); }
+  .privacy-grid article.is-wide { grid-column: 1 / -1; }
+  .privacy-grid article > span { color: #26a9d6; font-size: 11px; font-weight: 900; }
+  .privacy-grid h2 { margin: 12px 0 10px; font-size: 20px; letter-spacing: -.02em; }
+  .privacy-grid p, .privacy-contact p { margin: 0; color: #5f6884; font-size: 14px; line-height: 1.75; }
+  .privacy-contact { margin-top: 18px; padding: 28px; border-radius: 20px; color: white; background: #132175; }
+  .privacy-contact strong { display: block; margin-bottom: 8px; }
+  .privacy-contact p { color: rgba(255,255,255,.66); }
+  @media (max-width: 700px) { .privacy-grid { grid-template-columns: 1fr; } .privacy-grid article.is-wide { grid-column: auto; } }
+</style>

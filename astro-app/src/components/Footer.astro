@@ -33,6 +33,7 @@ const labels = {
   news: { en: "News", tr: "Haberler", de: "Neuigkeiten", fr: "Actualités", es: "Noticias", it: "Notizie", ar: "الأخبار", ja: "ニュース" },
   contact: { en: "Contact", tr: "İletişim", de: "Kontakt", fr: "Contact", es: "Contacto", it: "Contatti", ar: "اتصل بنا", ja: "お問い合わせ" },
   rights: { en: "All rights reserved.", tr: "Tüm hakları saklıdır.", de: "Alle Rechte vorbehalten.", fr: "Tous droits réservés.", es: "Todos los derechos reservados.", it: "Tutti i diritti riservati.", ar: "جميع الحقوق محفوظة.", ja: "無断転載を禁じます。" },
+  privacy: { en: "Privacy", tr: "Gizlilik", de: "Datenschutz", fr: "Confidentialité", es: "Privacidad", it: "Privacy", ar: "الخصوصية", ja: "プライバシー" },
 };
 const getLabel = (key: keyof typeof labels) => labels[key][locale] || labels[key].en;
 
@@ -64,6 +65,7 @@ const getLabel = (key: keyof typeof labels) => labels[key][locale] || labels[key
       <h3>{getLabel("companyGroup")}</h3>
       <a href={`/${locale}/company`}>{getLabel("company")}</a>
       <a href={`/${locale}/news`}>{getLabel("news")}</a>
+      <a href={`/${locale}/privacy`}>{getLabel("privacy")}</a>
     </div>
     <div>
       <h3>{getLabel("contactGroup")}</h3>

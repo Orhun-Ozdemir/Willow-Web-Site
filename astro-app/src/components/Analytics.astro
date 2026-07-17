@@ -1,0 +1,308 @@
+---
+import type { Locale } from "@/lib/cms";
+import { ANALYTICS_CONSENT_COOKIE, ANALYTICS_CONSENT_VERSION } from "@/lib/analytics";
+
+interface Props { locale: Locale }
+
+const { locale } = Astro.props;
+const choice = Astro.cookies.get(ANALYTICS_CONSENT_COOKIE)?.value || "";
+const hasChoice = choice === `granted:${ANALYTICS_CONSENT_VERSION}` || choice === `denied:${ANALYTICS_CONSENT_VERSION}`;
+
+const copy: Record<Locale, { title: string; body: string; accept: string; reject: string; preferences: string; privacy: string }> = {
+  en: { title: "Your privacy, your choice", body: "With your permission, we use anonymous analytics to understand visits, countries and product interest. We never record form contents or create a device fingerprint.", accept: "Allow analytics", reject: "Necessary only", preferences: "Cookie preferences", privacy: "Privacy notice" },
+  tr: { title: "Gizliliğiniz, sizin tercihiniz", body: "İzninizle ziyaretleri, ülkeleri ve ürün ilgisini anlamak için anonim analiz kullanıyoruz. Form içeriklerini kaydetmiyor ve cihaz parmak izi oluşturmuyoruz.", accept: "Analitiğe izin ver", reject: "Yalnızca gerekli", preferences: "Çerez tercihleri", privacy: "Gizlilik bildirimi" },
+  de: { title: "Ihre Privatsphäre, Ihre Wahl", body: "Mit Ihrer Erlaubnis verwenden wir anonyme Analysen, um Besuche, Länder und Produktinteressen zu verstehen. Formulareingaben und Geräte-Fingerprints werden nicht erfasst.", accept: "Analyse zulassen", reject: "Nur notwendige", preferences: "Cookie-Einstellungen", privacy: "Datenschutzhinweis" },
+  fr: { title: "Votre vie privée, votre choix", body: "Avec votre accord, nous utilisons des analyses anonymes pour comprendre les visites, les pays et l’intérêt pour les produits. Nous n’enregistrons pas le contenu des formulaires et ne créons pas d’empreinte numérique.", accept: "Autoriser l’analyse", reject: "Nécessaires uniquement", preferences: "Préférences cookies", privacy: "Avis de confidentialité" },
+  es: { title: "Tu privacidad, tu elección", body: "Con tu permiso usamos analítica anónima para comprender visitas, países e interés por productos. No registramos el contenido de formularios ni creamos huellas del dispositivo.", accept: "Permitir analítica", reject: "Solo necesarias", preferences: "Preferencias de cookies", privacy: "Aviso de privacidad" },
+  it: { title: "La tua privacy, la tua scelta", body: "Con il tuo consenso utilizziamo analisi anonime per comprendere visite, paesi e interesse per i prodotti. Non registriamo i contenuti dei moduli né creiamo impronte del dispositivo.", accept: "Consenti analisi", reject: "Solo necessari", preferences: "Preferenze cookie", privacy: "Informativa privacy" },
+  ar: { title: "خصوصيتك، اختيارك", body: "بإذنك نستخدم تحليلات مجهولة لفهم الزيارات والبلدان والاهتمام بالمنتجات. لا نسجل محتوى النماذج ولا ننشئ بصمة للجهاز.", accept: "السماح بالتحليلات", reject: "الضرورية فقط", preferences: "تفضيلات ملفات الارتباط", privacy: "إشعار الخصوصية" },
+  ja: { title: "プライバシーはあなたの選択です", body: "許可をいただいた場合、訪問数、国、製品への関心を把握するため匿名分析を使用します。フォーム内容の記録や端末フィンガープリントの作成は行いません。", accept: "分析を許可", reject: "必須のみ", preferences: "Cookie設定", privacy: "プライバシー通知" },
+};
+
+const text = copy[locale] || copy.en;
+---
+
+<aside id="willow-consent" class:list={["willow-consent", { "is-hidden": hasChoice }]} aria-labelledby="willow-consent-title" aria-live="polite">
+  <div class="willow-consent-mark" aria-hidden="true">W</div>
+  <div class="willow-consent-copy">
+    <strong id="willow-consent-title">{text.title}</strong>
+    <p>{text.body}</p>
+    <a href={`/${locale}/privacy`}>{text.privacy}</a>
+  </div>
+  <div class="willow-consent-actions">
+    <button type="button" class="willow-consent-reject" data-consent-choice="false">{text.reject}</button>
+    <button type="button" class="willow-consent-accept" data-consent-choice="true">{text.accept}</button>
+  </div>
+</aside>
+
+<button id="willow-consent-preferences" class:list={["willow-consent-preferences", { "is-visible": hasChoice }]} type="button">
+  <span aria-hidden="true">◉</span>{text.preferences}
+</button>
+
+<script is:inline define:vars={{ consentVersion: ANALYTICS_CONSENT_VERSION }}>
+  (function () {
+    var banner = document.getElementById("willow-consent");
+    var preferences = document.getElementById("willow-consent-preferences");
+    if (!banner || !preferences || banner.dataset.bound === "1") return;
+    banner.dataset.bound = "1";
+
+    function clearAnalyticsStorage() {
+      try {
+        localStorage.removeItem("willow_analytics_attribution");
+        sessionStorage.removeItem("willow_analytics_started_forms");
+      } catch {}
+    }
+
+    async function saveChoice(granted) {
+      banner.classList.add("is-saving");
+      try {
+        var response = await fetch("/api/analytics/consent", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          credentials: "same-origin",
+          body: JSON.stringify({ granted: granted }),
+        });
+        if (!response.ok) throw new Error("Consent could not be saved");
+        if (!granted) clearAnalyticsStorage();
+        banner.classList.add("is-hidden");
+        preferences.classList.add("is-visible");
+        window.dispatchEvent(new CustomEvent("willow:analytics-consent", { detail: { granted: granted, version: consentVersion } }));
+      } catch {
+        banner.classList.remove("is-hidden");
+      } finally {
+        banner.classList.remove("is-saving");
+      }
+    }
+
+    banner.querySelectorAll("[data-consent-choice]").forEach(function (button) {
+      button.addEventListener("click", function () {
+        saveChoice(button.getAttribute("data-consent-choice") === "true");
+      });
+    });
+
+    preferences.addEventListener("click", function () {
+      banner.classList.remove("is-hidden");
+      preferences.classList.remove("is-visible");
+      var accept = banner.querySelector(".willow-consent-accept");
+      if (accept) accept.focus();
+    });
+  })();
+</script>
+
+<script is:inline define:vars={{ consentVersion: ANALYTICS_CONSENT_VERSION }}>
+  (function () {
+    if (window.__willowAnalyticsLoaded) return;
+    window.__willowAnalyticsLoaded = true;
+
+    var startedAt = Date.now();
+    var maxScroll = 0;
+    var sentScroll = {};
+    var pageViewSent = false;
+    var engagementSent = false;
+    var attributionKey = "willow_analytics_attribution";
+
+    function readConsent() {
+      var match = document.cookie.match(/(?:^|;\s*)willow_analytics_consent=([^;]+)/);
+      return match ? decodeURIComponent(match[1]) : "";
+    }
+
+    function isGranted() {
+      return readConsent() === "granted:" + consentVersion;
+    }
+
+    function locale() {
+      return document.documentElement.lang || "en";
+    }
+
+    function getAttribution() {
+      if (!isGranted()) return {};
+      var now = Date.now();
+      var current = {};
+      try {
+        current = JSON.parse(localStorage.getItem(attributionKey) || "{}");
+      } catch {}
+      if (!current.createdAt || now - current.createdAt > 90 * 86400000) current = {};
+
+      var params = new URLSearchParams(location.search);
+      var hasCampaign = ["utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content"].some(function (key) { return params.has(key); });
+      if (!current.createdAt || hasCampaign) {
+        current = {
+          createdAt: now,
+          landingPage: location.pathname,
+          utmSource: (params.get("utm_source") || "").slice(0, 160),
+          utmMedium: (params.get("utm_medium") || "").slice(0, 160),
+          utmCampaign: (params.get("utm_campaign") || "").slice(0, 200),
+          utmTerm: (params.get("utm_term") || "").slice(0, 200),
+          utmContent: (params.get("utm_content") || "").slice(0, 200),
+        };
+        try { localStorage.setItem(attributionKey, JSON.stringify(current)); } catch {}
+      }
+      return current;
+    }
+
+    function payload(eventType, options) {
+      options = options || {};
+      return {
+        eventType: eventType,
+        path: location.pathname + location.search,
+        title: document.title,
+        locale: locale(),
+        referrer: document.referrer,
+        language: navigator.language || "",
+        timezone: (Intl.DateTimeFormat().resolvedOptions().timeZone || ""),
+        viewport: { width: window.innerWidth || 0, height: window.innerHeight || 0 },
+        durationMs: options.durationMs || 0,
+        metadata: options.metadata || null,
+        attribution: getAttribution(),
+      };
+    }
+
+    function track(eventType, options) {
+      if (!isGranted()) return false;
+      var body = JSON.stringify(payload(eventType, options));
+      if (options && options.beacon && navigator.sendBeacon) {
+        return navigator.sendBeacon("/api/events", new Blob([body], { type: "application/json" }));
+      }
+      fetch("/api/events", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "same-origin",
+        keepalive: true,
+        body: body,
+      }).catch(function () {});
+      return true;
+    }
+
+    window.willowTrack = track;
+
+    function sendPageView() {
+      if (pageViewSent || !isGranted()) return;
+      pageViewSent = true;
+      startedAt = Date.now();
+      track("page_view");
+      var productMatch = location.pathname.match(/\/(?:en|tr|de|fr|es|it|ar|ja)\/products\/([^/?#]+)/);
+      if (productMatch) track("product_view", { metadata: { productSlug: decodeURIComponent(productMatch[1]) } });
+    }
+
+    function sendEngagement() {
+      if (engagementSent || !pageViewSent || !isGranted()) return;
+      engagementSent = true;
+      track("page_engagement", {
+        beacon: true,
+        durationMs: Math.max(0, Date.now() - startedAt),
+        metadata: { scrollDepth: maxScroll },
+      });
+    }
+
+    function elementLabel(element) {
+      return String(element.getAttribute("aria-label") || element.textContent || "").replace(/\s+/g, " ").trim().slice(0, 120);
+    }
+
+    document.addEventListener("click", function (event) {
+      if (!isGranted()) return;
+      var target = event.target instanceof Element ? event.target.closest("a,button,[data-analytics-event]") : null;
+      if (!target || target.closest("#willow-consent, #willow-consent-preferences")) return;
+      var custom = target.getAttribute("data-analytics-event");
+      var href = target instanceof HTMLAnchorElement ? target.href : "";
+      var rawHref = target instanceof HTMLAnchorElement ? (target.getAttribute("href") || "") : "";
+      var eventType = custom || "cta_click";
+
+      if (rawHref.startsWith("mailto:")) eventType = "email_click";
+      else if (rawHref.startsWith("tel:")) eventType = "phone_click";
+      else if (/wa\.me|whatsapp/i.test(href)) eventType = "whatsapp_click";
+      else if (target.hasAttribute("download") || /\.(pdf|docx?|xlsx?|zip)(?:$|\?)/i.test(href)) eventType = "document_download";
+      else if (/\/(?:en|tr|de|fr|es|it|ar|ja)\/products\/[^/]+/.test(new URL(href || location.href, location.href).pathname)) eventType = "product_card_click";
+      else if (href && new URL(href, location.href).origin !== location.origin) eventType = "outbound_click";
+      else if (target.closest("nav,header")) eventType = "nav_click";
+
+      track(eventType, { metadata: {
+        label: elementLabel(target),
+        section: target.closest("section")?.id || target.closest("section")?.getAttribute("data-section") || "",
+        href: rawHref.slice(0, 300),
+      } });
+    }, { passive: true });
+
+    document.addEventListener("change", function (event) {
+      var target = event.target;
+      if (target instanceof HTMLSelectElement && target.id === "locale-select") {
+        track("language_switch", { metadata: { label: target.value } });
+      }
+    });
+
+    document.addEventListener("focusin", function (event) {
+      if (!isGranted()) return;
+      var form = event.target instanceof Element ? event.target.closest("form") : null;
+      if (!form || form.dataset.analyticsStarted === "1") return;
+      form.dataset.analyticsStarted = "1";
+      var isProject = form.id === "start-project-form";
+      track(isProject ? "start_project_form_start" : "contact_form_start", { metadata: { formId: form.id || "form" } });
+    });
+
+    window.addEventListener("scroll", function () {
+      var total = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+      maxScroll = Math.max(maxScroll, Math.min(100, Math.round((window.scrollY / total) * 100)));
+      [25, 50, 75, 90].forEach(function (milestone) {
+        if (maxScroll >= milestone && !sentScroll[milestone]) {
+          sentScroll[milestone] = true;
+          track("scroll_depth", { metadata: { scrollDepth: milestone } });
+        }
+      });
+    }, { passive: true });
+
+    window.addEventListener("pagehide", sendEngagement);
+    document.addEventListener("visibilitychange", function () {
+      if (document.visibilityState === "hidden") sendEngagement();
+    });
+    window.addEventListener("willow:analytics-consent", function (event) {
+      if (event.detail && event.detail.granted) sendPageView();
+      else {
+        pageViewSent = false;
+        engagementSent = false;
+      }
+    });
+
+    if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", sendPageView, { once: true });
+    else sendPageView();
+  })();
+</script>
+
+<style>
+  .willow-consent {
+    position: fixed;
+    z-index: 10050;
+    right: clamp(16px, 3vw, 36px);
+    bottom: clamp(16px, 3vw, 32px);
+    width: min(680px, calc(100vw - 32px));
+    display: grid;
+    grid-template-columns: 42px minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 16px;
+    padding: 18px;
+    color: #f7f9ff;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: 20px;
+    background: rgba(10, 19, 62, 0.96);
+    box-shadow: 0 22px 70px rgba(7, 15, 52, 0.34);
+    backdrop-filter: blur(18px);
+    transition: opacity 180ms ease, transform 180ms ease, visibility 180ms ease;
+  }
+  .willow-consent.is-hidden { opacity: 0; visibility: hidden; transform: translateY(12px); pointer-events: none; }
+  .willow-consent.is-saving { opacity: 0.72; pointer-events: none; }
+  .willow-consent-mark { width: 42px; height: 42px; display: grid; place-items: center; border-radius: 13px; background: linear-gradient(145deg, #38c5e9, #6458d4); color: white; font-weight: 900; }
+  .willow-consent-copy strong { display: block; margin-bottom: 4px; font-size: 14px; letter-spacing: -0.01em; }
+  .willow-consent-copy p { margin: 0; color: rgba(240, 245, 255, 0.72); font-size: 12px; line-height: 1.55; }
+  .willow-consent-copy a { display: inline-block; margin-top: 5px; color: #80ddf2; font-size: 11px; font-weight: 700; text-decoration: none; }
+  .willow-consent-actions { display: flex; gap: 8px; }
+  .willow-consent-actions button { min-height: 38px; padding: 0 13px; border: 0; border-radius: 11px; cursor: pointer; font: inherit; font-size: 11px; font-weight: 800; white-space: nowrap; }
+  .willow-consent-reject { color: #e6eaff; background: rgba(255, 255, 255, 0.1); }
+  .willow-consent-accept { color: #10183d; background: #f7f9ff; }
+  .willow-consent-preferences { position: fixed; z-index: 10040; left: 12px; bottom: 12px; display: flex; align-items: center; gap: 6px; padding: 8px 10px; border: 1px solid rgba(19, 33, 117, 0.12); border-radius: 999px; opacity: 0; visibility: hidden; color: #243064; background: rgba(255, 255, 255, 0.92); box-shadow: 0 8px 24px rgba(19, 33, 117, 0.12); font: inherit; font-size: 10px; font-weight: 800; cursor: pointer; backdrop-filter: blur(12px); }
+  .willow-consent-preferences.is-visible { opacity: 1; visibility: visible; }
+  .willow-consent-preferences span { color: #27a9d5; }
+  @media (max-width: 720px) {
+    .willow-consent { grid-template-columns: 34px minmax(0, 1fr); gap: 12px; padding: 15px; }
+    .willow-consent-mark { width: 34px; height: 34px; border-radius: 10px; }
+    .willow-consent-actions { grid-column: 1 / -1; }
+    .willow-consent-actions button { flex: 1; }
+  }
+</style>

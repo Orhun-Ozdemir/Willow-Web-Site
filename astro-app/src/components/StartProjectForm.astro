@@ -313,6 +313,7 @@ const getLabel = (key: keyof typeof labels) => {
         if (res.ok) {
           form.style.display = 'none';
           successMsg.style.display = 'flex';
+          window.willowTrack?.('start_project_form_submit', { metadata: { formId: 'start-project-form' } });
           form.reset();
         } else {
           let serverMsg = '';
@@ -322,6 +323,7 @@ const getLabel = (key: keyof typeof labels) => {
           } catch {}
           errorMsg.textContent = serverMsg || errorMsg.textContent;
           errorMsg.style.display = 'block';
+          window.willowTrack?.('form_error', { metadata: { formId: 'start-project-form', errorType: 'server' } });
         }
       } catch (err) {
         // Network failure only — queue offline so the visitor's brief isn't lost.
@@ -342,6 +344,7 @@ const getLabel = (key: keyof typeof labels) => {
           form.reset();
         } catch {
           errorMsg.style.display = 'block';
+          window.willowTrack?.('form_error', { metadata: { formId: 'start-project-form', errorType: 'offline-storage' } });
         }
       } finally {
         submitBtn.disabled = false;

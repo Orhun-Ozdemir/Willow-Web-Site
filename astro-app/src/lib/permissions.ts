@@ -2,6 +2,7 @@ export type AdminRole = "super_admin" | "content_editor" | "sales" | "viewer";
 
 export type AdminPermission =
   | "audit.read"
+  | "analytics.read"
   | "content.read"
   | "content.write"
   | "leads.read"
@@ -15,9 +16,9 @@ export type AdminPermission =
 
 const ROLE_PERMISSIONS: Record<AdminRole, AdminPermission[] | ["*"]> = {
   super_admin: ["*"],
-  content_editor: ["content.read", "content.write", "media.upload", "leads.read"],
-  sales: ["leads.read", "leads.write"],
-  viewer: ["content.read", "leads.read"],
+  content_editor: ["content.read", "content.write", "media.upload", "leads.read", "analytics.read"],
+  sales: ["leads.read", "leads.write", "analytics.read"],
+  viewer: ["content.read", "leads.read", "analytics.read"],
 };
 
 export function hasPermission(role: AdminRole, permission: AdminPermission): boolean {
@@ -28,6 +29,7 @@ export function hasPermission(role: AdminRole, permission: AdminPermission): boo
 
 /** Map admin shell tabs to required read permission. Omitted = visible to all authenticated admins. */
 export const TAB_PERMISSIONS: Partial<Record<string, AdminPermission>> = {
+  analytics: "analytics.read",
   leads: "leads.read",
   kanban: "leads.read",
   products: "content.read",

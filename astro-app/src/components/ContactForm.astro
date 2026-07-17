@@ -178,6 +178,7 @@ const subjectOptions: { value: string; label: Record<string, string> }[] = [
         if (res.ok) {
           form.style.display = 'none';
           successMsg.style.display = 'flex';
+          window.willowTrack?.('contact_form_submit', { metadata: { formId: 'contact-form' } });
           form.reset();
         } else {
           let serverMsg = '';
@@ -187,6 +188,7 @@ const subjectOptions: { value: string; label: Record<string, string> }[] = [
           } catch {}
           errorMsg.textContent = serverMsg || errorMsg.textContent;
           errorMsg.style.display = 'block';
+          window.willowTrack?.('form_error', { metadata: { formId: 'contact-form', errorType: 'server' } });
         }
       } catch (err) {
         // Network failure only — queue offline so the visitor's message isn't lost.
@@ -207,6 +209,7 @@ const subjectOptions: { value: string; label: Record<string, string> }[] = [
           form.reset();
         } catch {
           errorMsg.style.display = 'block';
+          window.willowTrack?.('form_error', { metadata: { formId: 'contact-form', errorType: 'offline-storage' } });
         }
       } finally {
         submitBtn.disabled = false;

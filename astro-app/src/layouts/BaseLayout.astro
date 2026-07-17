@@ -2,6 +2,7 @@
 import { OG_LOCALE_MAP, SITE_NAME, type Alternate } from "@/lib/seo";
 import type { Locale } from "@/lib/cms";
 import { resolveAsset } from "@/lib/cms";
+import Analytics from "@/components/Analytics.astro";
 
 import "@/styles/globals.css";
 
@@ -96,6 +97,7 @@ const skipLabel = skipLabels[locale] || skipLabels.en;
   <body data-page={dataPage} class="min-h-full flex flex-col">
     <a class="skip-link" href="#main-content">{skipLabel}</a>
     <slot />
+    {dataPage !== "admin" && <Analytics locale={locale} />}
     <script is:inline>
     (function(){
       const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -464,16 +466,30 @@ const skipLabel = skipLabels[locale] || skipLabels.en;
     })();
     </script>
   {/* Tawk.to Live Chat — PUBLIC_TAWK_PROPERTY_ID .env'de tanımlıysa yüklenir */}
-  {import.meta.env.PUBLIC_TAWK_PROPERTY_ID && (
+  {dataPage !== "admin" && import.meta.env.PUBLIC_TAWK_PROPERTY_ID && (
     <script is:inline define:vars={{ tawkPropertyId: import.meta.env.PUBLIC_TAWK_PROPERTY_ID, tawkWidgetId: import.meta.env.PUBLIC_TAWK_WIDGET_ID || "default" }}>
-      var Tawk_API = Tawk_API || {}, Tawk_LoadStart = new Date();
       (function(){
-        var s1 = document.createElement("script"), s0 = document.getElementsByTagName("script")[0];
-        s1.async = true;
-        s1.src = "https://embed.tawk.to/" + tawkPropertyId + "/" + tawkWidgetId;
-        s1.charset = "UTF-8";
-        s1.setAttribute("crossorigin", "*");
-        s0.parentNode.insertBefore(s1, s0);
+        function hasAnalyticsConsent(){
+          var match = document.cookie.match(/(?:^|;\s*)willow_analytics_consent=([^;]+)/);
+          return !!(match && decodeURIComponent(match[1]) === "granted:1");
+        }
+        function loadTawk(){
+          if (!hasAnalyticsConsent() || document.querySelector("script[data-willow-tawk]")) return;
+          window.Tawk_API = window.Tawk_API || {};
+          window.Tawk_LoadStart = new Date();
+          var s1 = document.createElement("script"), s0 = document.getElementsByTagName("script")[0];
+          s1.async = true;
+          s1.src = "https://embed.tawk.to/" + tawkPropertyId + "/" + tawkWidgetId;
+          s1.charset = "UTF-8";
+          s1.setAttribute("crossorigin", "*");
+          s1.setAttribute("data-willow-tawk", "true");
+          s0.parentNode.insertBefore(s1, s0);
+        }
+        loadTawk();
+        window.addEventListener("willow:analytics-consent", function(event){
+          if (event.detail && event.detail.granted) loadTawk();
+          else if (window.Tawk_API && typeof window.Tawk_API.shutdown === "function") window.Tawk_API.shutdown();
+        });
       })();
     </script>
   )}

@@ -23,19 +23,21 @@ import ChangeHistoryPanel from "./ChangeHistoryPanel";
 import CompanyPanel from "./CompanyPanel";
 import UsersPanel from "./UsersPanel";
 import AuditLogPanel from "./AuditLogPanel";
+import AnalyticsPanel from "./AnalyticsPanel";
 import LeadDetailsDrawer from "./LeadDetailsDrawer";
 import { useBodyScrollLock } from "./useDrawerLock";
 import { canAccessTab } from "@/lib/permissions";
 import type { AdminRole } from "@/lib/permissions";
 
 type Tab =
-  | "overview" | "leads" | "kanban"
+  | "overview" | "analytics" | "leads" | "kanban"
   | "products" | "news" | "faqs" | "glossary" | "solutions" | "clients" | "company" | "services_page"
   | "seo" | "translations" | "health"
   | "settings" | "backups" | "storage" | "history" | "users" | "audit";
 
 const ICON_PATHS: Record<Tab, string> = {
   overview: "M4 5a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H5a1 1 0 01-1-1V5zm10 0a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1V5zM4 15a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H5a1 1 0 01-1-1v-4zm10 0a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1v-4z",
+  analytics: "M4 19V9m5 10V5m5 14v-7m5 7V3",
   leads: "M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z",
   kanban: "M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2",
   products: "M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4",
@@ -70,6 +72,7 @@ const TABS: { section: string; items: { key: Tab; label: string }[] }[] = [
     section: "Genel",
     items: [
       { key: "overview", label: "Genel Bakış" },
+      { key: "analytics", label: "Analytics" },
       { key: "leads", label: "Mesajlar (Tablo)" },
       { key: "kanban", label: "Leads Pipeline" },
     ],
@@ -285,6 +288,7 @@ export default function AdminShell() {
 
         <div className="flex-1 overflow-y-auto p-4 md:p-8">
           {activeTab === "overview" && <OverviewPanel onNavigate={(tab) => setActiveTab(tab as Tab)} />}
+          {activeTab === "analytics" && <AnalyticsPanel />}
           {activeTab === "leads" && <LeadsTablePanel onSelectLead={setSelectedLeadId} />}
           {activeTab === "kanban" && <LeadsKanbanPanel onSelectLead={setSelectedLeadId} />}
           {activeTab === "products" && <ProductsPanel />}
