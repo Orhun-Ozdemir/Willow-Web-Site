@@ -1,6 +1,9 @@
 import nodemailer from "nodemailer";
 import { getSmtpConfig } from "./smtp-settings";
 
+const env = (key: string): string | undefined =>
+  (import.meta.env as any)?.[key] ?? (typeof process !== "undefined" ? process.env?.[key] : undefined);
+
 export interface LeadMailData {
   name: string;
   email: string;
@@ -20,6 +23,28 @@ export interface LeadMailData {
   timeline?: string;
   budgetRange?: string;
   subject?: string;
+}
+
+export interface LeadDigestRow {
+  id: string;
+  name: string;
+  email: string;
+  company?: string;
+  phone?: string;
+  sourcePage?: string;
+  createdAt: string;
+  daysWaiting: number;
+}
+
+function formatLeadDate(iso: string): string {
+  return new Date(iso).toLocaleString("tr-TR", {
+    timeZone: "Europe/Istanbul",
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
 }
 
 async function getTransporter() {
@@ -117,6 +142,131 @@ export async function sendLeadNotification(to: string[], lead: LeadMailData) {
       failed.map((r) => (r as PromiseRejectedResult).reason?.message || r)
     );
   }
+}
+
+export async function sendUncontactedLeadsDigest(to: string[], leads: LeadDigestRow[], adminUrl: string) {
+  const recipients = [...new Set((to || []).map((e) => e.trim()).filter((e) => e.includes("@")))];
+  if (!recipients.length || !leads.length) return;
+
+  const cfg = await getSmtpConfig();
+  if (!cfg.user || !cfg.pass) {
+    console.error("Lead digest e-posta atlandı: SMTP yapılandırılmamış");
+    return;
+  }
+
+  const { transporter, user } = await getTransporter();
+  const from = `"WillowSoft Admin" <${user}>`;
+  const count = leads.length;
+  const subject = `WillowSoft — ${count} yanıtsız lead (günlük özet)`;
+
+  const rows = leads
+    .map(
+      (lead) => `
+      <tr>
+        <td style="padding:8px 10px;border-bottom:1px solid #eef1f7;font-size:14px;color:#222">${lead.name}</td>
+        <td style="padding:8px 10px;border-bottom:1px solid #eef1f7;font-size:14px;color:#222">${lead.company || "—"}</td>
+        <td style="padding:8px 10px;border-bottom:1px solid #eef1f7;font-size:14px;color:#222">${lead.email}</td>
+        <td style="padding:8px 10px;border-bottom:1px solid #eef1f7;font-size:14px;color:#222">${lead.phone || "—"}</td>
+        <td style="padding:8px 10px;border-bottom:1px solid #eef1f7;font-size:14px;color:#222">${lead.sourcePage || "—"}</td>
+        <td style="padding:8px 10px;border-bottom:1px solid #eef1f7;font-size:14px;color:#222">${lead.daysWaiting} gün</td>
+        <td style="padding:8px 10px;border-bottom:1px solid #eef1f7;font-size:14px;color:#666">${formatLeadDate(lead.createdAt)}</td>
+      </tr>`
+    )
+    .join("");
+
+  const textLines = leads.map(
+    (lead) =>
+      `- ${lead.name}${lead.company ? ` (${lead.company})` : ""} | ${lead.email} | ${lead.daysWaiting} gündür bekliyor | ${lead.sourcePage || "—"}`
+  );
+
+  const html = `
+    <div style="font-family:sans-serif;max-width:760px;margin:0 auto">
+      <div style="background:#132175;padding:20px 24px;border-radius:8px 8px 0 0">
+        <h2 style="color:#fff;margin:0;font-size:18px">Günlük Lead Özeti</h2>
+        <p style="color:#a0b4e8;margin:4px 0 0;font-size:13px">${count} lead hâlâ görüşülmedi (status: new)</p>
+      </div>
+      <div style="border:1px solid #e0e5f0;border-top:none;border-radius:0 0 8px 8px;padding:20px 24px">
+        <table style="width:100%;border-collapse:collapse">
+          <thead>
+            <tr>
+              <th align="left" style="padding:8px 10px;font-size:12px;color:#666">Ad</th>
+              <th align="left" style="padding:8px 10px;font-size:12px;color:#666">Şirket</th>
+              <th align="left" style="padding:8px 10px;font-size:12px;color:#666">E-posta</th>
+              <th align="left" style="padding:8px 10px;font-size:12px;color:#666">Telefon</th>
+              <th align="left" style="padding:8px 10px;font-size:12px;color:#666">Kaynak</th>
+              <th align="left" style="padding:8px 10px;font-size:12px;color:#666">Bekleme</th>
+              <th align="left" style="padding:8px 10px;font-size:12px;color:#666">Geliş</th>
+            </tr>
+          </thead>
+          <tbody>${rows}</tbody>
+        </table>
+        <p style="margin:20px 0 0">
+          <a href="${adminUrl}" style="display:inline-block;background:#132175;color:#fff;text-decoration:none;padding:10px 16px;border-radius:6px;font-size:14px">Admin panelde aç</a>
+        </p>
+        <hr style="margin:20px 0;border:none;border-top:1px solid #eee">
+        <p style="font-size:12px;color:#aaa;margin:0">Bu özet, görüşülmemiş lead'ler için hafta içi sabahları otomatik gönderilir. Lead'i "Görüşüldü" yapınca listeden düşer.</p>
+      </div>
+    </div>
+  `;
+
+  const text = [
+    `WillowSoft — ${count} yanıtsız lead (günlük özet)`,
+    "",
+    ...textLines,
+    "",
+    `Admin panel: ${adminUrl}`,
+  ].join("\n");
+
+  const results = await Promise.allSettled(
+    recipients.map((addr) =>
+      transporter.sendMail({ from, to: addr, subject, html, text })
+    )
+  );
+  const failed = results.filter((r) => r.status === "rejected");
+  if (failed.length) {
+    console.error(
+      `Lead digest e-posta kısmi hata: ${failed.length}/${recipients.length} başarısız`,
+      failed.map((r) => (r as PromiseRejectedResult).reason?.message || r)
+    );
+  }
+}
+
+export async function sendUncontactedLeadsTelegramDigest(
+  chatIds: string[],
+  leads: LeadDigestRow[],
+  adminUrl: string
+) {
+  const token = env("TELEGRAM_BOT_TOKEN");
+  if (!token || !chatIds.length || !leads.length) return;
+
+  const lines = [
+    `📋 *GÜNLÜK LEAD ÖZETİ*`,
+    `${leads.length} lead hâlâ görüşülmedi`,
+    "─────────────────────",
+    ...leads.slice(0, 15).map(
+      (lead) =>
+        `• *${lead.name}*${lead.company ? ` (${lead.company})` : ""}\n  ${lead.email} · ${lead.daysWaiting} gün · ${lead.sourcePage || "—"}`
+    ),
+  ];
+
+  if (leads.length > 15) {
+    lines.push(`… ve ${leads.length - 15} lead daha`);
+  }
+
+  lines.push("─────────────────────");
+  lines.push(`🔗 ${adminUrl}`);
+
+  const text = lines.join("\n");
+
+  await Promise.allSettled(
+    chatIds.map((chatId) =>
+      fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ chat_id: chatId, text, parse_mode: "Markdown" }),
+      })
+    )
+  );
 }
 
 export async function sendTelegramNotification(chatIds: string[], lead: LeadMailData) {
