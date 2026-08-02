@@ -5,7 +5,7 @@ import { locales } from "@/lib/cms";
 import { useAdmin } from "./AdminContext";
 
 type AdminTab =
-  | "overview" | "leads" | "kanban"
+  | "overview" | "leads"
   | "products" | "news" | "faqs" | "glossary" | "solutions" | "clients" | "company"
   | "seo" | "translations" | "health"
   | "settings" | "backups" | "users";
@@ -156,7 +156,7 @@ export default function OverviewPanel({ onNavigate }: OverviewPanelProps) {
     { label: "News vitrinini düzenle", desc: "Öne çıkan haber, galeri ve public preview.", tab: "news", tone: "bg-amber-50 text-amber-700 border-amber-100" },
     { label: "SEO durumunu kontrol et", desc: "Dil bazlı SEO, H1 ve canlı görünüm.", tab: "seo", tone: "bg-blue-50 text-blue-700 border-blue-100" },
     { label: "Çevirileri tamamla", desc: "Canlı sayfa metinleri ve dil eksikleri.", tab: "translations", tone: "bg-cyan-50 text-cyan-700 border-cyan-100" },
-    { label: "Yeni mesajlara bak", desc: "Form gönderileri ve pipeline.", tab: "leads", tone: "bg-emerald-50 text-emerald-700 border-emerald-100" },
+    { label: "Leads'e bak", desc: "Form gönderileri, filtre ve pipeline.", tab: "leads", tone: "bg-emerald-50 text-emerald-700 border-emerald-100" },
   ];
 
   return (
@@ -218,7 +218,7 @@ export default function OverviewPanel({ onNavigate }: OverviewPanelProps) {
               ["Servisler", services.length, "yayında", "services" as AdminTab],
               ["SSS", faqs.length, "cevap", "faqs" as AdminTab],
               ["Sözlük", glossary.length, "terim", "glossary" as AdminTab],
-              ["Mesajlar", leads.length, `${overview.newLeads} yeni`, "leads" as AdminTab],
+              ["Leads", leads.length, `${overview.newLeads} yeni`, "leads" as AdminTab],
             ].map(([label, value, note, tab]) => (
               <button
                 key={label as string}

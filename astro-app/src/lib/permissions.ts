@@ -31,7 +31,6 @@ export function hasPermission(role: AdminRole, permission: AdminPermission): boo
 export const TAB_PERMISSIONS: Partial<Record<string, AdminPermission>> = {
   analytics: "analytics.read",
   leads: "leads.read",
-  kanban: "leads.read",
   products: "content.read",
   news: "content.read",
   faqs: "content.read",

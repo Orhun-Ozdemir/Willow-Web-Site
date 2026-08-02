@@ -4,8 +4,7 @@ import { useState, useEffect } from "react";
 
 import { useAdmin } from "./AdminContext";
 import OverviewPanel from "./OverviewPanel";
-import LeadsTablePanel from "./LeadsTablePanel";
-import LeadsKanbanPanel from "./LeadsKanbanPanel";
+import LeadsPanel from "./LeadsPanel";
 import ProductsPanel from "./ProductsPanel";
 import NewsPanel from "./NewsPanel";
 import FaqsPanel from "./FaqsPanel";
@@ -30,7 +29,7 @@ import { canAccessTab } from "@/lib/permissions";
 import type { AdminRole } from "@/lib/permissions";
 
 type Tab =
-  | "overview" | "analytics" | "leads" | "kanban"
+  | "overview" | "analytics" | "leads"
   | "products" | "news" | "faqs" | "glossary" | "solutions" | "clients" | "company" | "services_page"
   | "seo" | "translations" | "health"
   | "settings" | "backups" | "storage" | "history" | "users" | "audit";
@@ -39,7 +38,6 @@ const ICON_PATHS: Record<Tab, string> = {
   overview: "M4 5a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H5a1 1 0 01-1-1V5zm10 0a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1V5zM4 15a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H5a1 1 0 01-1-1v-4zm10 0a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1v-4z",
   analytics: "M4 19V9m5 10V5m5 14v-7m5 7V3",
   leads: "M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z",
-  kanban: "M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2",
   products: "M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4",
   news: "M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z",
   faqs: "M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z",
@@ -73,8 +71,7 @@ const TABS: { section: string; items: { key: Tab; label: string }[] }[] = [
     items: [
       { key: "overview", label: "Genel Bakış" },
       { key: "analytics", label: "Analytics" },
-      { key: "leads", label: "Mesajlar (Tablo)" },
-      { key: "kanban", label: "Leads Pipeline" },
+      { key: "leads", label: "Leads" },
     ],
   },
   {
@@ -289,8 +286,7 @@ export default function AdminShell() {
         <div className="flex-1 overflow-y-auto p-4 md:p-8">
           {activeTab === "overview" && <OverviewPanel onNavigate={(tab) => setActiveTab(tab as Tab)} />}
           {activeTab === "analytics" && <AnalyticsPanel />}
-          {activeTab === "leads" && <LeadsTablePanel onSelectLead={setSelectedLeadId} />}
-          {activeTab === "kanban" && <LeadsKanbanPanel onSelectLead={setSelectedLeadId} />}
+          {activeTab === "leads" && <LeadsPanel onSelectLead={setSelectedLeadId} />}
           {activeTab === "products" && <ProductsPanel />}
           {activeTab === "news" && <NewsPanel />}
           {activeTab === "faqs" && <FaqsPanel />}

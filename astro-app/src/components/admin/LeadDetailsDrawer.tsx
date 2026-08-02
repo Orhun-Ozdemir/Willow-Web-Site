@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { useAdmin } from "./AdminContext";
 import AdminDrawer, { DrawerCloseButton } from "./AdminDrawer";
+import { daysWaiting, sourceLabel, statusChipClass } from "./lead-ui";
 
 interface Note {
   id: string;
@@ -114,22 +115,7 @@ export default function LeadDetailsDrawer({ leadId, onClose }: LeadDetailsDrawer
     return labels[status] || status;
   };
 
-  const getStatusBadgeClass = (status: string) => {
-    switch (status) {
-      case "new":
-        return "bg-sky-50 text-sky-700 border-sky-200";
-      case "contacted":
-        return "bg-amber-50 text-amber-700 border-amber-200";
-      case "qualified":
-        return "bg-purple-50 text-purple-700 border-purple-200";
-      case "won":
-        return "bg-emerald-50 text-emerald-700 border-emerald-200";
-      case "lost":
-        return "bg-rose-50 text-rose-700 border-rose-200";
-      default:
-        return "bg-gray-50 text-gray-700 border-gray-200";
-    }
-  };
+  const waitingDays = daysWaiting(lead.createdAt);
 
   const handleStatusChange = async (newStatus: string) => {
     const oldStatus = lead.status || "new";
@@ -315,8 +301,14 @@ export default function LeadDetailsDrawer({ leadId, onClose }: LeadDetailsDrawer
     <div className="flex items-start justify-between gap-3">
       <div className="space-y-1.5 min-w-0 flex-1">
         <div className="flex items-center gap-2 flex-wrap">
-          <span className={`px-2.5 py-1 rounded-md border text-[10px] font-extrabold tracking-wider uppercase ${getStatusBadgeClass(lead.status || "new")}`}>
+          <span className={`px-2.5 py-1 rounded-md border text-[10px] font-extrabold tracking-wider uppercase ${statusChipClass(lead.status || "new")}`}>
             {getStatusLabel(lead.status || "new")}
+          </span>
+          <span className="px-2 py-1 rounded-md bg-gray-100 text-[10px] font-bold text-gray-600">
+            {sourceLabel(lead.sourcePage)}
+          </span>
+          <span className={`text-[11px] font-bold ${(lead.status || "new") === "new" && waitingDays >= 1 ? "text-rose-600" : "text-gray-400"}`}>
+            {waitingDays === 0 ? "Bugün geldi" : `${waitingDays} gündür bekliyor`}
           </span>
           <span className="text-[11px] text-gray-400 font-medium">
             {new Date(lead.createdAt).toLocaleDateString("tr-TR", {
@@ -341,6 +333,15 @@ export default function LeadDetailsDrawer({ leadId, onClose }: LeadDetailsDrawer
         )}
       </div>
       <div className="flex items-center gap-2 shrink-0">
+        {(lead.status || "new") === "new" && (
+          <button
+            type="button"
+            onClick={() => handleStatusChange("contacted")}
+            className="px-3 py-1.5 rounded-lg bg-[#132175] text-white text-xs font-bold hover:bg-[#0e1a5e]"
+          >
+            Görüşüldü
+          </button>
+        )}
         <div className="flex items-center gap-1.5 bg-gray-50 border border-gray-200 rounded-lg px-2.5 py-1.5">
           <svg className="w-3 h-3 text-gray-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
