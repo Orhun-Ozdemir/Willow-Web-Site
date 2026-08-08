@@ -162,10 +162,12 @@ const t = (cmsKey: string, labelKey: LabelKey) => pageText(pageContent, cmsKey, 
   schema={newsSchema}
   locale={locale}
   dataPage="news"
+  preloadImage={`${import.meta.env.BASE_URL}pdf-assets/p29_06_X111.webp`}
+  preloadImageType="image/webp"
 >
   <main id="main-content" data-news-proof data-active-category="all">
     <section class="hero compact news-proof-hero">
-      <div class="hero-media"><img src={`${import.meta.env.BASE_URL}pdf-assets/p29_06_X111.jpg`} alt={getLabel("heroAlt")} loading="lazy" decoding="async"/></div>
+      <div class="hero-media"><picture><source srcset={`${import.meta.env.BASE_URL}pdf-assets/p29_06_X111.webp`} type="image/webp" /><img src={`${import.meta.env.BASE_URL}pdf-assets/p29_06_X111.jpg`} alt={getLabel("heroAlt")} fetchpriority="high" decoding="async"/></picture></div>
       <canvas class="signal-canvas" data-density="28"></canvas>
       <div class="hero-inner">
         <p class="eyebrow reveal">{t("heroEyebrow", "heroEyebrow")}</p>
