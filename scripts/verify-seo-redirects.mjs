@@ -159,11 +159,24 @@ async function checkSeoInvariants(base) {
     if (/s-maxage/i.test(cc)) errs.push(`admin: must not be shared-cached (got "${cc}")`);
   }
 
-  // 2b. Public HTML carries the short shared-cache pilot header
+  // 2b. Public HTML participates in the shared-cache pilot. On a standalone
+  // origin this shows as an s-maxage directive; on Vercel the CDN consumes
+  // s-maxage and rewrites the downstream Cache-Control, exposing the cache via
+  // x-vercel-cache / cdn-cache-control instead. Accept either signal.
   {
     const r = await fetch(`${base}/en`, { redirect: "manual" });
     const cc = r.headers.get("cache-control") || "";
-    if (!/s-maxage=\d+/.test(cc)) errs.push(`cache: /en missing s-maxage pilot header (got "${cc}")`);
+    const cdnCc = r.headers.get("cdn-cache-control") || r.headers.get("vercel-cdn-cache-control") || "";
+    const vercelCache = r.headers.get("x-vercel-cache") || "";
+    const shared = /s-maxage=\d+/.test(cc) || /s-maxage=\d+/.test(cdnCc) || vercelCache !== "";
+    if (!shared) errs.push(`cache: /en not participating in shared-cache pilot (cache-control "${cc}", x-vercel-cache "${vercelCache}")`);
+  }
+
+  // 2c. Admin must never be shared-cached (no CDN HIT)
+  {
+    const r = await fetch(`${base}/admin`, { redirect: "manual" });
+    const vercelCache = (r.headers.get("x-vercel-cache") || "").toUpperCase();
+    if (["HIT", "STALE"].includes(vercelCache)) errs.push(`admin: unexpectedly shared-cached (x-vercel-cache "${vercelCache}")`);
   }
 
   // 3. Trailing slash collapses to the no-slash canonical in a single 301 hop
