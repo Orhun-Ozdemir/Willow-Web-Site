@@ -4,7 +4,7 @@ import ContactForm from "@/components/ContactForm.astro";
 import FaqAccordion from "@/components/FaqAccordion.astro";
 import AIAnswerBlock from "@/components/AIAnswerBlock.astro";
 import { loadContent } from "@/lib/content";
-import { pageSeo, webPageNode, ORGANIZATION_SCHEMA, WEBSITE_SCHEMA, SITE_ORIGIN } from "@/lib/seo";
+import { pageSeo, webPageNode, organizationWithOffices, WEBSITE_SCHEMA, SITE_ORIGIN } from "@/lib/seo";
 import { pageText, resolveLocale, type Locale } from "@/lib/cms";
 import { aiAnswerForPage, aiMetaForPage, appendSchemaNodes, fallbackFaqsForPage, faqItemsForPage, faqSchemaNode } from "@/lib/ai-search";
 import { officesForContact, telHref } from "@/lib/company-contact";
@@ -18,10 +18,11 @@ const contactFallbackFaqs = fallbackFaqsForPage("contact", locale);
 const contactFaqItems = faqItemsForPage(content.faqs || [], "contact", locale, contactFallbackFaqs);
 const aiAnswer = aiAnswerForPage(content, "contact", locale, seoProps.description);
 const aiMeta = aiMetaForPage(content, "contact", locale);
+const companyFacts = content.companyFacts || {};
 const contactSchema = appendSchemaNodes({
   "@context": "https://schema.org",
   "@graph": [
-    ORGANIZATION_SCHEMA,
+    organizationWithOffices(companyFacts, locale),
     WEBSITE_SCHEMA,
     {
       ...webPageNode("ContactPage", seoProps.canonical, seoProps.title, seoProps.description, locale),
@@ -31,8 +32,6 @@ const contactSchema = appendSchemaNodes({
 }, [faqSchemaNode(seoProps.canonical, contactFaqItems)]);
 const pageContent = content.pageContent?.contact || {};
 const t = (cmsKey: string, fallback: string) => pageText(pageContent, cmsKey, locale, fallback);
-
-const companyFacts = content.companyFacts || {};
 const contactOffices = officesForContact(companyFacts, locale);
 const officeTitle = (officeId: string, country: string) => {
   if (officeId === "office-tr") return getLabel("turkeyOffice");
@@ -80,7 +79,7 @@ const getLabel = (key: keyof typeof labels) => {
   locale={locale}
   dataPage="contact"
 >
-  <main>
+  <main id="main-content">
     <section class="section soft">
       <div class="section-inner split">
         <div class="reveal">

@@ -4,21 +4,21 @@ WillowSoft is an embedded hardware and Industrial IoT engineering company. The c
 
 ## Primary Site
 
-- Site: https://willowsoft.co
-- Sitemap: https://willowsoft.co/sitemap.xml
-- AI index: https://willowsoft.co/ai-index.json
-- Contact: https://willowsoft.co/en/contact
-- Start a project: https://willowsoft.co/en/start-project
+- Site: https://www.willowsoft.co
+- Sitemap: https://www.willowsoft.co/sitemap.xml
+- AI index: https://www.willowsoft.co/ai-index.json
+- Contact: https://www.willowsoft.co/en/contact
+- Start a project: https://www.willowsoft.co/en/start-project
 
 ## Key Pages
 
-- Home: https://willowsoft.co/en
-- Products: https://willowsoft.co/en/products
-- Services: https://willowsoft.co/en/services
-- Solutions: https://willowsoft.co/en/solutions
-- Company: https://willowsoft.co/en/company
-- News: https://willowsoft.co/en/news
-- Glossary: https://willowsoft.co/en/glossary
+- Home: https://www.willowsoft.co/en
+- Products: https://www.willowsoft.co/en/products
+- Services: https://www.willowsoft.co/en/services
+- Solutions: https://www.willowsoft.co/en/solutions
+- Company: https://www.willowsoft.co/en/company
+- News: https://www.willowsoft.co/en/news
+- Glossary: https://www.willowsoft.co/en/glossary
 
 ## Core Capabilities
 

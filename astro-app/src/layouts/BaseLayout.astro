@@ -1,5 +1,5 @@
 ---
-import { OG_LOCALE_MAP, SITE_NAME, type Alternate } from "@/lib/seo";
+import { OG_LOCALE_MAP, SITE_NAME, normalizeCanonical, robotsMeta, type Alternate } from "@/lib/seo";
 import type { Locale } from "@/lib/cms";
 import { resolveAsset } from "@/lib/cms";
 import Analytics from "@/components/Analytics.astro";
@@ -17,14 +17,18 @@ interface Props {
   ogImage?: string;
   ogType?: string;
   noindex?: boolean;
+  nofollow?: boolean;
+  nosnippet?: boolean;
   alternates?: Alternate[];
   schema?: object | object[];
+  preloadImage?: string;
+  preloadImageType?: string;
 }
 
 const {
   title,
   description = "",
-  canonical,
+  canonical: canonicalRaw,
   locale = "en",
   dataPage,
   ogTitle,
@@ -32,17 +36,20 @@ const {
   ogImage,
   ogType = "website",
   noindex = false,
+  nofollow = false,
+  nosnippet = false,
   alternates = [],
   schema,
+  preloadImage,
+  preloadImageType,
 } = Astro.props;
 
+const canonical = normalizeCanonical(canonicalRaw);
 const ogLocale = OG_LOCALE_MAP[locale] || "en_US";
 const ogLocaleAlternates = Object.entries(OG_LOCALE_MAP)
   .filter(([key]) => key !== locale)
   .map(([, value]) => value);
-const robots = noindex
-  ? "noindex, nofollow"
-  : "index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1";
+const robots = robotsMeta({ noindex, nofollow, nosnippet });
 const dir = locale === "ar" ? "rtl" : "ltr";
 
 const skipLabels: Record<string, string> = {
@@ -65,6 +72,10 @@ const skipLabel = skipLabels[locale] || skipLabels.en;
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!-- <link rel="stylesheet" href={`${import.meta.env.BASE_URL}assets/styles.css?v=2026-06-13`} /> -->
     <link rel="icon" type="image/svg+xml" href={resolveAsset("/assets/favicon.svg")} />
+    <link rel="manifest" href={`${import.meta.env.BASE_URL}site.webmanifest`} />
+    {preloadImage && (
+      <link rel="preload" as="image" href={preloadImage} type={preloadImageType} fetchpriority="high" />
+    )}
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link

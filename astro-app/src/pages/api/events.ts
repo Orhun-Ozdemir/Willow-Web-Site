@@ -38,6 +38,29 @@ function json(body: unknown, status = 200) {
   });
 }
 
+// Only real production-domain traffic should land in the analytics tables. Local
+// development (localhost/127.0.0.1) and Vercel preview deployments (*.vercel.app)
+// are dropped so they never pollute the production dashboards. The production host
+// can be overridden with ANALYTICS_PRODUCTION_HOST (comma-separated) if needed.
+function isProductionAnalyticsHost(request: Request): boolean {
+  let host = "";
+  try {
+    const origin = request.headers.get("origin");
+    host = origin ? new URL(origin).hostname : (request.headers.get("host") || "").split(":")[0];
+  } catch {
+    host = (request.headers.get("host") || "").split(":")[0];
+  }
+  host = host.toLowerCase().trim();
+  if (!host) return false;
+
+  const configured = (import.meta.env.ANALYTICS_PRODUCTION_HOST || "willowsoft.co")
+    .split(",")
+    .map((value: string) => value.trim().toLowerCase())
+    .filter(Boolean);
+
+  return configured.some((allowed: string) => host === allowed || host.endsWith(`.${allowed}`));
+}
+
 function getClientIp(request: Request): string {
   return String(
     request.headers.get("x-vercel-forwarded-for") ||
@@ -293,6 +316,12 @@ export const GET: APIRoute = async ({ request }) => {
 export const POST: APIRoute = async ({ request, cookies }) => {
   if (!isSameOriginRequest(request)) return json({ ok: false, error: "Invalid origin" }, 403);
   if (!hasAnalyticsConsent(request)) return json({ ok: false, error: "Analytics consent required" }, 403);
+
+  // Drop non-production traffic (localhost, preview deploys) so production reports
+  // only reflect real visitors. Respond 202 so the client treats it as accepted.
+  if (!isProductionAnalyticsHost(request)) {
+    return json({ ok: true, skipped: "non-production" }, 202);
+  }
 
   const contentLength = Number(request.headers.get("content-length") || 0);
   if (contentLength > MAX_BODY_BYTES) return json({ ok: false, error: "Payload too large" }, 413);

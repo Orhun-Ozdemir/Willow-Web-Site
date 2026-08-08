@@ -340,12 +340,24 @@ const homeSchema = appendSchemaNodes({
   schema={homeSchema}
   locale={locale}
   dataPage="home"
+  preloadImage={`${import.meta.env.BASE_URL}assets/hero-industrial-iot.webp`}
+  preloadImageType="image/webp"
 >
   <main id="main-content">
     <!-- Hero -->
     <section class="hero motion-hero">
       <div class="hero-media">
-        <img src={`${import.meta.env.BASE_URL}assets/hero-industrial-iot.jpg`} alt="Industrial IoT hardware on a lab bench" loading="lazy" decoding="async" />
+        <picture>
+          <source srcset={`${import.meta.env.BASE_URL}assets/hero-industrial-iot.webp`} type="image/webp" />
+          <img
+            src={`${import.meta.env.BASE_URL}assets/hero-industrial-iot.jpg`}
+            alt="Industrial IoT hardware on a lab bench"
+            width="1200"
+            height="574"
+            fetchpriority="high"
+            decoding="async"
+          />
+        </picture>
       </div>
       <canvas class="hero-shader-canvas" aria-hidden="true" style="position:absolute;inset:0;pointer-events:none;"></canvas>
       <canvas class="signal-canvas" data-density="42" data-color="75, 87, 170"></canvas>

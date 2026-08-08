@@ -1,7 +1,7 @@
 ---
 import PageLayout from "@/layouts/PageLayout.astro";
 import { loadContent } from "@/lib/content";
-import { pageSeo } from "@/lib/seo";
+import { pageSeo, webPageNode, ORGANIZATION_SCHEMA, WEBSITE_SCHEMA } from "@/lib/seo";
 import { localizeItem, pageText, resolveLocale, type Locale } from "@/lib/cms";
 
 export const prerender = false;
@@ -24,6 +24,36 @@ const connectivityItems = getGlossaryItems("connectivity");
 const devicesItems = getGlossaryItems("devices");
 const softwareItems = getGlossaryItems("software");
 
+const allGlossaryTerms = [...connectivityItems, ...devicesItems, ...softwareItems].filter(
+  (item: any) => item?.term && item?.definition,
+);
+const definedTermSetId = `${seoProps.canonical}#glossary`;
+const glossarySchema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    ORGANIZATION_SCHEMA,
+    WEBSITE_SCHEMA,
+    {
+      ...webPageNode("CollectionPage", seoProps.canonical, seoProps.title, seoProps.description, locale),
+      mainEntity: { "@id": definedTermSetId },
+    },
+    {
+      "@type": "DefinedTermSet",
+      "@id": definedTermSetId,
+      name: seoProps.title,
+      url: seoProps.canonical,
+      inLanguage: locale,
+      hasDefinedTerm: allGlossaryTerms.map((item: any) => ({
+        "@type": "DefinedTerm",
+        "@id": `${seoProps.canonical}#${item.id}`,
+        name: item.term,
+        description: item.definition,
+        inDefinedTermSet: { "@id": definedTermSetId },
+      })),
+    },
+  ],
+};
+
 const getNoteLabel = () => {
   const noteLabels: Record<string, string> = {
     en: "WillowSoft uses it in:",
@@ -40,6 +70,8 @@ const getNoteLabel = () => {
 
 const labels = {
   talkToEngineering: { en: "Talk to Engineering", tr: "Mühendislerle Görüşün", de: "Mit Engineering sprechen", fr: "Parler à l'ingénierie", es: "Hablar con ingeniería", it: "Parla con il team", ar: "تحدث إلى الهندسة", ja: "技術チームへ相談" },
+  exploreProducts: { en: "Explore Products", tr: "Ürünleri İnceleyin", de: "Produkte entdecken", fr: "Découvrir les produits", es: "Explorar productos", it: "Esplora i prodotti", ar: "استكشف المنتجات", ja: "製品を見る" },
+  exploreServices: { en: "Explore Services", tr: "Hizmetleri İnceleyin", de: "Leistungen entdecken", fr: "Découvrir les services", es: "Explorar servicios", it: "Esplora i servizi", ar: "استكشف الخدمات", ja: "サービスを見る" },
 };
 const getLabel = (key: keyof typeof labels) => labels[key][locale] || labels[key].en;
 ---
@@ -48,8 +80,9 @@ const getLabel = (key: keyof typeof labels) => labels[key][locale] || labels[key
   {...seoProps}
   locale={locale}
   dataPage="glossary"
+  schema={glossarySchema}
 >
-  <main>
+  <main id="main-content">
     <!-- Hero -->
     <section class="hero compact">
       <canvas class="signal-canvas" data-density="28" data-color="26, 163, 196"></canvas>
@@ -147,7 +180,11 @@ const getLabel = (key: keyof typeof labels) => labels[key][locale] || labels[key
         </div>
         <div class="reveal delay-1">
           <p class="section-lead">{t("ctaLead")}</p>
-          <p><a class="btn btn-primary" href={`/${locale}/contact`}>{getLabel("talkToEngineering")}</a></p>
+          <p style="display: flex; gap: 12px; flex-wrap: wrap;">
+            <a class="btn btn-primary" href={`/${locale}/contact`}>{getLabel("talkToEngineering")}</a>
+            <a class="btn btn-secondary" href={`/${locale}/products`}>{getLabel("exploreProducts")}</a>
+            <a class="btn btn-secondary" href={`/${locale}/services`}>{getLabel("exploreServices")}</a>
+          </p>
         </div>
       </div>
     </section>

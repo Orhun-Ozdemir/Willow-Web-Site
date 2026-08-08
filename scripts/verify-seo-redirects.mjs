@@ -15,6 +15,18 @@ const root = path.join(__dirname, "..");
 const httpMode = process.argv.includes("--http");
 const baseUrl = (process.env.BASE_URL || "http://127.0.0.1:4321").replace(/\/+$/, "");
 
+// Optional: bypass cookie for protected Vercel preview deployments. When set, it is
+// attached to every request so the SEO probes can run against a preview URL.
+const bypassCookie = process.env.VERCEL_BYPASS_COOKIE || "";
+if (bypassCookie) {
+  const nativeFetch = globalThis.fetch;
+  globalThis.fetch = (input, init = {}) => {
+    const headers = new Headers(init.headers || {});
+    headers.set("cookie", bypassCookie);
+    return nativeFetch(input, { ...init, headers });
+  };
+}
+
 const middlewareSrc = fs.readFileSync(path.join(root, "astro-app/src/middleware.ts"), "utf8");
 const site = JSON.parse(fs.readFileSync(path.join(root, "data/site-data.json"), "utf8"));
 
@@ -42,7 +54,7 @@ const gonePrefixes = extractGonePrefixes(middlewareSrc);
 
 const productSlugs = new Set((site.products || []).map((p) => p.slug || p.id));
 const newsSlugs = new Set((site.news || []).map((n) => n.slug || n.id));
-const staticSections = new Set(["", "solutions", "services", "products", "company", "news", "glossary", "contact", "start-project"]);
+const staticSections = new Set(["", "solutions", "services", "products", "company", "news", "glossary", "contact", "start-project", "privacy", "faq"]);
 
 function validateTarget(target) {
   if (target === "/sitemap.xml") return null;
@@ -117,6 +129,106 @@ async function probe(caseDef) {
   return null;
 }
 
+const CANONICAL_HOST = "https://www.willowsoft.co";
+
+// Extended SEO invariants (canonical host, admin noindex, slash, sitemap, hreflang,
+// schema JSON parse, representative pages). All read-only GET requests.
+async function checkSeoInvariants(base) {
+  const errs = [];
+  const get = async (p, redirect = "follow") => {
+    const r = await fetch(`${base}${p}`, { redirect });
+    return { status: r.status, headers: r.headers, body: redirect === "follow" ? await r.text() : "" };
+  };
+
+  // 1. Canonical host = www on representative pages (EN/TR/RTL/remote locales)
+  for (const p of ["/en", "/tr", "/en/products", "/ar/faq", "/ja"]) {
+    const r = await get(p);
+    if (r.status !== 200) { errs.push(`canonical: ${p} status ${r.status}`); continue; }
+    const m = r.body.match(/<link rel="canonical" href="([^"]+)"/);
+    if (!m) errs.push(`canonical: ${p} has no canonical tag`);
+    else if (!m[1].startsWith(CANONICAL_HOST)) errs.push(`canonical: ${p} -> ${m[1]} is not on ${CANONICAL_HOST}`);
+    else if (/[^/]\/$/.test(m[1])) errs.push(`canonical: ${p} -> ${m[1]} has a trailing slash`);
+  }
+
+  // 2. Admin: noindex header AND never shared-cached
+  {
+    const r = await fetch(`${base}/admin`, { redirect: "manual" });
+    const xr = r.headers.get("x-robots-tag") || "";
+    if (!/noindex/i.test(xr)) errs.push(`admin: X-Robots-Tag missing noindex (got "${xr}")`);
+    const cc = r.headers.get("cache-control") || "";
+    if (/s-maxage/i.test(cc)) errs.push(`admin: must not be shared-cached (got "${cc}")`);
+  }
+
+  // 2b. Public HTML participates in the shared-cache pilot. On a standalone
+  // origin this shows as an s-maxage directive; on Vercel the CDN consumes
+  // s-maxage and rewrites the downstream Cache-Control, exposing the cache via
+  // x-vercel-cache / cdn-cache-control instead. Accept either signal.
+  {
+    const r = await fetch(`${base}/en`, { redirect: "manual" });
+    const cc = r.headers.get("cache-control") || "";
+    const cdnCc = r.headers.get("cdn-cache-control") || r.headers.get("vercel-cdn-cache-control") || "";
+    const vercelCache = r.headers.get("x-vercel-cache") || "";
+    const shared = /s-maxage=\d+/.test(cc) || /s-maxage=\d+/.test(cdnCc) || vercelCache !== "";
+    if (!shared) errs.push(`cache: /en not participating in shared-cache pilot (cache-control "${cc}", x-vercel-cache "${vercelCache}")`);
+  }
+
+  // 2c. Admin must never be shared-cached (no CDN HIT)
+  {
+    const r = await fetch(`${base}/admin`, { redirect: "manual" });
+    const vercelCache = (r.headers.get("x-vercel-cache") || "").toUpperCase();
+    if (["HIT", "STALE"].includes(vercelCache)) errs.push(`admin: unexpectedly shared-cached (x-vercel-cache "${vercelCache}")`);
+  }
+
+  // 3. Trailing slash collapses to the no-slash canonical in a single 301 hop
+  {
+    const r = await fetch(`${base}/en/products/`, { redirect: "manual" });
+    if (r.status !== 301) errs.push(`slash: /en/products/ expected 301, got ${r.status}`);
+    const loc = r.headers.get("location") || "";
+    if (!/\/en\/products(?:$|[?#])/.test(loc)) errs.push(`slash: /en/products/ -> ${loc}`);
+  }
+
+  // 4. Sitemap: all locs on www host with no trailing slash, and 8 privacy URLs
+  {
+    const r = await get("/sitemap.xml");
+    if (r.status !== 200) errs.push(`sitemap: status ${r.status}`);
+    const locs = [...r.body.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
+    if (!locs.length) errs.push("sitemap: no <loc> entries found");
+    const nonWww = locs.filter((l) => !l.startsWith(CANONICAL_HOST));
+    if (nonWww.length) errs.push(`sitemap: ${nonWww.length} non-www locs (e.g. ${nonWww[0]})`);
+    const privacy = locs.filter((l) => /\/privacy$/.test(l));
+    if (privacy.length !== 8) errs.push(`sitemap: expected 8 privacy URLs, found ${privacy.length}`);
+  }
+
+  // 5. hreflang reciprocity: /en/products <-> /tr/products
+  {
+    const en = await get("/en/products");
+    const enAlts = [...en.body.matchAll(/<link rel="alternate" hreflang="([^"]+)" href="([^"]+)"/g)];
+    if (!enAlts.some((a) => a[1] === "tr")) errs.push("hreflang: /en/products missing tr alternate");
+    const tr = await get("/tr/products");
+    const trAlts = [...tr.body.matchAll(/<link rel="alternate" hreflang="([^"]+)" href="([^"]+)"/g)];
+    if (!trAlts.some((a) => a[1] === "en")) errs.push("hreflang: /tr/products missing reciprocal en alternate");
+  }
+
+  // 6. JSON-LD parses on representative pages
+  for (const p of ["/en", "/en/faq", "/en/glossary", "/en/privacy", "/en/products/willowbee"]) {
+    const r = await get(p);
+    if (r.status !== 200) { errs.push(`schema: ${p} status ${r.status}`); continue; }
+    const blocks = [...r.body.matchAll(/<script type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/g)];
+    if (!blocks.length) { errs.push(`schema: ${p} has no JSON-LD`); continue; }
+    for (const b of blocks) {
+      try { JSON.parse(b[1]); } catch (e) { errs.push(`schema: ${p} invalid JSON-LD (${e.message})`); }
+    }
+  }
+
+  // 7. Representative pages return 200 (new hubs + locales)
+  for (const p of ["/en/faq", "/tr/faq", "/en/glossary", "/en/privacy", "/tr/privacy", "/ar", "/ja/products"]) {
+    const r = await fetch(`${base}${p}`, { redirect: "manual" });
+    if (r.status !== 200) errs.push(`page: ${p} expected 200, got ${r.status}`);
+  }
+
+  return errs;
+}
+
 if (httpMode) {
   console.log(`\nHTTP probes against ${baseUrl} ...`);
   const httpErrors = [];
@@ -134,6 +246,14 @@ if (httpMode) {
     if (chain.status !== 200) httpErrors.push(`/willowbee final status ${chain.status}, expected 200`);
   } catch (e) {
     httpErrors.push(`/willowbee chain: ${e.message}`);
+  }
+
+  // Extended SEO invariant checks
+  try {
+    const invariantErrors = await checkSeoInvariants(baseUrl);
+    httpErrors.push(...invariantErrors);
+  } catch (e) {
+    httpErrors.push(`seo-invariants: ${e.message}`);
   }
 
   if (httpErrors.length) {

@@ -66,13 +66,15 @@ const LEGACY_REDIRECTS: Record<string, string> = {
   "/endustri-ve-musteri-ornekleri": "/tr/services",
   "/willowun-avantajlari": "/tr/services",
 
-  // FAQ
-  "/genel-sss": "/tr",
-  "/urune-ozel-sss": "/tr/products",
+  // FAQ — now served by the dedicated FAQ hub
+  "/genel-sss": "/tr/faq",
+  "/urune-ozel-sss": "/tr/faq",
 
-  // Legal pages (no dedicated page yet -> home)
-  "/telif-hakki": "/tr",
-  "/willow-gizlilik-politikasi": "/tr",
+  // Legal pages: the privacy policy now has a dedicated page; the copyright notice
+  // is closest to the privacy/legal notice page. Commerce terms (distance sales,
+  // delivery/returns) have no equivalent on the non-commerce site -> home.
+  "/willow-gizlilik-politikasi": "/tr/privacy",
+  "/telif-hakki": "/tr/privacy",
   "/mesafeli-satis-politikasi": "/tr",
   "/teslimat-ve-iade-sartlari": "/tr",
 
@@ -295,13 +297,24 @@ export const onRequest = defineMiddleware(async (context, next) => {
     return context.redirect(`${base}/tr/news${url.search}`, 301);
   }
 
-  const first = pathname.split("/").filter(Boolean)[0]?.toLowerCase() ?? "";
+  // Canonical URL shape: no trailing slash (root excepted). Computed before the
+  // locale redirect so a slash-only + missing-locale request collapses into a
+  // single hop instead of two chained redirects.
+  const strippedPathname = pathname !== "/" ? pathname.replace(/\/+$/, "") : "/";
+
+  const first = strippedPathname.split("/").filter(Boolean)[0]?.toLowerCase() ?? "";
   const hasLocalePrefix = locales.includes(first as Locale);
 
-  if (!hasLocalePrefix && !isExemptFromLocale(pathname)) {
+  if (!hasLocalePrefix && !isExemptFromLocale(strippedPathname)) {
     const locale = detectLocale(context.request);
-    const rest = pathname === "/" ? "" : pathname;
+    const rest = strippedPathname === "/" ? "" : strippedPathname;
     return context.redirect(`${base}/${locale}${rest}${url.search}`, 302);
+  }
+
+  // Locale-prefixed or exempt URL that still carries a trailing slash: send it to
+  // the canonical no-slash form in one permanent hop.
+  if (pathname !== "/" && pathname !== strippedPathname) {
+    return context.redirect(`${base}${strippedPathname}${url.search}`, 301);
   }
 
   if (hasSupabaseEnv) {
@@ -337,5 +350,41 @@ export const onRequest = defineMiddleware(async (context, next) => {
     }
   }
 
-  return next();
+  const response = await next();
+
+  // --- Shared CDN cache pilot (public HTML only) ------------------------------
+  // Public page HTML no longer varies by cookie (the consent banner is decided
+  // client-side), so anonymous GET HTML can be safely shared-cached for a short
+  // window with stale-while-revalidate. We NEVER cache:
+  //   - admin or API routes,
+  //   - non-200 responses (redirects, 404/410, errors),
+  //   - responses that set a cookie (personalized),
+  //   - responses that already declare their own Cache-Control.
+  try {
+    const firstSeg = strippedPathname.split("/").filter(Boolean)[0]?.toLowerCase() ?? "";
+    const contentType = response.headers.get("content-type") || "";
+    // The hosting adapter may attach a default "public, max-age=0" (no shared
+    // caching). We override that for public HTML, but never touch an explicit
+    // no-store/private directive that a route set on purpose.
+    const existingCache = (response.headers.get("cache-control") || "").toLowerCase();
+    const hasIntentionalNoCache = /no-store|private/.test(existingCache);
+    const cacheable =
+      context.request.method === "GET" &&
+      response.status === 200 &&
+      contentType.includes("text/html") &&
+      firstSeg !== "admin" &&
+      firstSeg !== "api" &&
+      !response.headers.has("set-cookie") &&
+      !hasIntentionalNoCache;
+    if (cacheable) {
+      response.headers.set(
+        "Cache-Control",
+        "public, max-age=0, s-maxage=60, stale-while-revalidate=86400",
+      );
+    }
+  } catch {
+    /* never let caching logic break the response */
+  }
+
+  return response;
 });

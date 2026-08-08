@@ -84,7 +84,7 @@ export async function runLeadReminderDigest(options?: { force?: boolean }): Prom
   }));
 
   const { emails, chatIds } = await getRecipientChannels();
-  const adminUrl = `${(env("SITE_URL") || "https://willowsoft.co").replace(/\/$/, "")}/admin`;
+  const adminUrl = `${(env("SITE_URL") || "https://www.willowsoft.co").replace(/\/$/, "")}/admin`;
 
   await Promise.allSettled([
     sendUncontactedLeadsDigest(emails, digestRows, adminUrl),
