@@ -115,4 +115,4 @@ Allow: /
 Disallow: /admin
 Disallow: /api/
 
-Sitemap: https://willowsoft.co/sitemap.xml
+Sitemap: https://www.willowsoft.co/sitemap.xml

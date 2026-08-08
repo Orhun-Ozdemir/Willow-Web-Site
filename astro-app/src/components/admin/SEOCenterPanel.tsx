@@ -115,7 +115,7 @@ function displayPath(pageKey: string, locale: Locale, slug?: string) {
     .replace(/^\/+|\/+$/g, "");
   if (cleanSlug === locale) cleanSlug = "";
   if (cleanSlug.startsWith(`${locale}/`)) cleanSlug = cleanSlug.slice(locale.length + 1);
-  return cleanSlug ? `willowsoft.co/${locale}/${cleanSlug}` : `willowsoft.co/${locale}`;
+  return cleanSlug ? `www.willowsoft.co/${locale}/${cleanSlug}` : `www.willowsoft.co/${locale}`;
 }
 
 function charState(value: string, target?: [number, number]) {
@@ -417,7 +417,7 @@ function SitePreview({
             {seoData.ogImage ? seoData.ogImage.split("/").pop() : "OG görseli"}
           </div>
           <div className="p-3">
-            <p className="text-[10px] uppercase text-gray-300">willowsoft.co</p>
+            <p className="text-[10px] uppercase text-gray-300">www.willowsoft.co</p>
             <p className="truncate text-sm font-black text-gray-800">{ogTitle}</p>
             <p className="line-clamp-2 text-xs text-gray-500">{ogDesc}</p>
           </div>
@@ -601,7 +601,7 @@ export default function SEOCenterPanel() {
         <Section title="Sosyal Medya Paylaşımı" hint="WhatsApp, LinkedIn, Twitter gibi platformlarda link paylaşıldığında görünen kart." defaultOpen={false}>
           <FormField label="Başlık" value={seoData.ogTitle || ""} onChange={(v) => updateSEO("ogTitle", v)} hint="Boş bırakırsanız Sayfa Başlığı otomatik kullanılır." />
           <FormField label="Açıklama" type="textarea" rows={2} value={seoData.ogDescription || ""} onChange={(v) => updateSEO("ogDescription", v)} hint="Boş bırakırsanız Kısa Açıklama otomatik kullanılır." />
-          <FormField label="Kapak Görseli URL" value={seoData.ogImage || ""} onChange={(v) => updateSEO("ogImage", v)} placeholder="https://willowsoft.co/assets/og/..." hint="1200×630 px önerilir." />
+          <FormField label="Kapak Görseli URL" value={seoData.ogImage || ""} onChange={(v) => updateSEO("ogImage", v)} placeholder="https://www.willowsoft.co/assets/og/..." hint="1200×630 px önerilir." />
           {(seoData.ogTitle || seoData.seoTitle) && (
             <div className="rounded-xl border border-gray-200 overflow-hidden max-w-sm">
               {seoData.ogImage && (
@@ -610,7 +610,7 @@ export default function SEOCenterPanel() {
                 </div>
               )}
               <div className="p-3 bg-white">
-                <p className="text-[10px] text-gray-300 uppercase">willowsoft.co</p>
+                <p className="text-[10px] text-gray-300 uppercase">www.willowsoft.co</p>
                 <p className="text-sm font-bold text-gray-800 truncate">{seoData.ogTitle || seoData.seoTitle}</p>
                 <p className="text-xs text-gray-500 line-clamp-2">{seoData.ogDescription || seoData.metaDescription}</p>
               </div>
@@ -667,7 +667,7 @@ export default function SEOCenterPanel() {
         {/* ── Section 5: Gelişmiş ── */}
         <Section title="Gelişmiş Ayarlar" hint="Canonical URL, Schema türü, indeksleme kuralları. Emin değilseniz dokunmayın." defaultOpen={false}>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <FormField label="Canonical URL" value={seoData.canonical || ""} onChange={(v) => updateSEO("canonical", v)} placeholder="https://willowsoft.co/..." hint="Aynı içeriğin birden fazla URL'de olduğu durumlar için." />
+            <FormField label="Canonical URL" value={seoData.canonical || ""} onChange={(v) => updateSEO("canonical", v)} placeholder="https://www.willowsoft.co/..." hint="Aynı içeriğin birden fazla URL'de olduğu durumlar için." />
             <FormField label="Schema Türü" type="select" value={seoData.schemaType || ""} onChange={(v) => updateSEO("schemaType", v)} options={SCHEMA_TYPES} hint="Yapısal veri türü." />
             <FormField label="Arama Motorlarından Gizle (Noindex)" type="select" value={seoData.noindex ? "true" : "false"} onChange={(v) => updateSEO("noindex", v === "true")} options={[{ value: "false", label: "Hayır — Normal indexle" }, { value: "true", label: "Evet — Bu sayfayı gizle" }]} />
             <FormField label="Link Takibini Engelle (Nofollow)" type="select" value={seoData.nofollow ? "true" : "false"} onChange={(v) => updateSEO("nofollow", v === "true")} options={[{ value: "false", label: "Hayır — Normal" }, { value: "true", label: "Evet — Engelle" }]} />

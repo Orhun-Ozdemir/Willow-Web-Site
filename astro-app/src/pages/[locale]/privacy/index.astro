@@ -1,7 +1,7 @@
 ---
 import PageLayout from "@/layouts/PageLayout.astro";
 import { resolveLocale, type Locale } from "@/lib/cms";
-import { buildAlternates, SITE_ORIGIN } from "@/lib/seo";
+import { buildAlternates, webPageNode, ORGANIZATION_SCHEMA, WEBSITE_SCHEMA, SITE_ORIGIN } from "@/lib/seo";
 
 export const prerender = false;
 
@@ -41,18 +41,32 @@ const copies: Record<Locale, PrivacyCopy> = {
 };
 
 const t = copies[locale] || copies.en;
+const canonical = `${SITE_ORIGIN}/${locale}/privacy`;
 const seo = {
   title: `${t.title} | WillowSoft`,
   description: t.lead,
-  canonical: `${SITE_ORIGIN}/${locale}/privacy`,
+  canonical,
   alternates: buildAlternates("/privacy"),
   ogTitle: `${t.title} | WillowSoft`,
   ogDescription: t.lead,
   noindex: false,
 };
+const privacySchema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    ORGANIZATION_SCHEMA,
+    WEBSITE_SCHEMA,
+    {
+      ...webPageNode("WebPage", canonical, seo.title, t.lead, locale),
+      datePublished: "2026-07-17",
+      dateModified: "2026-07-17",
+      about: { "@id": `${SITE_ORIGIN}/#org` },
+    },
+  ],
+};
 ---
 
-<PageLayout {...seo} locale={locale} dataPage="privacy">
+<PageLayout {...seo} locale={locale} dataPage="privacy" schema={privacySchema}>
   <main id="main-content" class="privacy-page">
     <section class="privacy-hero">
       <div class="privacy-inner">

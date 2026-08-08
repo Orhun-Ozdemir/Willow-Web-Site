@@ -13,6 +13,8 @@ const STATIC_PAGES: { key: string; subPath: string }[] = [
   { key: "glossary", subPath: "/glossary" },
   { key: "contact", subPath: "/contact" },
   { key: "startProject", subPath: "/start-project" },
+  { key: "privacy", subPath: "/privacy" },
+  { key: "faq", subPath: "/faq" },
 ];
 
 interface UrlEntry {

@@ -5,6 +5,7 @@ import { loadContent } from "@/lib/content";
 import { localizedValue, localizeItem, locales, resolveAsset, resolveLocale } from "@/lib/cms";
 import { buildAlternates, DEFAULT_OG_IMAGE, ORGANIZATION_SCHEMA, WEBSITE_SCHEMA, SITE_ORIGIN } from "@/lib/seo";
 import { normalizeProductSlug } from "@/lib/product-model";
+import { newsSeoFallback } from "@/lib/seo-fallbacks";
 
 export const prerender = false;
 
@@ -27,6 +28,12 @@ if (!raw) return Astro.redirect(`/${locale}/news`);
 
 const article = localizeItem(raw, locale);
 const seo = raw.seo?.[locale] || {};
+const newsSeoText = newsSeoFallback(locale, {
+  title: article.title || "",
+  excerpt: article.excerpt || "",
+  seoTitle: seo.seoTitle,
+  metaDescription: seo.metaDescription,
+});
 
 const slugByLocale = Object.fromEntries(
   locales.map((l) => [l, `/news/${localizedValue(raw.slug, l) || raw.slug?.en || raw.id}`]),
@@ -120,7 +127,7 @@ const articleSchema = {
     {
       "@type": "NewsArticle",
       headline: article.title,
-      description: seo.metaDescription || article.excerpt || "",
+      description: newsSeoText.description,
       image: schemaImages.length ? schemaImages : [DEFAULT_OG_IMAGE],
       inLanguage: locale,
       mainEntityOfPage: { "@type": "WebPage", "@id": canonical },
@@ -155,17 +162,20 @@ const getLabel = (key) => labels[key][locale] || labels[key].en;
 ---
 
 <PageLayout
-  title={seo.seoTitle || `${article.title} | WillowSoft`}
-  description={seo.metaDescription || article.excerpt || ""}
+  title={newsSeoText.title}
+  description={newsSeoText.description}
   canonical={canonical}
-  ogTitle={seo.ogTitle || article.title}
-  ogDescription={seo.ogDescription || seo.metaDescription || article.excerpt || ""}
+  ogTitle={seo.ogTitle || newsSeoText.title}
+  ogDescription={seo.ogDescription || newsSeoText.description}
   ogImage={ogImage}
   ogType="article"
   alternates={buildAlternates(slugByLocale[locale], slugByLocale)}
   schema={articleSchema}
   locale={locale}
   dataPage="news-detail"
+  noindex={Boolean(seo.noindex)}
+  nofollow={Boolean(seo.nofollow)}
+  nosnippet={Boolean(seo.nosnippet)}
 >
   <main id="main-content">
     <article>

@@ -17,8 +17,12 @@ interface Props {
   ogImage?: string;
   ogType?: string;
   noindex?: boolean;
+  nofollow?: boolean;
+  nosnippet?: boolean;
   alternates?: Alternate[];
   schema?: object | object[];
+  preloadImage?: string;
+  preloadImageType?: string;
 }
 
 const locale = resolveLocale(Astro.props.locale, Astro.url.pathname);

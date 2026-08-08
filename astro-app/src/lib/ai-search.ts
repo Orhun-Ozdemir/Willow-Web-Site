@@ -162,7 +162,13 @@ export function aiMetaForPage(content: any, pageKey: string, locale: Locale): Ai
 }
 
 export function fallbackFaqsForPage(pageKey: string, locale: Locale): AiFaqItem[] {
-  return FAQ_FALLBACKS[pageKey]?.[locale] || FAQ_FALLBACKS[pageKey]?.en || [];
+  // Only use a fallback that is genuinely in the requested locale. Never drop a
+  // non-English locale to the English list: rendering (and publishing FAQPage
+  // schema for) English Q&A on e.g. a German page is wrong-language content.
+  const localized = FAQ_FALLBACKS[pageKey]?.[locale];
+  if (localized && localized.length) return localized;
+  if (locale === "en") return FAQ_FALLBACKS[pageKey]?.en || [];
+  return [];
 }
 
 function localizedFaqField(faq: any, locale: Locale, field: "question" | "answer"): string {

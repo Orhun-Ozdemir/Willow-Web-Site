@@ -9,7 +9,12 @@ const isVercel = Boolean(process.env.VERCEL);
 export default defineConfig({
   // Production is Vercel-only; serve at the real origin with no base prefix so
   // local dev matches production (the old GitHub Pages base is no longer used).
-  site: "https://willowsoft.co",
+  site: "https://www.willowsoft.co",
+  // trailingSlash is left at the default ("ignore"): Astro's own "never" redirect
+  // runs *before* middleware and would double-hop legacy WordPress URLs that end
+  // in a slash (e.g. "/urunler/" -> "/urunler" -> "/tr/products"). Instead the
+  // middleware normalizes trailing slashes to the canonical no-slash form in a
+  // single hop, after legacy 301/410 rules have had a chance to match.
   // Astro 5 defaults checkOrigin to true, which blocks POST requests from Vercel
   // preview URLs (different origin than site). Admin routes are protected by their
   // own session-token auth, so CSRF check at Astro level is redundant here.

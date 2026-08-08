@@ -29,6 +29,8 @@ const labels = {
   solutions: { en: "Solutions", tr: "Çözümler", de: "Lösungen", fr: "Solutions", es: "Soluciones", it: "Soluzioni", ar: "الحلول", ja: "ソリューション" },
   services: { en: "Services", tr: "Hizmetler", de: "Leistungen", fr: "Services", es: "Servicios", it: "Servizi", ar: "الخدمات", ja: "サービス" },
   products: { en: "Products", tr: "Ürünler", de: "Produkte", fr: "Produits", es: "Productos", it: "Prodotti", ar: "المنتجات", ja: "製品" },
+  glossary: { en: "Glossary", tr: "Sözlük", de: "Glossar", fr: "Glossaire", es: "Glosario", it: "Glossario", ar: "المصطلحات", ja: "用語集" },
+  faq: { en: "FAQ", tr: "SSS", de: "FAQ", fr: "FAQ", es: "Preguntas frecuentes", it: "FAQ", ar: "الأسئلة الشائعة", ja: "よくある質問" },
   company: { en: "About Us", tr: "Hakkımızda", de: "Über uns", fr: "À propos", es: "Sobre nosotros", it: "Chi siamo", ar: "من نحن", ja: "会社概要" },
   news: { en: "News", tr: "Haberler", de: "Neuigkeiten", fr: "Actualités", es: "Noticias", it: "Notizie", ar: "الأخبار", ja: "ニュース" },
   contact: { en: "Contact", tr: "İletişim", de: "Kontakt", fr: "Contact", es: "Contacto", it: "Contatti", ar: "اتصل بنا", ja: "お問い合わせ" },
@@ -61,6 +63,8 @@ const getLabel = (key: keyof typeof labels) => labels[key][locale] || labels[key
       <a href={`/${locale}/solutions`}>{getLabel("solutions")}</a>
       <a href={`/${locale}/services`}>{getLabel("services")}</a>
       <a href={`/${locale}/products`}>{getLabel("products")}</a>
+      <a href={`/${locale}/glossary`}>{getLabel("glossary")}</a>
+      <a href={`/${locale}/faq`}>{getLabel("faq")}</a>
     </div>
     <div>
       <h3>{getLabel("companyGroup")}</h3>

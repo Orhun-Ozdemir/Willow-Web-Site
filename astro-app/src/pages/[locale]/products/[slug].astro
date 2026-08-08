@@ -9,6 +9,7 @@ import { getProductExtras } from "@/lib/product-extras";
 import { glossaryLinksForProduct, glossaryLinkLabels } from "@/lib/glossary-links";
 import { applicationIconForText, buildSpecificationGroups, canonicalizeProduct, iconKeyForText, LOCALE_NATIVE_NAMES, normalizeAssetPath, normalizeProductIconItems, normalizeProductSlug, normalizeStringList, productDocumentTypeLabel, productSlugCandidates, PRODUCT_ICON_SVG } from "@/lib/product-model";
 import { productCategoriesFromContent, productCategoryLabel } from "@/lib/product-categories";
+import { productSeoFallback } from "@/lib/seo-fallbacks";
 
 export const prerender = false;
 
@@ -27,6 +28,13 @@ const product = { ...localizedProduct, category: rawProduct.category || localize
 const productCategories = productCategoriesFromContent(content);
 const categoryLabel = productCategoryLabel(productCategories, String(rawProduct.category || product.category), locale);
 const seo = rawProduct.seo?.[locale] || {};
+const productSeoText = productSeoFallback(locale, {
+  name: product.title || "",
+  categoryLabel,
+  shortDescription: product.shortDescription || "",
+  seoTitle: seo.seoTitle,
+  metaDescription: seo.metaDescription,
+});
 const titleLower = (product.title || "").toLowerCase();
 const pickText = (value: any) => localizedValue(value, locale);
 const heroImages = Array.from(
@@ -629,6 +637,34 @@ const ICONS: Record<string, string> = {
 };
 
 // Schema.org Graph
+const productCanonical = `${SITE_ORIGIN}/${locale}/products/${slug}`;
+const crumbHome: Record<Locale, string> = { en: "Home", tr: "Ana Sayfa", de: "Startseite", fr: "Accueil", es: "Inicio", it: "Home", ar: "الرئيسية", ja: "ホーム" };
+const crumbProducts: Record<Locale, string> = { en: "Products", tr: "Ürünler", de: "Produkte", fr: "Produits", es: "Productos", it: "Prodotti", ar: "المنتجات", ja: "製品一覧" };
+
+// B2B catalog has no list price; a priceless Offer is invalid structured data, so
+// only emit an Offer node when a real price is present in CMS/product data.
+const productPrice = (product as any).price;
+const productNode: Record<string, any> = {
+  "@type": "Product",
+  "name": product.title,
+  "sku": product.slug || product.id,
+  "image": product.image ? [`${SITE_ORIGIN}/${product.image}`.replace(/([^:])\/\//g, "$1/")] : [],
+  "description": product.shortDescription || "",
+  "brand": { "@type": "Brand", "name": "WillowSoft" },
+  "manufacturer": { "@id": `${SITE_ORIGIN}/#org` },
+  "category": product.category || "Product",
+};
+if (productPrice) {
+  productNode.offers = {
+    "@type": "Offer",
+    "priceCurrency": (product as any).priceCurrency || "USD",
+    "price": String(productPrice),
+    "availability": "https://schema.org/InStock",
+    "seller": { "@id": `${SITE_ORIGIN}/#org` },
+    "url": productCanonical,
+  };
+}
+
 const graphSchema = appendSchemaNodes({
   "@context": "https://schema.org",
   "@graph": [
@@ -637,30 +673,14 @@ const graphSchema = appendSchemaNodes({
     {
       "@type": "BreadcrumbList",
       "itemListElement": [
-        { "@type": "ListItem", "position": 1, "name": "Home", "item": `${SITE_ORIGIN}/${locale}` },
-        { "@type": "ListItem", "position": 2, "name": "Products", "item": `${SITE_ORIGIN}/${locale}/products` },
-        { "@type": "ListItem", "position": 3, "name": product.title }
+        { "@type": "ListItem", "position": 1, "name": crumbHome[locale] || crumbHome.en, "item": `${SITE_ORIGIN}/${locale}` },
+        { "@type": "ListItem", "position": 2, "name": crumbProducts[locale] || crumbProducts.en, "item": `${SITE_ORIGIN}/${locale}/products` },
+        { "@type": "ListItem", "position": 3, "name": product.title, "item": productCanonical }
       ]
     },
-    {
-      "@type": "Product",
-      "name": product.title,
-      "sku": product.slug || product.id,
-      "image": product.image ? [`${SITE_ORIGIN}/${product.image}`.replace(/([^:])\/\//g, "$1/")] : [],
-      "description": product.shortDescription || "",
-      "brand": { "@type": "Brand", "name": "WillowSoft" },
-      "manufacturer": { "@id": `${SITE_ORIGIN}/#org` },
-      "category": product.category || "Product",
-      "offers": {
-        "@type": "Offer",
-        "priceCurrency": "USD",
-        "availability": "https://schema.org/InStock",
-        "seller": { "@id": `${SITE_ORIGIN}/#org` },
-        "url": `${SITE_ORIGIN}/${locale}/products/${slug}`
-      }
-    }
+    productNode,
   ]
-}, [faqSchemaNode(`${SITE_ORIGIN}/${locale}/products/${slug}`, productFaqItems)]);
+}, [faqSchemaNode(productCanonical, productFaqItems)]);
 
 // Localized UI Labels
 const t = {
@@ -786,18 +806,21 @@ const glossaryHeading = glossaryLinkLabels.heading[locale] || glossaryLinkLabels
 ---
 
 <PageLayout
-  title={seo.seoTitle || `${product.title} | WillowSoft`}
-  description={seo.metaDescription || product.shortDescription || ""}
+  title={productSeoText.title}
+  description={productSeoText.description}
   canonical={seo.canonical || `${SITE_ORIGIN}/${locale}/products/${slug}`}
-  ogTitle={seo.ogTitle || product.title}
-  ogDescription={seo.ogDescription || seo.metaDescription || product.shortDescription || ""}
+  ogTitle={seo.ogTitle || productSeoText.title}
+  ogDescription={seo.ogDescription || productSeoText.description}
   ogImage={product.image ? `${SITE_ORIGIN}/${product.image}`.replace(/([^:])\/\//g, "$1/") : DEFAULT_OG_IMAGE}
   alternates={buildAlternates(`/products/${slug}`)}
   schema={graphSchema}
   locale={locale}
   dataPage="product-detail"
+  noindex={Boolean(seo.noindex)}
+  nofollow={Boolean(seo.nofollow)}
+  nosnippet={Boolean(seo.nosnippet)}
 >
-  <main>
+  <main id="main-content">
     <div class="section-inner">
       <div class="ws-breadcrumbs">
         <a href={`/${locale}/products`}>{getT("productsBreadcrumb")}</a>

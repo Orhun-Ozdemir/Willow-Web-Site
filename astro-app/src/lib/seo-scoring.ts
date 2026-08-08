@@ -21,6 +21,32 @@ function levelFor(score: number): "good" | "ok" | "bad" {
   return score >= 80 ? "good" : score >= 50 ? "ok" : "bad";
 }
 
+function stripTags(value: unknown): string {
+  return String(value ?? "")
+    .replace(/<[^>]*>/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+/**
+ * Resolves the H1 that the live template actually renders. Public pages derive
+ * their H1 from the hero title in `pageContent` (not the rarely-used `pageSeo.h1`
+ * field), so the score must read the same source to avoid false "H1 missing"
+ * failures. Read-only: it never mutates CMS content.
+ */
+function renderedH1From(pageContent: Record<string, any> | undefined, locale: string): string {
+  if (!pageContent) return "";
+  const candidateKeys = ["heroTitle", "heroHeading", "heroH1", "title", "h1", "heading"];
+  for (const key of candidateKeys) {
+    const raw = pageContent[key];
+    if (!raw) continue;
+    const value = typeof raw === "string" ? raw : raw[locale] || raw.en || "";
+    const stripped = stripTags(value);
+    if (stripped) return stripped;
+  }
+  return "";
+}
+
 export function calcSEOScore(
   seoData: any,
   locale: string,
@@ -36,7 +62,7 @@ export function calcSEOScore(
   const keyword = (seoData?.focusKeyword || "").trim().toLowerCase();
   const slug = (seoData?.slug || "").trim();
   const canonical = (seoData?.canonical || "").trim();
-  const h1 = (seoData?.h1 || "").trim();
+  const h1 = (seoData?.h1 || "").trim() || renderedH1From(pageContent, locale);
   const ogImage = (seoData?.ogImage || "").trim();
   const schemaType = (seoData?.schemaType || "").trim();
   const noindex = !!seoData?.noindex;
@@ -131,7 +157,7 @@ export function calcSEOScore(
     seoChecks.push({ label: "Sayfa indekslemeye açık.", ok: true, pass: true });
   }
 
-  // 7. H1 & Title alignment
+  // 7. H1 & Title alignment (H1 read from the rendered hero, not just pageSeo.h1)
   if (!h1) {
     seoChecks.push({ label: "H1 başlığı eksik.", ok: false, fail: true });
   } else {

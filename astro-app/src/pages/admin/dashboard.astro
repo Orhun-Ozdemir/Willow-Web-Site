@@ -3,8 +3,10 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
 import AdminDashboard from "@/components/admin/AdminDashboard";
 
 export const prerender = false;
+
+Astro.response.headers.set("X-Robots-Tag", "noindex, nofollow");
 ---
 
-<BaseLayout title="WillowSoft Admin Dashboard" dataPage="admin">
+<BaseLayout title="WillowSoft Admin Dashboard" dataPage="admin" noindex={true}>
   <AdminDashboard client:only="react" />
 </BaseLayout>

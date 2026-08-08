@@ -1,0 +1,104 @@
+---
+import PageLayout from "@/layouts/PageLayout.astro";
+import FaqAccordion from "@/components/FaqAccordion.astro";
+import { loadContent } from "@/lib/content";
+import { pageSeo, webPageNode, ORGANIZATION_SCHEMA, WEBSITE_SCHEMA } from "@/lib/seo";
+import { resolveLocale, type Locale } from "@/lib/cms";
+import { appendSchemaNodes, faqItemsForPage, faqSchemaNode, type AiFaqItem } from "@/lib/ai-search";
+
+export const prerender = false;
+
+const locale = resolveLocale(Astro.params.locale, Astro.url.pathname);
+const content = await loadContent();
+const faqs = content.faqs || [];
+
+const FALLBACK_TITLE = "Frequently Asked Questions | WillowSoft";
+const FALLBACK_DESC =
+  "Answers about WillowSoft's embedded hardware, Industrial IoT products, engineering services, solutions and how to start a connected-product project.";
+const seoProps = pageSeo(content, "faq", locale, "/faq", FALLBACK_TITLE, FALLBACK_DESC);
+
+// Sections aggregate the existing localized FAQ entries by their source page and
+// link back to that page. Only sections that actually have localized Q&A for the
+// current locale are rendered (no wrong-language fallback, no thin sections).
+const SECTIONS: { pageKey: string; href: string; label: Record<Locale, string> }[] = [
+  { pageKey: "home", href: `/${locale}`, label: { en: "General", tr: "Genel", de: "Allgemein", fr: "Général", es: "General", it: "Generale", ar: "عام", ja: "一般" } },
+  { pageKey: "services", href: `/${locale}/services`, label: { en: "Services", tr: "Hizmetler", de: "Leistungen", fr: "Services", es: "Servicios", it: "Servizi", ar: "الخدمات", ja: "サービス" } },
+  { pageKey: "solutions", href: `/${locale}/solutions`, label: { en: "Solutions", tr: "Çözümler", de: "Lösungen", fr: "Solutions", es: "Soluciones", it: "Soluzioni", ar: "الحلول", ja: "ソリューション" } },
+  { pageKey: "contact", href: `/${locale}/contact`, label: { en: "Contact", tr: "İletişim", de: "Kontakt", fr: "Contact", es: "Contacto", it: "Contatti", ar: "اتصل بنا", ja: "お問い合わせ" } },
+  { pageKey: "start-project", href: `/${locale}/start-project`, label: { en: "Starting a project", tr: "Projeye başlamak", de: "Projektstart", fr: "Démarrer un projet", es: "Iniciar un proyecto", it: "Avviare un progetto", ar: "بدء مشروع", ja: "プロジェクト開始" } },
+];
+
+const activeSections = SECTIONS.map((section) => ({
+  ...section,
+  items: faqItemsForPage(faqs, section.pageKey, locale, [], 20),
+})).filter((section) => section.items.length > 0);
+
+// Aggregate, de-duplicate by question, and cap the schema payload.
+const schemaItems: AiFaqItem[] = [];
+const seenQuestions = new Set<string>();
+for (const section of activeSections) {
+  for (const item of section.items) {
+    const key = item.question.trim().toLowerCase();
+    if (seenQuestions.has(key)) continue;
+    seenQuestions.add(key);
+    schemaItems.push(item);
+  }
+}
+
+const faqSchema = appendSchemaNodes(
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      ORGANIZATION_SCHEMA,
+      WEBSITE_SCHEMA,
+      {
+        ...webPageNode("CollectionPage", seoProps.canonical, seoProps.title, seoProps.description, locale),
+        mainEntity: { "@id": `${seoProps.canonical}#faq` },
+      },
+    ],
+  },
+  [faqSchemaNode(seoProps.canonical, schemaItems)],
+);
+
+const copy = {
+  eyebrow: { en: "FAQ", tr: "SSS", de: "FAQ", fr: "FAQ", es: "FAQ", it: "FAQ", ar: "الأسئلة الشائعة", ja: "FAQ" },
+  title: { en: "Frequently asked questions", tr: "Sıkça sorulan sorular", de: "Häufig gestellte Fragen", fr: "Questions fréquentes", es: "Preguntas frecuentes", it: "Domande frequenti", ar: "الأسئلة الشائعة", ja: "よくあるご質問" },
+  lead: {
+    en: "Short answers about WillowSoft's products, engineering services, IoT solutions and how a project starts. Each section links to the related page.",
+    tr: "WillowSoft ürünleri, mühendislik hizmetleri, IoT çözümleri ve bir projenin nasıl başladığı hakkında kısa yanıtlar. Her bölüm ilgili sayfaya bağlanır.",
+    de: "Kurze Antworten zu WillowSoft-Produkten, Engineering-Leistungen, IoT-Lösungen und zum Projektstart. Jeder Abschnitt verlinkt die passende Seite.",
+    fr: "Réponses courtes sur les produits WillowSoft, les services d'ingénierie, les solutions IoT et le démarrage d'un projet. Chaque section renvoie à la page associée.",
+    es: "Respuestas breves sobre los productos de WillowSoft, servicios de ingeniería, soluciones IoT y cómo iniciar un proyecto. Cada sección enlaza con la página relacionada.",
+    it: "Risposte brevi su prodotti WillowSoft, servizi di ingegneria, soluzioni IoT e come avviare un progetto. Ogni sezione rimanda alla pagina correlata.",
+    ar: "إجابات مختصرة حول منتجات WillowSoft وخدمات الهندسة وحلول إنترنت الأشياء وكيفية بدء مشروع. يرتبط كل قسم بالصفحة المعنية.",
+    ja: "WillowSoft の製品、エンジニアリングサービス、IoT ソリューション、プロジェクトの始め方に関する簡潔な回答です。各セクションは関連ページにリンクします。",
+  },
+  more: { en: "See details", tr: "Detayları gör", de: "Details ansehen", fr: "Voir les détails", es: "Ver detalles", it: "Vedi dettagli", ar: "عرض التفاصيل", ja: "詳細を見る" },
+};
+const t = (key: keyof typeof copy) => copy[key][locale] || copy[key].en;
+---
+
+<PageLayout {...seoProps} locale={locale} dataPage="faq" schema={faqSchema}>
+  <main id="main-content">
+    <section class="hero compact">
+      <canvas class="signal-canvas" data-density="26" data-color="26, 163, 196"></canvas>
+      <div class="hero-inner">
+        <p class="eyebrow reveal">{t("eyebrow")}</p>
+        <h1 class="reveal delay-1">{t("title")}</h1>
+        <p class="reveal delay-2">{t("lead")}</p>
+      </div>
+    </section>
+
+    {activeSections.map((section) => (
+      <section class="section">
+        <div class="section-inner">
+          <div class="section-head reveal" style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: "16px", flexWrap: "wrap" }}>
+            <h2>{section.label[locale] || section.label.en}</h2>
+            <a class="btn btn-secondary btn-small" href={section.href}>{t("more")}</a>
+          </div>
+          <FaqAccordion pageKey={section.pageKey} faqs={faqs} locale={locale} />
+        </div>
+      </section>
+    ))}
+  </main>
+</PageLayout>

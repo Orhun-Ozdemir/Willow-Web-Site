@@ -1,0 +1,42 @@
+---
+import PageLayout from "@/layouts/PageLayout.astro";
+import { resolveLocale, type Locale } from "@/lib/cms";
+
+export const prerender = false;
+
+// Controlled catch-all so unmatched, locale-prefixed URLs render a branded 404
+// (middleware still runs first, handling legacy 301s and 410s before we get here).
+const locale = resolveLocale(Astro.params.locale, Astro.url.pathname);
+
+Astro.response.status = 404;
+Astro.response.statusText = "Not Found";
+Astro.response.headers.set("X-Robots-Tag", "noindex, nofollow");
+
+type Copy = { title: string; heading: string; body: string; home: string; products: string; contact: string };
+const COPY: Record<Locale, Copy> = {
+  en: { title: "Page not found", heading: "This page could not be found", body: "The page you are looking for may have been moved or no longer exists.", home: "Back to home", products: "Browse products", contact: "Contact us" },
+  tr: { title: "Sayfa bulunamadı", heading: "Bu sayfa bulunamadı", body: "Aradığınız sayfa taşınmış veya artık mevcut olmayabilir.", home: "Ana sayfaya dön", products: "Ürünlere göz at", contact: "Bize ulaşın" },
+  de: { title: "Seite nicht gefunden", heading: "Diese Seite wurde nicht gefunden", body: "Die gesuchte Seite wurde möglicherweise verschoben oder existiert nicht mehr.", home: "Zur Startseite", products: "Produkte ansehen", contact: "Kontakt" },
+  fr: { title: "Page introuvable", heading: "Cette page est introuvable", body: "La page que vous cherchez a peut-être été déplacée ou n'existe plus.", home: "Retour à l'accueil", products: "Voir les produits", contact: "Nous contacter" },
+  es: { title: "Página no encontrada", heading: "No se encontró esta página", body: "La página que buscas puede haberse movido o ya no existe.", home: "Volver al inicio", products: "Ver productos", contact: "Contáctanos" },
+  it: { title: "Pagina non trovata", heading: "Impossibile trovare questa pagina", body: "La pagina che cerchi potrebbe essere stata spostata o non esistere più.", home: "Torna alla home", products: "Vedi i prodotti", contact: "Contattaci" },
+  ar: { title: "الصفحة غير موجودة", heading: "تعذّر العثور على هذه الصفحة", body: "قد تكون الصفحة التي تبحث عنها قد نُقلت أو لم تعد موجودة.", home: "العودة إلى الرئيسية", products: "تصفح المنتجات", contact: "تواصل معنا" },
+  ja: { title: "ページが見つかりません", heading: "このページは見つかりませんでした", body: "お探しのページは移動されたか、存在しない可能性があります。", home: "ホームに戻る", products: "製品を見る", contact: "お問い合わせ" },
+};
+const t = COPY[locale] || COPY.en;
+---
+
+<PageLayout title={`404 — ${t.title} | WillowSoft`} description={t.body} locale={locale} noindex={true}>
+  <main id="main-content" class="flex flex-1 items-center justify-center px-6 py-24">
+    <div class="mx-auto max-w-xl text-center">
+      <p class="text-7xl font-black tracking-tight text-[#132175]">404</p>
+      <h1 class="mt-4 text-2xl font-bold text-gray-900 sm:text-3xl">{t.heading}</h1>
+      <p class="mt-3 text-base text-gray-600">{t.body}</p>
+      <div class="mt-8 flex flex-wrap items-center justify-center gap-3">
+        <a href={`/${locale}`} class="rounded-full bg-[#132175] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#0e1a5c]">{t.home}</a>
+        <a href={`/${locale}/products`} class="rounded-full border border-gray-300 px-6 py-3 text-sm font-semibold text-gray-800 transition hover:border-[#132175] hover:text-[#132175]">{t.products}</a>
+        <a href={`/${locale}/contact`} class="rounded-full border border-gray-300 px-6 py-3 text-sm font-semibold text-gray-800 transition hover:border-[#132175] hover:text-[#132175]">{t.contact}</a>
+      </div>
+    </div>
+  </main>
+</PageLayout>

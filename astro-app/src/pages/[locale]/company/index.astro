@@ -1,7 +1,7 @@
 ---
 import PageLayout from "@/layouts/PageLayout.astro";
 import { loadContent } from "@/lib/content";
-import { pageSeo, webPageNode, ORGANIZATION_SCHEMA, WEBSITE_SCHEMA, SITE_ORIGIN } from "@/lib/seo";
+import { pageSeo, webPageNode, organizationWithOffices, WEBSITE_SCHEMA, SITE_ORIGIN } from "@/lib/seo";
 import { localizeItem, resolveAsset, pageText, itemText, resolveLocale, type Locale } from "@/lib/cms";
 import { officesForContact, resolveOfficePhone, syncOfficePhonesInFacts, telHref } from "@/lib/company-contact";
 
@@ -10,10 +10,11 @@ export const prerender = false;
 const locale = resolveLocale(Astro.params.locale, Astro.url.pathname);
 const content = await loadContent();
 const seoProps = pageSeo(content, "company", locale, "/company", "Company | WillowSoft", "About WillowSoft.");
+const companyFacts = syncOfficePhonesInFacts(content.companyFacts || {});
 const companySchema = {
   "@context": "https://schema.org",
   "@graph": [
-    ORGANIZATION_SCHEMA,
+    organizationWithOffices(companyFacts, locale),
     WEBSITE_SCHEMA,
     {
       ...webPageNode("AboutPage", seoProps.canonical, seoProps.title, seoProps.description, locale),
@@ -24,8 +25,6 @@ const companySchema = {
 const pageContent = content.pageContent?.company || {};
 const t = (key: string, fallback = "") => pageText(pageContent, key, locale, fallback);
 const sectionTitle = (cmsKey: string, fallbackHtml: string) => t(cmsKey) || fallbackHtml;
-
-const companyFacts = syncOfficePhonesInFacts(content.companyFacts || {});
 const contactOffices = officesForContact(companyFacts, locale);
 
 const cleanCmsText = (value: string) => {
@@ -278,7 +277,7 @@ const teamTitleHtml: Record<string, string> = {
   locale={locale}
   dataPage="company"
 >
-  <main>
+  <main id="main-content">
     {/* CoC_Hero */}
     <div class="company-hero-c" style="background: var(--ws-navy-950); position: relative; overflow: hidden;">
       <canvas class="signal-canvas company-hero-signal" data-density="46" data-color="26, 163, 196"></canvas>
