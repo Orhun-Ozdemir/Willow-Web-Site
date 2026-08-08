@@ -15,6 +15,18 @@ const root = path.join(__dirname, "..");
 const httpMode = process.argv.includes("--http");
 const baseUrl = (process.env.BASE_URL || "http://127.0.0.1:4321").replace(/\/+$/, "");
 
+// Optional: bypass cookie for protected Vercel preview deployments. When set, it is
+// attached to every request so the SEO probes can run against a preview URL.
+const bypassCookie = process.env.VERCEL_BYPASS_COOKIE || "";
+if (bypassCookie) {
+  const nativeFetch = globalThis.fetch;
+  globalThis.fetch = (input, init = {}) => {
+    const headers = new Headers(init.headers || {});
+    headers.set("cookie", bypassCookie);
+    return nativeFetch(input, { ...init, headers });
+  };
+}
+
 const middlewareSrc = fs.readFileSync(path.join(root, "astro-app/src/middleware.ts"), "utf8");
 const site = JSON.parse(fs.readFileSync(path.join(root, "data/site-data.json"), "utf8"));
 

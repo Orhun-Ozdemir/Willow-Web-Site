@@ -363,6 +363,11 @@ export const onRequest = defineMiddleware(async (context, next) => {
   try {
     const firstSeg = strippedPathname.split("/").filter(Boolean)[0]?.toLowerCase() ?? "";
     const contentType = response.headers.get("content-type") || "";
+    // The hosting adapter may attach a default "public, max-age=0" (no shared
+    // caching). We override that for public HTML, but never touch an explicit
+    // no-store/private directive that a route set on purpose.
+    const existingCache = (response.headers.get("cache-control") || "").toLowerCase();
+    const hasIntentionalNoCache = /no-store|private/.test(existingCache);
     const cacheable =
       context.request.method === "GET" &&
       response.status === 200 &&
@@ -370,7 +375,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
       firstSeg !== "admin" &&
       firstSeg !== "api" &&
       !response.headers.has("set-cookie") &&
-      !response.headers.has("cache-control");
+      !hasIntentionalNoCache;
     if (cacheable) {
       response.headers.set(
         "Cache-Control",
