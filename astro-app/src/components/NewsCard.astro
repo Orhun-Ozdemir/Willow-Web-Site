@@ -19,7 +19,7 @@ const timestamp = n.date ? new Date(`${n.date}T00:00:00`).getTime() || 0 : 0;
 const rawCategory = n.category || "News";
 const categoryKey = String(rawCategory).trim().toLowerCase();
 const categoryLabels: Record<string, Record<string, string>> = {
-  proof: { en: "Field signal", tr: "Saha sinyali", de: "Feldsignal", fr: "Signal terrain", es: "Señal de campo", it: "Segnale sul campo", ar: "إشارة ميدانية", ja: "現場シグナル" },
+  proof: { en: "Company update", tr: "Kurumsal gelişme", de: "Unternehmensmeldung", fr: "Actualité de l’entreprise", es: "Novedad corporativa", it: "Aggiornamento aziendale", ar: "تحديث الشركة", ja: "企業ニュース" },
   tracking: { en: "Field update", tr: "Saha güncellemesi", de: "Feld-Update", fr: "Mise à jour terrain", es: "Actualización de campo", it: "Aggiornamento sul campo", ar: "تحديث ميداني", ja: "現場アップデート" },
   "field-update": { en: "Field update", tr: "Saha güncellemesi", de: "Feld-Update", fr: "Mise à jour terrain", es: "Actualización de campo", it: "Aggiornamento sul campo", ar: "تحديث ميداني", ja: "現場アップデート" },
   "export": { en: "Export", tr: "İhracat", de: "Export", fr: "Export", es: "Exportación", it: "Export", ar: "تصدير", ja: "輸出" },

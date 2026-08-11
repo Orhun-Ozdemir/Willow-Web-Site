@@ -12476,6 +12476,19 @@ body[data-page="solutions"] .company-hero-signal {
   align-items: start;
 }
 
+/* Telefon yatay / küçük tablet: intro + dar sağ kolon yan yana kalmasın */
+@media (max-width: 1024px) {
+  :is(body[data-page="company"], .ws-pc-mirror[data-page="company"]) .company-grid-team {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  :is(body[data-page="company"], .ws-pc-mirror[data-page="company"]) .company-team-list {
+    justify-content: stretch;
+    justify-items: stretch;
+  }
+}
+
 :is(body[data-page="company"], .ws-pc-mirror[data-page="company"]) .company-proof-chips {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -12705,9 +12718,9 @@ body[data-page="solutions"] .company-hero-signal {
 
 :is(body[data-page="company"], .ws-pc-mirror[data-page="company"]) .company-team-list {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 300px));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 18px;
-  justify-content: end;
+  justify-content: stretch;
   justify-items: stretch;
   width: 100%;
   align-self: start;
@@ -12727,6 +12740,8 @@ body[data-page="solutions"] .company-hero-signal {
   position: relative;
   display: grid;
   place-items: center;
+  width: 100%;
+  min-width: 100%;
   aspect-ratio: 4 / 5;
   min-height: 0;
   max-height: 320px;
@@ -13192,6 +13207,16 @@ body[data-page="solutions"] .company-hero-signal {
     grid-template-columns: 1fr;
     justify-content: stretch;
     justify-items: stretch;
+    /* Kartları container kenar boşluğundan çıkarıp ekrana yaklaştır */
+    width: calc(100% + 48px);
+    max-width: none;
+    margin-inline: -24px;
+    padding-inline: 4px;
+    box-sizing: border-box;
+  }
+  :is(body[data-page="company"], .ws-pc-mirror[data-page="company"]) .company-team-avatar {
+    /* min-width:100% ile max-height çakışınca genişlik korunur, yan boşluk oluşmaz */
+    max-height: 400px;
   }
   :is(body[data-page="company"], .ws-pc-mirror[data-page="company"]) .company-expertise-copy {
     position: static;
@@ -13276,9 +13301,12 @@ body[data-page="solutions"] .company-hero-signal {
     grid-template-columns: 1fr;
     justify-content: stretch;
     justify-items: stretch;
+    width: calc(100% + 32px);
+    margin-inline: -16px;
+    padding-inline: 4px;
   }
   :is(body[data-page="company"], .ws-pc-mirror[data-page="company"]) .company-team-avatar {
-    max-height: 360px;
+    max-height: 380px;
   }
   :is(body[data-page="company"], .ws-pc-mirror[data-page="company"]) .company-stats-wrap .ws-card {
     grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
