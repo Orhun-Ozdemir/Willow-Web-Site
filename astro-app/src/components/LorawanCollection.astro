@@ -1,0 +1,169 @@
+---
+import ProductCard from "./ProductCard.astro";
+import { localizeItem, type Locale } from "@/lib/cms";
+import { productCategoryText, type ProductCategory } from "@/lib/product-categories";
+import { productSearchDescriptor } from "@/lib/seo-fallbacks";
+import { categorySearchName, COLLECTION_TABLE_LABELS, LORAWAN_LANDING_COPY } from "@/lib/lorawan-landing";
+
+interface Props {
+  locale: Locale;
+  products: any[];
+  allProducts?: any[];
+  categories: ProductCategory[];
+  selectedCategory?: ProductCategory;
+}
+
+const { locale, products, allProducts = products, categories, selectedCategory } = Astro.props;
+const copy = LORAWAN_LANDING_COPY[locale] || LORAWAN_LANDING_COPY.en;
+const visibleCategories = categories.filter((category) => category.visible);
+const heroTitle = selectedCategory ? categorySearchName(selectedCategory.key, locale) : copy.title;
+const categoryText = selectedCategory ? productCategoryText(selectedCategory, locale) : null;
+const categoryDescription = String(categoryText?.description || "").trim();
+const heroLead = selectedCategory
+  ? `${categoryDescription}${categoryDescription && !/[.!?؟。]$/.test(categoryDescription) ? "." : ""} ${copy.portfolioLead}`.trim()
+  : copy.intro;
+const tableLabels = COLLECTION_TABLE_LABELS[locale] || COLLECTION_TABLE_LABELS.en;
+---
+
+<main id="main-content" class="lorawan-landing">
+  <section class="lorawan-hero">
+    <div class="section-inner lorawan-hero-grid">
+      <div>
+        <nav class="lorawan-breadcrumb" aria-label="Breadcrumb">
+          <a href={`/${locale}/products`}>{copy.allProducts}</a>
+          {selectedCategory && <><span>/</span><a href={`/${locale}/lorawan-sensors`}>{copy.categoryBack}</a></>}
+        </nav>
+        <p class="eyebrow">{copy.eyebrow}</p>
+        <h1>{heroTitle}</h1>
+        <p class="lorawan-hero-lead">{heroLead}</p>
+      </div>
+      <aside class="lorawan-evidence-note">
+        <span aria-hidden="true">i</span>
+        <p>{copy.evidenceNote}</p>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section lorawan-families">
+    <div class="section-inner">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">{copy.familiesTitle}</p>
+          <h2>{selectedCategory ? copy.categoryBack : copy.familiesTitle}</h2>
+          <p class="section-lead">{copy.familiesLead}</p>
+        </div>
+      </div>
+      <div class="lorawan-family-grid">
+        {visibleCategories.map((category, index) => {
+          const text = productCategoryText(category, locale);
+          const count = allProducts.filter((product) => String(product.category) === category.key).length;
+          return (
+            <a class:list={["lorawan-family-card", { active: selectedCategory?.key === category.key }]} href={`/${locale}/products/category/${category.key}`}>
+              <span>{String(index + 1).padStart(2, "0")}</span>
+              <h3>{categorySearchName(category.key, locale)}</h3>
+              <p>{text.description}</p>
+              <strong>{count}</strong>
+            </a>
+          );
+        })}
+      </div>
+    </div>
+  </section>
+
+  <section class="section soft lorawan-products">
+    <div class="section-inner">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">{copy.portfolioTitle}</p>
+          <h2>{heroTitle}</h2>
+          <p class="section-lead">{copy.portfolioLead}</p>
+        </div>
+      </div>
+      <div class="grid grid-4 product-atlas-grid">
+        {products.map((product, index) => (
+          <ProductCard product={product} locale={locale} index={index} variant="catalog" categories={categories} />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section lorawan-comparison">
+    <div class="section-inner">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">{copy.portfolioTitle}</p>
+          <h2>{copy.integrationTitle}</h2>
+          <p class="section-lead">{copy.integrationText}</p>
+        </div>
+      </div>
+      <div class="lorawan-table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">{tableLabels.product}</th>
+              <th scope="col">{tableLabels.type}</th>
+              <th scope="col">{tableLabels.category}</th>
+              <th scope="col">{tableLabels.description}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {products.map((rawProduct) => {
+              const product = localizeItem(rawProduct, locale);
+              const category = visibleCategories.find((item) => item.key === String(rawProduct.category));
+              return (
+                <tr>
+                  <th scope="row"><a href={`/${locale}/products/${product.slug || product.id}`}>{product.title}</a></th>
+                  <td>{productSearchDescriptor(rawProduct.id, locale)}</td>
+                  <td>{category ? productCategoryText(category, locale).title : rawProduct.category}</td>
+                  <td>{product.shortDescription}</td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+</main>
+
+<style>
+  .lorawan-landing { background: #fff; }
+  .lorawan-hero { padding: 150px 0 72px; overflow: hidden; background: radial-gradient(circle at 82% 22%, rgba(35,168,216,.13), transparent 29%), linear-gradient(145deg, #07152f, #111c49 62%, #17184e); color: #fff; }
+  .lorawan-hero-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(280px, .42fr); gap: clamp(34px, 6vw, 88px); align-items: end; }
+  .lorawan-breadcrumb { display: flex; gap: 9px; margin-bottom: 28px; color: rgba(255,255,255,.7); font-size: .78rem; font-weight: 750; }
+  .lorawan-breadcrumb a:hover { color: #fff; }
+  .lorawan-hero .eyebrow { color: #72dfc3; }
+  .lorawan-hero h1 { max-width: 900px; margin: 14px 0 24px; font-size: clamp(2.8rem, 6vw, 6.2rem); line-height: .96; letter-spacing: -.055em; }
+  .lorawan-hero-lead { max-width: 760px; color: rgba(255,255,255,.78); font-size: clamp(1rem, 1.4vw, 1.2rem); line-height: 1.7; }
+  .lorawan-evidence-note { display: grid; grid-template-columns: 30px 1fr; gap: 14px; padding: 20px; border: 1px solid rgba(255,255,255,.14); border-radius: 18px; background: rgba(255,255,255,.07); backdrop-filter: blur(16px); }
+  .lorawan-evidence-note span { display: grid; width: 28px; height: 28px; place-items: center; border-radius: 50%; background: #72dfc3; color: #07152f; font-weight: 900; }
+  .lorawan-evidence-note p { margin: 0; color: rgba(255,255,255,.76); font-size: .83rem; line-height: 1.55; }
+  .lorawan-families { padding: 76px 0 64px; }
+  .lorawan-family-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
+  .lorawan-family-card { position: relative; min-height: 210px; padding: 22px; overflow: hidden; border: 1px solid rgba(19,33,117,.12); border-radius: 20px; background: linear-gradient(145deg, #fff, #f5f8ff); transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease; }
+  .lorawan-family-card:hover, .lorawan-family-card.active { transform: translateY(-4px); border-color: rgba(35,168,216,.5); box-shadow: 0 20px 52px rgba(16,31,92,.1); }
+  .lorawan-family-card > span { color: rgba(19,33,117,.45); font: 800 .7rem var(--font-body); letter-spacing: .1em; }
+  .lorawan-family-card h3 { max-width: 14ch; margin: 28px 0 12px; color: var(--ink); font-size: 1.25rem; line-height: 1.15; }
+  .lorawan-family-card p { margin: 0; color: rgba(19,27,46,.64); font-size: .84rem; line-height: 1.5; }
+  .lorawan-family-card strong { position: absolute; right: 18px; bottom: 14px; color: rgba(19,33,117,.16); font-size: 2.5rem; }
+  .lorawan-products { padding: 70px 0 78px; }
+  .lorawan-comparison { padding: 72px 0 90px; }
+  .lorawan-table-wrap { overflow-x: auto; border: 1px solid rgba(19,33,117,.12); border-radius: 18px; box-shadow: 0 18px 54px rgba(16,31,92,.06); }
+  table { width: 100%; min-width: 850px; border-collapse: collapse; background: #fff; }
+  th, td { padding: 17px 18px; border-bottom: 1px solid rgba(19,33,117,.09); text-align: start; vertical-align: top; font-size: .83rem; line-height: 1.5; }
+  thead th { background: #f3f6fc; color: rgba(19,33,117,.72); font-size: .68rem; letter-spacing: .07em; text-transform: uppercase; }
+  tbody th { color: var(--blue); font-weight: 850; }
+  tbody th a:hover { text-decoration: underline; }
+  tbody td { color: rgba(19,27,46,.68); }
+  tbody tr:last-child > * { border-bottom: 0; }
+  @media (max-width: 980px) { .lorawan-family-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 760px) {
+    .lorawan-hero { padding: 112px 0 52px; }
+    .lorawan-hero-grid { grid-template-columns: 1fr; gap: 26px; }
+    .lorawan-hero h1 { font-size: clamp(2.55rem, 12vw, 4rem); }
+    .lorawan-families, .lorawan-products, .lorawan-comparison { padding: 48px 0; }
+    .lorawan-family-card { min-height: 170px; padding: 18px; }
+    .lorawan-family-card h3 { margin-top: 20px; font-size: 1rem; }
+  }
+  @media (max-width: 480px) { .lorawan-family-grid { grid-template-columns: 1fr 1fr; gap: 10px; } .lorawan-family-card { min-height: 184px; } }
+</style>

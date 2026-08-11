@@ -2,6 +2,7 @@
 import { localizeItem, resolveAsset, resolveLocale, type Locale } from "@/lib/cms";
 import { DEFAULT_PRODUCT_CATEGORIES, productCategoryLabel, type ProductCategory } from "@/lib/product-categories";
 import { productCutoutDimensions, productCutoutSrcSet } from "@/lib/image-metadata";
+import { productSearchDescriptor } from "@/lib/seo-fallbacks";
 
 interface Props {
   product: any;
@@ -29,31 +30,34 @@ const cutoutImage =
   resolveAsset(`assets/product-cutouts/${p.id}.png`);
 const cutoutDimensions = productCutoutDimensions(cutoutImage);
 const cutoutSrcSet = productCutoutSrcSet(cutoutImage);
-const detailsLabel: Record<string, string> = {
-  en: "View Details",
-  tr: "Detayları Gör",
-  de: "Details ansehen",
-  fr: "Voir les détails",
-  es: "Ver detalles",
-  it: "Vedi dettagli",
-  ar: "عرض التفاصيل",
-  ja: "詳細を見る",
+const detailsLabel: Record<string, (name: string) => string> = {
+  en: (name) => `View ${name}`,
+  tr: (name) => `${name} ürününü inceleyin`,
+  de: (name) => `${name} ansehen`,
+  fr: (name) => `Découvrir ${name}`,
+  es: (name) => `Ver ${name}`,
+  it: (name) => `Scopri ${name}`,
+  ar: (name) => `عرض ${name}`,
+  ja: (name) => `${name}を見る`,
 };
 // Category is a stable technical key and must never be replaced by a localized value.
 const displayCategory = String(product.category || "environment");
 const categoryLabel = productCategoryLabel(categories, displayCategory, locale);
+const searchDescriptor = productSearchDescriptor(product.id || p.id, locale);
+const imageAlt = [p.title, searchDescriptor].filter(Boolean).join(" — ");
+const detailsText = (detailsLabel[locale] || detailsLabel.en)(p.title);
 ---
 
 <article class={`card product-card${variant === "catalog" ? " product-card-premium" : ""} reveal${delay}`} data-category={displayCategory} data-product={p.id}>
   <figure>
-    {variant === "catalog" && <span class="product-card-category">{categoryLabel}</span>}
+    {variant === "catalog" && <a class="product-card-category" href={`/${locale}/products/category/${displayCategory}`}>{categoryLabel}</a>}
     <img
       src={cutoutImage}
       srcset={cutoutSrcSet}
       sizes="(max-width: 480px) 130px, (max-width: 760px) 160px, 180px"
       width={cutoutDimensions?.width}
       height={cutoutDimensions?.height}
-      alt={p.title}
+      alt={imageAlt}
       loading="lazy"
       decoding="async"
       onerror="this.onerror=null; this.src='/assets/willow-mark-64.webp'; this.removeAttribute('srcset'); this.style.opacity='0.15';"
@@ -70,7 +74,7 @@ const categoryLabel = productCategoryLabel(categories, displayCategory, locale);
     </div>
     <div class="product-actions">
       <a href={`/${locale}/products/${encodeURIComponent(p.slug || p.id)}`} class="btn btn-ghost btn-small">
-        <span>{detailsLabel[locale] || detailsLabel.en}</span>
+        <span>{detailsText}</span>
         {variant === "catalog" && <span class="product-action-arrow" aria-hidden="true">↗</span>}
       </a>
     </div>

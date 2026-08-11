@@ -11064,6 +11064,21 @@ body[data-page="products"] .product-catalog-section .product-headline h2 {
   font-size: clamp(2.35rem, 4.1vw, 4.1rem);
 }
 
+.product-catalog-seo-link {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  margin-top: 15px;
+  color: var(--blue);
+  font-size: .82rem;
+  font-weight: 850;
+}
+
+.product-catalog-seo-link:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
 body[data-page="products"] .product-atlas-topline {
   padding: 13px 18px;
 }

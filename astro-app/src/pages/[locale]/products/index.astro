@@ -52,9 +52,10 @@ const previewLabel = (en: string, tr: string) => ({
 });
 
 const labels = {
-  productsOnMarket: { en: "Products on Market", tr: "Piyasadaki Ürünler", de: "Produkte am Markt", fr: "Produits sur le marché", es: "Productos en el mercado", it: "Prodotti sul mercato", ar: "منتجات في السوق", ja: "市場実績製品" },
+  productsOnMarket: { en: "Delivered projects", tr: "Teslim edilen proje", de: "Ausgelieferte Projekte", fr: "Projets livrés", es: "Proyectos entregados", it: "Progetti consegnati", ar: "مشاريع مُسلّمة", ja: "納品プロジェクト" },
   catalogItems: { en: "catalog items", tr: "katalog ürünü", de: "Katalogartikel", fr: "articles du catalogue", es: "artículos del catálogo", it: "articoli a catalogo", ar: "عنصر في الكتالوج", ja: "ラインナップ" },
-  fieldReadyOptions: { en: "field-ready options", tr: "sahaya hazır seçenek", de: "praxisbereite Optionen", fr: "options prêtes pour le terrain", es: "opciones listas para el campo", it: "opzioni pronte per il campo", ar: "خيار جاهز للموقع", ja: "IP67定格デバイス" },
+  lorawanPortfolio: { en: "Explore the LoRaWAN sensor portfolio", tr: "LoRaWAN sensör portföyünü inceleyin", de: "LoRaWAN-Sensorportfolio entdecken", fr: "Explorer le portefeuille de capteurs LoRaWAN", es: "Explorar la cartera de sensores LoRaWAN", it: "Esplora il portafoglio di sensori LoRaWAN", ar: "استكشف مجموعة مستشعرات LoRaWAN", ja: "LoRaWANセンサー製品群を見る" },
+  productCategories: { en: "product categories", tr: "ürün kategorisi", de: "Produktkategorien", fr: "catégories de produits", es: "categorías de producto", it: "categorie di prodotto", ar: "فئات المنتجات", ja: "製品カテゴリー" },
   featuredHardware: { en: "Featured Hardware", tr: "Öne Çıkan Donanım", de: "Vorgestellte Hardware", fr: "Matériel vedette", es: "Hardware destacado", it: "Hardware in evidenza", ar: "الأجهزة المميزة", ja: "主要製品" },
   willowbeeCore: { en: "WillowBee at the core.", tr: "Çekirdekte WillowBee var.", de: "WillowBee im Kern.", fr: "WillowBee au cœur.", es: "WillowBee en el núcleo.", it: "WillowBee al centro.", ar: "WillowBee في القلب.", ja: "核となる無線マイコン「WillowBee」" },
   willowbeeDesc: {
@@ -70,55 +71,55 @@ const labels = {
 
   // Proof section
   rangeLabel: { en: "Range", tr: "Mesafe", de: "Reichweite", fr: "Portée", es: "Alcance", it: "Portata", ar: "المدى", ja: "通信距離" },
-  rangeVal: { en: "15 km", tr: "15 km", de: "15 km", fr: "15 km", es: "15 km", it: "15 km", ar: "١٥ كم", ja: "15 km" },
+  rangeVal: { en: "Per product", tr: "Ürüne göre", de: "Je Produkt", fr: "Selon le produit", es: "Según producto", it: "Per prodotto", ar: "حسب المنتج", ja: "製品別" },
   rangeDesc: {
-    en: "Long-range LoRaWAN communication for remote field deployments.",
-    tr: "Uzak saha kurulumları için uzun menzilli LoRaWAN iletişimi.",
-    de: "LoRaWAN-Kommunikation mit großer Reichweite für Remote-Feldeinsätze.",
-    fr: "Communication LoRaWAN longue portée pour les déploiements sur le terrain à distance.",
-    es: "Comunicación LoRaWAN de largo alcance para implementaciones de campo remotas.",
-    it: "Comunicazione LoRaWAN a lungo raggio per installazioni remote sul campo.",
-    ar: "اتصال LoRaWAN طويل المدى لعمليات النشر الميدانية البعيدة.",
-    ja: "ゲートウェイから離れた現場でも通信を確保する長距離LoRaWAN規格。"
+    en: "Range depends on the frequency plan, installation and site conditions; consult the current product specification.",
+    tr: "Menzil; frekans planı, kurulum ve saha koşullarına bağlıdır. Güncel ürün teknik özelliklerini inceleyin.",
+    de: "Die Reichweite hängt von Frequenzplan, Installation und Standortbedingungen ab; maßgeblich ist die aktuelle Produktspezifikation.",
+    fr: "La portée dépend du plan de fréquences, de l’installation et du site ; consultez la spécification produit à jour.",
+    es: "El alcance depende del plan de frecuencias, la instalación y el entorno; consulte la especificación vigente.",
+    it: "La portata dipende dal piano di frequenza, dall’installazione e dal sito; consultare la specifica aggiornata.",
+    ar: "يعتمد المدى على خطة التردد والتركيب وظروف الموقع؛ راجع مواصفات المنتج الحالية.",
+    ja: "通信距離は周波数プラン、設置方法、現場条件で異なります。最新の製品仕様をご確認ください。"
   },
 
   batteryLabel: { en: "Battery", tr: "Pil Ömrü", de: "Batterie", fr: "Batterie", es: "Batería", it: "Batteria", ar: "البطارية", ja: "バッテリー" },
-  batteryVal: { en: "10 yrs", tr: "10 Yıl", de: "10 Jahre", fr: "10 ans", es: "10 años", it: "10 anni", ar: "١٠ سنوات", ja: "10 年" },
+  batteryVal: { en: "By setup", tr: "Yapılandırmaya göre", de: "Nach Konfiguration", fr: "Selon configuration", es: "Según configuración", it: "In base alla configurazione", ar: "حسب الإعداد", ja: "構成別" },
   batteryDesc: {
-    en: "Low-power hardware design for unattended sensor operation.",
-    tr: "Müdahalesiz sensör çalışması için düşük güçlü donanım tasarımı.",
-    de: "Stromsparendes Hardware-Design für wartungsfreien Sensorbetrieb.",
-    fr: "Conception matérielle basse consommation pour un fonctionnement sans surveillance des capteurs.",
-    es: "Diseño de hardware de bajo consumo para el funcionamiento de sensores sin supervisión.",
-    it: "Design hardware a basso consumo per il funzionamento dei sensori senza manutenzione.",
-    ar: "تصميم أجهزة منخفضة الطاقة لتشغيل المستشعرات دون الحاجة إلى صيانة.",
-    ja: "電池交換の手間を省き、長期の単独動作を可能にする省電力設計。"
+    en: "Battery life varies with reporting interval, radio conditions, sensors and power configuration.",
+    tr: "Pil ömrü; veri gönderim aralığı, radyo koşulları, sensörler ve güç yapılandırmasına göre değişir.",
+    de: "Die Batterielaufzeit variiert je nach Sendeintervall, Funkbedingungen, Sensorik und Stromkonfiguration.",
+    fr: "L’autonomie varie selon l’intervalle d’envoi, les conditions radio, les capteurs et la configuration d’alimentation.",
+    es: "La autonomía varía según el intervalo de envío, las condiciones de radio, los sensores y la alimentación.",
+    it: "L’autonomia varia in base all’intervallo di invio, alle condizioni radio, ai sensori e all’alimentazione.",
+    ar: "يختلف عمر البطارية حسب فاصل الإرسال وظروف الاتصال والمستشعرات وإعداد الطاقة.",
+    ja: "電池寿命は送信間隔、無線環境、センサー、電源構成によって異なります。"
   },
 
   outdoorLabel: { en: "Outdoor", tr: "Dış Ortam", de: "Außenbereich", fr: "Extérieur", es: "Exterior", it: "Esterno", ar: "خارجي", ja: "耐環境性" },
-  outdoorVal: { en: "IP67", tr: "IP67", de: "IP67", fr: "IP67", es: "IP67", it: "IP67", ar: "IP67", ja: "IP67" },
+  outdoorVal: { en: "Selected models", tr: "Belirli modeller", de: "Ausgewählte Modelle", fr: "Certains modèles", es: "Modelos seleccionados", it: "Modelli selezionati", ar: "طرز محددة", ja: "対象モデル" },
   outdoorDesc: {
-    en: "Rugged enclosures for industrial, utility and outdoor sites.",
-    tr: "Endüstriyel, altyapı ve dış mekan sahaları için dayanıklı korumalı kutu tasarımları.",
-    de: "Robuste Gehäuse für Industrie-, Versorgungs- und Außenstandorte.",
-    fr: "Boîtiers robustes pour les sites industriels, de services publics et extérieurs.",
-    es: "Gabinetes robustos para sitios industriales, de servicios públicos y exteriores.",
-    it: "Custodie robuste per siti industriali, di servizi pubblici e all'aperto.",
-    ar: "علب متينة للمواقع الصناعية ومواقع المرافق والمواقع الخارجية.",
-    ja: "工場、プラント、屋外など過酷な環境での使用に耐えうる防塵防水筐体。"
+    en: "Enclosure and IP ratings are stated separately in each product’s current specification.",
+    tr: "Kutu yapısı ve IP derecesi, her ürünün güncel teknik özelliklerinde ayrı ayrı belirtilir.",
+    de: "Gehäuse- und IP-Schutzarten stehen separat in der aktuellen Spezifikation jedes Produkts.",
+    fr: "Le boîtier et l’indice IP sont précisés dans la spécification à jour de chaque produit.",
+    es: "La carcasa y el grado IP se indican en la especificación vigente de cada producto.",
+    it: "Custodia e grado IP sono indicati nella specifica aggiornata di ciascun prodotto.",
+    ar: "يُذكر نوع الغلاف وتصنيف IP بشكل منفصل في المواصفات الحالية لكل منتج.",
+    ja: "筐体とIP等級は、各製品の最新仕様に個別に記載されています。"
   },
 
   regionsLabel: { en: "Regions", tr: "Frekanslar", de: "Regionen", fr: "Régions", es: "Regiones", it: "Regioni", ar: "المناطق", ja: "グローバル対応" },
-  regionsVal: { en: "7", tr: "7 Plan", de: "7 Pläne", fr: "7 plans", es: "7 planes", it: "7 bande", ar: "٧ خطط", ja: "7 帯域" },
+  regionsVal: { en: "Product-specific", tr: "Ürün bazında", de: "Produktspezifisch", fr: "Selon le produit", es: "Específico del producto", it: "Specifico per prodotto", ar: "خاص بالمنتج", ja: "製品別" },
   regionsDesc: {
-    en: "US915, EU868, AS923, AU915, KR920, IN865 and RU864 support.",
-    tr: "US915, EU868, AS923, AU915, KR920, IN865 ve RU864 frekans desteği.",
-    de: "Unterstützung für US915, EU868, AS923, AU915, KR920, IN865 und RU864.",
-    fr: "Prise en charge de US915, EU868, AS923, AU915, KR920, IN865 et RU864.",
-    es: "Soporte para US915, EU868, AS923, AU915, KR920, IN865 y RU864.",
-    it: "Supporto per US915, EU868, AS923, AU915, KR920, IN865 e RU864.",
-    ar: "دعم خطط الترددات US915, EU868, AS923, AU915, KR920, IN865, RU864.",
-    ja: "US915、EU868、AS923、AU915など、各国の周波数プランをサポート。"
+    en: "Available frequency plans are listed in the current specification or datasheet for each product.",
+    tr: "Kullanılabilir frekans planları her ürünün güncel teknik özelliğinde veya veri sayfasında listelenir.",
+    de: "Verfügbare Frequenzpläne sind in der aktuellen Spezifikation oder im Datenblatt des Produkts aufgeführt.",
+    fr: "Les plans de fréquences disponibles figurent dans la spécification ou la fiche technique à jour du produit.",
+    es: "Los planes de frecuencia disponibles figuran en la especificación o ficha técnica vigente del producto.",
+    it: "I piani di frequenza disponibili sono riportati nella specifica o scheda tecnica aggiornata del prodotto.",
+    ar: "تُدرج خطط التردد المتاحة في المواصفات أو ورقة البيانات الحالية لكل منتج.",
+    ja: "対応周波数プランは、各製品の最新仕様またはデータシートに記載されています。"
   },
 
   browseProducts: { en: "Explore Products", tr: "Ürünleri İnceleyin", de: "Produkte entdecken", fr: "Explorer les produits", es: "Explorar productos", it: "Esplora i prodotti", ar: "استكشف المنتجات", ja: "製品を見る" },
@@ -277,8 +278,8 @@ const selectionPrimaryButton = buttonFor("selectionPrimaryButton", getLabel("tal
             </span>
             <span class="hero-meta-divider" aria-hidden="true"></span>
             <span class="hero-meta-item" role="listitem">
-              <strong>IP67</strong>
-              <span>{getLabel("fieldReadyOptions")}</span>
+              <strong>{productCategories.length}</strong>
+              <span>{getLabel("productCategories")}</span>
             </span>
           </div>
         </div>
@@ -341,6 +342,7 @@ const selectionPrimaryButton = buttonFor("selectionPrimaryButton", getLabel("tal
             <p class="eyebrow">{pt("catalogEyebrow", "catalogEyebrow")}</p>
             <h2>{pt("catalogTitle", "catalogTitlePremium")}</h2>
             <p class="section-lead">{pt("catalogLead", "catalogLeadPremium")}</p>
+            <a class="product-catalog-seo-link" href={`/${locale}/lorawan-sensors`}>{getLabel("lorawanPortfolio")} <span aria-hidden="true">↗</span></a>
           </div>
         </div>
 

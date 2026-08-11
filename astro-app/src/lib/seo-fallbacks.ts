@@ -132,3 +132,9 @@ const PRODUCT_TITLE_DESCRIPTORS: Record<string, Partial<Record<Locale, string>>>
   willowpre: { en: "LoRaWAN Pressure Sensor", tr: "LoRaWAN Basınç Sensörü", de: "LoRaWAN-Drucksensor", fr: "Capteur de pression LoRaWAN", es: "Sensor de presión LoRaWAN", it: "Sensore di pressione LoRaWAN", ar: "مستشعر ضغط LoRaWAN", ja: "LoRaWAN圧力センサー" },
   willowane: { en: "LoRaWAN Anemometer", tr: "LoRaWAN Anemometre", de: "LoRaWAN-Anemometer", fr: "Anémomètre LoRaWAN", es: "Anemómetro LoRaWAN", it: "Anemometro LoRaWAN", ar: "مقياس رياح LoRaWAN", ja: "LoRaWAN風速計" },
 };
+
+/** Search-intent descriptor for product headings, image alternatives and links. */
+export function productSearchDescriptor(productId: string, locale: Locale): string {
+  const descriptors = PRODUCT_TITLE_DESCRIPTORS[String(productId || "").toLowerCase()];
+  return descriptors?.[locale] || descriptors?.en || "";
+}

@@ -10,7 +10,7 @@ import { getProductExtras } from "@/lib/product-extras";
 import { glossaryLinksForProduct, glossaryLinkLabels } from "@/lib/glossary-links";
 import { applicationIconForText, buildSpecificationGroups, canonicalizeProduct, iconKeyForText, LOCALE_NATIVE_NAMES, normalizeAssetPath, normalizeProductIconItems, normalizeProductSlug, normalizeStringList, productDocumentTypeLabel, productSlugCandidates, PRODUCT_ICON_SVG } from "@/lib/product-model";
 import { productCategoriesFromContent, productCategoryLabel } from "@/lib/product-categories";
-import { productSeoFallback } from "@/lib/seo-fallbacks";
+import { productSearchDescriptor, productSeoFallback } from "@/lib/seo-fallbacks";
 import { productCutoutDimensions, productCutoutSrcSet } from "@/lib/image-metadata";
 
 export const prerender = false;
@@ -38,6 +38,10 @@ const productSeoText = productSeoFallback(locale, {
   seoTitle: seo.seoTitle,
   metaDescription: seo.metaDescription,
 });
+const searchDescriptor = productSearchDescriptor(rawProduct.id, locale);
+const productHeading = searchDescriptor && !String(product.title || "").toLocaleLowerCase().includes(searchDescriptor.toLocaleLowerCase())
+  ? `${product.title} — ${searchDescriptor}`
+  : product.title;
 const titleLower = (product.title || "").toLowerCase();
 const pickText = (value: any) => localizedValue(value, locale);
 const heroImages = Array.from(
@@ -651,13 +655,20 @@ const crumbProducts: Record<Locale, string> = { en: "Products", tr: "Ürünler",
 const productPrice = (product as any).price;
 const productNode: Record<string, any> = {
   "@type": "Product",
-  "name": product.title,
+  "name": productHeading,
   "sku": product.slug || product.id,
   "image": product.image ? [`${SITE_ORIGIN}/${product.image}`.replace(/([^:])\/\//g, "$1/")] : [],
   "description": product.shortDescription || "",
   "brand": { "@type": "Brand", "name": "WillowSoft" },
   "manufacturer": { "@id": `${SITE_ORIGIN}/#org` },
   "category": product.category || "Product",
+  "additionalProperty": specEntries
+    .filter(([, value]) => ["string", "number", "boolean"].includes(typeof value) && String(value).trim())
+    .map(([key, value]) => ({
+      "@type": "PropertyValue",
+      "name": wsSpecLabel(key, locale),
+      "value": String(value),
+    })),
 };
 if (productPrice) {
   productNode.offers = {
@@ -851,7 +862,7 @@ const relatedCopy = relatedProductsCopy[locale] || relatedProductsCopy.en;
       <div class="ws-breadcrumbs">
         <a href={`/${locale}/products`}>{getT("productsBreadcrumb")}</a>
         <span class="separator">/</span>
-        <a href={`/${locale}/products?category=${rawProduct.category || product.category}`}>{categoryLabel}</a>
+        <a href={`/${locale}/products/category/${rawProduct.category || product.category}`}>{categoryLabel}</a>
         <span class="separator">/</span>
         <span class="current">{product.title}</span>
       </div>
@@ -869,7 +880,7 @@ const relatedCopy = relatedProductsCopy[locale] || relatedProductsCopy.en;
               sizes="(max-width: 760px) 88vw, 46vw"
               width={heroImageDimensions?.width}
               height={heroImageDimensions?.height}
-              alt={product.title}
+              alt={productHeading}
               class="ws-hero-img"
               loading="eager"
               fetchpriority="high"
@@ -912,7 +923,7 @@ const relatedCopy = relatedProductsCopy[locale] || relatedProductsCopy.en;
               </span>
             )}
           </div>
-          <h1 class="ws-h1">{product.title}</h1>
+          <h1 class="ws-h1">{productHeading}</h1>
           <p class="ws-lead">{displayShortAnswer}</p>
           {relatedGlossaryTerms.length > 0 && (
             <div class="ws-glossary-links" aria-label={glossaryHeading}>

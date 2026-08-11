@@ -1,0 +1,68 @@
+---
+import PageLayout from "@/layouts/PageLayout.astro";
+import LorawanCollection from "@/components/LorawanCollection.astro";
+import { loadContent } from "@/lib/content";
+import { resolveLocale, localizedValue } from "@/lib/cms";
+import { productCategoriesFromContent } from "@/lib/product-categories";
+import { LORAWAN_LANDING_COPY } from "@/lib/lorawan-landing";
+import { appendSchemaNodes } from "@/lib/ai-search";
+import { buildAlternates, DEFAULT_OG_IMAGE, ORGANIZATION_SCHEMA, WEBSITE_SCHEMA, SITE_ORIGIN, fitSeoDescription, fitSeoTitle, webPageNode } from "@/lib/seo";
+
+export const prerender = false;
+
+const locale = resolveLocale(Astro.params.locale, Astro.url.pathname);
+const content = await loadContent();
+const products = (content.products || []).filter((product: any) => product.visible !== false);
+const categories = productCategoriesFromContent(content).filter((category) => category.visible);
+const copy = LORAWAN_LANDING_COPY[locale] || LORAWAN_LANDING_COPY.en;
+const canonical = `${SITE_ORIGIN}/${locale}/lorawan-sensors`;
+const title = fitSeoTitle(`${copy.title} | WillowSoft`);
+const description = fitSeoDescription(copy.description);
+const itemListId = `${canonical}#products`;
+
+const schema = appendSchemaNodes({
+  "@context": "https://schema.org",
+  "@graph": [
+    ORGANIZATION_SCHEMA,
+    WEBSITE_SCHEMA,
+    {
+      ...webPageNode("CollectionPage", canonical, title, description, locale),
+      mainEntity: { "@id": itemListId },
+    },
+    {
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "WillowSoft", item: `${SITE_ORIGIN}/${locale}` },
+        { "@type": "ListItem", position: 2, name: copy.title, item: canonical },
+      ],
+    },
+    {
+      "@type": "ItemList",
+      "@id": itemListId,
+      name: copy.title,
+      numberOfItems: products.length,
+      itemListElement: products.map((product: any, index: number) => ({
+        "@type": "ListItem",
+        position: index + 1,
+        name: localizedValue(product.title, locale),
+        url: `${SITE_ORIGIN}/${locale}/products/${product.slug || product.id}`,
+      })),
+    },
+  ],
+}, []);
+---
+
+<PageLayout
+  title={title}
+  description={description}
+  canonical={canonical}
+  ogTitle={title}
+  ogDescription={description}
+  ogImage={DEFAULT_OG_IMAGE}
+  alternates={buildAlternates("/lorawan-sensors")}
+  schema={schema}
+  locale={locale}
+  dataPage="products"
+>
+  <LorawanCollection locale={locale} products={products} categories={categories} />
+</PageLayout>

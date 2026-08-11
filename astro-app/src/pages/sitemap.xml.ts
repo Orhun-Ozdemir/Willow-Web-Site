@@ -2,12 +2,14 @@ import type { APIRoute } from "astro";
 import { loadContent } from "@/lib/content";
 import { itemText, locales, type Locale } from "@/lib/cms";
 import { SITE_ORIGIN } from "@/lib/seo";
+import { productCategoriesFromContent } from "@/lib/product-categories";
 
 const STATIC_PAGES: { key: string; subPath: string }[] = [
   { key: "home", subPath: "" },
   { key: "solutions", subPath: "/solutions" },
   { key: "services", subPath: "/services" },
   { key: "products", subPath: "/products" },
+  { key: "lorawanSensors", subPath: "/lorawan-sensors" },
   { key: "company", subPath: "/company" },
   { key: "news", subPath: "/news" },
   { key: "glossary", subPath: "/glossary" },
@@ -61,6 +63,14 @@ export const GET: APIRoute = async () => {
       changefreq: "monthly",
       priority: "0.7",
       lastmod: product.updatedAt || lastmod,
+    }));
+  }
+
+  for (const category of productCategoriesFromContent(content).filter((item) => item.visible)) {
+    pushLocalizedSet((l) => `${SITE_ORIGIN}/${l}/products/category/${category.key}`, () => ({
+      changefreq: "monthly",
+      priority: "0.75",
+      lastmod,
     }));
   }
 

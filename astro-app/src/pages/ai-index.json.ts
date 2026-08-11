@@ -3,10 +3,13 @@ import { loadContent } from "@/lib/content";
 import { itemText, localizedValue, locales, type Locale } from "@/lib/cms";
 import { SITE_ORIGIN } from "@/lib/seo";
 import { stripHtml } from "@/lib/ai-search";
+import { productCategoriesFromContent } from "@/lib/product-categories";
+import { categorySearchName, categorySeoDescription, LORAWAN_LANDING_COPY } from "@/lib/lorawan-landing";
 
 const staticPages = [
   { key: "home", path: "", type: "HomePage" },
   { key: "products", path: "/products", type: "CollectionPage" },
+  { key: "lorawanSensors", path: "/lorawan-sensors", type: "CollectionPage" },
   { key: "services", path: "/services", type: "ServicePage" },
   { key: "solutions", path: "/solutions", type: "CollectionPage" },
   { key: "company", path: "/company", type: "AboutPage" },
@@ -25,12 +28,27 @@ export const GET: APIRoute = async () => {
   const pages = locales.flatMap((locale) =>
     staticPages.map((page) => {
       const seo = content.pageSeo?.[page.key]?.[locale] || content.pageSeo?.[page.key]?.en || {};
+      const lorawanCopy = LORAWAN_LANDING_COPY[locale] || LORAWAN_LANDING_COPY.en;
       return {
         type: page.type,
         locale,
-        title: seo.seoTitle || page.key,
-        description: seo.metaDescription || "",
+        title: seo.seoTitle || (page.key === "lorawanSensors" ? lorawanCopy.title : page.key),
+        description: seo.metaDescription || (page.key === "lorawanSensors" ? lorawanCopy.description : ""),
         url: urlFor(locale, page.path),
+      };
+    }),
+  );
+
+  const productCategories = productCategoriesFromContent(content).filter((category) => category.visible);
+  const categoryPages = locales.flatMap((locale) =>
+    productCategories.map((category) => {
+      const productCount = (content.products || []).filter((product: any) => product.visible !== false && product.category === category.key).length;
+      return {
+        type: "CollectionPage",
+        locale,
+        title: categorySearchName(category.key, locale),
+        description: categorySeoDescription(category.key, locale, productCount),
+        url: urlFor(locale, `/products/category/${category.key}`),
       };
     }),
   );
@@ -76,7 +94,7 @@ export const GET: APIRoute = async () => {
           "mobile apps",
           "VR and simulation",
         ],
-        pages,
+        pages: [...pages, ...categoryPages],
         products,
         news,
       },

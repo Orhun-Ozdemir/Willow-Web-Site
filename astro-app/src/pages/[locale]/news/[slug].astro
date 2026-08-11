@@ -53,21 +53,21 @@ const absoluteImage = (value: unknown) => {
   if (resolved.startsWith("http")) return resolved;
   return `${SITE_ORIGIN}/${resolved.replace(/^\/+/, "")}`;
 };
-const detailImageList = (Array.isArray(article.images) ? article.images : [])
-  .filter((value) => typeof value === "string" && value.trim())
-  .filter((value, index, list) => list.indexOf(value) === index);
+const detailImageList: string[] = (Array.isArray(article.images) ? article.images : [])
+  .filter((value: unknown): value is string => typeof value === "string" && Boolean(value.trim()))
+  .filter((value: string, index: number, list: string[]) => list.indexOf(value) === index);
 const articleImage = assetPath(detailImageList[0] || article.image);
 const articleGalleryImages = detailImageList
   .slice(1)
-  .map((value) => assetPath(value))
-  .filter((value, index, list) => Boolean(value) && value !== articleImage && list.indexOf(value) === index);
-const articleImageList = [
+  .map((value: string) => assetPath(value))
+  .filter((value: string, index: number, list: string[]) => Boolean(value) && value !== articleImage && list.indexOf(value) === index);
+const articleImageList: string[] = [
   ...detailImageList,
   article.image,
 ]
-  .filter((value) => typeof value === "string" && value.trim())
-  .filter((value, index, list) => list.indexOf(value) === index);
-const schemaImages = articleImageList.map((value) => absoluteImage(value)).filter(Boolean);
+  .filter((value: unknown): value is string => typeof value === "string" && Boolean(value.trim()))
+  .filter((value: string, index: number, list: string[]) => list.indexOf(value) === index);
+const schemaImages = articleImageList.map((value: string) => absoluteImage(value)).filter(Boolean);
 const ogImage = schemaImages[0] || DEFAULT_OG_IMAGE;
 const heroImage = assetPath(article.image) || articleImage || "/assets/hero-industrial-iot.jpg";
 const articleImageMeta = raw.imageMeta || article.imageMeta;
@@ -283,7 +283,7 @@ const getLabel = (key: keyof typeof labels) => labels[key][locale] || labels[key
               <h2>{getLabel("galleryTitle")}</h2>
             </div>
             <div class="news-gallery-grid reveal delay-1">
-              {articleGalleryImages.map((src, idx) => (
+              {articleGalleryImages.map((src: string, idx: number) => (
                 <figure class={idx === 0 ? "is-large" : ""}>
                   <img src={src} alt={`${article.title} ${idx + 2}`} loading="lazy" decoding="async" />
                 </figure>
