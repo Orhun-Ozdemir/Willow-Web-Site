@@ -39,7 +39,7 @@ const productSeoText = productSeoFallback(locale, {
   metaDescription: seo.metaDescription,
 });
 const searchDescriptor = productSearchDescriptor(rawProduct.id, locale);
-const productHeading = searchDescriptor && !String(product.title || "").toLocaleLowerCase().includes(searchDescriptor.toLocaleLowerCase())
+const productHeading = searchDescriptor && !String(product.title || "").toLocaleLowerCase().includes("lorawan")
   ? `${product.title} — ${searchDescriptor}`
   : product.title;
 const titleLower = (product.title || "").toLowerCase();
@@ -2179,15 +2179,20 @@ const relatedCopy = relatedProductsCopy[locale] || relatedProductsCopy.en;
       padding: 22px 18px;
     }
     .ws-app-strip {
-      display: flex;
-      overflow-x: auto;
-      padding-bottom: 6px;
-      scroll-snap-type: x proximity;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      overflow: visible;
+      padding-bottom: 0;
     }
     .ws-app-strip-item {
-      min-width: 132px;
-      scroll-snap-align: start;
+      min-width: 0;
+      min-height: 88px;
+      padding: 10px 8px;
+      border-top: 1px solid rgba(var(--accent-rgb), 0.10);
     }
+    .ws-app-strip-item:nth-child(-n+2) { border-top: 0; }
+    .ws-app-strip-item + .ws-app-strip-item { border-left: 0; }
+    .ws-app-strip-item:nth-child(even) { border-left: 1px solid rgba(var(--accent-rgb), 0.10); }
   }
 
   /* FAQ Accordion Section */

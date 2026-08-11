@@ -392,19 +392,21 @@ const settingsText = settingsCopy[locale] || settingsCopy.en;
   :global(body:has(.willow-consent:not(.is-hidden)) .whatsapp-float) { bottom: 7.2rem; }
   :global(body:has(.willow-consent.is-customizing:not(.is-hidden)) .whatsapp-float) { bottom: 12rem; }
   @media (max-width: 720px) {
-    .willow-consent { right: 12px; bottom: 12px; left: 12px; width: auto; grid-template-columns: 34px minmax(0, 1fr); gap: 11px; padding: 16px; border-radius: 18px; transform: none; }
+    .willow-consent { right: 8px; bottom: 8px; left: 8px; width: auto; grid-template-columns: 28px minmax(0, 1fr); gap: 8px 10px; padding: 11px 12px; border-radius: 14px; transform: none; }
     .willow-consent.is-hidden { transform: translateY(14px); }
     .willow-consent.is-customizing { width: auto; }
-    .willow-consent-mark { width: 34px; height: 34px; }
-    .willow-cookie-icon { transform: scale(.86); }
+    .willow-consent-mark { width: 28px; height: 28px; }
+    .willow-cookie-icon { transform: scale(.72); }
     .willow-consent-actions { grid-column: 1 / -1; }
-    .willow-consent-copy p { font-size: 12px; }
-    .willow-consent-actions button { min-width: 0; min-height: 42px; flex: 1; }
+    .willow-consent-copy p { font-size: 10.75px; line-height: 1.36; }
+    .willow-consent-copy a { margin-top: 1px; font-size: 8.5px; }
+    .willow-consent-actions { gap: 8px; }
+    .willow-consent-actions button { min-width: 0; min-height: 38px; padding: 0 12px; border-radius: 10px; flex: 1; font-size: 11px; }
     .willow-consent-settings { grid-template-columns: 1fr; gap: 2px; }
     .willow-consent-setting-row + .willow-consent-setting-row { border-top: 1px solid rgba(255, 255, 255, 0.09); }
     .willow-consent-save { width: 100%; margin-top: 7px; }
     @keyframes willow-consent-enter { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
-    :global(body:has(.willow-consent:not(.is-hidden)) .whatsapp-float) { bottom: 12rem; }
-    :global(body:has(.willow-consent.is-customizing:not(.is-hidden)) .whatsapp-float) { bottom: 19rem; }
+    :global(body:has(.willow-consent:not(.is-hidden)) .whatsapp-float) { bottom: 9.5rem; }
+    :global(body:has(.willow-consent.is-customizing:not(.is-hidden)) .whatsapp-float) { bottom: 22rem; }
   }
 </style>

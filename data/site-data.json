@@ -397,7 +397,7 @@
       },
       {
         "label": "Web & Admin Panels",
-        "note": "CMS & Live telemetry",
+        "note": "Dashboards & live telemetry",
         "icon": "server"
       },
       {
@@ -5268,7 +5268,7 @@
         "ja": "ソリューション"
       },
       "heroTitle": {
-        "en": "Connected solutions for assets, sites and operations that cannot fail.",
+        "en": "Connected solutions for assets, sites and operationally critical environments.",
         "tr": "Gerçek dünya operasyonları için Endüstriyel IoT çözümleri.",
         "de": "Industrielle IoT-Lösungen für den realen Betrieb.",
         "fr": "Solutions IoT industrielles pour des opérations concrètes.",
@@ -6196,14 +6196,14 @@
         "ja": "取引先"
       },
       "workWithTitle": {
-        "en": "Global teams trust WillowSoft for one reason: we deliver.",
-        "tr": "Küresel ekipler WillowSoft'a tek bir nedenle güvenir: verdiğimiz sözü tutarız.",
-        "de": "Globale Teams vertrauen WillowSoft aus einem Grund: Wir halten, was wir versprechen.",
-        "fr": "Les équipes mondiales font confiance à WillowSoft pour une raison : nous tenons nos engagements.",
-        "es": "Los equipos globales confían en WillowSoft por una razón: cumplimos lo prometido.",
-        "it": "I team globali si fidano di WillowSoft per un motivo: manteniamo le promesse.",
-        "ar": "تثق الفرق العالمية بـ WillowSoft لسبب واحد: نحن نُنجز.",
-        "ja": "世界中のチームが WillowSoft を信頼する理由はただ一つ。私たちは約束を確実に果たすからです。"
+        "en": "Engineering partnerships across industries and markets.",
+        "tr": "Sektörler ve pazarlar arasında mühendislik iş birlikleri.",
+        "de": "Engineering-Partnerschaften über Branchen und Märkte hinweg.",
+        "fr": "Des partenariats d’ingénierie dans différents secteurs et marchés.",
+        "es": "Colaboraciones de ingeniería en distintos sectores y mercados.",
+        "it": "Collaborazioni ingegneristiche in diversi settori e mercati.",
+        "ar": "شراكات هندسية عبر قطاعات وأسواق متعددة.",
+        "ja": "業界や市場を横断するエンジニアリングパートナーシップ。"
       },
       "ctaEyebrow": {
         "en": "Work with us",
@@ -6390,7 +6390,7 @@
         "ja": "何を作ろうとしているのかをお聞かせください。"
       },
       "formLead": {
-        "en": "This form is intentionally more detailed than Contact. It helps WillowSoft understand whether you need one layer or an end-to-end connected product.",
+        "en": "Share the project type, scope and timeline. Our team will clarify the requirements and prepare an appropriate engineering roadmap.",
         "tr": "Proje türünüzü, kapsamınızı ve zaman planınızı paylaşın. Ekibimiz keşif görüşmesiyle gereksinimleri netleştirip size özel bir yol haritası sunar.",
         "de": "Teilen Sie uns Projekttyp, Umfang und Zeitplan mit. Unser Team klärt die Anforderungen in einem Discovery-Call und erstellt einen passenden technischen Fahrplan.",
         "fr": "Partagez le type de projet, le périmètre et le calendrier. Notre équipe clarifie les besoins lors d’un appel de cadrage et propose une feuille de route adaptée.",
@@ -6402,34 +6402,34 @@
     },
     "glossary": {
       "heroEyebrow": {
-        "en": "Glossary",
-        "tr": "Sözlük",
-        "de": "Glossar",
-        "fr": "Glossaire",
-        "es": "Glosario",
-        "it": "Glossario",
-        "ar": "قاموس المصطلحات",
-        "ja": "用語集"
+        "en": "Technical Reference",
+        "tr": "Teknik Referans",
+        "de": "Technische Referenz",
+        "fr": "Référence technique",
+        "es": "Referencia técnica",
+        "it": "Riferimento tecnico",
+        "ar": "مرجع تقني",
+        "ja": "技術リファレンス"
       },
       "heroTitle": {
-        "en": "Plain-English definitions <span class=\"serif-accent\">for the field</span>.",
-        "tr": "Saha için <span class=\"serif-accent\">sade dilde</span> tanımlar.",
-        "de": "Einfache Definitionen <span class=\"serif-accent\">für die Praxis</span>.",
-        "fr": "Définitions simples <span class=\"serif-accent\">pour le terrain</span>.",
-        "es": "Definiciones sencillas <span class=\"serif-accent\">para el terreno</span>.",
-        "it": "Definizioni semplici <span class=\"serif-accent\">per il settore</span>.",
-        "ar": "تعاريف مبسطة <span class=\"serif-accent\">للمجال العملي</span>.",
-        "ja": "現場のための <span class=\"serif-accent\">平易な定義</span>。"
+        "en": "Industrial IoT <span class=\"serif-accent\">technical glossary</span>.",
+        "tr": "Endüstriyel IoT <span class=\"serif-accent\">teknik sözlüğü</span>.",
+        "de": "Technisches Glossar für <span class=\"serif-accent\">Industrial IoT</span>.",
+        "fr": "Glossaire technique de <span class=\"serif-accent\">l’IoT industriel</span>.",
+        "es": "Glosario técnico de <span class=\"serif-accent\">IoT industrial</span>.",
+        "it": "Glossario tecnico per <span class=\"serif-accent\">l’IoT industriale</span>.",
+        "ar": "مسرد تقني <span class=\"serif-accent\">لإنترنت الأشياء الصناعي</span>.",
+        "ja": "産業用IoTの<span class=\"serif-accent\">技術用語集</span>。"
       },
       "heroLead": {
-        "en": "Reference terms WillowSoft uses across embedded hardware, firmware, LoRaWAN, Modbus and industrial IoT projects — written for engineers and decision-makers without the marketing layer.",
-        "tr": "WillowSoft'un gömülü donanım, firmware, LoRaWAN, Modbus ve endüstriyel IoT projelerinde kullandığı referans terimler; pazarlama süslemelerinden uzak, mühendisler ve karar vericiler için yazıldı.",
-        "de": "Referenzbegriffe, die WillowSoft in den Bereichen Embedded Hardware, Firmware, LoRaWAN, Modbus und industrielles IoT verwendet – geschrieben für Ingenieure und Entscheidungsträger, ohne Marketingfloskeln.",
-        "fr": "Termes de référence utilisés par WillowSoft dans ses projets de matériel embarqué, firmware, LoRaWAN, Modbus et IoT industriel — écrits pour les ingénieurs et décideurs, sans le jargon marketing.",
-        "es": "Términos de referencia que WillowSoft utiliza en proyectos de hardware embebido, firmware, LoRaWAN, Modbus e IoT industrial, redactados para ingenieros y tomadores de decisiones sin capas de marketing.",
-        "it": "Termini di riferimento utilizzati da WillowSoft nei progetti di hardware embedded, firmware, LoRaWAN, Modbus e IoT industriale, scritti per ingegneri e decisori senza fronzoli di marketing.",
-        "ar": "مصطلحات مرجعية تستخدمها WillowSoft في مشاريع العtاد المدمج، والبرامج الثابتة، وLoRaWAN، ve Modbus، veإنترنت الأشياء الصناعي - مكتوبة للمهندسين وصناع القرار دون زخرفة تسويقية.",
-        "ja": "WillowSoftが組み込みハードウェア、ファームウェア、LoRaWAN、Modbus、産業用IoTプロジェクトで使用する参照用語。マーケティング的な誇張を排し、エンジニアや意思決定者のために執筆されました。"
+        "en": "Definitions of the protocols, hardware components and software concepts used across WillowSoft embedded systems, LoRaWAN, Modbus and industrial IoT solutions.",
+        "tr": "WillowSoft gömülü sistem, LoRaWAN, Modbus ve endüstriyel IoT çözümlerinde kullanılan protokollerin, donanım bileşenlerinin ve yazılım kavramlarının tanımları.",
+        "de": "Definitionen der Protokolle, Hardwarekomponenten und Softwarekonzepte in den Embedded-System-, LoRaWAN-, Modbus- und Industrial-IoT-Lösungen von WillowSoft.",
+        "fr": "Définitions des protocoles, composants matériels et concepts logiciels employés dans les solutions de systèmes embarqués, LoRaWAN, Modbus et IoT industriel de WillowSoft.",
+        "es": "Definiciones de los protocolos, componentes de hardware y conceptos de software utilizados en las soluciones de sistemas embebidos, LoRaWAN, Modbus e IoT industrial de WillowSoft.",
+        "it": "Definizioni di protocolli, componenti hardware e concetti software utilizzati nelle soluzioni WillowSoft per sistemi embedded, LoRaWAN, Modbus e IoT industriale.",
+        "ar": "تعريفات البروتوكولات ومكونات العتاد ومفاهيم البرمجيات المستخدمة في حلول WillowSoft للأنظمة المدمجة وLoRaWAN وModbus وإنترنت الأشياء الصناعي.",
+        "ja": "WillowSoftの組み込みシステム、LoRaWAN、Modbus、産業用IoTソリューションで使用するプロトコル、ハードウェア構成要素、ソフトウェア概念を解説します。"
       },
       "connectivityEyebrow": {
         "en": "Connectivity",
@@ -6502,14 +6502,14 @@
         "ja": "用語が見つかりませんか？"
       },
       "ctaTitle": {
-        "en": "We'd rather explain it than assume you know it.",
-        "tr": "Bildiğinizi varsaymak yerine açıklamayı tercih ederiz.",
-        "de": "Wir erklären es lieber, als es vorauszusetzen.",
-        "fr": "Nous préférons l'expliquer plutôt que de présumer que vous le connaissez.",
-        "es": "Preferimos explicarlo a asumir que ya lo sabe.",
-        "it": "Preferiamo spiegarlo piuttosto che dare per scontato che lo conosca.",
-        "ar": "نفضل شرحه بدلاً من افتراض معرفتك به.",
-        "ja": "ご存じであると仮定するよりも、説明することを選びます。"
+        "en": "Technical concepts, clarified for your project.",
+        "tr": "Projenize özel teknik kavramları birlikte netleştirelim.",
+        "de": "Technische Konzepte für Ihr Projekt klar erläutert.",
+        "fr": "Des concepts techniques clarifiés pour votre projet.",
+        "es": "Conceptos técnicos aclarados para su proyecto.",
+        "it": "Concetti tecnici chiariti per il tuo progetto.",
+        "ar": "توضيح المفاهيم التقنية بما يناسب مشروعك.",
+        "ja": "プロジェクトに必要な技術概念を明確にします。"
       },
       "ctaLead": {
         "en": "If your project introduces specific protocols, certifications or industrial concepts not covered here, WillowSoft engineering is happy to walk through them in the discovery call.",
@@ -6518,8 +6518,8 @@
         "fr": "Si votre projet implique des protocoles spécifiques, des certifications ou des concepts industriels non couverts ici, l'ingénierie WillowSoft se fera un plaisir de les passer en revue lors de l'appel de découverte.",
         "es": "Si su proyecto introduce protocolos, certificaciones o conceptos industriales específicos que no se tratan aquí, el equipo de ingeniería de WillowSoft estará encantado de explicárselos en la llamada de descubrimiento.",
         "it": "Se il tuo progetto introduce protocolli, certificazioni o concetti industriali specifici non trattati qui, il team di ingegneria WillowSoft sarà felice di illustrarteli nella chiamata conoscitiva.",
-        "ar": "إذا كان مشروعك يتضمن بروتوكولات أو شهادات أو مفاهيم صناعية معينة لم تغط هنا، فإن فريق هندسة WillowSoft يسعده مناقştها وتوضيحها خلال مكالمة الاستكشاف الأولى.",
-        "ja": "プロジェクトでここに記載されていない特定のプロトコル、認証、または産業上の概念が導入される場合, WillowSoftのエンジニアリングチームがディスカバリーコールで喜んで説明いたします。"
+        "ar": "إذا كان مشروعك يتضمن بروتوكولات أو شهادات أو مفاهيم صناعية غير مذكورة هنا، يمكن لفريق WillowSoft الهندسي مراجعتها معك خلال الاجتماع الاستكشافي.",
+        "ja": "プロジェクトでここに記載されていないプロトコル、認証、産業上の概念が必要な場合は、初回打ち合わせでWillowSoftのエンジニアリングチームが確認します。"
       }
     }
   },
@@ -9627,7 +9627,7 @@
         "slug": "/en/glossary",
         "canonical": "https://willowsoft.co/en/glossary",
         "ogTitle": "IoT & LoRaWAN Glossary | WillowSoft",
-        "ogDescription": "Plain-English definitions of LoRaWAN, Modbus, Industrial IoT, embedded systems and other engineering terms used by WillowSoft.",
+        "ogDescription": "Technical definitions of LoRaWAN, Modbus, Industrial IoT, embedded systems and related engineering concepts used by WillowSoft.",
         "ogImage": "https://www.willowsoft.co/assets/og/willowsoft-industrial-iot.jpg",
         "twitterCard": "summary_large_image",
         "noindex": false,

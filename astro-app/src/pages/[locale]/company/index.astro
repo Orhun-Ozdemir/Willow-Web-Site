@@ -180,14 +180,14 @@ const ui = {
   },
   expertiseEyebrow: { en: "Core expertise", tr: "Uzmanlık Alanlarımız", de: "Kernkompetenzen", fr: "Expertise clé", es: "Experiencia principal", it: "Competenze chiave", ar: "الخبرات الأساسية", ja: "コア領域" },
   expertiseTitleHtml: {
-    en: 'What we are actually <span class="serif-accent">good</span> at.',
-    tr: 'Asıl <span class="serif-accent">iyi</span> olduğumuz işler.',
-    de: 'Worin wir wirklich <span class="serif-accent">stark</span> sind.',
-    fr: 'Ce que nous faisons vraiment <span class="serif-accent">bien</span>.',
-    es: 'En lo que realmente somos <span class="serif-accent">buenos</span>.',
-    it: 'Ciò in cui siamo davvero <span class="serif-accent">bravi</span>.',
-    ar: 'ما نتقنه <span class="serif-accent">فعلاً</span>.',
-    ja: '私たちが本当に<span class="serif-accent">得意</span>とする領域。',
+    en: 'Core <span class="serif-accent">engineering</span> capabilities.',
+    tr: 'Temel <span class="serif-accent">mühendislik</span> yetkinlikleri.',
+    de: 'Zentrale <span class="serif-accent">Engineering</span>-Kompetenzen.',
+    fr: 'Compétences clés en <span class="serif-accent">ingénierie</span>.',
+    es: 'Capacidades principales de <span class="serif-accent">ingeniería</span>.',
+    it: 'Competenze chiave di <span class="serif-accent">ingegneria</span>.',
+    ar: 'قدرات <span class="serif-accent">هندسية</span> أساسية.',
+    ja: '中核となる<span class="serif-accent">エンジニアリング</span>領域。',
   },
   expertiseLead: {
     en: "Six deep competencies covering the entire IoT product lifecycle — from silicon to cloud.",
@@ -200,14 +200,14 @@ const ui = {
     ja: "シリコンからクラウドまで、IoT製品ライフサイクル全体をカバーする6つの専門領域。",
   },
   workWithLead: {
-    en: "From Fortune 500 industrials to fast-moving consumer brands — demanding environments where reliability is not optional.",
-    tr: "Fortune 500 endüstriyel devlerinden hızlı tüketim markalarına kadar — güvenilirliğin isteğe bağlı olmadığı zorlu çalışma koşulları.",
-    de: "Von Fortune-500-Industriellen bis zu schnelllebigen Konsummarken — anspruchsvolle Umgebungen, in denen Zuverlässigkeit keine Option ist.",
-    fr: "Des industriels du Fortune 500 aux marques grand public — des environnements exigeants où la fiabilité n'est pas optionnelle.",
-    es: "Desde industriales Fortune 500 hasta marcas de consumo — entornos exigentes donde la fiabilidad no es opcional.",
-    it: "Dai industriali Fortune 500 ai brand consumer — ambienti impegnativi in cui l'affidabilità non è opzionale.",
-    ar: "من عمالقة الصناعة إلى علامات الاستهلاك السريع — بيئات تتطلب موثوقية لا تقبل التفاوض.",
-    ja: "フォーチュン500の産業企業から消費財ブランドまで — 信頼性が不可欠な厳しい環境。",
+    en: "Product teams work with WillowSoft across industrial systems, connected devices, sensing and operational software.",
+    tr: "Ürün ekipleri; endüstriyel sistemler, bağlantılı cihazlar, algılama ve operasyon yazılımları için WillowSoft ile çalışır.",
+    de: "Produktteams arbeiten mit WillowSoft an Industriesystemen, vernetzten Geräten, Sensorik und Betriebssoftware.",
+    fr: "Les équipes produit collaborent avec WillowSoft sur les systèmes industriels, les appareils connectés, la détection et les logiciels opérationnels.",
+    es: "Los equipos de producto trabajan con WillowSoft en sistemas industriales, dispositivos conectados, sensórica y software operativo.",
+    it: "I team di prodotto collaborano con WillowSoft su sistemi industriali, dispositivi connessi, sensoristica e software operativo.",
+    ar: "تتعاون فرق المنتجات مع WillowSoft في الأنظمة الصناعية والأجهزة المتصلة والاستشعار وبرمجيات التشغيل.",
+    ja: "製品チームは、産業システム、コネクテッドデバイス、センシング、運用ソフトウェアの領域でWillowSoftと協業しています。",
   },
   rndUnit: { en: "yrs", tr: "yıl", de: "J.", fr: "ans", es: "años", it: "anni", ar: "سنة", ja: "年" },
   fullStackValue: { en: "Full-stack", tr: "Uçtan uca", de: "Full-Stack", fr: "Full-stack", es: "Full-stack", it: "Full-stack", ar: "متكامل", ja: "フルスタック" },
@@ -295,7 +295,7 @@ const teamTitleHtml: Record<string, string> = {
         <div style="display: flex; flex-direction: column; gap: 28px;">
           <span class="eyebrow" style="color: var(--ws-teal);">{u("heroEyebrow")}</span>
           <h1 style="font-size: clamp(2.1rem, 4.2vw, 3.4rem); font-weight: 700; letter-spacing: -.03em; line-height: 1.02; color: #fff; margin: 0;">
-            {u("heroLine1")} <span class="serif-accent" style="color: var(--ws-teal); font-size: 1.05em;">{u("heroAccent")}</span><br/>{u("heroLine2")}
+            {u("heroLine1")} <span class="serif-accent" style="color: var(--ws-teal); font-size: 1.05em;">{u("heroAccent")}</span><br/>{" "}{u("heroLine2")}
           </h1>
           <p style="font-size: 16px; line-height: 1.68; color: rgba(255,255,255,.62); max-width: 520px; margin: 0;">
             {getFactVal("heroSub")}
@@ -541,7 +541,7 @@ const teamTitleHtml: Record<string, string> = {
       <div class="company-container company-industries-layout">
         <div class="company-industries-copy">
             <span class="eyebrow">{t("workWithEyebrow", u("workWithUs"))}</span>
-            <h2 class="ws-h2" style="margin-top: 18px;" set:html={sectionTitle("workWithTitle", locale === 'tr' ? 'Küresel ekipler WillowSoft\'a tek bir nedenle güvenir: Sonuç <span class="serif-accent">üretiriz</span>.' : 'Global teams trust WillowSoft for one reason: we <span class="serif-accent">deliver</span>.')} />
+            <h2 class="ws-h2" style="margin-top: 18px;" set:html={sectionTitle("workWithTitle", locale === 'tr' ? 'Sektörler ve pazarlar arasında <span class="serif-accent">mühendislik iş birlikleri</span>.' : 'Engineering partnerships across <span class="serif-accent">industries and markets</span>.')} />
           <p class="ws-lead">
             {factText("workWithLead", u("workWithLead"))}
           </p>

@@ -44,7 +44,9 @@ const detailsLabel: Record<string, (name: string) => string> = {
 const displayCategory = String(product.category || "environment");
 const categoryLabel = productCategoryLabel(categories, displayCategory, locale);
 const searchDescriptor = productSearchDescriptor(product.id || p.id, locale);
-const imageAlt = [p.title, searchDescriptor].filter(Boolean).join(" — ");
+const imageAlt = searchDescriptor && !String(p.title || "").toLocaleLowerCase().includes("lorawan")
+  ? `${p.title} — ${searchDescriptor}`
+  : p.title;
 const detailsText = (detailsLabel[locale] || detailsLabel.en)(p.title);
 ---
 

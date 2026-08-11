@@ -15439,3 +15439,73 @@ body[data-page="home"] .signature-flow-output i {
     animation: none !important;
   }
 }
+
+/* Mobile interaction and catalogue density */
+@media (max-width: 760px) {
+  .btn.btn-small {
+    min-height: 44px;
+  }
+
+  .news-filter-chip,
+  .sol-filter-btn {
+    min-height: 44px;
+  }
+
+  .footer a,
+  .footer-cookie-settings {
+    min-height: 40px;
+    display: flex;
+    align-items: center;
+  }
+
+  body[data-page="products"] .product-atlas .filter-bar {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1px;
+    margin: 0;
+    padding: 1px;
+    overflow: visible;
+  }
+
+  body[data-page="products"] .product-atlas .filter-btn {
+    grid-template-columns: 24px minmax(0, 1fr) auto;
+    gap: 8px;
+    min-width: 0;
+    min-height: 68px;
+    padding: 11px 10px;
+    border-right: 0;
+  }
+
+  body[data-page="products"] .product-atlas .filter-btn:first-child {
+    grid-column: 1 / -1;
+  }
+
+  body[data-page="products"] .product-atlas .filter-btn-number {
+    width: 24px;
+    height: 24px;
+  }
+
+  body[data-page="products"] .product-atlas .filter-btn-copy {
+    gap: 0;
+  }
+
+  body[data-page="products"] .product-atlas .filter-btn-copy strong {
+    font-size: .78rem;
+  }
+
+  body[data-page="products"] .product-atlas .filter-btn-copy small {
+    display: none;
+  }
+}
+
+[dir="rtl"] .reveal-left {
+  transform: translateX(24px);
+}
+
+[dir="rtl"] .reveal-right {
+  transform: translateX(-24px);
+}
+
+[dir="rtl"] .reveal-left.visible,
+[dir="rtl"] .reveal-right.visible {
+  transform: translateX(0);
+}

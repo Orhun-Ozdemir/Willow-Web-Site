@@ -10,7 +10,7 @@ const locale = resolveLocale(Astro.params.locale, Astro.url.pathname);
 const content = await loadContent();
 const pageContent = content.pageContent?.glossary || {};
 const glossaryList = content.glossary || [];
-const seoProps = pageSeo(content, "glossary", locale, "/glossary", "IoT & LoRaWAN Glossary | WillowSoft", "Plain-English definitions of LoRaWAN, Modbus RTU, Industrial IoT, embedded systems, MCU, IP67, edge computing and other terms used by WillowSoft engineering.");
+const seoProps = pageSeo(content, "glossary", locale, "/glossary", "IoT & LoRaWAN Glossary | WillowSoft", "Technical definitions of LoRaWAN, Modbus RTU, Industrial IoT, embedded systems, MCU, IP67, edge computing and related engineering concepts.");
 const t = (key: string, fallback = "") => pageText(pageContent, key, locale, fallback);
 
 const getGlossaryItems = (category: string) => {
