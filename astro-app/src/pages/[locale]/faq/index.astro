@@ -12,9 +12,28 @@ const locale = resolveLocale(Astro.params.locale, Astro.url.pathname);
 const content = await loadContent();
 const faqs = content.faqs || [];
 
-const FALLBACK_TITLE = "Frequently Asked Questions | WillowSoft";
-const FALLBACK_DESC =
-  "Answers about WillowSoft's embedded hardware, Industrial IoT products, engineering services, solutions and how to start a connected-product project.";
+const FALLBACK_TITLES: Record<Locale, string> = {
+  en: "Industrial IoT FAQ | WillowSoft",
+  tr: "Endüstriyel IoT SSS | WillowSoft",
+  de: "Industrial-IoT FAQ | WillowSoft",
+  fr: "FAQ IoT industriel | WillowSoft",
+  es: "FAQ de IoT industrial | WillowSoft",
+  it: "FAQ IoT industriale | WillowSoft",
+  ar: "أسئلة إنترنت الأشياء الصناعي | WillowSoft",
+  ja: "産業用IoT FAQ | WillowSoft",
+};
+const FALLBACK_DESCRIPTIONS: Record<Locale, string> = {
+  en: "Answers about WillowSoft industrial IoT products, embedded engineering services, LoRaWAN solutions and connected-product development processes.",
+  tr: "WillowSoft ürünleri, LoRaWAN çözümleri, gömülü sistem geliştirme hizmetleri ve bağlantılı ürün proje süreçleri hakkında sık sorulan sorular.",
+  de: "Antworten zu WillowSoft Industrial-IoT-Produkten, Embedded-Engineering, LoRaWAN-Lösungen und der Entwicklung vernetzter Produkte.",
+  fr: "Réponses sur les produits IoT industriel WillowSoft, l’ingénierie embarquée, les solutions LoRaWAN et le développement de produits connectés.",
+  es: "Respuestas sobre productos IoT industriales de WillowSoft, ingeniería embebida, soluciones LoRaWAN y desarrollo de productos conectados.",
+  it: "Risposte sui prodotti IoT industriali WillowSoft, ingegneria embedded, soluzioni LoRaWAN e sviluppo di prodotti connessi.",
+  ar: "إجابات حول منتجات WillowSoft لإنترنت الأشياء الصناعي والهندسة المدمجة وحلول LoRaWAN وتطوير المنتجات المتصلة.",
+  ja: "WillowSoftの産業IoT製品、組み込み開発、LoRaWANソリューション、コネクテッド製品開発に関する回答です。",
+};
+const FALLBACK_TITLE = FALLBACK_TITLES[locale] || FALLBACK_TITLES.en;
+const FALLBACK_DESC = FALLBACK_DESCRIPTIONS[locale] || FALLBACK_DESCRIPTIONS.en;
 const seoProps = pageSeo(content, "faq", locale, "/faq", FALLBACK_TITLE, FALLBACK_DESC);
 
 // Sections aggregate the existing localized FAQ entries by their source page and

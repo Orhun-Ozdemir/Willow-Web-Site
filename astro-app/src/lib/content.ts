@@ -96,14 +96,30 @@ export async function loadContent(opts: { allowFallback?: boolean } = {}): Promi
   }
 
   const [
-    { data: prods, error: prodsErr }, { data: nws }, { data: serv }, { data: sol }, { data: cli }, { data: fq }, { data: glos },
-    { data: pContent }, { data: pSeo }, { data: trns },
+    { data: prods, error: prodsErr }, { data: nws, error: newsErr }, { data: serv, error: servicesErr },
+    { data: sol, error: solutionsErr }, { data: cli, error: clientsErr }, { data: fq, error: faqsErr },
+    { data: glos, error: glossaryErr }, { data: pContent, error: pageContentErr },
+    { data: pSeo, error: pageSeoErr }, { data: trns, error: translationsErr },
     { data: compFacts, error: compErr }, { data: sMeta, error: metaErr }
   ] = results;
 
   // Distinguish a genuine query ERROR from a genuinely EMPTY (but successful) result.
   // A transient error must NOT be mistaken for "the DB legitimately has this (placeholder) data".
-  const hadError = Boolean(prodsErr || compErr || metaErr);
+  const queryErrors = [
+    prodsErr,
+    newsErr,
+    servicesErr,
+    solutionsErr,
+    clientsErr,
+    faqsErr,
+    glossaryErr,
+    pageContentErr,
+    pageSeoErr,
+    translationsErr,
+    compErr,
+    metaErr,
+  ].filter(Boolean);
+  const hadError = queryErrors.length > 0;
   const productsEmpty = !prods || prods.length === 0;
 
   if (hadError || productsEmpty) {
@@ -112,6 +128,14 @@ export async function loadContent(opts: { allowFallback?: boolean } = {}): Promi
         `Supabase read failed or returned empty (${hadError ? "query error" : "no products"}). ` +
         "Refusing to serve bundled fallback to the admin to avoid overwriting real data."
       );
+    }
+    // An expired cache is still safer than caching a partial content graph. This
+    // keeps sitemap, hreflang clusters and public navigation stable during a
+    // transient failure in any one Supabase collection.
+    if (cachedContent) {
+      console.warn("Supabase returned a partial/error response. Serving the last complete content snapshot.");
+      lastFetchTime = now;
+      return cachedContent;
     }
     console.warn("Supabase returned an error or no products. Falling back to local site-data.");
     return bundledFallback();

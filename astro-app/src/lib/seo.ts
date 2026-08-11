@@ -3,7 +3,19 @@ import { officesForContact } from "@/lib/company-contact";
 
 export const SITE_ORIGIN = "https://www.willowsoft.co";
 export const SITE_NAME = "WillowSoft";
-export const DEFAULT_OG_IMAGE = `${SITE_ORIGIN}/assets/hero-industrial-iot.jpg`;
+export const DEFAULT_OG_IMAGE = `${SITE_ORIGIN}/assets/og/willowsoft-industrial-iot.jpg`;
+
+/** Keeps search-result titles within the common mobile display range. */
+export function fitSeoTitle(value: string, maxLength = 60): string {
+  const clean = String(value || "").replace(/\s+/g, " ").trim();
+  if (Array.from(clean).length <= maxLength) return clean;
+  const withoutBrand = clean.replace(/\s*(?:\||—|-)\s*WillowSoft\s*$/i, "").trim();
+  if (withoutBrand && Array.from(withoutBrand).length <= maxLength) return withoutBrand;
+  const chars = Array.from(withoutBrand || clean);
+  const candidate = chars.slice(0, maxLength - 1).join("");
+  const wordBoundary = candidate.replace(/\s+\S*$/, "").trim();
+  return `${wordBoundary.length >= Math.floor(maxLength * 0.7) ? wordBoundary : candidate.trimEnd()}…`;
+}
 
 /**
  * Forces any canonical/absolute URL onto the production host + scheme and strips
@@ -172,11 +184,13 @@ export function pageSeo(
 ): SeoProps {
   const seo = content.pageSeo?.[pageKey]?.[locale] || {};
   const seoEn = content.pageSeo?.[pageKey]?.en || {};
+  const resolvedTitle = fitSeoTitle(seo.seoTitle || seoEn.seoTitle || fallbackTitle);
+  const resolvedOgTitle = fitSeoTitle(seo.ogTitle || seo.seoTitle || seoEn.ogTitle || fallbackTitle);
   return {
-    title: seo.seoTitle || seoEn.seoTitle || fallbackTitle,
+    title: resolvedTitle,
     description: seo.metaDescription || seoEn.metaDescription || fallbackDescription,
     canonical: normalizeCanonical(seo.canonical) || `${SITE_ORIGIN}/${locale}${subPath}`,
-    ogTitle: seo.ogTitle || seo.seoTitle || seoEn.ogTitle || fallbackTitle,
+    ogTitle: resolvedOgTitle,
     ogDescription: seo.ogDescription || seo.metaDescription || seoEn.ogDescription || fallbackDescription,
     ogImage: seo.ogImage || seoEn.ogImage || DEFAULT_OG_IMAGE,
     noindex: Boolean(seo.noindex),

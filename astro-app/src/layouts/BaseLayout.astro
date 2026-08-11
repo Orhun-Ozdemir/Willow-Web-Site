@@ -45,6 +45,11 @@ const {
 } = Astro.props;
 
 const canonical = normalizeCanonical(canonicalRaw);
+const normalizedOgImage = (normalizeCanonical(ogImage) || ogImage)?.replace(
+  /\/assets\/hero-industrial-iot\.(?:png|jpg)(?:\?.*)?$/i,
+  "/assets/og/willowsoft-industrial-iot.jpg",
+);
+const isStandardOgImage = Boolean(normalizedOgImage?.includes("/assets/og/"));
 const ogLocale = OG_LOCALE_MAP[locale] || "en_US";
 const ogLocaleAlternates = Object.entries(OG_LOCALE_MAP)
   .filter(([key]) => key !== locale)
@@ -76,17 +81,7 @@ const skipLabel = skipLabels[locale] || skipLabels.en;
     {preloadImage && (
       <link rel="preload" as="image" href={preloadImage} type={preloadImageType} fetchpriority="high" />
     )}
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      rel="preload"
-      as="style"
-      href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400..900&family=Instrument+Serif:ital@0;1&family=Inter:wght@400..900&display=swap"
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400..900&family=Instrument+Serif:ital@0;1&family=Inter:wght@400..900&display=swap"
-      rel="stylesheet"
-    />
+    <link rel="preload" href={`${import.meta.env.BASE_URL}assets/fonts/hanken-grotesk-latin.woff2`} as="font" type="font/woff2" crossorigin />
     <title>{title}</title>
     {description && <meta name="description" content={description} />}
     {canonical && <link rel="canonical" href={canonical} />}
@@ -98,16 +93,18 @@ const skipLabel = skipLabels[locale] || skipLabels.en;
     {canonical && <meta property="og:url" content={canonical} />}
     <meta property="og:title" content={ogTitle || title} />
     {(ogDescription || description) && <meta property="og:description" content={ogDescription || description} />}
-    {ogImage && <meta property="og:image" content={ogImage} />}
-    {ogImage && <meta property="og:image:width" content="1200" />}
-    {ogImage && <meta property="og:image:height" content="630" />}
+    {normalizedOgImage && <meta property="og:image" content={normalizedOgImage} />}
+    {normalizedOgImage && <meta property="og:image:alt" content={ogTitle || title} />}
+    {isStandardOgImage && <meta property="og:image:width" content="1200" />}
+    {isStandardOgImage && <meta property="og:image:height" content="630" />}
     <meta property="og:site_name" content={SITE_NAME} />
     <meta property="og:locale" content={ogLocale} />
     {ogLocaleAlternates.map((alt) => <meta property="og:locale:alternate" content={alt} />)}
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={ogTitle || title} />
     {(ogDescription || description) && <meta name="twitter:description" content={ogDescription || description} />}
-    {ogImage && <meta name="twitter:image" content={ogImage} />}
+    {normalizedOgImage && <meta name="twitter:image" content={normalizedOgImage} />}
+    {normalizedOgImage && <meta name="twitter:image:alt" content={ogTitle || title} />}
     {schema && <script type="application/ld+json" set:html={JSON.stringify(schema)} />}
   </head>
   <body data-page={dataPage} class="min-h-full flex flex-col">

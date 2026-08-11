@@ -16,6 +16,7 @@ const PAGES = [
   { key: "company",      label: "Hakkımızda",     icon: "🏢" },
   { key: "contact",      label: "İletişim",       icon: "📬" },
   { key: "startProject", label: "Proje Başlat",   icon: "🚀" },
+  { key: "faq",          label: "SSS",             icon: "❓" },
   { key: "glossary",     label: "Sözlük",         icon: "📖" },
 ];
 
@@ -51,6 +52,7 @@ const PAGE_PATHS: Record<string, string> = {
   company: "company",
   contact: "contact",
   startProject: "start-project",
+  faq: "faq",
   glossary: "glossary",
 };
 

@@ -60,7 +60,14 @@ function isActive(href: string) {
   <nav class="nav" aria-label={getLabel("mainNavigation")}>
     <a href={`/${locale}`} class="brand">
       <span class="brand-mark" aria-hidden="true">
-        <img src={`${import.meta.env.BASE_URL}assets/willow-mark-transparent.png`} alt="" decoding="async" />
+        <img
+          src={`${import.meta.env.BASE_URL}assets/willow-mark-64.webp`}
+          alt=""
+          width="64"
+          height="64"
+          fetchpriority="high"
+          decoding="async"
+        />
       </span>
       <span>
         <strong>WILLOWSOFT</strong>

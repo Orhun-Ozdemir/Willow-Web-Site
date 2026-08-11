@@ -24,7 +24,7 @@ const raw = newsList.find((n) => {
   return localSlug === normalizedSlug || normalizeRouteSlug(n.id) === normalizedSlug;
 });
 
-if (!raw) return Astro.redirect(`/${locale}/news`);
+if (!raw) return Astro.rewrite(`/${locale}/not-found`);
 
 const article = localizeItem(raw, locale);
 const seo = raw.seo?.[locale] || {};
@@ -180,7 +180,7 @@ const getLabel = (key) => labels[key][locale] || labels[key].en;
     <article>
       <section class="hero compact news-detail-hero">
         <div class="hero-media">
-          <img src={heroImage} alt={article.title} loading="lazy" decoding="async" />
+          <img src={heroImage} alt={article.title} loading="eager" fetchpriority="high" decoding="async" />
         </div>
         <canvas class="signal-canvas" data-density="30"></canvas>
         <div class="hero-inner">

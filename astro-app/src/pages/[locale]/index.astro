@@ -9,6 +9,7 @@ import { pageSeo, ORGANIZATION_SCHEMA, WEBSITE_SCHEMA } from "@/lib/seo";
 import { flowNodesFromPageContent, industryLanesFromPageContent, pageButtonText, pageLocaleHref, pageText, resolveAsset, resolveLocale, serviceRailFromPageContent, type Locale } from "@/lib/cms";
 import { aiAnswerForPage, aiMetaForPage, appendSchemaNodes, fallbackFaqsForPage, faqItemsForPage, faqSchemaNode } from "@/lib/ai-search";
 import { PRODUCT_ICON_SVG } from "@/lib/product-model";
+import { clientLogoDimensions, clientLogoWebpSrc } from "@/lib/image-metadata";
 import "@/styles/home-precision.css";
 
 export const prerender = false;
@@ -61,6 +62,7 @@ const labels: Record<string, Record<string, string>> = {
 };
 
 const heroEyebrow = getVal("heroEyebrow");
+const trustTitleHtml = getVal("trustTitle").replace(/<br\s*\/?\s*>/gi, "<br> ");
 const heroCtaLabel = pageButtonText(pageContent.heroCta, locale, locale === "tr" ? "Ücretsiz Danışın" : getLabel("startProject"));
 const heroCtaSecondaryLabel = pageButtonText(pageContent.heroCtaSecondary, locale, getLabel("exploreSolutions"));
 const heroCtaHref = pageLocaleHref(locale, pageContent.heroCta, "/start-project");
@@ -389,15 +391,15 @@ const homeSchema = appendSchemaNodes({
         <aside class="hero-product-stage reveal delay-2" aria-label="WillowSoft hardware showcase">
           <div class="product-spotlight"></div>
           <article class="floating-product product-one" style="--delay:0ms">
-            <figure><picture><source srcset={`${import.meta.env.BASE_URL}pdf-assets/p06_01_X13.webp`} type="image/webp" /><img src={`${import.meta.env.BASE_URL}pdf-assets/p06_01_X13.jpg`} alt="WillowBee LoRaWAN module" loading="lazy" decoding="async" /></picture></figure>
+            <figure><picture><source srcset={`${import.meta.env.BASE_URL}pdf-assets/p06_01_X13.webp`} type="image/webp" /><img src={`${import.meta.env.BASE_URL}pdf-assets/p06_01_X13.jpg`} alt="WillowBee LoRaWAN module" width="491" height="375" loading="lazy" decoding="async" /></picture></figure>
             <div><strong>WillowBee</strong><span>Compact LoRaWAN MCU module</span></div>
           </article>
           <article class="floating-product product-two" style="--delay:180ms">
-            <figure><picture><source srcset={`${import.meta.env.BASE_URL}pdf-assets/p08_01_X22.webp`} type="image/webp" /><img src={`${import.meta.env.BASE_URL}pdf-assets/p08_01_X22.jpg`} alt="WillowAir sensor" loading="lazy" decoding="async" /></picture></figure>
+            <figure><picture><source srcset={`${import.meta.env.BASE_URL}pdf-assets/p08_01_X22.webp`} type="image/webp" /><img src={`${import.meta.env.BASE_URL}pdf-assets/p08_01_X22.jpg`} alt="WillowAir sensor" width="429" height="394" loading="lazy" decoding="async" /></picture></figure>
             <div><strong>WillowAir</strong><span>Indoor air quality monitoring</span></div>
           </article>
           <article class="floating-product product-three" style="--delay:360ms">
-            <figure><picture><source srcset={`${import.meta.env.BASE_URL}pdf-assets/p14_01_X50.webp`} type="image/webp" /><img src={`${import.meta.env.BASE_URL}pdf-assets/p14_01_X50.jpg`} alt="WillowMod sensor" loading="lazy" decoding="async" /></picture></figure>
+            <figure><picture><source srcset={`${import.meta.env.BASE_URL}pdf-assets/p14_01_X50.webp`} type="image/webp" /><img src={`${import.meta.env.BASE_URL}pdf-assets/p14_01_X50.jpg`} alt="WillowMod sensor" width="339" height="344" loading="lazy" decoding="async" /></picture></figure>
             <div><strong>WillowMod</strong><span>Wireless Modbus integration</span></div>
           </article>
         </aside>
@@ -407,6 +409,7 @@ const homeSchema = appendSchemaNodes({
     <!-- Service Rail -->
     <section class="section tight home-service-section">
       <div class="section-inner">
+        <h2 class="sr-only">{getVal("servicesEyebrow", getLabel("exploreServices"))}</h2>
         <AIAnswerBlock answer={aiAnswer} locale={locale} meta={aiMeta} />
         <div class="service-rail reveal">
           {serviceRail.map((item, idx) => (
@@ -421,7 +424,7 @@ const homeSchema = appendSchemaNodes({
       <div class="section-inner trust-layout">
         <div class="trust-copy reveal-left">
           <p class="eyebrow">{getVal("trustEyebrow")}</p>
-          <h2 set:html={getVal("trustTitle")} />
+          <h2 set:html={trustTitleHtml} />
           <p>{getVal("trustLead")}</p>
           <div class="trust-more" aria-label="Additional sectors">
             {trustChips.map((chip) => <span>{loc(chip)}</span>)}
@@ -433,9 +436,21 @@ const homeSchema = appendSchemaNodes({
               const depths = [18, 54, 28, 42, 12, 66, 36, 24];
               const z = depths[idx % depths.length];
               const delay = idx * 130;
+              const logoSrc = resolveAsset(client.logo);
+              const logoDimensions = clientLogoDimensions(logoSrc);
+              const optimizedLogoSrc = clientLogoWebpSrc(logoSrc);
               return (
                 <div class="logo-tile" style={`--z:${z}px;--delay:${delay}ms`} title={client.name}>
-                  {client.logo ? <img src={resolveAsset(client.logo)} alt={client.name} loading="lazy" decoding="async" /> : <strong>{client.name}</strong>}
+                  {client.logo ? (
+                    <img
+                      src={optimizedLogoSrc}
+                      alt={client.name}
+                      width={logoDimensions?.width}
+                      height={logoDimensions?.height}
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  ) : <strong>{client.name}</strong>}
                 </div>
               );
             })}
@@ -469,13 +484,16 @@ const homeSchema = appendSchemaNodes({
                 <div class={`signature-node-visual signature-node-visual--${idx}`} aria-hidden="true">
                   <picture>
                     <source
-                      srcset={(flowIllustrationAssets[idx] || flowIllustrationAssets[0]).replace(/\.png$/, ".webp")}
+                      srcset={`${(flowIllustrationAssets[idx] || flowIllustrationAssets[0]).replace(/\.png$/, ".640.webp")} 640w, ${(flowIllustrationAssets[idx] || flowIllustrationAssets[0]).replace(/\.png$/, ".webp")} ${idx === 4 ? 1536 : 1254}w`}
+                      sizes="(max-width: 760px) 208px, 220px"
                       type="image/webp"
                     />
                     <img
                       class="signature-node-image"
                       src={flowIllustrationAssets[idx] || flowIllustrationAssets[0]}
                       alt=""
+                      width={idx === 4 ? 1536 : 1254}
+                      height={idx === 4 ? 1024 : 1254}
                       loading="lazy"
                       decoding="async"
                     />

@@ -1,6 +1,7 @@
 ---
 import { localizeItem, resolveAsset, resolveLocale, type Locale } from "@/lib/cms";
 import { DEFAULT_PRODUCT_CATEGORIES, productCategoryLabel, type ProductCategory } from "@/lib/product-categories";
+import { productCutoutDimensions, productCutoutSrcSet } from "@/lib/image-metadata";
 
 interface Props {
   product: any;
@@ -27,6 +28,8 @@ const cutoutImage =
   resolveAsset(p.image) ||
   resolveAsset(`assets/product-cutouts/${p.id}.png`);
 const originalImage = resolveAsset(p.image) || resolveAsset(p.cardImage) || cutoutImage;
+const cutoutDimensions = productCutoutDimensions(cutoutImage);
+const cutoutSrcSet = productCutoutSrcSet(cutoutImage);
 const detailsLabel: Record<string, string> = {
   en: "View Details",
   tr: "Detayları Gör",
@@ -45,7 +48,17 @@ const categoryLabel = productCategoryLabel(categories, displayCategory, locale);
 <article class={`card product-card${variant === "catalog" ? " product-card-premium" : ""} reveal${delay}`} data-category={displayCategory} data-product={p.id}>
   <figure>
     {variant === "catalog" && <span class="product-card-category">{categoryLabel}</span>}
-    <img src={cutoutImage} alt={p.title} loading="lazy" decoding="async" onerror="this.onerror=null; this.src='/assets/willow-mark-transparent.png'; this.style.opacity='0.15';" />
+    <img
+      src={cutoutImage}
+      srcset={cutoutSrcSet}
+      sizes="(max-width: 640px) 72vw, (max-width: 1100px) 38vw, 280px"
+      width={cutoutDimensions?.width}
+      height={cutoutDimensions?.height}
+      alt={p.title}
+      loading="lazy"
+      decoding="async"
+      onerror="this.onerror=null; this.src='/assets/willow-mark-64.webp'; this.removeAttribute('srcset'); this.style.opacity='0.15';"
+    />
     {variant === "catalog" && <span class="product-card-index" aria-hidden="true">{String(index + 1).padStart(2, "0")}</span>}
   </figure>
   <div class="product-body">

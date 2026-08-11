@@ -1,6 +1,7 @@
 ---
 import PageLayout from "@/layouts/PageLayout.astro";
 import AIAnswerBlock from "@/components/AIAnswerBlock.astro";
+import ProductCard from "@/components/ProductCard.astro";
 import { loadContent } from "@/lib/content";
 import { localizedValue, localizeItem, locales, resolveAsset, resolveLocale, type Locale } from "@/lib/cms";
 import { buildAlternates, DEFAULT_OG_IMAGE, ORGANIZATION_SCHEMA, WEBSITE_SCHEMA, SITE_ORIGIN } from "@/lib/seo";
@@ -10,6 +11,7 @@ import { glossaryLinksForProduct, glossaryLinkLabels } from "@/lib/glossary-link
 import { applicationIconForText, buildSpecificationGroups, canonicalizeProduct, iconKeyForText, LOCALE_NATIVE_NAMES, normalizeAssetPath, normalizeProductIconItems, normalizeProductSlug, normalizeStringList, productDocumentTypeLabel, productSlugCandidates, PRODUCT_ICON_SVG } from "@/lib/product-model";
 import { productCategoriesFromContent, productCategoryLabel } from "@/lib/product-categories";
 import { productSeoFallback } from "@/lib/seo-fallbacks";
+import { productCutoutDimensions, productCutoutSrcSet } from "@/lib/image-metadata";
 
 export const prerender = false;
 
@@ -20,7 +22,7 @@ const normalizedSlug = normalizeProductSlug(slug);
 const rawProduct = (content.products || []).find((p: any) => productSlugCandidates(p).includes(normalizedSlug));
 
 if (!rawProduct || rawProduct.visible === false) {
-  return Astro.redirect(`/${locale}/products`);
+  return Astro.rewrite(`/${locale}/not-found`);
 }
 
 const localizedProduct = localizeItem(canonicalizeProduct(rawProduct), locale);
@@ -55,6 +57,8 @@ const productAssetUrl = (path: any, fallback = "assets/hero-industrial-iot.jpg")
   return resolveAsset(normalized);
 };
 const heroImageUrl = productAssetUrl(heroImage);
+const heroImageDimensions = productCutoutDimensions(heroImageUrl);
+const heroImageSrcSet = productCutoutSrcSet(heroImageUrl);
 const fallbackHeroImageUrl = productAssetUrl("assets/hero-industrial-iot.jpg");
 const heroImageItems = heroImages.map((imgUrl) => productAssetUrl(imgUrl));
 
@@ -803,6 +807,27 @@ const getT = (key: keyof typeof t) => {
 
 const relatedGlossaryTerms = glossaryLinksForProduct(normalizedSlug, content.glossary || [], locale);
 const glossaryHeading = glossaryLinkLabels.heading[locale] || glossaryLinkLabels.heading.en;
+const visibleProductSequence = (content.products || [])
+  .filter((item: any) => item.visible !== false)
+  .sort((a: any, b: any) => Number(a.sortOrder || 0) - Number(b.sortOrder || 0));
+const currentProductIndex = visibleProductSequence.findIndex((item: any) => item.id === rawProduct.id);
+const relatedProducts = currentProductIndex < 0
+  ? visibleProductSequence.filter((item: any) => item.id !== rawProduct.id).slice(0, 4)
+  : Array.from(
+      { length: Math.min(4, Math.max(0, visibleProductSequence.length - 1)) },
+      (_, offset) => visibleProductSequence[(currentProductIndex + offset + 1) % visibleProductSequence.length],
+    );
+const relatedProductsCopy: Record<Locale, { eyebrow: string; title: string; lead: string }> = {
+  en: { eyebrow: "Related hardware", title: "Products for the same connected system", lead: "Compare complementary WillowSoft devices and build a complete monitoring architecture." },
+  tr: { eyebrow: "İlgili donanımlar", title: "Aynı bağlantılı sistem için ürünler", lead: "Tam bir izleme mimarisi oluşturmak için tamamlayıcı WillowSoft cihazlarını karşılaştırın." },
+  de: { eyebrow: "Passende Hardware", title: "Produkte für dasselbe vernetzte System", lead: "Vergleichen Sie ergänzende WillowSoft-Geräte für eine vollständige Monitoring-Architektur." },
+  fr: { eyebrow: "Matériel associé", title: "Produits pour le même système connecté", lead: "Comparez les appareils WillowSoft complémentaires pour construire une architecture de supervision complète." },
+  es: { eyebrow: "Hardware relacionado", title: "Productos para el mismo sistema conectado", lead: "Compare dispositivos WillowSoft complementarios para crear una arquitectura de monitorización completa." },
+  it: { eyebrow: "Hardware correlato", title: "Prodotti per lo stesso sistema connesso", lead: "Confronta i dispositivi WillowSoft complementari per una completa architettura di monitoraggio." },
+  ar: { eyebrow: "أجهزة ذات صلة", title: "منتجات للنظام المتصل نفسه", lead: "قارن أجهزة WillowSoft المتكاملة لبناء بنية مراقبة كاملة." },
+  ja: { eyebrow: "関連ハードウェア", title: "同じコネクテッドシステムに対応する製品", lead: "補完的なWillowSoftデバイスを比較し、包括的な監視アーキテクチャを構築できます。" },
+};
+const relatedCopy = relatedProductsCopy[locale] || relatedProductsCopy.en;
 ---
 
 <PageLayout
@@ -839,8 +864,15 @@ const glossaryHeading = glossaryLinkLabels.heading[locale] || glossaryLinkLabels
           <div class="ws-hero-image-card">
             <img
               src={heroImageUrl}
+              srcset={heroImageSrcSet}
+              sizes="(max-width: 760px) 88vw, 46vw"
+              width={heroImageDimensions?.width}
+              height={heroImageDimensions?.height}
               alt={product.title}
               class="ws-hero-img"
+              loading="eager"
+              fetchpriority="high"
+              decoding="async"
               data-product-main-image
               data-fallback-src={fallbackHeroImageUrl}
               onerror="this.onerror=null; this.src=this.dataset.fallbackSrc;"
@@ -856,7 +888,14 @@ const glossaryHeading = glossaryLinkLabels.heading[locale] || glossaryLinkLabels
                     aria-label={`${product.title} image ${index + 1}`}
                     aria-pressed={index === 0 ? "true" : "false"}
                   >
-                    <img src={imgUrl} alt="" loading="lazy" decoding="async" />
+                    <img
+                      src={imgUrl}
+                      width={productCutoutDimensions(imgUrl)?.width}
+                      height={productCutoutDimensions(imgUrl)?.height}
+                      alt=""
+                      loading="lazy"
+                      decoding="async"
+                    />
                   </button>
                 ))}
               </div>
@@ -1208,6 +1247,26 @@ const glossaryHeading = glossaryLinkLabels.heading[locale] || glossaryLinkLabels
                   <p class="ws-faq-answer">{f.answer}</p>
                 </div>
               </details>
+            ))}
+          </div>
+        </div>
+      </section>
+    )}
+
+    {relatedProducts.length > 0 && (
+      <section class="section ws-related-products-section" aria-labelledby="related-products-title">
+        <div class="section-inner">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow">{relatedCopy.eyebrow}</p>
+              <h2 id="related-products-title">{relatedCopy.title}</h2>
+              <p class="section-lead">{relatedCopy.lead}</p>
+            </div>
+            <a class="btn btn-secondary btn-small" href={`/${locale}/products`}>{getT("productsBreadcrumb")}</a>
+          </div>
+          <div class="grid grid-4">
+            {relatedProducts.map((item: any, index: number) => (
+              <ProductCard product={item} locale={locale} index={index} categories={productCategories} />
             ))}
           </div>
         </div>

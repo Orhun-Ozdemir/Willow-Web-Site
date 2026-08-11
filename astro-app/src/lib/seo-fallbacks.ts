@@ -18,6 +18,21 @@ const strip = (value: unknown): string =>
 
 const hasBrand = (value: string) => /willowsoft/i.test(value);
 
+const compactTitle = (primary: string, suffix = ` | ${BRAND}`): string => {
+  const cleanPrimary = strip(primary);
+  if (!cleanPrimary) return BRAND;
+  const withBrand = hasBrand(cleanPrimary) ? cleanPrimary : `${cleanPrimary}${suffix}`;
+  // Keep the full localized product/news name whenever possible. If branding
+  // pushes the title beyond the common mobile snippet range, the name carries
+  // stronger query intent than a repeated brand suffix.
+  const candidate = withBrand.length <= 60 ? withBrand : cleanPrimary;
+  if (Array.from(candidate).length <= 60) return candidate;
+  const chars = Array.from(candidate);
+  const initial = chars.slice(0, 59).join("");
+  const wordBoundary = initial.replace(/\s+\S*$/, "").trim();
+  return `${wordBoundary.length >= 42 ? wordBoundary : initial.trimEnd()}…`;
+};
+
 // Factual product description templates used only when neither a CMS meta
 // description nor a short description exists for the locale.
 const PRODUCT_DESC: Record<Locale, (name: string, category: string) => string> = {
@@ -60,15 +75,13 @@ export function productSeoFallback(
   const category = strip(opts.categoryLabel);
   const shortDesc = strip(opts.shortDescription);
 
-  const generatedTitle = hasBrand(name)
-    ? name
-    : `${name}${category ? ` — ${category}` : ""} | ${BRAND}`;
+  const generatedTitle = compactTitle(name);
 
   const template = (PRODUCT_DESC[locale] || PRODUCT_DESC.en)(name, category);
   const generatedDescription = shortDesc || template;
 
   return {
-    title: strip(opts.seoTitle) || generatedTitle,
+    title: opts.seoTitle ? compactTitle(opts.seoTitle) : generatedTitle,
     description: strip(opts.metaDescription) || generatedDescription,
   };
 }
@@ -83,11 +96,11 @@ export function newsSeoFallback(
   const title = strip(opts.title);
   const excerpt = strip(opts.excerpt);
 
-  const generatedTitle = hasBrand(title) ? title : `${title} | ${BRAND}`;
+  const generatedTitle = compactTitle(title);
   const generatedDescription = excerpt || (NEWS_DESC[locale] || NEWS_DESC.en)(title);
 
   return {
-    title: strip(opts.seoTitle) || generatedTitle,
+    title: opts.seoTitle ? compactTitle(opts.seoTitle) : generatedTitle,
     description: strip(opts.metaDescription) || generatedDescription,
   };
 }
