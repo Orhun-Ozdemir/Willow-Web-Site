@@ -241,6 +241,7 @@ const STATIC_PUBLIC_PREFIXES = [
   "assets/willow-mark",
   "assets/hero-",
   "assets/client-logos/",
+  "assets/news/",
   "assets/product-cutouts/",
   "pdf-assets/",
 ];

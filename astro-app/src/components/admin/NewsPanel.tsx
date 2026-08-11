@@ -25,6 +25,7 @@ type NewsItem = {
   date?: string;
   category?: string;
   image?: string;
+  imageMeta?: { width?: number; height?: number; variants?: Record<string, string> };
   images?: string[];
   excerpt?: string;
   content?: string;
@@ -449,6 +450,9 @@ export default function NewsPanel() {
                   onChange={(v) => {
                     const nextImages = v && !galleryImages.includes(v) ? [v, ...galleryImages] : galleryImages;
                     updateNewsMedia(n.id!, nextImages, v);
+                  }}
+                  onUploadResult={(result) => {
+                    if (result?.imageMeta) updateNews(n.id!, "imageMeta", result.imageMeta);
                   }}
                   placeholder="assets/news/example.webp"
                 />

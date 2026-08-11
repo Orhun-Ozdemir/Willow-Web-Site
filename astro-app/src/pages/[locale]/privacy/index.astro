@@ -1,7 +1,7 @@
 ---
 import PageLayout from "@/layouts/PageLayout.astro";
 import { resolveLocale, type Locale } from "@/lib/cms";
-import { buildAlternates, webPageNode, ORGANIZATION_SCHEMA, WEBSITE_SCHEMA, SITE_ORIGIN } from "@/lib/seo";
+import { buildAlternates, webPageNode, DEFAULT_OG_IMAGE, ORGANIZATION_SCHEMA, WEBSITE_SCHEMA, SITE_ORIGIN } from "@/lib/seo";
 
 export const prerender = false;
 
@@ -49,6 +49,7 @@ const seo = {
   alternates: buildAlternates("/privacy"),
   ogTitle: `${t.title} | WillowSoft`,
   ogDescription: t.lead,
+  ogImage: DEFAULT_OG_IMAGE,
   noindex: false,
 };
 const privacySchema = {

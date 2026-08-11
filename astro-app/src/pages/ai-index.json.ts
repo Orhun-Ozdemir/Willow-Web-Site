@@ -1,6 +1,6 @@
 import type { APIRoute } from "astro";
 import { loadContent } from "@/lib/content";
-import { localizedValue, locales, type Locale } from "@/lib/cms";
+import { itemText, localizedValue, locales, type Locale } from "@/lib/cms";
 import { SITE_ORIGIN } from "@/lib/seo";
 import { stripHtml } from "@/lib/ai-search";
 
@@ -53,7 +53,7 @@ export const GET: APIRoute = async () => {
       headline: localizedValue(item.title, locale),
       description: stripHtml(localizedValue(item.excerpt, locale)),
       datePublished: item.date || "",
-      url: urlFor(locale, `/news/${localizedValue(item.slug, locale) || item.slug?.en || item.id}`),
+      url: urlFor(locale, `/news/${itemText(item, "slug", locale, item.slug?.en || item.slug || item.id)}`),
     })),
   );
 

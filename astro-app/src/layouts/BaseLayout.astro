@@ -55,6 +55,8 @@ const ogLocaleAlternates = Object.entries(OG_LOCALE_MAP)
   .filter(([key]) => key !== locale)
   .map(([, value]) => value);
 const robots = robotsMeta({ noindex, nofollow, nosnippet });
+const googleSiteVerification = import.meta.env.PUBLIC_GOOGLE_SITE_VERIFICATION || "";
+const bingSiteVerification = import.meta.env.PUBLIC_BING_SITE_VERIFICATION || "";
 const dir = locale === "ar" ? "rtl" : "ltr";
 
 const skipLabels: Record<string, string> = {
@@ -88,6 +90,8 @@ const skipLabel = skipLabels[locale] || skipLabels.en;
     {alternates.map((alt) => <link rel="alternate" hreflang={alt.hreflang} href={alt.href} />)}
     <meta name="robots" content={robots} />
     <meta name="author" content={SITE_NAME} />
+    {googleSiteVerification && <meta name="google-site-verification" content={googleSiteVerification} />}
+    {bingSiteVerification && <meta name="msvalidate.01" content={bingSiteVerification} />}
     <meta name="theme-color" content="#132175" />
     <meta property="og:type" content={ogType} />
     {canonical && <meta property="og:url" content={canonical} />}

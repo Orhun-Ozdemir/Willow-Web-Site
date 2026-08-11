@@ -17,6 +17,16 @@ export function fitSeoTitle(value: string, maxLength = 60): string {
   return `${wordBoundary.length >= Math.floor(maxLength * 0.7) ? wordBoundary : candidate.trimEnd()}…`;
 }
 
+export function fitSeoDescription(value: string, maxLength = 155): string {
+  const clean = String(value || "").replace(/\s+/g, " ").trim();
+  if (Array.from(clean).length <= maxLength) return clean;
+  const initial = Array.from(clean).slice(0, maxLength - 1).join("");
+  const sentence = initial.match(/^(.+[.!?])(?:\s|$)/)?.[1];
+  if (sentence && Array.from(sentence).length >= 90) return sentence;
+  const wordBoundary = initial.replace(/\s+\S*$/, "").trim();
+  return `${wordBoundary || initial.trimEnd()}…`;
+}
+
 /**
  * Forces any canonical/absolute URL onto the production host + scheme and strips
  * a trailing slash (root excepted). CMS rows may still hold legacy apex-host
@@ -186,12 +196,14 @@ export function pageSeo(
   const seoEn = content.pageSeo?.[pageKey]?.en || {};
   const resolvedTitle = fitSeoTitle(seo.seoTitle || seoEn.seoTitle || fallbackTitle);
   const resolvedOgTitle = fitSeoTitle(seo.ogTitle || seo.seoTitle || seoEn.ogTitle || fallbackTitle);
+  const resolvedDescription = fitSeoDescription(seo.metaDescription || seoEn.metaDescription || fallbackDescription);
+  const resolvedOgDescription = fitSeoDescription(seo.ogDescription || seo.metaDescription || seoEn.ogDescription || fallbackDescription);
   return {
     title: resolvedTitle,
-    description: seo.metaDescription || seoEn.metaDescription || fallbackDescription,
+    description: resolvedDescription,
     canonical: normalizeCanonical(seo.canonical) || `${SITE_ORIGIN}/${locale}${subPath}`,
     ogTitle: resolvedOgTitle,
-    ogDescription: seo.ogDescription || seo.metaDescription || seoEn.ogDescription || fallbackDescription,
+    ogDescription: resolvedOgDescription,
     ogImage: seo.ogImage || seoEn.ogImage || DEFAULT_OG_IMAGE,
     noindex: Boolean(seo.noindex),
     nofollow: Boolean(seo.nofollow),

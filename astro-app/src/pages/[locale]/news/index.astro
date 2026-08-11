@@ -3,7 +3,8 @@ import PageLayout from "@/layouts/PageLayout.astro";
 import NewsCard from "@/components/NewsCard.astro";
 import { loadContent } from "@/lib/content";
 import { pageSeo, webPageNode, ORGANIZATION_SCHEMA, WEBSITE_SCHEMA, SITE_ORIGIN } from "@/lib/seo";
-import { localizedValue, localizeItem, pageText, resolveAsset, resolveLocale, type Locale } from "@/lib/cms";
+import { itemText, localizedValue, localizeItem, pageText, resolveAsset, resolveLocale, type Locale } from "@/lib/cms";
+import { responsiveImageSrcSet, type ResponsiveImageMeta } from "@/lib/image-metadata";
 
 export const prerender = false;
 
@@ -66,6 +67,9 @@ const categoryLabels: Record<string, Record<Locale, string>> = {
   proof: { en: "Company update", tr: "Kurumsal gelişme", de: "Unternehmensmeldung", fr: "Actualité de l’entreprise", es: "Novedad corporativa", it: "Aggiornamento aziendale", ar: "تحديث الشركة", ja: "企業ニュース" },
   tracking: { en: "Field update", tr: "Saha güncellemesi", de: "Feld-Update", fr: "Mise à jour terrain", es: "Actualización de campo", it: "Aggiornamento sul campo", ar: "تحديث ميداني", ja: "現場アップデート" },
   "field-update": { en: "Field update", tr: "Saha güncellemesi", de: "Feld-Update", fr: "Mise à jour terrain", es: "Actualización de campo", it: "Aggiornamento sul campo", ar: "تحديث ميداني", ja: "現場アップデート" },
+  "project-update": { en: "Project update", tr: "Proje güncellemesi", de: "Projekt-Update", fr: "Mise à jour projet", es: "Actualización de proyecto", it: "Aggiornamento progetto", ar: "تحديث مشروع", ja: "プロジェクト更新" },
+  "product-update": { en: "Product update", tr: "Ürün güncellemesi", de: "Produkt-Update", fr: "Mise à jour produit", es: "Actualización de producto", it: "Aggiornamento prodotto", ar: "تحديث منتج", ja: "製品アップデート" },
+  expertise: { en: "Expertise", tr: "Uzmanlık", de: "Expertise", fr: "Expertise", es: "Experiencia", it: "Competenze", ar: "الخبرة", ja: "技術力" },
   "export": { en: "Export", tr: "İhracat", de: "Export", fr: "Export", es: "Exportación", it: "Export", ar: "تصدير", ja: "輸出" },
   event: { en: "Event", tr: "Etkinlik", de: "Event", fr: "Événement", es: "Evento", it: "Evento", ar: "فعالية", ja: "イベント" },
   company: { en: "Corporate", tr: "Kurumsal", de: "Unternehmen", fr: "Entreprise", es: "Empresa", it: "Azienda", ar: "الشركة", ja: "会社" },
@@ -83,6 +87,8 @@ const featured = featuredRaw ? localizeItem(featuredRaw, locale) : null;
 const featuredDate = featured ? formatDate(featured.date, "long") : "";
 const featuredGalleryImage = Array.isArray(featured?.images) ? featured.images.find((src: any) => typeof src === "string" && src.trim()) : "";
 const featuredImage = assetPath(featured?.image || featuredGalleryImage);
+const featuredImageMeta = (featuredRaw?.imageMeta || featured?.imageMeta) as ResponsiveImageMeta | undefined;
+const featuredImageSrcSet = featuredImage ? responsiveImageSrcSet(featuredImage, featuredImageMeta, resolveAsset) : undefined;
 const renderedNews = newsList.map((item: any) => localizeItem(item, locale));
 
 const categoryMap = new Map<string, string>();
@@ -115,7 +121,7 @@ const newsSchema = {
         "@type": "ListItem",
         position: idx + 1,
         name: localizedValue(item.title, locale),
-        url: `${SITE_ORIGIN}/${locale}/news/${encodeURIComponent(localizedValue(item.slug, locale) || item.slug?.en || item.id)}`,
+        url: `${SITE_ORIGIN}/${locale}/news/${encodeURIComponent(itemText(item, "slug", locale, item.slug?.en || item.slug || item.id))}`,
       })),
     },
   ],
@@ -229,7 +235,11 @@ const t = (cmsKey: string, labelKey: LabelKey) => pageText(pageContent, cmsKey, 
               {featuredImage ? (
                 <img
                   src={featuredImage}
+                  srcset={featuredImageSrcSet}
+                  sizes="(max-width: 760px) calc(100vw - 42px), 44vw"
                   alt={featured.title}
+                  width={featuredImageMeta?.width || 1600}
+                  height={featuredImageMeta?.height || 1000}
                   loading="lazy"
                   decoding="async"
                   onerror="this.closest('figure').classList.add('is-empty'); this.remove();"

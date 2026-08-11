@@ -3,6 +3,25 @@ export interface ImageDimensions {
   height: number;
 }
 
+export interface ResponsiveImageMeta extends ImageDimensions {
+  variants?: Record<string, string>;
+}
+
+export function responsiveImageSrcSet(
+  src: string,
+  meta: ResponsiveImageMeta | undefined,
+  resolve: (value: string) => string = (value) => value,
+): string | undefined {
+  if (!meta?.width) return undefined;
+  const entries = Object.entries(meta.variants || {})
+    .map(([width, value]) => [Number(width), resolve(value)] as const)
+    .filter(([width, value]) => Number.isFinite(width) && width > 0 && Boolean(value))
+    .sort(([a], [b]) => a - b)
+    .map(([width, value]) => `${value} ${width}w`);
+  entries.push(`${src} ${meta.width}w`);
+  return entries.join(", ");
+}
+
 const PRODUCT_CUTOUT_DIMENSIONS: Record<string, ImageDimensions> = {
   anemometer: { width: 429, height: 375 },
   "barometric-pressure": { width: 390, height: 358 },
@@ -56,9 +75,18 @@ export function clientLogoWebpSrc(src: string): string {
 
 export function productCutoutSrcSet(src: string): string | undefined {
   if (!/\/assets\/product-cutouts\/[^/?]+\.(?:png|webp)(?:\?.*)?$/i.test(src)) return undefined;
-  const clean = src.split("?")[0].replace(/\.png$/i, ".webp");
+  // CMS records created before the responsive pipeline can point at the old
+  // `.320.webp` derivative. Always derive candidates from the canonical base;
+  // otherwise browsers request non-existent names such as `.320.160.webp`.
+  const clean = src
+    .split("?")[0]
+    .replace(/\.png$/i, ".webp")
+    .replace(/\.320\.webp$/i, ".webp");
   const dimensions = productCutoutDimensions(clean);
   if (!dimensions) return undefined;
-  const small = clean.replace(/\.webp$/i, ".320.webp");
-  return `${small} ${Math.min(320, dimensions.width)}w, ${clean} ${dimensions.width}w`;
+  const candidates = [160, 240, 320, 480, 640]
+    .filter((width) => width < dimensions.width)
+    .map((width) => `${clean.replace(/\.webp$/i, `.${width}.webp`)} ${width}w`);
+  candidates.push(`${clean} ${dimensions.width}w`);
+  return candidates.join(", ");
 }

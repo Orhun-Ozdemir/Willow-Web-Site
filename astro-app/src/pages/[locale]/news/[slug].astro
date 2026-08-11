@@ -2,10 +2,11 @@
 import PageLayout from "@/layouts/PageLayout.astro";
 import NewsCard from "@/components/NewsCard.astro";
 import { loadContent } from "@/lib/content";
-import { localizedValue, localizeItem, locales, resolveAsset, resolveLocale } from "@/lib/cms";
+import { itemText, localizeItem, locales, resolveAsset, resolveLocale, type Locale } from "@/lib/cms";
 import { buildAlternates, DEFAULT_OG_IMAGE, ORGANIZATION_SCHEMA, WEBSITE_SCHEMA, SITE_ORIGIN } from "@/lib/seo";
 import { normalizeProductSlug } from "@/lib/product-model";
 import { newsSeoFallback } from "@/lib/seo-fallbacks";
+import { responsiveImageSrcSet } from "@/lib/image-metadata";
 
 export const prerender = false;
 
@@ -13,14 +14,14 @@ const locale = resolveLocale(Astro.params.locale, Astro.url.pathname);
 const slug = String(Astro.params.slug || "");
 const content = await loadContent();
 const normalizedSlug = normalizeProductSlug(slug);
-const normalizeRouteSlug = (value) => normalizeProductSlug(value);
+const normalizeRouteSlug = (value: unknown) => normalizeProductSlug(value);
 const newsList = [...(content.news || [])].sort((a, b) => {
   const dateA = a.date ? new Date(`${a.date}T00:00:00`).getTime() : 0;
   const dateB = b.date ? new Date(`${b.date}T00:00:00`).getTime() : 0;
   return dateB - dateA;
 });
 const raw = newsList.find((n) => {
-  const localSlug = normalizeRouteSlug(localizedValue(n.slug, locale) || n.slug?.en || n.id);
+  const localSlug = normalizeRouteSlug(itemText(n, "slug", locale, n.slug?.en || n.slug || n.id));
   return localSlug === normalizedSlug || normalizeRouteSlug(n.id) === normalizedSlug;
 });
 
@@ -36,15 +37,15 @@ const newsSeoText = newsSeoFallback(locale, {
 });
 
 const slugByLocale = Object.fromEntries(
-  locales.map((l) => [l, `/news/${localizedValue(raw.slug, l) || raw.slug?.en || raw.id}`]),
+  locales.map((l) => [l, `/news/${itemText(raw, "slug", l, raw.slug?.en || raw.slug || raw.id)}`]),
 );
 const canonical = seo.canonical || `${SITE_ORIGIN}/${locale}${slugByLocale[locale]}`;
-const assetPath = (value) => {
+const assetPath = (value: unknown) => {
   if (!value || typeof value !== "string") return "";
   if (value.startsWith("data:")) return value;
   return resolveAsset(value);
 };
-const absoluteImage = (value) => {
+const absoluteImage = (value: unknown) => {
   if (!value || typeof value !== "string") return "";
   if (value.startsWith("data:")) return "";
   const resolved = resolveAsset(value);
@@ -52,41 +53,52 @@ const absoluteImage = (value) => {
   if (resolved.startsWith("http")) return resolved;
   return `${SITE_ORIGIN}/${resolved.replace(/^\/+/, "")}`;
 };
+const detailImageList = (Array.isArray(article.images) ? article.images : [])
+  .filter((value) => typeof value === "string" && value.trim())
+  .filter((value, index, list) => list.indexOf(value) === index);
+const articleImage = assetPath(detailImageList[0] || article.image);
+const articleGalleryImages = detailImageList
+  .slice(1)
+  .map((value) => assetPath(value))
+  .filter((value, index, list) => Boolean(value) && value !== articleImage && list.indexOf(value) === index);
 const articleImageList = [
+  ...detailImageList,
   article.image,
-  ...(Array.isArray(article.images) ? article.images : []),
 ]
   .filter((value) => typeof value === "string" && value.trim())
   .filter((value, index, list) => list.indexOf(value) === index);
-const articleImage = assetPath(articleImageList[0]);
-const articleGalleryImages = articleImageList
-  .map((value) => assetPath(value))
-  .filter(Boolean)
-  .filter((value, index, list) => value !== articleImage && list.indexOf(value) === index);
 const schemaImages = articleImageList.map((value) => absoluteImage(value)).filter(Boolean);
 const ogImage = schemaImages[0] || DEFAULT_OG_IMAGE;
-const heroImage = articleImage || "/assets/hero-industrial-iot.jpg";
+const heroImage = assetPath(article.image) || articleImage || "/assets/hero-industrial-iot.jpg";
+const articleImageMeta = raw.imageMeta || article.imageMeta;
+const articleImageSrcSet = articleImage ? responsiveImageSrcSet(articleImage, articleImageMeta, resolveAsset) : undefined;
 const dateLabel = article.date
   ? new Date(`${article.date}T00:00:00`).toLocaleDateString(locale, { year: "numeric", month: "long", day: "numeric" })
   : "";
+const sourceUrl = typeof raw.sourceUrl === "string" && /^https?:\/\//.test(raw.sourceUrl)
+  ? raw.sourceUrl
+  : "";
 
-const categoryKey = (value) => String(value || "").trim().toLowerCase();
-const categoryLabels = {
+const categoryKey = (value: unknown) => String(value || "").trim().toLowerCase();
+const categoryLabels: Record<string, Record<Locale, string>> = {
   proof: { en: "Company update", tr: "Kurumsal gelişme", de: "Unternehmensmeldung", fr: "Actualité de l’entreprise", es: "Novedad corporativa", it: "Aggiornamento aziendale", ar: "تحديث الشركة", ja: "企業ニュース" },
   tracking: { en: "Field update", tr: "Saha güncellemesi", de: "Feld-Update", fr: "Mise à jour terrain", es: "Actualización de campo", it: "Aggiornamento sul campo", ar: "تحديث ميداني", ja: "現場アップデート" },
   "field-update": { en: "Field update", tr: "Saha güncellemesi", de: "Feld-Update", fr: "Mise à jour terrain", es: "Actualización de campo", it: "Aggiornamento sul campo", ar: "تحديث ميداني", ja: "現場アップデート" },
+  "project-update": { en: "Project update", tr: "Proje güncellemesi", de: "Projekt-Update", fr: "Mise à jour projet", es: "Actualización de proyecto", it: "Aggiornamento progetto", ar: "تحديث مشروع", ja: "プロジェクト更新" },
+  "product-update": { en: "Product update", tr: "Ürün güncellemesi", de: "Produkt-Update", fr: "Mise à jour produit", es: "Actualización de producto", it: "Aggiornamento prodotto", ar: "تحديث منتج", ja: "製品アップデート" },
+  expertise: { en: "Expertise", tr: "Uzmanlık", de: "Expertise", fr: "Expertise", es: "Experiencia", it: "Competenze", ar: "الخبرة", ja: "技術力" },
   "export": { en: "Export", tr: "İhracat", de: "Export", fr: "Export", es: "Exportación", it: "Export", ar: "تصدير", ja: "輸出" },
   event: { en: "Event", tr: "Etkinlik", de: "Event", fr: "Événement", es: "Evento", it: "Evento", ar: "فعالية", ja: "イベント" },
   company: { en: "Corporate", tr: "Kurumsal", de: "Unternehmen", fr: "Entreprise", es: "Empresa", it: "Azienda", ar: "الشركة", ja: "会社" },
   workshop: { en: "Workshop", tr: "Atölye", de: "Workshop", fr: "Atelier", es: "Workshop", it: "Workshop", ar: "ورشة عمل", ja: "ワークショップ" },
   update: { en: "Update", tr: "Güncelleme", de: "Update", fr: "Mise à jour", es: "Actualización", it: "Aggiornamento", ar: "تحديث", ja: "更新" },
 };
-const displayCategory = (value) => {
+const displayCategory = (value: unknown) => {
   const key = categoryKey(value);
   return categoryLabels[key]?.[locale] || categoryLabels[key]?.en || String(value || "News");
 };
 
-const escapeHtml = (value) =>
+const escapeHtml = (value: unknown) =>
   String(value || "")
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
@@ -133,6 +145,7 @@ const articleSchema = {
       mainEntityOfPage: { "@type": "WebPage", "@id": canonical },
       ...(article.date ? { datePublished: article.date, dateModified: article.date } : {}),
       articleSection: article.category || "Company News",
+      ...(sourceUrl ? { isBasedOn: sourceUrl } : {}),
       author: { "@id": `${SITE_ORIGIN}/#org` },
       publisher: { "@id": `${SITE_ORIGIN}/#org` },
     },
@@ -148,6 +161,8 @@ const labels = {
   published: { en: "Published", tr: "Yayın tarihi", de: "Veröffentlicht", fr: "Publié", es: "Publicado", it: "Pubblicato", ar: "تاريخ النشر", ja: "公開日" },
   context: { en: "Organization", tr: "Kuruluş", de: "Organisation", fr: "Organisation", es: "Organización", it: "Organizzazione", ar: "الجهة", ja: "組織" },
   contextValue: { en: "WillowSoft", tr: "WillowSoft", de: "WillowSoft", fr: "WillowSoft", es: "WillowSoft", it: "WillowSoft", ar: "WillowSoft", ja: "WillowSoft" },
+  source: { en: "Source", tr: "Kaynak", de: "Quelle", fr: "Source", es: "Fuente", it: "Fonte", ar: "المصدر", ja: "出典" },
+  originalPost: { en: "View original LinkedIn post", tr: "Orijinal LinkedIn gönderisini görüntüle", de: "Originalbeitrag auf LinkedIn ansehen", fr: "Voir la publication LinkedIn d’origine", es: "Ver la publicación original en LinkedIn", it: "Vedi il post LinkedIn originale", ar: "عرض منشور LinkedIn الأصلي", ja: "LinkedInの元投稿を見る" },
   galleryEyebrow: { en: "Media gallery", tr: "Görsel galeri", de: "Mediengalerie", fr: "Galerie média", es: "Galería multimedia", it: "Galleria media", ar: "معرض الصور", ja: "メディアギャラリー" },
   galleryTitle: { en: "More images from this update.", tr: "Bu haberden diğer görseller.", de: "Weitere Bilder zu diesem Update.", fr: "Autres images de cette actualité.", es: "Más imágenes de esta actualización.", it: "Altre immagini da questo aggiornamento.", ar: "صور إضافية من هذا التحديث.", ja: "この更新のその他の画像。" },
   relatedEyebrow: { en: "Related updates", tr: "İlgili haberler", de: "Ähnliche Updates", fr: "Actualités associées", es: "Actualizaciones relacionadas", it: "Aggiornamenti correlati", ar: "تحديثات ذات صلة", ja: "関連更新" },
@@ -157,7 +172,7 @@ const labels = {
   ctaLead: { en: "Share the product, field constraints and target launch path. WillowSoft can map the hardware, firmware, backend and interface route together.", tr: "Ürününüzü, saha kısıtlarınızı ve hedef lansman planınızı paylaşın. WillowSoft donanım, firmware, backend ve arayüz yol haritasını birlikte çıkarabilir.", de: "Teilen Sie Produkt, Feldbedingungen und Launch-Ziel. WillowSoft kann Hardware, Firmware, Backend und Interfaces gemeinsam planen.", fr: "Partagez le produit, les contraintes terrain et l'objectif de lancement. WillowSoft peut cartographier matériel, firmware, backend et interface ensemble.", es: "Comparta el producto, las restricciones de campo y el camino de lanzamiento. WillowSoft puede mapear hardware, firmware, backend e interfaz juntos.", it: "Condividi prodotto, vincoli di campo e percorso di lancio. WillowSoft può mappare insieme hardware, firmware, backend e interfacce.", ar: "شارك المنتج وقيود الميدان ومسار الإطلاق المستهدف. يمكن لـ WillowSoft تخطيط العتاد والبرامج الثابتة والخلفية والواجهة معاً.", ja: "製品、現場制約、ローンチ目標を共有してください。WillowSoft はハードウェア、ファームウェア、バックエンド、UIを一体で整理できます。" },
   startProject: { en: "Start Project", tr: "Projeye Başla", de: "Projekt starten", fr: "Démarrer un projet", es: "Iniciar proyecto", it: "Avvia progetto", ar: "ابدأ مشروعًا", ja: "プロジェクト開始" },
 };
-const getLabel = (key) => labels[key][locale] || labels[key].en;
+const getLabel = (key: keyof typeof labels) => labels[key][locale] || labels[key].en;
 ---
 
 <PageLayout
@@ -180,7 +195,17 @@ const getLabel = (key) => labels[key][locale] || labels[key].en;
     <article>
       <section class="hero compact news-detail-hero">
         <div class="hero-media">
-          <img src={heroImage} alt={article.title} loading="eager" fetchpriority="high" decoding="async" />
+          <img
+            src={heroImage}
+            srcset={articleImageSrcSet}
+            sizes="100vw"
+            width={articleImageMeta?.width}
+            height={articleImageMeta?.height}
+            alt={article.title}
+            loading="eager"
+            fetchpriority="high"
+            decoding="async"
+          />
         </div>
         <canvas class="signal-canvas" data-density="30"></canvas>
         <div class="hero-inner">
@@ -197,7 +222,16 @@ const getLabel = (key) => labels[key][locale] || labels[key].en;
         <section class="section news-detail-media-section">
           <div class="section-inner">
             <figure class="news-detail-media reveal">
-              <img src={articleImage} alt={article.title} loading="lazy" decoding="async" />
+              <img
+                src={articleImage}
+                srcset={articleImageSrcSet}
+                sizes="(max-width: 760px) calc(100vw - 42px), 1100px"
+                width={articleImageMeta?.width}
+                height={articleImageMeta?.height}
+                alt={article.title}
+                loading="lazy"
+                decoding="async"
+              />
               <figcaption>
                 <span>{displayCategory(article.category || getLabel("newsLabel"))}</span>
                 {dateLabel && <time datetime={article.date}>{dateLabel}</time>}
@@ -229,6 +263,12 @@ const getLabel = (key) => labels[key][locale] || labels[key].en;
                 <dt>{getLabel("context")}</dt>
                 <dd>{getLabel("contextValue")}</dd>
               </div>
+              {sourceUrl && (
+                <div>
+                  <dt>{getLabel("source")}</dt>
+                  <dd><a href={sourceUrl} target="_blank" rel="noopener noreferrer">{getLabel("originalPost")}</a></dd>
+                </div>
+              )}
             </dl>
             <a class="btn btn-primary" href={`/${locale}/start-project`}>{getLabel("startProject")}</a>
           </aside>

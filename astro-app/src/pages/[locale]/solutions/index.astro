@@ -21,7 +21,10 @@ const aiMeta = aiMetaForPage(content, "solutions", locale);
 
 const solutions = (content.solutions || []).sort((a: any, b: any) => (a.sortOrder || 0) - (b.sortOrder || 0));
 const allProducts = content.products || [];
-const solutionCategories = ["All", ...Array.from(new Set(solutions.map((s: any) => s.category).filter(Boolean)))];
+const solutionCategories: string[] = [
+  "All",
+  ...Array.from(new Set<string>(solutions.map((s: any) => String(s.category || "")).filter(Boolean))),
+];
 
 const categoryLabelMap = new Map<string, string>();
 for (const sol of solutions) {

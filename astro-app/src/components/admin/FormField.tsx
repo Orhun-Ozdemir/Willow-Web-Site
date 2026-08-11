@@ -15,11 +15,12 @@ interface FormFieldProps {
   charTarget?: [number, number];
   placeholder?: string;
   className?: string;
+  onUploadResult?: (result: any) => void;
 }
 
 export default function FormField({
   label, value, onChange, type = "text", options, rows = 3,
-  readOnly, hint, charTarget, placeholder, className = "",
+  readOnly, hint, charTarget, placeholder, className = "", onUploadResult,
 }: FormFieldProps) {
   const [uploading, setUploading] = useState(false);
   const [uploadError, setUploadError] = useState("");
@@ -50,6 +51,8 @@ export default function FormField({
       ? "products"
       : label.toLowerCase().includes("çözüm") || label.toLowerCase().includes("solution") || label.toLowerCase().includes("hero")
       ? "solutions"
+      : label.toLowerCase().includes("kapak") || label.toLowerCase().includes("haber")
+      ? "news"
       : "uploads";
 
     try {
@@ -65,6 +68,7 @@ export default function FormField({
       }
 
       onChange(data.path || data.url);
+      onUploadResult?.(data);
     } catch {
       setUploadError("Yükleme sırasında ağ hatası oluştu.");
     } finally {

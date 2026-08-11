@@ -1,5 +1,6 @@
 ---
 import { localizeItem, resolveAsset, resolveLocale, type Locale } from "@/lib/cms";
+import { responsiveImageSrcSet, type ResponsiveImageMeta } from "@/lib/image-metadata";
 
 interface Props {
   item: any;
@@ -22,6 +23,9 @@ const categoryLabels: Record<string, Record<string, string>> = {
   proof: { en: "Company update", tr: "Kurumsal gelişme", de: "Unternehmensmeldung", fr: "Actualité de l’entreprise", es: "Novedad corporativa", it: "Aggiornamento aziendale", ar: "تحديث الشركة", ja: "企業ニュース" },
   tracking: { en: "Field update", tr: "Saha güncellemesi", de: "Feld-Update", fr: "Mise à jour terrain", es: "Actualización de campo", it: "Aggiornamento sul campo", ar: "تحديث ميداني", ja: "現場アップデート" },
   "field-update": { en: "Field update", tr: "Saha güncellemesi", de: "Feld-Update", fr: "Mise à jour terrain", es: "Actualización de campo", it: "Aggiornamento sul campo", ar: "تحديث ميداني", ja: "現場アップデート" },
+  "project-update": { en: "Project update", tr: "Proje güncellemesi", de: "Projekt-Update", fr: "Mise à jour projet", es: "Actualización de proyecto", it: "Aggiornamento progetto", ar: "تحديث مشروع", ja: "プロジェクト更新" },
+  "product-update": { en: "Product update", tr: "Ürün güncellemesi", de: "Produkt-Update", fr: "Mise à jour produit", es: "Actualización de producto", it: "Aggiornamento prodotto", ar: "تحديث منتج", ja: "製品アップデート" },
+  expertise: { en: "Expertise", tr: "Uzmanlık", de: "Expertise", fr: "Expertise", es: "Experiencia", it: "Competenze", ar: "الخبرة", ja: "技術力" },
   "export": { en: "Export", tr: "İhracat", de: "Export", fr: "Export", es: "Exportación", it: "Export", ar: "تصدير", ja: "輸出" },
   event: { en: "Event", tr: "Etkinlik", de: "Event", fr: "Événement", es: "Evento", it: "Evento", ar: "فعالية", ja: "イベント" },
   company: { en: "Corporate", tr: "Kurumsal", de: "Unternehmen", fr: "Entreprise", es: "Empresa", it: "Azienda", ar: "الشركة", ja: "会社" },
@@ -33,6 +37,8 @@ const slug = encodeURIComponent(n.slug || n.id || "");
 const rawGalleryImage = Array.isArray(n.images) ? n.images.find((src: any) => typeof src === "string" && src.trim()) : "";
 const rawImage = typeof n.image === "string" && n.image.trim() ? n.image : rawGalleryImage || "";
 const imageSrc = resolveAsset(rawImage);
+const imageMeta = (item.imageMeta || n.imageMeta) as ResponsiveImageMeta | undefined;
+const imageSrcSet = imageSrc ? responsiveImageSrcSet(imageSrc, imageMeta, resolveAsset) : undefined;
 const searchable = [n.title, rawCategory, category, n.excerpt].filter(Boolean).join(" ").toLowerCase();
 const readLabel: Record<string, string> = {
   en: "Read",
@@ -78,9 +84,11 @@ const dateLabel: Record<string, string> = {
     {imageSrc ? (
       <img
         src={imageSrc}
+        srcset={imageSrcSet}
+        sizes="(max-width: 760px) calc(100vw - 42px), (max-width: 1100px) 45vw, 380px"
         alt={n.title}
-        width="1600"
-        height="1000"
+        width={imageMeta?.width || 1600}
+        height={imageMeta?.height || 1000}
         loading="lazy"
         decoding="async"
         onerror="this.closest('figure').classList.add('is-empty'); this.remove();"

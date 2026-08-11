@@ -142,7 +142,7 @@ export async function loadContent(opts: { allowFallback?: boolean } = {}): Promi
   }
 
   const mapProductCollection = (rows: any[] | null) =>
-    (rows || []).map((r) => canonicalizeProduct({ ...r.data, id: r.id, localized: r.localized || {} }));
+    (rows || []).map((r) => canonicalizeProduct({ ...r.data, id: r.id, localized: r.localized || {}, updatedAt: r.updated_at || r.data?.updatedAt }));
 
   /** SSS, sözlük vb. — ürün canonicalizer uygulanmaz (sahte diff/veri bozulması önlenir). */
   const mapGenericCollection = (rows: any[] | null) =>
@@ -150,6 +150,7 @@ export async function loadContent(opts: { allowFallback?: boolean } = {}): Promi
       ...r.data,
       id: r.id,
       localized: r.localized || {},
+      updatedAt: r.updated_at || r.data?.updatedAt,
     }));
 
   const mapSingleton = (rows: any[] | null, key: string) => {
@@ -170,7 +171,11 @@ export async function loadContent(opts: { allowFallback?: boolean } = {}): Promi
     glossary: mapGenericCollection(glos),
     pageContent: mapSingleton(pContent, "page"),
     pageSeo: mapSingleton(pSeo, "page"),
-    translations: mapSingleton(trns, "locale")
+    translations: mapSingleton(trns, "locale"),
+    lastModified: {
+      pageSeo: Object.fromEntries((pSeo || []).map((row: any) => [row.page, row.updated_at]).filter(([, value]) => value)),
+      pageContent: Object.fromEntries((pContent || []).map((row: any) => [row.page, row.updated_at]).filter(([, value]) => value)),
+    },
   };
 
   cachedContent = content;

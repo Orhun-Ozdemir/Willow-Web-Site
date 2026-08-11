@@ -27,7 +27,6 @@ const cutoutImage =
   resolveAsset(p.cardImage) ||
   resolveAsset(p.image) ||
   resolveAsset(`assets/product-cutouts/${p.id}.png`);
-const originalImage = resolveAsset(p.image) || resolveAsset(p.cardImage) || cutoutImage;
 const cutoutDimensions = productCutoutDimensions(cutoutImage);
 const cutoutSrcSet = productCutoutSrcSet(cutoutImage);
 const detailsLabel: Record<string, string> = {
@@ -51,7 +50,7 @@ const categoryLabel = productCategoryLabel(categories, displayCategory, locale);
     <img
       src={cutoutImage}
       srcset={cutoutSrcSet}
-      sizes="(max-width: 640px) 72vw, (max-width: 1100px) 38vw, 280px"
+      sizes="(max-width: 480px) 130px, (max-width: 760px) 160px, 180px"
       width={cutoutDimensions?.width}
       height={cutoutDimensions?.height}
       alt={p.title}

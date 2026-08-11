@@ -82,9 +82,9 @@ export default function PageMirrorSidebar({
             layout={layout}
             data={pageData}
             locale={previewLocale}
-            activeBlockId={activeBlockId ?? undefined}
+            activeBlockId={activeBlockId ?? null}
             activeItemId={activeItemId ?? undefined}
-            activeCard={activeCard ?? undefined}
+            activeCard={activeCard ?? null}
             onSelectBlock={onSelectBlock || (() => {})}
             onSelectItem={onSelectItem}
             onSelectCard={onSelectCard}

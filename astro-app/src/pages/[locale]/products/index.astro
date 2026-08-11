@@ -8,6 +8,7 @@ import { pageSeo, webPageNode, ORGANIZATION_SCHEMA, WEBSITE_SCHEMA, SITE_ORIGIN 
 import { localizedValue, localizeItem, pageButtonParts, pageLocaleHref, pageText, resolveAsset, resolveLocale, type Locale } from "@/lib/cms";
 import { aiAnswerForPage, aiMetaForPage, appendSchemaNodes, fallbackFaqsForPage, faqItemsForPage, faqSchemaNode } from "@/lib/ai-search";
 import { productCategoriesFromContent, productCategoryText } from "@/lib/product-categories";
+import { productCutoutDimensions, productCutoutSrcSet } from "@/lib/image-metadata";
 
 export const prerender = false;
 
@@ -217,9 +218,11 @@ const featuredProductRaw = productsList.find((product: any) => product.id === fe
 const featuredProduct = localizeItem(featuredProductRaw, locale);
 const featuredImage = resolveAsset(
   featuredProduct?.id === "willowbee"
-    ? "assets/product-cutouts/willowbee-lorawan-module.png"
+    ? "assets/product-cutouts/willowbee-lorawan-module.webp"
     : featuredProduct?.cardImage || featuredProduct?.image || `assets/product-cutouts/${featuredProduct?.id || "willowbee"}.png`,
 );
+const featuredImageDimensions = productCutoutDimensions(featuredImage);
+const featuredImageSrcSet = productCutoutSrcSet(featuredImage);
 const featuredChips = Array.isArray(featuredProduct?.chips) ? featuredProduct.chips.slice(0, 3) : [];
 
 const proofItems = [
@@ -246,6 +249,8 @@ const selectionPrimaryButton = buttonFor("selectionPrimaryButton", getLabel("tal
   schema={productsSchema}
   locale={locale}
   dataPage="products"
+  preloadImage={featuredImage}
+  preloadImageType="image/webp"
 >
   <main id="main-content">
     <!-- Hero -->
@@ -277,7 +282,7 @@ const selectionPrimaryButton = buttonFor("selectionPrimaryButton", getLabel("tal
             </span>
           </div>
         </div>
-        <aside class="product-hero-showcase reveal delay-2" aria-label="Featured WillowSoft hardware">
+        <aside class="product-hero-showcase" aria-label="Featured WillowSoft hardware">
           <div class="product-showcase-topline">
             <span>{pt("featuredStatus", "productionReady")}</span>
             <span class="product-live-dot" aria-hidden="true"></span>
@@ -285,7 +290,17 @@ const selectionPrimaryButton = buttonFor("selectionPrimaryButton", getLabel("tal
           <div class="product-showcase-stage">
             <span class="product-orbit product-orbit-one" aria-hidden="true"></span>
             <span class="product-orbit product-orbit-two" aria-hidden="true"></span>
-            <img src={featuredImage} alt={featuredProduct?.title || "Featured product"} loading="lazy" decoding="async" />
+            <img
+              src={featuredImage}
+              srcset={featuredImageSrcSet}
+              sizes="(max-width: 760px) 205px, 235px"
+              width={featuredImageDimensions?.width}
+              height={featuredImageDimensions?.height}
+              alt={featuredProduct?.title || "Featured product"}
+              loading="eager"
+              fetchpriority="high"
+              decoding="async"
+            />
             {featuredChips.map((chip: string, index: number) => (
               <span class={`product-spec-tag product-spec-tag-${["one", "two", "three"][index]}`}>{chip}</span>
             ))}

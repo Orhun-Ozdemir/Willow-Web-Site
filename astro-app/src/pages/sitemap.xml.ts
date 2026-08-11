@@ -1,6 +1,6 @@
 import type { APIRoute } from "astro";
 import { loadContent } from "@/lib/content";
-import { localizedValue, locales, type Locale } from "@/lib/cms";
+import { itemText, locales, type Locale } from "@/lib/cms";
 import { SITE_ORIGIN } from "@/lib/seo";
 
 const STATIC_PAGES: { key: string; subPath: string }[] = [
@@ -51,6 +51,7 @@ export const GET: APIRoute = async () => {
     pushLocalizedSet((l) => `${SITE_ORIGIN}/${l}${page.subPath}`, (l) => ({
       changefreq: seoByLocale[l]?.changefreq || seoEn.changefreq,
       priority: seoByLocale[l]?.priority || seoEn.priority,
+      lastmod: content.lastModified?.pageSeo?.[page.key] || content.lastModified?.pageContent?.[page.key] || lastmod,
     }));
   }
 
@@ -59,13 +60,14 @@ export const GET: APIRoute = async () => {
     pushLocalizedSet((l) => `${SITE_ORIGIN}/${l}/products/${slug}`, () => ({
       changefreq: "monthly",
       priority: "0.7",
+      lastmod: product.updatedAt || lastmod,
     }));
   }
 
   for (const item of content.news || []) {
     pushLocalizedSet(
-      (l) => `${SITE_ORIGIN}/${l}/news/${localizedValue(item.slug, l) || item.slug?.en || item.id}`,
-      () => ({ changefreq: "yearly", priority: "0.5", lastmod: item.date || lastmod }),
+      (l) => `${SITE_ORIGIN}/${l}/news/${itemText(item, "slug", l, item.slug?.en || item.slug || item.id)}`,
+      () => ({ changefreq: "yearly", priority: "0.5", lastmod: item.updatedAt || item.date || lastmod }),
     );
   }
 
