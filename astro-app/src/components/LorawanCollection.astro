@@ -5,6 +5,7 @@ import { productCategoryText, type ProductCategory } from "@/lib/product-categor
 import { productSearchDescriptor } from "@/lib/seo-fallbacks";
 import { categorySearchName, COLLECTION_TABLE_LABELS, LORAWAN_LANDING_COPY } from "@/lib/lorawan-landing";
 import { GUIDE_INDEX_COPY, TECHNICAL_GUIDES } from "@/lib/technical-guides";
+import { accessibilityCopy } from "@/lib/accessibility-copy";
 
 interface Props {
   locale: Locale;
@@ -31,7 +32,7 @@ const guideCopy = GUIDE_INDEX_COPY[locale];
   <section class="lorawan-hero">
     <div class="section-inner lorawan-hero-grid">
       <div>
-        <nav class="lorawan-breadcrumb" aria-label="Breadcrumb">
+        <nav class="lorawan-breadcrumb" aria-label={accessibilityCopy("breadcrumb", locale)}>
           <a href={`/${locale}/products`}>{copy.allProducts}</a>
           {selectedCategory && <><span>/</span><a href={`/${locale}/lorawan-sensors`}>{copy.categoryBack}</a></>}
         </nav>

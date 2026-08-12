@@ -44,6 +44,73 @@ const selectorCards = pageContent.selectorCards || [];
 const howItWorksSteps = pageContent.howItWorksSteps || [];
 const whyCards = pageContent.whyCards || [];
 
+type SolutionFallbackCard = { eyebrow?: string; title: string; body: string; bullets?: string[] };
+
+const selectorFallbacks: Record<Locale, SolutionFallbackCard[]> = {
+  en: [
+    { eyebrow: "Need visibility?", title: "Remote Monitoring", body: "For assets that are hard to reach, distributed across sites or still checked manually by field teams.", bullets: ["Live telemetry", "Asset status", "Historical trends"] },
+    { eyebrow: "Need response?", title: "Alerts & Workflows", body: "For operations where level, pressure, motion, panic, door, GPS or air-quality events require immediate action.", bullets: ["Threshold alerts", "Mobile notifications", "Escalation flows"] },
+    { eyebrow: "Need integration?", title: "Industrial Data Platform", body: "For telemetry that must feed reporting tools, ERP systems, customer portals, PostgreSQL or internal APIs.", bullets: ["Backend APIs", "Admin panels", "Data pipelines"] },
+  ],
+  tr: [
+    { eyebrow: "Görünürlük mü gerekiyor?", title: "Uzaktan İzleme", body: "Erişilmesi zor, farklı sahalara dağılmış veya ekipler tarafından hâlâ manuel kontrol edilen varlıklar için.", bullets: ["Canlı telemetri", "Varlık durumu", "Geçmiş eğilimler"] },
+    { eyebrow: "Hızlı müdahale mi gerekiyor?", title: "Uyarılar ve İş Akışları", body: "Seviye, basınç, hareket, panik, kapı, GPS veya hava kalitesi olaylarının anında müdahale gerektirdiği operasyonlar için.", bullets: ["Eşik uyarıları", "Mobil bildirimler", "Eskalasyon akışları"] },
+    { eyebrow: "Entegrasyon mu gerekiyor?", title: "Endüstriyel Veri Platformu", body: "Raporlama araçlarını, ERP sistemlerini, müşteri portallarını, PostgreSQL veritabanını veya dahili API'leri beslemesi gereken telemetri için.", bullets: ["Backend API'leri", "Yönetim panelleri", "Veri hatları"] },
+  ],
+  de: [
+    { eyebrow: "Mehr Transparenz benötigt?", title: "Fernüberwachung", body: "Für schwer zugängliche, auf mehrere Standorte verteilte oder noch manuell kontrollierte Anlagen.", bullets: ["Live-Telemetrie", "Anlagenstatus", "Historische Trends"] },
+    { eyebrow: "Schnelle Reaktion erforderlich?", title: "Alarme & Workflows", body: "Für Betriebsabläufe, bei denen Füllstand, Druck, Bewegung, Panik, Türstatus, GPS oder Luftqualität sofortiges Handeln erfordern.", bullets: ["Schwellenwertalarme", "Mobile Benachrichtigungen", "Eskalationsabläufe"] },
+    { eyebrow: "Integration benötigt?", title: "Industrielle Datenplattform", body: "Für Telemetriedaten, die Berichtssysteme, ERP-Lösungen, Kundenportale, PostgreSQL oder interne APIs versorgen müssen.", bullets: ["Backend-APIs", "Admin-Panels", "Datenpipelines"] },
+  ],
+  fr: [
+    { eyebrow: "Besoin de visibilité ?", title: "Surveillance à distance", body: "Pour les équipements difficiles d'accès, répartis sur plusieurs sites ou encore contrôlés manuellement par les équipes terrain.", bullets: ["Télémétrie en temps réel", "État des équipements", "Tendances historiques"] },
+    { eyebrow: "Besoin de réagir rapidement ?", title: "Alertes et workflows", body: "Pour les opérations où les événements de niveau, pression, mouvement, panique, porte, GPS ou qualité de l'air exigent une action immédiate.", bullets: ["Alertes sur seuil", "Notifications mobiles", "Workflows d'escalade"] },
+    { eyebrow: "Besoin d'intégration ?", title: "Plateforme de données industrielles", body: "Pour les données de télémétrie destinées aux outils de reporting, ERP, portails clients, bases PostgreSQL ou API internes.", bullets: ["API backend", "Interfaces d'administration", "Pipelines de données"] },
+  ],
+  es: [
+    { eyebrow: "¿Necesita visibilidad?", title: "Monitorización remota", body: "Para activos de difícil acceso, distribuidos entre distintas ubicaciones o que todavía se revisan manualmente en campo.", bullets: ["Telemetría en tiempo real", "Estado de los activos", "Tendencias históricas"] },
+    { eyebrow: "¿Necesita una respuesta rápida?", title: "Alertas y flujos de trabajo", body: "Para operaciones donde los eventos de nivel, presión, movimiento, pánico, puerta, GPS o calidad del aire exigen actuar de inmediato.", bullets: ["Alertas por umbral", "Notificaciones móviles", "Flujos de escalado"] },
+    { eyebrow: "¿Necesita integración?", title: "Plataforma de datos industriales", body: "Para telemetría que debe alimentar herramientas de informes, sistemas ERP, portales de clientes, PostgreSQL o API internas.", bullets: ["API de backend", "Paneles de administración", "Pipelines de datos"] },
+  ],
+  it: [
+    { eyebrow: "Serve maggiore visibilità?", title: "Monitoraggio remoto", body: "Per asset difficili da raggiungere, distribuiti su più siti o ancora controllati manualmente dagli operatori sul campo.", bullets: ["Telemetria in tempo reale", "Stato degli asset", "Trend storici"] },
+    { eyebrow: "Serve una risposta rapida?", title: "Avvisi e workflow", body: "Per operazioni in cui eventi di livello, pressione, movimento, panico, porta, GPS o qualità dell'aria richiedono un intervento immediato.", bullets: ["Avvisi a soglia", "Notifiche mobili", "Flussi di escalation"] },
+    { eyebrow: "Serve un'integrazione?", title: "Piattaforma dati industriale", body: "Per telemetria destinata ad alimentare strumenti di reporting, sistemi ERP, portali clienti, PostgreSQL o API interne.", bullets: ["API backend", "Pannelli di amministrazione", "Pipeline di dati"] },
+  ],
+  ar: [
+    { eyebrow: "هل تحتاج إلى رؤية أوضح؟", title: "المراقبة عن بُعد", body: "للأصول التي يصعب الوصول إليها، أو الموزعة بين مواقع متعددة، أو التي ما زالت الفرق الميدانية تفحصها يدوياً.", bullets: ["قياس آني عن بُعد", "حالة الأصول", "الاتجاهات التاريخية"] },
+    { eyebrow: "هل تحتاج إلى استجابة سريعة؟", title: "التنبيهات ومسارات العمل", body: "للعمليات التي تتطلب فيها أحداث المستوى أو الضغط أو الحركة أو الاستغاثة أو الأبواب أو GPS أو جودة الهواء تدخلاً فورياً.", bullets: ["تنبيهات الحدود", "إشعارات الجوال", "مسارات التصعيد"] },
+    { eyebrow: "هل تحتاج إلى تكامل؟", title: "منصة البيانات الصناعية", body: "للبيانات الميدانية التي يجب أن تغذي أدوات التقارير وأنظمة ERP وبوابات العملاء وقواعد PostgreSQL أو واجهات API الداخلية.", bullets: ["واجهات API للخلفية", "لوحات الإدارة", "مسارات البيانات"] },
+  ],
+  ja: [
+    { eyebrow: "遠隔で状況を把握したいですか？", title: "リモート監視", body: "アクセスが難しい設備、複数拠点に分散した資産、または現場担当者が手作業で点検している設備向けです。", bullets: ["リアルタイムテレメトリー", "設備状態", "履歴トレンド"] },
+    { eyebrow: "迅速な対応が必要ですか？", title: "アラートとワークフロー", body: "水位、圧力、動作、緊急通報、扉、GPS、空気質などの異常に即時対応が必要な運用向けです。", bullets: ["しきい値アラート", "モバイル通知", "エスカレーションフロー"] },
+    { eyebrow: "システム連携が必要ですか？", title: "産業データプラットフォーム", body: "レポートツール、ERP、顧客ポータル、PostgreSQL、社内APIへテレメトリーデータを連携する用途向けです。", bullets: ["バックエンドAPI", "管理画面", "データパイプライン"] },
+  ],
+};
+
+const flowFallbacks: Record<Locale, SolutionFallbackCard[]> = {
+  en: [{ title: "Measure", body: "Level, pressure, air quality, motion, GPS, temperature, humidity and more." }, { title: "Transmit", body: "LoRaWAN and low-power communication paths designed for site reality." }, { title: "Process", body: "Backend APIs, PostgreSQL storage, rules, thresholds and reporting logic." }, { title: "Visualize", body: "Dashboards, maps, admin panels, mobile apps and customer portals." }, { title: "Act", body: "Alerts, workflows, field response, maintenance planning and decision support." }],
+  tr: [{ title: "Ölçüm", body: "Seviye, basınç, hava kalitesi, hareket, GPS, sıcaklık, nem ve daha fazlası." }, { title: "İletim", body: "Saha koşullarına göre tasarlanmış LoRaWAN ve düşük güçlü iletişim yolları." }, { title: "İşleme", body: "Backend API'leri, PostgreSQL depolaması, kurallar, eşikler ve raporlama mantığı." }, { title: "Görselleştirme", body: "Paneller, haritalar, yönetim ekranları, mobil uygulamalar ve müşteri portalları." }, { title: "Eylem", body: "Uyarılar, iş akışları, saha müdahalesi, bakım planlaması ve karar desteği." }],
+  de: [{ title: "Messen", body: "Füllstand, Druck, Luftqualität, Bewegung, GPS, Temperatur, Feuchtigkeit und mehr." }, { title: "Übertragen", body: "LoRaWAN- und stromsparende Kommunikationswege, ausgelegt für reale Standortbedingungen." }, { title: "Verarbeiten", body: "Backend-APIs, PostgreSQL-Speicherung, Regeln, Schwellenwerte und Berichtslogik." }, { title: "Visualisieren", body: "Dashboards, Karten, Admin-Panels, mobile Apps und Kundenportale." }, { title: "Handeln", body: "Alarme, Workflows, Feldeinsätze, Wartungsplanung und Entscheidungsunterstützung." }],
+  fr: [{ title: "Mesurer", body: "Niveau, pression, qualité de l'air, mouvement, GPS, température, humidité et plus encore." }, { title: "Transmettre", body: "LoRaWAN et communications basse consommation conçus pour les conditions réelles du site." }, { title: "Traiter", body: "API backend, stockage PostgreSQL, règles, seuils et logique de reporting." }, { title: "Visualiser", body: "Tableaux de bord, cartes, interfaces d'administration, applications mobiles et portails clients." }, { title: "Agir", body: "Alertes, workflows, interventions terrain, planification de maintenance et aide à la décision." }],
+  es: [{ title: "Medir", body: "Nivel, presión, calidad del aire, movimiento, GPS, temperatura, humedad y mucho más." }, { title: "Transmitir", body: "LoRaWAN y comunicaciones de bajo consumo diseñadas para las condiciones reales del sitio." }, { title: "Procesar", body: "API de backend, almacenamiento PostgreSQL, reglas, umbrales y lógica de informes." }, { title: "Visualizar", body: "Paneles, mapas, interfaces de administración, aplicaciones móviles y portales de clientes." }, { title: "Actuar", body: "Alertas, flujos de trabajo, respuesta en campo, planificación del mantenimiento y apoyo a la decisión." }],
+  it: [{ title: "Misurare", body: "Livello, pressione, qualità dell'aria, movimento, GPS, temperatura, umidità e altro." }, { title: "Trasmettere", body: "LoRaWAN e comunicazioni a basso consumo progettate per le reali condizioni del sito." }, { title: "Elaborare", body: "API backend, archiviazione PostgreSQL, regole, soglie e logica di reporting." }, { title: "Visualizzare", body: "Dashboard, mappe, pannelli di amministrazione, app mobili e portali clienti." }, { title: "Intervenire", body: "Avvisi, workflow, interventi sul campo, pianificazione della manutenzione e supporto decisionale." }],
+  ar: [{ title: "القياس", body: "المستوى والضغط وجودة الهواء والحركة وGPS ودرجة الحرارة والرطوبة وغيرها." }, { title: "الإرسال", body: "اتصالات LoRaWAN ومسارات منخفضة الطاقة مصممة وفق ظروف الموقع الفعلية." }, { title: "المعالجة", body: "واجهات API للخلفية وتخزين PostgreSQL والقواعد والحدود ومنطق التقارير." }, { title: "العرض", body: "لوحات المعلومات والخرائط ولوحات الإدارة وتطبيقات الجوال وبوابات العملاء." }, { title: "التنفيذ", body: "التنبيهات ومسارات العمل والاستجابة الميدانية وتخطيط الصيانة ودعم القرار." }],
+  ja: [{ title: "計測", body: "水位、圧力、空気質、動作、GPS、温度、湿度などを計測します。" }, { title: "送信", body: "現場条件に合わせて設計したLoRaWANと低消費電力通信でデータを送信します。" }, { title: "処理", body: "バックエンドAPI、PostgreSQL、ルール、しきい値、レポート処理を統合します。" }, { title: "可視化", body: "ダッシュボード、地図、管理画面、モバイルアプリ、顧客ポータルで可視化します。" }, { title: "対応", body: "アラート、ワークフロー、現場対応、保守計画、意思決定を支援します。" }],
+};
+
+const whyFallbacks: Record<Locale, SolutionFallbackCard[]> = {
+  en: [{ title: "Low-Power Expertise", body: "Battery life, payload size and reporting intervals are designed around real deployment requirements." }, { title: "RF-Aware Deployment", body: "Connectivity planning considers metal-heavy factories, distance, weather, enclosures and gateway placement." }, { title: "Full-Stack Ownership", body: "Hardware, firmware, backend, database, dashboard, admin panel and mobile workflows are designed together." }, { title: "Production-First Thinking", body: "Every solution is evaluated against field reality, not only against prototype assumptions." }],
+  tr: [{ title: "Düşük Güç Uzmanlığı", body: "Pil ömrü, veri paketi boyutu ve raporlama aralıkları gerçek kurulum gereksinimlerine göre tasarlanır." }, { title: "RF Koşullarına Uygun Kurulum", body: "Bağlantı planlamasında metal yoğunluklu fabrikalar, mesafe, hava koşulları, muhafazalar ve gateway yerleşimi dikkate alınır." }, { title: "Uçtan Uca Sorumluluk", body: "Donanım, firmware, backend, veritabanı, dashboard, admin paneli ve mobil iş akışları birlikte tasarlanır." }, { title: "Üretim Odaklı Yaklaşım", body: "Her çözüm yalnızca prototip varsayımlarına göre değil, gerçek saha koşullarına göre değerlendirilir." }],
+  de: [{ title: "Low-Power-Kompetenz", body: "Batterielaufzeit, Nutzlastgröße und Berichtsintervalle werden nach den realen Anforderungen der Installation ausgelegt." }, { title: "RF-gerechte Bereitstellung", body: "Die Verbindungsplanung berücksichtigt metallreiche Fabriken, Entfernungen, Wetter, Gehäuse und Gateway-Positionen." }, { title: "Full-Stack-Verantwortung", body: "Hardware, Firmware, Backend, Datenbank, Dashboard, Admin-Panel und mobile Workflows werden gemeinsam entwickelt." }, { title: "Produktionsorientiertes Denken", body: "Jede Lösung wird an der Realität im Feld und nicht nur an Prototypannahmen gemessen." }],
+  fr: [{ title: "Expertise basse consommation", body: "Autonomie, taille des payloads et fréquence de transmission sont définies selon les contraintes réelles du déploiement." }, { title: "Déploiement adapté aux RF", body: "La planification tient compte des usines riches en métal, des distances, de la météo, des boîtiers et de l'emplacement des gateways." }, { title: "Maîtrise de bout en bout", body: "Matériel, firmware, backend, base de données, dashboard, administration et workflows mobiles sont conçus ensemble." }, { title: "Priorité à la production", body: "Chaque solution est évaluée selon la réalité du terrain, et pas uniquement selon les hypothèses d'un prototype." }],
+  es: [{ title: "Especialización en bajo consumo", body: "La autonomía, el tamaño del payload y los intervalos de envío se diseñan según los requisitos reales del despliegue." }, { title: "Despliegue adaptado a RF", body: "La planificación considera fábricas con abundante metal, distancia, clima, carcasas y ubicación de gateways." }, { title: "Responsabilidad de extremo a extremo", body: "Hardware, firmware, backend, base de datos, dashboard, panel de administración y flujos móviles se diseñan en conjunto." }, { title: "Enfoque orientado a producción", body: "Cada solución se evalúa frente a la realidad del campo, no solo según supuestos de prototipo." }],
+  it: [{ title: "Competenza nel basso consumo", body: "Autonomia, dimensione del payload e intervalli di invio vengono definiti in base ai requisiti reali dell'installazione." }, { title: "Installazione consapevole delle RF", body: "La pianificazione considera fabbriche ricche di metallo, distanze, meteo, involucri e posizione dei gateway." }, { title: "Responsabilità end-to-end", body: "Hardware, firmware, backend, database, dashboard, pannello di amministrazione e workflow mobili vengono progettati insieme." }, { title: "Approccio orientato alla produzione", body: "Ogni soluzione viene valutata sulla realtà del campo, non soltanto sulle ipotesi di un prototipo." }],
+  ar: [{ title: "خبرة في استهلاك الطاقة المنخفض", body: "يُصمم عمر البطارية وحجم البيانات وفترات الإرسال وفق متطلبات النشر الفعلية." }, { title: "نشر مدروس وفق بيئة RF", body: "يراعي تخطيط الاتصال كثافة المعادن في المصانع والمسافة والطقس والحاويات ومواقع البوابات." }, { title: "مسؤولية متكاملة", body: "تُصمم الأجهزة وFirmware والخلفية وقاعدة البيانات ولوحات المعلومات والإدارة ومسارات الجوال معاً." }, { title: "تفكير يبدأ من الإنتاج", body: "يُقيَّم كل حل وفق واقع الميدان، وليس اعتماداً على افتراضات النموذج الأولي فقط." }],
+  ja: [{ title: "低消費電力設計の専門性", body: "電池寿命、ペイロードサイズ、送信間隔を実際の導入要件に合わせて設計します。" }, { title: "RF環境を考慮した導入", body: "金属の多い工場、距離、天候、筐体、ゲートウェイ配置を考慮して通信設計を行います。" }, { title: "フルスタックでの一貫対応", body: "ハードウェア、Firmware、バックエンド、データベース、ダッシュボード、管理画面、モバイル運用を一体で設計します。" }, { title: "量産を見据えた設計", body: "試作段階の前提だけでなく、実際の現場条件に基づいてすべてのソリューションを評価します。" }],
+};
+
 const labels = {
   filterAll: { en: "All", tr: "Tümü", de: "Alle", fr: "Tous", es: "Todos", it: "Tutti", ar: "الكل", ja: "すべて" },
   exploreDevices: { en: "Explore Devices", tr: "Cihazları İnceleyin", de: "Geräte entdecken", fr: "Découvrir les appareils", es: "Explorar dispositivos", it: "Esplora i dispositivi", ar: "استكشف الأجهزة", ja: "製品を見る" },
@@ -196,49 +263,15 @@ const categoryName = (cat: string) =>
                 </article>
               );
             })
-          ) : (
-            <>
-              <article class="solution-decision-card reveal">
-                <div class="decision-icon">01</div>
-                <span>{locale === 'tr' ? 'Görünürlük mü lazım?' : 'Need visibility?'}</span>
-                <h3>{locale === 'tr' ? 'Uzaktan İzleme' : 'Remote Monitoring'}</h3>
-                <p>
-                  {locale === 'tr' ? 'Erişilmesi zor, sahalara dağıtılmış veya saha ekipleri tarafından manuel kontrol edilen varlıklar için.' : 'For assets that are hard to reach, distributed across sites or still checked manually by field teams.'}
-                </p>
-                <ul>
-                  <li>{locale === 'tr' ? 'Canlı telemetri' : 'Live telemetry'}</li>
-                  <li>{locale === 'tr' ? 'Varlık durumu' : 'Asset status'}</li>
-                  <li>{locale === 'tr' ? 'Geçmiş trendler' : 'Historical trends'}</li>
-                </ul>
-              </article>
-              <article class="solution-decision-card reveal delay-1">
-                <div class="decision-icon">02</div>
-                <span>{locale === 'tr' ? 'Müdahale mi gerekiyor?' : 'Need response?'}</span>
-                <h3>{locale === 'tr' ? 'Uyarılar ve İş Akışları' : 'Alerts & Workflows'}</h3>
-                <p>
-                  {locale === 'tr' ? 'Seviye, basınç, hareket, panik, kapı, GPS veya hava kalitesi olaylarının anında müdahale gerektirdiği operasyonlar için.' : 'For operations where level, pressure, motion, panic, door, GPS or air-quality events require immediate action.'}
-                </p>
-                <ul>
-                  <li>{locale === 'tr' ? 'Eşik uyarıları' : 'Threshold alerts'}</li>
-                  <li>{locale === 'tr' ? 'Mobil bildirimler' : 'Mobile notifications'}</li>
-                  <li>{locale === 'tr' ? 'Eskalasyon akışları' : 'Escalation flows'}</li>
-                </ul>
-              </article>
-              <article class="solution-decision-card reveal delay-2">
-                <div class="decision-icon">03</div>
-                <span>{locale === 'tr' ? 'Entegrasyon mu lazım?' : 'Need integration?'}</span>
-                <h3>{locale === 'tr' ? 'Endüstriyel Veri Platformu' : 'Industrial Data Platform'}</h3>
-                <p>
-                  {locale === 'tr' ? 'Raporlama araçlarını, ERP sistemlerini, müşteri portallarını, PostgreSQL veritabanını veya dahili API\'leri beslemesi gereken telemetri için.' : 'For telemetry that must feed reporting tools, ERP systems, customer portals, PostgreSQL or internal APIs.'}
-                </p>
-                <ul>
-                  <li>{locale === 'tr' ? 'Arka uç API\'leri' : 'Backend APIs'}</li>
-                  <li>{locale === 'tr' ? 'Yönetici panelleri' : 'Admin panels'}</li>
-                  <li>{locale === 'tr' ? 'Veri hatları' : 'Data pipelines'}</li>
-                </ul>
-              </article>
-            </>
-          )}
+          ) : selectorFallbacks[locale].map((card, idx) => (
+            <article class={`solution-decision-card reveal ${idx > 0 ? `delay-${idx}` : ""}`}>
+              <div class="decision-icon">{String(idx + 1).padStart(2, "0")}</div>
+              <span>{card.eyebrow}</span>
+              <h3>{card.title}</h3>
+              <p>{card.body}</p>
+              <ul>{card.bullets?.map((bullet) => <li>{bullet}</li>)}</ul>
+            </article>
+          ))}
         </div>
       </div>
     </section>
@@ -312,36 +345,13 @@ const categoryName = (cat: string) =>
                   </div>
                 );
               })
-            ) : (
-              // Fallback
-              <>
-                <div class="flow-node">
-                  <small>01</small>
-                  <strong>{locale === 'tr' ? 'Ölçüm' : 'Measure'}</strong>
-                  <span>{locale === 'tr' ? 'Seviye, basınç, hava kalitesi, hareket, GPS, sıcaklık, nem ve daha fazlası.' : 'Level, pressure, air quality, motion, GPS, temperature, humidity and more.'}</span>
-                </div>
-                <div class="flow-node">
-                  <small>02</small>
-                  <strong>{locale === 'tr' ? 'İletim' : 'Transmit'}</strong>
-                  <span>{locale === 'tr' ? 'Saha gerçekliğine göre tasarlanmış LoRaWAN ve düşük güçlü iletişim yolları.' : 'LoRaWAN and low-power communication paths designed for site reality.'}</span>
-                </div>
-                <div class="flow-node">
-                  <small>03</small>
-                  <strong>{locale === 'tr' ? 'İşleme' : 'Process'}</strong>
-                  <span>{locale === 'tr' ? 'Backend API\'leri, PostgreSQL depolaması, kurallar, eşikler ve raporlama mantığı.' : 'Backend APIs, PostgreSQL storage, rules, thresholds and reporting logic.'}</span>
-                </div>
-                <div class="flow-node">
-                  <small>04</small>
-                  <strong>{locale === 'tr' ? 'Görselleştirme' : 'Visualize'}</strong>
-                  <span>{locale === 'tr' ? 'Paneller, haritalar, yönetici panelleri, mobil uygulamalar ve müşteri portalları.' : 'Dashboards, maps, admin panels, mobile apps and customer portals.'}</span>
-                </div>
-                <div class="flow-node">
-                  <small>05</small>
-                  <strong>{locale === 'tr' ? 'Eylem' : 'Act'}</strong>
-                  <span>{locale === 'tr' ? 'Uyarılar, iş akışları, saha yanıtları, bakım planlaması ve karar desteği.' : 'Alerts, workflows, field response, maintenance planning and decision support.'}</span>
-                </div>
-              </>
-            )}
+            ) : flowFallbacks[locale].map((step, idx) => (
+              <div class="flow-node">
+                <small>{String(idx + 1).padStart(2, "0")}</small>
+                <strong>{step.title}</strong>
+                <span>{step.body}</span>
+              </div>
+            ))}
           </div>
         </div>
       </div>
@@ -369,39 +379,13 @@ const categoryName = (cat: string) =>
                 </article>
               );
             })
-          ) : (
-            // Fallback
-            <>
-              <article class="solutions-principle-card reveal">
-                <span>01</span>
-                <h3>{locale === 'tr' ? 'Düşük Güç Uzmanlığı' : 'Low-Power Expertise'}</h3>
-                <p>
-                  {locale === 'tr' ? 'Pil ömrü, veri paketi boyutu ve raporlama aralıkları gerçek kurulum gereksinimlerine göre tasarlanır.' : 'Battery life, payload size and reporting intervals are designed around real deployment requirements.'}
-                </p>
-              </article>
-              <article class="solutions-principle-card reveal delay-1">
-                <span>02</span>
-                <h3>{locale === 'tr' ? 'RF Uyumlu Kurulum' : 'RF-Aware Deployment'}</h3>
-                <p>
-                  {locale === 'tr' ? 'Bağlantı planlaması; metal yoğunluklu fabrikaları, mesafeyi, hava koşullarını, muhafazaları ve geçit yerleşimini hesaba katar.' : 'Connectivity planning considers metal-heavy factories, distance, weather, enclosures and gateway placement.'}
-                </p>
-              </article>
-              <article class="solutions-principle-card reveal delay-2">
-                <span>03</span>
-                <h3>{locale === 'tr' ? 'Uçtan Uca Sahiplik' : 'Full Stack Ownership'}</h3>
-                <p>
-                  {locale === 'tr' ? 'Donanım, gömülü yazılım (firmware), backend, veritabanı, pano, admin paneli ve mobil iş akışları birlikte tasarlanır.' : 'Hardware, firmware, backend, database, dashboard, admin panel and mobile workflows are designed together.'}
-                </p>
-              </article>
-              <article class="solutions-principle-card reveal delay-3">
-                <span>04</span>
-                <h3>{locale === 'tr' ? 'Önce Üretim Yaklaşımı' : 'Production-First Thinking'}</h3>
-                <p>
-                  {locale === 'tr' ? 'Her çözüm sadece prototip varsayımlarına göre değil, saha gerçekliğine göre değerlendirilir.' : 'Every solution is evaluated against field reality, not only against prototype assumptions.'}
-                </p>
-              </article>
-            </>
-          )}
+          ) : whyFallbacks[locale].map((card, idx) => (
+            <article class={`solutions-principle-card reveal ${idx > 0 ? `delay-${idx}` : ""}`}>
+              <span>{String(idx + 1).padStart(2, "0")}</span>
+              <h3>{card.title}</h3>
+              <p>{card.body}</p>
+            </article>
+          ))}
         </div>
       </div>
     </section>

@@ -11,6 +11,7 @@ import {
   fallbackProcessSteps,
   fallbackServiceLayers,
 } from "@/lib/services-page-fallbacks";
+import { accessibilityCopy } from "@/lib/accessibility-copy";
 
 export const prerender = false;
 
@@ -172,7 +173,7 @@ const faqLead = txt("faqLead") || l({ en: "Engineering buyers usually arrive wit
             </span>
           </div>
         </div>
-        <div class="service-architecture reveal delay-2" aria-label="Connected product architecture summary">
+        <div class="service-architecture reveal delay-2" aria-label={accessibilityCopy("architectureSummary", locale)}>
           <div class="architecture-deck architecture-deck-simple">
             <p class="architecture-label">{getLabel("serviceArchitecture")}</p>
             <h2>{getLabel("deviceToData")}</h2>

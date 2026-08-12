@@ -34,6 +34,24 @@ const SERVICES_ARRAY_FALLBACKS: Record<string, readonly any[]> = {
   processSteps: fallbackProcessSteps,
 };
 
+const MIRROR_COPY: Record<string, Record<Locale, string>> = {
+  mapCase: { en: "Map your case", tr: "Kullanım senaryonuzu belirleyin", de: "Anwendungsfall zuordnen", fr: "Définir votre cas d'usage", es: "Defina su caso de uso", it: "Definisci il caso d'uso", ar: "حدّد حالة الاستخدام", ja: "ユースケースを相談" },
+  exploreDevices: { en: "Explore devices", tr: "Cihazları inceleyin", de: "Geräte entdecken", fr: "Découvrir les appareils", es: "Explorar dispositivos", it: "Esplora i dispositivi", ar: "استكشف الأجهزة", ja: "製品を見る" },
+  stack: { en: "Stack", tr: "Katmanlar", de: "Ebenen", fr: "Couches", es: "Capas", it: "Livelli", ar: "الطبقات", ja: "構成レイヤー" },
+  layer: { en: "Layer", tr: "Katman", de: "Ebene", fr: "Couche", es: "Capa", it: "Livello", ar: "طبقة", ja: "レイヤー" },
+  createBrief: { en: "Create project brief", tr: "Proje özeti oluştur", de: "Projektbrief erstellen", fr: "Créer le brief du projet", es: "Crear resumen del proyecto", it: "Crea il brief di progetto", ar: "أنشئ ملخص المشروع", ja: "プロジェクト概要を作成" },
+  generalContact: { en: "General contact", tr: "Genel iletişim", de: "Allgemeiner Kontakt", fr: "Contact général", es: "Contacto general", it: "Contatto generale", ar: "تواصل عام", ja: "一般お問い合わせ" },
+  technicalScope: { en: "Technical scope", tr: "Teknik kapsam", de: "Technischer Umfang", fr: "Périmètre technique", es: "Alcance técnico", it: "Ambito tecnico", ar: "النطاق التقني", ja: "技術範囲" },
+  layerPlanning: { en: "Layer planning", tr: "Katman planı", de: "Ebenenplanung", fr: "Planification des couches", es: "Planificación de capas", it: "Pianificazione dei livelli", ar: "تخطيط الطبقات", ja: "レイヤー設計" },
+  engineeringReview: { en: "Engineering review", tr: "Mühendislik incelemesi", de: "Technische Prüfung", fr: "Revue d'ingénierie", es: "Revisión de ingeniería", it: "Revisione ingegneristica", ar: "مراجعة هندسية", ja: "エンジニアリングレビュー" },
+  discoveryPlan: { en: "Discovery plan", tr: "Keşif planı", de: "Analyseplan", fr: "Plan de cadrage", es: "Plan de descubrimiento", it: "Piano di analisi", ar: "خطة الاستكشاف", ja: "要件整理プラン" },
+  projectBrief: { en: "Project brief", tr: "Proje özeti", de: "Projektbrief", fr: "Brief du projet", es: "Resumen del proyecto", it: "Brief di progetto", ar: "ملخص المشروع", ja: "プロジェクト概要" },
+  about: { en: "About WillowSoft", tr: "WillowSoft Hakkında", de: "Über WillowSoft", fr: "À propos de WillowSoft", es: "Sobre WillowSoft", it: "Su WillowSoft", ar: "عن WillowSoft", ja: "WillowSoftについて" },
+  companyHero: { en: "Smart Teams. Resilient Systems.", tr: "Akıllı Ekipler. Dayanıklı Sistemler.", de: "Kluge Teams. Robuste Systeme.", fr: "Des équipes intelligentes. Des systèmes résilients.", es: "Equipos inteligentes. Sistemas resilientes.", it: "Team intelligenti. Sistemi resilienti.", ar: "فرق ذكية. أنظمة مرنة.", ja: "スマートなチーム。堅牢なシステム。" },
+};
+
+const mirrorCopy = (key: keyof typeof MIRROR_COPY, locale: Locale) => MIRROR_COPY[key]?.[locale] || MIRROR_COPY[key]?.en || key;
+
 function arrayItemsOrFallback(data: Record<string, any>, key?: string) {
   const items = arrayItems(data, key);
   if (items.length || !key) return { items, usingFallback: false };
@@ -177,8 +195,8 @@ export default function PageMirror({
         );
 
       case "solutions-hero": {
-        const heroPrimary = locale === "tr" ? "Projenizi Planlayın" : "Map your case";
-        const heroSecondary = locale === "tr" ? "Cihazları İnceleyin" : "Explore devices";
+        const heroPrimary = mirrorCopy("mapCase", locale);
+        const heroSecondary = mirrorCopy("exploreDevices", locale);
         return (
           <Hit id={block.id} active={active} onClick={onClick}>
             <div className="company-hero-c" style={{ background: "#070d19", position: "relative", overflow: "hidden" }}>
@@ -191,10 +209,10 @@ export default function PageMirror({
                   </div>
                 </div>
                 <div className="solutions-hero-panel">
-                  <span className="panel-kicker">{locale === "tr" ? "Katmanlar" : "Stack"}</span>
+                  <span className="panel-kicker">{mirrorCopy("stack", locale)}</span>
                   <div className="solution-stack-list">
                     {[1, 2, 3, 4].map((n) => (
-                      <div key={n}><strong>0{n}</strong><span>{locale === "tr" ? "Katman" : "Layer"}</span></div>
+                      <div key={n}><strong>0{n}</strong><span>{mirrorCopy("layer", locale)}</span></div>
                     ))}
                   </div>
                 </div>
@@ -226,18 +244,18 @@ export default function PageMirror({
                 <div className="start-hero-copy">
                   <SectionHead data={data} locale={locale} fields={block.fields} h1 />
                   <div className="hero-ctas">
-                    <span className="btn btn-primary" title="#lead-form">{locale === "tr" ? "Proje özeti oluştur" : "Create project brief"}</span>
-                    <span className="btn btn-secondary" title={`/${locale}/contact`}>{locale === "tr" ? "Genel iletişim" : "General contact"}</span>
+                    <span className="btn btn-primary" title="#lead-form">{mirrorCopy("createBrief", locale)}</span>
+                    <span className="btn btn-secondary" title={`/${locale}/contact`}>{mirrorCopy("generalContact", locale)}</span>
                   </div>
                   <div className="start-hero-proofline">
-                    <span>{locale === "tr" ? "Teknik kapsam" : "Technical scope"}</span>
-                    <span>{locale === "tr" ? "Katman planı" : "Layer planning"}</span>
-                    <span>{locale === "tr" ? "Mühendislik incelemesi" : "Engineering review"}</span>
+                    <span>{mirrorCopy("technicalScope", locale)}</span>
+                    <span>{mirrorCopy("layerPlanning", locale)}</span>
+                    <span>{mirrorCopy("engineeringReview", locale)}</span>
                   </div>
                 </div>
                 <aside className="brief-overview-card">
-                  <p className="architecture-label">{locale === "tr" ? "Keşif planı" : "Discovery plan"}</p>
-                  <h2>{locale === "tr" ? "Proje özeti" : "Project brief"}</h2>
+                  <p className="architecture-label">{mirrorCopy("discoveryPlan", locale)}</p>
+                  <h2>{mirrorCopy("projectBrief", locale)}</h2>
                   <div className="summary-metrics">
                     <div>
                       <strong>{companyFacts.productsOnMarket || "100+"}</strong>
@@ -271,9 +289,9 @@ export default function PageMirror({
                 />
                 {!v("heroTitle") && (
                   <>
-                    <p className="eyebrow" style={{ color: "var(--ws-teal)" }}>{locale === "tr" ? "WillowSoft Hakkında" : "About WillowSoft"}</p>
+                    <p className="eyebrow" style={{ color: "var(--ws-teal)" }}>{mirrorCopy("about", locale)}</p>
                     <h1 style={{ color: "#fff", fontSize: "2.4rem", margin: 0 }}>
-                      {locale === "tr" ? "Akıllı Ekipler. Dayanıklı Sistemler." : "Smart Teams. Resilient Systems."}
+                      {mirrorCopy("companyHero", locale)}
                     </h1>
                   </>
                 )}

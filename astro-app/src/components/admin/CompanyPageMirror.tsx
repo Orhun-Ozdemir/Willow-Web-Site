@@ -4,6 +4,7 @@ import { localizeItem, pageText, itemText, type Locale } from "@/lib/cms";
 import { officesForContact, resolveOfficePhone, syncOfficePhonesInFacts } from "@/lib/company-contact";
 import { resolveAdminImageSrc } from "@/lib/admin-media";
 import { Hit, ItemHit, MirrorShell, locVal } from "./mirrorShared";
+import { localizedCompanyList, localizeCompanyItem } from "@/lib/company-item-translations";
 
 const SVGS: Record<string, string> = {
   cpu: `<svg viewBox="0 0 24 24" width="SIZE" height="SIZE" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect><rect x="9" y="9" width="6" height="6"></rect><line x1="9" y1="1" x2="9" y2="4"></line><line x1="15" y1="1" x2="15" y2="4"></line><line x1="9" y1="20" x2="9" y2="23"></line><line x1="15" y1="20" x2="15" y2="23"></line><line x1="20" y1="9" x2="23" y2="9"></line><line x1="20" y1="15" x2="23" y2="15"></line><line x1="1" y1="9" x2="4" y2="9"></line><line x1="1" y1="15" x2="4" y2="15"></line></svg>`,
@@ -76,6 +77,8 @@ const UI: Record<string, Record<string, string>> = {
     ar: "ست سنوات من النمو المستقر — من استوديو هندسي متخصص إلى شركة إنترنت أشياء منتشرة دولياً.",
     ja: "着実な成長の6年間 — 集中型エンジニアリングスタジオから国際展開するIoT企業へ。",
   },
+  historyTitleHtml: { en: 'From R&D roots to <span class="serif-accent">global</span> deployment.', tr: 'Ar-Ge köklerinden <span class="serif-accent">küresel</span> dağıtıma.', de: 'Von F&E-Wurzeln zum <span class="serif-accent">weltweiten</span> Einsatz.', fr: 'De la R&D au déploiement <span class="serif-accent">international</span>.', es: 'De las raíces en I+D al despliegue <span class="serif-accent">global</span>.', it: 'Dalle radici nella R&S alla diffusione <span class="serif-accent">globale</span>.', ar: 'من جذور البحث والتطوير إلى الانتشار <span class="serif-accent">العالمي</span>.', ja: '研究開発を原点に、<span class="serif-accent">グローバル</span>展開へ。' },
+  workWithTitleHtml: { en: 'Engineering partnerships across <span class="serif-accent">industries and markets</span>.', tr: 'Sektörler ve pazarlar arasında <span class="serif-accent">mühendislik iş birlikleri</span>.', de: 'Engineering-Partnerschaften über <span class="serif-accent">Branchen und Märkte</span> hinweg.', fr: 'Des partenariats d’ingénierie dans différents <span class="serif-accent">secteurs et marchés</span>.', es: 'Colaboraciones de ingeniería en distintos <span class="serif-accent">sectores y mercados</span>.', it: 'Collaborazioni ingegneristiche in diversi <span class="serif-accent">settori e mercati</span>.', ar: 'شراكات هندسية عبر <span class="serif-accent">قطاعات وأسواق متعددة</span>.', ja: 'さまざまな<span class="serif-accent">業界・市場</span>におけるエンジニアリングパートナーシップ。' },
   expertiseEyebrow: { en: "Core expertise", tr: "Uzmanlık Alanlarımız", de: "Kernkompetenzen", fr: "Expertise clé", es: "Experiencia principal", it: "Competenze chiave", ar: "الخبرات الأساسية", ja: "コア領域" },
   expertiseTitleHtml: {
     en: 'What we are actually <span class="serif-accent">good</span> at.',
@@ -243,7 +246,7 @@ export default function CompanyPageMirror({
     const localized = companyFacts.localized?.[locale]?.[key];
     const raw = localized !== undefined && localized !== null ? localized : companyFacts[key];
     const cleaned = cleanCmsValue(raw ?? []);
-    if (Array.isArray(cleaned)) return cleaned;
+    if (Array.isArray(cleaned)) return localized === undefined || localized === null ? localizedCompanyList(key, cleaned, locale) : cleaned;
     if (typeof cleaned === "string") {
       return cleaned.split(/[\n,]+/g).map((item) => item.trim()).filter(Boolean);
     }
@@ -261,15 +264,15 @@ export default function CompanyPageMirror({
 
   const sortedTeam = sortByOrder(teamFromFacts())
     .filter((item) => item && typeof item === "object")
-    .map((item) => cleanCmsValue(localizeItem(item, locale)));
+    .map((item) => cleanCmsValue(localizeCompanyItem("team", item, locale)));
 
   const sortedTimeline = sortByOrder(Array.isArray(companyFacts.timeline) ? companyFacts.timeline : [])
     .filter((item) => item && typeof item === "object")
-    .map((item) => cleanCmsValue(localizeItem(item, locale)));
+    .map((item) => cleanCmsValue(localizeCompanyItem("timeline", item, locale)));
 
   const sortedExpertise = sortByOrder(getFactList("expertise"));
   const industries = getFactList("industries");
-  const offices = getFactList("officesList");
+  const offices = getFactList("officesList").map((office: any) => localizeCompanyItem("offices", office, locale));
   const principles = getFactList("principles");
   const whyUs = getFactList("whyUs");
   const aboutBullets = getFactList("aboutBullets");
@@ -282,13 +285,9 @@ export default function CompanyPageMirror({
   const stat4Display = getFactVal("stat4Value") || u("fullStackValue", locale);
   const stat4Label = getFactVal("stat4Label") || u("fullStackLabel", locale);
 
-  const historyTitleFallback = locale === "tr"
-    ? 'Ar-Ge köklerinden <span class="serif-accent">küresel</span> dağıtıma.'
-    : 'From R&D roots to <span class="serif-accent">global</span> deployment.';
+  const historyTitleFallback = u("historyTitleHtml", locale);
 
-  const workWithTitleFallback = locale === "tr"
-    ? 'Küresel ekipler WillowSoft\'a tek bir nedenle güvenir: Sonuç <span class="serif-accent">üretiriz</span>.'
-    : 'Global teams trust WillowSoft for one reason: we <span class="serif-accent">deliver</span>.';
+  const workWithTitleFallback = u("workWithTitleHtml", locale);
 
   const itemActive = (id: string | undefined) => Boolean(id && activeItemId === id);
   const pickItem = (blockId: string, item: any) => {
@@ -465,7 +464,7 @@ export default function CompanyPageMirror({
                 <div className="company-proof-chips">
                   {whyUs.map((w: any, i: number) => {
                     if (!w || typeof w !== "object") return null;
-                    const chip = localizeItem(w, locale);
+                    const chip = localizeCompanyItem("whyUs", w, locale);
                     return (
                       <div key={w.id || i} className="company-proof-chip">
                         <div className="ws-icbox" style={{ flex: "0 0 auto" }} dangerouslySetInnerHTML={{ __html: getSvg(chip?.icon || w.icon, 20) }} />
@@ -478,7 +477,7 @@ export default function CompanyPageMirror({
               <div className="company-principles-list">
                 {principles.map((p: any, i: number) => {
                   if (!p || typeof p !== "object") return null;
-                  const principle = localizeItem(p, locale);
+                  const principle = localizeCompanyItem("principles", p, locale);
                   return (
                     <div key={p.id || i} className="ws-card company-principle-card">
                       <div className="company-principle-top">
@@ -555,7 +554,7 @@ export default function CompanyPageMirror({
               <div className="company-capability-panel">
                 {sortedExpertise.map((e: any, i: number) => {
                   if (!e || typeof e !== "object") return null;
-                  const exp = localizeItem(e, locale);
+                  const exp = localizeCompanyItem("expertise", e, locale);
                   const rowBody = (
                     <>
                       <span className="company-capability-number">{String(i + 1).padStart(2, "0")}</span>
@@ -596,7 +595,7 @@ export default function CompanyPageMirror({
               <div className="company-industry-proof-list">
                 {industries.map((ind: any, i: number) => {
                   if (!ind || typeof ind !== "object") return null;
-                  const industry = localizeItem(ind, locale);
+                  const industry = localizeCompanyItem("industries", ind, locale);
                   const cardBody = (
                     <>
                       <span className="company-industry-index">{String(i + 1).padStart(2, "0")}</span>
@@ -639,7 +638,7 @@ export default function CompanyPageMirror({
               <div className="company-offices-grid">
                 {offices.map((o: any, i: number) => {
                   if (!o || typeof o !== "object") return null;
-                  const office = localizeItem(o, locale);
+                  const office = o;
                   const phone = resolveOfficePhone(o, companyFacts);
                   const imgSrc = resolveAdminImageSrc(office.image);
                   const cardBody = (

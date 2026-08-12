@@ -175,9 +175,9 @@ export default function HomePageMirror({
   const flowNodes = buildFlowNodes(data, locale);
   const industryLanes = buildIndustryLanes(data, locale);
   const proofLabels = {
-    products: locale === "tr" ? "Teslim Edilen Proje" : "Delivered projects",
-    clients: locale === "tr" ? "Kurumsal Müşteri" : "Enterprise clients",
-    founded: locale === "tr" ? "Kuruluş" : "Founded",
+    products: ({ en: "Delivered projects", tr: "Teslim edilen proje", de: "Realisierte Projekte", fr: "Projets livrés", es: "Proyectos entregados", it: "Progetti realizzati", ar: "مشاريع منجزة", ja: "納入プロジェクト" } as Record<Locale, string>)[locale],
+    clients: ({ en: "Enterprise clients", tr: "Kurumsal müşteri", de: "Unternehmenskunden", fr: "Clients entreprises", es: "Clientes empresariales", it: "Clienti aziendali", ar: "عملاء مؤسسات", ja: "法人顧客" } as Record<Locale, string>)[locale],
+    founded: ({ en: "Founded", tr: "Kuruluş", de: "Gegründet", fr: "Fondation", es: "Fundación", it: "Fondazione", ar: "التأسيس", ja: "設立" } as Record<Locale, string>)[locale],
   };
 
   const heroCtaLabel = pageButtonText(data.heroCta, locale, pageButtonLabel(data.heroCta, locale) || v("heroCta") || uiLabel("startProject", locale));

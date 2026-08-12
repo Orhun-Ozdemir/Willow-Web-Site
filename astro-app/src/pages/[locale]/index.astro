@@ -10,6 +10,7 @@ import { flowNodesFromPageContent, industryLanesFromPageContent, pageButtonText,
 import { aiAnswerForPage, aiMetaForPage, appendSchemaNodes, fallbackFaqsForPage, faqItemsForPage, faqSchemaNode } from "@/lib/ai-search";
 import { PRODUCT_ICON_SVG } from "@/lib/product-model";
 import { clientLogoDimensions, clientLogoSrcSet, clientLogoWebpSrc } from "@/lib/image-metadata";
+import { accessibilityCopy } from "@/lib/accessibility-copy";
 import homePrecisionCss from "@/styles/home-precision.css?inline";
 
 export const prerender = false;
@@ -59,11 +60,18 @@ const labels: Record<string, Record<string, string>> = {
   ctaChoice_0: { en: "Hardware + Embedded Software", tr: "donanım+gömülü yazılım", de: "Hardware + eingebettete Software", fr: "Matériel + logiciel embarqué", es: "Hardware + software embebido", it: "Hardware + software embedded", ar: "عتاد + برمجيات مدمجة", ja: "ハードウェア＋組み込みソフトウェア" },
   ctaChoice_1: { en: "Cloud + Database", tr: "bulut+veri tabanı", de: "Cloud + Datenbank", fr: "Cloud + base de données", es: "Nube + base de datos", it: "Cloud + database", ar: "سحابة + قاعدة بيانات", ja: "クラウド＋データベース" },
   ctaChoice_2: { en: "Web, Mobile, Simulation", tr: "web, mobil, Simülasyon", de: "Web, Mobile, Simulation", fr: "Web, mobile, simulation", es: "Web, móvil, simulación", it: "Web, mobile, simulazione", ar: "ويب، جوال، محاكاة", ja: "Web、モバイル、シミュレーション" },
+  hardwareShowcase: { en: "WillowSoft hardware showcase", tr: "WillowSoft donanım ürünleri", de: "WillowSoft Hardware-Produkte", fr: "Produits matériels WillowSoft", es: "Productos de hardware WillowSoft", it: "Prodotti hardware WillowSoft", ar: "منتجات WillowSoft المادية", ja: "WillowSoftハードウェア製品" },
+  willowBeeAlt: { en: "WillowBee LoRaWAN module", tr: "WillowBee LoRaWAN modülü", de: "WillowBee LoRaWAN-Modul", fr: "Module LoRaWAN WillowBee", es: "Módulo LoRaWAN WillowBee", it: "Modulo LoRaWAN WillowBee", ar: "وحدة WillowBee LoRaWAN", ja: "WillowBee LoRaWANモジュール" },
+  willowBeeDesc: { en: "Compact LoRaWAN MCU module", tr: "Kompakt LoRaWAN MCU modülü", de: "Kompaktes LoRaWAN-MCU-Modul", fr: "Module MCU LoRaWAN compact", es: "Módulo MCU LoRaWAN compacto", it: "Modulo MCU LoRaWAN compatto", ar: "وحدة MCU LoRaWAN مدمجة", ja: "コンパクトなLoRaWAN MCUモジュール" },
+  willowAirAlt: { en: "WillowAir sensor", tr: "WillowAir sensörü", de: "WillowAir-Sensor", fr: "Capteur WillowAir", es: "Sensor WillowAir", it: "Sensore WillowAir", ar: "مستشعر WillowAir", ja: "WillowAirセンサー" },
+  willowAirDesc: { en: "Indoor air quality monitoring", tr: "İç ortam hava kalitesi izleme", de: "Überwachung der Raumluftqualität", fr: "Surveillance de la qualité de l'air intérieur", es: "Monitorización de la calidad del aire interior", it: "Monitoraggio della qualità dell'aria interna", ar: "مراقبة جودة الهواء الداخلي", ja: "室内空気質モニタリング" },
+  willowModAlt: { en: "WillowMod sensor", tr: "WillowMod sensörü", de: "WillowMod-Sensor", fr: "Capteur WillowMod", es: "Sensor WillowMod", it: "Sensore WillowMod", ar: "مستشعر WillowMod", ja: "WillowModセンサー" },
+  willowModDesc: { en: "Wireless Modbus integration", tr: "Kablosuz Modbus entegrasyonu", de: "Drahtlose Modbus-Integration", fr: "Intégration Modbus sans fil", es: "Integración Modbus inalámbrica", it: "Integrazione Modbus wireless", ar: "تكامل Modbus لاسلكي", ja: "ワイヤレスModbus連携" },
 };
 
 const heroEyebrow = getVal("heroEyebrow");
 const trustTitleHtml = getVal("trustTitle").replace(/<br\s*\/?\s*>/gi, "<br> ");
-const heroCtaLabel = pageButtonText(pageContent.heroCta, locale, locale === "tr" ? "Ücretsiz Danışın" : getLabel("startProject"));
+const heroCtaLabel = pageButtonText(pageContent.heroCta, locale, getLabel("startProject"));
 const heroCtaSecondaryLabel = pageButtonText(pageContent.heroCtaSecondary, locale, getLabel("exploreSolutions"));
 const heroCtaHref = pageLocaleHref(locale, pageContent.heroCta, "/start-project");
 const heroCtaSecondaryHref = pageLocaleHref(locale, pageContent.heroCtaSecondary, "/solutions");
@@ -390,19 +398,19 @@ const homeSchema = appendSchemaNodes({
           </div>
         </div>
 
-        <aside class="hero-product-stage reveal delay-2" aria-label="WillowSoft hardware showcase">
+        <aside class="hero-product-stage reveal delay-2" aria-label={getLabel("hardwareShowcase")}>
           <div class="product-spotlight"></div>
           <article class="floating-product product-one" style="--delay:0ms">
-            <figure><picture><source srcset={`${import.meta.env.BASE_URL}pdf-assets/p06_01_X13.webp`} type="image/webp" /><img src={`${import.meta.env.BASE_URL}pdf-assets/p06_01_X13.jpg`} alt="WillowBee LoRaWAN module" width="491" height="375" loading="lazy" decoding="async" /></picture></figure>
-            <div><strong>WillowBee</strong><span>Compact LoRaWAN MCU module</span></div>
+            <figure><picture><source srcset={`${import.meta.env.BASE_URL}pdf-assets/p06_01_X13.webp`} type="image/webp" /><img src={`${import.meta.env.BASE_URL}pdf-assets/p06_01_X13.jpg`} alt={getLabel("willowBeeAlt")} width="491" height="375" loading="lazy" decoding="async" /></picture></figure>
+            <div><strong>WillowBee</strong><span>{getLabel("willowBeeDesc")}</span></div>
           </article>
           <article class="floating-product product-two" style="--delay:180ms">
-            <figure><picture><source srcset={`${import.meta.env.BASE_URL}pdf-assets/p08_01_X22.webp`} type="image/webp" /><img src={`${import.meta.env.BASE_URL}pdf-assets/p08_01_X22.jpg`} alt="WillowAir sensor" width="429" height="394" loading="lazy" decoding="async" /></picture></figure>
-            <div><strong>WillowAir</strong><span>Indoor air quality monitoring</span></div>
+            <figure><picture><source srcset={`${import.meta.env.BASE_URL}pdf-assets/p08_01_X22.webp`} type="image/webp" /><img src={`${import.meta.env.BASE_URL}pdf-assets/p08_01_X22.jpg`} alt={getLabel("willowAirAlt")} width="429" height="394" loading="lazy" decoding="async" /></picture></figure>
+            <div><strong>WillowAir</strong><span>{getLabel("willowAirDesc")}</span></div>
           </article>
           <article class="floating-product product-three" style="--delay:360ms">
-            <figure><picture><source srcset={`${import.meta.env.BASE_URL}pdf-assets/p14_01_X50.webp`} type="image/webp" /><img src={`${import.meta.env.BASE_URL}pdf-assets/p14_01_X50.jpg`} alt="WillowMod sensor" width="339" height="344" loading="lazy" decoding="async" /></picture></figure>
-            <div><strong>WillowMod</strong><span>Wireless Modbus integration</span></div>
+            <figure><picture><source srcset={`${import.meta.env.BASE_URL}pdf-assets/p14_01_X50.webp`} type="image/webp" /><img src={`${import.meta.env.BASE_URL}pdf-assets/p14_01_X50.jpg`} alt={getLabel("willowModAlt")} width="339" height="344" loading="lazy" decoding="async" /></picture></figure>
+            <div><strong>WillowMod</strong><span>{getLabel("willowModDesc")}</span></div>
           </article>
         </aside>
       </div>
@@ -422,13 +430,13 @@ const homeSchema = appendSchemaNodes({
     </section>
 
     <!-- Trust Showcase -->
-    <section class="trust-showcase" id="trusted-brands" aria-label="Trusted by clients">
+    <section class="trust-showcase" id="trusted-brands" aria-label={accessibilityCopy("trustedClients", locale)}>
       <div class="section-inner trust-layout">
         <div class="trust-copy reveal-left">
           <p class="eyebrow">{getVal("trustEyebrow")}</p>
           <h2 set:html={trustTitleHtml} />
           <p>{getVal("trustLead")}</p>
-          <div class="trust-more" aria-label="Additional sectors">
+          <div class="trust-more" aria-label={accessibilityCopy("additionalSectors", locale)}>
             {trustChips.map((chip) => <span>{loc(chip)}</span>)}
           </div>
         </div>
@@ -597,7 +605,7 @@ const homeSchema = appendSchemaNodes({
         </div>
         <div class="reveal delay-1">
           <p class="section-lead">{getVal("ctaLead")}</p>
-          <div class="cta-choice-grid" aria-label="Common project starting points">
+          <div class="cta-choice-grid" aria-label={accessibilityCopy("projectStartingPoints", locale)}>
             <span>{getVal("ctaChoice_0") || getLabel("ctaChoice_0")}</span>
             <span>{getVal("ctaChoice_1") || getLabel("ctaChoice_1")}</span>
             <span>{getVal("ctaChoice_2") || getLabel("ctaChoice_2")}</span>

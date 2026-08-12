@@ -5,6 +5,7 @@ import { loadContent } from "@/lib/content";
 import { pageSeo, webPageNode, ORGANIZATION_SCHEMA, WEBSITE_SCHEMA, SITE_ORIGIN } from "@/lib/seo";
 import { itemText, localizedValue, localizeItem, pageText, resolveAsset, resolveLocale, type Locale } from "@/lib/cms";
 import { responsiveImageSrcSet, type ResponsiveImageMeta } from "@/lib/image-metadata";
+import { accessibilityCopy } from "@/lib/accessibility-copy";
 
 export const prerender = false;
 
@@ -184,7 +185,7 @@ const t = (cmsKey: string, labelKey: LabelKey) => pageText(pageContent, cmsKey, 
 
     <section class="section news-proof-overview">
       <div class="section-inner">
-        <div class="news-proof-strip reveal" aria-label="News summary">
+        <div class="news-proof-strip reveal" aria-label={accessibilityCopy("newsSummary", locale)}>
           <article>
             <div class="news-proof-icon" aria-hidden="true">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -273,7 +274,7 @@ const t = (cmsKey: string, labelKey: LabelKey) => pageText(pageContent, cmsKey, 
           </div>
         </div>
 
-        <div class="news-controls reveal delay-1" aria-label="News filters">
+        <div class="news-controls reveal delay-1" aria-label={accessibilityCopy("newsFilters", locale)}>
           <div class="news-controls-head">
             <span>{getLabel("filterEyebrow")}</span>
             <strong>{getLabel("filterTitle")}</strong>
@@ -282,7 +283,7 @@ const t = (cmsKey: string, labelKey: LabelKey) => pageText(pageContent, cmsKey, 
             <span>{getLabel("searchLabel")}</span>
             <input type="search" data-news-search-input placeholder={getLabel("searchPlaceholder")} />
           </label>
-          <div class="news-filter-row" role="group" aria-label="News categories">
+          <div class="news-filter-row" role="group" aria-label={accessibilityCopy("newsCategories", locale)}>
             <button type="button" class="news-filter-chip is-active" data-news-filter="all" aria-pressed="true">
               {getLabel("allCategories")}
               <span class="news-chip-count">{newsList.length}</span>

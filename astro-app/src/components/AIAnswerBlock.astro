@@ -1,6 +1,7 @@
 ---
 import type { Locale } from "@/lib/cms";
 import type { AiAnswerMeta } from "@/lib/ai-search";
+import { accessibilityCopy } from "@/lib/accessibility-copy";
 
 interface Props {
   answer: string;
@@ -74,7 +75,7 @@ const t = (key: keyof typeof labels) => labels[key][locale] || labels[key].en;
       <span class="ai-overview-badge">{t("badge")}</span>
     </div>
     <p class="ai-overview-text">{answer}</p>
-    <div class="ai-overview-eeat" aria-label="Content verification">
+    <div class="ai-overview-eeat" aria-label={accessibilityCopy("contentVerification", locale)}>
       {meta.reviewedBy && (
         <span class="ai-overview-eeat-item">
           <span class="ai-overview-eeat-label">{t("reviewed")}:</span>

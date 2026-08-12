@@ -1,0 +1,150 @@
+{
+  "team": {
+    "Ömer Oyar": {
+      "de": { "role": "Mitgründer", "bio": "Mitgründer von WillowSoft mit Schwerpunkt auf der Entwicklung vernetzter Produkte, eingebetteten Systemen und der Umsetzung industrieller IoT-Lösungen." },
+      "fr": { "role": "Cofondateur", "bio": "Cofondateur de WillowSoft, spécialisé dans l'ingénierie de produits connectés, les systèmes embarqués et la réalisation de solutions IoT industrielles." },
+      "es": { "role": "Cofundador", "bio": "Cofundador de WillowSoft, centrado en la ingeniería de productos conectados, los sistemas embebidos y la implementación de soluciones IoT industriales." },
+      "it": { "role": "Cofondatore", "bio": "Cofondatore di WillowSoft, specializzato nello sviluppo di prodotti connessi, sistemi embedded e realizzazione di soluzioni IoT industriali." },
+      "ar": { "role": "شريك مؤسس", "bio": "شريك مؤسس في WillowSoft، يركز على هندسة المنتجات المتصلة والأنظمة المدمجة وتنفيذ حلول إنترنت الأشياء الصناعية." },
+      "ja": { "role": "共同創業者", "bio": "WillowSoftの共同創業者。コネクテッド製品の開発、組み込みシステム、産業IoTソリューションの実装を担当。" }
+    },
+    "Eren Baştürk": {
+      "de": { "role": "Mitgründer & Softwareentwickler", "bio": "Mitgründer und Softwareentwickler; verantwortlich für sichere Software für drahtlose Geräte, Backend-Integration und exportfähige IoT-Plattformen." },
+      "fr": { "role": "Cofondateur et ingénieur logiciel", "bio": "Cofondateur et ingénieur logiciel, responsable des logiciels sécurisés pour appareils sans fil, de l'intégration backend et des plateformes IoT prêtes pour l'international." },
+      "es": { "role": "Cofundador e ingeniero de software", "bio": "Cofundador e ingeniero de software, responsable del software seguro para dispositivos inalámbricos, la integración backend y las plataformas IoT preparadas para la exportación." },
+      "it": { "role": "Cofondatore e ingegnere software", "bio": "Cofondatore e ingegnere software, responsabile del software sicuro per dispositivi wireless, dell'integrazione backend e delle piattaforme IoT pronte per i mercati internazionali." },
+      "ar": { "role": "شريك مؤسس ومهندس برمجيات", "bio": "شريك مؤسس ومهندس برمجيات يقود تطوير البرمجيات الآمنة للأجهزة اللاسلكية وتكامل الخلفية ومنصات إنترنت الأشياء الجاهزة للأسواق الدولية." },
+      "ja": { "role": "共同創業者・ソフトウェアエンジニア", "bio": "共同創業者兼ソフトウェアエンジニア。安全な無線デバイスソフトウェア、バックエンド連携、海外展開に対応したIoTプラットフォームを担当。" }
+    },
+    "Alican Serin": {
+      "tr": { "role": "Finans Direktörü", "bio": "Finansal strateji, yatırımcı ilişkileri ve uluslararası büyümeyi destekleyen finansman yapısını yönetir." },
+      "de": { "role": "Finanzdirektor", "bio": "Verantwortet Finanzstrategie, Investorenbeziehungen und die Finanzierungsstruktur für die internationale Expansion." },
+      "fr": { "role": "Directeur financier", "bio": "Pilote la stratégie financière, les relations avec les investisseurs et la structure de financement qui soutient l'expansion internationale." },
+      "es": { "role": "Director financiero", "bio": "Dirige la estrategia financiera, las relaciones con inversores y la estructura de financiación que respalda la expansión internacional." },
+      "it": { "role": "Direttore finanziario", "bio": "Guida la strategia finanziaria, le relazioni con gli investitori e la struttura di finanziamento a supporto dell'espansione internazionale." },
+      "ar": { "role": "المدير المالي", "bio": "يقود الاستراتيجية المالية وعلاقات المستثمرين وهيكل التمويل الداعم للتوسع الدولي." },
+      "ja": { "role": "財務責任者", "bio": "財務戦略、投資家対応、海外展開を支える資金調達体制を統括しています。" }
+    }
+  },
+  "whyUs": {
+    "R&D Focused": {
+      "tr": { "title": "Ar-Ge Odaklı" }, "de": { "title": "F&E-orientiert" }, "fr": { "title": "Axé sur la R&D" }, "es": { "title": "Enfoque en I+D" }, "it": { "title": "Orientati alla R&S" }, "ar": { "title": "تركيز على البحث والتطوير" }, "ja": { "title": "研究開発重視" }
+    },
+    "Global Deployments": {
+      "tr": { "title": "Küresel Kurulumlar" }, "de": { "title": "Weltweite Einsätze" }, "fr": { "title": "Déploiements internationaux" }, "es": { "title": "Despliegues globales" }, "it": { "title": "Installazioni globali" }, "ar": { "title": "عمليات نشر عالمية" }, "ja": { "title": "グローバル導入" }
+    },
+    "End-to-End Delivery": {
+      "tr": { "title": "Uçtan Uca Teslimat" }, "de": { "title": "End-to-End-Umsetzung" }, "fr": { "title": "Réalisation de bout en bout" }, "es": { "title": "Entrega de extremo a extremo" }, "it": { "title": "Realizzazione end-to-end" }, "ar": { "title": "تنفيذ متكامل" }, "ja": { "title": "一貫した提供体制" }
+    }
+  },
+  "principles": {
+    "Production-First Thinking": {
+      "de": { "title": "Produktionsorientiertes Denken", "body": "Jede Designentscheidung wird anhand der realen Bedingungen im Feld bewertet: Energiebudget, Gehäusebeschränkungen, RF-Umgebung und Fertigungstoleranzen." },
+      "fr": { "title": "Priorité à la production", "body": "Chaque décision de conception est évaluée selon les conditions réelles du terrain : budget énergétique, contraintes du boîtier, environnement RF et tolérances de fabrication." },
+      "es": { "title": "Enfoque orientado a producción", "body": "Cada decisión de diseño se evalúa según las condiciones reales del campo: presupuesto energético, limitaciones de la carcasa, entorno RF y tolerancias de fabricación." },
+      "it": { "title": "Approccio orientato alla produzione", "body": "Ogni decisione progettuale viene valutata in base alle condizioni reali sul campo: budget energetico, vincoli dell'involucro, ambiente RF e tolleranze di produzione." },
+      "ar": { "title": "تفكير يبدأ من الإنتاج", "body": "يُقيَّم كل قرار تصميم وفق ظروف الميدان الفعلية: ميزانية الطاقة وقيود الحاوية وبيئة RF وتفاوتات التصنيع." },
+      "ja": { "title": "量産を見据えた設計", "body": "電力条件、筐体の制約、RF環境、製造公差など、実際の現場条件に照らしてすべての設計判断を行います。" }
+    },
+    "Full Stack Ownership": {
+      "de": { "title": "Full-Stack-Verantwortung", "body": "Wir geben die Arbeit nicht zwischen Teams weiter. Dasselbe Team entwickelt Hardware, Firmware, Backend und Benutzeroberfläche. So gehen zwischen den Ebenen keine Informationen verloren." },
+      "fr": { "title": "Maîtrise de bout en bout", "body": "Nous ne transférons pas le travail d'une équipe à l'autre. La même équipe conçoit le matériel, développe le firmware et le backend, puis livre l'interface. L'information reste intacte entre les couches." },
+      "es": { "title": "Responsabilidad de extremo a extremo", "body": "No transferimos el trabajo entre equipos. El mismo equipo diseña el hardware, desarrolla el firmware y el backend, y entrega la interfaz. Así evitamos pérdidas de información entre capas." },
+      "it": { "title": "Responsabilità end-to-end", "body": "Non trasferiamo il lavoro tra team diversi. Lo stesso team progetta l'hardware, sviluppa firmware e backend e realizza l'interfaccia, evitando perdite di informazioni tra i livelli." },
+      "ar": { "title": "مسؤولية متكاملة", "body": "لا ننقل العمل بين فرق منفصلة. الفريق نفسه يصمم الأجهزة ويطور Firmware والخلفية ويسلم الواجهة، لذلك لا تضيع المعلومات بين الطبقات." },
+      "ja": { "title": "フルスタックでの一貫対応", "body": "工程ごとに別チームへ引き渡しません。同じチームがハードウェアを設計し、Firmwareとバックエンドを開発してインターフェースまで提供するため、レイヤー間の情報損失を防げます。" }
+    },
+    "Long-Term Reliability": {
+      "de": { "title": "Langfristige Zuverlässigkeit", "body": "Unsere Systeme sollen über Jahre ohne Eingriff arbeiten. Wir entwickeln für diese Realität und nicht nur für eine Demonstration." },
+      "fr": { "title": "Fiabilité à long terme", "body": "Les systèmes que nous déployons sont conçus pour fonctionner pendant des années sans intervention. Notre ingénierie répond à cette réalité, pas seulement à une démonstration." },
+      "es": { "title": "Fiabilidad a largo plazo", "body": "Los sistemas que desplegamos están pensados para funcionar durante años sin intervención. Diseñamos para esa realidad, no solo para una demostración." },
+      "it": { "title": "Affidabilità a lungo termine", "body": "I sistemi che installiamo sono progettati per funzionare per anni senza interventi. Progettiamo per questa realtà, non soltanto per una dimostrazione." },
+      "ar": { "title": "موثوقية طويلة الأمد", "body": "صُممت الأنظمة التي ننشرها لتعمل لسنوات من دون تدخل. نهندس لهذه الحقيقة، لا لمجرد عرض توضيحي." },
+      "ja": { "title": "長期信頼性", "body": "導入したシステムが長期間にわたり人手を介さず稼働することを前提に、デモではなく実運用のための設計を行います。" }
+    }
+  },
+  "industries": {
+    "Industrial & Energy": {
+      "de": { "name": "Industrie & Energie", "tag": "IIOT & TELEMETRIE", "body": "Unternehmen wie Honeywell und SLB arbeiten mit WillowSoft an kundenspezifischen Sensorknoten, Modbus-Integrationsschichten und vernetzter Hardware für den Feldeinsatz." },
+      "fr": { "name": "Industrie et énergie", "tag": "IIOT ET TÉLÉMÉTRIE", "body": "Des entreprises telles que Honeywell et SLB collaborent avec WillowSoft sur des nœuds de capteurs sur mesure, des couches d'intégration Modbus et du matériel connecté déployé sur le terrain." },
+      "es": { "name": "Industria y energía", "tag": "IIOT Y TELEMETRÍA", "body": "Empresas como Honeywell y SLB trabajan con WillowSoft en nodos de sensores a medida, capas de integración Modbus y hardware conectado para despliegues en campo." },
+      "it": { "name": "Industria ed energia", "tag": "IIOT E TELEMETRIA", "body": "Aziende come Honeywell e SLB collaborano con WillowSoft su nodi sensore personalizzati, livelli di integrazione Modbus e hardware connesso per installazioni sul campo." },
+      "ar": { "name": "الصناعة والطاقة", "tag": "إنترنت الأشياء الصناعي والقياس عن بُعد", "body": "تتعاون شركات مثل Honeywell وSLB مع WillowSoft في عقد استشعار مخصصة وطبقات تكامل Modbus وأجهزة متصلة للنشر الميداني." },
+      "ja": { "name": "産業・エネルギー", "tag": "IIOT・テレメトリー", "body": "HoneywellやSLBなどの企業と、カスタムセンサーノード、Modbus連携レイヤー、現場導入向けコネクテッドハードウェアに取り組んでいます。" }
+    },
+    "Consumer & FMCG": {
+      "de": { "name": "Konsumgüter & FMCG", "tag": "INTELLIGENTE KONNEKTIVITÄT", "body": "Marken wie Beko und Coca-Cola haben WillowSoft mit Firmware für vernetzte Produkte, Backend-Datenplattformen und mobilen Benutzeroberflächen beauftragt." },
+      "fr": { "name": "Biens de consommation et FMCG", "tag": "CONNECTIVITÉ INTELLIGENTE", "body": "Des marques telles que Beko et Coca-Cola ont confié à WillowSoft le développement de firmware pour produits connectés, de plateformes de données backend et d'interfaces mobiles." },
+      "es": { "name": "Consumo y gran consumo", "tag": "CONECTIVIDAD INTELIGENTE", "body": "Marcas como Beko y Coca-Cola han encargado a WillowSoft firmware para productos conectados, plataformas de datos backend e interfaces móviles." },
+      "it": { "name": "Beni di consumo e FMCG", "tag": "CONNETTIVITÀ INTELLIGENTE", "body": "Marchi come Beko e Coca-Cola hanno affidato a WillowSoft firmware per prodotti connessi, piattaforme dati backend e interfacce mobili." },
+      "ar": { "name": "المنتجات الاستهلاكية والسلع سريعة التداول", "tag": "الاتصال الذكي", "body": "كلفت علامات مثل Beko وCoca-Cola شركة WillowSoft بتطوير Firmware للمنتجات المتصلة ومنصات بيانات خلفية وواجهات للجوال." },
+      "ja": { "name": "消費財・FMCG", "tag": "スマートコネクティビティ", "body": "BekoやCoca-Colaなどのブランド向けに、コネクテッド製品のFirmware、バックエンドデータ基盤、モバイルインターフェースを開発しています。" }
+    },
+    "Healthcare & Telecoms": {
+      "de": { "name": "Gesundheitswesen & Telekommunikation", "tag": "KRITISCHE INFRASTRUKTUR", "body": "Aero Healthcare und AT&T stellen höchste Anforderungen an die Zuverlässigkeit. WillowSoft entwickelt eingebettete Systeme für regulierte Umgebungen." },
+      "fr": { "name": "Santé et télécommunications", "tag": "INFRASTRUCTURES CRITIQUES", "body": "Aero Healthcare et AT&T exigent les plus hauts niveaux de fiabilité. WillowSoft fournit des systèmes embarqués conçus pour les environnements réglementés." },
+      "es": { "name": "Salud y telecomunicaciones", "tag": "INFRAESTRUCTURAS CRÍTICAS", "body": "Aero Healthcare y AT&T exigen los más altos niveles de fiabilidad. WillowSoft desarrolla sistemas embebidos para entornos regulados." },
+      "it": { "name": "Sanità e telecomunicazioni", "tag": "INFRASTRUTTURE CRITICHE", "body": "Aero Healthcare e AT&T richiedono i più elevati standard di affidabilità. WillowSoft realizza sistemi embedded per ambienti regolamentati." },
+      "ar": { "name": "الرعاية الصحية والاتصالات", "tag": "البنية التحتية الحرجة", "body": "تتطلب Aero Healthcare وAT&T أعلى معايير الموثوقية. تقدم WillowSoft أنظمة مدمجة مصممة للبيئات الخاضعة للتنظيم." },
+      "ja": { "name": "ヘルスケア・通信", "tag": "重要インフラ", "body": "Aero HealthcareやAT&Tが求める高い信頼性基準に対応し、規制対象環境向けの組み込みシステムを提供しています。" }
+    }
+  },
+  "expertise": {
+    "Embedded Hardware": {
+      "tr": { "label": "Gömülü Donanım", "note": "Özel PCB ve RF tasarımı" }, "de": { "label": "Embedded Hardware", "note": "Kundenspezifische PCB- und RF-Entwicklung" }, "fr": { "label": "Matériel embarqué", "note": "Conception de PCB et RF sur mesure" }, "es": { "label": "Hardware embebido", "note": "Diseño de PCB y RF a medida" }, "it": { "label": "Hardware embedded", "note": "Progettazione PCB e RF personalizzata" }, "ar": { "label": "الأجهزة المدمجة", "note": "تصميم PCB وRF مخصص" }, "ja": { "label": "組み込みハードウェア", "note": "カスタムPCB・RF設計" }
+    },
+    "Firmware Development": {
+      "tr": { "label": "Firmware Geliştirme", "note": "Düşük güçlü C/RTOS" }, "de": { "label": "Firmware-Entwicklung", "note": "Stromsparendes C/RTOS" }, "fr": { "label": "Développement firmware", "note": "C/RTOS basse consommation" }, "es": { "label": "Desarrollo de firmware", "note": "C/RTOS de bajo consumo" }, "it": { "label": "Sviluppo firmware", "note": "C/RTOS a basso consumo" }, "ar": { "label": "تطوير Firmware", "note": "C/RTOS منخفض الطاقة" }, "ja": { "label": "Firmware開発", "note": "低消費電力C/RTOS" }
+    },
+    "IoT Backend & DB": {
+      "tr": { "label": "IoT Backend ve Veritabanı", "note": "PostgreSQL ve API'ler" }, "de": { "label": "IoT-Backend & Datenbank", "note": "PostgreSQL & APIs" }, "fr": { "label": "Backend IoT et base de données", "note": "PostgreSQL et API" }, "es": { "label": "Backend IoT y base de datos", "note": "PostgreSQL y API" }, "it": { "label": "Backend IoT e database", "note": "PostgreSQL e API" }, "ar": { "label": "خلفية IoT وقاعدة البيانات", "note": "PostgreSQL وواجهات API" }, "ja": { "label": "IoTバックエンド・DB", "note": "PostgreSQL・API" }
+    },
+    "Web & Admin Panels": {
+      "tr": { "label": "Web ve Yönetim Panelleri", "note": "Dashboard ve canlı telemetri" }, "de": { "label": "Web- & Admin-Panels", "note": "Dashboards & Live-Telemetrie" }, "fr": { "label": "Web et interfaces d'administration", "note": "Tableaux de bord et télémétrie en temps réel" }, "es": { "label": "Web y paneles de administración", "note": "Dashboards y telemetría en tiempo real" }, "it": { "label": "Web e pannelli di amministrazione", "note": "Dashboard e telemetria in tempo reale" }, "ar": { "label": "الويب ولوحات الإدارة", "note": "لوحات معلومات وقياس آني عن بُعد" }, "ja": { "label": "Web・管理画面", "note": "ダッシュボード・リアルタイムテレメトリー" }
+    },
+    "Mobile Apps": {
+      "tr": { "label": "Mobil Uygulamalar", "note": "React Native / Swift" }, "de": { "label": "Mobile Apps", "note": "React Native / Swift" }, "fr": { "label": "Applications mobiles", "note": "React Native / Swift" }, "es": { "label": "Aplicaciones móviles", "note": "React Native / Swift" }, "it": { "label": "App mobili", "note": "React Native / Swift" }, "ar": { "label": "تطبيقات الجوال", "note": "React Native / Swift" }, "ja": { "label": "モバイルアプリ", "note": "React Native / Swift" }
+    },
+    "VR & Simulation": {
+      "tr": { "label": "VR ve Simülasyon", "note": "Unity ve eğitim" }, "de": { "label": "VR & Simulation", "note": "Unity & Schulung" }, "fr": { "label": "VR et simulation", "note": "Unity et formation" }, "es": { "label": "VR y simulación", "note": "Unity y formación" }, "it": { "label": "VR e simulazione", "note": "Unity e formazione" }, "ar": { "label": "الواقع الافتراضي والمحاكاة", "note": "Unity والتدريب" }, "ja": { "label": "VR・シミュレーション", "note": "Unity・トレーニング" }
+    }
+  },
+  "offices": {
+    "Turkey": {
+      "tr": { "country": "Türkiye", "address": "Altınkale Cad. 40101 Sk. Antalya, Türkiye" },
+      "de": { "country": "Türkei", "address": "Altınkale-Straße, 40101. Straße, Antalya, Türkei" },
+      "fr": { "country": "Turquie", "address": "Rue Altınkale, voie 40101, Antalya, Turquie" },
+      "es": { "country": "Turquía", "address": "Calle Altınkale, vía 40101, Antalya, Turquía" },
+      "it": { "country": "Turchia", "address": "Via Altınkale, strada 40101, Antalya, Turchia" },
+      "ar": { "country": "تركيا", "address": "شارع ألتن كاله، 40101، أنطاليا، تركيا" },
+      "ja": { "country": "トルコ", "address": "トルコ・アンタルヤ、アルトゥンカレ通り40101" }
+    },
+    "United Kingdom": {
+      "tr": { "country": "Birleşik Krallık", "address": "Doğu Londra (Wood Street, E17 3NU), Birleşik Krallık" },
+      "de": { "country": "Vereinigtes Königreich", "address": "East London (Wood Street, E17 3NU), Vereinigtes Königreich" },
+      "fr": { "country": "Royaume-Uni", "address": "Est de Londres (Wood Street, E17 3NU), Royaume-Uni" },
+      "es": { "country": "Reino Unido", "address": "Este de Londres (Wood Street, E17 3NU), Reino Unido" },
+      "it": { "country": "Regno Unito", "address": "Londra Est (Wood Street, E17 3NU), Regno Unito" },
+      "ar": { "country": "المملكة المتحدة", "address": "شرق لندن (Wood Street، E17 3NU)، المملكة المتحدة" },
+      "ja": { "country": "英国", "address": "英国・イーストロンドン（Wood Street, E17 3NU）" }
+    }
+  },
+  "lists": {
+    "aboutTags": {
+      "tr": ["Donanım", "Firmware", "Bulut", "IIoT", "Özel PCB", "Düşük Güç", "Üretime Hazır"],
+      "de": ["Hardware", "Firmware", "Cloud", "IIoT", "Kundenspezifische PCB", "Low-Power", "Produktionsbereit"],
+      "fr": ["Matériel", "Firmware", "Cloud", "IIoT", "PCB sur mesure", "Basse consommation", "Prêt pour la production"],
+      "es": ["Hardware", "Firmware", "Cloud", "IIoT", "PCB a medida", "Bajo consumo", "Listo para producción"],
+      "it": ["Hardware", "Firmware", "Cloud", "IIoT", "PCB personalizzato", "Basso consumo", "Pronto per la produzione"],
+      "ar": ["الأجهزة", "Firmware", "السحابة", "IIoT", "PCB مخصص", "طاقة منخفضة", "جاهز للإنتاج"],
+      "ja": ["ハードウェア", "Firmware", "クラウド", "IIoT", "カスタムPCB", "低消費電力", "量産対応"]
+    }
+  },
+  "timeline": {
+    "Export Growth": {
+      "it": { "title": "Crescita dell'export", "body": "L'azienda ha raggiunto importanti traguardi nell'esportazione di alta tecnologia ed è stata premiata come Campione dell'Export Tecnologico." },
+      "ar": { "title": "نمو الصادرات", "body": "حققت الشركة إنجازات مهمة في تصدير التكنولوجيا المتقدمة، وحصلت على لقب بطل تصدير التكنولوجيا." },
+      "ja": { "title": "輸出拡大", "body": "先端技術製品の輸出で重要な成果を達成し、テクノロジー輸出チャンピオンとして表彰されました。" }
+    }
+  }
+}

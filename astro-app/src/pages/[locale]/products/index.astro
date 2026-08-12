@@ -9,6 +9,7 @@ import { localizedValue, localizeItem, pageButtonParts, pageLocaleHref, pageText
 import { aiAnswerForPage, aiMetaForPage, appendSchemaNodes, fallbackFaqsForPage, faqItemsForPage, faqSchemaNode } from "@/lib/ai-search";
 import { productCategoriesFromContent, productCategoryText } from "@/lib/product-categories";
 import { productCutoutDimensions, productCutoutSrcSet } from "@/lib/image-metadata";
+import { accessibilityCopy } from "@/lib/accessibility-copy";
 
 export const prerender = false;
 
@@ -266,7 +267,7 @@ const selectionPrimaryButton = buttonFor("selectionPrimaryButton", getLabel("tal
           <div class="products-hero-actions reveal delay-3">
             <a class="btn btn-primary" href={heroPrimaryButton.url}>{heroPrimaryButton.label}</a>
           </div>
-          <div class="services-hero-meta reveal delay-3" role="list" aria-label="Product portfolio facts">
+          <div class="services-hero-meta reveal delay-3" role="list" aria-label={accessibilityCopy("productFacts", locale)}>
             <span class="hero-meta-item" role="listitem">
               <strong data-company-fact="productsOnMarket">{companyFacts.productsOnMarket || "100+"}</strong>
               <span>{getLabel("productsOnMarket")}</span>
@@ -283,7 +284,7 @@ const selectionPrimaryButton = buttonFor("selectionPrimaryButton", getLabel("tal
             </span>
           </div>
         </div>
-        <aside class="product-hero-showcase" aria-label="Featured WillowSoft hardware">
+        <aside class="product-hero-showcase" aria-label={accessibilityCopy("featuredHardware", locale)}>
           <div class="product-showcase-topline">
             <span>{pt("featuredStatus", "productionReady")}</span>
             <span class="product-live-dot" aria-hidden="true"></span>
@@ -346,12 +347,12 @@ const selectionPrimaryButton = buttonFor("selectionPrimaryButton", getLabel("tal
           </div>
         </div>
 
-        <div class="product-atlas reveal" aria-label="Product families">
+        <div class="product-atlas reveal" aria-label={accessibilityCopy("productFamilies", locale)}>
           <div class="product-atlas-topline">
             <span>PRODUCT ATLAS / 2026</span>
             <span class="product-filter-status" aria-live="polite">{productsList.length} {getLabel("productsVisible")}</span>
           </div>
-          <div class="filter-bar" role="group" aria-label="Product family filters">
+          <div class="filter-bar" role="group" aria-label={accessibilityCopy("productFilters", locale)}>
             {catalogFamilies.map((family, index) => (
               <button class={`filter-btn${index === 0 ? " active" : ""}`} data-filter={family.key} aria-pressed={index === 0 ? "true" : "false"}>
                 <span class="filter-btn-number">{family.number}</span>

@@ -6,6 +6,7 @@ import { resolveLocale } from "@/lib/cms";
 import { productCategoriesFromContent } from "@/lib/product-categories";
 import { GUIDE_INDEX_COPY, technicalGuide } from "@/lib/technical-guides";
 import { buildAlternates, DEFAULT_OG_IMAGE, fitSeoDescription, fitSeoTitle, ORGANIZATION_SCHEMA, SITE_ORIGIN, WEBSITE_SCHEMA, webPageNode } from "@/lib/seo";
+import { accessibilityCopy } from "@/lib/accessibility-copy";
 
 export const prerender = false;
 
@@ -52,7 +53,7 @@ const schema = {
   <main id="main-content" class="guide-detail">
     <section class="guide-detail-hero">
       <div class="section-inner">
-        <nav class="guide-breadcrumb" aria-label="Breadcrumb"><a href={`/${locale}/guides`}>{indexCopy.allGuides}</a><span>/</span><span>{copy.eyebrow}</span></nav>
+        <nav class="guide-breadcrumb" aria-label={accessibilityCopy("breadcrumb", locale)}><a href={`/${locale}/guides`}>{indexCopy.allGuides}</a><span>/</span><span>{copy.eyebrow}</span></nav>
         <div class="guide-title-grid">
           <div>
             <p class="eyebrow">{copy.eyebrow}</p>

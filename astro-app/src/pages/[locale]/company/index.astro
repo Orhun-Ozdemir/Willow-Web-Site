@@ -4,6 +4,7 @@ import { loadContent } from "@/lib/content";
 import { pageSeo, webPageNode, organizationWithOffices, WEBSITE_SCHEMA, SITE_ORIGIN } from "@/lib/seo";
 import { localizeItem, resolveAsset, pageText, itemText, resolveLocale, type Locale } from "@/lib/cms";
 import { officesForContact, resolveOfficePhone, syncOfficePhonesInFacts, telHref } from "@/lib/company-contact";
+import { localizedCompanyList, localizeCompanyItem } from "@/lib/company-item-translations";
 
 export const prerender = false;
 
@@ -25,7 +26,7 @@ const companySchema = {
 const pageContent = content.pageContent?.company || {};
 const t = (key: string, fallback = "") => pageText(pageContent, key, locale, fallback);
 const sectionTitle = (cmsKey: string, fallbackHtml: string) => t(cmsKey) || fallbackHtml;
-const contactOffices = officesForContact(companyFacts, locale);
+const contactOffices = officesForContact({ ...companyFacts, officesList: (companyFacts.officesList || []).map((office: any) => localizeCompanyItem("offices", office, locale)) }, locale);
 
 const cleanCmsText = (value: string) => {
   return value
@@ -63,7 +64,7 @@ const getFactList = (key: string): any[] => {
   const localized = companyFacts.localized?.[locale]?.[key];
   const raw = localized !== undefined && localized !== null ? localized : companyFacts[key];
   const cleaned = cleanCmsValue(raw ?? []);
-  if (Array.isArray(cleaned)) return cleaned;
+  if (Array.isArray(cleaned)) return localized === undefined || localized === null ? localizedCompanyList(key, cleaned, locale) : cleaned;
   if (typeof cleaned === "string") {
     return cleaned.split(/[\n,]+/g).map((item) => item.trim()).filter(Boolean);
   }
@@ -86,10 +87,10 @@ const teamFromFacts = () => {
 };
 const sortedTeam = sortByOrder(teamFromFacts())
   .filter((item) => item && typeof item === "object")
-  .map((item) => cleanCmsValue(localizeItem(item, locale)));
+  .map((item) => cleanCmsValue(localizeCompanyItem("team", item, locale)));
 const sortedTimeline = sortByOrder(Array.isArray(companyFacts.timeline) ? companyFacts.timeline : [])
   .filter((item) => item && typeof item === "object")
-  .map((item) => cleanCmsValue(localizeItem(item, locale)));
+  .map((item) => cleanCmsValue(localizeCompanyItem("timeline", item, locale)));
 const timelineCopies = [0, 1, 2];
 
 const getInitials = (name: string) => {
@@ -178,6 +179,16 @@ const ui = {
     ar: "ست سنوات من النمو المستقر — من استوديو هندسي متخصص إلى شركة إنترنت أشياء منتشرة دولياً.",
     ja: "着実な成長の6年間 — 集中型エンジニアリングスタジオから国際展開するIoT企業へ。",
   },
+  historyTitleHtml: {
+    en: 'From R&D roots to <span class="serif-accent">global</span> deployment.',
+    tr: 'Ar-Ge köklerinden <span class="serif-accent">küresel</span> dağıtıma.',
+    de: 'Von F&E-Wurzeln zum <span class="serif-accent">weltweiten</span> Einsatz.',
+    fr: 'De la R&D au déploiement <span class="serif-accent">international</span>.',
+    es: 'De las raíces en I+D al despliegue <span class="serif-accent">global</span>.',
+    it: 'Dalle radici nella R&S alla diffusione <span class="serif-accent">globale</span>.',
+    ar: 'من جذور البحث والتطوير إلى الانتشار <span class="serif-accent">العالمي</span>.',
+    ja: '研究開発を原点に、<span class="serif-accent">グローバル</span>展開へ。',
+  },
   expertiseEyebrow: { en: "Core expertise", tr: "Uzmanlık Alanlarımız", de: "Kernkompetenzen", fr: "Expertise clé", es: "Experiencia principal", it: "Competenze chiave", ar: "الخبرات الأساسية", ja: "コア領域" },
   expertiseTitleHtml: {
     en: 'Core <span class="serif-accent">engineering</span> capabilities.',
@@ -208,6 +219,16 @@ const ui = {
     it: "I team di prodotto collaborano con WillowSoft su sistemi industriali, dispositivi connessi, sensoristica e software operativo.",
     ar: "تتعاون فرق المنتجات مع WillowSoft في الأنظمة الصناعية والأجهزة المتصلة والاستشعار وبرمجيات التشغيل.",
     ja: "製品チームは、産業システム、コネクテッドデバイス、センシング、運用ソフトウェアの領域でWillowSoftと協業しています。",
+  },
+  workWithTitleHtml: {
+    en: 'Engineering partnerships across <span class="serif-accent">industries and markets</span>.',
+    tr: 'Sektörler ve pazarlar arasında <span class="serif-accent">mühendislik iş birlikleri</span>.',
+    de: 'Engineering-Partnerschaften über <span class="serif-accent">Branchen und Märkte</span> hinweg.',
+    fr: 'Des partenariats d’ingénierie dans différents <span class="serif-accent">secteurs et marchés</span>.',
+    es: 'Colaboraciones de ingeniería en distintos <span class="serif-accent">sectores y mercados</span>.',
+    it: 'Collaborazioni ingegneristiche in diversi <span class="serif-accent">settori e mercati</span>.',
+    ar: 'شراكات هندسية عبر <span class="serif-accent">قطاعات وأسواق متعددة</span>.',
+    ja: 'さまざまな<span class="serif-accent">業界・市場</span>におけるエンジニアリングパートナーシップ。',
   },
   rndUnit: { en: "yrs", tr: "yıl", de: "J.", fr: "ans", es: "años", it: "anni", ar: "سنة", ja: "年" },
   fullStackValue: { en: "Full-stack", tr: "Uçtan uca", de: "Full-Stack", fr: "Full-stack", es: "Full-stack", it: "Full-stack", ar: "متكامل", ja: "フルスタック" },
@@ -422,7 +443,7 @@ const teamTitleHtml: Record<string, string> = {
           <div class="company-proof-chips">
             {getFactList("whyUs").map((w: any) => {
               if (!w || typeof w !== "object") return null;
-              const chip = localizeItem(w, locale);
+              const chip = localizeCompanyItem("whyUs", w, locale);
               return (
                 <div class="company-proof-chip">
                   <div class="ws-icbox" style="flex: 0 0 auto;" set:html={getSvg(chip?.icon || w.icon, 20)} />
@@ -435,7 +456,7 @@ const teamTitleHtml: Record<string, string> = {
         <div class="company-principles-list">
           {getFactList("principles").map((p: any) => {
             if (!p || typeof p !== "object") return null;
-            const principle = localizeItem(p, locale);
+            const principle = localizeCompanyItem("principles", p, locale);
             return (
               <div class="ws-card company-principle-card">
                 <div class="company-principle-top">
@@ -457,9 +478,7 @@ const teamTitleHtml: Record<string, string> = {
         <div class="company-grid-timeline-head">
           <div>
             <span class="eyebrow">{t("historyEyebrow", u("historyTimeline"))}</span>
-            <h2 class="ws-h2" style="margin-top: 18px;" set:html={sectionTitle("historyTitle", locale === 'tr'
-                ? 'Ar-Ge köklerinden <span class="serif-accent">küresel</span> dağıtıma.'
-                : 'From R&D roots to <span class="serif-accent">global</span> deployment.')} />
+            <h2 class="ws-h2" style="margin-top: 18px;" set:html={sectionTitle("historyTitle", ui.historyTitleHtml[locale] || ui.historyTitleHtml.en)} />
           </div>
           <p class="ws-lead" style="align-self: end; padding-bottom: 4px;">
             {factText("historyLead", u("historyLead"))}
@@ -520,7 +539,7 @@ const teamTitleHtml: Record<string, string> = {
         <div class="company-capability-panel">
           {sortByOrder(getFactList("expertise")).map((e: any, i: number) => {
             if (!e || typeof e !== "object") return null;
-            const exp = localizeItem(e, locale);
+            const exp = localizeCompanyItem("expertise", e, locale);
             return (
               <div class="company-capability-row">
                 <span class="company-capability-number">{String(i + 1).padStart(2, "0")}</span>
@@ -541,7 +560,7 @@ const teamTitleHtml: Record<string, string> = {
       <div class="company-container company-industries-layout">
         <div class="company-industries-copy">
             <span class="eyebrow">{t("workWithEyebrow", u("workWithUs"))}</span>
-            <h2 class="ws-h2" style="margin-top: 18px;" set:html={sectionTitle("workWithTitle", locale === 'tr' ? 'Sektörler ve pazarlar arasında <span class="serif-accent">mühendislik iş birlikleri</span>.' : 'Engineering partnerships across <span class="serif-accent">industries and markets</span>.')} />
+            <h2 class="ws-h2" style="margin-top: 18px;" set:html={sectionTitle("workWithTitle", ui.workWithTitleHtml[locale] || ui.workWithTitleHtml.en)} />
           <p class="ws-lead">
             {factText("workWithLead", u("workWithLead"))}
           </p>
@@ -549,7 +568,7 @@ const teamTitleHtml: Record<string, string> = {
         <div class="company-industry-proof-list">
           {getFactList("industries").map((ind: any, i: number) => {
             if (!ind || typeof ind !== "object") return null;
-            const industry = localizeItem(ind, locale);
+            const industry = localizeCompanyItem("industries", ind, locale);
             return (
               <div class="ws-card company-industry-proof">
                 <span class="company-industry-index">{String(i + 1).padStart(2, "0")}</span>
@@ -574,7 +593,7 @@ const teamTitleHtml: Record<string, string> = {
         <div class="company-offices-grid">
           {getFactList("officesList").map((o: any) => {
             if (!o || typeof o !== "object") return null;
-            const office = localizeItem(o, locale);
+            const office = localizeCompanyItem("offices", o, locale);
             return (
               <div class="ws-card company-office-card">
                 <div class="ws-placeholder-office company-office-visual">
