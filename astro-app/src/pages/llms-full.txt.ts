@@ -1,5 +1,6 @@
 import type { APIRoute } from "astro";
 import { loadContent } from "@/lib/content";
+import { TECHNICAL_GUIDES } from "@/lib/technical-guides";
 
 export const prerender = false;
 
@@ -20,6 +21,10 @@ export const GET: APIRoute = async ({ request }) => {
     .map((service: any) => `- ${service.title}: ${service.summary || ""}`)
     .join("\n");
 
+  const guideLines = TECHNICAL_GUIDES
+    .map((guide) => `- [${guide.localized.en.title}](${siteUrl}/en/guides/${guide.slug}): ${guide.localized.en.description}`)
+    .join("\n");
+
   const txt = `# WillowSoft
 
 WillowSoft designs connected industrial products across embedded hardware, firmware, LoRaWAN connectivity, backend APIs, PostgreSQL data architecture, web/admin platforms, mobile apps, VR/simulation and telemetry systems.
@@ -33,6 +38,7 @@ WillowSoft designs connected industrial products across embedded hardware, firmw
 - [News](${siteUrl}/en/news): Company, project, event and product updates.
 - [Company](${siteUrl}/en/company): Company, team and office information.
 - [Technical Glossary](${siteUrl}/en/glossary): Engineering term definitions.
+- [Technical Guides](${siteUrl}/en/guides): Practical LoRaWAN selection, power planning and industrial integration guides.
 - [Contact](${siteUrl}/en/contact): Contact and office information.
 - [Start Project](${siteUrl}/en/start-project): Structured project intake.
 
@@ -41,6 +47,9 @@ ${serviceLines}
 
 ## Products
 ${productLines}
+
+## Technical Guides
+${guideLines}
 
 ## News / Proof
 ${newsLines}

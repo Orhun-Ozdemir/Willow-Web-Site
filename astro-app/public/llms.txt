@@ -14,6 +14,7 @@ This file provides a concise map of WillowSoft's public, English-language techni
 - [Company](https://www.willowsoft.co/en/company): WillowSoft company, engineering approach, team and office information.
 - [News](https://www.willowsoft.co/en/news): Company announcements, events, projects and product updates.
 - [Technical Glossary](https://www.willowsoft.co/en/glossary): Definitions of LoRaWAN, Modbus, embedded systems and Industrial IoT concepts.
+- [Technical Guides](https://www.willowsoft.co/en/guides): Practical guides for LoRaWAN selection, power planning and industrial integration.
 - [Frequently Asked Questions](https://www.willowsoft.co/en/faq): Answers about WillowSoft services, products, solutions and project process.
 
 ## Product Families

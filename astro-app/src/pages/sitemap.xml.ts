@@ -3,6 +3,7 @@ import { loadContent } from "@/lib/content";
 import { itemText, locales, type Locale } from "@/lib/cms";
 import { SITE_ORIGIN } from "@/lib/seo";
 import { productCategoriesFromContent } from "@/lib/product-categories";
+import { TECHNICAL_GUIDES } from "@/lib/technical-guides";
 
 const STATIC_PAGES: { key: string; subPath: string }[] = [
   { key: "home", subPath: "" },
@@ -13,6 +14,7 @@ const STATIC_PAGES: { key: string; subPath: string }[] = [
   { key: "company", subPath: "/company" },
   { key: "news", subPath: "/news" },
   { key: "glossary", subPath: "/glossary" },
+  { key: "guides", subPath: "/guides" },
   { key: "contact", subPath: "/contact" },
   { key: "startProject", subPath: "/start-project" },
   { key: "privacy", subPath: "/privacy" },
@@ -57,12 +59,20 @@ export const GET: APIRoute = async () => {
     }));
   }
 
-  for (const product of content.products || []) {
+  for (const product of (content.products || []).filter((item: any) => item.visible !== false)) {
     const slug = product.slug || product.id;
     pushLocalizedSet((l) => `${SITE_ORIGIN}/${l}/products/${slug}`, () => ({
       changefreq: "monthly",
       priority: "0.7",
       lastmod: product.updatedAt || lastmod,
+    }));
+  }
+
+  for (const guide of TECHNICAL_GUIDES) {
+    pushLocalizedSet((l) => `${SITE_ORIGIN}/${l}/guides/${guide.slug}`, () => ({
+      changefreq: "yearly",
+      priority: "0.72",
+      lastmod,
     }));
   }
 
@@ -74,7 +84,7 @@ export const GET: APIRoute = async () => {
     }));
   }
 
-  for (const item of content.news || []) {
+  for (const item of (content.news || []).filter((entry: any) => entry.visible !== false)) {
     pushLocalizedSet(
       (l) => `${SITE_ORIGIN}/${l}/news/${itemText(item, "slug", l, item.slug?.en || item.slug || item.id)}`,
       () => ({ changefreq: "yearly", priority: "0.5", lastmod: item.updatedAt || item.date || lastmod }),

@@ -1,0 +1,130 @@
+---
+import PageLayout from "@/layouts/PageLayout.astro";
+import ProductCard from "@/components/ProductCard.astro";
+import { loadContent } from "@/lib/content";
+import { resolveLocale } from "@/lib/cms";
+import { productCategoriesFromContent } from "@/lib/product-categories";
+import { GUIDE_INDEX_COPY, technicalGuide } from "@/lib/technical-guides";
+import { buildAlternates, DEFAULT_OG_IMAGE, fitSeoDescription, fitSeoTitle, ORGANIZATION_SCHEMA, SITE_ORIGIN, WEBSITE_SCHEMA, webPageNode } from "@/lib/seo";
+
+export const prerender = false;
+
+const locale = resolveLocale(Astro.params.locale, Astro.url.pathname);
+const guide = technicalGuide(Astro.params.slug);
+if (!guide) return Astro.rewrite(`/${locale}/not-found`);
+
+const copy = guide.localized[locale];
+const indexCopy = GUIDE_INDEX_COPY[locale];
+const canonical = `${SITE_ORIGIN}/${locale}/guides/${guide.slug}`;
+const title = fitSeoTitle(`${copy.title} | WillowSoft`);
+const description = fitSeoDescription(copy.description);
+const content = await loadContent();
+const categories = productCategoriesFromContent(content);
+const relatedProducts = (content.products || [])
+  .filter((product: any) => product.visible !== false && (!guide.relatedCategory || String(product.category) === guide.relatedCategory))
+  .slice(0, 4);
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    ORGANIZATION_SCHEMA,
+    WEBSITE_SCHEMA,
+    {
+      ...webPageNode("TechArticle", canonical, title, description, locale),
+      headline: copy.title,
+      author: { "@id": `${SITE_ORIGIN}/#org` },
+      publisher: { "@id": `${SITE_ORIGIN}/#org` },
+      proficiencyLevel: "Intermediate",
+      about: ["LoRaWAN", guide.category],
+    },
+    {
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "WillowSoft", item: `${SITE_ORIGIN}/${locale}` },
+        { "@type": "ListItem", position: 2, name: indexCopy.title, item: `${SITE_ORIGIN}/${locale}/guides` },
+        { "@type": "ListItem", position: 3, name: copy.title, item: canonical },
+      ],
+    },
+  ],
+};
+---
+
+<PageLayout title={title} description={description} canonical={canonical} ogTitle={title} ogDescription={description} ogImage={DEFAULT_OG_IMAGE} alternates={buildAlternates(`/guides/${guide.slug}`)} schema={schema} locale={locale} dataPage="guide-detail">
+  <main id="main-content" class="guide-detail">
+    <section class="guide-detail-hero">
+      <div class="section-inner">
+        <nav class="guide-breadcrumb" aria-label="Breadcrumb"><a href={`/${locale}/guides`}>{indexCopy.allGuides}</a><span>/</span><span>{copy.eyebrow}</span></nav>
+        <div class="guide-title-grid">
+          <div>
+            <p class="eyebrow">{copy.eyebrow}</p>
+            <h1>{copy.title}</h1>
+          </div>
+          <p>{copy.intro}</p>
+        </div>
+      </div>
+    </section>
+
+    <article class="section guide-article">
+      <div class="section-inner guide-article-grid">
+        <aside class="guide-aside">
+          <span>{guide.readingMinutes} {indexCopy.minutes}</span>
+          <a href={guide.source.url} target="_blank" rel="noopener noreferrer"><small>{indexCopy.source}</small>{guide.source.label} <span aria-hidden="true">↗</span></a>
+        </aside>
+        <div class="guide-content">
+          {copy.sections.map((section, index) => (
+            <section class="guide-section">
+              <span>{String(index + 1).padStart(2, "0")}</span>
+              <h2>{section.heading}</h2>
+              <p>{section.body}</p>
+              {section.points?.length && <ul>{section.points.map((point) => <li>{point}</li>)}</ul>}
+            </section>
+          ))}
+          <section class="guide-checklist">
+            <p class="eyebrow">{copy.checklistTitle}</p>
+            <h2>{copy.checklistTitle}</h2>
+            <ul>{copy.checklist.map((item) => <li><span aria-hidden="true">✓</span>{item}</li>)}</ul>
+          </section>
+        </div>
+      </div>
+    </article>
+
+    {relatedProducts.length > 0 && (
+      <section class="section soft guide-products">
+        <div class="section-inner">
+          <div class="section-head"><div><p class="eyebrow">LoRaWAN</p><h2>{indexCopy.related}</h2></div><a class="guide-all-products" href={`/${locale}/products/category/${guide.relatedCategory}`}>{indexCopy.related} <span aria-hidden="true">↗</span></a></div>
+          <div class="grid grid-4 product-atlas-grid">{relatedProducts.map((product: any, index: number) => <ProductCard product={product} locale={locale} index={index} variant="catalog" categories={categories} />)}</div>
+        </div>
+      </section>
+    )}
+  </main>
+</PageLayout>
+
+<style>
+  .guide-detail { background: #fff; }
+  .guide-detail-hero { padding: 132px 0 68px; color: #fff; background: radial-gradient(circle at 85% 15%, rgba(114,223,195,.14), transparent 28%), linear-gradient(145deg, #07152f, #111c49 67%, #17184e); }
+  .guide-breadcrumb { display: flex; gap: 9px; margin-bottom: 52px; color: rgba(255,255,255,.6); font-size: .72rem; font-weight: 800; }
+  .guide-breadcrumb a:hover { color: #fff; }
+  .guide-title-grid { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(300px, .55fr); gap: clamp(36px, 7vw, 100px); align-items: end; }
+  .guide-detail-hero .eyebrow { color: #72dfc3; }
+  .guide-detail-hero h1 { max-width: 900px; margin: 13px 0 0; font-size: clamp(2.8rem, 6vw, 5.6rem); line-height: .96; letter-spacing: -.055em; }
+  .guide-title-grid > p { margin: 0; color: rgba(255,255,255,.77); font-size: 1.05rem; line-height: 1.75; }
+  .guide-article { padding: 76px 0 92px; }
+  .guide-article-grid { display: grid; grid-template-columns: minmax(180px, .28fr) minmax(0, .92fr); gap: clamp(36px, 8vw, 120px); max-width: 1120px; }
+  .guide-aside { position: sticky; top: 110px; align-self: start; display: grid; gap: 18px; color: rgba(19,33,117,.58); font-size: .7rem; font-weight: 850; letter-spacing: .08em; text-transform: uppercase; }
+  .guide-aside a { display: grid; gap: 8px; padding-top: 18px; border-top: 1px solid rgba(19,33,117,.15); color: var(--blue); line-height: 1.5; }
+  .guide-aside small { color: rgba(19,33,117,.48); font-size: .6rem; }
+  .guide-content { min-width: 0; }
+  .guide-section { position: relative; padding: 0 0 52px 54px; border-left: 1px solid rgba(19,33,117,.14); }
+  .guide-section > span { position: absolute; top: 0; left: -16px; display: grid; width: 32px; height: 32px; place-items: center; border: 1px solid rgba(35,168,216,.3); border-radius: 50%; background: #fff; color: var(--blue); font-size: .62rem; font-weight: 900; }
+  .guide-section h2 { margin: 0 0 16px; color: var(--ink); font-size: clamp(1.6rem, 2.7vw, 2.3rem); line-height: 1.12; letter-spacing: -.035em; }
+  .guide-section p { margin: 0; color: rgba(19,27,46,.72); font-size: 1rem; line-height: 1.82; }
+  .guide-section ul { display: grid; gap: 8px; margin: 22px 0 0; padding: 0; list-style: none; }
+  .guide-section li { padding: 12px 15px; border-radius: 10px; background: #f4f7fb; color: rgba(19,27,46,.76); font-size: .88rem; }
+  .guide-checklist { padding: 30px; border: 1px solid rgba(35,168,216,.22); border-radius: 22px; background: linear-gradient(145deg, #f4fbff, #f3f6ff); }
+  .guide-checklist h2 { margin: 8px 0 22px; color: var(--ink); font-size: 1.8rem; }
+  .guide-checklist ul { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin: 0; padding: 0; list-style: none; }
+  .guide-checklist li { display: flex; gap: 10px; align-items: center; padding: 13px; border-radius: 10px; background: rgba(255,255,255,.76); color: rgba(19,27,46,.76); font-size: .82rem; }
+  .guide-checklist li span { color: #15947b; font-weight: 900; }
+  .guide-products { padding: 68px 0 84px; }
+  .guide-all-products { color: var(--blue); font-size: .78rem; font-weight: 850; }
+  @media (max-width: 760px) { .guide-detail-hero { padding: 108px 0 48px; } .guide-breadcrumb { margin-bottom: 30px; } .guide-title-grid { grid-template-columns: 1fr; gap: 24px; } .guide-article { padding: 48px 0 64px; } .guide-article-grid { grid-template-columns: 1fr; gap: 36px; } .guide-aside { position: static; grid-template-columns: 1fr 1.5fr; } .guide-section { padding: 0 0 42px 38px; } .guide-checklist { padding: 22px; } .guide-checklist ul { grid-template-columns: 1fr; } .guide-products { padding: 48px 0 60px; } }
+</style>

@@ -1,0 +1,85 @@
+---
+import PageLayout from "@/layouts/PageLayout.astro";
+import { resolveLocale } from "@/lib/cms";
+import { GUIDE_INDEX_COPY, TECHNICAL_GUIDES } from "@/lib/technical-guides";
+import { buildAlternates, DEFAULT_OG_IMAGE, fitSeoDescription, fitSeoTitle, ORGANIZATION_SCHEMA, SITE_ORIGIN, WEBSITE_SCHEMA, webPageNode } from "@/lib/seo";
+
+export const prerender = false;
+
+const locale = resolveLocale(Astro.params.locale, Astro.url.pathname);
+const copy = GUIDE_INDEX_COPY[locale];
+const canonical = `${SITE_ORIGIN}/${locale}/guides`;
+const title = fitSeoTitle(`${copy.title} | WillowSoft`);
+const description = fitSeoDescription(copy.description);
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    ORGANIZATION_SCHEMA,
+    WEBSITE_SCHEMA,
+    { ...webPageNode("CollectionPage", canonical, title, description, locale), mainEntity: { "@id": `${canonical}#guides` } },
+    {
+      "@type": "ItemList",
+      "@id": `${canonical}#guides`,
+      name: copy.title,
+      numberOfItems: TECHNICAL_GUIDES.length,
+      itemListElement: TECHNICAL_GUIDES.map((guide, index) => ({
+        "@type": "ListItem",
+        position: index + 1,
+        name: guide.localized[locale].title,
+        url: `${canonical}/${guide.slug}`,
+      })),
+    },
+  ],
+};
+---
+
+<PageLayout title={title} description={description} canonical={canonical} ogTitle={title} ogDescription={description} ogImage={DEFAULT_OG_IMAGE} alternates={buildAlternates("/guides")} schema={schema} locale={locale} dataPage="guides">
+  <main id="main-content" class="guide-index">
+    <section class="guide-hero">
+      <div class="section-inner guide-hero-inner">
+        <p class="eyebrow">{copy.eyebrow}</p>
+        <h1>{copy.title}</h1>
+        <p>{copy.intro}</p>
+      </div>
+    </section>
+
+    <section class="section guide-list-section">
+      <div class="section-inner guide-grid" id="guides">
+        {TECHNICAL_GUIDES.map((guide, index) => {
+          const item = guide.localized[locale];
+          return (
+            <article class="guide-card">
+              <div class="guide-card-meta">
+                <span>{String(index + 1).padStart(2, "0")}</span>
+                <span>{guide.readingMinutes} {copy.minutes}</span>
+              </div>
+              <h2><a href={`/${locale}/guides/${guide.slug}`}>{item.title}</a></h2>
+              <p>{item.description}</p>
+              <a class="guide-link" href={`/${locale}/guides/${guide.slug}`}>{copy.read} <span aria-hidden="true">↗</span></a>
+            </article>
+          );
+        })}
+      </div>
+    </section>
+  </main>
+</PageLayout>
+
+<style>
+  .guide-index { background: #f7f9fc; }
+  .guide-hero { padding: 154px 0 76px; color: #fff; background: radial-gradient(circle at 78% 10%, rgba(53, 203, 170, .16), transparent 30%), linear-gradient(145deg, #07152f, #111c49 66%, #151443); }
+  .guide-hero-inner { display: grid; grid-template-columns: minmax(0, .85fr) minmax(320px, .55fr); gap: clamp(34px, 7vw, 100px); align-items: end; }
+  .guide-hero .eyebrow { color: #72dfc3; }
+  .guide-hero h1 { margin: 14px 0 0; font-size: clamp(3.2rem, 7vw, 6.8rem); line-height: .92; letter-spacing: -.06em; }
+  .guide-hero p:last-child { margin: 0; color: rgba(255,255,255,.76); font-size: 1.08rem; line-height: 1.75; }
+  .guide-list-section { padding: 72px 0 96px; }
+  .guide-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+  .guide-card { display: flex; min-height: 360px; flex-direction: column; padding: 26px; border: 1px solid rgba(19,33,117,.12); border-radius: 22px; background: #fff; box-shadow: 0 18px 60px rgba(16,31,92,.06); transition: transform .22s ease, border-color .22s ease, box-shadow .22s ease; }
+  .guide-card:hover { transform: translateY(-5px); border-color: rgba(35,168,216,.45); box-shadow: 0 26px 70px rgba(16,31,92,.11); }
+  .guide-card-meta { display: flex; justify-content: space-between; color: rgba(19,33,117,.52); font-size: .67rem; font-weight: 850; letter-spacing: .08em; text-transform: uppercase; }
+  .guide-card h2 { margin: 54px 0 16px; color: var(--ink); font-size: clamp(1.35rem, 2vw, 1.75rem); line-height: 1.12; letter-spacing: -.025em; }
+  .guide-card h2 a:hover { color: var(--blue); }
+  .guide-card p { margin: 0; color: rgba(19,27,46,.67); font-size: .9rem; line-height: 1.7; }
+  .guide-link { display: flex; justify-content: space-between; margin-top: auto; padding-top: 26px; color: var(--blue); font-size: .78rem; font-weight: 850; }
+  @media (max-width: 880px) { .guide-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .guide-card:last-child { grid-column: 1 / -1; min-height: 280px; } }
+  @media (max-width: 680px) { .guide-hero { padding: 116px 0 52px; } .guide-hero-inner { grid-template-columns: 1fr; gap: 24px; } .guide-hero h1 { font-size: clamp(2.7rem, 14vw, 4.4rem); } .guide-list-section { padding: 44px 0 64px; } .guide-grid { grid-template-columns: 1fr; } .guide-card, .guide-card:last-child { min-height: 270px; grid-column: auto; } .guide-card h2 { margin-top: 36px; } }
+</style>

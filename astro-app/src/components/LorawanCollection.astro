@@ -4,6 +4,7 @@ import { localizeItem, type Locale } from "@/lib/cms";
 import { productCategoryText, type ProductCategory } from "@/lib/product-categories";
 import { productSearchDescriptor } from "@/lib/seo-fallbacks";
 import { categorySearchName, COLLECTION_TABLE_LABELS, LORAWAN_LANDING_COPY } from "@/lib/lorawan-landing";
+import { GUIDE_INDEX_COPY, TECHNICAL_GUIDES } from "@/lib/technical-guides";
 
 interface Props {
   locale: Locale;
@@ -23,6 +24,7 @@ const heroLead = selectedCategory
   ? `${categoryDescription}${categoryDescription && !/[.!?؟。]$/.test(categoryDescription) ? "." : ""} ${copy.portfolioLead}`.trim()
   : copy.intro;
 const tableLabels = COLLECTION_TABLE_LABELS[locale] || COLLECTION_TABLE_LABELS.en;
+const guideCopy = GUIDE_INDEX_COPY[locale];
 ---
 
 <main id="main-content" class="lorawan-landing">
@@ -124,6 +126,24 @@ const tableLabels = COLLECTION_TABLE_LABELS[locale] || COLLECTION_TABLE_LABELS.e
       </div>
     </div>
   </section>
+
+  <section class="section soft lorawan-guides">
+    <div class="section-inner">
+      <div class="section-head">
+        <div><p class="eyebrow">{guideCopy.eyebrow}</p><h2>{guideCopy.title}</h2><p class="section-lead">{guideCopy.intro}</p></div>
+        <a class="lorawan-guide-all" href={`/${locale}/guides`}>{guideCopy.allGuides} <span aria-hidden="true">↗</span></a>
+      </div>
+      <div class="lorawan-guide-grid">
+        {TECHNICAL_GUIDES.map((guide) => (
+          <a class="lorawan-guide-card" href={`/${locale}/guides/${guide.slug}`}>
+            <span>{guide.readingMinutes} {guideCopy.minutes}</span>
+            <h3>{guide.localized[locale].title}</h3>
+            <p>{guide.localized[locale].description}</p>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
 </main>
 
 <style>
@@ -148,6 +168,14 @@ const tableLabels = COLLECTION_TABLE_LABELS[locale] || COLLECTION_TABLE_LABELS.e
   .lorawan-family-card strong { position: absolute; right: 18px; bottom: 14px; color: rgba(19,33,117,.16); font-size: 2.5rem; }
   .lorawan-products { padding: 70px 0 78px; }
   .lorawan-comparison { padding: 72px 0 90px; }
+  .lorawan-guides { padding: 70px 0 88px; }
+  .lorawan-guide-all { color: var(--blue); font-size: .78rem; font-weight: 850; }
+  .lorawan-guide-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+  .lorawan-guide-card { min-height: 230px; padding: 22px; border: 1px solid rgba(19,33,117,.12); border-radius: 18px; background: #fff; transition: transform .2s ease, border-color .2s ease; }
+  .lorawan-guide-card:hover { transform: translateY(-4px); border-color: rgba(35,168,216,.48); }
+  .lorawan-guide-card > span { color: rgba(19,33,117,.5); font-size: .64rem; font-weight: 850; letter-spacing: .07em; text-transform: uppercase; }
+  .lorawan-guide-card h3 { margin: 38px 0 12px; color: var(--ink); font-size: 1.17rem; line-height: 1.15; }
+  .lorawan-guide-card p { margin: 0; color: rgba(19,27,46,.64); font-size: .82rem; line-height: 1.55; }
   .lorawan-table-wrap { overflow-x: auto; border: 1px solid rgba(19,33,117,.12); border-radius: 18px; box-shadow: 0 18px 54px rgba(16,31,92,.06); }
   table { width: 100%; min-width: 850px; border-collapse: collapse; background: #fff; }
   th, td { padding: 17px 18px; border-bottom: 1px solid rgba(19,33,117,.09); text-align: start; vertical-align: top; font-size: .83rem; line-height: 1.5; }
@@ -161,7 +189,9 @@ const tableLabels = COLLECTION_TABLE_LABELS[locale] || COLLECTION_TABLE_LABELS.e
     .lorawan-hero { padding: 112px 0 52px; }
     .lorawan-hero-grid { grid-template-columns: 1fr; gap: 26px; }
     .lorawan-hero h1 { font-size: clamp(2.55rem, 12vw, 4rem); }
-    .lorawan-families, .lorawan-products, .lorawan-comparison { padding: 48px 0; }
+    .lorawan-families, .lorawan-products, .lorawan-comparison, .lorawan-guides { padding: 48px 0; }
+    .lorawan-guide-grid { grid-template-columns: 1fr; }
+    .lorawan-guide-card { min-height: 190px; }
     .lorawan-family-card { min-height: 170px; padding: 18px; }
     .lorawan-family-card h3 { margin-top: 20px; font-size: 1rem; }
     .lorawan-table-wrap { overflow: visible; border: 0; border-radius: 0; box-shadow: none; }

@@ -5,6 +5,7 @@ import { SITE_ORIGIN } from "@/lib/seo";
 import { stripHtml } from "@/lib/ai-search";
 import { productCategoriesFromContent } from "@/lib/product-categories";
 import { categorySearchName, categorySeoDescription, LORAWAN_LANDING_COPY } from "@/lib/lorawan-landing";
+import { GUIDE_INDEX_COPY, TECHNICAL_GUIDES } from "@/lib/technical-guides";
 
 const staticPages = [
   { key: "home", path: "", type: "HomePage" },
@@ -15,6 +16,7 @@ const staticPages = [
   { key: "company", path: "/company", type: "AboutPage" },
   { key: "news", path: "/news", type: "CollectionPage" },
   { key: "glossary", path: "/glossary", type: "DefinedTermSet" },
+  { key: "guides", path: "/guides", type: "CollectionPage" },
   { key: "contact", path: "/contact", type: "ContactPage" },
   { key: "startProject", path: "/start-project", type: "WebPage" },
 ];
@@ -32,12 +34,20 @@ export const GET: APIRoute = async () => {
       return {
         type: page.type,
         locale,
-        title: seo.seoTitle || (page.key === "lorawanSensors" ? lorawanCopy.title : page.key),
-        description: seo.metaDescription || (page.key === "lorawanSensors" ? lorawanCopy.description : ""),
+        title: seo.seoTitle || (page.key === "lorawanSensors" ? lorawanCopy.title : page.key === "guides" ? GUIDE_INDEX_COPY[locale].title : page.key),
+        description: seo.metaDescription || (page.key === "lorawanSensors" ? lorawanCopy.description : page.key === "guides" ? GUIDE_INDEX_COPY[locale].description : ""),
         url: urlFor(locale, page.path),
       };
     }),
   );
+
+  const guides = locales.flatMap((locale) => TECHNICAL_GUIDES.map((guide) => ({
+    type: "TechArticle",
+    locale,
+    title: guide.localized[locale].title,
+    description: guide.localized[locale].description,
+    url: urlFor(locale, `/guides/${guide.slug}`),
+  })));
 
   const productCategories = productCategoriesFromContent(content).filter((category) => category.visible);
   const categoryPages = locales.flatMap((locale) =>
@@ -54,7 +64,7 @@ export const GET: APIRoute = async () => {
   );
 
   const products = locales.flatMap((locale) =>
-    (content.products || []).map((product: any) => ({
+    (content.products || []).filter((product: any) => product.visible !== false).map((product: any) => ({
       type: "Product",
       locale,
       name: localizedValue(product.title, locale),
@@ -65,7 +75,7 @@ export const GET: APIRoute = async () => {
   );
 
   const news = locales.flatMap((locale) =>
-    (content.news || []).map((item: any) => ({
+    (content.news || []).filter((item: any) => item.visible !== false).map((item: any) => ({
       type: "NewsArticle",
       locale,
       headline: localizedValue(item.title, locale),
@@ -94,7 +104,7 @@ export const GET: APIRoute = async () => {
           "mobile apps",
           "VR and simulation",
         ],
-        pages: [...pages, ...categoryPages],
+        pages: [...pages, ...categoryPages, ...guides],
         products,
         news,
       },

@@ -12,6 +12,7 @@ import { applicationIconForText, buildSpecificationGroups, canonicalizeProduct, 
 import { productCategoriesFromContent, productCategoryLabel } from "@/lib/product-categories";
 import { productSearchDescriptor, productSeoFallback } from "@/lib/seo-fallbacks";
 import { productCutoutDimensions, productCutoutSrcSet } from "@/lib/image-metadata";
+import { technicalGuide } from "@/lib/technical-guides";
 
 export const prerender = false;
 
@@ -62,6 +63,7 @@ const productAssetUrl = (path: any, fallback = "assets/hero-industrial-iot.jpg")
   return resolveAsset(normalized);
 };
 const heroImageUrl = productAssetUrl(heroImage);
+const heroImageAbsoluteUrl = new URL(heroImageUrl, SITE_ORIGIN).toString();
 const heroImageDimensions = productCutoutDimensions(heroImageUrl);
 const heroImageSrcSet = productCutoutSrcSet(heroImageUrl);
 const fallbackHeroImageUrl = productAssetUrl("assets/hero-industrial-iot.jpg");
@@ -646,7 +648,8 @@ const ICONS: Record<string, string> = {
 };
 
 // Schema.org Graph
-const productCanonical = `${SITE_ORIGIN}/${locale}/products/${slug}`;
+const canonicalProductSlug = rawProduct.slug || rawProduct.id;
+const productCanonical = `${SITE_ORIGIN}/${locale}/products/${canonicalProductSlug}`;
 const crumbHome: Record<Locale, string> = { en: "Home", tr: "Ana Sayfa", de: "Startseite", fr: "Accueil", es: "Inicio", it: "Home", ar: "الرئيسية", ja: "ホーム" };
 const crumbProducts: Record<Locale, string> = { en: "Products", tr: "Ürünler", de: "Produkte", fr: "Produits", es: "Productos", it: "Prodotti", ar: "المنتجات", ja: "製品一覧" };
 
@@ -655,9 +658,11 @@ const crumbProducts: Record<Locale, string> = { en: "Products", tr: "Ürünler",
 const productPrice = (product as any).price;
 const productNode: Record<string, any> = {
   "@type": "Product",
+  "@id": `${productCanonical}#product`,
+  "url": productCanonical,
   "name": productHeading,
   "sku": product.slug || product.id,
-  "image": product.image ? [`${SITE_ORIGIN}/${product.image}`.replace(/([^:])\/\//g, "$1/")] : [],
+  "image": heroImageAbsoluteUrl ? [heroImageAbsoluteUrl] : [],
   "description": product.shortDescription || "",
   "brand": { "@type": "Brand", "name": "WillowSoft" },
   "manufacturer": { "@id": `${SITE_ORIGIN}/#org` },
@@ -819,6 +824,8 @@ const getT = (key: keyof typeof t) => {
 
 const relatedGlossaryTerms = glossaryLinksForProduct(normalizedSlug, content.glossary || [], locale);
 const glossaryHeading = glossaryLinkLabels.heading[locale] || glossaryLinkLabels.heading.en;
+const relatedGuide = technicalGuide(String(rawProduct.category) === "industrial" ? "modbus-to-lorawan-integration" : "how-to-choose-a-lorawan-sensor");
+const relatedGuideLabel: Record<Locale, string> = { en: "Technical guide", tr: "Teknik rehber", de: "Technischer Leitfaden", fr: "Guide technique", es: "Guía técnica", it: "Guida tecnica", ar: "دليل فني", ja: "技術ガイド" };
 const visibleProductSequence = (content.products || [])
   .filter((item: any) => item.visible !== false)
   .sort((a: any, b: any) => Number(a.sortOrder || 0) - Number(b.sortOrder || 0));
@@ -845,11 +852,11 @@ const relatedCopy = relatedProductsCopy[locale] || relatedProductsCopy.en;
 <PageLayout
   title={productSeoText.title}
   description={productSeoText.description}
-  canonical={seo.canonical || `${SITE_ORIGIN}/${locale}/products/${slug}`}
+  canonical={seo.canonical || productCanonical}
   ogTitle={seo.ogTitle || productSeoText.title}
   ogDescription={seo.ogDescription || productSeoText.description}
-  ogImage={product.image ? `${SITE_ORIGIN}/${product.image}`.replace(/([^:])\/\//g, "$1/") : DEFAULT_OG_IMAGE}
-  alternates={buildAlternates(`/products/${slug}`)}
+  ogImage={heroImageAbsoluteUrl || DEFAULT_OG_IMAGE}
+  alternates={buildAlternates(`/products/${canonicalProductSlug}`)}
   schema={graphSchema}
   locale={locale}
   dataPage="product-detail"
@@ -932,6 +939,13 @@ const relatedCopy = relatedProductsCopy[locale] || relatedProductsCopy.en;
                 <a class="ws-glossary-link" href={term.href}>{term.term}</a>
               ))}
             </div>
+          )}
+          {relatedGuide && (
+            <a class="ws-related-guide" href={`/${locale}/guides/${relatedGuide.slug}`}>
+              <span>{relatedGuideLabel[locale]}</span>
+              <strong>{relatedGuide.localized[locale].title}</strong>
+              <span aria-hidden="true">↗</span>
+            </a>
           )}
           {product.chips && product.chips.length > 0 && (
             <div class="ws-chip-row">
@@ -1532,6 +1546,30 @@ const relatedCopy = relatedProductsCopy[locale] || relatedProductsCopy.en;
     color: var(--ink);
     border-bottom-color: currentColor;
   }
+  .ws-related-guide {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    gap: 10px;
+    align-items: center;
+    max-width: 640px;
+    margin: 14px 0 20px;
+    padding: 12px 14px;
+    border: 1px solid rgba(26, 163, 196, 0.2);
+    border-radius: 12px;
+    background: rgba(26, 163, 196, 0.055);
+    color: var(--ws-teal, #1aa3c4);
+    font-size: 0.76rem;
+    text-decoration: none;
+  }
+  .ws-related-guide > span:first-child {
+    color: var(--muted);
+    font-size: 0.62rem;
+    font-weight: 850;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .ws-related-guide strong { color: var(--ink); font-weight: 800; }
+  .ws-related-guide:hover { border-color: rgba(26, 163, 196, 0.5); }
   .ws-chip-row {
     display: flex;
     flex-wrap: wrap;

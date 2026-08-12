@@ -72,6 +72,7 @@ const labels = {
   talkToEngineering: { en: "Talk to Engineering", tr: "Mühendislerle Görüşün", de: "Mit Engineering sprechen", fr: "Parler à l'ingénierie", es: "Hablar con ingeniería", it: "Parla con il team", ar: "تحدث إلى الهندسة", ja: "技術チームへ相談" },
   exploreProducts: { en: "Explore Products", tr: "Ürünleri İnceleyin", de: "Produkte entdecken", fr: "Découvrir les produits", es: "Explorar productos", it: "Esplora i prodotti", ar: "استكشف المنتجات", ja: "製品を見る" },
   exploreServices: { en: "Explore Services", tr: "Hizmetleri İnceleyin", de: "Leistungen entdecken", fr: "Découvrir les services", es: "Explorar servicios", it: "Esplora i servizi", ar: "استكشف الخدمات", ja: "サービスを見る" },
+  technicalGuides: { en: "Technical Guides", tr: "Teknik Rehberler", de: "Technische Leitfäden", fr: "Guides techniques", es: "Guías técnicas", it: "Guide tecniche", ar: "الأدلة الفنية", ja: "技術ガイド" },
 };
 const getLabel = (key: keyof typeof labels) => labels[key][locale] || labels[key].en;
 ---
@@ -184,6 +185,7 @@ const getLabel = (key: keyof typeof labels) => labels[key][locale] || labels[key
             <a class="btn btn-primary" href={`/${locale}/contact`}>{getLabel("talkToEngineering")}</a>
             <a class="btn btn-secondary" href={`/${locale}/products`}>{getLabel("exploreProducts")}</a>
             <a class="btn btn-secondary" href={`/${locale}/services`}>{getLabel("exploreServices")}</a>
+            <a class="btn btn-secondary" href={`/${locale}/guides`}>{getLabel("technicalGuides")}</a>
           </p>
         </div>
       </div>

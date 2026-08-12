@@ -31,6 +31,7 @@ const labels = {
   products: { en: "Products", tr: "Ürünler", de: "Produkte", fr: "Produits", es: "Productos", it: "Prodotti", ar: "المنتجات", ja: "製品" },
   lorawanSensors: { en: "LoRaWAN Sensors", tr: "LoRaWAN Sensörleri", de: "LoRaWAN-Sensoren", fr: "Capteurs LoRaWAN", es: "Sensores LoRaWAN", it: "Sensori LoRaWAN", ar: "مستشعرات LoRaWAN", ja: "LoRaWANセンサー" },
   glossary: { en: "Glossary", tr: "Sözlük", de: "Glossar", fr: "Glossaire", es: "Glosario", it: "Glossario", ar: "المصطلحات", ja: "用語集" },
+  guides: { en: "Technical Guides", tr: "Teknik Rehberler", de: "Technische Leitfäden", fr: "Guides techniques", es: "Guías técnicas", it: "Guide tecniche", ar: "الأدلة الفنية", ja: "技術ガイド" },
   faq: { en: "FAQ", tr: "SSS", de: "FAQ", fr: "FAQ", es: "Preguntas frecuentes", it: "FAQ", ar: "الأسئلة الشائعة", ja: "よくある質問" },
   company: { en: "About Us", tr: "Hakkımızda", de: "Über uns", fr: "À propos", es: "Sobre nosotros", it: "Chi siamo", ar: "من نحن", ja: "会社概要" },
   news: { en: "News", tr: "Haberler", de: "Neuigkeiten", fr: "Actualités", es: "Noticias", it: "Notizie", ar: "الأخبار", ja: "ニュース" },
@@ -65,6 +66,7 @@ const getLabel = (key: keyof typeof labels) => labels[key][locale] || labels[key
       <a href={`/${locale}/services`}>{getLabel("services")}</a>
       <a href={`/${locale}/products`}>{getLabel("products")}</a>
       <a href={`/${locale}/lorawan-sensors`}>{getLabel("lorawanSensors")}</a>
+      <a href={`/${locale}/guides`}>{getLabel("guides")}</a>
       <a href={`/${locale}/glossary`}>{getLabel("glossary")}</a>
       <a href={`/${locale}/faq`}>{getLabel("faq")}</a>
     </div>
