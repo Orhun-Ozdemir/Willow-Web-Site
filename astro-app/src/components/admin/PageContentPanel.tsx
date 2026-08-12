@@ -217,23 +217,37 @@ function stripHtml(value: string) {
   return value.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
 }
 
+/** Normalize CMS values before completeness checks. Buttons are stored as
+ * `{ label, url }`, while older fields may be strings, arrays or numbers. */
+function contentValueText(value: unknown): string {
+  if (value == null) return "";
+  if (typeof value === "string") return value.trim();
+  if (typeof value === "number" || typeof value === "boolean") return String(value);
+  if (Array.isArray(value)) return value.map(contentValueText).filter(Boolean).join("\n");
+  if (typeof value === "object") {
+    const record = value as Record<string, unknown>;
+    return contentValueText(record.label ?? record.title ?? record.name ?? "");
+  }
+  return "";
+}
+
 function cardLabel(data: Record<string, any>, card: CardPair, locale: Locale) {
-  const title = (data[card.titleKey]?.[locale] || data[card.titleKey]?.en || "").trim();
+  const title = contentValueText(data[card.titleKey]?.[locale] || data[card.titleKey]?.en);
   if (title) return stripHtml(title);
   return `Kart ${String(card.index + 1).padStart(2, "0")}`;
 }
 
 function cardStatus(data: Record<string, any>, card: CardPair): "all" | "partial" | "empty" {
   const keys = [card.titleKey, card.descKey];
-  const filled = TARGET_LOCALES.filter((l) => keys.every((k) => (data[k]?.[l] || "").trim())).length;
+  const filled = TARGET_LOCALES.filter((l) => keys.every((k) => contentValueText(data[k]?.[l]))).length;
   if (filled === TARGET_LOCALES.length) return "all";
-  if (filled > 0 || keys.some((k) => (data[k]?.en || "").trim())) return "partial";
+  if (filled > 0 || keys.some((k) => contentValueText(data[k]?.en))) return "partial";
   return "empty";
 }
 
 function fieldStatus(data: Record<string, any>, key: string): "all" | "partial" | "empty" {
   if (typeof data[key] === "string") return data[key].trim() ? "all" : "empty";
-  const filled = TARGET_LOCALES.filter((l) => (data[key]?.[l] || "").trim()).length;
+  const filled = TARGET_LOCALES.filter((l) => contentValueText(data[key]?.[l])).length;
   if (filled === TARGET_LOCALES.length) return "all";
   if (filled > 0) return "partial";
   return "empty";
@@ -253,7 +267,7 @@ function ContentCardGrid({
     <div className="ws-pc-card-grid">
       {cards.map((card) => {
         const title = cardLabel(data, card, locale);
-        const desc = stripHtml((data[card.descKey]?.[locale] || data[card.descKey]?.en || "").trim());
+        const desc = stripHtml(contentValueText(data[card.descKey]?.[locale] || data[card.descKey]?.en));
         const active = activeCard?.titleKey === card.titleKey;
         const status = cardStatus(data, card);
         return (
@@ -746,7 +760,11 @@ export default function PageContentPanel() {
             const pgKeys = pg.key === "home"
               ? [...new Set([...Object.keys(pgData), ...HOME_EXTRA_KEYS])]
               : Object.keys(pgData);
-            const filled = pgKeys.filter((k) => (pgData[k]?.tr || "").trim()).length;
+            const filled = pgKeys.filter((k) => {
+              const field = pgData[k];
+              if (SCALAR_PAGE_FIELDS.has(k)) return contentValueText(field);
+              return contentValueText(field?.tr);
+            }).length;
             const pct = pgKeys.length ? Math.round((filled / pgKeys.length) * 100) : 0;
             const active = selectedPage === pg.key;
             return (
