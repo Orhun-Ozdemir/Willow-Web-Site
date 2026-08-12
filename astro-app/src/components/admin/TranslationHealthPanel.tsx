@@ -20,11 +20,14 @@ function countLocalized(items: any[], fields: string[]): Record<string, { filled
   const result: Record<string, { filled: number; total: number }> = {};
   for (const loc of locales) {
     let filled = 0;
-    const total = items.length * fields.length;
+    let total = 0;
     for (const item of items) {
-      const ld = item?.localized?.[loc] || {};
       for (const f of fields) {
-        if (isFilled(ld[f])) filled++;
+        // Only score fields that actually exist in the English source record.
+        // Optional/nonexistent fields must not lower every locale's coverage.
+        if (!isFilled(item?.[f])) continue;
+        total++;
+        if (loc === "en" ? isFilled(item?.[f]) : isFilled(item?.localized?.[loc]?.[f])) filled++;
       }
     }
     result[loc] = { filled, total };
@@ -39,10 +42,12 @@ function countPageContent(pageContent: any): Record<string, { filled: number; to
     let filled = 0;
     let total = 0;
     for (const page of pages) {
-      const keys = Object.keys(pageContent[page] || {});
-      total += keys.length;
-      for (const key of keys) {
-        if (isFilled(pageContent[page][key]?.[loc])) filled++;
+      const entries = Object.entries(pageContent[page] || {}).filter(([, value]: [string, any]) =>
+        value && typeof value === "object" && !Array.isArray(value) && locales.some((lang) => lang in value)
+      );
+      total += entries.length;
+      for (const [, value] of entries) {
+        if (isFilled((value as Record<string, any>)[loc])) filled++;
       }
     }
     result[loc] = { filled, total };
@@ -50,7 +55,7 @@ function countPageContent(pageContent: any): Record<string, { filled: number; to
   return result;
 }
 
-function countPageSeo(pageSeo: any): Record<string, { filled: number; total: number }> {
+function countPageSeo(pageSeo: any, pageContent: any): Record<string, { filled: number; total: number }> {
   const result: Record<string, { filled: number; total: number }> = {};
   const pages = Object.keys(pageSeo || {});
   const fields = ["seoTitle", "metaDescription", "focusKeyword", "slug", "h1"];
@@ -60,7 +65,10 @@ function countPageSeo(pageSeo: any): Record<string, { filled: number; total: num
     for (const page of pages) {
       const d = pageSeo[page]?.[loc] || {};
       for (const f of fields) {
-        if (isFilled(d[f])) filled++;
+        const renderedH1 = pageContent?.[page]?.heroTitle?.[loc]
+          || pageContent?.[page]?.heroHeading?.[loc]
+          || pageContent?.[page]?.title?.[loc];
+        if (isFilled(d[f]) || (f === "h1" && isFilled(renderedH1))) filled++;
       }
     }
     result[loc] = { filled, total };
@@ -84,13 +92,17 @@ export default function TranslationHealthPanel({ onNavigate }: { onNavigate?: (t
   const rows: CoverageRow[] = useMemo(() => {
     if (!content) return [];
     return [
-      { label: "Sayfa SEO", byLocale: countPageSeo(content.pageSeo) },
+      { label: "Sayfa SEO", byLocale: countPageSeo(content.pageSeo, content.pageContent) },
       { label: "Sayfa İçerik", byLocale: countPageContent(content.pageContent) },
-      { label: "Ürünler", byLocale: countLocalized(content.products || [], ["title", "category", "shortDescription", "technicalSummary", "useCases", "specifications"]) },
-      { label: "Haberler", byLocale: countLocalized(content.news || [], ["title", "category", "excerpt", "content"]) },
+      // Category values are stable routing/filter keys and are localized by the
+      // public UI dictionaries. Requiring item.localized.category creates a
+      // false missing-translation warning and can break filtering if edited.
+      { label: "Ürünler", byLocale: countLocalized(content.products || [], ["title", "shortDescription", "applications"]) },
+      { label: "Haberler", byLocale: countLocalized(content.news || [], ["title", "excerpt", "content"]) },
       { label: "Çözümler", byLocale: countLocalized(content.solutions || [], ["title", "category", "headline", "summary", "bullets"]) },
       { label: "SSS", byLocale: countLocalized(content.faqs || [], ["question", "answer"]) },
-      { label: "Müşteriler", byLocale: countLocalized(content.clients || [], ["name", "industry", "country"]) },
+      // Customer names are trademarks; the current trust showcase renders logo
+      // and name only. There is no translatable customer copy to score here.
     ];
   }, [content]);
 
@@ -104,7 +116,7 @@ export default function TranslationHealthPanel({ onNavigate }: { onNavigate?: (t
     overallByLocale[loc] = { filled, total };
   }
 
-  const pct = (filled: number, total: number) => total === 0 ? 0 : Math.round((filled / total) * 100);
+  const pct = (filled: number, total: number) => total === 0 ? 100 : Math.round((filled / total) * 100);
   const barColor = (p: number) => p >= 80 ? "bg-[#132175]" : p >= 50 ? "bg-amber-500" : "bg-red-500";
   const textColor = (p: number) => p >= 80 ? "text-[#132175]" : p >= 50 ? "text-amber-600" : "text-red-500";
 

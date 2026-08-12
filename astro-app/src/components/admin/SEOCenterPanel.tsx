@@ -478,8 +478,8 @@ export default function SEOCenterPanel() {
   const selectedPageLabel = PAGES.find((p) => p.key === selectedPage)?.label || selectedPage;
 
   const scoreResult: SEOScoreResult = useMemo(
-    () => calcSEOScore(seoData, locale, pageSeo, selectedPage, pageContent),
-    [seoData, locale, pageSeo, selectedPage, pageContent]
+    () => calcSEOScore(seoData, locale, pageSeo, selectedPage, pageContent, content),
+    [seoData, locale, pageSeo, selectedPage, pageContent, content]
   );
 
   const updateSEOForLocale = (targetLocale: Locale, field: string, value: any) => {
@@ -521,7 +521,7 @@ export default function SEOCenterPanel() {
         <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider px-1 mb-2">Sayfa Seçin</p>
         {PAGES.map((pg) => {
           const pgSeo  = pageSeo[pg.key]?.[locale] || {};
-          const pgRes  = calcSEOScore(pgSeo, locale, pageSeo, pg.key, content?.pageContent?.[pg.key]);
+          const pgRes  = calcSEOScore(pgSeo, locale, pageSeo, pg.key, content?.pageContent?.[pg.key], content);
           const dotClr = pgRes.seoLevel === "good" ? "bg-green-400" : pgRes.seoLevel === "ok" ? "bg-amber-400" : "bg-red-400";
           const active = selectedPage === pg.key;
           return (

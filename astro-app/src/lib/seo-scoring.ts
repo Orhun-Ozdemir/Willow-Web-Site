@@ -52,7 +52,8 @@ export function calcSEOScore(
   locale: string,
   allPagesData: Record<string, any> | null,
   pageKey: string,
-  pageContent?: Record<string, any>
+  pageContent?: Record<string, any>,
+  siteContent?: Record<string, any>,
 ): SEOScoreResult {
   const seoChecks: SEOCheck[] = [];
   const aiChecks: SEOCheck[] = [];
@@ -221,7 +222,12 @@ export function calcSEOScore(
     aiChecks.push({ label: "Sayfa indekse açık ve snippet kullanımına izin veriyor.", ok: true, pass: true });
   }
 
-  const aiShort = (seoData?.aiShortAnswer || "").trim();
+  const effectiveContent = siteContent || {};
+  const aiShort = (
+    seoData?.aiShortAnswer
+    || (siteContent ? aiAnswerForPage(effectiveContent, pageKey, locale as Locale, "") : "")
+    || ""
+  ).trim();
   if (!aiShort) {
     aiChecks.push({ label: "AI Kısa Cevap alanı doldurulmamış.", ok: false, fail: true });
   } else if (aiShort.length < 50) {
@@ -232,7 +238,21 @@ export function calcSEOScore(
     aiChecks.push({ label: "AI Kısa Cevap bölümü hazır.", ok: true, pass: true });
   }
 
-  const faqList = seoData?.aiFAQ || [];
+  const faqPageKey = pageKey === "startProject" ? "start-project" : pageKey;
+  const fallbackFaqs = siteContent ? fallbackFaqsForPage(faqPageKey, locale as Locale) : [];
+  const renderedFaqs = siteContent
+    ? pageKey === "faq"
+      ? (effectiveContent.faqs || [])
+          .map((faq: any) => ({
+            question: locale === "en" ? faq.question : faq.localized?.[locale]?.question,
+            answer: locale === "en" ? faq.answer : faq.localized?.[locale]?.answer,
+          }))
+          .filter((faq: any) => faq.question && faq.answer)
+      : faqItemsForPage(effectiveContent.faqs || [], faqPageKey, locale as Locale, fallbackFaqs)
+    : [];
+  const faqList = Array.isArray(seoData?.aiFAQ) && seoData.aiFAQ.length > 0
+    ? seoData.aiFAQ
+    : renderedFaqs;
   if (faqList.length === 0) {
     aiChecks.push({ label: "AI soru-cevap blokları eklenmemiş.", ok: false, fail: true });
   } else if (faqList.length < 3) {
@@ -257,6 +277,15 @@ export function calcSEOScore(
     hasListsOrTables = true;
   }
 
+  if (siteContent) {
+    if (pageKey === "company" && ["team", "principles", "timeline", "expertise", "industries"].some((key) => effectiveContent.companyFacts?.[key]?.length)) {
+      hasListsOrTables = true;
+    }
+    if (pageKey === "faq" && renderedFaqs.length > 0) hasListsOrTables = true;
+    if (pageKey === "glossary" && effectiveContent.glossary?.length > 0) hasListsOrTables = true;
+    if (pageKey === "news" && effectiveContent.news?.length > 0) hasListsOrTables = true;
+  }
+
   if (hasListsOrTables) {
     aiScoreVal += 20;
     aiChecks.push({ label: "İçerikte maddeleme, tablo veya liste yapısı mevcut.", ok: true, pass: true });
@@ -264,19 +293,21 @@ export function calcSEOScore(
     aiChecks.push({ label: "İçerik düz uzun paragraflardan oluşuyor. Liste/tablo önerilir.", ok: false, warn: true });
   }
 
+  const renderedMeta = siteContent ? aiMetaForPage(effectiveContent, pageKey, locale as Locale) : {};
   const author = (seoData?.author || "").trim();
   const expertise = (seoData?.expertiseNote || "").trim();
-  const sources = (seoData?.sources || "").trim();
+  const reviewedBy = (seoData?.reviewedBy || seoData?.expertReviewedBy || renderedMeta.reviewedBy || "").trim();
+  const sources = (seoData?.sources || renderedMeta.sourceLabel || "").trim();
   let eeatCount = 0;
   if (author) eeatCount++;
   if (expertise) eeatCount++;
-  if ((seoData?.reviewedBy || "").trim()) eeatCount++;
+  if (reviewedBy) eeatCount++;
   if (sources) eeatCount++;
   if ((seoData?.companyCompetency || "").trim()) eeatCount++;
   aiScoreVal += eeatCount * 2;
 
-  if (author && expertise) {
-    aiChecks.push({ label: "E-E-A-T yazar ve uzmanlık bilgisi girilmiş.", ok: true, pass: true });
+  if ((author && expertise) || reviewedBy) {
+    aiChecks.push({ label: reviewedBy ? `İçerik inceleme bilgisi mevcut (${reviewedBy}).` : "E-E-A-T yazar ve uzmanlık bilgisi girilmiş.", ok: true, pass: true });
   } else {
     aiChecks.push({ label: "Yazar veya uzmanlık bilgisi (E-E-A-T) eksik.", ok: false, warn: true });
   }
@@ -287,7 +318,7 @@ export function calcSEOScore(
     aiChecks.push({ label: "Kaynak gösterimi / resmi teknik referanslar girilmemiş.", ok: false, warn: true });
   }
 
-  const lastUpd = (seoData?.lastUpdated || "").trim();
+  const lastUpd = (seoData?.lastUpdated || renderedMeta.updatedAt || "").trim();
   if (lastUpd) {
     aiScoreVal += 10;
     aiChecks.push({ label: `Güncellik ve yayın tarihi bilgisi mevcut (${lastUpd}).`, ok: true, pass: true });
@@ -308,3 +339,5 @@ export function calcSEOScore(
     aiChecks,
   };
 }
+import { aiAnswerForPage, aiMetaForPage, fallbackFaqsForPage, faqItemsForPage } from "@/lib/ai-search";
+import type { Locale } from "@/lib/cms";
