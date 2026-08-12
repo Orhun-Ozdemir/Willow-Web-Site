@@ -1,5 +1,5 @@
 ---
-import PageLayout from "@/layouts/PageLayout.astro";
+import HomePageLayout from "@/layouts/HomePageLayout.astro";
 import ProductCard from "@/components/ProductCard.astro";
 import NewsCard from "@/components/NewsCard.astro";
 import FaqAccordion from "@/components/FaqAccordion.astro";
@@ -337,7 +337,7 @@ const homeSchema = appendSchemaNodes({
 }, [faqSchemaNode(seoProps.canonical, homeFaqItems)]);
 ---
 
-<PageLayout
+<HomePageLayout
   {...seoProps}
   schema={homeSchema}
   locale={locale}
@@ -607,4 +607,4 @@ const homeSchema = appendSchemaNodes({
       </div>
     </section>
   </main>
-</PageLayout>
+</HomePageLayout>

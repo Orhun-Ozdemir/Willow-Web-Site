@@ -4,8 +4,6 @@ import type { Locale } from "@/lib/cms";
 import { resolveAsset } from "@/lib/cms";
 import Analytics from "@/components/Analytics.astro";
 
-import "@/styles/globals.css";
-
 interface Props {
   title: string;
   description?: string;
@@ -258,8 +256,8 @@ const skipLabel = skipLabels[locale] || skipLabels.en;
             };
           }
 
-          function resize(){
-            var rect = canvas.getBoundingClientRect();
+          function resize(rect){
+            rect = rect || canvas.getBoundingClientRect();
             var scale = Math.min(window.devicePixelRatio || 1, 2);
             width = Math.max(1, Math.floor(rect.width));
             height = Math.max(1, Math.floor(rect.height));
@@ -371,12 +369,18 @@ const skipLabel = skipLabels[locale] || skipLabels.en;
             running = false;
             cancelAnimationFrame(raf);
           }
-          resize();
-          var canvasResizeRaf = 0;
-          window.addEventListener("resize", function(){
-            cancelAnimationFrame(canvasResizeRaf);
-            canvasResizeRaf = requestAnimationFrame(resize);
-          }, { passive: true });
+          if ("ResizeObserver" in window) {
+            new ResizeObserver(function(entries){
+              if (entries[0]) resize(entries[0].contentRect);
+            }).observe(canvas);
+          } else {
+            resize();
+            var canvasResizeRaf = 0;
+            window.addEventListener("resize", function(){
+              cancelAnimationFrame(canvasResizeRaf);
+              canvasResizeRaf = requestAnimationFrame(function(){ resize(); });
+            }, { passive: true });
+          }
           var canvasObs = new IntersectionObserver(function(entries){
             entries.forEach(function(e){
               inViewport = e.isIntersecting;
@@ -423,8 +427,7 @@ const skipLabel = skipLabels[locale] || skipLabels.en;
         var shaderWorker = new Worker("/assets/hero-shader-worker.js");
         var offscreenShader = shaderCanvas.transferControlToOffscreen();
         var workerInViewport = false;
-        var postShaderSize = function(){
-          var rect = shaderCanvas.getBoundingClientRect();
+        var postShaderSize = function(rect){
           shaderWorker.postMessage({
             type: "resize",
             width: Math.max(1, Math.floor(rect.width)),
@@ -432,22 +435,19 @@ const skipLabel = skipLabels[locale] || skipLabels.en;
             dpr: Math.min(window.devicePixelRatio || 1, 1.5)
           });
         };
-        var initialShaderRect = shaderCanvas.getBoundingClientRect();
         shaderWorker.postMessage({
           type: "init",
           canvas: offscreenShader,
-          width: Math.max(1, Math.floor(initialShaderRect.width)),
-          height: Math.max(1, Math.floor(initialShaderRect.height)),
+          width: 1,
+          height: 1,
           dpr: Math.min(window.devicePixelRatio || 1, 1.5),
           colors: shaderColors
         }, [offscreenShader]);
         shaderCanvas.dataset.renderer = "worker";
 
-        var shaderWorkerResizeRaf = 0;
-        window.addEventListener("resize", function(){
-          cancelAnimationFrame(shaderWorkerResizeRaf);
-          shaderWorkerResizeRaf = requestAnimationFrame(postShaderSize);
-        }, { passive: true });
+        new ResizeObserver(function(entries){
+          if (entries[0]) postShaderSize(entries[0].contentRect);
+        }).observe(shaderCanvas);
         var shaderWorkerObserver = new IntersectionObserver(function(entries){
           entries.forEach(function(entry){
             workerInViewport = entry.isIntersecting;
