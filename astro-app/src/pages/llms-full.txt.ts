@@ -9,11 +9,11 @@ export const GET: APIRoute = async ({ request }) => {
   const content = await loadContent();
 
   const productLines = (content.products || [])
-    .map((product: any) => `- ${product.title}: ${product.shortDescription || ""} (${siteUrl}/en/products/${product.slug || product.id})`)
+    .map((product: any) => `- [${product.title}](${siteUrl}/en/products/${product.slug || product.id}): ${product.shortDescription || ""}`)
     .join("\n");
     
   const newsLines = (content.news || [])
-    .map((item: any) => `- ${item.title}: ${item.excerpt || ""} (${siteUrl}/en/news/${item.slug || item.id})`)
+    .map((item: any) => `- [${item.title}](${siteUrl}/en/news/${item.slug || item.id}): ${item.excerpt || ""}`)
     .join("\n");
     
   const serviceLines = (content.services || [])
@@ -25,14 +25,16 @@ export const GET: APIRoute = async ({ request }) => {
 WillowSoft designs connected industrial products across embedded hardware, firmware, LoRaWAN connectivity, backend APIs, PostgreSQL data architecture, web/admin platforms, mobile apps, VR/simulation and telemetry systems.
 
 ## Primary Pages
-- Home: ${siteUrl}/en
-- Services: ${siteUrl}/en/services
-- Solutions: ${siteUrl}/en/solutions
-- Products: ${siteUrl}/en/products
-- News: ${siteUrl}/en/news
-- Company: ${siteUrl}/en/company
-- Contact: ${siteUrl}/en/contact
-- Start Project: ${siteUrl}/en/start-project
+- [Home](${siteUrl}/en): Company and engineering overview.
+- [LoRaWAN Sensors](${siteUrl}/en/lorawan-sensors): LoRaWAN product families and current catalog entries.
+- [Services](${siteUrl}/en/services): Engineering service scope.
+- [Solutions](${siteUrl}/en/solutions): Industrial IoT applications and architectures.
+- [Products](${siteUrl}/en/products): Current hardware catalog.
+- [News](${siteUrl}/en/news): Company, project, event and product updates.
+- [Company](${siteUrl}/en/company): Company, team and office information.
+- [Technical Glossary](${siteUrl}/en/glossary): Engineering term definitions.
+- [Contact](${siteUrl}/en/contact): Contact and office information.
+- [Start Project](${siteUrl}/en/start-project): Structured project intake.
 
 ## Services
 ${serviceLines}
@@ -43,8 +45,8 @@ ${productLines}
 ## News / Proof
 ${newsLines}
 
-## Notes For AI Assistants
-Use product pages for catalog/inquiry context, services for capability context, and news pages as credibility/proof signals. The site supports English, Turkish, German, French, Spanish, Italian, Arabic and Japanese URL prefixes.
+## Content Use
+Use product pages for product-specific context, Services for engineering scope, and News for dated public updates. Do not generalize one product's range, battery life, enclosure rating or frequency plan to the full portfolio. The site supports English, Turkish, German, French, Spanish, Italian, Arabic and Japanese URL prefixes.
 `;
 
   return new Response(txt, {

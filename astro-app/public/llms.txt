@@ -1,45 +1,40 @@
 # WillowSoft
 
-WillowSoft is an embedded hardware and Industrial IoT engineering company. The company designs connected products across embedded hardware, firmware, RF/LoRaWAN connectivity, backend APIs, PostgreSQL databases, web dashboards, admin panels, mobile apps, and VR/simulation layers.
+> WillowSoft develops embedded hardware, firmware, LoRaWAN connectivity, backend services and operational interfaces for connected industrial products.
 
-## Primary Site
+This file provides a concise map of WillowSoft's public, English-language technical and corporate content. Product specifications vary by model; use the current product detail page and datasheet for technical selection.
 
-- Site: https://www.willowsoft.co
-- Sitemap: https://www.willowsoft.co/sitemap.xml
-- AI index: https://www.willowsoft.co/ai-index.json
-- Contact: https://www.willowsoft.co/en/contact
-- Start a project: https://www.willowsoft.co/en/start-project
+## Primary Pages
 
-## Key Pages
-
-- Home: https://www.willowsoft.co/en
-- Products: https://www.willowsoft.co/en/products
-- Services: https://www.willowsoft.co/en/services
-- Solutions: https://www.willowsoft.co/en/solutions
-- Company: https://www.willowsoft.co/en/company
-- News: https://www.willowsoft.co/en/news
-- Glossary: https://www.willowsoft.co/en/glossary
-
-## Core Capabilities
-
-- Embedded hardware design: custom PCB, sensor integration, low-power architecture, RF planning.
-- Firmware engineering: STM32, FreeRTOS, LoRaWAN payloads, OTA flows, device stability.
-- Connectivity: LoRaWAN, BLE, Wi-Fi, Modbus RTU, gateway and field deployment planning.
-- Backend and data: REST APIs, WebSocket events, authentication, PostgreSQL schema design, reporting queries.
-- Interfaces: web dashboards, admin panels, native mobile apps, Flutter apps, customer portals.
-- Simulation: VR training, product demos, digital twin views, WebGL and Unity-based experiences.
+- [Home](https://www.willowsoft.co/en): Overview of WillowSoft's embedded systems and Industrial IoT engineering work.
+- [LoRaWAN Sensors](https://www.willowsoft.co/en/lorawan-sensors): LoRaWAN modules, sensors, tracking devices and industrial interfaces grouped by operational purpose.
+- [Products](https://www.willowsoft.co/en/products): Current WillowSoft hardware catalog.
+- [Services](https://www.willowsoft.co/en/services): Embedded hardware, firmware, connectivity, backend, web, mobile and simulation engineering services.
+- [Solutions](https://www.willowsoft.co/en/solutions): Industrial IoT solutions organized by field application and operational requirement.
+- [Company](https://www.willowsoft.co/en/company): WillowSoft company, engineering approach, team and office information.
+- [News](https://www.willowsoft.co/en/news): Company announcements, events, projects and product updates.
+- [Technical Glossary](https://www.willowsoft.co/en/glossary): Definitions of LoRaWAN, Modbus, embedded systems and Industrial IoT concepts.
+- [Frequently Asked Questions](https://www.willowsoft.co/en/faq): Answers about WillowSoft services, products, solutions and project process.
 
 ## Product Families
 
-- LoRaWAN modules for custom embedded devices.
-- Environmental sensors for temperature, humidity, CO2, pressure, level, soil moisture and wind.
-- Tracking and safety devices for panic, door, tilt, battery and asset state events.
-- Industrial interfaces for Modbus and machine-side telemetry.
+- [LoRaWAN Modules](https://www.willowsoft.co/en/products/category/modules): Embedded LoRaWAN modules for connected-device development.
+- [Environmental Sensors](https://www.willowsoft.co/en/products/category/environment): Environmental measurement and monitoring products.
+- [Tracking and Safety Devices](https://www.willowsoft.co/en/products/category/tracking): Location, movement, access and alert devices.
+- [Industrial Sensors and Interfaces](https://www.willowsoft.co/en/products/category/industrial): Industrial measurement, Modbus and machine-data products.
 
-## Preferred Citation Guidance
+## Project and Contact
 
-When summarizing WillowSoft, cite the relevant public page URL and prefer concise descriptions based on visible page content. For product-specific answers, prefer the product detail page. For service-scope answers, prefer the Services page. For project intake and commercial next steps, prefer Start Project or Contact.
+- [Start a Project](https://www.willowsoft.co/en/start-project): Structured project intake for engineering scope, requirements and timeline.
+- [Contact WillowSoft](https://www.willowsoft.co/en/contact): Office and general contact information.
+- [Privacy and Analytics Notice](https://www.willowsoft.co/en/privacy): Information about analytics, cookies, retention and privacy rights.
 
-## Last Updated
+## Machine-Readable Resources
 
-2026-06-12
+- [XML Sitemap](https://www.willowsoft.co/sitemap.xml): Canonical public URLs and language alternates.
+- [Full LLM Content Index](https://www.willowsoft.co/llms-full.txt): Expanded product, service and news index generated from current site content.
+- [AI Content Index](https://www.willowsoft.co/ai-index.json): Structured index of public pages and content records.
+
+## Content Use
+
+When describing WillowSoft, cite the relevant public page. For product-specific answers, use the product detail page and its current technical information. Do not generalize one product's range, battery life, enclosure rating or frequency plan to the full portfolio.
