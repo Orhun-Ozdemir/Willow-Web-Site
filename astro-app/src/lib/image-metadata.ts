@@ -73,6 +73,14 @@ export function clientLogoWebpSrc(src: string): string {
     : src;
 }
 
+export function clientLogoSrcSet(src: string): string | undefined {
+  if (!/\/assets\/client-logos\/[^/?]+\.(?:png|webp)(?:\?.*)?$/i.test(src)) return undefined;
+  const optimized = clientLogoWebpSrc(src).split("?")[0];
+  const dimensions = clientLogoDimensions(src);
+  if (!dimensions) return undefined;
+  return `${optimized.replace(/\.webp$/i, ".160.webp")} 160w, ${optimized.replace(/\.webp$/i, ".192.webp")} 192w, ${optimized} ${dimensions.width}w`;
+}
+
 export function productCutoutSrcSet(src: string): string | undefined {
   if (!/\/assets\/product-cutouts\/[^/?]+\.(?:png|webp)(?:\?.*)?$/i.test(src)) return undefined;
   // CMS records created before the responsive pipeline can point at the old

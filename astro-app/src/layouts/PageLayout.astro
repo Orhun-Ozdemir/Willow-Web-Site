@@ -23,6 +23,7 @@ interface Props {
   schema?: object | object[];
   preloadImage?: string;
   preloadImageType?: string;
+  preloadSerifFont?: boolean;
 }
 
 const locale = resolveLocale(Astro.props.locale, Astro.url.pathname);

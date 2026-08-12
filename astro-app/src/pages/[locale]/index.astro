@@ -9,8 +9,8 @@ import { pageSeo, ORGANIZATION_SCHEMA, WEBSITE_SCHEMA } from "@/lib/seo";
 import { flowNodesFromPageContent, industryLanesFromPageContent, pageButtonText, pageLocaleHref, pageText, resolveAsset, resolveLocale, serviceRailFromPageContent, type Locale } from "@/lib/cms";
 import { aiAnswerForPage, aiMetaForPage, appendSchemaNodes, fallbackFaqsForPage, faqItemsForPage, faqSchemaNode } from "@/lib/ai-search";
 import { PRODUCT_ICON_SVG } from "@/lib/product-model";
-import { clientLogoDimensions, clientLogoWebpSrc } from "@/lib/image-metadata";
-import "@/styles/home-precision.css";
+import { clientLogoDimensions, clientLogoSrcSet, clientLogoWebpSrc } from "@/lib/image-metadata";
+import homePrecisionCss from "@/styles/home-precision.css?inline";
 
 export const prerender = false;
 
@@ -344,7 +344,9 @@ const homeSchema = appendSchemaNodes({
   dataPage="home"
   preloadImage={`${import.meta.env.BASE_URL}assets/hero-industrial-iot.webp`}
   preloadImageType="image/webp"
+  preloadSerifFont={true}
 >
+  <style is:inline set:html={homePrecisionCss} />
   <main id="main-content">
     <!-- Hero -->
     <section class="hero motion-hero">
@@ -444,6 +446,8 @@ const homeSchema = appendSchemaNodes({
                   {client.logo ? (
                     <img
                       src={optimizedLogoSrc}
+                      srcset={clientLogoSrcSet(logoSrc)}
+                      sizes="160px"
                       alt={client.name}
                       width={logoDimensions?.width}
                       height={logoDimensions?.height}
@@ -484,7 +488,7 @@ const homeSchema = appendSchemaNodes({
                 <div class={`signature-node-visual signature-node-visual--${idx}`} aria-hidden="true">
                   <picture>
                     <source
-                      srcset={`${(flowIllustrationAssets[idx] || flowIllustrationAssets[0]).replace(/\.png$/, ".640.webp")} 640w, ${(flowIllustrationAssets[idx] || flowIllustrationAssets[0]).replace(/\.png$/, ".webp")} ${idx === 4 ? 1536 : 1254}w`}
+                      srcset={`${(flowIllustrationAssets[idx] || flowIllustrationAssets[0]).replace(/\.png$/, ".240.webp")} 240w, ${(flowIllustrationAssets[idx] || flowIllustrationAssets[0]).replace(/\.png$/, ".640.webp")} 640w, ${(flowIllustrationAssets[idx] || flowIllustrationAssets[0]).replace(/\.png$/, ".webp")} ${idx === 4 ? 1536 : 1254}w`}
                       sizes="(max-width: 760px) 208px, 220px"
                       type="image/webp"
                     />

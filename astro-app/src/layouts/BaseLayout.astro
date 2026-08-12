@@ -23,6 +23,7 @@ interface Props {
   schema?: object | object[];
   preloadImage?: string;
   preloadImageType?: string;
+  preloadSerifFont?: boolean;
 }
 
 const {
@@ -42,6 +43,7 @@ const {
   schema,
   preloadImage,
   preloadImageType,
+  preloadSerifFont = false,
 } = Astro.props;
 
 const canonical = normalizeCanonical(canonicalRaw);
@@ -84,6 +86,9 @@ const skipLabel = skipLabels[locale] || skipLabels.en;
       <link rel="preload" as="image" href={preloadImage} type={preloadImageType} fetchpriority="high" />
     )}
     <link rel="preload" href={`${import.meta.env.BASE_URL}assets/fonts/hanken-grotesk-latin.woff2`} as="font" type="font/woff2" crossorigin />
+    {preloadSerifFont && (
+      <link rel="preload" href={`${import.meta.env.BASE_URL}assets/fonts/instrument-serif-italic-latin.woff2`} as="font" type="font/woff2" crossorigin />
+    )}
     <title>{title}</title>
     {description && <meta name="description" content={description} />}
     {canonical && <link rel="canonical" href={canonical} />}
@@ -118,6 +123,25 @@ const skipLabel = skipLabels[locale] || skipLabels.en;
     <script is:inline>
     (function(){
       const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      // Read shader tokens before any reveal classes or canvas dimensions mutate.
+      // Reusing this snapshot avoids a later synchronous style recalculation.
+      var shaderColorStyles = document.querySelector(".hero-shader-canvas")
+        ? getComputedStyle(document.documentElement)
+        : null;
+
+      // Keep decorative CSS animations from consuming rendering time while their
+      // section is outside the viewport. The animation resumes from the same point
+      // shortly before the visitor reaches the section.
+      if (!reducedMotion && "IntersectionObserver" in window) {
+        var motionRegionObserver = new IntersectionObserver(function(entries){
+          entries.forEach(function(entry){
+            entry.target.classList.toggle("motion-region-paused", !entry.isIntersecting);
+          });
+        }, { threshold: 0, rootMargin: "240px 0px 240px 0px" });
+        document.querySelectorAll("main > section, main > .hero").forEach(function(region){
+          motionRegionObserver.observe(region);
+        });
+      }
 
       // 1. REVEAL ANIMATIONS
       const allRevealSel = ".reveal, .reveal-left, .reveal-right, .reveal-scale";
@@ -136,12 +160,16 @@ const skipLabel = skipLabels[locale] || skipLabels.en;
           }, { threshold: 0.01, rootMargin: "120px 0px 120px 0px" });
           revealItems.forEach(function(item){ revealObserver.observe(item); });
           var vh = window.innerHeight;
+          var initiallyVisible = [];
           revealItems.forEach(function(item){
             var rect = item.getBoundingClientRect();
             if (rect.top < vh && rect.bottom > 0) {
-              item.classList.add("visible");
-              revealObserver.unobserve(item);
+              initiallyVisible.push(item);
             }
+          });
+          initiallyVisible.forEach(function(item){
+            item.classList.add("visible");
+            revealObserver.unobserve(item);
           });
         }
       }
@@ -203,7 +231,8 @@ const skipLabel = skipLabels[locale] || skipLabels.en;
           var ctx = canvas.getContext("2d");
           if (!ctx) return;
           var width = 0, height = 0, points = [], pulses = [];
-          var raf = 0, running = false;
+          var raf = 0, running = false, inViewport = false, lastFrameAt = 0;
+          var frameInterval = 1000 / 30;
           var density = Number(canvas.dataset.density || 36);
           var color = canvas.dataset.color || "35, 168, 216";
           var isHeroCanvas = !!canvas.closest(".hero")
@@ -232,8 +261,6 @@ const skipLabel = skipLabels[locale] || skipLabels.en;
             height = Math.max(1, Math.floor(rect.height));
             canvas.width = Math.floor(width * scale);
             canvas.height = Math.floor(height * scale);
-            canvas.style.width = width + "px";
-            canvas.style.height = height + "px";
             ctx.setTransform(scale, 0, 0, scale, 0, 0);
             build();
           }
@@ -293,8 +320,13 @@ const skipLabel = skipLabels[locale] || skipLabels.en;
             }
             ctx.stroke();
           }
-          function draw(){
+          function draw(now){
             if (!running || !ctx) return;
+            if (now - lastFrameAt < frameInterval) {
+              raf = requestAnimationFrame(draw);
+              return;
+            }
+            lastFrameAt = now;
             ctx.clearRect(0, 0, width, height);
             for (var i = 0; i < points.length; i++) {
               var p = points[i]; p.x += p.vx; p.y += p.vy;
@@ -325,15 +357,34 @@ const skipLabel = skipLabels[locale] || skipLabels.en;
             }
             raf = requestAnimationFrame(draw);
           }
+          function startCanvas(){
+            if (running || !inViewport || document.hidden) return;
+            running = true;
+            lastFrameAt = 0;
+            raf = requestAnimationFrame(draw);
+          }
+          function stopCanvas(){
+            running = false;
+            cancelAnimationFrame(raf);
+          }
           resize();
-          window.addEventListener("resize", resize, { passive: true });
+          var canvasResizeRaf = 0;
+          window.addEventListener("resize", function(){
+            cancelAnimationFrame(canvasResizeRaf);
+            canvasResizeRaf = requestAnimationFrame(resize);
+          }, { passive: true });
           var canvasObs = new IntersectionObserver(function(entries){
             entries.forEach(function(e){
-              if (e.isIntersecting) { if (!running) { running = true; draw(); } }
-              else { running = false; cancelAnimationFrame(raf); }
+              inViewport = e.isIntersecting;
+              if (inViewport) startCanvas();
+              else stopCanvas();
             });
           }, { threshold: 0.01 });
           canvasObs.observe(canvas);
+          document.addEventListener("visibilitychange", function(){
+            if (document.hidden) stopCanvas();
+            else startCanvas();
+          });
         });
       }
 
@@ -438,7 +489,7 @@ const skipLabel = skipLabels[locale] || skipLabels.en;
                 var uTime = gl.getUniformLocation(prog, "uTime");
                 var uReduceMotion = gl.getUniformLocation(prog, "uReduceMotion");
 
-                var css = getComputedStyle(document.documentElement);
+                var css = shaderColorStyles || getComputedStyle(document.documentElement);
                 var readColor = function(name, fallback){
                   var raw = css.getPropertyValue(name).trim() || fallback;
                   var hex = raw.replace("#","");
@@ -449,7 +500,8 @@ const skipLabel = skipLabels[locale] || skipLabels.en;
                 pairs.forEach(function(p){ var c=readColor(p[1],p[2]); gl.uniform3f(gl.getUniformLocation(prog,p[0]),c[0],c[1],c[2]); });
                 gl.uniform1f(uReduceMotion, 0.0);
 
-                var localRunning = false, localRafId = 0, startTime = performance.now();
+                var localRunning = false, localInViewport = false, localRafId = 0, startTime = performance.now();
+                var shaderLastFrameAt = 0, shaderFrameInterval = 1000 / 30;
                 var resizeShader = function(){
                   var dpr = Math.min(window.devicePixelRatio||1, 1.5);
                   var w = shaderCanvas.clientWidth, h = shaderCanvas.clientHeight;
@@ -458,23 +510,47 @@ const skipLabel = skipLabels[locale] || skipLabels.en;
                   gl.viewport(0,0,shaderCanvas.width,shaderCanvas.height);
                   gl.uniform2f(uResolution, shaderCanvas.width, shaderCanvas.height);
                 };
-                window.addEventListener("resize", resizeShader, { passive: true });
+                var shaderResizeRaf = 0;
+                window.addEventListener("resize", function(){
+                  cancelAnimationFrame(shaderResizeRaf);
+                  shaderResizeRaf = requestAnimationFrame(resizeShader);
+                }, { passive: true });
                 resizeShader();
                 gl.uniform1f(uTime, 0.0); gl.drawArrays(gl.TRIANGLES, 0, 6);
 
-                var frame = function(){
+                var frame = function(now){
                   if (!localRunning) return;
+                  if (now - shaderLastFrameAt < shaderFrameInterval) {
+                    localRafId = requestAnimationFrame(frame);
+                    return;
+                  }
+                  shaderLastFrameAt = now;
                   gl.uniform1f(uTime, (performance.now()-startTime)/1000);
                   gl.drawArrays(gl.TRIANGLES, 0, 6);
                   localRafId = requestAnimationFrame(frame);
                 };
+                var startShader = function(){
+                  if (localRunning || !localInViewport || document.hidden) return;
+                  localRunning = true;
+                  shaderLastFrameAt = 0;
+                  localRafId = requestAnimationFrame(frame);
+                };
+                var stopShader = function(){
+                  localRunning = false;
+                  cancelAnimationFrame(localRafId);
+                };
                 var shaderObs = new IntersectionObserver(function(entries){
                   entries.forEach(function(e){
-                    if (e.isIntersecting) { if (!localRunning) { localRunning=true; localRafId=requestAnimationFrame(frame); } }
-                    else { localRunning=false; cancelAnimationFrame(localRafId); }
+                    localInViewport = e.isIntersecting;
+                    if (localInViewport) startShader();
+                    else stopShader();
                   });
                 }, { threshold: 0.01 });
                 shaderObs.observe(shaderCanvas);
+                document.addEventListener("visibilitychange", function(){
+                  if (document.hidden) stopShader();
+                  else startShader();
+                });
               }
             }
           }
