@@ -12,11 +12,19 @@ export type AdminPermission =
   | "settings.write"
   | "backups.manage"
   | "history.manage"
-  | "storage.manage";
+  | "storage.manage"
+  | "publishing.read"
+  | "publishing.write"
+  | "publishing.publish"
+  | "publishing.schedule"
+  | "social_accounts.manage";
 
 const ROLE_PERMISSIONS: Record<AdminRole, AdminPermission[] | ["*"]> = {
   super_admin: ["*"],
-  content_editor: ["content.read", "content.write", "media.upload", "leads.read", "analytics.read"],
+  content_editor: [
+    "content.read", "content.write", "media.upload", "leads.read", "analytics.read",
+    "publishing.read", "publishing.write",
+  ],
   sales: ["leads.read", "leads.write", "analytics.read"],
   viewer: ["content.read", "leads.read", "analytics.read"],
 };
@@ -33,6 +41,7 @@ export const TAB_PERMISSIONS: Partial<Record<string, AdminPermission>> = {
   leads: "leads.read",
   products: "content.read",
   news: "content.read",
+  publishing: "publishing.read",
   faqs: "content.read",
   glossary: "content.read",
   solutions: "content.read",
