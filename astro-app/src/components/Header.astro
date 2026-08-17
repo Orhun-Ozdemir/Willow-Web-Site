@@ -21,6 +21,8 @@ const navLabels = {
   services: { en: "Services", tr: "Hizmetler", de: "Leistungen", fr: "Services", es: "Servicios", it: "Servizi", ar: "الخدمات", ja: "サービス" },
   products: { en: "Products", tr: "Ürünler", de: "Produkte", fr: "Produits", es: "Productos", it: "Prodotti", ar: "المنتجات", ja: "製品" },
   news: { en: "News", tr: "Haberler", de: "Neuigkeiten", fr: "Actualités", es: "Noticias", it: "Notizie", ar: "الأخبار", ja: "ニュース" },
+  allNews: { en: "All News", tr: "Tüm Haberler", de: "Alle Neuigkeiten", fr: "Toutes les actualités", es: "Todas las noticias", it: "Tutte le notizie", ar: "جميع الأخبار", ja: "すべてのニュース" },
+  guides: { en: "Technical Guides", tr: "Teknik Rehberler", de: "Technische Leitfäden", fr: "Guides techniques", es: "Guías técnicas", it: "Guide tecniche", ar: "الأدلة الفنية", ja: "技術ガイド" },
   company: { en: "About Us", tr: "Hakkımızda", de: "Über uns", fr: "À propos", es: "Sobre nosotros", it: "Chi siamo", ar: "من نحن", ja: "会社概要" },
   contact: { en: "Contact", tr: "İletişim", de: "Kontakt", fr: "Contact", es: "Contacto", it: "Contatti", ar: "اتصل بنا", ja: "お問い合わせ" },
   language: { en: "Language", tr: "Dil", de: "Sprache", fr: "Langue", es: "Idioma", it: "Lingua", ar: "اللغة", ja: "言語" },
@@ -45,7 +47,6 @@ const links = [
   { name: getLabel("solutions"), href: `/${locale}/solutions`, accent: "nav-accent-green" },
   { name: getLabel("services"), href: `/${locale}/services`, accent: "nav-accent-amber" },
   { name: getLabel("products"), href: `/${locale}/products`, accent: "nav-accent-cyan" },
-  { name: getLabel("news"), href: `/${locale}/news`, accent: "nav-accent-violet" },
   { name: getLabel("company"), href: `/${locale}/company`, accent: "nav-accent-red" },
   { name: getLabel("contact"), href: `/${locale}/contact`, accent: "nav-accent-teal" },
 ];
@@ -76,7 +77,30 @@ function isActive(href: string) {
     </a>
 
     <div class="nav-links" id="nav-links">
-      {links.map((link) => (
+      {links.slice(0, 4).map((link) => (
+        <a
+          href={link.href}
+          class={link.accent}
+          aria-current={isActive(link.href) ? "page" : undefined}
+        >
+          {link.name}
+        </a>
+      ))}
+      <div class:list={["nav-dropdown", { active: currentPath.startsWith(`/${locale}/news`) || currentPath.startsWith(`/${locale}/guides`) }]} data-nav-dropdown>
+        <button class="nav-dropdown-trigger nav-accent-violet" type="button" aria-expanded="false" aria-haspopup="true">
+          <span>{getLabel("news")}</span>
+          <span class="nav-dropdown-chevron" aria-hidden="true">⌄</span>
+        </button>
+        <div class="nav-dropdown-panel">
+          <a href={`/${locale}/news`} aria-current={currentPath.startsWith(`/${locale}/news`) ? "page" : undefined}>
+            <span>{getLabel("allNews")}</span><span aria-hidden="true">↗</span>
+          </a>
+          <a href={`/${locale}/guides`} aria-current={currentPath.startsWith(`/${locale}/guides`) ? "page" : undefined}>
+            <span>{getLabel("guides")}</span><span aria-hidden="true">↗</span>
+          </a>
+        </div>
+      </div>
+      {links.slice(4).map((link) => (
         <a
           href={link.href}
           class={link.accent}
@@ -114,6 +138,21 @@ function isActive(href: string) {
     toggle.setAttribute("aria-expanded", String(!!open));
   });
 
+  const dropdown = document.querySelector("[data-nav-dropdown]");
+  const dropdownTrigger = dropdown?.querySelector(".nav-dropdown-trigger");
+  const setDropdownOpen = (open: boolean) => {
+    dropdown?.classList.toggle("open", open);
+    dropdownTrigger?.setAttribute("aria-expanded", String(open));
+  };
+  dropdownTrigger?.addEventListener("click", () => setDropdownOpen(!dropdown?.classList.contains("open")));
+  dropdown?.querySelectorAll("a").forEach((link) => link.addEventListener("click", () => setDropdownOpen(false)));
+  document.addEventListener("click", (event) => {
+    if (dropdown && !dropdown.contains(event.target as Node)) setDropdownOpen(false);
+  });
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") setDropdownOpen(false);
+  });
+
   const select = document.getElementById("locale-select") as HTMLSelectElement | null;
   select?.addEventListener("change", (e) => {
     const nextLocale = (e.target as HTMLSelectElement).value;
@@ -127,3 +166,26 @@ function isActive(href: string) {
     window.location.href = "/" + parts.join("/") + window.location.search + window.location.hash;
   });
 </script>
+
+<style>
+  .nav-dropdown { position: relative; }
+  .nav-dropdown-trigger { display: inline-flex; align-items: center; gap: 5px; padding: 6px 0; border: 0; background: transparent; color: inherit; font: inherit; cursor: pointer; }
+  .nav-dropdown-trigger::after { position: absolute; right: 0; bottom: 0; left: 0; height: 2px; background: #704dff; transform: scaleX(0); transform-origin: left; transition: transform 180ms ease; content: ""; }
+  .nav-dropdown:hover .nav-dropdown-trigger, .nav-dropdown.open .nav-dropdown-trigger, .nav-dropdown.active .nav-dropdown-trigger { color: #5538c9; }
+  .nav-dropdown:hover .nav-dropdown-trigger::after, .nav-dropdown.open .nav-dropdown-trigger::after, .nav-dropdown.active .nav-dropdown-trigger::after { transform: scaleX(1); }
+  .nav-dropdown-chevron { display: inline-block; font-size: .72rem; transform: translateY(-1px); transition: transform 180ms ease; }
+  .nav-dropdown.open .nav-dropdown-chevron, .nav-dropdown:hover .nav-dropdown-chevron { transform: translateY(1px) rotate(180deg); }
+  .nav-dropdown-panel { position: absolute; top: calc(100% + 14px); left: 50%; z-index: 2; display: grid; width: 218px; padding: 8px; visibility: hidden; border: 1px solid rgba(19, 33, 117, .12); border-radius: 14px; background: rgba(255, 255, 255, .97); box-shadow: 0 20px 48px rgba(19, 27, 46, .14); opacity: 0; transform: translate(-50%, -7px); transition: opacity 160ms ease, transform 160ms ease, visibility 160ms ease; backdrop-filter: blur(18px); }
+  .nav-dropdown:hover .nav-dropdown-panel, .nav-dropdown:focus-within .nav-dropdown-panel, .nav-dropdown.open .nav-dropdown-panel { visibility: visible; opacity: 1; transform: translate(-50%, 0); }
+  .nav-dropdown-panel a { display: flex; align-items: center; justify-content: space-between; padding: 11px 12px; border-radius: 9px; color: rgba(19, 27, 46, .78); font-size: .74rem; font-weight: 750; }
+  .nav-dropdown-panel a::after { display: none; }
+  .nav-dropdown-panel a:hover, .nav-dropdown-panel a[aria-current="page"] { background: #f2f0ff; color: #5538c9; }
+  @media (max-width: 900px) {
+    .nav-dropdown-trigger { width: 100%; justify-content: space-between; padding: 12px; }
+    .nav-dropdown-trigger::after { display: none; }
+    .nav-dropdown-panel { position: static; display: none; width: auto; padding: 6px 8px; visibility: visible; overflow: hidden; border: 0; border-radius: 10px; background: rgba(19, 33, 117, .035); box-shadow: none; opacity: 1; transform: none; transition: none; backdrop-filter: none; }
+    .nav-dropdown:hover .nav-dropdown-panel, .nav-dropdown:focus-within .nav-dropdown-panel { display: none; transform: none; }
+    .nav-dropdown.open .nav-dropdown-panel { display: grid; }
+    .nav-dropdown-panel a { padding: 10px; }
+  }
+</style>

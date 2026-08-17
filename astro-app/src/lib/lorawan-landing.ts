@@ -5,6 +5,8 @@ type LandingCopy = {
   title: string;
   description: string;
   intro: string;
+  featuredTitle: string;
+  featuredLead: string;
   familiesTitle: string;
   familiesLead: string;
   portfolioTitle: string;
@@ -22,6 +24,8 @@ export const LORAWAN_LANDING_COPY: Record<Locale, LandingCopy> = {
     title: "LoRaWAN Sensors and Industrial IoT Devices",
     description: "Explore WillowSoft LoRaWAN sensors, embedded modules, tracking devices and industrial interfaces using specifications maintained in the product catalog.",
     intro: "WillowSoft develops connected hardware for environmental sensing, asset and safety monitoring, industrial data collection and embedded LoRaWAN product development.",
+    featuredTitle: "Direct product paths",
+    featuredLead: "Open the current catalog page for each product to review its maintained description and technical information.",
     familiesTitle: "Browse by operational purpose",
     familiesLead: "Product families follow the work performed in the field. Open a family to compare the products and their current technical information.",
     portfolioTitle: "Current LoRaWAN product portfolio",
@@ -37,6 +41,8 @@ export const LORAWAN_LANDING_COPY: Record<Locale, LandingCopy> = {
     title: "LoRaWAN Sensörleri ve Endüstriyel IoT Cihazları",
     description: "WillowSoft LoRaWAN sensörlerini, gömülü modülleri, takip cihazlarını ve endüstriyel arayüzleri güncel ürün verileriyle inceleyin.",
     intro: "WillowSoft; çevresel ölçüm, varlık ve güvenlik takibi, endüstriyel veri toplama ve gömülü LoRaWAN ürün geliştirme için bağlantılı donanımlar geliştirir.",
+    featuredTitle: "Doğrudan ürün bağlantıları",
+    featuredLead: "Güncel açıklama ve teknik bilgileri incelemek için ürünün katalog sayfasını açın.",
     familiesTitle: "Operasyonel amaca göre inceleyin",
     familiesLead: "Ürün aileleri sahada üstlendikleri göreve göre ayrılır. Ürünleri ve güncel teknik bilgilerini karşılaştırmak için bir aile seçin.",
     portfolioTitle: "Güncel LoRaWAN ürün portföyü",
@@ -52,6 +58,8 @@ export const LORAWAN_LANDING_COPY: Record<Locale, LandingCopy> = {
     title: "LoRaWAN-Sensoren und industrielle IoT-Geräte",
     description: "Entdecken Sie LoRaWAN-Sensoren, Embedded-Module, Tracking-Geräte und industrielle Schnittstellen von WillowSoft anhand gepflegter Produktdaten.",
     intro: "WillowSoft entwickelt vernetzte Hardware für Umweltmessung, Asset- und Sicherheitsüberwachung, industrielle Datenerfassung und Embedded-LoRaWAN-Produkte.",
+    featuredTitle: "Direkte Produktzugänge",
+    featuredLead: "Öffnen Sie die aktuelle Katalogseite des Produkts, um die gepflegte Beschreibung und technische Angaben zu prüfen.",
     familiesTitle: "Nach Einsatzzweck auswählen",
     familiesLead: "Die Produktfamilien folgen ihrer Aufgabe im Feld. Öffnen Sie eine Familie, um Produkte und aktuelle technische Angaben zu vergleichen.",
     portfolioTitle: "Aktuelles LoRaWAN-Produktportfolio",
@@ -67,6 +75,8 @@ export const LORAWAN_LANDING_COPY: Record<Locale, LandingCopy> = {
     title: "Capteurs LoRaWAN et appareils IoT industriels",
     description: "Découvrez les capteurs LoRaWAN, modules embarqués, dispositifs de suivi et interfaces industrielles WillowSoft à partir des données produit à jour.",
     intro: "WillowSoft développe du matériel connecté pour la mesure environnementale, le suivi des actifs et de la sécurité, la collecte de données industrielles et les produits LoRaWAN embarqués.",
+    featuredTitle: "Accès direct aux produits",
+    featuredLead: "Ouvrez la page catalogue actuelle de chaque produit pour consulter sa description et ses informations techniques.",
     familiesTitle: "Explorer par finalité opérationnelle",
     familiesLead: "Les familles correspondent au rôle assuré sur le terrain. Ouvrez une famille pour comparer les produits et leurs informations techniques actuelles.",
     portfolioTitle: "Portefeuille LoRaWAN actuel",
@@ -82,6 +92,8 @@ export const LORAWAN_LANDING_COPY: Record<Locale, LandingCopy> = {
     title: "Sensores LoRaWAN y dispositivos IoT industriales",
     description: "Explore sensores LoRaWAN, módulos embebidos, dispositivos de seguimiento e interfaces industriales WillowSoft con datos de producto mantenidos.",
     intro: "WillowSoft desarrolla hardware conectado para medición ambiental, seguimiento de activos y seguridad, captura de datos industriales y productos LoRaWAN embebidos.",
+    featuredTitle: "Acceso directo a productos",
+    featuredLead: "Abra la página actual del catálogo de cada producto para consultar su descripción e información técnica.",
     familiesTitle: "Explorar por finalidad operativa",
     familiesLead: "Las familias siguen el trabajo realizado en campo. Abra una familia para comparar productos y su información técnica actual.",
     portfolioTitle: "Cartera LoRaWAN actual",
@@ -97,6 +109,8 @@ export const LORAWAN_LANDING_COPY: Record<Locale, LandingCopy> = {
     title: "Sensori LoRaWAN e dispositivi IoT industriali",
     description: "Esplora sensori LoRaWAN, moduli embedded, dispositivi di tracciamento e interfacce industriali WillowSoft con dati di prodotto aggiornati.",
     intro: "WillowSoft sviluppa hardware connesso per misure ambientali, monitoraggio di asset e sicurezza, raccolta dati industriali e prodotti LoRaWAN embedded.",
+    featuredTitle: "Accesso diretto ai prodotti",
+    featuredLead: "Apri la pagina di catalogo aggiornata del prodotto per consultarne descrizione e informazioni tecniche.",
     familiesTitle: "Esplora per finalità operativa",
     familiesLead: "Le famiglie seguono il compito svolto sul campo. Apri una famiglia per confrontare prodotti e informazioni tecniche aggiornate.",
     portfolioTitle: "Portafoglio LoRaWAN attuale",
@@ -112,6 +126,8 @@ export const LORAWAN_LANDING_COPY: Record<Locale, LandingCopy> = {
     title: "مستشعرات LoRaWAN وأجهزة إنترنت الأشياء الصناعية",
     description: "استكشف مستشعرات LoRaWAN والوحدات المدمجة وأجهزة التتبع والواجهات الصناعية من WillowSoft اعتماداً على بيانات المنتجات المحدثة.",
     intro: "تطور WillowSoft عتاداً متصلاً للقياس البيئي وتتبع الأصول والسلامة وجمع البيانات الصناعية وتطوير منتجات LoRaWAN المدمجة.",
+    featuredTitle: "روابط مباشرة للمنتجات",
+    featuredLead: "افتح صفحة الكتالوج الحالية لكل منتج لمراجعة وصفه ومعلوماته الفنية المحدثة.",
     familiesTitle: "التصفح حسب الغرض التشغيلي",
     familiesLead: "تُصنف عائلات المنتجات وفق المهمة الميدانية. افتح إحدى العائلات لمقارنة المنتجات ومعلوماتها الفنية الحالية.",
     portfolioTitle: "مجموعة منتجات LoRaWAN الحالية",
@@ -127,6 +143,8 @@ export const LORAWAN_LANDING_COPY: Record<Locale, LandingCopy> = {
     title: "LoRaWANセンサーと産業用IoTデバイス",
     description: "WillowSoftのLoRaWANセンサー、組み込みモジュール、追跡デバイス、産業用インターフェースを管理された製品情報から確認できます。",
     intro: "WillowSoftは、環境計測、資産・安全監視、産業データ収集、組み込みLoRaWAN製品開発向けのコネクテッドハードウェアを開発しています。",
+    featuredTitle: "製品ページへの直接リンク",
+    featuredLead: "各製品の最新カタログページで、管理されている説明と技術情報を確認できます。",
     familiesTitle: "運用目的から選ぶ",
     familiesLead: "製品群は現場で担う役割ごとに分類されています。各分類から、製品と最新の技術情報を比較できます。",
     portfolioTitle: "現在のLoRaWAN製品ポートフォリオ",

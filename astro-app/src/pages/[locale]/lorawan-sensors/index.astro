@@ -13,6 +13,10 @@ export const prerender = false;
 const locale = resolveLocale(Astro.params.locale, Astro.url.pathname);
 const content = await loadContent();
 const products = (content.products || []).filter((product: any) => product.visible !== false);
+const featuredProductIds = ["willowsonic", "willowmod", "willowair", "willowgps"];
+const featuredProducts = featuredProductIds
+  .map((id) => products.find((product: any) => String(product.id).toLowerCase() === id))
+  .filter(Boolean);
 const categories = productCategoriesFromContent(content).filter((category) => category.visible);
 const copy = LORAWAN_LANDING_COPY[locale] || LORAWAN_LANDING_COPY.en;
 const canonical = `${SITE_ORIGIN}/${locale}/lorawan-sensors`;
@@ -40,8 +44,8 @@ const schema = appendSchemaNodes({
       "@type": "ItemList",
       "@id": itemListId,
       name: copy.title,
-      numberOfItems: products.length,
-      itemListElement: products.map((product: any, index: number) => ({
+      numberOfItems: featuredProducts.length,
+      itemListElement: featuredProducts.map((product: any, index: number) => ({
         "@type": "ListItem",
         position: index + 1,
         name: localizedValue(product.title, locale),

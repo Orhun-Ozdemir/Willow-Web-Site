@@ -21,6 +21,7 @@ export type TechnicalGuide = {
   readingMinutes: number;
   category: "selection" | "deployment" | "integration";
   relatedCategory?: string;
+  relatedProductIds?: string[];
   source: { label: string; url: string };
   localized: Record<Locale, TechnicalGuideCopy>;
 };
@@ -32,7 +33,8 @@ const guide = (
   relatedCategory: string | undefined,
   source: TechnicalGuide["source"],
   localized: Record<Locale, TechnicalGuideCopy>,
-): TechnicalGuide => ({ slug, readingMinutes, category, relatedCategory, source, localized });
+  relatedProductIds: string[] = [],
+): TechnicalGuide => ({ slug, readingMinutes, category, relatedCategory, relatedProductIds, source, localized });
 
 export const TECHNICAL_GUIDES: TechnicalGuide[] = [
   guide(
@@ -194,6 +196,7 @@ export const TECHNICAL_GUIDES: TechnicalGuide[] = [
         ja: ["Register mapと機器アドレス", "シリアル通信設定", "Pollingとtimeout方針", "Payloadバージョンとdecoder", "データ有効性", "End-to-End受入試験"],
       } as Record<string, string[]>)[locale],
     }])) as Record<Locale, TechnicalGuideCopy>,
+    ["willowmod"],
   ),
 ];
 

@@ -3,7 +3,7 @@ import ProductCard from "./ProductCard.astro";
 import { localizeItem, type Locale } from "@/lib/cms";
 import { productCategoryText, type ProductCategory } from "@/lib/product-categories";
 import { productSearchDescriptor } from "@/lib/seo-fallbacks";
-import { categorySearchName, COLLECTION_TABLE_LABELS, LORAWAN_LANDING_COPY } from "@/lib/lorawan-landing";
+import { categorySearchName, LORAWAN_LANDING_COPY } from "@/lib/lorawan-landing";
 import { GUIDE_INDEX_COPY, TECHNICAL_GUIDES } from "@/lib/technical-guides";
 import { accessibilityCopy } from "@/lib/accessibility-copy";
 
@@ -24,8 +24,12 @@ const categoryDescription = String(categoryText?.description || "").trim();
 const heroLead = selectedCategory
   ? `${categoryDescription}${categoryDescription && !/[.!?؟。]$/.test(categoryDescription) ? "." : ""} ${copy.portfolioLead}`.trim()
   : copy.intro;
-const tableLabels = COLLECTION_TABLE_LABELS[locale] || COLLECTION_TABLE_LABELS.en;
 const guideCopy = GUIDE_INDEX_COPY[locale];
+const directProductIds = ["willowsonic", "willowmod", "willowair", "willowgps"];
+const directProducts = selectedCategory ? [] : directProductIds
+  .map((id) => allProducts.find((product) => String(product.id).toLowerCase() === id))
+  .filter(Boolean)
+  .map((product) => ({ raw: product, localized: localizeItem(product, locale) }));
 ---
 
 <main id="main-content" class="lorawan-landing">
@@ -46,6 +50,28 @@ const guideCopy = GUIDE_INDEX_COPY[locale];
       </aside>
     </div>
   </section>
+
+  {directProducts.length > 0 && (
+    <section class="lorawan-direct" aria-labelledby="lorawan-direct-title">
+      <div class="section-inner lorawan-direct-layout">
+        <div class="lorawan-direct-copy">
+          <p class="eyebrow">{copy.portfolioTitle}</p>
+          <h2 id="lorawan-direct-title">{copy.featuredTitle}</h2>
+          <p>{copy.featuredLead}</p>
+        </div>
+        <div class="lorawan-direct-grid">
+          {directProducts.map(({ raw, localized }) => (
+            <a href={`/${locale}/products/${localized.slug || raw.id}`}>
+              <span>{productSearchDescriptor(raw.id, locale)}</span>
+              <strong>{localized.title}</strong>
+              <p>{localized.shortDescription}</p>
+              <i aria-hidden="true">↗</i>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
 
   <section class="section lorawan-families">
     <div class="section-inner">
@@ -73,60 +99,35 @@ const guideCopy = GUIDE_INDEX_COPY[locale];
     </div>
   </section>
 
-  <section class="section soft lorawan-products">
-    <div class="section-inner">
-      <div class="section-head">
-        <div>
-          <p class="eyebrow">{copy.portfolioTitle}</p>
-          <h2>{heroTitle}</h2>
-          <p class="section-lead">{copy.portfolioLead}</p>
+  {selectedCategory ? (
+    <section class="section soft lorawan-products">
+      <div class="section-inner">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">{copy.portfolioTitle}</p>
+            <h2>{heroTitle}</h2>
+            <p class="section-lead">{copy.portfolioLead}</p>
+          </div>
+        </div>
+        <div class="grid grid-4 product-atlas-grid">
+          {products.map((product, index) => (
+            <ProductCard product={product} locale={locale} index={index} variant="catalog" categories={categories} />
+          ))}
         </div>
       </div>
-      <div class="grid grid-4 product-atlas-grid">
-        {products.map((product, index) => (
-          <ProductCard product={product} locale={locale} index={index} variant="catalog" categories={categories} />
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <section class="section lorawan-comparison">
-    <div class="section-inner">
-      <div class="section-head">
+    </section>
+  ) : (
+    <section class="lorawan-catalog-link">
+      <div class="section-inner lorawan-catalog-layout">
         <div>
           <p class="eyebrow">{copy.portfolioTitle}</p>
-          <h2>{copy.integrationTitle}</h2>
-          <p class="section-lead">{copy.integrationText}</p>
+          <h2>{copy.portfolioTitle}</h2>
+          <p>{copy.portfolioLead}</p>
         </div>
+        <a href={`/${locale}/products`}>{copy.allProducts} <span aria-hidden="true">↗</span></a>
       </div>
-      <div class="lorawan-table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th scope="col">{tableLabels.product}</th>
-              <th scope="col">{tableLabels.type}</th>
-              <th scope="col">{tableLabels.category}</th>
-              <th scope="col">{tableLabels.description}</th>
-            </tr>
-          </thead>
-          <tbody>
-            {products.map((rawProduct) => {
-              const product = localizeItem(rawProduct, locale);
-              const category = visibleCategories.find((item) => item.key === String(rawProduct.category));
-              return (
-                <tr>
-                  <th scope="row"><a href={`/${locale}/products/${product.slug || product.id}`}>{product.title}</a></th>
-                  <td data-label={tableLabels.type}>{productSearchDescriptor(rawProduct.id, locale)}</td>
-                  <td data-label={tableLabels.category}>{category ? productCategoryText(category, locale).title : rawProduct.category}</td>
-                  <td data-label={tableLabels.description}>{product.shortDescription}</td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </section>
+    </section>
+  )}
 
   <section class="section soft lorawan-guides">
     <div class="section-inner">
@@ -159,6 +160,17 @@ const guideCopy = GUIDE_INDEX_COPY[locale];
   .lorawan-evidence-note { display: grid; grid-template-columns: 30px 1fr; gap: 14px; padding: 20px; border: 1px solid rgba(255,255,255,.14); border-radius: 18px; background: rgba(255,255,255,.07); backdrop-filter: blur(16px); }
   .lorawan-evidence-note span { display: grid; width: 28px; height: 28px; place-items: center; border-radius: 50%; background: #72dfc3; color: #07152f; font-weight: 900; }
   .lorawan-evidence-note p { margin: 0; color: rgba(255,255,255,.76); font-size: .83rem; line-height: 1.55; }
+  .lorawan-direct { padding: 34px 0; border-bottom: 1px solid rgba(19,33,117,.1); background: #f6f8fc; }
+  .lorawan-direct-layout { display: grid; grid-template-columns: minmax(210px, .34fr) minmax(0, 1fr); gap: 30px; align-items: center; }
+  .lorawan-direct-copy h2 { margin: 7px 0 8px; color: var(--ink); font-size: clamp(1.35rem, 2vw, 1.8rem); letter-spacing: -.03em; }
+  .lorawan-direct-copy > p:last-child { margin: 0; color: rgba(19,27,46,.62); font-size: .8rem; line-height: 1.55; }
+  .lorawan-direct-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 9px; }
+  .lorawan-direct-grid a { position: relative; min-width: 0; min-height: 142px; padding: 15px 34px 15px 15px; border: 1px solid rgba(19,33,117,.1); border-radius: 14px; background: #fff; transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease; }
+  .lorawan-direct-grid a:hover { transform: translateY(-2px); border-color: rgba(35,168,216,.45); box-shadow: 0 12px 30px rgba(16,31,92,.08); }
+  .lorawan-direct-grid span { display: block; min-height: 2.5em; color: rgba(19,33,117,.55); font-size: .61rem; font-weight: 800; line-height: 1.25; text-transform: uppercase; }
+  .lorawan-direct-grid strong { display: block; margin-top: 6px; overflow-wrap: anywhere; color: var(--ink); font-size: .91rem; line-height: 1.2; }
+  .lorawan-direct-grid p { display: -webkit-box; margin: 8px 0 0; overflow: hidden; color: rgba(19,27,46,.62); font-size: .7rem; line-height: 1.4; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+  .lorawan-direct-grid i { position: absolute; top: 14px; right: 14px; color: var(--blue); font-style: normal; font-size: .75rem; }
   .lorawan-families { padding: 76px 0 64px; }
   .lorawan-family-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
   .lorawan-family-card { position: relative; min-height: 210px; padding: 22px; overflow: hidden; border: 1px solid rgba(19,33,117,.12); border-radius: 20px; background: linear-gradient(145deg, #fff, #f5f8ff); transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease; }
@@ -168,7 +180,11 @@ const guideCopy = GUIDE_INDEX_COPY[locale];
   .lorawan-family-card p { margin: 0; color: rgba(19,27,46,.64); font-size: .84rem; line-height: 1.5; }
   .lorawan-family-card strong { position: absolute; right: 18px; bottom: 14px; color: rgba(19,33,117,.16); font-size: 2.5rem; }
   .lorawan-products { padding: 70px 0 78px; }
-  .lorawan-comparison { padding: 72px 0 90px; }
+  .lorawan-catalog-link { padding: 0 0 70px; }
+  .lorawan-catalog-layout { display: flex; gap: 28px; align-items: center; justify-content: space-between; padding: 26px 30px; border: 1px solid rgba(19,33,117,.11); border-radius: 18px; background: linear-gradient(135deg, #f7f9fd, #eef3fb); }
+  .lorawan-catalog-layout h2 { margin: 7px 0 8px; color: var(--ink); font-size: clamp(1.35rem, 2.2vw, 1.9rem); letter-spacing: -.03em; }
+  .lorawan-catalog-layout p:last-child { margin: 0; color: rgba(19,27,46,.65); font-size: .84rem; line-height: 1.55; }
+  .lorawan-catalog-layout > a { flex: 0 0 auto; padding: 13px 17px; border-radius: 12px; background: var(--blue); color: #fff; font-size: .76rem; font-weight: 850; }
   .lorawan-guides { padding: 70px 0 88px; }
   .lorawan-guide-all { color: var(--blue); font-size: .78rem; font-weight: 850; }
   .lorawan-guide-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
@@ -177,32 +193,20 @@ const guideCopy = GUIDE_INDEX_COPY[locale];
   .lorawan-guide-card > span { color: rgba(19,33,117,.5); font-size: .64rem; font-weight: 850; letter-spacing: .07em; text-transform: uppercase; }
   .lorawan-guide-card h3 { margin: 38px 0 12px; color: var(--ink); font-size: 1.17rem; line-height: 1.15; }
   .lorawan-guide-card p { margin: 0; color: rgba(19,27,46,.64); font-size: .82rem; line-height: 1.55; }
-  .lorawan-table-wrap { overflow-x: auto; border: 1px solid rgba(19,33,117,.12); border-radius: 18px; box-shadow: 0 18px 54px rgba(16,31,92,.06); }
-  table { width: 100%; min-width: 850px; border-collapse: collapse; background: #fff; }
-  th, td { padding: 17px 18px; border-bottom: 1px solid rgba(19,33,117,.09); text-align: start; vertical-align: top; font-size: .83rem; line-height: 1.5; }
-  thead th { background: #f3f6fc; color: rgba(19,33,117,.72); font-size: .68rem; letter-spacing: .07em; text-transform: uppercase; }
-  tbody th { color: var(--blue); font-weight: 850; }
-  tbody th a:hover { text-decoration: underline; }
-  tbody td { color: rgba(19,27,46,.68); }
-  tbody tr:last-child > * { border-bottom: 0; }
-  @media (max-width: 980px) { .lorawan-family-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 980px) { .lorawan-direct-layout { grid-template-columns: 1fr; gap: 18px; } .lorawan-family-grid { grid-template-columns: repeat(2, 1fr); } }
   @media (max-width: 760px) {
     .lorawan-hero { padding: 112px 0 52px; }
     .lorawan-hero-grid { grid-template-columns: 1fr; gap: 26px; }
+    .lorawan-direct { padding: 28px 0; }
+    .lorawan-direct-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .lorawan-hero h1 { font-size: clamp(2.55rem, 12vw, 4rem); }
-    .lorawan-families, .lorawan-products, .lorawan-comparison, .lorawan-guides { padding: 48px 0; }
+    .lorawan-families, .lorawan-products, .lorawan-guides { padding: 48px 0; }
+    .lorawan-catalog-link { padding: 0 0 48px; }
+    .lorawan-catalog-layout { align-items: flex-start; flex-direction: column; padding: 22px; }
     .lorawan-guide-grid { grid-template-columns: 1fr; }
     .lorawan-guide-card { min-height: 190px; }
     .lorawan-family-card { min-height: 170px; padding: 18px; }
     .lorawan-family-card h3 { margin-top: 20px; font-size: 1rem; }
-    .lorawan-table-wrap { overflow: visible; border: 0; border-radius: 0; box-shadow: none; }
-    table, tbody, tr, th, td { display: block; width: 100%; min-width: 0; }
-    thead { display: none; }
-    tbody { display: grid; gap: 12px; }
-    tbody tr { padding: 16px; border: 1px solid rgba(19,33,117,.12); border-radius: 16px; background: #fff; box-shadow: 0 10px 28px rgba(16,31,92,.05); }
-    tbody th { padding: 0 0 12px; border-bottom: 1px solid rgba(19,33,117,.1); font-size: .92rem; }
-    tbody td { display: grid; grid-template-columns: minmax(92px, .7fr) minmax(0, 1fr); gap: 12px; padding: 10px 0 0; border: 0; }
-    tbody td::before { content: attr(data-label); color: rgba(19,33,117,.58); font-size: .64rem; font-weight: 850; letter-spacing: .05em; text-transform: uppercase; }
   }
-  @media (max-width: 480px) { .lorawan-family-grid { grid-template-columns: 1fr 1fr; gap: 10px; } .lorawan-family-card { min-height: 184px; } }
+  @media (max-width: 480px) { .lorawan-direct-grid { grid-template-columns: 1fr 1fr; } .lorawan-direct-grid a { min-height: 136px; padding: 13px 28px 13px 13px; } .lorawan-family-grid { grid-template-columns: 1fr 1fr; gap: 10px; } .lorawan-family-card { min-height: 184px; } }
 </style>

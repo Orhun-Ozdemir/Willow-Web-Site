@@ -2,7 +2,7 @@
 import PageLayout from "@/layouts/PageLayout.astro";
 import ProductCard from "@/components/ProductCard.astro";
 import { loadContent } from "@/lib/content";
-import { resolveLocale } from "@/lib/cms";
+import { localizedValue, resolveLocale } from "@/lib/cms";
 import { productCategoriesFromContent } from "@/lib/product-categories";
 import { GUIDE_INDEX_COPY, technicalGuide } from "@/lib/technical-guides";
 import { buildAlternates, DEFAULT_OG_IMAGE, fitSeoDescription, fitSeoTitle, ORGANIZATION_SCHEMA, SITE_ORIGIN, WEBSITE_SCHEMA, webPageNode } from "@/lib/seo";
@@ -21,8 +21,14 @@ const title = fitSeoTitle(`${copy.title} | WillowSoft`);
 const description = fitSeoDescription(copy.description);
 const content = await loadContent();
 const categories = productCategoriesFromContent(content);
+const relatedProductPriority = new Map((guide.relatedProductIds || []).map((id, index) => [id, index]));
 const relatedProducts = (content.products || [])
   .filter((product: any) => product.visible !== false && (!guide.relatedCategory || String(product.category) === guide.relatedCategory))
+  .sort((a: any, b: any) => {
+    const aPriority = relatedProductPriority.get(String(a.id)) ?? Number.MAX_SAFE_INTEGER;
+    const bPriority = relatedProductPriority.get(String(b.id)) ?? Number.MAX_SAFE_INTEGER;
+    return aPriority - bPriority;
+  })
   .slice(0, 4);
 const schema = {
   "@context": "https://schema.org",
@@ -36,6 +42,11 @@ const schema = {
       publisher: { "@id": `${SITE_ORIGIN}/#org` },
       proficiencyLevel: "Intermediate",
       about: ["LoRaWAN", guide.category],
+      mentions: relatedProducts.map((product: any) => ({
+        "@type": "ProductModel",
+        name: localizedValue(product.title, locale),
+        url: `${SITE_ORIGIN}/${locale}/products/${product.slug || product.id}`,
+      })),
     },
     {
       "@type": "BreadcrumbList",
