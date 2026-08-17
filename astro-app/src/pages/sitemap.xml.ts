@@ -40,10 +40,15 @@ export const GET: APIRoute = async () => {
   const pushLocalizedSet = (
     hrefFor: (locale: Locale) => string,
     extraFor: (locale: Locale) => Partial<UrlEntry> = () => ({}),
+    includeFor: (locale: Locale) => boolean = () => true,
   ) => {
-    const alternates = locales.map((l) => ({ hreflang: l as string, href: hrefFor(l) }));
-    alternates.push({ hreflang: "x-default", href: hrefFor("en") });
-    for (const locale of locales) {
+    const includedLocales = locales.filter(includeFor);
+    if (includedLocales.length === 0) return;
+
+    const defaultLocale = includedLocales.includes("en") ? "en" : includedLocales[0];
+    const alternates = includedLocales.map((l) => ({ hreflang: l as string, href: hrefFor(l) }));
+    alternates.push({ hreflang: "x-default", href: hrefFor(defaultLocale) });
+    for (const locale of includedLocales) {
       entries.push({ loc: hrefFor(locale), alternates, lastmod, ...extraFor(locale) });
     }
   };
@@ -56,7 +61,7 @@ export const GET: APIRoute = async () => {
       changefreq: seoByLocale[l]?.changefreq || seoEn.changefreq,
       priority: seoByLocale[l]?.priority || seoEn.priority,
       lastmod: content.lastModified?.pageSeo?.[page.key] || content.lastModified?.pageContent?.[page.key] || lastmod,
-    }));
+    }), (l) => !Boolean(seoByLocale[l]?.noindex));
   }
 
   for (const product of (content.products || []).filter((item: any) => item.visible !== false)) {
@@ -65,7 +70,7 @@ export const GET: APIRoute = async () => {
       changefreq: "monthly",
       priority: "0.7",
       lastmod: product.updatedAt || lastmod,
-    }));
+    }), (l) => !Boolean(product.seo?.[l]?.noindex));
   }
 
   for (const guide of TECHNICAL_GUIDES) {
@@ -88,6 +93,7 @@ export const GET: APIRoute = async () => {
     pushLocalizedSet(
       (l) => `${SITE_ORIGIN}/${l}/news/${itemText(item, "slug", l, item.slug?.en || item.slug || item.id)}`,
       () => ({ changefreq: "yearly", priority: "0.5", lastmod: item.updatedAt || item.date || lastmod }),
+      (l) => !Boolean(item.seo?.[l]?.noindex),
     );
   }
 

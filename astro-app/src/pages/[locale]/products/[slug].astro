@@ -653,14 +653,18 @@ const productCanonical = `${SITE_ORIGIN}/${locale}/products/${canonicalProductSl
 const crumbHome: Record<Locale, string> = { en: "Home", tr: "Ana Sayfa", de: "Startseite", fr: "Accueil", es: "Inicio", it: "Home", ar: "الرئيسية", ja: "ホーム" };
 const crumbProducts: Record<Locale, string> = { en: "Products", tr: "Ürünler", de: "Produkte", fr: "Produits", es: "Productos", it: "Prodotti", ar: "المنتجات", ja: "製品一覧" };
 
-// B2B catalog has no list price; a priceless Offer is invalid structured data, so
-// only emit an Offer node when a real price is present in CMS/product data.
+// WillowSoft's catalog describes B2B product models rather than a public online
+// offer. ProductModel preserves the real entity/specification semantics without
+// claiming eligibility for Google's price/review-based Product rich result. If a
+// genuine public price is later entered in CMS, the node becomes a Product with
+// a complete Offer.
 const productPrice = (product as any).price;
 const productNode: Record<string, any> = {
-  "@type": "Product",
+  "@type": productPrice ? "Product" : "ProductModel",
   "@id": `${productCanonical}#product`,
   "url": productCanonical,
   "name": productHeading,
+  "model": product.slug || product.id,
   "sku": product.slug || product.id,
   "image": heroImageAbsoluteUrl ? [heroImageAbsoluteUrl] : [],
   "description": product.shortDescription || "",
