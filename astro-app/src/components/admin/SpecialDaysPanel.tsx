@@ -62,8 +62,8 @@ function PreviewCard({ day, locale }: { day: SpecialDay; locale: Locale }) {
     >
       <div className="pointer-events-none absolute inset-0 opacity-30" style={{ backgroundImage: "radial-gradient(rgba(19,33,117,.22) .6px,transparent .6px)", backgroundSize: "6px 6px" }} />
       <div className="absolute -left-3 top-10 text-[160px] font-black leading-none tracking-[-.13em] text-transparent" style={{ WebkitTextStroke: `1px ${day.accentColor}88` }}>{numeral}</div>
-      <div className="absolute right-6 top-6 grid h-20 w-20 place-items-center rounded-full border text-[10px] font-black uppercase tracking-widest" style={{ borderColor: `${day.accentColor}55`, color: day.accentColor, background: `${day.accentColor}10` }}>
-        {motifFor(day)}
+      <div className="absolute right-6 top-6 h-16 w-24 overflow-hidden rounded-lg border-2 shadow-[0_8px_20px_rgba(19,33,117,.18)]" style={{ borderColor: `${day.accentColor}55` }}>
+        <img src={`${import.meta.env.BASE_URL}assets/flags-rect/${day.flag}.svg`} alt="" className="h-full w-full object-cover" />
       </div>
       <div className="relative z-10 mt-24 ml-auto max-w-[72%]">
         <p className="text-[10px] font-black uppercase tracking-[.18em] text-[#132175]/55">{day.countries.join(" · ")} / {dateLabel(day, sampleDate.getFullYear())}</p>

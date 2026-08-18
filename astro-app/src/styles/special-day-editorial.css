@@ -112,6 +112,7 @@ body[data-page="home"] .hero-celebration.is-editorial::before {
    Keyed on :not([hidden]), not just presence of [data-celebration] — the overlay
    div stays in the DOM (just [hidden]) after national-day-celebration.ts finishes
    its play(), so matching on presence alone would leave the hero tall forever. */
+body[data-page="home"] .motion-hero:has([data-celebration]) { transition: min-height .6s ease; }
 body[data-page="home"] .motion-hero:has([data-celebration]:not([hidden])) { min-height: 100svh; }
 
 @media(max-width:760px) {
@@ -130,6 +131,7 @@ body[data-page="home"] .motion-hero:has([data-celebration]:not([hidden])) { min-
   .republic-day-index { right:20px;bottom:22px; }
 }
 @media(prefers-reduced-motion:reduce) {
+  body[data-page="home"] .motion-hero:has([data-celebration]) { transition:none; }
   .hero-celebration.is-editorial * { animation:none!important; }
   .hero-celebration.is-editorial .republic-traces path,.hero-celebration.is-editorial .republic-orbit { stroke-dashoffset:0; }
   .hero-celebration.is-editorial .republic-number-solid { clip-path:inset(0); }
