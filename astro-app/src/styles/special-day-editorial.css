@@ -103,6 +103,15 @@ body[data-page="home"] .hero-celebration.is-editorial::before {
 @keyframes republicNumberOutline { to { opacity: 1; transform: translateX(0); } }
 @keyframes republicCopy { to { opacity: 1; transform: translateY(0); } }
 @keyframes republicOrbitDot { 0% { opacity:0;transform:translate(0) } 12% { opacity:1 } 58% { opacity:1;transform:translate(-136px,-74px) } 100% { opacity:0;transform:translate(-232px,84px) } }
+/* globals.css caps the normal-day .motion-hero to a short, content-sized box —
+   clamp(260px,32svh,368px) on desktop, min-height:0 below 900px. The celebration
+   overlay is an inset:0 layer whose own layout (giant number, centered copy block,
+   bottom-right index) assumes a tall canvas regardless of viewport width, so on a
+   celebration day the hero needs its height back everywhere, not just on mobile —
+   otherwise the giant number's top half renders behind the fixed header. Specificity
+   (0,3,1) beats both culprit rules ((0,2,1) each), so no media query is needed here. */
+body[data-page="home"] .motion-hero:has([data-celebration]) { min-height: 100svh; }
+
 @media(max-width:760px) {
   body[data-page="home"]:has(.national-day-note) .motion-hero .hero-inner { padding-top:108px; }
   body[data-page="home"] .hero-celebration.is-editorial { background: radial-gradient(circle at 82% 25%,rgba(227,10,23,.11),transparent 25%),linear-gradient(155deg,rgba(248,249,253,.97),rgba(244,245,250,.94)); }
