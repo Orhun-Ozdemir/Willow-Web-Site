@@ -9,22 +9,38 @@ function init() {
 
   const dedupeKey = root.dataset.dedupeKey || "";
   const isPreview = root.dataset.preview === "true";
-  if (!dedupeKey || (!isPreview && localStorage.getItem(dedupeKey))) return;
-  if (!isPreview) localStorage.setItem(dedupeKey, "1");
-
-  root.hidden = false;
   const isEditorial = root.dataset.editorial === "true";
-  if (isEditorial) root.classList.add("is-editorial");
-  requestAnimationFrame(() => root.classList.add("is-active"));
+  let hideTimer: number | undefined;
+  let fadeTimer: number | undefined;
 
-  window.setTimeout(() => {
-    root.classList.remove("is-active");
-    root.classList.add("is-leaving");
-    window.setTimeout(() => {
-      root.hidden = true;
-      root.classList.remove("is-leaving");
-    }, FADE_MS);
-  }, SHOW_MS);
+  function play() {
+    window.clearTimeout(hideTimer);
+    window.clearTimeout(fadeTimer);
+    // Reset first so a replay triggered mid-cycle (badge clicked twice quickly)
+    // restarts the transition instead of no-op'ing on an already-"is-active" node.
+    root!.classList.remove("is-active", "is-leaving");
+    root!.hidden = false;
+    if (isEditorial) root!.classList.add("is-editorial");
+    requestAnimationFrame(() => root!.classList.add("is-active"));
+
+    hideTimer = window.setTimeout(() => {
+      root!.classList.remove("is-active");
+      root!.classList.add("is-leaving");
+      fadeTimer = window.setTimeout(() => {
+        root!.hidden = true;
+        root!.classList.remove("is-leaving");
+      }, FADE_MS);
+    }, SHOW_MS);
+  }
+
+  // The badge in the header dispatches this to replay on demand, independent
+  // of the once-per-day dedupe below (see NationalDayBadge.astro).
+  window.addEventListener("willow:replay-celebration", play);
+
+  const alreadySeenToday = !isPreview && !!dedupeKey && !!localStorage.getItem(dedupeKey);
+  if (!dedupeKey || alreadySeenToday) return;
+  localStorage.setItem(dedupeKey, "1");
+  play();
 }
 
 if (document.readyState === "loading") {
