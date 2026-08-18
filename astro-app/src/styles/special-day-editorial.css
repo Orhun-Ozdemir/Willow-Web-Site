@@ -106,11 +106,13 @@ body[data-page="home"] .hero-celebration.is-editorial::before {
 /* globals.css caps the normal-day .motion-hero to a short, content-sized box —
    clamp(260px,32svh,368px) on desktop, min-height:0 below 900px. The celebration
    overlay is an inset:0 layer whose own layout (giant number, centered copy block,
-   bottom-right index) assumes a tall canvas regardless of viewport width, so on a
-   celebration day the hero needs its height back everywhere, not just on mobile —
-   otherwise the giant number's top half renders behind the fixed header. Specificity
-   (0,3,1) beats both culprit rules ((0,2,1) each), so no media query is needed here. */
-body[data-page="home"] .motion-hero:has([data-celebration]) { min-height: 100svh; }
+   bottom-right index) assumes a tall canvas regardless of viewport width, so while
+   it's actually showing, the hero needs its height back everywhere, not just on
+   mobile — otherwise the giant number's top half renders behind the fixed header.
+   Keyed on :not([hidden]), not just presence of [data-celebration] — the overlay
+   div stays in the DOM (just [hidden]) after national-day-celebration.ts finishes
+   its play(), so matching on presence alone would leave the hero tall forever. */
+body[data-page="home"] .motion-hero:has([data-celebration]:not([hidden])) { min-height: 100svh; }
 
 @media(max-width:760px) {
   body[data-page="home"]:has(.national-day-note) .motion-hero .hero-inner { padding-top:108px; }
