@@ -42,6 +42,7 @@ export const TAB_PERMISSIONS: Partial<Record<string, AdminPermission>> = {
   products: "content.read",
   news: "content.read",
   publishing: "publishing.read",
+  special_days: "content.read",
   faqs: "content.read",
   glossary: "content.read",
   solutions: "content.read",

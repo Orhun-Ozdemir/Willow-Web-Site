@@ -3,6 +3,10 @@ import type { Locale } from "@/lib/cms";
 import { locales, resolveLocale } from "@/lib/cms";
 import { loadContent } from "@/lib/content";
 import { brandTaglineForLocale } from "@/lib/brand-tagline";
+import { getAnalyticsGeo } from "@/lib/analytics";
+import { getSession } from "@/lib/auth";
+import { calendarDateForTimeZone, configuredSpecialDays, getActiveSpecialDay, resolvePreviewOverride } from "@/lib/special-days";
+import NationalDayBadge from "./NationalDayBadge.astro";
 
 interface Props {
   locale: Locale;
@@ -13,6 +17,25 @@ const locale = resolveLocale(Astro.props.locale, Astro.url.pathname);
 const currentPath = Astro.props.currentPath || Astro.url.pathname;
 const content = await loadContent();
 const brandTagline = brandTaglineForLocale(content?.meta, locale);
+
+const { country: visitorCountry, timezone: visitorTimezone } = getAnalyticsGeo(Astro.request);
+const allowSpecialDayPreview = import.meta.env.DEV || Boolean(getSession(Astro.request.headers.get("cookie")));
+const { now: specialDayNow, countryCode: specialDayCountry } = resolvePreviewOverride(
+  allowSpecialDayPreview,
+  Astro.url.searchParams,
+  calendarDateForTimeZone(new Date(), visitorTimezone),
+  visitorCountry,
+);
+const activeSpecialDay = getActiveSpecialDay(specialDayNow, specialDayCountry, configuredSpecialDays(content?.meta?.specialDays));
+const specialDayGreeting = activeSpecialDay
+  ? activeSpecialDay.greeting[locale] || activeSpecialDay.greeting.en
+  : null;
+const specialDayNavMessage = activeSpecialDay && specialDayGreeting
+  ? locale === "tr"
+    ? `${specialDayGreeting.title} · ${specialDayGreeting.accent} kutlu olsun.`
+    : specialDayGreeting.subline.replace(/\s+[—–-]\s+WillowSoft\s*$/i, "")
+  : "";
+const isHomePage = currentPath === `/${locale}` || currentPath === `/${locale}/`;
 
 const labels: Record<string, string> = { en: "EN", tr: "TR", de: "DE", fr: "FR", es: "ES", it: "IT", ar: "AR", ja: "JA" };
 const navLabels = {
@@ -127,6 +150,15 @@ function isActive(href: string) {
         <span class="bar" aria-hidden="true"></span>
       </button>
     </div>
+
+    {activeSpecialDay && specialDayGreeting && (
+      <NationalDayBadge
+        flag={activeSpecialDay.flag}
+        title={`${specialDayGreeting.title} ${specialDayGreeting.accent}`}
+        message={specialDayNavMessage}
+        revealDelay={isHomePage ? "6.2s" : ".35s"}
+      />
+    )}
   </nav>
 </header>
 
@@ -168,6 +200,7 @@ function isActive(href: string) {
 </script>
 
 <style>
+  .nav { position: relative; }
   .nav-dropdown { position: relative; }
   .nav-dropdown-trigger { display: inline-flex; align-items: center; gap: 5px; padding: 6px 0; border: 0; background: transparent; color: inherit; font: inherit; cursor: pointer; }
   .nav-dropdown-trigger::after { position: absolute; right: 0; bottom: 0; left: 0; height: 2px; background: #704dff; transform: scaleX(0); transform-origin: left; transition: transform 180ms ease; content: ""; }

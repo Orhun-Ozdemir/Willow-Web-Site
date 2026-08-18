@@ -6,6 +6,7 @@ import WhatsAppFloat from "@/components/WhatsAppFloat.astro";
 import { resolveLocale, type Locale } from "@/lib/cms";
 import type { Alternate } from "@/lib/seo";
 import "virtual:home-global.css";
+import devGlobalCss from "@/styles/globals.css?inline";
 
 interface Props {
   title: string;
@@ -31,6 +32,7 @@ const locale = resolveLocale(Astro.props.locale, Astro.url.pathname);
 ---
 
 <BaseLayout {...Astro.props}>
+  {import.meta.env.DEV && <style is:inline set:html={devGlobalCss} />}
   <Header locale={locale} currentPath={Astro.url.pathname} />
   <slot />
   <Footer locale={locale} />

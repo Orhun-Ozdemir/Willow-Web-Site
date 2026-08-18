@@ -92,3 +92,6 @@ astro-app/.vercel/
 astro-app/dist/
 .vercel
 .env*
+
+# Brainstorm visual companion
+.superpowers/

@@ -14,6 +14,7 @@ const homeStyleSources = [
   "src/layouts/HomePageLayout.astro",
   "src/layouts/BaseLayout.astro",
   "src/components/Header.astro",
+  "src/components/NationalDayBadge.astro",
   "src/components/Footer.astro",
   "src/components/WhatsAppFloat.astro",
   "src/components/Analytics.astro",
