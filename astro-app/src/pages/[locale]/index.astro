@@ -408,7 +408,7 @@ const homeSchema = appendSchemaNodes({
           data-secondary={activeSpecialDay.secondaryColor || ""}
           data-event-id={activeSpecialDay.id}
           data-editorial="true"
-          data-preview={import.meta.env.DEV && Astro.url.searchParams.has("willow-preview-day") ? "true" : "false"}
+          data-preview={Astro.url.searchParams.has("willow-preview-day") ? "true" : "false"}
           data-dedupe-key={celebrationDedupeKey}
           style={`--day-accent:${activeSpecialDay.accentColor};--day-secondary:${activeSpecialDay.secondaryColor || activeSpecialDay.accentColor}`}
         >

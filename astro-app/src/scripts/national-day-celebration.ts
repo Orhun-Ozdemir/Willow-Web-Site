@@ -16,8 +16,6 @@ function init() {
   function play() {
     window.clearTimeout(hideTimer);
     window.clearTimeout(fadeTimer);
-    // Reset first so a replay triggered mid-cycle (badge clicked twice quickly)
-    // restarts the transition instead of no-op'ing on an already-"is-active" node.
     root!.classList.remove("is-active", "is-leaving");
     root!.hidden = false;
     if (isEditorial) root!.classList.add("is-editorial");
@@ -34,12 +32,25 @@ function init() {
   }
 
   // The badge in the header dispatches this to replay on demand, independent
-  // of the once-per-day dedupe below (see NationalDayBadge.astro).
+  // of the once-per-day dedupe (see NationalDayBadge.astro).
   window.addEventListener("willow:replay-celebration", play);
 
-  const alreadySeenToday = !isPreview && !!dedupeKey && !!localStorage.getItem(dedupeKey);
+  // In preview mode (triggered via Admin panel / URL parameter), always play immediately
+  // and do NOT store seen status in localStorage.
+  if (isPreview) {
+    play();
+    return;
+  }
+
+  // For live production users: play once per day per country event.
+  const alreadySeenToday = !!dedupeKey && !!localStorage.getItem(dedupeKey);
   if (!dedupeKey || alreadySeenToday) return;
-  localStorage.setItem(dedupeKey, "1");
+
+  try {
+    localStorage.setItem(dedupeKey, "1");
+  } catch (e) {
+    // Graceful fallback if localStorage is disabled in private browsing
+  }
   play();
 }
 
