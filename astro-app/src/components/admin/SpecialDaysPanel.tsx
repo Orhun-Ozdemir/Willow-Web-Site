@@ -37,17 +37,18 @@ function eventName(day: SpecialDay) {
 function motifFor(day: SpecialDay): CelebrationMotif {
   if (day.motif) return day.motif;
   if (day.id === "tr-republic-day") return "crescent";
-  if (day.id === "tr-national-sovereignty-day") return "modules";
+  if (["tr-national-sovereignty-day", "pt-republic-day"].includes(day.id)) return "modules";
   if (day.id === "tr-youth-sports-day") return "horizon";
-  if (["tr-victory-day", "es-fiesta-nacional"].includes(day.id)) return "rays";
+  if (["tr-victory-day", "es-fiesta-nacional", "pt-liberty-day"].includes(day.id)) return "rays";
   if (day.id === "us-independence-day") return "stars";
   if (day.id === "us-thanksgiving") return "harvest";
-  if (day.id === "gb-st-georges-day") return "cross";
+  if (["gb-st-georges-day", "pt-restoration-day"].includes(day.id)) return "cross";
   if (day.id === "de-unity-day") return "unity";
   if (["fr-bastille-day", "it-republic-day", "ae-national-day"].includes(day.id)) return "bands";
   if (day.id === "jp-foundation-day") return "sun";
   if (["sa-national-day", "sa-founding-day"].includes(day.id)) return "geometry";
   if (day.id === "qa-national-day") return "serrated";
+  if (day.id === "pt-portugal-day") return "orbit";
   return "orbit";
 }
 
@@ -62,8 +63,22 @@ function PreviewCard({ day, locale }: { day: SpecialDay; locale: Locale }) {
     >
       <div className="pointer-events-none absolute inset-0 opacity-30" style={{ backgroundImage: "radial-gradient(rgba(19,33,117,.22) .6px,transparent .6px)", backgroundSize: "6px 6px" }} />
       <div className="absolute -left-3 top-10 text-[160px] font-black leading-none tracking-[-.13em] text-transparent" style={{ WebkitTextStroke: `1px ${day.accentColor}88` }}>{numeral}</div>
-      <div className="absolute right-6 top-6 h-16 w-24 overflow-hidden rounded-lg border-2 shadow-[0_8px_20px_rgba(19,33,117,.18)]" style={{ borderColor: `${day.accentColor}55` }}>
-        <img src={`${import.meta.env.BASE_URL}assets/flags-rect/${day.flag}.svg`} alt="" className="h-full w-full object-cover" />
+      <div className="absolute right-6 top-6 h-16 w-24">
+        <svg className="pointer-events-none absolute inset-0 overflow-visible" viewBox="0 0 96 64" fill="none" aria-hidden="true">
+          <g stroke={day.accentColor} strokeWidth="1.5" strokeLinecap="round" opacity=".85">
+            <path d="M-6 2v-8h8" />
+            <path d="M102 2v-8h-8" />
+            <path d="M-6 62v8h8" />
+            <path d="M102 62v8h-8" />
+          </g>
+          <circle cx="-6" cy="-6" r="5" fill={day.accentColor} opacity=".22" />
+          <circle cx="-6" cy="-6" r="2.2" fill={day.accentColor} />
+          <circle cx="102" cy="70" r="5" fill={day.accentColor} opacity=".22" />
+          <circle cx="102" cy="70" r="2.2" fill={day.accentColor} />
+        </svg>
+        <div className="h-full w-full overflow-hidden rounded-md border shadow-[0_8px_20px_rgba(19,33,117,.18)]" style={{ borderColor: `${day.accentColor}70` }}>
+          <img src={`${import.meta.env.BASE_URL}assets/flags-rect/${day.flag}.svg`} alt="" className="h-full w-full object-cover" />
+        </div>
       </div>
       <div className="relative z-10 mt-24 ml-auto max-w-[72%]">
         <p className="text-[10px] font-black uppercase tracking-[.18em] text-[#132175]/55">{day.countries.join(" · ")} / {dateLabel(day, sampleDate.getFullYear())}</p>
