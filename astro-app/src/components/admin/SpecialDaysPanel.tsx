@@ -26,6 +26,18 @@ function dateForYear(day: SpecialDay, year: number): Date {
   return new Date(year, day.date.month - 1, 1 + offset + (day.date.nth - 1) * 7, 12);
 }
 
+function isoDayString(day: SpecialDay, year: number): string {
+  if (day.date.type === "fixed") {
+    const mm = String(day.date.month).padStart(2, "0");
+    const dd = String(day.date.day).padStart(2, "0");
+    return `${year}-${mm}-${dd}`;
+  }
+  const d = dateForYear(day, year);
+  const mm = String(d.getMonth() + 1).padStart(2, "0");
+  const dd = String(d.getDate()).padStart(2, "0");
+  return `${year}-${mm}-${dd}`;
+}
+
 function dateLabel(day: SpecialDay, year: number) {
   return dateForYear(day, year).toLocaleDateString("tr-TR", { day: "numeric", month: "long" });
 }
@@ -52,40 +64,67 @@ function motifFor(day: SpecialDay): CelebrationMotif {
   return "orbit";
 }
 
+function resolveTargetLocale(day: SpecialDay, currentLocale: Locale): string {
+  const c = (day.countries[0] || "").toUpperCase();
+  if (c === "TR") return "tr";
+  if (c === "DE") return "de";
+  if (c === "FR") return "fr";
+  if (c === "ES") return "es";
+  if (c === "IT") return "it";
+  if (c === "JP") return "ja";
+  if (["SA", "QA", "AE"].includes(c)) return "ar";
+  if (locales.includes(currentLocale)) return currentLocale;
+  return "en";
+}
+
 function PreviewCard({ day, locale }: { day: SpecialDay; locale: Locale }) {
-  const greeting = day.greeting?.[locale] || day.greeting?.en;
+  const greeting = day.greeting?.[locale] || day.greeting?.en || day.greeting?.tr;
   const sampleDate = dateForYear(day, new Date().getFullYear());
-  const numeral = String(sampleDate.getDate()).padStart(2, "0");
+  const activeCountry = day.countries.find((code) => code !== "*") || "TR";
+
   return (
     <div
-      className="relative min-h-[260px] overflow-hidden rounded-3xl border border-white/60 p-6 shadow-[0_24px_70px_rgba(19,33,117,.12)]"
-      style={{ background: `radial-gradient(circle at 82% 22%, ${day.accentColor}24, transparent 28%), linear-gradient(145deg,#fbfbfe,#f2f4fa)` }}
+      className="relative min-h-[260px] overflow-hidden rounded-3xl border border-white/20 p-6 text-white shadow-2xl"
+      style={{ background: "#06070b" }}
     >
-      <div className="pointer-events-none absolute inset-0 opacity-30" style={{ backgroundImage: "radial-gradient(rgba(19,33,117,.22) .6px,transparent .6px)", backgroundSize: "6px 6px" }} />
-      <div className="absolute -left-3 top-10 text-[160px] font-black leading-none tracking-[-.13em] text-transparent" style={{ WebkitTextStroke: `1px ${day.accentColor}88` }}>{numeral}</div>
-      <div className="absolute right-6 top-6 h-16 w-24">
-        <svg className="pointer-events-none absolute inset-0 overflow-visible" viewBox="0 0 96 64" fill="none" aria-hidden="true">
-          <g stroke={day.accentColor} strokeWidth="1.5" strokeLinecap="round" opacity=".85">
-            <path d="M-6 2v-8h8" />
-            <path d="M102 2v-8h-8" />
-            <path d="M-6 62v8h8" />
-            <path d="M102 62v8h-8" />
-          </g>
-          <circle cx="-6" cy="-6" r="5" fill={day.accentColor} opacity=".22" />
-          <circle cx="-6" cy="-6" r="2.2" fill={day.accentColor} />
-          <circle cx="102" cy="70" r="5" fill={day.accentColor} opacity=".22" />
-          <circle cx="102" cy="70" r="2.2" fill={day.accentColor} />
-        </svg>
-        <div className="h-full w-full overflow-hidden rounded-md border shadow-[0_8px_20px_rgba(19,33,117,.18)]" style={{ borderColor: `${day.accentColor}70` }}>
-          <img src={`${import.meta.env.BASE_URL}assets/flags-rect/${day.flag}.svg`} alt="" className="h-full w-full object-cover" />
-        </div>
+      {/* 3D WebP Flag Artwork Backdrop Preview */}
+      <div className="absolute inset-0 z-0 overflow-hidden">
+        <img
+          src={`${import.meta.env.BASE_URL}assets/special-days/${day.id}.webp`}
+          alt=""
+          className="h-full w-full object-cover object-right opacity-75"
+          onError={(e) => { (e.target as HTMLElement).style.opacity = "0"; }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#06070b] via-[#06070b]/80 to-transparent" />
       </div>
-      <div className="relative z-10 mt-24 ml-auto max-w-[72%]">
-        <p className="text-[10px] font-black uppercase tracking-[.18em] text-[#132175]/55">{day.countries.join(" · ")} / {dateLabel(day, sampleDate.getFullYear())}</p>
-        <p className="mt-3 text-sm font-black text-[#131b2e]">{greeting?.title}</p>
-        <h4 className="mt-1 text-3xl font-normal italic leading-[.92]" style={{ fontFamily: "var(--font-serif)", color: day.accentColor }}>{greeting?.accent}</h4>
-        <div className="mt-5 flex items-center gap-2 text-[10px] font-bold text-[#131b2e]/55">
-          <span style={{ color: day.accentColor }}>{greeting?.subline?.split(/\s+[—–-]\s+/)[0]}</span><i className="h-px w-6" style={{ background: day.accentColor }} /><strong className="tracking-widest">WILLOWSOFT</strong>
+
+      {/* Flag SVG Badge */}
+      <div className="absolute right-5 top-5 z-10 flex items-center gap-2 rounded-full border border-white/20 bg-black/50 px-3 py-1.5 backdrop-blur-md">
+        <img
+          src={`${import.meta.env.BASE_URL}assets/flags/${day.flag}.svg`}
+          alt=""
+          className="h-4 w-6 rounded object-cover shadow-sm"
+          onError={(e) => { (e.target as HTMLElement).style.display = "none"; }}
+        />
+        <span className="text-[10px] font-black tracking-widest text-white/90">{activeCountry}</span>
+      </div>
+
+      {/* Hero Typography Overlay */}
+      <div className="relative z-10 mt-14 max-w-[88%]">
+        <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[.22em] text-white/80">
+          <span className="h-2 w-2 rounded-full shadow-[0_0_8px_currentColor]" style={{ background: day.accentColor }} />
+          <span>WILLOWSOFT KUTLUYOR • {activeCountry}</span>
+        </div>
+        <p className="mt-2 text-xs font-black uppercase tracking-wider text-white/90">{greeting?.title}</p>
+        <h4
+          className="mt-1 text-2xl font-normal italic leading-snug drop-shadow-md"
+          style={{ fontFamily: "var(--font-serif, serif)", color: "#ffffff", textShadow: `0 0 20px ${day.accentColor}` }}
+        >
+          {greeting?.accent}
+        </h4>
+        <div className="mt-4 flex items-center gap-3 text-[10px] font-bold text-white/70">
+          <span className="h-px w-6" style={{ background: day.accentColor }} />
+          <span className="truncate">{greeting?.subline}</span>
         </div>
       </div>
     </div>
@@ -124,8 +163,10 @@ export default function SpecialDaysPanel() {
 
   if (!selected) return null;
 
-  const selectedDate = dateForYear(selected, year);
-  const previewHref = `/${locale}?willow-preview-day=${selectedDate.toISOString().slice(0, 10)}&willow-preview-country=${selected.countries.find((code) => code !== "*") || "TR"}`;
+  const targetIsoDay = isoDayString(selected, year);
+  const activeCountryCode = selected.countries.find((code) => code !== "*") || "TR";
+  const targetLocale = resolveTargetLocale(selected, locale);
+  const previewHref = `/${targetLocale}?willow-preview-day=${targetIsoDay}&willow-preview-country=${activeCountryCode}`;
 
   return (
     <div className="space-y-6">
