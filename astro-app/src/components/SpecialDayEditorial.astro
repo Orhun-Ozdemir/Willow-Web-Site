@@ -11,189 +11,136 @@ interface Props {
 
 const { specialDay, greeting, activeDate, locale } = Astro.props;
 
-const motifByEvent: Record<string, string> = {
-  "tr-republic-day": "crescent",
-  "tr-national-sovereignty-day": "modules",
-  "tr-youth-sports-day": "horizon",
-  "tr-victory-day": "rays",
-  "us-independence-day": "stars",
-  "us-thanksgiving": "harvest",
-  "gb-st-georges-day": "cross",
-  "de-unity-day": "unity",
-  "fr-bastille-day": "bands",
-  "it-republic-day": "bands",
-  "es-fiesta-nacional": "rays",
-  "pt-liberty-day": "rays",
-  "pt-portugal-day": "orbit",
-  "pt-republic-day": "modules",
-  "pt-restoration-day": "cross",
-  "jp-foundation-day": "sun",
-  "sa-national-day": "geometry",
-  "sa-founding-day": "geometry",
-  "qa-national-day": "serrated",
-  "ae-national-day": "bands",
-  "new-year": "orbit",
-};
-
-const motif = specialDay.motif || motifByEvent[specialDay.id] || "orbit";
 const dayNumber = String(activeDate.getUTCDate()).padStart(2, "0");
 const monthNumber = String(activeDate.getUTCMonth() + 1).padStart(2, "0");
 const countryCode = specialDay.countries[0] === "*" ? "GLOBAL" : specialDay.countries[0];
-const signature = greeting.subline.split(/\s+[—–-]\s+/).filter(Boolean);
-const signatureText = signature[0] || greeting.subline;
-const signatureBrand = signature[1] || "WillowSoft";
+
+const kickerByDay: Record<string, Record<string, string>> = {
+  "tr-republic-day": { tr: "TÜRKİYE CUMHURİYETİ • 1923", en: "REPUBLIC OF TURKEY • 1923" },
+  "tr-national-sovereignty-day": { tr: "TÜRKİYE CUMHURİYETİ • 23 NİSAN", en: "TURKEY • APRIL 23" },
+  "tr-youth-sports-day": { tr: "TÜRKİYE CUMHURİYETİ • 19 MAYIS", en: "TURKEY • MAY 19" },
+  "tr-victory-day": { tr: "TÜRKİYE CUMHURİYETİ • 30 AĞUSTOS", en: "TURKEY • AUGUST 30" },
+  "us-independence-day": { en: "UNITED STATES OF AMERICA • 1776", tr: "AMERİKA BİRLEŞİK DEVLETLERİ • 1776" },
+  "us-thanksgiving": { en: "UNITED STATES OF AMERICA • THANKSGIVING", tr: "AMERİKA BİRLEŞİK DEVLETLERİ • ŞÜKRAN GÜNÜ" },
+  "gb-st-georges-day": { en: "UNITED KINGDOM • ST GEORGE", tr: "BİRLEŞİK KRALLIK • AZİZ GEORGE GÜNÜ" },
+  "de-unity-day": { de: "BUNDESREPUBLIK DEUTSCHLAND • 1990", en: "FEDERAL REPUBLIC OF GERMANY • 1990", tr: "ALMANYA BİRLİK GÜNÜ • 1990" },
+  "pt-portugal-day": { pt: "REPÚBLICA PORTUGUESA • 1572", en: "PORTUGUESE REPUBLIC • 1572", tr: "PORTEKİZ CUMHURİYETİ • 1572" },
+  "pt-liberty-day": { pt: "REPÚBLICA PORTUGUESA • 1974", en: "PORTUGUESE REPUBLIC • 1974", tr: "PORTEKİZ CUMHURİYETİ • 1974" },
+  "pt-republic-day": { pt: "REPÚBLICA PORTUGUESA • 1910", en: "PORTUGUESE REPUBLIC • 1910", tr: "PORTEKİZ CUMHURİYETİ • 1910" },
+  "pt-restoration-day": { pt: "REPÚBLICA PORTUGUESA • 1640", en: "PORTUGUESE REPUBLIC • 1640", tr: "PORTEKİZ CUMHURİYETİ • 1640" },
+  "sa-national-day": { ar: "المملكة العربية السعودية • ١٣٥١", en: "KINGDOM OF SAUDI ARABIA • 1932", tr: "SUUDİ ARABİSTAN KRALLIĞI • 1932" },
+  "sa-founding-day": { ar: "المملكة العربية السعودية • يوم التأسيس", en: "KINGDOM OF SAUDI ARABIA • FOUNDING DAY", tr: "SUUDİ ARABİSTAN KRALLIĞI • KURULUŞ GÜNÜ" },
+  "fr-bastille-day": { fr: "RÉPUBLIQUE FRANÇAISE • 1789", en: "FRENCH REPUBLIC • 1789", tr: "FRANSA CUMHURİYETİ • 1789" },
+  "it-republic-day": { it: "REPUBBLICA ITALIANA • 1946", en: "ITALIAN REPUBLIC • 1946", tr: "İTALYA CUMHURİYETİ • 1946" },
+  "es-fiesta-nacional": { es: "REINO DE ESPAÑA • 1492", en: "KINGDOM OF SPAIN • 1492", tr: "İSPANYA KRALLIĞI • 1492" },
+  "jp-foundation-day": { ja: "日本国 • 建国記念の日", en: "STATE OF JAPAN • FOUNDATION DAY", tr: "JAPONYA DEVLETİ • KURULUŞ GÜNÜ" },
+  "qa-national-day": { ar: "دولة قطر • ١٨٧٨", en: "STATE OF QATAR • 1878", tr: "KATAR DEVLETİ • 1878" },
+  "ae-national-day": { ar: "الإمارات العربية المتحدة • ١٩٧١", en: "UNITED ARAB EMIRATES • 1971", tr: "BİRLEŞİK ARAP EMİRLİKLERİ • 1971" },
+};
+
+const kickerMap = kickerByDay[specialDay.id] || {};
+const kickerText = kickerMap[locale] || kickerMap.en || `${countryCode} • ${monthNumber}/${dayNumber}`;
+
+// Prominent brand celebration header text per locale
+const brandCelebratesByLocale: Record<string, string> = {
+  tr: "WILLOWSOFT KUTLUYOR",
+  en: "WILLOWSOFT CELEBRATES",
+  de: "WILLOWSOFT FEERT MIT",
+  fr: "WILLOWSOFT CÉLÈBRE",
+  es: "WILLOWSOFT CELEBRA",
+  it: "WILLOWSOFT FESTEGGIA",
+  ar: "WILLOWSOFT يحتفل",
+  ja: "WILLOWSOFT お祝い",
+};
+const brandHeader = brandCelebratesByLocale[locale] || "WILLOWSOFT CELEBRATES";
+
+const motifByEvent: Record<string, string> = {
+  "tr-republic-day": "crescent",
+  "us-independence-day": "stars",
+  "de-unity-day": "unity",
+  "pt-portugal-day": "orbit",
+  "sa-national-day": "geometry",
+  "fr-bastille-day": "bands",
+  "it-republic-day": "bands",
+  "qa-national-day": "serrated",
+  "ae-national-day": "bands",
+  "es-fiesta-nacional": "rays",
+  "jp-foundation-day": "sun",
+  "gb-st-georges-day": "cross",
+};
+
+const motif = specialDay.motif || motifByEvent[specialDay.id] || "orbit";
 ---
 
 <div
-  class:list={["republic-day-art", "editorial-day-art", `motif-${motif}`]}
+  class:list={["republic-day-art", "editorial-day-art", `day-${specialDay.id}`, `motif-${motif}`]}
   style={`--day-accent:${specialDay.accentColor};--day-secondary:${specialDay.secondaryColor || specialDay.accentColor}`}
   lang={locale}
+  dir={locale === "ar" ? "rtl" : "ltr"}
   aria-label={`${greeting.title} ${greeting.accent}`}
 >
+  <!-- Ultra-Optimized High-Performance WebP Backdrop -->
+  <div class="editorial-image-backdrop">
+    <img 
+      src={`${import.meta.env.BASE_URL}assets/special-days/${specialDay.id}.webp`} 
+      alt=""
+      class="editorial-banner-img"
+      onerror="this.style.opacity='0'; this.style.pointerEvents='none';"
+      loading="eager"
+      decoding="async"
+    />
+    <div class="editorial-banner-overlay"></div>
+  </div>
+
+  <!-- High-Tech Country SVG Flag Frame Backdrop (Native Fallback) -->
   <svg class="republic-day-lines" viewBox="0 0 1440 720" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
     <defs>
       <linearGradient id={`day-signal-${specialDay.id}`} x1="0" y1="0" x2="1" y2="0">
         <stop offset="0" stop-color="var(--day-accent)" stop-opacity="0" />
-        <stop offset=".3" stop-color="var(--day-accent)" stop-opacity=".72" />
-        <stop offset=".72" stop-color="var(--day-secondary)" stop-opacity=".58" />
+        <stop offset=".3" stop-color="var(--day-accent)" stop-opacity=".75" />
+        <stop offset=".72" stop-color="var(--day-secondary)" stop-opacity=".6" />
         <stop offset="1" stop-color="var(--day-secondary)" stop-opacity="0" />
       </linearGradient>
       <filter id={`day-soft-glow-${specialDay.id}`} x="-40%" y="-40%" width="180%" height="180%">
-        <feGaussianBlur stdDeviation="7" result="blur" />
+        <feGaussianBlur stdDeviation="8" result="blur" />
         <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
       </filter>
-      <mask id={`day-crescent-${specialDay.id}`}>
-        <rect width="100%" height="100%" fill="black" />
-        <circle cx="1030" cy="278" r="88" fill="white" />
-        <circle cx="1066" cy="250" r="74" fill="black" />
-      </mask>
     </defs>
-
-    <g class="republic-grid">
-      <path d="M0 130H1440M0 360H1440M0 590H1440" />
-      <path d="M180 0V720M720 0V720M1260 0V720" />
-    </g>
-
-    <g class="republic-traces" fill="none" stroke={`url(#day-signal-${specialDay.id})`} stroke-width="1.5">
-      <path d="M-40 196H182L228 150H426L478 202H666" />
-      <path d="M72 536H302L348 490H594L650 546H884L932 498H1480" />
-      <path d="M838 84V174L896 232V438L842 492V650" />
-      <path d="M1190 54V126L1240 176V398L1292 450V660" />
-    </g>
-
-    <g class="republic-nodes" fill="var(--day-accent)">
-      <circle cx="228" cy="150" r="4" /><circle cx="478" cy="202" r="4" />
-      <circle cx="650" cy="546" r="4" /><circle cx="932" cy="498" r="4" />
-      <circle cx="896" cy="232" r="4" /><circle cx="1240" cy="176" r="4" />
-    </g>
-
-    <g class="republic-emblem editorial-motif" filter={`url(#day-soft-glow-${specialDay.id})`}>
-      {motif === "crescent" && (
-        <>
-          <rect x="920" y="166" width="220" height="220" fill="var(--day-accent)" mask={`url(#day-crescent-${specialDay.id})`} />
-          <path class="republic-star" d="M1119 257l9 20 22 2-17 14 5 22-19-12-19 12 5-22-17-14 22-2z" fill="var(--day-accent)" />
-        </>
-      )}
-      {motif === "sun" && <circle cx="1044" cy="278" r="92" fill="var(--day-accent)" />}
-      {motif === "stars" && (
-        <>
-          <path d="M1044 174l25 56 61 6-46 40 14 60-54-32-54 32 14-60-46-40 61-6z" fill="var(--day-accent)" />
-          <path d="M1165 330l10 22 24 2-18 16 5 23-21-13-21 13 6-23-19-16 25-2z" fill="var(--day-secondary)" opacity=".72" />
-        </>
-      )}
-      {motif === "cross" && (
-        <>
-          <rect x="1018" y="154" width="48" height="248" rx="5" fill="var(--day-accent)" />
-          <rect x="918" y="254" width="248" height="48" rx="5" fill="var(--day-accent)" />
-        </>
-      )}
-      {motif === "unity" && (
-        <>
-          <path d="M918 204h98v148h-98z" fill="var(--day-accent)" opacity=".78" />
-          <path d="M1072 204h98v148h-98z" fill="var(--day-secondary)" opacity=".78" />
-          <path d="M990 278h108" stroke="#121212" stroke-width="16" stroke-linecap="round" />
-        </>
-      )}
-      {motif === "bands" && (
-        <>
-          <path d="M932 176c60 34 80 34 112 0v204c-32 34-52 34-112 0z" fill="var(--day-accent)" opacity=".82" />
-          <path d="M1044 176c42 28 76 30 118 0v204c-42 30-76 28-118 0z" fill="var(--day-secondary)" opacity=".78" />
-        </>
-      )}
-      {motif === "rays" && (
-        <g stroke="var(--day-accent)" stroke-width="18" stroke-linecap="round">
-          <path d="M1044 148v62M1044 346v62M914 278h62M1112 278h62M952 186l44 44M1092 326l44 44M952 370l44-44M1092 230l44-44" />
-          <circle cx="1044" cy="278" r="62" fill="var(--day-secondary)" stroke="none" opacity=".7" />
-        </g>
-      )}
-      {motif === "modules" && (
-        <g fill="none" stroke="var(--day-accent)" stroke-width="10">
-          <rect x="928" y="164" width="92" height="92" rx="22" />
-          <rect x="1068" y="164" width="92" height="92" rx="46" />
-          <rect x="928" y="304" width="92" height="92" rx="46" />
-          <rect x="1068" y="304" width="92" height="92" rx="22" />
-        </g>
-      )}
-      {motif === "horizon" && (
-        <>
-          <path d="M908 342h280" stroke="var(--day-accent)" stroke-width="4" />
-          <path d="M940 342a104 104 0 01208 0" fill="none" stroke="var(--day-secondary)" stroke-width="18" opacity=".7" />
-          <path d="M1044 152v82" stroke="var(--day-accent)" stroke-width="6" stroke-linecap="round" />
-        </>
-      )}
-      {motif === "harvest" && (
-        <>
-          <path d="M1042 396V178" stroke="var(--day-accent)" stroke-width="8" stroke-linecap="round" />
-          {[0,1,2,3].map((index) => (
-            <g transform={`translate(0 ${index * 46})`}>
-              <path d="M1038 212c-52-8-74-28-82-58 48 0 73 18 82 58z" fill="var(--day-accent)" opacity={.88 - index * .1} />
-              <path d="M1048 232c52-8 74-28 82-58-48 0-73 18-82 58z" fill="var(--day-secondary)" opacity={.78 - index * .08} />
-            </g>
-          ))}
-        </>
-      )}
-      {motif === "geometry" && (
-        <g fill="none" stroke="var(--day-accent)" stroke-width="5">
-          <path d="M1044 154l116 67v134l-116 67-116-67V221z" />
-          <path d="M1044 202l74 43v86l-74 43-74-43v-86z" opacity=".72" />
-          <circle cx="1044" cy="288" r="28" fill="var(--day-accent)" opacity=".2" />
-        </g>
-      )}
-      {motif === "serrated" && (
-        <path d="M940 164h214l-62 28 62 28-62 28 62 28-62 28 62 28-62 28 62 28H940z" fill="var(--day-accent)" opacity=".82" />
-      )}
-      {motif === "orbit" && (
-        <>
-          <circle cx="1044" cy="278" r="102" fill="none" stroke="var(--day-accent)" stroke-width="5" />
-          <circle cx="1044" cy="278" r="36" fill="var(--day-secondary)" opacity=".72" />
-          <path d="M1044 132v292M898 278h292M940 174l208 208M1148 174L940 382" stroke="var(--day-accent)" stroke-width="3" opacity=".62" />
-        </>
-      )}
-    </g>
-
-    <path class="republic-orbit" d="M902 278c0-88 70-160 158-160 57 0 108 30 136 74" fill="none" stroke="var(--day-accent)" stroke-width="1.2" />
-    <circle class="republic-orbit-dot" cx="1196" cy="192" r="5" fill="var(--day-accent)" />
   </svg>
 
-  <div class="republic-day-number" aria-hidden="true">
-    <span class="republic-number-solid">{dayNumber}</span>
-    <span class="republic-number-outline">{dayNumber}</span>
+  <!-- Volumetric Soft Ambient Glow Pulse -->
+  <div class="editorial-ambient-glow" aria-hidden="true"></div>
+
+  <!-- Multilingual Live Premium Typography Layer with WillowSoft Celebrates Header -->
+  <div class="editorial-hero-content">
+    <div class="editorial-kicker-line cinematic-item item-1">
+      <span class="kicker-dot"></span>
+      <span class="kicker-text">{brandHeader} • {kickerText}</span>
+    </div>
+
+    <h1 class="republic-day-title">
+      <span class="title-main cinematic-item item-2">{greeting.title}</span>
+      <span class="title-accent cinematic-item item-3">{greeting.accent}</span>
+    </h1>
+
+    <div class="republic-day-subline cinematic-item item-4">
+      <span class="subline-line"></span>
+      <span class="subline-brand">WILLOWSOFT</span>
+    </div>
   </div>
 
-  <div class="republic-day-copy">
-    <p class="republic-day-kicker">{countryCode} <span></span> {monthNumber} / {dayNumber}</p>
-    <p class="republic-day-title">
-      <span>{greeting.title}</span>
-      <em>{greeting.accent}</em>
-    </p>
-    <p class="republic-day-subline">
-      <span>{signatureText}</span>
-      <i aria-hidden="true"></i>
-      <strong>{signatureBrand}</strong>
-    </p>
+  <!-- Floating Ambient Particles -->
+  <div class="celebration-sparks" aria-hidden="true">
+    <span class="spark s1"></span>
+    <span class="spark s2"></span>
+    <span class="spark s3"></span>
+    <span class="spark s4"></span>
+    <span class="spark s5"></span>
+    <span class="spark s6"></span>
   </div>
 
-  <div class="republic-day-index" aria-hidden="true">
-    <span>{monthNumber}</span><i></i><span>{dayNumber}</span>
+  <!-- 5.8s Auto-Dismiss Progress Bar -->
+  <div class="celebration-progress-bar" aria-hidden="true">
+    <div class="celebration-progress-fill"></div>
   </div>
 </div>
