@@ -21,7 +21,7 @@
       "ar": "الأنظمة المدمجة وحلول اتصال إنترنت الأشياء",
       "ja": "組み込みシステムとIoT通信"
     },
-    "updatedAt": "2026-08-11T20:22:05.168Z",
+    "updatedAt": "2026-08-25T20:59:02.262Z",
     "linkedinNewsSource": "https://www.linkedin.com/company/willow-software/posts/?feedView=all"
   },
   "companyFacts": {
@@ -313,7 +313,7 @@
         "vision": "Diventare lo standard globale per lo sviluppo di prodotti connessi full-stack, dal silicio all'interfaccia."
       },
       "ar": {
-        "heroSub": "تأسست WillowSoft في عام 2020، ونmet من فريق هندسي يركز على البحث والتطوير إلى شركة منتجات متصلة معترف بها عالميًا — تم تكريمها كبطل لتصدير التكنولوجيا في عام 2023 مع عمليات نشر نشطة في أكثر من 15 دولة.",
+        "heroSub": "تأسست WillowSoft عام 2020، وتطورت من فريق هندسي يركز على البحث والتطوير إلى شركة عالمية متخصصة في المنتجات المتصلة. وفي عام 2023 نالت لقب بطل تصدير التكنولوجيا، مع حلول تعمل اليوم في أكثر من 15 دولة.",
         "aboutHeadline": "نحن لا نصنع الأجهزة فحسب؛ بل نهندس منظومات موثوقة.",
         "aboutSub": "تأسست WillowSoft عام 2020، وتقدّم حلول العتاد والبرمجيات المدمجة للتطبيقات الصناعية وإنترنت الأشياء. يركّز الفريق على البنية منخفضة الطاقة واتصال LoRa وموثوقية البرامج الثابتة وتصميم العتاد المخصص وأنظمة الخلفية وواجهات الجوال والويب والجاهزية للإنتاج.",
         "mission": "هندسة أنظمة متصلة موثوقة للغاية ومنخفضة الطاقة تربط بين العتاد المادي والشبكات الرقمية دون أي تنازلات.",
@@ -322,7 +322,7 @@
       "ja": {
         "heroSub": "2020年に設立された WillowSoft は、研究 R&D 発想のエンジニアリング集団から、グローバル市場で実績を持つ IoT デバイスメーカーへと成長しました。2023年には技術輸出チャンピオンに選出され、現在15カ国以上でシステムが稼働しています。",
         "aboutHeadline": "私たちはデバイスを作るだけでなく、信頼できるエコシステムを設計します。",
-        "aboutSub": "2020年に設立された WillowSoft は、産業用および IoT 向けの組み込みハードウェア・ソフトウェアソリューションを提供します。チームは、低消費電力アーキテクチャ、LoRa 接続、ファームウェア의 信頼性、カスタムハードウェア設計、バックエンドシステム、モバイル・Web インターフェース、量産対応に注力しています。",
+        "aboutSub": "2020年設立のWillowSoftは、産業・IoT分野向けに組み込みハードウェアとソフトウェアを提供しています。低消費電力設計、LoRa通信、信頼性の高いファームウェア、カスタム基板、バックエンド、モバイル・Web画面、量産対応まで一貫して支援します。",
         "mission": "妥協のない物理ハードウェアとデジタルネットワークをブリッジする、超信頼性・低消費電力のコネクテッドシステムを設計すること。",
         "vision": "シリコンからUIまで、フルスタックのコネクテッド製品開発におけるグローバルスタンダードとなること。"
       }
@@ -2659,43 +2659,73 @@
       "localized": {
         "tr": {
           "title": "Gömülü Donanım Tasarımı",
-          "summary": "PCB tasarımı, sensör geliştirme, sağlam IoT ağ geçitleri ve düşük güçlü donanım.",
+          "summary": "Devre kartı tasarımı, sensör entegrasyonu, dayanıklı IoT ağ geçitleri ve enerji verimli elektronik sistemler.",
           "deliverables": [
-            "Şematik",
+            "Devre şemaları",
             "PCB tasarımı",
-            "Prototip",
+            "Çalışan prototip",
             "Seri üretim desteği"
           ]
         },
         "de": {
           "title": "Embedded-Hardware-Design",
-          "summary": "PCB-Design, Sensorentwicklung, robuste IoT-Gateways und Low-Power-Hardware.",
-          "deliverables": ""
+          "summary": "Leiterplattenentwicklung, Sensorintegration, robuste IoT-Gateways und energieeffiziente Elektronik.",
+          "deliverables": [
+            "Schaltpläne",
+            "Leiterplattenlayout",
+            "Funktionsprototyp",
+            "Begleitung der Serienfertigung"
+          ]
         },
         "fr": {
           "title": "Conception hardware embarqué",
-          "summary": "Conception PCB, développement de capteurs, gateways IoT robustes et hardware basse consommation.",
-          "deliverables": ""
+          "summary": "Conception de cartes électroniques, intégration de capteurs, passerelles IoT robustes et systèmes basse consommation.",
+          "deliverables": [
+            "Schémas électroniques",
+            "Conception du circuit imprimé",
+            "Prototype fonctionnel",
+            "Accompagnement à l’industrialisation"
+          ]
         },
         "es": {
           "title": "Diseño de hardware embebido",
-          "summary": "Diseño de PCB, desarrollo de sensores, gateways IoT robustos y hardware de bajo consumo.",
-          "deliverables": ""
+          "summary": "Diseño de placas electrónicas, integración de sensores, gateways IoT robustos y sistemas de bajo consumo.",
+          "deliverables": [
+            "Esquemas electrónicos",
+            "Diseño de PCB",
+            "Prototipo funcional",
+            "Soporte para producción en serie"
+          ]
         },
         "it": {
           "title": "Progettazione hardware embedded",
-          "summary": "Design PCB, sviluppo sensori, gateway IoT robusti e hardware a basso consumo.",
-          "deliverables": ""
+          "summary": "Progettazione di schede elettroniche, integrazione di sensori, gateway IoT robusti e sistemi a basso consumo.",
+          "deliverables": [
+            "Schemi elettronici",
+            "Progettazione PCB",
+            "Prototipo funzionante",
+            "Supporto alla produzione in serie"
+          ]
         },
         "ar": {
           "title": "تصميم عتاد embedded",
-          "summary": "تصميم PCB، تطوير المستشعرات، gateways IoT متينة وعتاد منخفض الطاقة.",
-          "deliverables": ""
+          "summary": "تصميم اللوحات الإلكترونية ودمج المستشعرات وتطوير بوابات إنترنت الأشياء المتينة والأنظمة الموفرة للطاقة.",
+          "deliverables": [
+            "المخططات الإلكترونية",
+            "تصميم لوحة الدوائر المطبوعة",
+            "نموذج أولي عامل",
+            "دعم الإنتاج المتسلسل"
+          ]
         },
         "ja": {
           "title": "組み込みハードウェア設計",
-          "summary": "PCB 設計、センサー開発、堅牢な IoT ゲートウェイ、低消費電力ハードウェア。",
-          "deliverables": ""
+          "summary": "回路・基板設計、センサー統合、堅牢なIoTゲートウェイ、低消費電力システムの開発。",
+          "deliverables": [
+            "回路図",
+            "基板レイアウト",
+            "動作試作機",
+            "量産移行支援"
+          ]
         }
       }
     },
@@ -2712,43 +2742,73 @@
       "localized": {
         "tr": {
           "title": "Firmware Geliştirme",
-          "summary": "MCU, RTOS, bare-metal yazılım, LoRaWAN yığını ve cihaz sürücüleri.",
+          "summary": "MCU ve RTOS tabanlı gömülü yazılım, bare-metal geliştirme, LoRaWAN protokolü ve cihaz sürücüleri.",
           "deliverables": [
             "Firmware mimarisi",
-            "Sürücüler",
-            "OTA stratejisi",
-            "Güç optimizasyonu"
+            "Cihaz sürücüleri",
+            "OTA güncelleme stratejisi",
+            "Güç tüketimi optimizasyonu"
           ]
         },
         "de": {
           "title": "Firmware-Entwicklung",
-          "summary": "MCU, RTOS, Bare-Metal, LoRaWAN-Stack und Gerätetreiber.",
-          "deliverables": ""
+          "summary": "Firmware für MCU- und RTOS-Systeme, Bare-Metal-Entwicklung, LoRaWAN-Protokoll und Gerätetreiber.",
+          "deliverables": [
+            "Firmware-Architektur",
+            "Gerätetreiber",
+            "OTA-Update-Strategie",
+            "Optimierung des Energieverbrauchs"
+          ]
         },
         "fr": {
           "title": "Développement firmware",
-          "summary": "MCU, RTOS, bare-metal, stack LoRaWAN et drivers de périphériques.",
-          "deliverables": ""
+          "summary": "Firmware pour MCU et RTOS, développement bare-metal, protocole LoRaWAN et pilotes de périphériques.",
+          "deliverables": [
+            "Architecture firmware",
+            "Pilotes de périphériques",
+            "Stratégie de mise à jour OTA",
+            "Optimisation de la consommation"
+          ]
         },
         "es": {
           "title": "Desarrollo de firmware",
-          "summary": "MCU, RTOS, bare-metal, stack LoRaWAN y drivers de dispositivo.",
-          "deliverables": ""
+          "summary": "Firmware para MCU y RTOS, desarrollo bare-metal, protocolo LoRaWAN y controladores de dispositivos.",
+          "deliverables": [
+            "Arquitectura de firmware",
+            "Controladores de dispositivos",
+            "Estrategia de actualización OTA",
+            "Optimización del consumo energético"
+          ]
         },
         "it": {
           "title": "Sviluppo firmware",
-          "summary": "MCU, RTOS, bare-metal, stack LoRaWAN e driver di dispositivo.",
-          "deliverables": ""
+          "summary": "Firmware per MCU e RTOS, sviluppo bare-metal, protocollo LoRaWAN e driver di dispositivo.",
+          "deliverables": [
+            "Architettura firmware",
+            "Driver di dispositivo",
+            "Strategia di aggiornamento OTA",
+            "Ottimizzazione dei consumi"
+          ]
         },
         "ar": {
           "title": "تطوير firmware",
-          "summary": "MCU وRTOS وbare-metal وLoRaWAN stack وتعريفات الأجهزة.",
-          "deliverables": ""
+          "summary": "تطوير البرمجيات الثابتة لوحدات التحكم وأنظمة RTOS، والبرمجة المباشرة، وبروتوكول LoRaWAN، وتعريفات الأجهزة.",
+          "deliverables": [
+            "بنية البرمجيات الثابتة",
+            "تعريفات الأجهزة",
+            "استراتيجية التحديث عن بُعد",
+            "تحسين استهلاك الطاقة"
+          ]
         },
         "ja": {
           "title": "ファームウェア開発",
-          "summary": "MCU、RTOS、ベアメタル、LoRaWAN スタック、デバイスドライバー。",
-          "deliverables": ""
+          "summary": "MCU・RTOS向けファームウェア、ベアメタル開発、LoRaWANプロトコル、デバイスドライバー。",
+          "deliverables": [
+            "ファームウェア設計",
+            "デバイスドライバー",
+            "OTA更新方針",
+            "消費電力の最適化"
+          ]
         }
       }
     },
@@ -2765,43 +2825,73 @@
       "localized": {
         "tr": {
           "title": "Backend API",
-          "summary": "REST API, WebSocket, telemetri alımı, kimlik doğrulama ve raporlama.",
+          "summary": "REST API ve WebSocket altyapısı, telemetri verisi alımı, kimlik doğrulama ve raporlama.",
           "deliverables": [
             "API tasarımı",
-            "Telemetri hattı",
+            "Telemetri veri akışı",
             "Kimlik doğrulama",
-            "Raporlama"
+            "Raporlama altyapısı"
           ]
         },
         "de": {
           "title": "Backend-API",
-          "summary": "REST-APIs, WebSocket, Telemetrie-Ingestion, Authentifizierung und Reporting.",
-          "deliverables": ""
+          "summary": "REST-APIs und WebSockets für Telemetrieaufnahme, Authentifizierung und Berichtswesen.",
+          "deliverables": [
+            "API-Konzept",
+            "Telemetrie-Datenfluss",
+            "Authentifizierung",
+            "Berichtsfunktionen"
+          ]
         },
         "fr": {
           "title": "API backend",
-          "summary": "API REST, WebSocket, ingestion de télémétrie, authentification et reporting.",
-          "deliverables": ""
+          "summary": "API REST et WebSocket pour la collecte de télémétrie, l’authentification et la génération de rapports.",
+          "deliverables": [
+            "Conception des API",
+            "Flux de télémétrie",
+            "Authentification",
+            "Système de reporting"
+          ]
         },
         "es": {
           "title": "API backend",
-          "summary": "API REST, WebSocket, ingesta de telemetría, autenticación e informes.",
-          "deliverables": ""
+          "summary": "API REST y WebSocket para recopilar telemetría, gestionar la autenticación y generar informes.",
+          "deliverables": [
+            "Diseño de API",
+            "Flujo de telemetría",
+            "Autenticación",
+            "Sistema de informes"
+          ]
         },
         "it": {
           "title": "API backend",
-          "summary": "API REST, WebSocket, ingestion della telemetria, autenticazione e reporting.",
-          "deliverables": ""
+          "summary": "API REST e WebSocket per acquisire la telemetria, gestire l’autenticazione e produrre report.",
+          "deliverables": [
+            "Progettazione delle API",
+            "Flusso di telemetria",
+            "Autenticazione",
+            "Sistema di reportistica"
+          ]
         },
         "ar": {
           "title": "API backend",
-          "summary": "REST API وWebSocket واستقبال بيانات telemetry والمصادقة والتقارير.",
-          "deliverables": ""
+          "summary": "واجهات REST واتصالات WebSocket لاستقبال بيانات القياس عن بُعد وإدارة المصادقة وإعداد التقارير.",
+          "deliverables": [
+            "تصميم الواجهات البرمجية",
+            "مسار بيانات القياس عن بُعد",
+            "المصادقة",
+            "نظام التقارير"
+          ]
         },
         "ja": {
           "title": "バックエンド API",
-          "summary": "REST API、WebSocket、テレメトリ取り込み、認証、レポート。",
-          "deliverables": ""
+          "summary": "REST APIとWebSocketによるテレメトリ収集、認証、レポート機能の構築。",
+          "deliverables": [
+            "API設計",
+            "テレメトリデータ基盤",
+            "認証機能",
+            "レポート機能"
+          ]
         }
       }
     },
@@ -2818,43 +2908,73 @@
       "localized": {
         "tr": {
           "title": "PostgreSQL ve Veritabanı Mimarisi",
-          "summary": "Cihaz verisi modelleme, zaman serisi verileri, raporlama tabloları ve panel sorguları.",
+          "summary": "Cihaz verisi modelleme, zaman serisi mimarisi, raporlama tabloları ve yüksek performanslı sorgular.",
           "deliverables": [
-            "Şema",
-            "İndeksler",
+            "Veritabanı şeması",
+            "İndeks yapısı",
             "Zaman serisi modeli",
             "Sorgu optimizasyonu"
           ]
         },
         "de": {
           "title": "PostgreSQL- und Datenbankarchitektur",
-          "summary": "Datenmodelle für Gerätedaten, Time-Series-Daten, Reporting-Tabellen und Dashboard-Abfragen.",
-          "deliverables": ""
+          "summary": "Datenmodelle für Geräte- und Zeitreihendaten, Berichtstabellen und leistungsfähige Abfragen.",
+          "deliverables": [
+            "Datenbankschema",
+            "Indexkonzept",
+            "Zeitreihenmodell",
+            "Abfrageoptimierung"
+          ]
         },
         "fr": {
           "title": "Architecture PostgreSQL et base de données",
-          "summary": "Modèles de données pour appareils, données time-series, tables de reporting et requêtes dashboard.",
-          "deliverables": ""
+          "summary": "Modélisation des données d’appareils et des séries temporelles, tables de reporting et requêtes performantes.",
+          "deliverables": [
+            "Schéma de base de données",
+            "Stratégie d’indexation",
+            "Modèle de séries temporelles",
+            "Optimisation des requêtes"
+          ]
         },
         "es": {
           "title": "Arquitectura PostgreSQL y base de datos",
-          "summary": "Modelado de datos de dispositivos, datos time-series, tablas de informes y consultas de dashboard.",
-          "deliverables": ""
+          "summary": "Modelado de datos de dispositivos y series temporales, tablas de informes y consultas de alto rendimiento.",
+          "deliverables": [
+            "Esquema de base de datos",
+            "Estrategia de índices",
+            "Modelo de series temporales",
+            "Optimización de consultas"
+          ]
         },
         "it": {
           "title": "Architettura PostgreSQL e database",
-          "summary": "Modellazione dati dei dispositivi, dati time-series, tabelle di reporting e query per dashboard.",
-          "deliverables": ""
+          "summary": "Modellazione dei dati dei dispositivi e delle serie temporali, tabelle di reportistica e query efficienti.",
+          "deliverables": [
+            "Schema del database",
+            "Strategia degli indici",
+            "Modello per serie temporali",
+            "Ottimizzazione delle query"
+          ]
         },
         "ar": {
           "title": "بنية PostgreSQL وقواعد البيانات",
-          "summary": "نمذجة بيانات الأجهزة وبيانات time-series وجداول التقارير واستعلامات dashboard.",
-          "deliverables": ""
+          "summary": "نمذجة بيانات الأجهزة والسلاسل الزمنية، وجداول التقارير، والاستعلامات عالية الأداء.",
+          "deliverables": [
+            "مخطط قاعدة البيانات",
+            "استراتيجية الفهارس",
+            "نموذج السلاسل الزمنية",
+            "تحسين الاستعلامات"
+          ]
         },
         "ja": {
           "title": "PostgreSQL とデータベース設計",
-          "summary": "デバイスデータ、時系列データ、レポート用テーブル、ダッシュボード向けクエリの設計。",
-          "deliverables": ""
+          "summary": "デバイス・時系列データのモデル設計、集計テーブル、高性能なクエリの構築。",
+          "deliverables": [
+            "データベーススキーマ",
+            "インデックス設計",
+            "時系列データモデル",
+            "クエリ最適化"
+          ]
         }
       }
     },
@@ -2871,43 +2991,73 @@
       "localized": {
         "tr": {
           "title": "Web Platformu / Yönetim Paneli",
-          "summary": "Web panelleri, yönetim arayüzleri, müşteri portalları ve izleme ekranları.",
+          "summary": "Operasyon panelleri, yönetim arayüzleri, müşteri portalları ve gerçek zamanlı izleme ekranları.",
           "deliverables": [
-            "Dashboard",
-            "Yönetim paneli",
+            "Operasyon paneli",
+            "Yönetim arayüzü",
             "Rol bazlı erişim",
-            "Operasyon arayüzü"
+            "İzleme ekranları"
           ]
         },
         "de": {
           "title": "Web-Plattform / Admin-Panel",
-          "summary": "Dashboards, Admin-Oberflächen, Kundenportale und Monitoring-Ansichten.",
-          "deliverables": ""
+          "summary": "Betriebs-Dashboards, Verwaltungsoberflächen, Kundenportale und Echtzeit-Monitoring.",
+          "deliverables": [
+            "Betriebs-Dashboard",
+            "Administrationsbereich",
+            "Rollenbasierte Zugriffssteuerung",
+            "Monitoring-Oberflächen"
+          ]
         },
         "fr": {
           "title": "Plateforme web / panneau admin",
-          "summary": "Dashboards, interfaces admin, portails clients et écrans de supervision.",
-          "deliverables": ""
+          "summary": "Tableaux de bord opérationnels, interfaces d’administration, portails clients et supervision en temps réel.",
+          "deliverables": [
+            "Tableau de bord opérationnel",
+            "Interface d’administration",
+            "Gestion des accès par rôle",
+            "Écrans de supervision"
+          ]
         },
         "es": {
           "title": "Plataforma web / panel admin",
-          "summary": "Dashboards, interfaces admin, portales de clientes y pantallas de monitorización.",
-          "deliverables": ""
+          "summary": "Paneles operativos, interfaces de administración, portales de clientes y monitorización en tiempo real.",
+          "deliverables": [
+            "Panel operativo",
+            "Interfaz de administración",
+            "Acceso basado en roles",
+            "Pantallas de monitorización"
+          ]
         },
         "it": {
           "title": "Piattaforma web / pannello admin",
-          "summary": "Dashboard, interfacce admin, portali clienti e schermate di monitoraggio.",
-          "deliverables": ""
+          "summary": "Cruscotti operativi, interfacce di amministrazione, portali clienti e monitoraggio in tempo reale.",
+          "deliverables": [
+            "Cruscotto operativo",
+            "Interfaccia di amministrazione",
+            "Accesso basato sui ruoli",
+            "Schermate di monitoraggio"
+          ]
         },
         "ar": {
           "title": "منصة ويب / لوحة admin",
-          "summary": "Dashboards وواجهات admin وبوابات العملاء وشاشات المراقبة.",
-          "deliverables": ""
+          "summary": "لوحات تشغيل وواجهات إدارة وبوابات للعملاء وشاشات مراقبة لحظية.",
+          "deliverables": [
+            "لوحة التشغيل",
+            "واجهة الإدارة",
+            "صلاحيات حسب الدور",
+            "شاشات المراقبة"
+          ]
         },
         "ja": {
           "title": "Web プラットフォーム / 管理パネル",
-          "summary": "ダッシュボード、管理画面、顧客ポータル、監視画面。",
-          "deliverables": ""
+          "summary": "運用ダッシュボード、管理画面、顧客ポータル、リアルタイム監視画面。",
+          "deliverables": [
+            "運用ダッシュボード",
+            "管理画面",
+            "ロール別アクセス制御",
+            "監視画面"
+          ]
         }
       }
     },
@@ -2924,43 +3074,73 @@
       "localized": {
         "tr": {
           "title": "Mobil Uygulama Geliştirme",
-          "summary": "Saha operasyonları, sensör izleme, anlık bildirimler, çevrimdışı çalışma ve mağaza yayını için native iOS (Swift), native Android (Kotlin) ve Flutter uygulamaları.",
+          "summary": "Saha operasyonları, sensör izleme, anlık bildirimler ve çevrimdışı kullanım için iOS, Android ve Flutter uygulamaları.",
           "deliverables": [
             "Mobil uygulama",
-            "Bildirimler",
-            "Çevrimdışı senaryolar",
+            "Bildirim altyapısı",
+            "Çevrimdışı kullanım",
             "Saha kullanıcı deneyimi"
           ]
         },
         "de": {
           "title": "Mobile-App-Entwicklung",
-          "summary": "Native iOS (Swift), native Android (Kotlin) und Flutter-Apps für Feldbetrieb, Sensor-Monitoring, Push-Benachrichtigungen, Offline-Szenarien und Store-Release.",
-          "deliverables": ""
+          "summary": "iOS-, Android- und Flutter-Apps für Außeneinsätze, Sensorüberwachung, Push-Benachrichtigungen und Offline-Nutzung.",
+          "deliverables": [
+            "Mobile App",
+            "Benachrichtigungssystem",
+            "Offline-Funktionen",
+            "Benutzerführung für den Außeneinsatz"
+          ]
         },
         "fr": {
           "title": "Développement d’applications mobiles",
-          "summary": "Applications native iOS (Swift), native Android (Kotlin) et Flutter pour opérations terrain, suivi capteurs, notifications push, scénarios offline et publication store.",
-          "deliverables": ""
+          "summary": "Applications iOS, Android et Flutter pour les opérations terrain, le suivi des capteurs, les notifications et le mode hors ligne.",
+          "deliverables": [
+            "Application mobile",
+            "Système de notifications",
+            "Fonctionnement hors ligne",
+            "Expérience utilisateur sur le terrain"
+          ]
         },
         "es": {
           "title": "Desarrollo de apps móviles",
-          "summary": "Apps nativas iOS (Swift), nativas Android (Kotlin) y Flutter para operaciones de campo, monitorización de sensores, notificaciones push, escenarios offline y publicación en stores.",
-          "deliverables": ""
+          "summary": "Aplicaciones iOS, Android y Flutter para operaciones de campo, seguimiento de sensores, notificaciones y uso sin conexión.",
+          "deliverables": [
+            "Aplicación móvil",
+            "Sistema de notificaciones",
+            "Funcionamiento sin conexión",
+            "Experiencia de usuario en campo"
+          ]
         },
         "it": {
           "title": "Sviluppo app mobile",
-          "summary": "App native iOS (Swift), native Android (Kotlin) e Flutter per operazioni sul campo, monitoraggio sensori, notifiche push, scenari offline e pubblicazione sugli store.",
-          "deliverables": ""
+          "summary": "Applicazioni iOS, Android e Flutter per attività sul campo, monitoraggio dei sensori, notifiche e utilizzo offline.",
+          "deliverables": [
+            "Applicazione mobile",
+            "Sistema di notifiche",
+            "Funzionamento offline",
+            "Esperienza utente sul campo"
+          ]
         },
         "ar": {
           "title": "تطوير تطبيقات الجوال",
-          "summary": "تطبيقات native iOS (Swift) وnative Android (Kotlin) وFlutter لعمليات الميدان، ومراقبة المستشعرات، وإشعارات push، وسيناريوهات offline، والنشر على المتاجر.",
-          "deliverables": ""
+          "summary": "تطبيقات iOS وAndroid وFlutter للعمليات الميدانية ومراقبة المستشعرات والتنبيهات والعمل دون اتصال.",
+          "deliverables": [
+            "تطبيق الجوال",
+            "نظام التنبيهات",
+            "العمل دون اتصال",
+            "تجربة المستخدم الميدانية"
+          ]
         },
         "ja": {
           "title": "モバイルアプリ開発",
-          "summary": "現場運用、センサー監視、プッシュ通知、オフライン対応、ストア公開向けの native iOS（Swift）、native Android（Kotlin）、Flutter アプリ。",
-          "deliverables": ""
+          "summary": "現場業務、センサー監視、プッシュ通知、オフライン利用に対応したiOS・Android・Flutterアプリ。",
+          "deliverables": [
+            "モバイルアプリ",
+            "通知機能",
+            "オフライン機能",
+            "現場向けユーザー体験"
+          ]
         }
       }
     },
@@ -2977,43 +3157,73 @@
       "localized": {
         "tr": {
           "title": "VR / Simülasyon",
-          "summary": "Endüstriyel eğitim, ürün tanıtımları, dijital ikiz ve simülasyon sunumları.",
+          "summary": "Endüstriyel eğitim, ürün tanıtımı, dijital ikiz ve etkileşimli simülasyon deneyimleri.",
           "deliverables": [
-            "VR demosu",
-            "Eğitim akışı",
-            "Simülasyon sahnesi",
-            "Ürün sunumu"
+            "VR uygulaması",
+            "Eğitim senaryosu",
+            "Simülasyon ortamı",
+            "Etkileşimli ürün sunumu"
           ]
         },
         "de": {
           "title": "VR / Simulation",
-          "summary": "Industrielle Schulungen, Produktdemos, Digital Twins und Simulationspräsentationen.",
-          "deliverables": ""
+          "summary": "Interaktive Simulationen für Industrieschulungen, Produktpräsentationen und digitale Zwillinge.",
+          "deliverables": [
+            "VR-Anwendung",
+            "Schulungsszenario",
+            "Simulationsumgebung",
+            "Interaktive Produktpräsentation"
+          ]
         },
         "fr": {
           "title": "VR / simulation",
-          "summary": "Formation industrielle, démonstrations produit, digital twins et présentations de simulation.",
-          "deliverables": ""
+          "summary": "Expériences interactives pour la formation industrielle, la présentation de produits et les jumeaux numériques.",
+          "deliverables": [
+            "Application VR",
+            "Parcours de formation",
+            "Environnement de simulation",
+            "Présentation produit interactive"
+          ]
         },
         "es": {
           "title": "VR / simulación",
-          "summary": "Formación industrial, demos de producto, digital twins y presentaciones de simulación.",
-          "deliverables": ""
+          "summary": "Experiencias interactivas para formación industrial, presentación de productos y gemelos digitales.",
+          "deliverables": [
+            "Aplicación de VR",
+            "Recorrido formativo",
+            "Entorno de simulación",
+            "Presentación interactiva del producto"
+          ]
         },
         "it": {
           "title": "VR / simulazione",
-          "summary": "Formazione industriale, demo di prodotto, digital twin e presentazioni di simulazione.",
-          "deliverables": ""
+          "summary": "Esperienze interattive per la formazione industriale, la presentazione di prodotti e i gemelli digitali.",
+          "deliverables": [
+            "Applicazione VR",
+            "Percorso formativo",
+            "Ambiente di simulazione",
+            "Presentazione interattiva del prodotto"
+          ]
         },
         "ar": {
           "title": "VR / محاكاة",
-          "summary": "تدريب صناعي، عروض منتجات، digital twins وعروض محاكاة.",
-          "deliverables": ""
+          "summary": "تجارب تفاعلية للتدريب الصناعي وعرض المنتجات والتوائم الرقمية والمحاكاة.",
+          "deliverables": [
+            "تطبيق واقع افتراضي",
+            "مسار تدريبي",
+            "بيئة محاكاة",
+            "عرض تفاعلي للمنتج"
+          ]
         },
         "ja": {
           "title": "VR / シミュレーション",
-          "summary": "産業トレーニング、製品デモ、デジタルツイン、シミュレーションプレゼンテーション。",
-          "deliverables": ""
+          "summary": "産業研修、製品紹介、デジタルツインに対応したインタラクティブなシミュレーション。",
+          "deliverables": [
+            "VRアプリケーション",
+            "研修シナリオ",
+            "シミュレーション環境",
+            "インタラクティブな製品紹介"
+          ]
         }
       }
     },
@@ -3030,43 +3240,73 @@
       "localized": {
         "tr": {
           "title": "IoT Bulutu / Telemetri",
-          "summary": "Cihaz filosu izleme, alarmlar, entegrasyonlar ve uzaktan veri görselleştirme.",
+          "summary": "Cihaz filosu izleme, alarm yönetimi, sistem entegrasyonları ve uzaktan veri görselleştirme.",
           "deliverables": [
-            "Filo görünümü",
-            "Alarmlar",
-            "Entegrasyonlar",
+            "Filo izleme ekranı",
+            "Alarm yönetimi",
+            "Sistem entegrasyonları",
             "Uzaktan izleme"
           ]
         },
         "de": {
           "title": "IoT-Cloud / Telemetrie",
-          "summary": "Flotten-Monitoring, Alarme, Integrationen und Remote-Datenvisualisierung.",
-          "deliverables": ""
+          "summary": "Geräteflotten überwachen, Alarme verwalten, Systeme anbinden und Daten aus der Ferne visualisieren.",
+          "deliverables": [
+            "Flottenübersicht",
+            "Alarmmanagement",
+            "Systemintegrationen",
+            "Fernüberwachung"
+          ]
         },
         "fr": {
           "title": "Cloud IoT / télémétrie",
-          "summary": "Suivi de flotte d’appareils, alertes, intégrations et visualisation des données à distance.",
-          "deliverables": ""
+          "summary": "Suivi des flottes d’appareils, gestion des alertes, intégrations système et visualisation des données à distance.",
+          "deliverables": [
+            "Vue de la flotte",
+            "Gestion des alertes",
+            "Intégrations système",
+            "Supervision à distance"
+          ]
         },
         "es": {
           "title": "Cloud IoT / telemetría",
-          "summary": "Monitorización de flotas de dispositivos, alarmas, integraciones y visualización remota de datos.",
-          "deliverables": ""
+          "summary": "Seguimiento de flotas de dispositivos, gestión de alertas, integraciones y visualización remota de datos.",
+          "deliverables": [
+            "Vista de la flota",
+            "Gestión de alertas",
+            "Integraciones de sistemas",
+            "Monitorización remota"
+          ]
         },
         "it": {
           "title": "Cloud IoT / telemetria",
-          "summary": "Monitoraggio flotte dispositivi, allarmi, integrazioni e visualizzazione dati da remoto.",
-          "deliverables": ""
+          "summary": "Monitoraggio delle flotte di dispositivi, gestione degli allarmi, integrazioni e visualizzazione remota dei dati.",
+          "deliverables": [
+            "Vista della flotta",
+            "Gestione degli allarmi",
+            "Integrazioni di sistema",
+            "Monitoraggio da remoto"
+          ]
         },
         "ar": {
-          "title": "سحابة IoT / القياس عن بُعد",
-          "summary": "مراقبة أسطول الأجهزة، والتنبيهات، والتكاملات، وعرض البيانات عن بُعد.",
-          "deliverables": ""
+          "title": "IoT Cloud / Telemetry",
+          "summary": "مراقبة أساطيل الأجهزة وإدارة التنبيهات وربط الأنظمة وعرض البيانات عن بُعد.",
+          "deliverables": [
+            "عرض أسطول الأجهزة",
+            "إدارة التنبيهات",
+            "تكامل الأنظمة",
+            "المراقبة عن بُعد"
+          ]
         },
         "ja": {
           "title": "IoT クラウド / テレメトリ",
-          "summary": "デバイスフリート監視、アラーム、連携、リモートデータ可視化。",
-          "deliverables": ""
+          "summary": "デバイス群の監視、アラート管理、システム連携、遠隔データ可視化。",
+          "deliverables": [
+            "フリート一覧",
+            "アラート管理",
+            "システム連携",
+            "遠隔監視"
+          ]
         }
       }
     }
@@ -3694,13 +3934,13 @@
           "title": "زيارة الوزير وارانك إلى مجمّع موغلا التقني",
           "content": "<p>استقبلت WillowSoft وزير الصناعة والتكنولوجيا مصطفى فارانك، ومحافظ موغلا أورهان تافلي، وأعضاء مجلس إدارة Muğla Teknopark خلال زيارتهم إلى المجمع التقني.</p>\n<p>قدم فريقنا حلول مستشعرات LoRaWAN من WillowSoft وشرح كيفية استخدامها في المراقبة عن بُعد وتطبيقات إنترنت الأشياء الصناعية.</p>\n<p>أتاح اللقاء مناقشة القدرات الهندسية المحلية وتطوير المنتجات ودور التقنيات المتصلة في منظومة التكنولوجيا المتنامية في تركيا.</p>",
           "excerpt": "قدّمت WillowSoft خلال الزيارة حلول مستشعرات LoRaWAN وقدرات هندسة إنترنت الأشياء المحلية.",
-          "category": "الشركة"
+          "category": "إثبات"
         },
         "de": {
           "title": "Besuch von Minister Varank im Mugla Teknopark",
           "content": "<p>WillowSoft begrüßte den Minister für Industrie und Technologie Mustafa Varank, den Gouverneur von Muğla Orhan Tavlı und Mitglieder des Vorstands von Muğla Teknopark während ihres Besuchs im Technologiepark.</p>\n<p>Unser Team stellte die LoRaWAN-Sensorlösungen von WillowSoft vor und erläuterte ihren Einsatz in der Fernüberwachung und in industriellen IoT-Anwendungen.</p>\n<p>Im Mittelpunkt des Austauschs standen lokale Engineering-Kompetenz, Produktentwicklung und die Rolle vernetzter Technologien im wachsenden Technologie-Ökosystem der Türkei.</p>",
           "excerpt": "WillowSoft präsentierte beim Besuch LoRaWAN-Sensorlösungen und lokale IoT-Engineering-Kompetenzen.",
-          "category": "Unternehmen"
+          "category": "Beleg"
         },
         "en": {
           "title": "Minister Varank Visits WillowSoft at Muğla Teknopark",
@@ -3711,31 +3951,31 @@
           "title": "Visita del ministro Varank al Mugla Teknopark",
           "content": "<p>WillowSoft recibió al ministro de Industria y Tecnología Mustafa Varank, al gobernador de Muğla Orhan Tavlı y a miembros del Consejo de Administración de Muğla Teknopark durante su visita al parque tecnológico.</p>\n<p>Nuestro equipo presentó las soluciones de sensores LoRaWAN de WillowSoft y explicó su uso en monitorización remota y aplicaciones industriales de IoT.</p>\n<p>La reunión permitió conversar sobre la capacidad local de ingeniería, el desarrollo de productos y el papel de las tecnologías conectadas en el creciente ecosistema tecnológico de Turquía.</p>",
           "excerpt": "Durante la visita, WillowSoft presentó soluciones de sensores LoRaWAN y capacidades locales de ingeniería IoT.",
-          "category": "Empresa"
+          "category": "Prueba"
         },
         "fr": {
           "title": "Visite du ministre Varank au Mugla Teknopark",
           "content": "<p>WillowSoft a accueilli le ministre de l'Industrie et de la Technologie Mustafa Varank, le gouverneur de Muğla Orhan Tavlı et des membres du conseil d'administration de Muğla Teknopark lors de leur visite du technoparc.</p>\n<p>Notre équipe a présenté les solutions de capteurs LoRaWAN de WillowSoft et leur utilisation pour la supervision à distance et les applications IoT industrielles.</p>\n<p>Les échanges ont porté sur les compétences locales en ingénierie, le développement de produits et le rôle des technologies connectées dans l'écosystème technologique en croissance de la Turquie.</p>",
           "excerpt": "WillowSoft a présenté lors de la visite des solutions de capteurs LoRaWAN et ses compétences locales en ingénierie IoT.",
-          "category": "Entreprise"
+          "category": "Preuve"
         },
         "it": {
-          "title": "Il ministro Varank visita WillowSoft al Muğla Teknopark",
+          "title": "Visita del ministro Varank al Mugla Teknopark",
           "content": "<p>WillowSoft ha accolto il ministro dell'Industria e della Tecnologia Mustafa Varank, il governatore di Muğla Orhan Tavlı e i membri del Consiglio di amministrazione di Muğla Teknopark durante la loro visita al parco tecnologico.</p>\n<p>Il nostro team ha presentato le soluzioni di sensori LoRaWAN di WillowSoft, illustrandone l'impiego nel monitoraggio remoto e nelle applicazioni IoT industriali.</p>\n<p>L'incontro ha offerto l'opportunità di approfondire le competenze ingegneristiche locali, lo sviluppo di prodotto e il ruolo delle tecnologie connesse nel crescente ecosistema tecnologico della Turchia.</p>",
           "excerpt": "Durante la visita, WillowSoft ha presentato soluzioni di sensori LoRaWAN e competenze locali di ingegneria IoT.",
-          "category": "Azienda"
+          "category": "Prova"
         },
         "ja": {
           "title": "ヴァランク大臣がムーラ・テクノパークを訪問",
           "content": "<p>WillowSoft は、テクノパーク訪問中のムスタファ・ヴァランク産業技術大臣、オルハン・タヴル・ムーラ県知事、Muğla Teknopark 取締役会の皆様をお迎えしました。</p>\n<p>当社チームは WillowSoft の LoRaWAN センサーソリューションを紹介し、遠隔監視や産業用 IoT アプリケーションでの活用方法を説明しました。</p>\n<p>会談では、地域のエンジニアリング力、製品開発、そしてトルコの成長する技術エコシステムにおけるコネクテッド技術の役割について意見を交わしました。</p>",
           "excerpt": "WillowSoft は訪問時に、LoRaWAN センサーソリューションと地域の IoT エンジニアリング能力を紹介しました。",
-          "category": "企業ニュース"
+          "category": "実績"
         },
         "tr": {
           "title": "Bakan Varank'ın Muğla Teknopark Ziyareti",
           "content": "<p>WillowSoft, Sanayi ve Teknoloji Bakanı Mustafa Varank, Muğla Valisi Orhan Tavlı ve Muğla Teknopark Yönetim Kurulu üyelerini teknopark ziyareti kapsamında ağırladı.</p>\n<p>Ziyaret sırasında ekibimiz, WillowSoft'un LoRaWAN sensör çözümlerini tanıtarak bu teknolojilerin uzaktan izleme ve endüstriyel IoT uygulamalarında nasıl kullanıldığını aktardı.</p>\n<p>Görüşmede yerli mühendislik yetkinliği, ürün geliştirme çalışmaları ve bağlantılı teknolojilerin Türkiye'nin gelişen teknoloji ekosistemindeki rolü ele alındı.</p>",
           "excerpt": "WillowSoft, ziyaret sırasında LoRaWAN sensör çözümlerini ve yerel IoT mühendislik yeteneklerini sundu.",
-          "category": "Kurumsal"
+          "category": "Kanıt"
         }
       },
       "sortOrder": 2,
@@ -4401,7 +4641,7 @@
       },
       "heroTitle": {
         "en": "From <em class=\"hw-serif\">bare metal</em> to <strong class=\"hw-display\">dashboard</strong> — <span class=\"hw-muted\">without fragmented vendors.</span>",
-        "tr": "Endüstriyel IoT ve Gömülü Sistem Çözümleriyle<br><strong class=\"hw-display\">Dijitalleşme Yolculuğunuzun Güvenilir Teknoloji Ortağı</strong>",
+        "tr": "<em class=\"hw-serif\">Yalın donanımdan</em> <strong class=\"hw-display\">yönetim paneline</strong> — <span class=\"hw-muted\">birbirinden kopuk tedarikçilerle uğraşmadan.</span>",
         "de": "Von <em class=\"hw-serif\">Bare Metal</em> bis zum <strong class=\"hw-display\">Dashboard</strong> — <span class=\"hw-muted\">ohne zersplitterte Dienstleister.</span>",
         "fr": "Du <em class=\"hw-serif\">Bare Metal</em> au <strong class=\"hw-display\">tableau de bord</strong> — <span class=\"hw-muted\">sans multiplier les prestataires.</span>",
         "es": "Del <em class=\"hw-serif\">bare metal</em> al <strong class=\"hw-display\">panel de control</strong> — <span class=\"hw-muted\">sin lidiar con múltiples proveedores.</span>",
@@ -4411,7 +4651,7 @@
       },
       "heroLead": {
         "en": "WillowSoft builds every layer of your connected product: hardware, firmware, connectivity, backend, and interfaces — as one reliable system.",
-        "tr": "WillowSoft, işletmenizin dijital dönüşümünü hızlandıracak hazır IoT ürünleri ve platformları sunar. Aynı zamanda ihtiyaçlarınıza özel ürün geliştirme süreçlerini uzman mühendislik ekibiyle yönetir: donanım tasarımı, gömülü yazılım, bulut altyapısı ve kullanıcı arayüzleri.",
+        "tr": "WillowSoft, IoT ürününüzün tüm katmanlarını tek ekip olarak geliştirir: donanım, firmware, bağlantı, backend ve kullanıcı arayüzleri.",
         "de": "WillowSoft entwickelt alle Ebenen Ihres IoT-Produkts mit einem Team: Hardware, Firmware, Konnektivität, Backend und Benutzeroberflächen.",
         "fr": "WillowSoft développe toutes les couches de votre produit IoT avec une seule équipe : matériel, firmware, connectivité, backend et interfaces utilisateur.",
         "es": "WillowSoft desarrolla todas las capas de su producto IoT con un solo equipo: hardware, firmware, conectividad, backend e interfaces de usuario.",
@@ -4526,7 +4766,7 @@
         "fr": "Architectures backend, gestion de bases de données, portails web temps réel et applications mobiles.",
         "es": "Arquitecturas backend, gestión de bases de datos, portales web en tiempo real y aplicaciones móviles.",
         "it": "Architetture backend, gestione database, portali web in tempo reale e app mobile.",
-        "ar": "بنى backend، وإدارة قواعد البيانات، وبوابات ويب فورية وتطبيقات جوال.",
+        "ar": "أنظمة backend وإدارة قواعد البيانات وبوابات ويب فورية وتطبيقات جوال.",
         "ja": "バックエンド設計、データベース管理、リアルタイムWebポータル、モバイルアプリ。"
       },
       "serviceRail_3_title": {
@@ -5023,55 +5263,55 @@
       },
       "catalogTitle": {
         "en": "Explore hardware by operational purpose.",
-        "tr": "Donanımı kullanım amacına göre keşfedin.",
-        "de": "Hardware nach Einsatzzweck entdecken.",
-        "fr": "Explorez le matériel selon son usage opérationnel.",
-        "es": "Explore el hardware según su propósito operativo.",
-        "it": "Esplora l'hardware in base allo scopo operativo.",
-        "ar": "استكشف الأجهزة حسب الغرض التشغيلي.",
-        "ja": "運用目的からハードウェアを探す。"
+        "tr": "Ürün ailesine göre filtreleyin.",
+        "de": "Nach Produktfamilie filtern.",
+        "fr": "Filtrer par famille de produits.",
+        "es": "Filtrar por familia de productos.",
+        "it": "Filtra per famiglia di prodotti.",
+        "ar": "التصفية حسب عائلة المنتج.",
+        "ja": "製品ファミリーで絞り込む。"
       },
       "catalogLead": {
-        "en": "Every device belongs to a clear family based on the job it performs in the field. Compare the operational role first, then the technical specification.",
-        "tr": "Her cihaz, sahada üstlendiği göreve göre net bir ürün ailesine yerleştirildi. Önce operasyonel rolü, ardından teknik özellikleri karşılaştırın.",
-        "de": "Jedes Gerät gehört entsprechend seiner Aufgabe im Feld zu einer klaren Produktfamilie. Vergleichen Sie zuerst die operative Rolle und dann die technischen Daten.",
-        "fr": "Chaque appareil appartient à une famille claire selon sa mission sur le terrain. Comparez d’abord le rôle opérationnel, puis les spécifications techniques.",
-        "es": "Cada dispositivo pertenece a una familia clara según su función en campo. Compare primero el papel operativo y después las especificaciones técnicas.",
-        "it": "Ogni dispositivo appartiene a una famiglia chiara in base al compito svolto sul campo. Confronta prima il ruolo operativo, poi le specifiche tecniche.",
-        "ar": "ينتمي كل جهاز إلى عائلة واضحة وفق مهمته في الميدان. قارن أولًا الدور التشغيلي ثم المواصفات التقنية.",
-        "ja": "各デバイスは現場で担う役割に基づいて明確な製品群に分類されています。まず運用上の役割を、次に技術仕様を比較してください。"
+        "en": "A clear catalog to compare modules, environmental sensors, tracking and safety devices, and industrial interfaces — in the same visual language as the rest of the site.",
+        "tr": "Modüller, çevresel sensörler, takip ve güvenlik cihazları ile endüstriyel arayüzleri karşılaştırmak için net bir katalog — sitenin geri kalanıyla aynı görsel dilde.",
+        "de": "Ein übersichtlicher Katalog zum Vergleich von Modulen, Umweltsensoren, Tracking- und Sicherheitsgeräten sowie Industrieschnittstellen — im gleichen visuellen Stil wie der Rest der Website.",
+        "fr": "Un catalogue clair pour comparer modules, capteurs environnementaux, dispositifs de suivi et de sécurité, et interfaces industrielles — dans la même identité visuelle que le reste du site.",
+        "es": "Un catálogo claro para comparar módulos, sensores ambientales, dispositivos de seguimiento y seguridad, e interfaces industriales — con el mismo lenguaje visual del resto del sitio.",
+        "it": "Un catalogo chiaro per confrontare moduli, sensori ambientali, dispositivi di tracciamento e sicurezza, e interfacce industriali — nello stesso linguaggio visivo del resto del sito.",
+        "ar": "كتالوج واضح لمقارنة الوحدات والمستشعرات البيئية وأجهزة التتبع والأمان والواجهات الصناعية — بنفس الهوية البصرية لبقية الموقع.",
+        "ja": "モジュール、環境センサー、追跡・安全デバイス、産業用インターフェースを比較できる明快なカタログ — サイト全体と統一されたビジュアルで。"
       }
     },
     "news": {
       "heroEyebrow": {
         "en": "News & Updates",
-        "tr": "Haberler ve Güncellemeler",
-        "de": "News & Updates",
-        "fr": "Actualités et mises à jour",
-        "es": "Noticias y novedades",
-        "it": "Notizie e aggiornamenti",
-        "ar": "الأخبار والتحديثات",
-        "ja": "ニュースと更新"
+        "tr": "Haberler ve Referanslar",
+        "de": "News & Belege",
+        "fr": "Actualités et preuves",
+        "es": "Noticias y pruebas",
+        "it": "Notizie e prove",
+        "ar": "الأخبار والإثبات",
+        "ja": "ニュースと実績"
       },
       "heroTitle": {
         "en": "News, events and engineering milestones.",
-        "tr": "Haberler, etkinlikler ve mühendislik gelişmeleri.",
-        "de": "Neuigkeiten, Veranstaltungen und technische Meilensteine.",
-        "fr": "Actualités, événements et avancées techniques.",
-        "es": "Noticias, eventos e hitos de ingeniería.",
-        "it": "Notizie, eventi e traguardi ingegneristici.",
-        "ar": "الأخبار والفعاليات والمحطات الهندسية.",
-        "ja": "ニュース、イベント、エンジニアリングの節目。"
+        "tr": "Güven oluşturan kurumsal gelişmeler.",
+        "de": "Unternehmensmeldungen, die Vertrauen schaffen.",
+        "fr": "L'actualité d'entreprise qui inspire confiance.",
+        "es": "Noticias corporativas que generan confianza.",
+        "it": "Novità aziendali che costruiscono fiducia.",
+        "ar": "أخبار وإنجازات تبني الثقة.",
+        "ja": "信頼を築く、当社の実績と最新動向。"
       },
       "heroLead": {
         "en": "Follow WillowSoft’s company milestones, industry events, product launches and engineering developments.",
-        "tr": "WillowSoft’un kurumsal gelişmelerini, sektör etkinliklerini, ürün lansmanlarını ve mühendislik çalışmalarını takip edin.",
-        "de": "Verfolgen Sie Unternehmensmeilensteine, Branchenveranstaltungen, Produktneuheiten und technische Entwicklungen von WillowSoft.",
-        "fr": "Suivez les étapes clés de WillowSoft, ses événements sectoriels, lancements de produits et développements techniques.",
-        "es": "Siga los hitos de WillowSoft, eventos del sector, lanzamientos de productos y avances de ingeniería.",
-        "it": "Segui i traguardi di WillowSoft, gli eventi di settore, i lanci di prodotto e gli sviluppi tecnici.",
-        "ar": "تابع محطات WillowSoft المؤسسية وفعاليات القطاع وإطلاقات المنتجات والتطورات الهندسية.",
-        "ja": "WillowSoft の企業動向、業界イベント、製品発表、技術開発をご覧ください。"
+        "tr": "Etkinlikler, ihracat kilometre taşları, atölyeler ve mühendislik güncellemeleri kurumsal müşteriler için somut referanslar sunar.",
+        "de": "Veranstaltungen, Exportmeilensteine, Workshops und Engineering-Updates dienen Unternehmenskunden als Beleg.",
+        "fr": "Événements, jalons à l'export, ateliers et mises à jour techniques font office de preuves pour les clients entreprise.",
+        "es": "Eventos, hitos de exportación, talleres y novedades de ingeniería sirven como prueba para clientes corporativos.",
+        "it": "Eventi, traguardi di esportazione, workshop e aggiornamenti tecnici fungono da prova per i clienti enterprise.",
+        "ar": "الفعاليات ومحطات التصدير وورش العمل وتحديثات الهندسة تعمل كإثبات لعملاء المؤسسات.",
+        "ja": "イベント、輸出の節目、ワークショップ、エンジニアリングの最新情報は、エンタープライズ顧客への実績となります。"
       },
       "latestEyebrow": {
         "en": "Latest Updates",
@@ -5085,43 +5325,43 @@
       },
       "latestTitle": {
         "en": "Latest from WillowSoft.",
-        "tr": "WillowSoft’tan son gelişmeler.",
-        "de": "Aktuelles von WillowSoft.",
-        "fr": "Les dernières actualités de WillowSoft.",
-        "es": "Lo último de WillowSoft.",
-        "it": "Le ultime novità da WillowSoft.",
-        "ar": "أحدث أخبار WillowSoft.",
-        "ja": "WillowSoft の最新情報。"
+        "tr": "WillowSoft'un sahada aktif olduğunun kanıtı.",
+        "de": "Beleg dafür, dass WillowSoft im Feld aktiv ist.",
+        "fr": "La preuve que WillowSoft est actif sur le terrain.",
+        "es": "La prueba de que WillowSoft está activo en el campo.",
+        "it": "La prova che WillowSoft è attiva sul campo.",
+        "ar": "دليل على أن WillowSoft نشطة في الميدان.",
+        "ja": "WillowSoft が現場で活動している証。"
       },
       "pipelineEyebrow": {
         "en": "Build what’s next",
-        "tr": "Sıradaki ürünü birlikte geliştirelim",
-        "de": "Gemeinsam den nächsten Schritt entwickeln",
-        "fr": "Construisons la prochaine étape",
-        "es": "Construyamos lo siguiente",
-        "it": "Costruiamo il prossimo prodotto",
-        "ar": "لنطوّر الخطوة التالية",
-        "ja": "次の製品を共に形に"
+        "tr": "Referansları fırsata dönüştürün",
+        "de": "Referenzen in Leads verwandeln",
+        "fr": "Transformer les réussites en opportunités",
+        "es": "Convierta los casos de éxito en oportunidades",
+        "it": "Trasforma i risultati in opportunità commerciali",
+        "ar": "تحويل الإنجازات إلى فرص تجارية",
+        "ja": "実績を商談につなげる"
       },
       "pipelineTitle": {
         "en": "Bring your connected-product idea to life.",
-        "tr": "Bağlı ürün fikrinizi hayata geçirin.",
-        "de": "Bringen Sie Ihre vernetzte Produktidee zur Marktreife.",
-        "fr": "Donnez vie à votre produit connecté.",
-        "es": "Dé vida a su idea de producto conectado.",
-        "it": "Dai vita alla tua idea di prodotto connesso.",
-        "ar": "حوّل فكرة منتجك المتصل إلى واقع.",
-        "ja": "コネクテッド製品のアイデアを実現しましょう。"
+        "tr": "Haberler, etkinlikler ve ürün lansmanlarıyla nitelikli talep oluşturun.",
+        "de": "Nutzen Sie News, Events und Produkteinführungen, um qualifizierte Leads zu gewinnen.",
+        "fr": "Utilisez les actualités, événements et lancements de produits pour générer des prospects qualifiés.",
+        "es": "Use noticias, eventos y lanzamientos de productos para generar oportunidades cualificadas.",
+        "it": "Usa notizie, eventi e lanci di prodotto per generare lead qualificati.",
+        "ar": "استخدم الأخبار والفعاليات وإطلاق المنتجات لجذب عملاء محتملين مؤهلين.",
+        "ja": "ニュース、イベント、製品発表を活用して、有望なリードを獲得します。"
       },
       "pipelineLead": {
         "en": "Discuss your goals with our engineering team. We bring hardware, firmware, connectivity, cloud and interfaces together in one delivery roadmap.",
-        "tr": "Hedeflerinizi mühendislik ekibimizle paylaşın. Donanım, firmware, bağlantı, cloud ve arayüzleri tek bir teslimat yol haritasında birleştirelim.",
-        "de": "Besprechen Sie Ihre Ziele mit unserem Engineering-Team. Wir führen Hardware, Firmware, Konnektivität, Cloud und Interfaces in einer gemeinsamen Roadmap zusammen.",
-        "fr": "Échangez avec notre équipe d’ingénierie. Nous réunissons matériel, firmware, connectivité, cloud et interfaces dans une feuille de route unique.",
-        "es": "Comparta sus objetivos con nuestro equipo de ingeniería. Integramos hardware, firmware, conectividad, cloud e interfaces en una única hoja de ruta.",
-        "it": "Condividi i tuoi obiettivi con il nostro team di ingegneria. Riuniamo hardware, firmware, connettività, cloud e interfacce in un’unica roadmap.",
-        "ar": "ناقش أهدافك مع فريقنا الهندسي. نجمع العتاد والبرامج الثابتة والاتصال والسحابة والواجهات ضمن خارطة تنفيذ واحدة.",
-        "ja": "目標をエンジニアリングチームにお聞かせください。ハードウェア、ファームウェア、接続、クラウド、UIを一つの開発ロードマップにまとめます。"
+        "tr": "Yönetim panelinden koda dokunmadan yeni haber ekleyebilir; öne çıkan içerikleri Ana Sayfa ve Hakkımızda bölümlerinde gösterebilirsiniz.",
+        "de": "Über das Admin-Panel lassen sich neue Beiträge ohne Code hinzufügen. Ausgewählte Updates können später auf der Start- und Über-uns-Seite erscheinen.",
+        "fr": "Le panneau d'administration permet d'ajouter des actualités sans toucher au code. Les mises à jour en vedette peuvent ensuite apparaître sur les pages Accueil et À propos.",
+        "es": "El panel de administración permite añadir noticias sin tocar código. Las novedades destacadas pueden mostrarse después en las páginas de Inicio y Sobre nosotros.",
+        "it": "Il pannello di amministrazione consente di aggiungere notizie senza toccare il codice. Gli aggiornamenti in evidenza possono poi comparire nelle pagine Home e Chi siamo.",
+        "ar": "تتيح لوحة الإدارة إضافة أخبار جديدة دون تعديل الشيفرة. ويمكن لاحقًا إبراز التحديثات المميزة في صفحتَي الرئيسية ومن نحن.",
+        "ja": "管理パネルからコードに触れずに新しいニュースを追加できます。注目の更新は後でホームや会社概要ページに表示できます。"
       }
     },
     "services": {
@@ -6197,13 +6437,13 @@
       },
       "workWithTitle": {
         "en": "Engineering partnerships across industries and markets.",
-        "tr": "Sektörler ve pazarlar arasında mühendislik iş birlikleri.",
-        "de": "Engineering-Partnerschaften über Branchen und Märkte hinweg.",
-        "fr": "Des partenariats d’ingénierie dans différents secteurs et marchés.",
-        "es": "Colaboraciones de ingeniería en distintos sectores y mercados.",
-        "it": "Collaborazioni ingegneristiche in diversi settori e mercati.",
-        "ar": "شراكات هندسية عبر قطاعات وأسواق متعددة.",
-        "ja": "業界や市場を横断するエンジニアリングパートナーシップ。"
+        "tr": "Küresel ekipler WillowSoft'a tek bir nedenle güvenir: verdiğimiz sözü tutarız.",
+        "de": "Globale Teams vertrauen WillowSoft aus einem Grund: Wir halten, was wir versprechen.",
+        "fr": "Les équipes mondiales font confiance à WillowSoft pour une raison : nous tenons nos engagements.",
+        "es": "Los equipos globales confían en WillowSoft por una razón: cumplimos lo prometido.",
+        "it": "I team globali si fidano di WillowSoft per un motivo: manteniamo le promesse.",
+        "ar": "تثق الفرق العالمية بـ WillowSoft لسبب واحد: نحن نُنجز.",
+        "ja": "世界中のチームが WillowSoft を信頼する理由はただ一つ。私たちは約束を確実に果たすからです。"
       },
       "ctaEyebrow": {
         "en": "Work with us",

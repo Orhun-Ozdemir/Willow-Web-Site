@@ -14,43 +14,30 @@ const { specialDay, greeting, activeDate, locale } = Astro.props;
 const dayNumber = String(activeDate.getUTCDate()).padStart(2, "0");
 const monthNumber = String(activeDate.getUTCMonth() + 1).padStart(2, "0");
 const countryCode = specialDay.countries[0] === "*" ? "GLOBAL" : specialDay.countries[0];
-
-const kickerByDay: Record<string, Record<string, string>> = {
-  "tr-republic-day": { tr: "TÜRKİYE CUMHURİYETİ • 1923", en: "REPUBLIC OF TURKEY • 1923" },
-  "tr-national-sovereignty-day": { tr: "TÜRKİYE CUMHURİYETİ • 23 NİSAN", en: "TURKEY • APRIL 23" },
-  "tr-youth-sports-day": { tr: "TÜRKİYE CUMHURİYETİ • 19 MAYIS", en: "TURKEY • MAY 19" },
-  "tr-victory-day": { tr: "TÜRKİYE CUMHURİYETİ • 30 AĞUSTOS", en: "TURKEY • AUGUST 30" },
-  "us-independence-day": { en: "UNITED STATES OF AMERICA • 1776", tr: "AMERİKA BİRLEŞİK DEVLETLERİ • 1776" },
-  "us-thanksgiving": { en: "UNITED STATES OF AMERICA • THANKSGIVING", tr: "AMERİKA BİRLEŞİK DEVLETLERİ • ŞÜKRAN GÜNÜ" },
-  "gb-st-georges-day": { en: "UNITED KINGDOM • ST GEORGE", tr: "BİRLEŞİK KRALLIK • AZİZ GEORGE GÜNÜ" },
-  "de-unity-day": { de: "BUNDESREPUBLIK DEUTSCHLAND • 1990", en: "FEDERAL REPUBLIC OF GERMANY • 1990", tr: "ALMANYA BİRLİK GÜNÜ • 1990" },
-  "pt-portugal-day": { pt: "REPÚBLICA PORTUGUESA • 1572", en: "PORTUGUESE REPUBLIC • 1572", tr: "PORTEKİZ CUMHURİYETİ • 1572" },
-  "pt-liberty-day": { pt: "REPÚBLICA PORTUGUESA • 1974", en: "PORTUGUESE REPUBLIC • 1974", tr: "PORTEKİZ CUMHURİYETİ • 1974" },
-  "pt-republic-day": { pt: "REPÚBLICA PORTUGUESA • 1910", en: "PORTUGUESE REPUBLIC • 1910", tr: "PORTEKİZ CUMHURİYETİ • 1910" },
-  "pt-restoration-day": { pt: "REPÚBLICA PORTUGUESA • 1640", en: "PORTUGUESE REPUBLIC • 1640", tr: "PORTEKİZ CUMHURİYETİ • 1640" },
-  "sa-national-day": { ar: "المملكة العربية السعودية • ١٣٥١", en: "KINGDOM OF SAUDI ARABIA • 1932", tr: "SUUDİ ARABİSTAN KRALLIĞI • 1932" },
-  "sa-founding-day": { ar: "المملكة العربية السعودية • يوم التأسيس", en: "KINGDOM OF SAUDI ARABIA • FOUNDING DAY", tr: "SUUDİ ARABİSTAN KRALLIĞI • KURULUŞ GÜNÜ" },
-  "fr-bastille-day": { fr: "RÉPUBLIQUE FRANÇAISE • 1789", en: "FRENCH REPUBLIC • 1789", tr: "FRANSA CUMHURİYETİ • 1789" },
-  "it-republic-day": { it: "REPUBBLICA ITALIANA • 1946", en: "ITALIAN REPUBLIC • 1946", tr: "İTALYA CUMHURİYETİ • 1946" },
-  "es-fiesta-nacional": { es: "REINO DE ESPAÑA • 1492", en: "KINGDOM OF SPAIN • 1492", tr: "İSPANYA KRALLIĞI • 1492" },
-  "jp-foundation-day": { ja: "日本国 • 建国記念の日", en: "STATE OF JAPAN • FOUNDATION DAY", tr: "JAPONYA DEVLETİ • KURULUŞ GÜNÜ" },
-  "qa-national-day": { ar: "دولة قطر • ١٨٧٨", en: "STATE OF QATAR • 1878", tr: "KATAR DEVLETİ • 1878" },
-  "ae-national-day": { ar: "الإمارات العربية المتحدة • ١٩٧١", en: "UNITED ARAB EMIRATES • 1971", tr: "BİRLEŞİK ARAP EMİRLİKLERİ • 1971" },
-};
-
-const kickerMap = kickerByDay[specialDay.id] || {};
-const kickerText = kickerMap[locale] || kickerMap.en || `${countryCode} • ${monthNumber}/${dayNumber}`;
+const fallbackDate = `${monthNumber}/${dayNumber}`;
+let localizedCountry = countryCode;
+let localizedDate = fallbackDate;
+try {
+  localizedCountry = countryCode === "GLOBAL"
+    ? ({ en: "Global", tr: "Dünya", de: "Weltweit", fr: "Monde", es: "Mundo", it: "Mondo", ar: "العالم", ja: "世界" }[locale] || "Global")
+    : new Intl.DisplayNames([locale], { type: "region" }).of(countryCode) || countryCode;
+  localizedDate = new Intl.DateTimeFormat(locale, { day: "numeric", month: "long", timeZone: "UTC" }).format(activeDate);
+} catch {
+  // Keep stable ISO-like fallbacks when the server runtime lacks full Intl data.
+}
+const kickerText = `${localizedCountry} • ${localizedDate}`;
+const sublineText = greeting.subline.replace(/\s+[—–-]\s+WillowSoft\s*$/i, "");
 
 // Prominent brand celebration header text per locale
 const brandCelebratesByLocale: Record<string, string> = {
   tr: "WILLOWSOFT KUTLUYOR",
   en: "WILLOWSOFT CELEBRATES",
-  de: "WILLOWSOFT FEERT MIT",
+  de: "WILLOWSOFT GRATULIERT",
   fr: "WILLOWSOFT CÉLÈBRE",
   es: "WILLOWSOFT CELEBRA",
-  it: "WILLOWSOFT FESTEGGIA",
-  ar: "WILLOWSOFT يحتفل",
-  ja: "WILLOWSOFT お祝い",
+  it: "WILLOWSOFT CELEBRA",
+  ar: "WILLOWSOFT تهنّئكم",
+  ja: "WILLOWSOFTより心を込めて",
 };
 const brandHeader = brandCelebratesByLocale[locale] || "WILLOWSOFT CELEBRATES";
 
@@ -125,6 +112,7 @@ const motif = specialDay.motif || motifByEvent[specialDay.id] || "orbit";
 
     <div class="republic-day-subline cinematic-item item-4">
       <span class="subline-line"></span>
+      <span class="subline-copy">{sublineText}</span>
       <span class="subline-brand">WILLOWSOFT</span>
     </div>
   </div>

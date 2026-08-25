@@ -1,0 +1,164 @@
+{
+  "services": {
+    "embedded-hardware": {
+      "summary": {
+        "tr": "Devre kartı tasarımı, sensör entegrasyonu, dayanıklı IoT ağ geçitleri ve enerji verimli elektronik sistemler.",
+        "de": "Leiterplattenentwicklung, Sensorintegration, robuste IoT-Gateways und energieeffiziente Elektronik.",
+        "fr": "Conception de cartes électroniques, intégration de capteurs, passerelles IoT robustes et systèmes basse consommation.",
+        "es": "Diseño de placas electrónicas, integración de sensores, gateways IoT robustos y sistemas de bajo consumo.",
+        "it": "Progettazione di schede elettroniche, integrazione di sensori, gateway IoT robusti e sistemi a basso consumo.",
+        "ar": "تصميم اللوحات الإلكترونية ودمج المستشعرات وتطوير بوابات إنترنت الأشياء المتينة والأنظمة الموفرة للطاقة.",
+        "ja": "回路・基板設計、センサー統合、堅牢なIoTゲートウェイ、低消費電力システムの開発。"
+      },
+      "deliverables": {
+        "tr": ["Devre şemaları", "PCB tasarımı", "Çalışan prototip", "Seri üretim desteği"],
+        "de": ["Schaltpläne", "Leiterplattenlayout", "Funktionsprototyp", "Begleitung der Serienfertigung"],
+        "fr": ["Schémas électroniques", "Conception du circuit imprimé", "Prototype fonctionnel", "Accompagnement à l’industrialisation"],
+        "es": ["Esquemas electrónicos", "Diseño de PCB", "Prototipo funcional", "Soporte para producción en serie"],
+        "it": ["Schemi elettronici", "Progettazione PCB", "Prototipo funzionante", "Supporto alla produzione in serie"],
+        "ar": ["المخططات الإلكترونية", "تصميم لوحة الدوائر المطبوعة", "نموذج أولي عامل", "دعم الإنتاج المتسلسل"],
+        "ja": ["回路図", "基板レイアウト", "動作試作機", "量産移行支援"]
+      }
+    },
+    "firmware": {
+      "summary": {
+        "tr": "MCU ve RTOS tabanlı gömülü yazılım, bare-metal geliştirme, LoRaWAN protokolü ve cihaz sürücüleri.",
+        "de": "Firmware für MCU- und RTOS-Systeme, Bare-Metal-Entwicklung, LoRaWAN-Protokoll und Gerätetreiber.",
+        "fr": "Firmware pour MCU et RTOS, développement bare-metal, protocole LoRaWAN et pilotes de périphériques.",
+        "es": "Firmware para MCU y RTOS, desarrollo bare-metal, protocolo LoRaWAN y controladores de dispositivos.",
+        "it": "Firmware per MCU e RTOS, sviluppo bare-metal, protocollo LoRaWAN e driver di dispositivo.",
+        "ar": "تطوير البرمجيات الثابتة لوحدات التحكم وأنظمة RTOS، والبرمجة المباشرة، وبروتوكول LoRaWAN، وتعريفات الأجهزة.",
+        "ja": "MCU・RTOS向けファームウェア、ベアメタル開発、LoRaWANプロトコル、デバイスドライバー。"
+      },
+      "deliverables": {
+        "tr": ["Firmware mimarisi", "Cihaz sürücüleri", "OTA güncelleme stratejisi", "Güç tüketimi optimizasyonu"],
+        "de": ["Firmware-Architektur", "Gerätetreiber", "OTA-Update-Strategie", "Optimierung des Energieverbrauchs"],
+        "fr": ["Architecture firmware", "Pilotes de périphériques", "Stratégie de mise à jour OTA", "Optimisation de la consommation"],
+        "es": ["Arquitectura de firmware", "Controladores de dispositivos", "Estrategia de actualización OTA", "Optimización del consumo energético"],
+        "it": ["Architettura firmware", "Driver di dispositivo", "Strategia di aggiornamento OTA", "Ottimizzazione dei consumi"],
+        "ar": ["بنية البرمجيات الثابتة", "تعريفات الأجهزة", "استراتيجية التحديث عن بُعد", "تحسين استهلاك الطاقة"],
+        "ja": ["ファームウェア設計", "デバイスドライバー", "OTA更新方針", "消費電力の最適化"]
+      }
+    },
+    "backend-api": {
+      "summary": {
+        "tr": "REST API ve WebSocket altyapısı, telemetri verisi alımı, kimlik doğrulama ve raporlama.",
+        "de": "REST-APIs und WebSockets für Telemetrieaufnahme, Authentifizierung und Berichtswesen.",
+        "fr": "API REST et WebSocket pour la collecte de télémétrie, l’authentification et la génération de rapports.",
+        "es": "API REST y WebSocket para recopilar telemetría, gestionar la autenticación y generar informes.",
+        "it": "API REST e WebSocket per acquisire la telemetria, gestire l’autenticazione e produrre report.",
+        "ar": "واجهات REST واتصالات WebSocket لاستقبال بيانات القياس عن بُعد وإدارة المصادقة وإعداد التقارير.",
+        "ja": "REST APIとWebSocketによるテレメトリ収集、認証、レポート機能の構築。"
+      },
+      "deliverables": {
+        "tr": ["API tasarımı", "Telemetri veri akışı", "Kimlik doğrulama", "Raporlama altyapısı"],
+        "de": ["API-Konzept", "Telemetrie-Datenfluss", "Authentifizierung", "Berichtsfunktionen"],
+        "fr": ["Conception des API", "Flux de télémétrie", "Authentification", "Système de reporting"],
+        "es": ["Diseño de API", "Flujo de telemetría", "Autenticación", "Sistema de informes"],
+        "it": ["Progettazione delle API", "Flusso di telemetria", "Autenticazione", "Sistema di reportistica"],
+        "ar": ["تصميم الواجهات البرمجية", "مسار بيانات القياس عن بُعد", "المصادقة", "نظام التقارير"],
+        "ja": ["API設計", "テレメトリデータ基盤", "認証機能", "レポート機能"]
+      }
+    },
+    "postgresql": {
+      "summary": {
+        "tr": "Cihaz verisi modelleme, zaman serisi mimarisi, raporlama tabloları ve yüksek performanslı sorgular.",
+        "de": "Datenmodelle für Geräte- und Zeitreihendaten, Berichtstabellen und leistungsfähige Abfragen.",
+        "fr": "Modélisation des données d’appareils et des séries temporelles, tables de reporting et requêtes performantes.",
+        "es": "Modelado de datos de dispositivos y series temporales, tablas de informes y consultas de alto rendimiento.",
+        "it": "Modellazione dei dati dei dispositivi e delle serie temporali, tabelle di reportistica e query efficienti.",
+        "ar": "نمذجة بيانات الأجهزة والسلاسل الزمنية، وجداول التقارير، والاستعلامات عالية الأداء.",
+        "ja": "デバイス・時系列データのモデル設計、集計テーブル、高性能なクエリの構築。"
+      },
+      "deliverables": {
+        "tr": ["Veritabanı şeması", "İndeks yapısı", "Zaman serisi modeli", "Sorgu optimizasyonu"],
+        "de": ["Datenbankschema", "Indexkonzept", "Zeitreihenmodell", "Abfrageoptimierung"],
+        "fr": ["Schéma de base de données", "Stratégie d’indexation", "Modèle de séries temporelles", "Optimisation des requêtes"],
+        "es": ["Esquema de base de datos", "Estrategia de índices", "Modelo de series temporales", "Optimización de consultas"],
+        "it": ["Schema del database", "Strategia degli indici", "Modello per serie temporali", "Ottimizzazione delle query"],
+        "ar": ["مخطط قاعدة البيانات", "استراتيجية الفهارس", "نموذج السلاسل الزمنية", "تحسين الاستعلامات"],
+        "ja": ["データベーススキーマ", "インデックス設計", "時系列データモデル", "クエリ最適化"]
+      }
+    },
+    "web-admin": {
+      "summary": {
+        "tr": "Operasyon panelleri, yönetim arayüzleri, müşteri portalları ve gerçek zamanlı izleme ekranları.",
+        "de": "Betriebs-Dashboards, Verwaltungsoberflächen, Kundenportale und Echtzeit-Monitoring.",
+        "fr": "Tableaux de bord opérationnels, interfaces d’administration, portails clients et supervision en temps réel.",
+        "es": "Paneles operativos, interfaces de administración, portales de clientes y monitorización en tiempo real.",
+        "it": "Cruscotti operativi, interfacce di amministrazione, portali clienti e monitoraggio in tempo reale.",
+        "ar": "لوحات تشغيل وواجهات إدارة وبوابات للعملاء وشاشات مراقبة لحظية.",
+        "ja": "運用ダッシュボード、管理画面、顧客ポータル、リアルタイム監視画面。"
+      },
+      "deliverables": {
+        "tr": ["Operasyon paneli", "Yönetim arayüzü", "Rol bazlı erişim", "İzleme ekranları"],
+        "de": ["Betriebs-Dashboard", "Administrationsbereich", "Rollenbasierte Zugriffssteuerung", "Monitoring-Oberflächen"],
+        "fr": ["Tableau de bord opérationnel", "Interface d’administration", "Gestion des accès par rôle", "Écrans de supervision"],
+        "es": ["Panel operativo", "Interfaz de administración", "Acceso basado en roles", "Pantallas de monitorización"],
+        "it": ["Cruscotto operativo", "Interfaccia di amministrazione", "Accesso basato sui ruoli", "Schermate di monitoraggio"],
+        "ar": ["لوحة التشغيل", "واجهة الإدارة", "صلاحيات حسب الدور", "شاشات المراقبة"],
+        "ja": ["運用ダッシュボード", "管理画面", "ロール別アクセス制御", "監視画面"]
+      }
+    },
+    "mobile": {
+      "summary": {
+        "tr": "Saha operasyonları, sensör izleme, anlık bildirimler ve çevrimdışı kullanım için iOS, Android ve Flutter uygulamaları.",
+        "de": "iOS-, Android- und Flutter-Apps für Außeneinsätze, Sensorüberwachung, Push-Benachrichtigungen und Offline-Nutzung.",
+        "fr": "Applications iOS, Android et Flutter pour les opérations terrain, le suivi des capteurs, les notifications et le mode hors ligne.",
+        "es": "Aplicaciones iOS, Android y Flutter para operaciones de campo, seguimiento de sensores, notificaciones y uso sin conexión.",
+        "it": "Applicazioni iOS, Android e Flutter per attività sul campo, monitoraggio dei sensori, notifiche e utilizzo offline.",
+        "ar": "تطبيقات iOS وAndroid وFlutter للعمليات الميدانية ومراقبة المستشعرات والتنبيهات والعمل دون اتصال.",
+        "ja": "現場業務、センサー監視、プッシュ通知、オフライン利用に対応したiOS・Android・Flutterアプリ。"
+      },
+      "deliverables": {
+        "tr": ["Mobil uygulama", "Bildirim altyapısı", "Çevrimdışı kullanım", "Saha kullanıcı deneyimi"],
+        "de": ["Mobile App", "Benachrichtigungssystem", "Offline-Funktionen", "Benutzerführung für den Außeneinsatz"],
+        "fr": ["Application mobile", "Système de notifications", "Fonctionnement hors ligne", "Expérience utilisateur sur le terrain"],
+        "es": ["Aplicación móvil", "Sistema de notificaciones", "Funcionamiento sin conexión", "Experiencia de usuario en campo"],
+        "it": ["Applicazione mobile", "Sistema di notifiche", "Funzionamento offline", "Esperienza utente sul campo"],
+        "ar": ["تطبيق الجوال", "نظام التنبيهات", "العمل دون اتصال", "تجربة المستخدم الميدانية"],
+        "ja": ["モバイルアプリ", "通知機能", "オフライン機能", "現場向けユーザー体験"]
+      }
+    },
+    "vr": {
+      "summary": {
+        "tr": "Endüstriyel eğitim, ürün tanıtımı, dijital ikiz ve etkileşimli simülasyon deneyimleri.",
+        "de": "Interaktive Simulationen für Industrieschulungen, Produktpräsentationen und digitale Zwillinge.",
+        "fr": "Expériences interactives pour la formation industrielle, la présentation de produits et les jumeaux numériques.",
+        "es": "Experiencias interactivas para formación industrial, presentación de productos y gemelos digitales.",
+        "it": "Esperienze interattive per la formazione industriale, la presentazione di prodotti e i gemelli digitali.",
+        "ar": "تجارب تفاعلية للتدريب الصناعي وعرض المنتجات والتوائم الرقمية والمحاكاة.",
+        "ja": "産業研修、製品紹介、デジタルツインに対応したインタラクティブなシミュレーション。"
+      },
+      "deliverables": {
+        "tr": ["VR uygulaması", "Eğitim senaryosu", "Simülasyon ortamı", "Etkileşimli ürün sunumu"],
+        "de": ["VR-Anwendung", "Schulungsszenario", "Simulationsumgebung", "Interaktive Produktpräsentation"],
+        "fr": ["Application VR", "Parcours de formation", "Environnement de simulation", "Présentation produit interactive"],
+        "es": ["Aplicación de VR", "Recorrido formativo", "Entorno de simulación", "Presentación interactiva del producto"],
+        "it": ["Applicazione VR", "Percorso formativo", "Ambiente di simulazione", "Presentazione interattiva del prodotto"],
+        "ar": ["تطبيق واقع افتراضي", "مسار تدريبي", "بيئة محاكاة", "عرض تفاعلي للمنتج"],
+        "ja": ["VRアプリケーション", "研修シナリオ", "シミュレーション環境", "インタラクティブな製品紹介"]
+      }
+    },
+    "telemetry": {
+      "summary": {
+        "tr": "Cihaz filosu izleme, alarm yönetimi, sistem entegrasyonları ve uzaktan veri görselleştirme.",
+        "de": "Geräteflotten überwachen, Alarme verwalten, Systeme anbinden und Daten aus der Ferne visualisieren.",
+        "fr": "Suivi des flottes d’appareils, gestion des alertes, intégrations système et visualisation des données à distance.",
+        "es": "Seguimiento de flotas de dispositivos, gestión de alertas, integraciones y visualización remota de datos.",
+        "it": "Monitoraggio delle flotte di dispositivi, gestione degli allarmi, integrazioni e visualizzazione remota dei dati.",
+        "ar": "مراقبة أساطيل الأجهزة وإدارة التنبيهات وربط الأنظمة وعرض البيانات عن بُعد.",
+        "ja": "デバイス群の監視、アラート管理、システム連携、遠隔データ可視化。"
+      },
+      "deliverables": {
+        "tr": ["Filo izleme ekranı", "Alarm yönetimi", "Sistem entegrasyonları", "Uzaktan izleme"],
+        "de": ["Flottenübersicht", "Alarmmanagement", "Systemintegrationen", "Fernüberwachung"],
+        "fr": ["Vue de la flotte", "Gestion des alertes", "Intégrations système", "Supervision à distance"],
+        "es": ["Vista de la flota", "Gestión de alertas", "Integraciones de sistemas", "Monitorización remota"],
+        "it": ["Vista della flotta", "Gestione degli allarmi", "Integrazioni di sistema", "Monitoraggio da remoto"],
+        "ar": ["عرض أسطول الأجهزة", "إدارة التنبيهات", "تكامل الأنظمة", "المراقبة عن بُعد"],
+        "ja": ["フリート一覧", "アラート管理", "システム連携", "遠隔監視"]
+      }
+    }
+  }
+}

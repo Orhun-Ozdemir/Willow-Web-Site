@@ -6,6 +6,7 @@ import {
   fallbackProcessStepsAsCmsItems,
   fallbackServiceLayersAsCmsItems,
 } from "../astro-app/src/lib/services-page-fallbacks.ts";
+import { specialDays } from "../astro-app/src/data/special-days.ts";
 
 /** Matches live /services template fallbacks when CMS fields are empty. */
 const sectionText: Record<string, Record<string, string>> = {
@@ -186,6 +187,7 @@ console.log(
     serviceLayers: fallbackServiceLayersAsCmsItems(),
     deliverables: fallbackDeliverablesAsCmsItems(),
     processSteps: fallbackProcessStepsAsCmsItems(),
+    specialDays,
     sectionText,
   })
 );

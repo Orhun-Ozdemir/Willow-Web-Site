@@ -232,10 +232,12 @@ body[data-page="home"] main > *:not(.motion-hero) {
 }
 
 .republic-day-subline {
-  display: inline-flex;
+  display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 16px;
   margin-top: 18px;
+  max-width: min(780px, 82vw);
 }
 .editorial-day-art[dir="rtl"] .republic-day-subline {
   justify-content: flex-end;
@@ -262,6 +264,19 @@ body[data-page="home"] main > *:not(.motion-hero) {
   text-transform: uppercase;
   color: #ffffff;
   text-shadow: 0 2px 6px rgba(0, 0, 0, 0.8);
+  flex: 0 0 auto;
+}
+
+.republic-day-subline .subline-copy {
+  flex: 1 1 300px;
+  max-width: 62ch;
+  font-family: var(--font-display, "Hanken Grotesk", sans-serif);
+  font-size: clamp(.78rem, 1.05vw, .96rem);
+  font-weight: 600;
+  line-height: 1.45;
+  letter-spacing: .01em;
+  color: rgba(255, 255, 255, .88);
+  text-shadow: 0 2px 8px rgba(0, 0, 0, .82);
 }
 
 /* ── Dynamic Celebratory Particle Sparks ── */
@@ -386,6 +401,19 @@ body[data-page="home"] .motion-hero:has([data-celebration]:not([hidden])) { min-
   .republic-day-subline {
     margin-top: 12px;
     justify-content: center;
+    max-width: 100%;
+    text-align: center;
+  }
+
+  .republic-day-subline .subline-copy {
+    flex-basis: 100%;
+    font-size: clamp(.7rem, 2.6vw, .82rem);
+    line-height: 1.35;
+  }
+
+  .republic-day-subline .subline-line,
+  .republic-day-subline .subline-brand {
+    display: none;
   }
 
   .editorial-banner-overlay {

@@ -31,9 +31,7 @@ const specialDayGreeting = activeSpecialDay
   ? activeSpecialDay.greeting[locale] || activeSpecialDay.greeting.en
   : null;
 const specialDayNavMessage = activeSpecialDay && specialDayGreeting
-  ? locale === "tr"
-    ? `${specialDayGreeting.title} · ${specialDayGreeting.accent} kutlu olsun.`
-    : specialDayGreeting.subline.replace(/\s+[—–-]\s+WillowSoft\s*$/i, "")
+  ? specialDayGreeting.subline.replace(/\s+[—–-]\s+WillowSoft\s*$/i, "")
   : "";
 const isHomePage = currentPath === `/${locale}` || currentPath === `/${locale}/`;
 
