@@ -45,6 +45,10 @@ export function normalizeCanonical(url: string | undefined | null): string | und
   if (/(^|\.)willowsoft\.co$/i.test(parsed.hostname)) {
     parsed.protocol = origin.protocol;
     parsed.host = origin.host;
+    // Canonical URLs identify the document, not campaign/search state. Keeping a
+    // CMS query string here can split signals between otherwise identical pages.
+    parsed.search = "";
+    parsed.hash = "";
   }
   if (parsed.pathname.length > 1 && parsed.pathname.endsWith("/")) {
     parsed.pathname = parsed.pathname.replace(/\/+$/, "");

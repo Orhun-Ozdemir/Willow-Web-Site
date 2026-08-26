@@ -237,6 +237,28 @@ function isExemptFromLocale(pathname: string): boolean {
   return false;
 }
 
+function safeDecodePathname(pathname: string): string {
+  try {
+    return decodeURIComponent(pathname);
+  } catch {
+    // A malformed percent escape must never turn a crawler request into a 500.
+    // Keep the raw pathname so Astro can resolve it normally (usually as a 404).
+    return pathname;
+  }
+}
+
+function removeObsoleteSearchParams(url: URL): boolean {
+  let changed = false;
+  for (const key of [...url.searchParams.keys()]) {
+    const normalizedKey = key.toLowerCase();
+    if (normalizedKey === "s" || normalizedKey === "search_term_string") {
+      url.searchParams.delete(key);
+      changed = true;
+    }
+  }
+  return changed;
+}
+
 const detectLocale = detectLocaleFromRequest;
 
 const aiBots = [
@@ -272,10 +294,15 @@ export const onRequest = defineMiddleware(async (context, next) => {
   if (base && pathname.startsWith(base)) {
     pathname = pathname.slice(base.length) || "/";
   }
+  // Remove only obsolete WordPress/site-search parameters. Product/contact
+  // prefills, catalog filters and campaign attribution remain functional.
+  const removedObsoleteSearch = (context.request.method === "GET" || context.request.method === "HEAD")
+    && !isExemptFromLocale(pathname)
+    && removeObsoleteSearchParams(url);
   // Normalize: decode percent-encoded chars (e.g. Turkish ü, ö) and strip trailing slash.
   // This ensures /lorawan-ultrasonik-mesafe-seviye-sens%C3%B6r%C3%BC matches the redirect map.
   const legacyKey = pathname !== "/"
-    ? decodeURIComponent(pathname).replace(/\/+$/, "").toLowerCase()
+    ? safeDecodePathname(pathname).replace(/\/+$/, "").toLowerCase()
     : pathname;
 
   // 410 Gone — WordPress technical remnants (feeds, wp-json, xmlrpc, etc.).
@@ -302,7 +329,9 @@ export const onRequest = defineMiddleware(async (context, next) => {
   // single hop instead of two chained redirects.
   const strippedPathname = pathname !== "/" ? pathname.replace(/\/+$/, "") : "/";
 
-  const first = strippedPathname.split("/").filter(Boolean)[0]?.toLowerCase() ?? "";
+  const pathSegments = strippedPathname.split("/").filter(Boolean);
+  const firstRaw = pathSegments[0] ?? "";
+  const first = firstRaw.toLowerCase();
   const hasLocalePrefix = locales.includes(first as Locale);
 
   if (!hasLocalePrefix && !isExemptFromLocale(strippedPathname)) {
@@ -311,9 +340,21 @@ export const onRequest = defineMiddleware(async (context, next) => {
     return context.redirect(`${base}/${locale}${rest}${url.search}`, 302);
   }
 
+  // Locale codes are canonicalized to lowercase. Use the already slash-trimmed
+  // segments so `/EN/products/` reaches `/en/products` in one hop.
+  if (hasLocalePrefix && firstRaw !== first) {
+    pathSegments[0] = first;
+    return context.redirect(`${base}/${pathSegments.join("/")}${url.search}`, 301);
+  }
+
   // Locale-prefixed or exempt URL that still carries a trailing slash: send it to
   // the canonical no-slash form in one permanent hop.
   if (pathname !== "/" && pathname !== strippedPathname) {
+    return context.redirect(`${base}${strippedPathname}${url.search}`, 301);
+  }
+
+
+  if (removedObsoleteSearch) {
     return context.redirect(`${base}${strippedPathname}${url.search}`, 301);
   }
 

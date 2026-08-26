@@ -32,9 +32,19 @@ interface UrlEntry {
 const escapeXml = (value: string) =>
   value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 
+const asLastmod = (value: unknown): string | undefined => {
+  if (!value) return undefined;
+  const date = new Date(String(value));
+  return Number.isNaN(date.getTime()) ? undefined : date.toISOString().slice(0, 10);
+};
+
+const latestLastmod = (values: unknown[]): string | undefined => {
+  const dates = values.map(asLastmod).filter((value): value is string => Boolean(value));
+  return dates.sort().at(-1);
+};
+
 export const GET: APIRoute = async () => {
   const content = await loadContent();
-  const lastmod = content.meta?.updatedAt ? String(content.meta.updatedAt).slice(0, 10) : undefined;
   const entries: UrlEntry[] = [];
 
   const pushLocalizedSet = (
@@ -49,7 +59,7 @@ export const GET: APIRoute = async () => {
     const alternates = includedLocales.map((l) => ({ hreflang: l as string, href: hrefFor(l) }));
     alternates.push({ hreflang: "x-default", href: hrefFor(defaultLocale) });
     for (const locale of includedLocales) {
-      entries.push({ loc: hrefFor(locale), alternates, lastmod, ...extraFor(locale) });
+      entries.push({ loc: hrefFor(locale), alternates, ...extraFor(locale) });
     }
   };
 
@@ -60,7 +70,10 @@ export const GET: APIRoute = async () => {
     pushLocalizedSet((l) => `${SITE_ORIGIN}/${l}${page.subPath}`, (l) => ({
       changefreq: seoByLocale[l]?.changefreq || seoEn.changefreq,
       priority: seoByLocale[l]?.priority || seoEn.priority,
-      lastmod: content.lastModified?.pageSeo?.[page.key] || content.lastModified?.pageContent?.[page.key] || lastmod,
+      lastmod: latestLastmod([
+        content.lastModified?.pageSeo?.[page.key],
+        content.lastModified?.pageContent?.[page.key],
+      ]),
     }), (l) => !Boolean(seoByLocale[l]?.noindex));
   }
 
@@ -69,7 +82,7 @@ export const GET: APIRoute = async () => {
     pushLocalizedSet((l) => `${SITE_ORIGIN}/${l}/products/${slug}`, () => ({
       changefreq: "monthly",
       priority: "0.7",
-      lastmod: product.updatedAt || lastmod,
+      lastmod: asLastmod(product.updatedAt),
     }), (l) => !Boolean(product.seo?.[l]?.noindex));
   }
 
@@ -77,22 +90,26 @@ export const GET: APIRoute = async () => {
     pushLocalizedSet((l) => `${SITE_ORIGIN}/${l}/guides/${guide.slug}`, () => ({
       changefreq: "yearly",
       priority: "0.72",
-      lastmod,
     }));
   }
 
   for (const category of productCategoriesFromContent(content).filter((item) => item.visible)) {
+    const categoryLastmod = latestLastmod(
+      (content.products || [])
+        .filter((product: any) => product.visible !== false && String(product.category || "") === category.key)
+        .map((product: any) => product.updatedAt),
+    );
     pushLocalizedSet((l) => `${SITE_ORIGIN}/${l}/products/category/${category.key}`, () => ({
       changefreq: "monthly",
       priority: "0.75",
-      lastmod,
+      lastmod: categoryLastmod,
     }));
   }
 
   for (const item of (content.news || []).filter((entry: any) => entry.visible !== false)) {
     pushLocalizedSet(
       (l) => `${SITE_ORIGIN}/${l}/news/${itemText(item, "slug", l, item.slug?.en || item.slug || item.id)}`,
-      () => ({ changefreq: "yearly", priority: "0.5", lastmod: item.updatedAt || item.date || lastmod }),
+      () => ({ changefreq: "yearly", priority: "0.5", lastmod: asLastmod(item.updatedAt || item.date) }),
       (l) => !Boolean(item.seo?.[l]?.noindex),
     );
   }

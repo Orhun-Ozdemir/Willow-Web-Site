@@ -3,7 +3,7 @@ import ProductCard from "./ProductCard.astro";
 import { localizeItem, type Locale } from "@/lib/cms";
 import { productCategoryText, type ProductCategory } from "@/lib/product-categories";
 import { productSearchDescriptor } from "@/lib/seo-fallbacks";
-import { categorySearchName, LORAWAN_LANDING_COPY } from "@/lib/lorawan-landing";
+import { categorySearchName, COLLECTION_TABLE_LABELS, LORAWAN_LANDING_COPY, localizeCatalogValue } from "@/lib/lorawan-landing";
 import { GUIDE_INDEX_COPY, TECHNICAL_GUIDES } from "@/lib/technical-guides";
 import { accessibilityCopy } from "@/lib/accessibility-copy";
 
@@ -25,11 +25,35 @@ const heroLead = selectedCategory
   ? `${categoryDescription}${categoryDescription && !/[.!?؟。]$/.test(categoryDescription) ? "." : ""} ${copy.portfolioLead}`.trim()
   : copy.intro;
 const guideCopy = GUIDE_INDEX_COPY[locale];
-const directProductIds = ["willowsonic", "willowmod", "willowair", "willowgps"];
+const directProductIds = ["willowpre", "willowsonic", "willowair", "willowmod", "willowgps"];
 const directProducts = selectedCategory ? [] : directProductIds
   .map((id) => allProducts.find((product) => String(product.id).toLowerCase() === id))
   .filter(Boolean)
   .map((product) => ({ raw: product, localized: localizeItem(product, locale) }));
+const tableLabels = COLLECTION_TABLE_LABELS[locale] || COLLECTION_TABLE_LABELS.en;
+const comparisonProducts = selectedCategory ? [] : allProducts
+  .filter((product) => product.visible !== false)
+  .map((raw) => {
+    const localized = localizeItem(raw, locale);
+    const specifications = raw.specifications && typeof raw.specifications === "object" && !Array.isArray(raw.specifications)
+      ? raw.specifications
+      : {};
+    const firstValue = (...keys: string[]) => keys
+      .map((key) => specifications[key] ?? raw[key] ?? localized[key])
+      .find((value) => value !== undefined && value !== null && String(value).trim());
+    const category = visibleCategories.find((item) => item.key === String(raw.category || ""));
+    return {
+      raw,
+      localized,
+      brand: typeof raw.title === "string" ? raw.title : localized.title,
+      type: raw.localized?.[locale]?.type || productSearchDescriptor(raw.id, locale) || localized.type || "—",
+      enclosure: localizeCatalogValue(firstValue("enclosure"), locale),
+      measurementRange: localizeCatalogValue(firstValue("measurement_range", "measurementRange", "pressure_range", "pressureRange", "sensing_radius", "sensingRadius"), locale),
+      radio: localizeCatalogValue(firstValue("protocol", "wireless_protocol", "wirelessProtocol"), locale),
+      battery: localizeCatalogValue(firstValue("battery_life", "batteryLife"), locale),
+      category: category ? productCategoryText(category, locale).title : String(raw.category || "—"),
+    };
+  });
 ---
 
 <main id="main-content" class="lorawan-landing">
@@ -63,7 +87,7 @@ const directProducts = selectedCategory ? [] : directProductIds
           {directProducts.map(({ raw, localized }) => (
             <a href={`/${locale}/products/${localized.slug || raw.id}`}>
               <span>{productSearchDescriptor(raw.id, locale)}</span>
-              <strong>{localized.title}</strong>
+              <strong>{typeof raw.title === "string" ? raw.title : localized.title}</strong>
               <p>{localized.shortDescription}</p>
               <i aria-hidden="true">↗</i>
             </a>
@@ -99,6 +123,37 @@ const directProducts = selectedCategory ? [] : directProductIds
     </div>
   </section>
 
+  {!selectedCategory && (
+    <section class="section soft lorawan-selection" aria-labelledby="lorawan-selection-title">
+      <div class="section-inner">
+        <div class="section-head lorawan-selection-head">
+          <div>
+            <p class="eyebrow">{copy.selectionEyebrow}</p>
+            <h2 id="lorawan-selection-title">{copy.selectionTitle}</h2>
+            <p class="section-lead">{copy.selectionIntro}</p>
+          </div>
+          <aside class="lorawan-selection-note">
+            <strong>IP</strong>
+            <p>{copy.selectionNote}</p>
+          </aside>
+        </div>
+        <div class="lorawan-selection-grid">
+          {copy.selectionCriteria.map((criterion, index) => (
+            <article>
+              <span>{String(index + 1).padStart(2, "0")}</span>
+              <h3>{criterion.title}</h3>
+              <p>{criterion.text}</p>
+            </article>
+          ))}
+        </div>
+        <div class="lorawan-integration-note">
+          <h3>{copy.integrationTitle}</h3>
+          <p>{copy.integrationText}</p>
+        </div>
+      </div>
+    </section>
+  )}
+
   {selectedCategory ? (
     <section class="section soft lorawan-products">
       <div class="section-inner">
@@ -117,14 +172,48 @@ const directProducts = selectedCategory ? [] : directProductIds
       </div>
     </section>
   ) : (
-    <section class="lorawan-catalog-link">
-      <div class="section-inner lorawan-catalog-layout">
-        <div>
-          <p class="eyebrow">{copy.portfolioTitle}</p>
-          <h2>{copy.portfolioTitle}</h2>
-          <p>{copy.portfolioLead}</p>
+    <section class="section lorawan-comparison" aria-labelledby="lorawan-comparison-title">
+      <div class="section-inner">
+        <div class="section-head lorawan-comparison-head">
+          <div>
+            <p class="eyebrow">{copy.comparisonEyebrow}</p>
+            <h2 id="lorawan-comparison-title">{copy.comparisonTitle}</h2>
+            <p class="section-lead">{copy.comparisonLead}</p>
+          </div>
+          <a href={`/${locale}/products`}>{copy.allProducts} <span aria-hidden="true">↗</span></a>
         </div>
-        <a href={`/${locale}/products`}>{copy.allProducts} <span aria-hidden="true">↗</span></a>
+        <div class="lorawan-table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">{tableLabels.product}</th>
+                <th scope="col">{tableLabels.measures}</th>
+                <th scope="col">{tableLabels.enclosure}</th>
+                <th scope="col">{tableLabels.measurementRange}</th>
+                <th scope="col">{tableLabels.radio}</th>
+                <th scope="col">{tableLabels.battery}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {comparisonProducts.map((item) => (
+                <tr>
+                  <th scope="row">
+                    <a href={`/${locale}/products/${item.raw.slug || item.raw.id}`}>
+                      <strong>{item.brand}</strong>
+                      <span>{item.category}</span>
+                    </a>
+                  </th>
+                  <td>{item.type}</td>
+                  <td>{item.enclosure || "—"}</td>
+                  <td>{item.measurementRange || "—"}</td>
+                  <td>{item.radio || "—"}</td>
+                  <td>{item.battery || "—"}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <p class="lorawan-comparison-note">{copy.comparisonNote}</p>
       </div>
     </section>
   )}
@@ -164,7 +253,7 @@ const directProducts = selectedCategory ? [] : directProductIds
   .lorawan-direct-layout { display: grid; grid-template-columns: minmax(210px, .34fr) minmax(0, 1fr); gap: 30px; align-items: center; }
   .lorawan-direct-copy h2 { margin: 7px 0 8px; color: var(--ink); font-size: clamp(1.35rem, 2vw, 1.8rem); letter-spacing: -.03em; }
   .lorawan-direct-copy > p:last-child { margin: 0; color: rgba(19,27,46,.62); font-size: .8rem; line-height: 1.55; }
-  .lorawan-direct-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 9px; }
+  .lorawan-direct-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(155px, 1fr)); gap: 9px; }
   .lorawan-direct-grid a { position: relative; min-width: 0; min-height: 142px; padding: 15px 34px 15px 15px; border: 1px solid rgba(19,33,117,.1); border-radius: 14px; background: #fff; transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease; }
   .lorawan-direct-grid a:hover { transform: translateY(-2px); border-color: rgba(35,168,216,.45); box-shadow: 0 12px 30px rgba(16,31,92,.08); }
   .lorawan-direct-grid span { display: block; min-height: 2.5em; color: rgba(19,33,117,.55); font-size: .61rem; font-weight: 800; line-height: 1.25; text-transform: uppercase; }
@@ -180,6 +269,34 @@ const directProducts = selectedCategory ? [] : directProductIds
   .lorawan-family-card p { margin: 0; color: rgba(19,27,46,.64); font-size: .84rem; line-height: 1.5; }
   .lorawan-family-card strong { position: absolute; right: 18px; bottom: 14px; color: rgba(19,33,117,.16); font-size: 2.5rem; }
   .lorawan-products { padding: 70px 0 78px; }
+  .lorawan-selection { padding: 74px 0; }
+  .lorawan-selection-head { align-items: end; }
+  .lorawan-selection-note { display: grid; grid-template-columns: 38px minmax(0, 1fr); gap: 14px; max-width: 490px; padding: 18px; border: 1px solid rgba(19,33,117,.12); border-radius: 16px; background: #fff; }
+  .lorawan-selection-note strong { display: grid; width: 38px; height: 38px; place-items: center; border-radius: 10px; background: rgba(35,168,216,.12); color: var(--blue); font-size: .78rem; }
+  .lorawan-selection-note p { margin: 0; color: rgba(19,27,46,.66); font-size: .78rem; line-height: 1.55; }
+  .lorawan-selection-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+  .lorawan-selection-grid article { min-height: 175px; padding: 21px; border: 1px solid rgba(19,33,117,.1); border-radius: 17px; background: #fff; }
+  .lorawan-selection-grid article > span { color: rgba(19,33,117,.42); font-size: .66rem; font-weight: 850; letter-spacing: .09em; }
+  .lorawan-selection-grid h3 { margin: 22px 0 9px; color: var(--ink); font-size: 1rem; }
+  .lorawan-selection-grid p { margin: 0; color: rgba(19,27,46,.64); font-size: .79rem; line-height: 1.55; }
+  .lorawan-integration-note { display: grid; grid-template-columns: minmax(180px, .35fr) minmax(0, 1fr); gap: 28px; align-items: center; margin-top: 14px; padding: 22px 24px; border-radius: 17px; background: linear-gradient(135deg, #0b1c40, #17245b); color: #fff; }
+  .lorawan-integration-note h3 { margin: 0; font-size: 1rem; }
+  .lorawan-integration-note p { margin: 0; color: rgba(255,255,255,.76); font-size: .82rem; line-height: 1.6; }
+  .lorawan-comparison { padding: 74px 0 82px; }
+  .lorawan-comparison-head { align-items: end; }
+  .lorawan-comparison-head > a { flex: 0 0 auto; padding: 12px 16px; border-radius: 11px; background: var(--blue); color: #fff; font-size: .75rem; font-weight: 850; }
+  .lorawan-table-wrap { overflow-x: auto; border: 1px solid rgba(19,33,117,.12); border-radius: 18px; background: #fff; box-shadow: 0 18px 50px rgba(16,31,92,.06); }
+  .lorawan-table-wrap table { width: 100%; min-width: 980px; border-collapse: collapse; color: var(--ink); text-align: left; }
+  .lorawan-table-wrap th, .lorawan-table-wrap td { padding: 16px 15px; border-bottom: 1px solid rgba(19,33,117,.09); vertical-align: top; }
+  .lorawan-table-wrap thead th { background: #f3f6fb; color: rgba(19,33,117,.65); font-size: .67rem; font-weight: 850; letter-spacing: .055em; text-transform: uppercase; }
+  .lorawan-table-wrap tbody th { min-width: 150px; }
+  .lorawan-table-wrap tbody td { color: rgba(19,27,46,.72); font-size: .78rem; line-height: 1.45; }
+  .lorawan-table-wrap tbody tr:last-child th, .lorawan-table-wrap tbody tr:last-child td { border-bottom: 0; }
+  .lorawan-table-wrap tbody tr:hover { background: rgba(35,168,216,.035); }
+  .lorawan-table-wrap tbody a strong, .lorawan-table-wrap tbody a span { display: block; }
+  .lorawan-table-wrap tbody a strong { color: var(--blue); font-size: .86rem; }
+  .lorawan-table-wrap tbody a span { margin-top: 4px; color: rgba(19,27,46,.53); font-size: .68rem; font-weight: 600; }
+  .lorawan-comparison-note { margin: 14px 2px 0; color: rgba(19,27,46,.58); font-size: .72rem; line-height: 1.55; }
   .lorawan-catalog-link { padding: 0 0 70px; }
   .lorawan-catalog-layout { display: flex; gap: 28px; align-items: center; justify-content: space-between; padding: 26px 30px; border: 1px solid rgba(19,33,117,.11); border-radius: 18px; background: linear-gradient(135deg, #f7f9fd, #eef3fb); }
   .lorawan-catalog-layout h2 { margin: 7px 0 8px; color: var(--ink); font-size: clamp(1.35rem, 2.2vw, 1.9rem); letter-spacing: -.03em; }
@@ -193,14 +310,19 @@ const directProducts = selectedCategory ? [] : directProductIds
   .lorawan-guide-card > span { color: rgba(19,33,117,.5); font-size: .64rem; font-weight: 850; letter-spacing: .07em; text-transform: uppercase; }
   .lorawan-guide-card h3 { margin: 38px 0 12px; color: var(--ink); font-size: 1.17rem; line-height: 1.15; }
   .lorawan-guide-card p { margin: 0; color: rgba(19,27,46,.64); font-size: .82rem; line-height: 1.55; }
-  @media (max-width: 980px) { .lorawan-direct-layout { grid-template-columns: 1fr; gap: 18px; } .lorawan-family-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 980px) { .lorawan-direct-layout { grid-template-columns: 1fr; gap: 18px; } .lorawan-family-grid { grid-template-columns: repeat(2, 1fr); } .lorawan-selection-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
   @media (max-width: 760px) {
     .lorawan-hero { padding: 112px 0 52px; }
     .lorawan-hero-grid { grid-template-columns: 1fr; gap: 26px; }
     .lorawan-direct { padding: 28px 0; }
     .lorawan-direct-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .lorawan-hero h1 { font-size: clamp(2.55rem, 12vw, 4rem); }
-    .lorawan-families, .lorawan-products, .lorawan-guides { padding: 48px 0; }
+    .lorawan-families, .lorawan-products, .lorawan-selection, .lorawan-comparison, .lorawan-guides { padding: 48px 0; }
+    .lorawan-selection-head, .lorawan-comparison-head { align-items: flex-start; }
+    .lorawan-selection-note { max-width: none; }
+    .lorawan-selection-grid { grid-template-columns: 1fr; }
+    .lorawan-selection-grid article { min-height: 0; }
+    .lorawan-integration-note { grid-template-columns: 1fr; gap: 9px; }
     .lorawan-catalog-link { padding: 0 0 48px; }
     .lorawan-catalog-layout { align-items: flex-start; flex-direction: column; padding: 22px; }
     .lorawan-guide-grid { grid-template-columns: 1fr; }

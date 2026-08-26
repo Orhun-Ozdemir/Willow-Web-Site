@@ -949,7 +949,7 @@
       "localized": {
         "tr": {
           "type": "LoRaWAN Ultrasonik Mesafe/Seviye Sensörü",
-          "title": "LoRaWAN Ultrasonik Mesafe ve Seviye Sensörü",
+          "title": "WillowSonic",
           "description": "WS-O-X-AI-UD-1, ağır dış ortam koşullarına dayanıklı, kullanıma hazır bir ultrasonik mesafe sensörüdür. Sıvı, silo, kar ve rögar seviyelerini izlemek üzere duvara veya herhangi bir yüzeye monte edilebilir. 19.000 mAh pil ile 10 yıla kadar çalışabilir. LoRaWAN ağ geçidi ve IoT bulut çözümüyle birleştiğinde tüm sensör verileri uzaktan izlenebilir ve yönetilebilir. LoRaWAN protokolünü destekleyen tüm ağ geçitleriyle uyumludur.",
           "applications": [
             {
@@ -988,27 +988,33 @@
           "shortDescription": "Zorlu dış ortam koşullarına dayanıklı ultrasonik mesafe ve seviye sensörü; sıvı, silo, kar ve rögar seviyelerini izlemek için tasarlandı."
         },
         "de": {
-          "title": "LoRaWAN-Ultraschall-Abstands- und Füllstandsensor",
+          "title": "WillowSonic",
+          "type": "LoRaWAN-Ultraschall-Abstands- und Füllstandsensor",
           "shortDescription": "Robuster Ultraschallsensor für Flüssigkeits-, Silo-, Schnee- und Schachtfüllstände im Außenbereich."
         },
         "fr": {
-          "title": "Capteur LoRaWAN de distance et de niveau à ultrasons",
+          "title": "WillowSonic",
+          "type": "Capteur LoRaWAN de distance et de niveau à ultrasons",
           "shortDescription": "Capteur ultrasonique robuste pour niveaux de liquides, silos, neige et regards en extérieur."
         },
         "es": {
-          "title": "Sensor LoRaWAN ultrasónico de distancia y nivel",
+          "title": "WillowSonic",
+          "type": "Sensor LoRaWAN ultrasónico de distancia y nivel",
           "shortDescription": "Sensor ultrasónico robusto para niveles de líquidos, silos, nieve y registros en exterior."
         },
         "it": {
-          "title": "Sensore LoRaWAN a ultrasuoni per distanza e livello",
+          "title": "WillowSonic",
+          "type": "Sensore LoRaWAN a ultrasuoni per distanza e livello",
           "shortDescription": "Sensore a ultrasuoni robusto per livelli di liquidi, silo, neve e pozzetti in esterno."
         },
         "ar": {
-          "title": "مستشعر LoRaWAN بالموجات فوق الصوتية للمسافة والمستوى",
+          "title": "WillowSonic",
+          "type": "مستشعر LoRaWAN بالموجات فوق الصوتية للمسافة والمستوى",
           "shortDescription": "مستشعر فوق صوتي متين لمستويات السوائل والصوامع والثلوج وغرف التفتيش في الخارج."
         },
         "ja": {
-          "title": "LoRaWAN 超音波距離・レベルセンサー",
+          "title": "WillowSonic",
+          "type": "LoRaWAN 超音波距離・レベルセンサー",
           "shortDescription": "液体、サイロ、積雪、マンホールのレベル監視向けの堅牢な屋外用超音波センサー。"
         }
       },
@@ -2373,8 +2379,8 @@
           "visible": true
         },
         {
-          "id": "wastewater-level-monitoring-3",
-          "label": "Wastewater Level Monitoring",
+          "id": "pump-pressure-monitoring-3",
+          "label": "Pump Pressure Monitoring",
           "icon": "water",
           "description": "",
           "visible": true
@@ -2387,8 +2393,8 @@
           "visible": true
         },
         {
-          "id": "chemical-processing-plants-5",
-          "label": "Chemical Processing Plants",
+          "id": "water-distribution-networks-5",
+          "label": "Water Distribution Networks",
           "icon": "factory",
           "description": "",
           "visible": true
@@ -2440,7 +2446,7 @@
       "localized": {
         "tr": {
           "type": "IP67 LoRaWAN Sıvı Basınç Sensörü",
-          "title": "IP67 LoRaWAN Sıvı Basınç Sensörü",
+          "title": "WillowPre",
           "description": "Boru ve tank sistemlerindeki sıvı basıncını ölçer. Zorlu çalışma koşullarına uygundur; veriler LoRaWAN üzerinden uzaktan izlenir.",
           "applications": [
             {
@@ -2453,7 +2459,7 @@
             },
             {
               "icon": "water",
-              "label": "Atık su seviye izleme"
+              "label": "Pompa basıncı izleme"
             },
             {
               "icon": "water",
@@ -2461,7 +2467,7 @@
             },
             {
               "icon": "factory",
-              "label": "Kimyasal işleme tesisleri"
+              "label": "Su dağıtım şebekeleri"
             },
             {
               "icon": "gear",
@@ -2475,27 +2481,33 @@
           "shortDescription": "Boru ve tank sistemlerindeki sıvı basıncını ölçen, zorlu koşullara uygun LoRaWAN sensörü."
         },
         "de": {
-          "title": "IP67 LoRaWAN-Flüssigkeitsdrucksensor",
+          "title": "WillowPre",
+          "type": "IP67-LoRaWAN-Flüssigkeitsdrucksensor",
           "shortDescription": "LoRaWAN-Sensor zur Messung von Flüssigkeitsdruck in Rohrleitungen und Tanks unter rauen Bedingungen."
         },
         "fr": {
-          "title": "Capteur LoRaWAN IP67 de pression liquide",
+          "title": "WillowPre",
+          "type": "Capteur LoRaWAN IP67 de pression liquide",
           "shortDescription": "Capteur LoRaWAN pour mesurer la pression des liquides dans tuyaux et réservoirs en conditions difficiles."
         },
         "es": {
-          "title": "Sensor LoRaWAN IP67 de presión de líquidos",
+          "title": "WillowPre",
+          "type": "Sensor LoRaWAN IP67 de presión de líquidos",
           "shortDescription": "Sensor LoRaWAN para medir presión de líquidos en tuberías y tanques en condiciones exigentes."
         },
         "it": {
-          "title": "Sensore LoRaWAN IP67 per pressione liquidi",
+          "title": "WillowPre",
+          "type": "Sensore LoRaWAN IP67 per pressione liquidi",
           "shortDescription": "Sensore LoRaWAN per misurare la pressione dei liquidi in tubazioni e serbatoi in condizioni difficili."
         },
         "ar": {
-          "title": "مستشعر LoRaWAN IP67 لضغط السوائل",
+          "title": "WillowPre",
+          "type": "مستشعر LoRaWAN IP67 لضغط السوائل",
           "shortDescription": "مستشعر LoRaWAN لقياس ضغط السوائل في الأنابيب والخزانات ضمن ظروف قاسية."
         },
         "ja": {
-          "title": "IP67 LoRaWAN 液体圧力センサー",
+          "title": "WillowPre",
+          "type": "IP67 LoRaWAN 液体圧力センサー",
           "shortDescription": "過酷な環境で配管やタンク内の液体圧力を測定する LoRaWAN センサー。"
         }
       },
@@ -5212,14 +5224,14 @@
         "ja": "製品"
       },
       "heroTitle": {
-        "en": "Industrial-grade LoRaWAN hardware portfolio.",
-        "tr": "Endüstriyel sınıf LoRaWAN donanım portföyü.",
-        "de": "LoRaWAN-Hardware-Portfolio in Industriequalität.",
-        "fr": "Portefeuille matériel LoRaWAN de qualité industrielle.",
-        "es": "Portafolio de hardware LoRaWAN de calidad industrial.",
-        "it": "Portfolio hardware LoRaWAN di livello industriale.",
-        "ar": "محفظة عتاد LoRaWAN بمواصفات صناعية.",
-        "ja": "産業グレードの LoRaWAN ハードウェアポートフォリオ。"
+        "en": "WillowSoft IoT hardware catalog.",
+        "tr": "WillowSoft IoT donanım kataloğu.",
+        "de": "Der IoT-Hardwarekatalog von WillowSoft.",
+        "fr": "Le catalogue de matériel IoT WillowSoft.",
+        "es": "Catálogo de hardware IoT de WillowSoft.",
+        "it": "Catalogo hardware IoT WillowSoft.",
+        "ar": "كتالوج أجهزة IoT من WillowSoft.",
+        "ja": "WillowSoft IoTハードウェアカタログ。"
       },
       "heroLead": {
         "en": "Modules, environmental sensors, tracking devices, safety products, and industrial interfaces for reliable remote monitoring.",

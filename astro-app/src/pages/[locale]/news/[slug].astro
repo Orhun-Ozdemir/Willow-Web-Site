@@ -3,7 +3,7 @@ import PageLayout from "@/layouts/PageLayout.astro";
 import NewsCard from "@/components/NewsCard.astro";
 import { loadContent } from "@/lib/content";
 import { itemText, localizeItem, locales, resolveAsset, resolveLocale, type Locale } from "@/lib/cms";
-import { buildAlternates, DEFAULT_OG_IMAGE, ORGANIZATION_SCHEMA, WEBSITE_SCHEMA, SITE_ORIGIN } from "@/lib/seo";
+import { buildAlternates, DEFAULT_OG_IMAGE, normalizeCanonical, ORGANIZATION_SCHEMA, WEBSITE_SCHEMA, SITE_ORIGIN } from "@/lib/seo";
 import { normalizeProductSlug } from "@/lib/product-model";
 import { newsSeoFallback } from "@/lib/seo-fallbacks";
 import { responsiveImageSrcSet } from "@/lib/image-metadata";
@@ -22,10 +22,18 @@ const newsList = [...(content.news || [])].sort((a, b) => {
 });
 const raw = newsList.find((n) => {
   const localSlug = normalizeRouteSlug(itemText(n, "slug", locale, n.slug?.en || n.slug || n.id));
-  return localSlug === normalizedSlug || normalizeRouteSlug(n.id) === normalizedSlug;
+  const matchesAnotherLocale = locales.some((l) => (
+    normalizeRouteSlug(itemText(n, "slug", l, n.slug?.en || n.slug || n.id)) === normalizedSlug
+  ));
+  return localSlug === normalizedSlug || matchesAnotherLocale || normalizeRouteSlug(n.id) === normalizedSlug;
 });
 
 if (!raw) return Astro.rewrite(`/${locale}/not-found`);
+
+const canonicalRouteSlug = itemText(raw, "slug", locale, raw.slug?.en || raw.slug || raw.id);
+if (slug !== canonicalRouteSlug) {
+  return Astro.redirect(`/${locale}/news/${canonicalRouteSlug}`, 301);
+}
 
 const article = localizeItem(raw, locale);
 const seo = raw.seo?.[locale] || {};
@@ -39,7 +47,8 @@ const newsSeoText = newsSeoFallback(locale, {
 const slugByLocale = Object.fromEntries(
   locales.map((l) => [l, `/news/${itemText(raw, "slug", l, raw.slug?.en || raw.slug || raw.id)}`]),
 );
-const canonical = seo.canonical || `${SITE_ORIGIN}/${locale}${slugByLocale[locale]}`;
+const canonical = normalizeCanonical(seo.canonical || `${SITE_ORIGIN}/${locale}${slugByLocale[locale]}`)
+  || `${SITE_ORIGIN}/${locale}${slugByLocale[locale]}`;
 const assetPath = (value: unknown) => {
   if (!value || typeof value !== "string") return "";
   if (value.startsWith("data:")) return value;

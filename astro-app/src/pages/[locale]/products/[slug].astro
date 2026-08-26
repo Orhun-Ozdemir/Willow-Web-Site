@@ -11,6 +11,8 @@ import { glossaryLinksForProduct, glossaryLinkLabels } from "@/lib/glossary-link
 import { applicationIconForText, buildSpecificationGroups, canonicalizeProduct, iconKeyForText, LOCALE_NATIVE_NAMES, normalizeAssetPath, normalizeProductIconItems, normalizeProductSlug, normalizeStringList, productDocumentTypeLabel, productSlugCandidates, PRODUCT_ICON_SVG } from "@/lib/product-model";
 import { productCategoriesFromContent, productCategoryLabel } from "@/lib/product-categories";
 import { productSearchDescriptor, productSeoFallback } from "@/lib/seo-fallbacks";
+import { localizeCatalogValue } from "@/lib/lorawan-landing";
+import { localizedProductApplications, localizedProductFeatures, localizedReportedParameters } from "@/lib/product-spec-copy";
 import { productCutoutDimensions, productCutoutSrcSet } from "@/lib/image-metadata";
 import { technicalGuide } from "@/lib/technical-guides";
 
@@ -26,24 +28,30 @@ if (!rawProduct || rawProduct.visible === false) {
   return Astro.rewrite(`/${locale}/not-found`);
 }
 
+const canonicalProductSlug = String(rawProduct.slug || rawProduct.id);
+if (normalizedSlug !== normalizeProductSlug(canonicalProductSlug)) {
+  return Astro.redirect(`/${locale}/products/${canonicalProductSlug}`, 301);
+}
+
 const localizedProduct = localizeItem(canonicalizeProduct(rawProduct), locale);
 const product = { ...localizedProduct, category: rawProduct.category || localizedProduct.category };
 const productCategories = productCategoriesFromContent(content);
 const categoryLabel = productCategoryLabel(productCategories, String(rawProduct.category || product.category), locale);
 const seo = rawProduct.seo?.[locale] || {};
+const productBrand = typeof rawProduct.title === "string"
+  ? rawProduct.title.trim()
+  : localizedValue(rawProduct.title, locale) || String(rawProduct.id || product.title || "");
 const productSeoText = productSeoFallback(locale, {
   productId: rawProduct.id,
-  name: product.title || "",
+  name: productBrand,
   categoryLabel,
   shortDescription: product.shortDescription || "",
   seoTitle: seo.seoTitle,
   metaDescription: seo.metaDescription,
 });
 const searchDescriptor = productSearchDescriptor(rawProduct.id, locale);
-const productHeading = searchDescriptor && !String(product.title || "").toLocaleLowerCase().includes("lorawan")
-  ? `${product.title} — ${searchDescriptor}`
-  : product.title;
-const titleLower = (product.title || "").toLowerCase();
+const productHeading = searchDescriptor ? `${productBrand} — ${searchDescriptor}` : productBrand;
+const titleLower = `${rawProduct.id || ""} ${rawProduct.title || ""} ${product.title || ""} ${product.type || ""} ${searchDescriptor || ""}`.toLowerCase();
 const pickText = (value: any) => localizedValue(value, locale);
 const heroImages = Array.from(
   new Set(
@@ -300,6 +308,60 @@ if (locale !== "en") {
   decision.delivered = locDecision.delivered?.[locale] || decision.delivered;
 }
 
+if (String(rawProduct.id).toLowerCase() === "willowpre") {
+  decision.useTitle = pickText({
+    en: "Pipeline and tank pressure monitoring",
+    tr: "Boru hattı ve tank basıncı izleme",
+    de: "Drucküberwachung in Rohrleitungen und Tanks",
+    fr: "Surveillance de pression des conduites et réservoirs",
+    es: "Monitorización de presión en tuberías y tanques",
+    it: "Monitoraggio della pressione in tubazioni e serbatoi",
+    ar: "مراقبة ضغط الأنابيب والخزانات",
+    ja: "配管・タンクの圧力監視",
+  });
+  decision.use = pickText({
+    en: "Use WillowPre where liquid pressure in pipes, tanks, hydraulic systems or irrigation lines must be monitored remotely.",
+    tr: "Boru, tank, hidrolik sistem veya sulama hatlarındaki sıvı basıncının uzaktan izlenmesi gereken uygulamalarda WillowPre kullanın.",
+    de: "Setzen Sie WillowPre ein, wenn Flüssigkeitsdruck in Rohrleitungen, Tanks, Hydrauliksystemen oder Bewässerungsleitungen remote überwacht werden muss.",
+    fr: "Utilisez WillowPre lorsque la pression des liquides dans les conduites, réservoirs, systèmes hydrauliques ou réseaux d’irrigation doit être surveillée à distance.",
+    es: "Use WillowPre cuando deba monitorizarse a distancia la presión de líquidos en tuberías, tanques, sistemas hidráulicos o líneas de riego.",
+    it: "Usa WillowPre quando occorre monitorare da remoto la pressione dei liquidi in tubazioni, serbatoi, sistemi idraulici o linee di irrigazione.",
+    ar: "استخدم WillowPre عندما يلزم رصد ضغط السوائل عن بُعد في الأنابيب أو الخزانات أو الأنظمة الهيدروليكية أو خطوط الري.",
+    ja: "配管、タンク、油圧システム、灌漑ラインの液体圧力を遠隔監視する用途にWillowPreを使用します。",
+  });
+  decision.roleTitle = pickText({
+    en: "Remote pressure measurement node",
+    tr: "Uzaktan basınç ölçüm düğümü",
+    de: "Messknoten für die Remote-Druckerfassung",
+    fr: "Nœud de mesure de pression à distance",
+    es: "Nodo de medición remota de presión",
+    it: "Nodo di misura remota della pressione",
+    ar: "عقدة قياس الضغط عن بُعد",
+    ja: "遠隔圧力計測ノード",
+  });
+  decision.role = pickText({
+    en: "It measures liquid pressure and sends structured readings over LoRaWAN for thresholds, history and alerts.",
+    tr: "Sıvı basıncını ölçer ve eşik, geçmiş kayıt ve alarm işlemleri için yapılandırılmış verileri LoRaWAN üzerinden iletir.",
+    de: "Das Gerät misst Flüssigkeitsdruck und überträgt strukturierte Messwerte per LoRaWAN für Grenzwerte, Historien und Alarme.",
+    fr: "Il mesure la pression des liquides et transmet des valeurs structurées via LoRaWAN pour les seuils, l’historique et les alertes.",
+    es: "Mide la presión de líquidos y transmite lecturas estructuradas por LoRaWAN para umbrales, históricos y alertas.",
+    it: "Misura la pressione dei liquidi e invia letture strutturate via LoRaWAN per soglie, storico e avvisi.",
+    ar: "يقيس ضغط السوائل ويرسل قراءات منظمة عبر LoRaWAN لاستخدامها في الحدود والسجل والتنبيهات.",
+    ja: "液体圧力を計測し、しきい値、履歴、アラートに利用できる構造化データをLoRaWAN経由で送信します。",
+  });
+  const willowPreDelivered: Record<Locale, string[]> = {
+    en: ["Pressure range and reporting configuration", "LoRaWAN payload and alarm rules", "Dashboard trends, alerts and API integration"],
+    tr: ["Basınç aralığı ve raporlama yapılandırması", "LoRaWAN payload ve alarm kuralları", "Dashboard trendleri, uyarılar ve API entegrasyonu"],
+    de: ["Druckbereich und Meldekonfiguration", "LoRaWAN-Payload und Alarmregeln", "Dashboard-Trends, Alarme und API-Integration"],
+    fr: ["Plage de pression et configuration des transmissions", "Payload LoRaWAN et règles d’alerte", "Tendances, alertes et intégration API"],
+    es: ["Rango de presión y configuración de reportes", "Payload LoRaWAN y reglas de alarma", "Tendencias, alertas e integración API"],
+    it: ["Intervallo di pressione e configurazione degli invii", "Payload LoRaWAN e regole di allarme", "Trend, avvisi e integrazione API"],
+    ar: ["نطاق الضغط وإعداد التقارير", "حمولة LoRaWAN وقواعد التنبيه", "اتجاهات لوحة التحكم والتنبيهات وتكامل API"],
+    ja: ["圧力レンジと送信設定", "LoRaWANペイロードとアラームルール", "ダッシュボード推移、アラート、API連携"],
+  };
+  decision.delivered = willowPreDelivered[locale];
+}
+
 if (titleLower.includes("panic")) {
   decision.useTitle = pickText({
     en: "Safety and emergency workflows",
@@ -344,7 +406,7 @@ if (titleLower.includes("modbus")) {
     ja: "Modbus〜プラットフォーム橋渡し",
   });
 }
-if (titleLower.includes("ultrasonic") || titleLower.includes("level")) {
+if (String(rawProduct.id).toLowerCase() === "willowsonic" || titleLower.includes("ultrasonic") || titleLower.includes("level")) {
   decision.useTitle = pickText({
     en: "Tank, manhole and level monitoring",
     tr: "Tank, rögar ve seviye izleme",
@@ -405,57 +467,61 @@ const dynamicLabels = {
 };
 const dynamicLabel = (key: keyof typeof dynamicLabels) => pickText(dynamicLabels[key]);
 const dynamicFacts = [
-  { label: dynamicLabel("productType"), value: product.type },
-  { label: dynamicLabel("batteryLife"), value: product.batteryLife || product.battery_life },
-  { label: dynamicLabel("communicationRange"), value: product.communicationRange || product.communication_range }
+  { label: dynamicLabel("productType"), value: searchDescriptor || product.type },
+  { label: dynamicLabel("batteryLife"), value: localizeCatalogValue(product.batteryLife || product.battery_life, locale) },
+  { label: dynamicLabel("communicationRange"), value: localizeCatalogValue(product.communicationRange || product.communication_range, locale) }
 ].filter((fact) => fact.value);
-const productApplications = normalizeProductIconItems(product.applications, applicationIconForText);
+const rawProductApplications = normalizeProductIconItems(product.applications, applicationIconForText);
+const productApplications = localizedProductApplications(rawProduct.id, locale, rawProductApplications)
+  .map((item) => ({ ...item, icon: applicationIconForText(item.label) }));
 const specObject = product.specifications && typeof product.specifications === "object" && !Array.isArray(product.specifications) ? product.specifications : {};
-const reportedParameters = normalizeProductIconItems((specObject as any)?.reported_parameters || (specObject as any)?.reportedParameters, iconKeyForText);
+const rawReportedParameters = normalizeProductIconItems((specObject as any)?.reported_parameters || (specObject as any)?.reportedParameters, iconKeyForText);
+const reportedParameters = localizedReportedParameters(rawProduct.id, locale, rawReportedParameters)
+  .map((item) => ({ ...item, icon: iconKeyForText(item.label) }));
 const structuredSpecGroups = buildSpecificationGroups(product.specifications);
 const extraSpecGroups = structuredSpecGroups.slice(1);
 
 const productAiIntro = pickText({
-  en: `${product.title} is a WillowSoft ${product.category || "IoT"} product for connected field telemetry.`,
-  tr: `${product.title}, saha telemetrisi için geliştirilmiş bir WillowSoft IoT ürünüdür.`,
-  de: `${product.title} ist ein WillowSoft-${product.category || "IoT"}-Produkt für vernetzte Feldtelemetrie.`,
-  fr: `${product.title} est un produit WillowSoft ${product.category || "IoT"} pour la télémétrie terrain connectée.`,
-  es: `${product.title} es un producto WillowSoft ${product.category || "IoT"} para telemetría de campo conectada.`,
-  it: `${product.title} è un prodotto WillowSoft ${product.category || "IoT"} per la telemetria connessa sul campo.`,
-  ar: `${product.title} هو منتج ${product.category || "IoT"} من WillowSoft للقياس الميداني المتصل.`,
-  ja: `${product.title} は、接続された現場テレメトリ向けの WillowSoft ${product.category || "IoT"} 製品です。`,
+  en: `${productBrand} is a WillowSoft ${product.category || "IoT"} product for connected field telemetry.`,
+  tr: `${productBrand}, saha telemetrisi için geliştirilmiş bir WillowSoft IoT ürünüdür.`,
+  de: `${productBrand} ist ein WillowSoft-${product.category || "IoT"}-Produkt für vernetzte Feldtelemetrie.`,
+  fr: `${productBrand} est un produit WillowSoft ${product.category || "IoT"} pour la télémétrie terrain connectée.`,
+  es: `${productBrand} es un producto WillowSoft ${product.category || "IoT"} para telemetría de campo conectada.`,
+  it: `${productBrand} è un prodotto WillowSoft ${product.category || "IoT"} per la telemetria connessa sul campo.`,
+  ar: `${productBrand} هو منتج ${product.category || "IoT"} من WillowSoft للقياس الميداني المتصل.`,
+  ja: `${productBrand} は、接続された現場テレメトリ向けの WillowSoft ${product.category || "IoT"} 製品です。`,
 });
 const productAiAnswer = stripHtml(`${productAiIntro} ${product.shortDescription || ""} ${decision.use || ""}`);
 const productFaqLabels = {
   useQuestion: {
-    en: `What is ${product.title} used for?`,
-    tr: `${product.title} ne için kullanılır?`,
-    de: `Wofür wird ${product.title} verwendet?`,
-    fr: `À quoi sert ${product.title} ?`,
-    es: `¿Para qué se utiliza ${product.title}?`,
-    it: `A cosa serve ${product.title}?`,
-    ar: `ما استخدام ${product.title}؟`,
-    ja: `${product.title} は何に使いますか？`,
+    en: `What is ${productBrand} used for?`,
+    tr: `${productBrand} ne için kullanılır?`,
+    de: `Wofür wird ${productBrand} verwendet?`,
+    fr: `À quoi sert ${productBrand} ?`,
+    es: `¿Para qué se utiliza ${productBrand}?`,
+    it: `A cosa serve ${productBrand}?`,
+    ar: `ما استخدام ${productBrand}؟`,
+    ja: `${productBrand} は何に使いますか？`,
   },
   integrationQuestion: {
-    en: `Can ${product.title} be integrated with software platforms?`,
-    tr: `${product.title} yazılım platformlarıyla entegre edilebilir mi?`,
-    de: `Kann ${product.title} in Softwareplattformen integriert werden?`,
-    fr: `${product.title} peut-il être intégré à des plateformes logicielles ?`,
-    es: `¿Puede ${product.title} integrarse con plataformas de software?`,
-    it: `${product.title} può essere integrato con piattaforme software?`,
-    ar: `هل يمكن دمج ${product.title} مع منصات برمجية؟`,
-    ja: `${product.title} はソフトウェア基盤と連携できますか？`,
+    en: `Can ${productBrand} be integrated with software platforms?`,
+    tr: `${productBrand} yazılım platformlarıyla entegre edilebilir mi?`,
+    de: `Kann ${productBrand} in Softwareplattformen integriert werden?`,
+    fr: `${productBrand} peut-il être intégré à des plateformes logicielles ?`,
+    es: `¿Puede ${productBrand} integrarse con plataformas de software?`,
+    it: `È possibile integrare ${productBrand} con piattaforme software?`,
+    ar: `هل يمكن دمج ${productBrand} مع منصات برمجية؟`,
+    ja: `${productBrand} はソフトウェア基盤と連携できますか？`,
   },
   selectionQuestion: {
-    en: `When should a buyer choose ${product.title}?`,
-    tr: `Bir alıcı ${product.title} ürününü ne zaman seçmeli?`,
-    de: `Wann sollte ein Käufer ${product.title} wählen?`,
-    fr: `Quand choisir ${product.title} ?`,
-    es: `¿Cuándo debería elegirse ${product.title}?`,
-    it: `Quando scegliere ${product.title}?`,
-    ar: `متى يجب اختيار ${product.title}؟`,
-    ja: `${product.title} はどのような場合に選ぶべきですか？`,
+    en: `When should a buyer choose ${productBrand}?`,
+    tr: `Bir alıcı ${productBrand} ürününü ne zaman seçmeli?`,
+    de: `Wann sollte ein Käufer ${productBrand} wählen?`,
+    fr: `Quand choisir ${productBrand} ?`,
+    es: `¿Cuándo debería elegirse ${productBrand}?`,
+    it: `Quando scegliere ${productBrand}?`,
+    ar: `متى يجب اختيار ${productBrand}؟`,
+    ja: `${productBrand} はどのような場合に選ぶべきですか？`,
   },
   integrationAnswer: {
     en: "It can be used as part of a complete WillowSoft hardware, firmware, backend and dashboard stack.",
@@ -499,6 +565,11 @@ const WS_SPEC_LABELS: Record<string, Record<string, string>> = {
   battery_life: { en: "Battery life", tr: "Pil ömrü", de: "Batterielaufzeit", fr: "Autonomie de batterie", es: "Duración de baterıa", it: "Durata batteria", ar: "عمر البطارية", ja: "バッテリー寿命" },
   power: { en: "Power", tr: "Güç", de: "Leistung", fr: "Puissance", es: "Potencia", it: "Potenza", ar: "الطاقة", ja: "電力" },
   enclosure: { en: "Enclosure", tr: "Muhafaza", de: "Gehäuse", fr: "Boîtier", es: "Carcasa", it: "Involucro", ar: "الغلاف", ja: "筐体" },
+  sleep_current: { en: "Sleep current", tr: "Uyku akımı", de: "Ruhestrom", fr: "Courant en veille", es: "Corriente en reposo", it: "Corrente in standby", ar: "تيار وضع السكون", ja: "スリープ電流" },
+  sensor_holder: { en: "Sensor holder", tr: "Sensör tutucu", de: "Sensorhalter", fr: "Support du capteur", es: "Soporte del sensor", it: "Supporto del sensore", ar: "حامل المستشعر", ja: "センサーホルダー" },
+  measurement_range: { en: "Measurement range", tr: "Ölçüm aralığı", de: "Messbereich", fr: "Plage de mesure", es: "Rango de medición", it: "Intervallo di misura", ar: "نطاق القياس", ja: "測定範囲" },
+  pressure_range: { en: "Pressure range", tr: "Basınç aralığı", de: "Druckbereich", fr: "Plage de pression", es: "Rango de presión", it: "Intervallo di pressione", ar: "نطاق الضغط", ja: "圧力範囲" },
+  features: { en: "Features", tr: "Özellikler", de: "Funktionen", fr: "Fonctions", es: "Funciones", it: "Funzioni", ar: "الميزات", ja: "機能" },
   sensingRadius: { en: "Sensing radius", tr: "Algılama yarıçapı", de: "Erfassungsradius", fr: "Rayon de détection", es: "Radio de detección", it: "Raggio di rilevamento", ar: "نصف قطر الاستشعار", ja: "検知範囲" },
   sensing_radius: { en: "Sensing radius", tr: "Algılama yarıçapı", de: "Erfassungsradius", fr: "Rayon de détection", es: "Radio de detección", it: "Raggio di rilevamento", ar: "نصف قطر الاستشعار", ja: "検知範囲" },
   reportedParameters: { en: "Reported parameters", tr: "Raporlanan parametreler", de: "Berichtete Parameter", fr: "Paramètres rapportés", es: "Parámetros reportados", it: "Parametri riportati", ar: "المعلمات المبلغ عنها", ja: "レポートパラメータ" },
@@ -527,14 +598,14 @@ const WS_HIGHLIGHT_KEYS = [
   { keys: ["warranty"], icon: "shield", label: { en: "Warranty", tr: "Garanti", de: "Garantie", fr: "Garantie", es: "Garantía", it: "Garanzia", ar: "الضمان", ja: "保証" } }
 ];
 
-function getProductHighlights(p: any, locale: string) {
+function getProductHighlights(p: any, locale: Locale) {
   const s = p.specifications || {};
   const highlights: { value: string; label: string; icon: string }[] = [];
   for (const item of WS_HIGHLIGHT_KEYS) {
     const foundKey = item.keys.find(k => s[k] !== undefined);
     if (foundKey) {
       highlights.push({
-        value: String(s[foundKey]),
+        value: localizeCatalogValue(s[foundKey], locale),
         label: item.label[locale as keyof typeof item.label] || item.label.en,
         icon: item.icon
       });
@@ -545,7 +616,7 @@ function getProductHighlights(p: any, locale: string) {
 
 const highlights = getProductHighlights(product, locale);
 const specEntries = Object.entries(specObject).filter(([k]) => k !== "features" && k !== "reported_parameters" && k !== "reportedParameters");
-const keyFeatures = normalizeStringList((specObject as any)?.features);
+const keyFeatures = localizedProductFeatures(rawProduct.id, locale, normalizeStringList((specObject as any)?.features));
 
 const extras = getProductExtras(rawProduct.id || rawProduct.slug || slug);
 
@@ -648,7 +719,6 @@ const ICONS: Record<string, string> = {
 };
 
 // Schema.org Graph
-const canonicalProductSlug = rawProduct.slug || rawProduct.id;
 const productCanonical = `${SITE_ORIGIN}/${locale}/products/${canonicalProductSlug}`;
 const crumbHome: Record<Locale, string> = { en: "Home", tr: "Ana Sayfa", de: "Startseite", fr: "Accueil", es: "Inicio", it: "Home", ar: "الرئيسية", ja: "ホーム" };
 const crumbProducts: Record<Locale, string> = { en: "Products", tr: "Ürünler", de: "Produkte", fr: "Produits", es: "Productos", it: "Prodotti", ar: "المنتجات", ja: "製品一覧" };
@@ -676,7 +746,7 @@ const productNode: Record<string, any> = {
     .map(([key, value]) => ({
       "@type": "PropertyValue",
       "name": wsSpecLabel(key, locale),
-      "value": String(value),
+      "value": localizeCatalogValue(value, locale),
     })),
 };
 if (productPrice) {
@@ -700,7 +770,7 @@ const graphSchema = appendSchemaNodes({
       "itemListElement": [
         { "@type": "ListItem", "position": 1, "name": crumbHome[locale] || crumbHome.en, "item": `${SITE_ORIGIN}/${locale}` },
         { "@type": "ListItem", "position": 2, "name": crumbProducts[locale] || crumbProducts.en, "item": `${SITE_ORIGIN}/${locale}/products` },
-        { "@type": "ListItem", "position": 3, "name": product.title, "item": productCanonical }
+        { "@type": "ListItem", "position": 3, "name": productBrand, "item": productCanonical }
       ]
     },
     productNode,
@@ -828,18 +898,32 @@ const getT = (key: keyof typeof t) => {
 
 const relatedGlossaryTerms = glossaryLinksForProduct(normalizedSlug, content.glossary || [], locale);
 const glossaryHeading = glossaryLinkLabels.heading[locale] || glossaryLinkLabels.heading.en;
-const relatedGuide = technicalGuide(String(rawProduct.category) === "industrial" ? "modbus-to-lorawan-integration" : "how-to-choose-a-lorawan-sensor");
+const relatedGuideSlug = String(rawProduct.id).toLowerCase() === "willowpre"
+  ? "how-to-choose-a-lorawan-sensor"
+  : String(rawProduct.category) === "industrial"
+    ? "modbus-to-lorawan-integration"
+    : "how-to-choose-a-lorawan-sensor";
+const relatedGuide = technicalGuide(relatedGuideSlug);
 const relatedGuideLabel: Record<Locale, string> = { en: "Technical guide", tr: "Teknik rehber", de: "Technischer Leitfaden", fr: "Guide technique", es: "Guía técnica", it: "Guida tecnica", ar: "دليل فني", ja: "技術ガイド" };
 const visibleProductSequence = (content.products || [])
   .filter((item: any) => item.visible !== false)
   .sort((a: any, b: any) => Number(a.sortOrder || 0) - Number(b.sortOrder || 0));
 const currentProductIndex = visibleProductSequence.findIndex((item: any) => item.id === rawProduct.id);
-const relatedProducts = currentProductIndex < 0
-  ? visibleProductSequence.filter((item: any) => item.id !== rawProduct.id).slice(0, 4)
-  : Array.from(
-      { length: Math.min(4, Math.max(0, visibleProductSequence.length - 1)) },
-      (_, offset) => visibleProductSequence[(currentProductIndex + offset + 1) % visibleProductSequence.length],
-    );
+const semanticRelatedIds: Record<string, string[]> = {
+  willowpre: ["willowsonic", "willowmod", "willowane", "willowtemp"],
+  willowsonic: ["willowpre", "willowair", "willowmos", "willowane"],
+};
+const curatedRelated = (semanticRelatedIds[String(rawProduct.id).toLowerCase()] || [])
+  .map((id) => visibleProductSequence.find((item: any) => String(item.id).toLowerCase() === id))
+  .filter(Boolean);
+const relatedProducts = curatedRelated.length
+  ? curatedRelated
+  : currentProductIndex < 0
+    ? visibleProductSequence.filter((item: any) => item.id !== rawProduct.id).slice(0, 4)
+    : Array.from(
+        { length: Math.min(4, Math.max(0, visibleProductSequence.length - 1)) },
+        (_, offset) => visibleProductSequence[(currentProductIndex + offset + 1) % visibleProductSequence.length],
+      );
 const relatedProductsCopy: Record<Locale, { eyebrow: string; title: string; lead: string }> = {
   en: { eyebrow: "Related hardware", title: "Products for the same connected system", lead: "Compare complementary WillowSoft devices and build a complete monitoring architecture." },
   tr: { eyebrow: "İlgili donanımlar", title: "Aynı bağlantılı sistem için ürünler", lead: "Tam bir izleme mimarisi oluşturmak için tamamlayıcı WillowSoft cihazlarını karşılaştırın." },
@@ -875,7 +959,7 @@ const relatedCopy = relatedProductsCopy[locale] || relatedProductsCopy.en;
         <span class="separator">/</span>
         <a href={`/${locale}/products/category/${rawProduct.category || product.category}`}>{categoryLabel}</a>
         <span class="separator">/</span>
-        <span class="current">{product.title}</span>
+        <span class="current">{productBrand}</span>
       </div>
     </div>
 
@@ -901,14 +985,14 @@ const relatedCopy = relatedProductsCopy[locale] || relatedProductsCopy.en;
               onerror="this.onerror=null; this.src=this.dataset.fallbackSrc;"
             />
             {heroImageItems.length > 1 && (
-              <div class="ws-hero-thumbs" aria-label={`${product.title} images`}>
+              <div class="ws-hero-thumbs" aria-label={`${productBrand} images`}>
                 {heroImageItems.map((imgUrl: string, index: number) => (
                   <button
                     class={`ws-hero-thumb${index === 0 ? " is-active" : ""}`}
                     type="button"
                     data-product-thumb
                     data-src={imgUrl}
-                    aria-label={`${product.title} image ${index + 1}`}
+                    aria-label={`${productBrand} image ${index + 1}`}
                     aria-pressed={index === 0 ? "true" : "false"}
                   >
                     <img
@@ -956,7 +1040,7 @@ const relatedCopy = relatedProductsCopy[locale] || relatedProductsCopy.en;
               {product.chips.map((chip: string) => (
                 <span class="ws-chip">
                   <Fragment set:html={ICONS.check} />
-                  {chip}
+                  {localizeCatalogValue(chip, locale)}
                 </span>
               ))}
             </div>
@@ -1025,7 +1109,7 @@ const relatedCopy = relatedProductsCopy[locale] || relatedProductsCopy.en;
               {specEntries.map(([k, v]) => (
                 <div class="ws-spec-row">
                   <dt class="ws-spec-dt">{wsSpecLabel(k, locale)}</dt>
-                  <dd class="ws-spec-dd">{v}</dd>
+                  <dd class="ws-spec-dd">{localizeCatalogValue(v, locale)}</dd>
                 </div>
               ))}
             </dl>

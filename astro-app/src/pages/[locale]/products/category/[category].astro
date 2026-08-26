@@ -11,12 +11,16 @@ import { buildAlternates, DEFAULT_OG_IMAGE, ORGANIZATION_SCHEMA, WEBSITE_SCHEMA,
 export const prerender = false;
 
 const locale = resolveLocale(Astro.params.locale, Astro.url.pathname);
-const categoryKey = String(Astro.params.category || "").trim().toLowerCase();
+const requestedCategoryKey = String(Astro.params.category || "").trim();
+const categoryKey = requestedCategoryKey.toLowerCase();
 const content = await loadContent();
 const categories = productCategoriesFromContent(content).filter((category) => category.visible);
 const selectedCategory = categories.find((category) => category.key === categoryKey);
 
 if (!selectedCategory) return Astro.rewrite(`/${locale}/not-found`);
+if (requestedCategoryKey !== selectedCategory.key) {
+  return Astro.redirect(`/${locale}/products/category/${selectedCategory.key}`, 301);
+}
 
 const allProducts = (content.products || []).filter((product: any) => product.visible !== false);
 const products = allProducts.filter((product: any) => String(product.category || "") === selectedCategory.key);

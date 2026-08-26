@@ -3,6 +3,7 @@ import { localizeItem, resolveAsset, resolveLocale, type Locale } from "@/lib/cm
 import { DEFAULT_PRODUCT_CATEGORIES, productCategoryLabel, type ProductCategory } from "@/lib/product-categories";
 import { productCutoutDimensions, productCutoutSrcSet } from "@/lib/image-metadata";
 import { productSearchDescriptor } from "@/lib/seo-fallbacks";
+import { localizeCatalogValue } from "@/lib/lorawan-landing";
 
 interface Props {
   product: any;
@@ -15,14 +16,9 @@ interface Props {
 const { product, index, variant = "default", categories = DEFAULT_PRODUCT_CATEGORIES } = Astro.props;
 const locale = resolveLocale(Astro.props.locale, Astro.url.pathname);
 const p = localizeItem(product, locale);
+const productBrand = typeof product.title === "string" ? product.title : p.title;
 const delay = index % 4 ? ` delay-${index % 4}` : "";
-const localizeChip = (chip: string) => {
-  if (locale !== "tr") return chip;
-  return chip
-    .replace(/\b10 years\b/gi, "10 yıla kadar")
-    .replace(/\b5 years\b/gi, "5 yıla kadar");
-};
-const chips = (p.chips || []).slice(0, 3).map(localizeChip);
+const chips = (p.chips || []).slice(0, 3).map((chip: string) => localizeCatalogValue(chip, locale));
 
 const cutoutImage =
   resolveAsset(p.cardImage) ||
@@ -44,10 +40,8 @@ const detailsLabel: Record<string, (name: string) => string> = {
 const displayCategory = String(product.category || "environment");
 const categoryLabel = productCategoryLabel(categories, displayCategory, locale);
 const searchDescriptor = productSearchDescriptor(product.id || p.id, locale);
-const imageAlt = searchDescriptor && !String(p.title || "").toLocaleLowerCase().includes("lorawan")
-  ? `${p.title} — ${searchDescriptor}`
-  : p.title;
-const detailsText = (detailsLabel[locale] || detailsLabel.en)(p.title);
+const imageAlt = searchDescriptor ? `${productBrand} — ${searchDescriptor}` : productBrand;
+const detailsText = (detailsLabel[locale] || detailsLabel.en)(productBrand);
 ---
 
 <article class={`card product-card${variant === "catalog" ? " product-card-premium" : ""} reveal${delay}`} data-category={displayCategory} data-product={p.id}>
@@ -67,7 +61,7 @@ const detailsText = (detailsLabel[locale] || detailsLabel.en)(p.title);
     {variant === "catalog" && <span class="product-card-index" aria-hidden="true">{String(index + 1).padStart(2, "0")}</span>}
   </figure>
   <div class="product-body">
-    <h3>{p.title}</h3>
+    <h3>{productBrand}</h3>
     <p class="product-description">{p.shortDescription}</p>
     <div class="chip-row">
       {chips.map((chip: string) => (
