@@ -26,13 +26,23 @@ const cutoutImage =
   resolveAsset(`assets/product-cutouts/${p.id}.png`);
 const cutoutDimensions = productCutoutDimensions(cutoutImage);
 const cutoutSrcSet = productCutoutSrcSet(cutoutImage);
-const detailsLabel: Record<string, (name: string) => string> = {
+const detailsLabel: Record<Locale, string> = {
+  en: "View product",
+  tr: "Ürünü İncele",
+  de: "Produkt ansehen",
+  fr: "Voir le produit",
+  es: "Ver producto",
+  it: "Vedi prodotto",
+  ar: "عرض المنتج",
+  ja: "製品を見る",
+};
+const detailsAriaLabel: Record<Locale, (name: string) => string> = {
   en: (name) => `View ${name}`,
   tr: (name) => `${name} ürününü inceleyin`,
   de: (name) => `${name} ansehen`,
-  fr: (name) => `Découvrir ${name}`,
+  fr: (name) => `Voir ${name}`,
   es: (name) => `Ver ${name}`,
-  it: (name) => `Scopri ${name}`,
+  it: (name) => `Vedi ${name}`,
   ar: (name) => `عرض ${name}`,
   ja: (name) => `${name}を見る`,
 };
@@ -41,7 +51,8 @@ const displayCategory = String(product.category || "environment");
 const categoryLabel = productCategoryLabel(categories, displayCategory, locale);
 const searchDescriptor = productSearchDescriptor(product.id || p.id, locale);
 const imageAlt = searchDescriptor ? `${productBrand} — ${searchDescriptor}` : productBrand;
-const detailsText = (detailsLabel[locale] || detailsLabel.en)(productBrand);
+const detailsText = detailsLabel[locale] || detailsLabel.en;
+const detailsAccessibleName = (detailsAriaLabel[locale] || detailsAriaLabel.en)(productBrand);
 ---
 
 <article class={`card product-card${variant === "catalog" ? " product-card-premium" : ""} reveal${delay}`} data-category={displayCategory} data-product={p.id}>
@@ -69,7 +80,7 @@ const detailsText = (detailsLabel[locale] || detailsLabel.en)(productBrand);
       ))}
     </div>
     <div class="product-actions">
-      <a href={`/${locale}/products/${encodeURIComponent(p.slug || p.id)}`} class="btn btn-ghost btn-small">
+      <a href={`/${locale}/products/${encodeURIComponent(p.slug || p.id)}`} class="btn btn-ghost btn-small" aria-label={detailsAccessibleName}>
         <span>{detailsText}</span>
         {variant === "catalog" && <span class="product-action-arrow" aria-hidden="true">↗</span>}
       </a>

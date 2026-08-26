@@ -12119,6 +12119,16 @@ body[data-page="home"] .proof-section {
     var(--surface);
 }
 
+/* Keep homepage section hierarchy strong without letting supporting headings
+   compete with the hero. The tighter scale also behaves better in longer locales. */
+body[data-page="home"] .section-head h2 {
+  font-size: clamp(1.9rem, 3.4vw, 3.15rem);
+}
+
+body[data-page="home"] .trust-copy h2 {
+  font-size: clamp(2.1rem, 3.8vw, 3.3rem);
+}
+
 /* Override existing ::before grid pattern to use shader tones */
 body[data-page="home"] .home-products::before,
 body[data-page="home"] .industries-section::before,
@@ -12195,6 +12205,7 @@ body[data-page="home"] .final-cta .section-inner {
 body[data-page="home"] .final-cta h2,
 body[data-page="home"] .final-cta .page-title {
   color: #fff;
+  font-size: clamp(2.1rem, 4vw, 3.5rem);
 }
 
 body[data-page="home"] .final-cta .eyebrow {
@@ -15132,7 +15143,7 @@ body[data-page="home"] .ecosystem-signature-head h2 {
   max-width: 720px;
   margin: 0;
   color: var(--ink);
-  font-size: clamp(2.45rem, 4.5vw, 4.45rem);
+  font-size: clamp(2.2rem, 3.8vw, 3.35rem);
   line-height: 0.98;
   letter-spacing: -0.048em;
 }
