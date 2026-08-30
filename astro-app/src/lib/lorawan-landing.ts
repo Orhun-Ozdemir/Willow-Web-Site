@@ -26,6 +26,9 @@ type LandingCopy = {
   comparisonNote: string;
   categoryBack: string;
   allProducts: string;
+  faqEyebrow: string;
+  faqTitle: string;
+  faqLead: string;
 };
 
 export const LORAWAN_LANDING_COPY: Record<Locale, LandingCopy> = {
@@ -62,6 +65,9 @@ export const LORAWAN_LANDING_COPY: Record<Locale, LandingCopy> = {
     comparisonNote: "Values come from the current catalog record. A dash means that no value is listed in this comparison; check the product page and current datasheet. Communication range and battery life vary with configuration and site conditions.",
     categoryBack: "LoRaWAN sensor portfolio",
     allProducts: "View all products",
+    faqEyebrow: "Frequently Asked",
+    faqTitle: "Questions about LoRaWAN sensors.",
+    faqLead: "Answers to the most common questions about selecting, deploying and integrating LoRaWAN sensors.",
   },
   tr: {
     eyebrow: "LoRaWAN donanım portföyü",
@@ -96,6 +102,9 @@ export const LORAWAN_LANDING_COPY: Record<Locale, LandingCopy> = {
     comparisonNote: "Değerler güncel katalog kaydından alınır. Çizgi, bu karşılaştırmada bir değer bulunmadığını gösterir; ürün sayfasını ve güncel datasheet'i kontrol edin. İletişim menzili ve batarya ömrü yapılandırma ile saha koşullarına göre değişir.",
     categoryBack: "LoRaWAN sensör portföyü",
     allProducts: "Tüm ürünleri görüntüle",
+    faqEyebrow: "Sıkça Sorulanlar",
+    faqTitle: "LoRaWAN sensörleri hakkında sorular.",
+    faqLead: "LoRaWAN sensörü seçimi, sahaya kurulumu ve entegrasyonu hakkında en sık sorulan soruların yanıtları.",
   },
   de: {
     eyebrow: "LoRaWAN-Hardwareportfolio",
@@ -130,6 +139,9 @@ export const LORAWAN_LANDING_COPY: Record<Locale, LandingCopy> = {
     comparisonNote: "Die Werte stammen aus dem aktuellen Katalogdatensatz. Ein Strich bedeutet, dass in diesem Vergleich kein Wert aufgeführt ist; prüfen Sie Produktseite und aktuelles Datenblatt. Reichweite und Batterielaufzeit hängen von Konfiguration und Standort ab.",
     categoryBack: "LoRaWAN-Sensorportfolio",
     allProducts: "Alle Produkte ansehen",
+    faqEyebrow: "Häufig gestellte Fragen",
+    faqTitle: "Fragen zu LoRaWAN-Sensoren.",
+    faqLead: "Antworten auf die häufigsten Fragen zur Auswahl, Installation und Integration von LoRaWAN-Sensoren.",
   },
   fr: {
     eyebrow: "Portefeuille matériel LoRaWAN",
@@ -164,6 +176,9 @@ export const LORAWAN_LANDING_COPY: Record<Locale, LandingCopy> = {
     comparisonNote: "Les valeurs proviennent du catalogue actuel. Un tiret signifie qu’aucune valeur n’est indiquée dans ce comparatif ; consultez la page produit et la fiche technique à jour. La portée et l’autonomie varient selon la configuration et le site.",
     categoryBack: "Portefeuille de capteurs LoRaWAN",
     allProducts: "Voir tous les produits",
+    faqEyebrow: "Questions fréquentes",
+    faqTitle: "Questions sur les capteurs LoRaWAN.",
+    faqLead: "Réponses aux questions les plus fréquentes sur le choix, le déploiement et l'intégration des capteurs LoRaWAN.",
   },
   es: {
     eyebrow: "Cartera de hardware LoRaWAN",
@@ -198,6 +213,9 @@ export const LORAWAN_LANDING_COPY: Record<Locale, LandingCopy> = {
     comparisonNote: "Los valores proceden del catálogo actual. Un guion indica que el dato no figura en esta comparación; consulte la página del producto y la ficha técnica vigente. El alcance y la autonomía varían según la configuración y el entorno.",
     categoryBack: "Cartera de sensores LoRaWAN",
     allProducts: "Ver todos los productos",
+    faqEyebrow: "Preguntas frecuentes",
+    faqTitle: "Preguntas sobre sensores LoRaWAN.",
+    faqLead: "Respuestas a las preguntas más frecuentes sobre la selección, instalación e integración de sensores LoRaWAN.",
   },
   it: {
     eyebrow: "Portafoglio hardware LoRaWAN",
@@ -232,6 +250,9 @@ export const LORAWAN_LANDING_COPY: Record<Locale, LandingCopy> = {
     comparisonNote: "I valori provengono dal catalogo attuale. Un trattino indica che il dato non è riportato in questo confronto; consulta la pagina prodotto e il datasheet aggiornato. Portata e autonomia variano in base a configurazione e sito.",
     categoryBack: "Portafoglio sensori LoRaWAN",
     allProducts: "Vedi tutti i prodotti",
+    faqEyebrow: "Domande frequenti",
+    faqTitle: "Domande sui sensori LoRaWAN.",
+    faqLead: "Risposte alle domande più frequenti sulla selezione, l'installazione e l'integrazione dei sensori LoRaWAN.",
   },
   ar: {
     eyebrow: "مجموعة عتاد LoRaWAN",
@@ -266,6 +287,9 @@ export const LORAWAN_LANDING_COPY: Record<Locale, LandingCopy> = {
     comparisonNote: "القيم مأخوذة من سجل الكتالوج الحالي. تشير الشرطة إلى عدم توفر قيمة في هذه المقارنة؛ راجع صفحة المنتج وورقة البيانات الحالية. يختلف مدى الاتصال وعمر البطارية حسب الإعداد وظروف الموقع.",
     categoryBack: "مجموعة مستشعرات LoRaWAN",
     allProducts: "عرض جميع المنتجات",
+    faqEyebrow: "الأسئلة الشائعة",
+    faqTitle: "أسئلة حول مستشعرات LoRaWAN.",
+    faqLead: "إجابات عن الأسئلة الأكثر شيوعًا حول اختيار مستشعرات LoRaWAN ونشرها ودمجها.",
   },
   ja: {
     eyebrow: "LoRaWANハードウェア製品群",
@@ -300,6 +324,9 @@ export const LORAWAN_LANDING_COPY: Record<Locale, LandingCopy> = {
     comparisonNote: "値は現行カタログの登録情報に基づきます。ダッシュは、この比較表に値がないことを示します。製品ページと最新データシートをご確認ください。通信距離と電池寿命は設定や現場条件によって変わります。",
     categoryBack: "LoRaWANセンサー製品群",
     allProducts: "すべての製品を見る",
+    faqEyebrow: "よくある質問",
+    faqTitle: "LoRaWANセンサーに関するよくある質問",
+    faqLead: "LoRaWANセンサーの選定、設置、統合に関するよくある質問への回答です。",
   },
 };
 
@@ -307,26 +334,68 @@ const CATEGORY_NAMES: Record<string, Record<Locale, string>> = {
   modules: { en: "LoRaWAN Modules", tr: "LoRaWAN Modülleri", de: "LoRaWAN-Module", fr: "Modules LoRaWAN", es: "Módulos LoRaWAN", it: "Moduli LoRaWAN", ar: "وحدات LoRaWAN", ja: "LoRaWANモジュール" },
   environment: { en: "LoRaWAN Environmental Sensors", tr: "LoRaWAN Çevresel Ölçüm Sensörleri", de: "LoRaWAN-Umweltsensoren", fr: "Capteurs environnementaux LoRaWAN", es: "Sensores ambientales LoRaWAN", it: "Sensori ambientali LoRaWAN", ar: "مستشعرات LoRaWAN البيئية", ja: "LoRaWAN環境センサー" },
   tracking: { en: "LoRaWAN Tracking and Safety Devices", tr: "LoRaWAN Takip ve Güvenlik Cihazları", de: "LoRaWAN-Tracking- und Sicherheitsgeräte", fr: "Dispositifs LoRaWAN de suivi et de sécurité", es: "Dispositivos LoRaWAN de seguimiento y seguridad", it: "Dispositivi LoRaWAN di tracciamento e sicurezza", ar: "أجهزة LoRaWAN للتتبع والسلامة", ja: "LoRaWAN追跡・安全デバイス" },
-  industrial: { en: "Industrial LoRaWAN Sensors and Interfaces", tr: "Endüstriyel LoRaWAN Sensörleri ve Arayüzleri", de: "Industrielle LoRaWAN-Sensoren und Schnittstellen", fr: "Capteurs et interfaces LoRaWAN industriels", es: "Sensores e interfaces LoRaWAN industriales", it: "Sensori e interfacce LoRaWAN industriali", ar: "مستشعرات وواجهات LoRaWAN الصناعية", ja: "産業用LoRaWANセンサー・インターフェース" },
+  // Renamed from "Industrial LoRaWAN Sensors and Interfaces" — that wording nearly
+  // duplicated the pillar page's own title ("Industrial LoRaWAN Sensors and IoT
+  // Devices"), risking self-cannibalization between the two in search results.
+  industrial: { en: "LoRaWAN Pressure Sensors and Modbus Interfaces", tr: "LoRaWAN Basınç Sensörleri ve Modbus Arayüzleri", de: "LoRaWAN-Drucksensoren und Modbus-Schnittstellen", fr: "Capteurs de pression et interfaces Modbus LoRaWAN", es: "Sensores de presión e interfaces Modbus LoRaWAN", it: "Sensori di pressione e interfacce Modbus LoRaWAN", ar: "مستشعرات ضغط LoRaWAN وواجهات Modbus", ja: "LoRaWAN圧力センサー・Modbusインターフェース" },
 };
 
 export function categorySearchName(key: string, locale: Locale): string {
   return CATEGORY_NAMES[key]?.[locale] || CATEGORY_NAMES[key]?.en || key;
 }
 
+// One distinct description per category (not a single template with the name
+// swapped in) — a shared boilerplate sentence across all four category pages
+// reads as near-duplicate meta content to search engines.
+const CATEGORY_SEO_DESCRIPTIONS: Record<string, Record<Locale, (count: number) => string>> = {
+  modules: {
+    en: (n) => `${n} LoRaWAN module${n === 1 ? "" : "s"} for embedded integration — MCU and radio specifications for building custom sensor end-nodes.`,
+    tr: (n) => `Özel sensör uç düğümleri geliştirmek için ${n} LoRaWAN modülü — MCU ve radyo özellikleriyle gömülü entegrasyona hazır.`,
+    de: (n) => `${n} LoRaWAN-Modul${n === 1 ? "" : "e"} für die Embedded-Integration — MCU- und Funkspezifikationen für eigene Sensorendknoten.`,
+    fr: (n) => `${n} module${n === 1 ? "" : "s"} LoRaWAN pour l'intégration embarquée — spécifications MCU et radio pour concevoir vos propres nœuds capteurs.`,
+    es: (n) => `${n} módulo${n === 1 ? "" : "s"} LoRaWAN para integración embebida — especificaciones de MCU y radio para crear sus propios nodos sensores.`,
+    it: (n) => `${n} modulo/i LoRaWAN per l'integrazione embedded — specifiche MCU e radio per progettare nodi sensore personalizzati.`,
+    ar: (n) => `${n} وحدة/وحدات LoRaWAN للتكامل المدمج — مواصفات المتحكم والراديو لبناء عقد استشعار مخصصة.`,
+    ja: (n) => `カスタムセンサー端末の開発向けLoRaWANモジュール${n}点 — MCUと無線仕様を掲載、組み込み統合に対応。`,
+  },
+  environment: {
+    en: (n) => `${n} LoRaWAN sensor${n === 1 ? "" : "s"} for environmental monitoring — level, air quality, temperature and soil moisture, compared by measurement range and enclosure rating.`,
+    tr: (n) => `Çevresel izleme için ${n} LoRaWAN sensörü — seviye, hava kalitesi, sıcaklık ve toprak nemi; ölçüm aralığı ve gövde koruma sınıfına göre karşılaştırın.`,
+    de: (n) => `${n} LoRaWAN-Sensor${n === 1 ? "" : "en"} für die Umweltüberwachung — Füllstand, Luftqualität, Temperatur und Bodenfeuchte, verglichen nach Messbereich und Schutzart.`,
+    fr: (n) => `${n} capteur${n === 1 ? "" : "s"} LoRaWAN pour la surveillance environnementale — niveau, qualité de l'air, température et humidité du sol, comparés selon la plage de mesure et l'indice de protection.`,
+    es: (n) => `${n} sensor${n === 1 ? "" : "es"} LoRaWAN para monitorización ambiental — nivel, calidad del aire, temperatura y humedad del suelo, comparados por rango de medición y grado de protección.`,
+    it: (n) => `${n} sensore/i LoRaWAN per il monitoraggio ambientale — livello, qualità dell'aria, temperatura e umidità del suolo, confrontati per intervallo di misura e grado di protezione.`,
+    ar: (n) => `${n} مستشعر/مستشعرات LoRaWAN للمراقبة البيئية — المستوى وجودة الهواء ودرجة الحرارة ورطوبة التربة، بالمقارنة حسب نطاق القياس ودرجة الحماية.`,
+    ja: (n) => `環境モニタリング向けLoRaWANセンサー${n}点 — 水位、空気質、温度、土壌水分を測定範囲と防塵防水等級で比較できます。`,
+  },
+  tracking: {
+    en: (n) => `${n} LoRaWAN device${n === 1 ? "" : "s"} for asset tracking and safety alerts — location, movement and emergency events, compared by coverage and battery life.`,
+    tr: (n) => `Varlık takibi ve güvenlik uyarıları için ${n} LoRaWAN cihazı — konum, hareket ve acil durum bildirimleri; kapsama alanı ve pil ömrüne göre karşılaştırın.`,
+    de: (n) => `${n} LoRaWAN-Gerät${n === 1 ? "" : "e"} für Asset-Tracking und Sicherheitsalarme — Standort, Bewegung und Notfallereignisse, verglichen nach Funkabdeckung und Batterielaufzeit.`,
+    fr: (n) => `${n} appareil${n === 1 ? "" : "s"} LoRaWAN pour le suivi d'actifs et les alertes de sécurité — position, mouvement et événements d'urgence, comparés selon la couverture radio et l'autonomie.`,
+    es: (n) => `${n} dispositivo${n === 1 ? "" : "s"} LoRaWAN para seguimiento de activos y alertas de seguridad — ubicación, movimiento y eventos de emergencia, comparados por cobertura y autonomía.`,
+    it: (n) => `${n} dispositivo/i LoRaWAN per il tracciamento degli asset e gli allarmi di sicurezza — posizione, movimento ed eventi di emergenza, confrontati per copertura radio e autonomia.`,
+    ar: (n) => `${n} جهاز/أجهزة LoRaWAN لتتبع الأصول وتنبيهات السلامة — الموقع والحركة وأحداث الطوارئ، بالمقارنة حسب التغطية وعمر البطارية.`,
+    ja: (n) => `資産追跡・安全アラート向けLoRaWANデバイス${n}点 — 位置、動き、緊急イベントを電波到達範囲と電池寿命で比較できます。`,
+  },
+  industrial: {
+    en: (n) => `${n} LoRaWAN pressure sensor${n === 1 ? "" : "s"} and Modbus interfaces for industrial process data — protocol support and enclosure rating, compared for field deployment.`,
+    tr: (n) => `Endüstriyel süreç verisi için ${n} LoRaWAN basınç sensörü ve Modbus arayüzü — protokol desteği ve gövde koruma sınıfına göre saha kurulumuna hazır karşılaştırma.`,
+    de: (n) => `${n} LoRaWAN-Drucksensor${n === 1 ? "" : "en"} und Modbus-Schnittstellen für industrielle Prozessdaten — verglichen nach Protokollunterstützung und Schutzart für den Feldeinsatz.`,
+    fr: (n) => `${n} capteur${n === 1 ? "" : "s"} de pression et interfaces Modbus LoRaWAN pour les données de process industriel — comparés selon le protocole pris en charge et l'indice de protection pour le déploiement terrain.`,
+    es: (n) => `${n} sensor${n === 1 ? "" : "es"} de presión e interfaces Modbus LoRaWAN para datos de proceso industrial — comparados por soporte de protocolo y grado de protección para el despliegue en campo.`,
+    it: (n) => `${n} sensore/i di pressione e interfacce Modbus LoRaWAN per i dati di processo industriale — confrontati per supporto protocollo e grado di protezione per l'installazione sul campo.`,
+    ar: (n) => `${n} مستشعر/مستشعرات ضغط LoRaWAN وواجهات Modbus لبيانات العمليات الصناعية — بالمقارنة حسب دعم البروتوكول ودرجة الحماية للنشر الميداني.`,
+    ja: (n) => `産業プロセスデータ向けLoRaWAN圧力センサー・Modbusインターフェース${n}点 — 対応プロトコルと防塵防水等級を現場設置の観点で比較できます。`,
+  },
+};
+
 export function categorySeoDescription(key: string, locale: Locale, productCount: number): string {
+  const perCategory = CATEGORY_SEO_DESCRIPTIONS[key]?.[locale] || CATEGORY_SEO_DESCRIPTIONS[key]?.en;
+  if (perCategory) return perCategory(productCount);
+  // Fallback for any category key not covered above.
   const name = categorySearchName(key, locale);
-  const templates: Record<Locale, string> = {
-    en: `Compare ${productCount} Willow Software ${name.toLowerCase()} using current catalog descriptions and product specifications.`,
-    tr: `${productCount} Willow Software ${name.toLocaleLowerCase("tr-TR")} ürününü güncel katalog açıklamaları ve teknik özelliklerle karşılaştırın.`,
-    de: `Vergleichen Sie ${productCount} Willow Software-Produkte aus „${name}“ anhand aktueller Katalogdaten und Spezifikationen.`,
-    fr: `Comparez ${productCount} produits Willow Software de la gamme « ${name} » à partir des descriptions et spécifications actuelles.`,
-    es: `Compare ${productCount} productos Willow Software de « ${name} » mediante descripciones y especificaciones actuales.`,
-    it: `Confronta ${productCount} prodotti Willow Software della gamma “${name}” usando descrizioni e specifiche aggiornate.`,
-    ar: `قارن بين ${productCount} من منتجات Willow Software ضمن «${name}» بالاعتماد على الأوصاف والمواصفات الحالية.`,
-    ja: `「${name}」に属するWillow Software製品${productCount}点を、最新の説明と仕様で比較できます。`,
-  };
-  return templates[locale] || templates.en;
+  return `Compare ${productCount} Willow Software ${name.toLowerCase()} using current catalog descriptions and product specifications.`;
 }
 
 export const COLLECTION_TABLE_LABELS: Record<Locale, { product: string; measures: string; enclosure: string; measurementRange: string; radio: string; battery: string }> = {
