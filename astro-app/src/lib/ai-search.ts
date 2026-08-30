@@ -121,6 +121,22 @@ const FAQ_FALLBACKS: Record<string, Partial<Record<Locale, AiFaqItem[]>>> = {
       { question: "Willow Software ürünleri sadece donanım mı?", answer: "Hayır. Ürünler yalnızca donanım olarak veya yazılım, bulut, veritabanı ve operatör arayüzlerini kapsayan eksiksiz bir IoT yığını içinde değerlendirilebilir." },
     ],
   },
+  "lorawan-sensors": {
+    en: [
+      { question: "What is a LoRaWAN sensor?", answer: "A LoRaWAN sensor is a low-power wireless device that measures a physical value — level, pressure, temperature, location or a digital event — and transmits it over long range using the LoRaWAN protocol, typically through a gateway and then a network server." },
+      { question: "How do I choose the right LoRaWAN sensor for my application?", answer: "Start with the measurement task and expected range, then check the installation environment, enclosure rating, supported frequency plan and reporting interval before comparing battery life and price." },
+      { question: "What determines LoRaWAN range in the field?", answer: "Range depends on the frequency plan, gateway placement, antenna height, obstacles and local radio conditions — not the sensor alone. Consult the current product specification for typical figures." },
+      { question: "How long does a LoRaWAN sensor's battery last?", answer: "Battery life is configuration-dependent: it varies with reporting interval, radio conditions, sensor type and power settings. Check each product's current specification for its tested range." },
+      { question: "Can Willow Software LoRaWAN sensors be integrated with a dashboard or existing platform?", answer: "Yes. They can be paired with LoRaWAN payload decoding, backend ingestion, PostgreSQL schemas, dashboards, alerts and mobile workflows, or evaluated as standalone hardware." },
+    ],
+    tr: [
+      { question: "LoRaWAN sensörü nedir?", answer: "LoRaWAN sensörü; seviye, basınç, sıcaklık, konum veya dijital bir olay gibi fiziksel bir değeri ölçüp LoRaWAN protokolüyle uzun mesafeye, genellikle bir gateway ve ardından ağ sunucusuna ileten düşük güçlü kablosuz bir cihazdır." },
+      { question: "Uygulamam için doğru LoRaWAN sensörünü nasıl seçerim?", answer: "Önce ölçüm görevini ve beklenen aralığı belirleyin, ardından kurulum ortamını, gövde koruma sınıfını, desteklenen frekans planını ve veri gönderim aralığını kontrol edip pil ömrü ve fiyatı karşılaştırın." },
+      { question: "Sahada LoRaWAN menzilini ne belirler?", answer: "Menzil; frekans planı, gateway konumu, anten yüksekliği, engeller ve yerel radyo koşullarına bağlıdır — sadece sensöre değil. Tipik değerler için güncel ürün teknik özelliğine bakın." },
+      { question: "Bir LoRaWAN sensörünün pil ömrü ne kadardır?", answer: "Pil ömrü yapılandırmaya bağlıdır: veri gönderim aralığı, radyo koşulları, sensör türü ve güç ayarlarına göre değişir. Test edilmiş değerler için her ürünün güncel teknik özelliğini inceleyin." },
+      { question: "Willow Software LoRaWAN sensörleri bir dashboard veya mevcut platformla entegre edilebilir mi?", answer: "Evet. LoRaWAN payload çözümleme, backend veri alımı, PostgreSQL şeması, dashboard, alarm ve mobil iş akışlarıyla birlikte çalışabilir veya tek başına donanım olarak değerlendirilebilir." },
+    ],
+  },
 };
 
 export function stripHtml(value: string): string {

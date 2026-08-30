@@ -5,7 +5,7 @@ import { loadContent } from "@/lib/content";
 import { resolveLocale, localizedValue } from "@/lib/cms";
 import { productCategoriesFromContent } from "@/lib/product-categories";
 import { LORAWAN_LANDING_COPY } from "@/lib/lorawan-landing";
-import { appendSchemaNodes } from "@/lib/ai-search";
+import { appendSchemaNodes, fallbackFaqsForPage, faqItemsForPage, faqSchemaNode } from "@/lib/ai-search";
 import { buildAlternates, DEFAULT_OG_IMAGE, ORGANIZATION_SCHEMA, WEBSITE_SCHEMA, SITE_ORIGIN, fitSeoDescription, fitSeoTitle, webPageNode } from "@/lib/seo";
 
 export const prerender = false;
@@ -19,6 +19,8 @@ const canonical = `${SITE_ORIGIN}/${locale}/lorawan-sensors`;
 const title = fitSeoTitle(`${copy.seoTitle} | Willow Software`);
 const description = fitSeoDescription(copy.description);
 const itemListId = `${canonical}#products`;
+const fallbackFaqs = fallbackFaqsForPage("lorawan-sensors", locale);
+const faqItems = faqItemsForPage(content.faqs || [], "lorawan-sensors", locale, fallbackFaqs);
 
 const schema = appendSchemaNodes({
   "@context": "https://schema.org",
@@ -49,7 +51,7 @@ const schema = appendSchemaNodes({
       })),
     },
   ],
-}, []);
+}, [faqSchemaNode(canonical, faqItems)]);
 ---
 
 <PageLayout
@@ -64,5 +66,5 @@ const schema = appendSchemaNodes({
   locale={locale}
   dataPage="products"
 >
-  <LorawanCollection locale={locale} products={products} categories={categories} />
+  <LorawanCollection locale={locale} products={products} categories={categories} faqs={content.faqs || []} fallbackFaqs={fallbackFaqs} />
 </PageLayout>

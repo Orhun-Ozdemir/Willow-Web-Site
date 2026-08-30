@@ -1,5 +1,6 @@
 ---
 import ProductCard from "./ProductCard.astro";
+import FaqAccordion from "./FaqAccordion.astro";
 import { localizeItem, type Locale } from "@/lib/cms";
 import { productCategoryText, type ProductCategory } from "@/lib/product-categories";
 import { productSearchDescriptor } from "@/lib/seo-fallbacks";
@@ -13,9 +14,11 @@ interface Props {
   allProducts?: any[];
   categories: ProductCategory[];
   selectedCategory?: ProductCategory;
+  faqs?: any[];
+  fallbackFaqs?: { question: string; answer: string }[];
 }
 
-const { locale, products, allProducts = products, categories, selectedCategory } = Astro.props;
+const { locale, products, allProducts = products, categories, selectedCategory, faqs = [], fallbackFaqs = [] } = Astro.props;
 const copy = LORAWAN_LANDING_COPY[locale] || LORAWAN_LANDING_COPY.en;
 const visibleCategories = categories.filter((category) => category.visible);
 const heroTitle = selectedCategory ? categorySearchName(selectedCategory.key, locale) : copy.title;
@@ -235,6 +238,19 @@ const comparisonProducts = selectedCategory ? [] : allProducts
       </div>
     </div>
   </section>
+
+  {!selectedCategory && (
+    <section class="section soft lorawan-faq" id="faq">
+      <div class="section-inner">
+        <div class="section-head center">
+          <p class="eyebrow">{copy.faqEyebrow}</p>
+          <h2 class="page-title">{copy.faqTitle}</h2>
+          <p class="section-lead">{copy.faqLead}</p>
+        </div>
+        <FaqAccordion faqs={faqs} pageKey="lorawan-sensors" locale={locale} fallbackFaqs={fallbackFaqs} />
+      </div>
+    </section>
+  )}
 </main>
 
 <style>
