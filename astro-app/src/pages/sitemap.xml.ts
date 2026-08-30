@@ -5,12 +5,15 @@ import { SITE_ORIGIN } from "@/lib/seo";
 import { productCategoriesFromContent } from "@/lib/product-categories";
 import { TECHNICAL_GUIDES } from "@/lib/technical-guides";
 
-const STATIC_PAGES: { key: string; subPath: string }[] = [
+const STATIC_PAGES: { key: string; subPath: string; defaultPriority?: string; defaultChangefreq?: string }[] = [
   { key: "home", subPath: "" },
   { key: "solutions", subPath: "/solutions" },
   { key: "services", subPath: "/services" },
   { key: "products", subPath: "/products" },
-  { key: "lorawanSensors", subPath: "/lorawan-sensors" },
+  // No `pageSeo` entry exists for this page in the CMS, so without a fallback it
+  // silently gets no <priority>/<changefreq> at all (see pushLocalizedSet below) —
+  // unlike the /products/category/* pages, which hardcode their own.
+  { key: "lorawanSensors", subPath: "/lorawan-sensors", defaultPriority: "0.8", defaultChangefreq: "weekly" },
   { key: "company", subPath: "/company" },
   { key: "news", subPath: "/news" },
   { key: "glossary", subPath: "/glossary" },
@@ -68,8 +71,8 @@ export const GET: APIRoute = async () => {
     const seoEn = seoByLocale.en || {};
     // Use each locale's own changefreq/priority, falling back to the English entry.
     pushLocalizedSet((l) => `${SITE_ORIGIN}/${l}${page.subPath}`, (l) => ({
-      changefreq: seoByLocale[l]?.changefreq || seoEn.changefreq,
-      priority: seoByLocale[l]?.priority || seoEn.priority,
+      changefreq: seoByLocale[l]?.changefreq || seoEn.changefreq || page.defaultChangefreq,
+      priority: seoByLocale[l]?.priority || seoEn.priority || page.defaultPriority,
       lastmod: latestLastmod([
         content.lastModified?.pageSeo?.[page.key],
         content.lastModified?.pageContent?.[page.key],
