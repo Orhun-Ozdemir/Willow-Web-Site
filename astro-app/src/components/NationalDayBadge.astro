@@ -41,10 +41,22 @@ const Tag = replayable ? "button" : "div";
   // indefinitely, leaving this note stuck at opacity:0 forever. Reveal it from
   // JS instead (setTimeout keeps firing regardless of tab visibility), and only
   // start the delay once the page is genuinely visible.
+  // Non-home pages wrap the full greeting (no truncation) so it can run to several
+  // lines, and it sits absolutely-positioned over page content below the header —
+  // fine to read, not fine to leave parked over the page title forever. The
+  // replayable badge (home page) is a standing control, so it stays put; the
+  // plain announcement on other pages fades itself out after a read window.
+  const AUTO_HIDE_MS = 7000;
+
   document.querySelectorAll<HTMLElement>("[data-reveal-delay]").forEach((note) => {
     const delayMs = Math.max(0, parseFloat(note.dataset.revealDelay || "0.35") * 1000);
     const reveal = () => {
-      window.setTimeout(() => note.classList.add("is-visible"), delayMs);
+      window.setTimeout(() => {
+        note.classList.add("is-visible");
+        if (!note.dataset.replayBadge) {
+          window.setTimeout(() => note.classList.remove("is-visible"), AUTO_HIDE_MS);
+        }
+      }, delayMs);
     };
     if (document.hidden) {
       const onVisible = () => {
@@ -74,11 +86,11 @@ const Tag = replayable ? "button" : "div";
     display: flex;
     align-items: center;
     gap: 9px;
-    max-width: min(520px, calc(100vw - 32px));
+    max-width: min(560px, calc(100vw - 32px));
     min-height: 32px;
+    border-radius: 18px;
     padding: 5px 13px 5px 6px;
     border: 1px solid rgba(227, 10, 23, .14);
-    border-radius: 999px;
     color: rgba(19, 27, 46, .78);
     background: rgba(255, 255, 255, .9);
     box-shadow: 0 10px 28px rgba(19, 27, 46, .1);
@@ -151,26 +163,23 @@ const Tag = replayable ? "button" : "div";
   }
 
   .national-day-note-message {
-    overflow: hidden;
     font-size: .68rem;
     font-weight: 720;
-    line-height: 1.2;
+    line-height: 1.35;
     letter-spacing: .015em;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    white-space: normal;
   }
 
   @media (max-width: 900px) {
     .national-day-note {
       top: calc(100% + 6px);
-      width: max-content;
       max-width: calc(100vw - 32px);
       min-height: 29px;
       padding: 4px 11px 4px 5px;
     }
 
     .national-day-note-flag { width: 20px; height: 20px; }
-    .national-day-note-message { max-width: calc(100vw - 84px); font-size: .62rem; }
+    .national-day-note-message { font-size: .62rem; }
   }
 
   @media (prefers-reduced-motion: reduce) {
