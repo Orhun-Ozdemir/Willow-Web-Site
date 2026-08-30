@@ -47,7 +47,7 @@ const getLabel = (key: keyof typeof labels) => labels[key][locale] || labels[key
 <footer class="footer">
   <div class="footer-grid">
     <div>
-      <h3>WillowSoft</h3>
+      <h3>Willow Software</h3>
       <p>{getLabel("tagline")}</p>
       <div class="footer-social" aria-label={getLabel("social")}>
         {socialLinks.length > 0 ? socialLinks.map((s) => (
@@ -85,6 +85,6 @@ const getLabel = (key: keyof typeof labels) => labels[key][locale] || labels[key
     </div>
   </div>
   <div class="footer-bottom">
-    <span>© 2026 WillowSoft. {getLabel("rights")}</span>
+    <span>© 2026 Willow Software. {getLabel("rights")}</span>
   </div>
 </footer>

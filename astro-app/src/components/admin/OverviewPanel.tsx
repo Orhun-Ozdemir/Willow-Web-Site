@@ -164,7 +164,7 @@ export default function OverviewPanel({ onNavigate }: OverviewPanelProps) {
       <section className="rounded-3xl border border-gray-200 bg-white p-6 shadow-sm">
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
-            <p className="text-[11px] font-black uppercase tracking-widest text-[#132175]">WillowSoft Admin</p>
+            <p className="text-[11px] font-black uppercase tracking-widest text-[#132175]">Willow Software Admin</p>
             <h3 className="mt-2 text-2xl font-black text-[#131b2e]">Genel Bakış</h3>
             <p className="mt-2 max-w-2xl text-sm leading-relaxed text-gray-500">
               İçerik, SEO, çeviri ve form taleplerinin kısa durum özeti. Buradan hangi bölüme müdahale gerektiğini hızlıca görebilirsin.

@@ -557,7 +557,7 @@ export default function SettingsPanel() {
             <div>
               <p className="text-sm font-semibold text-gray-800">Marka Sloganı (Header)</p>
               <p className="mt-1 text-xs text-gray-400">
-                Logo altında görünen <strong>WILLOWSOFT</strong> altı metin. Her dil için ayrı kaydedilir ve Supabase <code className="text-[11px]">site_meta</code> tablosuna yazılır.
+                Logo altında görünen <strong>WILLOW SOFTWARE</strong> altı metin. Her dil için ayrı kaydedilir ve Supabase <code className="text-[11px]">site_meta</code> tablosuna yazılır.
               </p>
             </div>
             <LocaleTabs active={brandLocale} onChange={setBrandLocale} />

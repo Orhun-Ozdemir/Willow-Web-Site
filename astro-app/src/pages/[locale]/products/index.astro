@@ -15,7 +15,7 @@ export const prerender = false;
 
 const locale = resolveLocale(Astro.params.locale, Astro.url.pathname);
 const content = await loadContent();
-const seoProps = pageSeo(content, "products", locale, "/products", "Products | WillowSoft", "Industrial-grade LoRaWAN hardware portfolio.");
+const seoProps = pageSeo(content, "products", locale, "/products", "Products | Willow Software", "Industrial-grade LoRaWAN hardware portfolio.");
 const pageContent = content.pageContent?.products || {};
 const companyFacts = content.companyFacts || {};
 
@@ -132,7 +132,7 @@ const labels = {
   selectionLead: { en: "Share the measurement, environment and connectivity requirements. Our engineering team will recommend the right hardware and system architecture.", tr: "Ölçmek istediğiniz değeri, çalışma ortamını ve bağlantı ihtiyacınızı paylaşın. Mühendislik ekibimiz doğru donanımı ve sistem mimarisini birlikte belirlesin.", de: "Teilen Sie Mess-, Umgebungs- und Konnektivitätsanforderungen. Unser Team empfiehlt Hardware und Architektur.", fr: "Partagez vos besoins de mesure, d’environnement et de connectivité. Notre équipe recommandera le matériel adapté.", es: "Comparta sus requisitos de medición, entorno y conectividad. Nuestro equipo recomendará el hardware adecuado.", it: "Condividi requisiti di misura, ambiente e connettività. Il nostro team consiglierà l'hardware adatto.", ar: "شارك متطلبات القياس والبيئة والاتصال وسيوصي فريقنا بالأجهزة المناسبة.", ja: "計測対象、設置環境、通信要件を共有いただければ、最適なハードウェアと構成をご提案します。" },
   systemEyebrow: previewLabel("Connected product architecture", "Bağlı ürün mimarisi"),
   systemTitle: previewLabel("Hardware is only the beginning.", "Donanım yalnızca başlangıç."),
-  systemLead: previewLabel("WillowSoft combines the device, connectivity and software layers so field data becomes an operational decision.", "WillowSoft; cihaz, bağlantı ve yazılım katmanlarını birlikte geliştirir. Böylece saha verisi yalnızca toplanmaz, operasyonel karara dönüşür."),
+  systemLead: previewLabel("Willow Software combines the device, connectivity and software layers so field data becomes an operational decision.", "Willow Software; cihaz, bağlantı ve yazılım katmanlarını birlikte geliştirir. Böylece saha verisi yalnızca toplanmaz, operasyonel karara dönüşür."),
   systemStepOneTitle: previewLabel("Field device", "Saha cihazı"),
   systemStepOneDesc: previewLabel("Low-power sensing and industrial enclosure", "Düşük güçlü ölçüm ve endüstriyel gövde"),
   systemStepTwoTitle: previewLabel("LoRaWAN network", "LoRaWAN ağı"),

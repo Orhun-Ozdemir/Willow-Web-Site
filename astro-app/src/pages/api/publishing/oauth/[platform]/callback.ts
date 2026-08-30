@@ -44,7 +44,7 @@ export const GET: APIRoute = async ({ request, params }) => {
       const data = await response.json();
       if (!response.ok || !data.access_token) throw new Error(data.error_description || "LinkedIn token alınamadı.");
       token = data.access_token; refreshToken = data.refresh_token || ""; expiresIn = data.expires_in || null; scopes = String(data.scope || "").split(" ").filter(Boolean);
-      displayName = process.env.LINKEDIN_DISPLAY_NAME || "WillowSoft LinkedIn";
+      displayName = process.env.LINKEDIN_DISPLAY_NAME || "Willow Software LinkedIn";
       username = process.env.LINKEDIN_USERNAME || "";
     } else if (platform === "instagram") {
       const form = new FormData();

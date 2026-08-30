@@ -198,7 +198,7 @@ export default function AdminShell() {
               <img src={`${import.meta.env.BASE_URL}assets/willow-mark-transparent.png`} alt="" className="w-6 h-6 object-contain" />
             </div>
             <div>
-              <h1 className="font-extrabold text-sm tracking-wide text-white" style={{ fontFamily: "var(--font-display)" }}>WILLOWSOFT</h1>
+              <h1 className="font-extrabold text-sm tracking-wide text-white" style={{ fontFamily: "var(--font-display)" }}>WILLOW SOFTWARE</h1>
               <p className="text-[10px] text-white/50 uppercase tracking-widest">Admin Panel</p>
             </div>
           </div>

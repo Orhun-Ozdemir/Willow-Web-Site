@@ -43,7 +43,7 @@ type LabelKey =
 const locale = resolveLocale(Astro.params.locale, Astro.url.pathname);
 const content = await loadContent();
 const pageContent = content.pageContent?.news || {};
-const seoProps = pageSeo(content, "news", locale, "/news", "News | WillowSoft", "WillowSoft company updates, events, export news, and engineering updates.");
+const seoProps = pageSeo(content, "news", locale, "/news", "News | Willow Software", "Willow Software company updates, events, export news, and engineering updates.");
 
 const toTime = (value: any) => {
   const time = value ? new Date(`${value}T00:00:00`).getTime() : 0;
@@ -129,15 +129,15 @@ const newsSchema = {
 };
 
 const labels: Record<LabelKey, Record<Locale, string>> = {
-  heroAlt: { en: "WillowSoft engineering updates", tr: "WillowSoft mühendislik haberleri", de: "WillowSoft Engineering-Neuigkeiten", fr: "Actualités d'ingénierie WillowSoft", es: "Actualizaciones de ingeniería de WillowSoft", it: "Aggiornamenti tecnici WillowSoft", ar: "تحديثات WillowSoft الهندسية", ja: "WillowSoft エンジニアリングニュース" },
+  heroAlt: { en: "Willow Software engineering updates", tr: "Willow Software mühendislik haberleri", de: "Willow Software Engineering-Neuigkeiten", fr: "Actualités d'ingénierie Willow Software", es: "Actualizaciones de ingeniería de Willow Software", it: "Aggiornamenti tecnici Willow Software", ar: "تحديثات Willow Software الهندسية", ja: "Willow Software エンジニアリングニュース" },
   heroEyebrow: { en: "News & Updates", tr: "Haberler ve Güncellemeler", de: "News & Updates", fr: "Actualités et mises à jour", es: "Noticias y novedades", it: "News e aggiornamenti", ar: "الأخبار والتحديثات", ja: "ニュースと更新" },
   heroTitle: { en: "News, events and engineering milestones.", tr: "Haberler, etkinlikler ve mühendislik gelişmeleri.", de: "Neuigkeiten, Veranstaltungen und technische Meilensteine.", fr: "Actualités, événements et avancées techniques.", es: "Noticias, eventos e hitos de ingeniería.", it: "Notizie, eventi e traguardi ingegneristici.", ar: "الأخبار والفعاليات والمحطات الهندسية.", ja: "ニュース、イベント、エンジニアリングの節目。" },
-  heroLead: { en: "Follow WillowSoft’s company milestones, industry events, product launches and engineering developments.", tr: "WillowSoft’un kurumsal gelişmelerini, sektör etkinliklerini, ürün lansmanlarını ve mühendislik çalışmalarını takip edin.", de: "Verfolgen Sie Unternehmensmeilensteine, Branchenveranstaltungen, Produktneuheiten und technische Entwicklungen von WillowSoft.", fr: "Suivez les étapes clés de WillowSoft, ses événements sectoriels, lancements de produits et développements techniques.", es: "Siga los hitos de WillowSoft, eventos del sector, lanzamientos de productos y avances de ingeniería.", it: "Segui i traguardi di WillowSoft, gli eventi di settore, i lanci di prodotto e gli sviluppi tecnici.", ar: "تابع محطات WillowSoft المؤسسية وفعاليات القطاع وإطلاقات المنتجات والتطورات الهندسية.", ja: "WillowSoft の企業動向、業界イベント、製品発表、技術開発をご覧ください。" },
+  heroLead: { en: "Follow Willow Software’s company milestones, industry events, product launches and engineering developments.", tr: "Willow Software’un kurumsal gelişmelerini, sektör etkinliklerini, ürün lansmanlarını ve mühendislik çalışmalarını takip edin.", de: "Verfolgen Sie Unternehmensmeilensteine, Branchenveranstaltungen, Produktneuheiten und technische Entwicklungen von Willow Software.", fr: "Suivez les étapes clés de Willow Software, ses événements sectoriels, lancements de produits et développements techniques.", es: "Siga los hitos de Willow Software, eventos del sector, lanzamientos de productos y avances de ingeniería.", it: "Segui i traguardi di Willow Software, gli eventi di settore, i lanci di prodotto e gli sviluppi tecnici.", ar: "تابع محطات Willow Software المؤسسية وفعاليات القطاع وإطلاقات المنتجات والتطورات الهندسية.", ja: "Willow Software の企業動向、業界イベント、製品発表、技術開発をご覧ください。" },
   featuredEyebrow: { en: "Featured update", tr: "Öne çıkan haber", de: "Ausgewähltes Update", fr: "Actualité à la une", es: "Actualización destacada", it: "Aggiornamento in evidenza", ar: "تحديث مميز", ja: "注目の更新" },
-  featuredTitle: { en: "Featured news from WillowSoft.", tr: "WillowSoft’tan öne çıkan haber.", de: "Ausgewählte Neuigkeiten von WillowSoft.", fr: "L’actualité à la une de WillowSoft.", es: "Noticias destacadas de WillowSoft.", it: "Notizie in evidenza da WillowSoft.", ar: "خبر مميز من WillowSoft.", ja: "WillowSoft の注目ニュース。" },
+  featuredTitle: { en: "Featured news from Willow Software.", tr: "Willow Software’tan öne çıkan haber.", de: "Ausgewählte Neuigkeiten von Willow Software.", fr: "L’actualité à la une de Willow Software.", es: "Noticias destacadas de Willow Software.", it: "Notizie in evidenza da Willow Software.", ar: "خبر مميز من Willow Software.", ja: "Willow Software の注目ニュース。" },
   featuredCta: { en: "Read", tr: "Oku", de: "Lesen", fr: "Lire", es: "Leer", it: "Leggi", ar: "اقرأ", ja: "読む" },
   allEyebrow: { en: "News archive", tr: "Haber arşivi", de: "Newsarchiv", fr: "Archive des actualités", es: "Archivo de noticias", it: "Archivio news", ar: "أرشيف الأخبار", ja: "ニュースアーカイブ" },
-  allTitle: { en: "Latest from WillowSoft.", tr: "WillowSoft’tan son gelişmeler.", de: "Aktuelles von WillowSoft.", fr: "Les dernières actualités de WillowSoft.", es: "Lo último de WillowSoft.", it: "Le ultime novità da WillowSoft.", ar: "أحدث أخبار WillowSoft.", ja: "WillowSoft の最新情報。" },
+  allTitle: { en: "Latest from Willow Software.", tr: "Willow Software’tan son gelişmeler.", de: "Aktuelles von Willow Software.", fr: "Les dernières actualités de Willow Software.", es: "Lo último de Willow Software.", it: "Le ultime novità da Willow Software.", ar: "أحدث أخبار Willow Software.", ja: "Willow Software の最新情報。" },
   allLead: { en: "Use search and filters to find the update type that matters for your project.", tr: "Projeniz için önemli olan haber türünü arama ve filtrelerle bulun.", de: "Nutzen Sie Suche und Filter, um den passenden Update-Typ für Ihr Projekt zu finden.", fr: "Utilisez la recherche et les filtres pour trouver l'actualité utile à votre projet.", es: "Use búsqueda y filtros para encontrar la actualización relevante para su proyecto.", it: "Usa ricerca e filtri per trovare l'aggiornamento più utile al tuo progetto.", ar: "استخدم البحث والفلاتر للعثور على نوع التحديث المناسب لمشروعك.", ja: "検索とフィルターで、プロジェクトに必要な更新を探せます。" },
   totalUpdates: { en: "Updates", tr: "Haber", de: "Updates", fr: "Actualités", es: "Actualizaciones", it: "Aggiornamenti", ar: "تحديثات", ja: "更新数" },
   categories: { en: "Categories", tr: "Kategori", de: "Kategorien", fr: "Catégories", es: "Categorías", it: "Categorie", ar: "فئات", ja: "カテゴリ" },
@@ -246,7 +246,7 @@ const t = (cmsKey: string, labelKey: LabelKey) => pageText(pageContent, cmsKey, 
                   onerror="this.closest('figure').classList.add('is-empty'); this.remove();"
                 />
               ) : (
-                <span>WillowSoft</span>
+                <span>Willow Software</span>
               )}
             </figure>
             <div class="news-featured-copy">

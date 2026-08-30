@@ -25,9 +25,9 @@ export const GET: APIRoute = async ({ request }) => {
     .map((guide) => `- [${guide.localized.en.title}](${siteUrl}/en/guides/${guide.slug}): ${guide.localized.en.description}`)
     .join("\n");
 
-  const txt = `# WillowSoft
+  const txt = `# Willow Software
 
-WillowSoft designs connected industrial products across embedded hardware, firmware, LoRaWAN connectivity, backend APIs, PostgreSQL data architecture, web/admin platforms, mobile apps, VR/simulation and telemetry systems.
+Willow Software designs connected industrial products across embedded hardware, firmware, LoRaWAN connectivity, backend APIs, PostgreSQL data architecture, web/admin platforms, mobile apps, VR/simulation and telemetry systems.
 
 ## Primary Pages
 - [Home](${siteUrl}/en): Company and engineering overview.

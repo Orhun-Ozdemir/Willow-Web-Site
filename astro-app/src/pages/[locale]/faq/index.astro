@@ -13,24 +13,24 @@ const content = await loadContent();
 const faqs = content.faqs || [];
 
 const FALLBACK_TITLES: Record<Locale, string> = {
-  en: "Industrial IoT FAQ | WillowSoft",
-  tr: "Endüstriyel IoT SSS | WillowSoft",
-  de: "Industrial-IoT FAQ | WillowSoft",
-  fr: "FAQ IoT industriel | WillowSoft",
-  es: "FAQ de IoT industrial | WillowSoft",
-  it: "FAQ IoT industriale | WillowSoft",
-  ar: "أسئلة إنترنت الأشياء الصناعي | WillowSoft",
-  ja: "産業用IoT FAQ | WillowSoft",
+  en: "Industrial IoT FAQ | Willow Software",
+  tr: "Endüstriyel IoT SSS | Willow Software",
+  de: "Industrial-IoT FAQ | Willow Software",
+  fr: "FAQ IoT industriel | Willow Software",
+  es: "FAQ de IoT industrial | Willow Software",
+  it: "FAQ IoT industriale | Willow Software",
+  ar: "أسئلة إنترنت الأشياء الصناعي | Willow Software",
+  ja: "産業用IoT FAQ | Willow Software",
 };
 const FALLBACK_DESCRIPTIONS: Record<Locale, string> = {
-  en: "Answers about WillowSoft industrial IoT products, embedded engineering services, LoRaWAN solutions and connected-product development processes.",
-  tr: "WillowSoft ürünleri, LoRaWAN çözümleri, gömülü sistem geliştirme hizmetleri ve bağlantılı ürün proje süreçleri hakkında sık sorulan sorular.",
-  de: "Antworten zu WillowSoft Industrial-IoT-Produkten, Embedded-Engineering, LoRaWAN-Lösungen und der Entwicklung vernetzter Produkte.",
-  fr: "Réponses sur les produits IoT industriel WillowSoft, l’ingénierie embarquée, les solutions LoRaWAN et le développement de produits connectés.",
-  es: "Respuestas sobre productos IoT industriales de WillowSoft, ingeniería embebida, soluciones LoRaWAN y desarrollo de productos conectados.",
-  it: "Risposte sui prodotti IoT industriali WillowSoft, ingegneria embedded, soluzioni LoRaWAN e sviluppo di prodotti connessi.",
-  ar: "إجابات حول منتجات WillowSoft لإنترنت الأشياء الصناعي والهندسة المدمجة وحلول LoRaWAN وتطوير المنتجات المتصلة.",
-  ja: "WillowSoftの産業IoT製品、組み込み開発、LoRaWANソリューション、コネクテッド製品開発に関する回答です。",
+  en: "Answers about Willow Software industrial IoT products, embedded engineering services, LoRaWAN solutions and connected-product development processes.",
+  tr: "Willow Software ürünleri, LoRaWAN çözümleri, gömülü sistem geliştirme hizmetleri ve bağlantılı ürün proje süreçleri hakkında sık sorulan sorular.",
+  de: "Antworten zu Willow Software Industrial-IoT-Produkten, Embedded-Engineering, LoRaWAN-Lösungen und der Entwicklung vernetzter Produkte.",
+  fr: "Réponses sur les produits IoT industriel Willow Software, l’ingénierie embarquée, les solutions LoRaWAN et le développement de produits connectés.",
+  es: "Respuestas sobre productos IoT industriales de Willow Software, ingeniería embebida, soluciones LoRaWAN y desarrollo de productos conectados.",
+  it: "Risposte sui prodotti IoT industriali Willow Software, ingegneria embedded, soluzioni LoRaWAN e sviluppo di prodotti connessi.",
+  ar: "إجابات حول منتجات Willow Software لإنترنت الأشياء الصناعي والهندسة المدمجة وحلول LoRaWAN وتطوير المنتجات المتصلة.",
+  ja: "Willow Softwareの産業IoT製品、組み込み開発、LoRaWANソリューション、コネクテッド製品開発に関する回答です。",
 };
 const FALLBACK_TITLE = FALLBACK_TITLES[locale] || FALLBACK_TITLES.en;
 const FALLBACK_DESC = FALLBACK_DESCRIPTIONS[locale] || FALLBACK_DESCRIPTIONS.en;
@@ -83,14 +83,14 @@ const copy = {
   eyebrow: { en: "FAQ", tr: "SSS", de: "FAQ", fr: "FAQ", es: "FAQ", it: "FAQ", ar: "الأسئلة الشائعة", ja: "FAQ" },
   title: { en: "Frequently asked questions", tr: "Sıkça sorulan sorular", de: "Häufig gestellte Fragen", fr: "Questions fréquentes", es: "Preguntas frecuentes", it: "Domande frequenti", ar: "الأسئلة الشائعة", ja: "よくあるご質問" },
   lead: {
-    en: "Short answers about WillowSoft's products, engineering services, IoT solutions and how a project starts. Each section links to the related page.",
-    tr: "WillowSoft ürünleri, mühendislik hizmetleri, IoT çözümleri ve bir projenin nasıl başladığı hakkında kısa yanıtlar. Her bölüm ilgili sayfaya bağlanır.",
-    de: "Kurze Antworten zu WillowSoft-Produkten, Engineering-Leistungen, IoT-Lösungen und zum Projektstart. Jeder Abschnitt verlinkt die passende Seite.",
-    fr: "Réponses courtes sur les produits WillowSoft, les services d'ingénierie, les solutions IoT et le démarrage d'un projet. Chaque section renvoie à la page associée.",
-    es: "Respuestas breves sobre los productos de WillowSoft, servicios de ingeniería, soluciones IoT y cómo iniciar un proyecto. Cada sección enlaza con la página relacionada.",
-    it: "Risposte brevi su prodotti WillowSoft, servizi di ingegneria, soluzioni IoT e come avviare un progetto. Ogni sezione rimanda alla pagina correlata.",
-    ar: "إجابات مختصرة حول منتجات WillowSoft وخدمات الهندسة وحلول إنترنت الأشياء وكيفية بدء مشروع. يرتبط كل قسم بالصفحة المعنية.",
-    ja: "WillowSoft の製品、エンジニアリングサービス、IoT ソリューション、プロジェクトの始め方に関する簡潔な回答です。各セクションは関連ページにリンクします。",
+    en: "Short answers about Willow Software's products, engineering services, IoT solutions and how a project starts. Each section links to the related page.",
+    tr: "Willow Software ürünleri, mühendislik hizmetleri, IoT çözümleri ve bir projenin nasıl başladığı hakkında kısa yanıtlar. Her bölüm ilgili sayfaya bağlanır.",
+    de: "Kurze Antworten zu Willow Software-Produkten, Engineering-Leistungen, IoT-Lösungen und zum Projektstart. Jeder Abschnitt verlinkt die passende Seite.",
+    fr: "Réponses courtes sur les produits Willow Software, les services d'ingénierie, les solutions IoT et le démarrage d'un projet. Chaque section renvoie à la page associée.",
+    es: "Respuestas breves sobre los productos de Willow Software, servicios de ingeniería, soluciones IoT y cómo iniciar un proyecto. Cada sección enlaza con la página relacionada.",
+    it: "Risposte brevi su prodotti Willow Software, servizi di ingegneria, soluzioni IoT e come avviare un progetto. Ogni sezione rimanda alla pagina correlata.",
+    ar: "إجابات مختصرة حول منتجات Willow Software وخدمات الهندسة وحلول إنترنت الأشياء وكيفية بدء مشروع. يرتبط كل قسم بالصفحة المعنية.",
+    ja: "Willow Software の製品、エンジニアリングサービス、IoT ソリューション、プロジェクトの始め方に関する簡潔な回答です。各セクションは関連ページにリンクします。",
   },
   more: { en: "See details", tr: "Detayları gör", de: "Details ansehen", fr: "Voir les détails", es: "Ver detalles", it: "Vedi dettagli", ar: "عرض التفاصيل", ja: "詳細を見る" },
 };

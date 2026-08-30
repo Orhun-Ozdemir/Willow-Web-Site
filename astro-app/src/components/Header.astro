@@ -37,7 +37,7 @@ const specialDayGreeting = activeSpecialDay
   ? activeSpecialDay.greeting[locale] || activeSpecialDay.greeting.en
   : null;
 const specialDayNavMessage = activeSpecialDay && specialDayGreeting
-  ? specialDayGreeting.subline.replace(/\s+[—–-]\s+WillowSoft\s*$/i, "")
+  ? specialDayGreeting.subline.replace(/\s+[—–-]\s+Willow Software\s*$/i, "")
   : "";
 const isHomePage = currentPath === `/${locale}` || currentPath === `/${locale}/`;
 
@@ -98,7 +98,7 @@ function isActive(href: string) {
         />
       </span>
       <span>
-        <strong>WILLOWSOFT</strong>
+        <strong>WILLOW SOFTWARE</strong>
         <span>{brandTagline}</span>
       </span>
     </a>

@@ -12,7 +12,7 @@ export const prerender = false;
 
 const locale = resolveLocale(Astro.params.locale, Astro.url.pathname);
 const content = await loadContent();
-const seoProps = pageSeo(content, "startProject", locale, "/start-project", "Start Your IoT Project | WillowSoft", "Start a connected hardware, software or platform project with WillowSoft.");
+const seoProps = pageSeo(content, "startProject", locale, "/start-project", "Start Your IoT Project | Willow Software", "Start a connected hardware, software or platform project with Willow Software.");
 const pageContent = content.pageContent?.startProject || {};
 const startFallbackFaqs = fallbackFaqsForPage("start-project", locale);
 const startFaqItems = faqItemsForPage(content.faqs || [], "start-project", locale, startFallbackFaqs);

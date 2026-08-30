@@ -30,7 +30,7 @@ function SvgIcon({ name, size = 20 }: { name: string; size?: number }) {
 }
 
 const UI: Record<string, Record<string, string>> = {
-  heroEyebrow: { en: "About WillowSoft", tr: "WillowSoft Hakkında", de: "Über WillowSoft", fr: "À propos de WillowSoft", es: "Sobre WillowSoft", it: "Su WillowSoft", ar: "عن WillowSoft", ja: "WillowSoftについて" },
+  heroEyebrow: { en: "About Willow Software", tr: "Willow Software Hakkında", de: "Über Willow Software", fr: "À propos de Willow Software", es: "Sobre Willow Software", it: "Su Willow Software", ar: "عن Willow Software", ja: "Willow Softwareについて" },
   heroLine1: { en: "Smart", tr: "Akıllı", de: "Kluge", fr: "Des équipes", es: "Equipos", it: "Team", ar: "فرق", ja: "スマートな" },
   heroAccent: { en: "Teams.", tr: "Ekipler.", de: "Teams.", fr: "intelligentes.", es: "inteligentes.", it: "intelligenti.", ar: "ذكية.", ja: "チーム。" },
   heroLine2: { en: "Resilient Systems.", tr: "Dayanıklı Sistemler.", de: "Robuste Systeme.", fr: "Des systèmes résilients.", es: "Sistemas resilientes.", it: "Sistemi resilienti.", ar: "أنظمة مرنة.", ja: "堅牢なシステム。" },

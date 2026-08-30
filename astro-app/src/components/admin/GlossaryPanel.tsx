@@ -117,7 +117,7 @@ export default function GlossaryPanel() {
               <FormField label="Tanım" type="textarea" value={t.definition || ""} onChange={(v) => updateTerm(t.id, "definition", v)} rows={4} />
             </div>
             <div className="col-span-2">
-              <FormField label="Not (opsiyonel — 'WillowSoft uses it in:')" type="textarea" value={t.note || ""} onChange={(v) => updateTerm(t.id, "note", v)} rows={2} />
+              <FormField label="Not (opsiyonel — 'Willow Software uses it in:')" type="textarea" value={t.note || ""} onChange={(v) => updateTerm(t.id, "note", v)} rows={2} />
             </div>
           </div>
           <div className="border-t border-gray-200 pt-4">

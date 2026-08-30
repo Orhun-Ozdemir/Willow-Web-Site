@@ -26,20 +26,20 @@ try {
   // Keep stable ISO-like fallbacks when the server runtime lacks full Intl data.
 }
 const kickerText = `${localizedCountry} • ${localizedDate}`;
-const sublineText = greeting.subline.replace(/\s+[—–-]\s+WillowSoft\s*$/i, "");
+const sublineText = greeting.subline.replace(/\s+[—–-]\s+Willow Software\s*$/i, "");
 
 // Prominent brand celebration header text per locale
 const brandCelebratesByLocale: Record<string, string> = {
-  tr: "WILLOWSOFT KUTLUYOR",
-  en: "WILLOWSOFT CELEBRATES",
-  de: "WILLOWSOFT GRATULIERT",
-  fr: "WILLOWSOFT CÉLÈBRE",
-  es: "WILLOWSOFT CELEBRA",
-  it: "WILLOWSOFT CELEBRA",
-  ar: "WILLOWSOFT تهنّئكم",
-  ja: "WILLOWSOFTより心を込めて",
+  tr: "WILLOW SOFTWARE KUTLUYOR",
+  en: "WILLOW SOFTWARE CELEBRATES",
+  de: "WILLOW SOFTWARE GRATULIERT",
+  fr: "WILLOW SOFTWARE CÉLÈBRE",
+  es: "WILLOW SOFTWARE CELEBRA",
+  it: "WILLOW SOFTWARE CELEBRA",
+  ar: "WILLOW SOFTWARE تهنّئكم",
+  ja: "WILLOW SOFTWAREより心を込めて",
 };
-const brandHeader = brandCelebratesByLocale[locale] || "WILLOWSOFT CELEBRATES";
+const brandHeader = brandCelebratesByLocale[locale] || "WILLOW SOFTWARE CELEBRATES";
 
 const motifByEvent: Record<string, string> = {
   "tr-republic-day": "crescent",
@@ -98,7 +98,7 @@ const motif = specialDay.motif || motifByEvent[specialDay.id] || "orbit";
   <!-- Volumetric Soft Ambient Glow Pulse -->
   <div class="editorial-ambient-glow" aria-hidden="true"></div>
 
-  <!-- Multilingual Live Premium Typography Layer with WillowSoft Celebrates Header -->
+  <!-- Multilingual Live Premium Typography Layer with Willow Software Celebrates Header -->
   <div class="editorial-hero-content">
     <div class="editorial-kicker-line cinematic-item item-1">
       <span class="kicker-dot"></span>
@@ -113,7 +113,7 @@ const motif = specialDay.motif || motifByEvent[specialDay.id] || "orbit";
     <div class="republic-day-subline cinematic-item item-4">
       <span class="subline-line"></span>
       <span class="subline-copy">{sublineText}</span>
-      <span class="subline-brand">WILLOWSOFT</span>
+      <span class="subline-brand">WILLOW SOFTWARE</span>
     </div>
   </div>
 

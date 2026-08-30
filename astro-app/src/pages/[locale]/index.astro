@@ -43,7 +43,7 @@ const celebrationDedupeKey = activeSpecialDay
   : "";
 const pageContent = content.pageContent?.home || {};
 const companyFacts = content.companyFacts || {};
-const seoProps = pageSeo(content, "home", locale, "", "WillowSoft | Embedded Hardware & Industrial IoT Engineering", "Embedded hardware and Industrial IoT engineering.");
+const seoProps = pageSeo(content, "home", locale, "", "Willow Software | Embedded Hardware & Industrial IoT Engineering", "Embedded hardware and Industrial IoT engineering.");
 
 const getLabel = (key: string) => labels[key]?.[locale] || labels[key]?.en || key;
 const getVal = (key: string, fallback = "") => pageText(pageContent, key, locale, fallback);
@@ -84,7 +84,7 @@ const labels: Record<string, Record<string, string>> = {
   ctaChoice_0: { en: "Hardware + Embedded Software", tr: "donanım+gömülü yazılım", de: "Hardware + eingebettete Software", fr: "Matériel + logiciel embarqué", es: "Hardware + software embebido", it: "Hardware + software embedded", ar: "عتاد + برمجيات مدمجة", ja: "ハードウェア＋組み込みソフトウェア" },
   ctaChoice_1: { en: "Cloud + Database", tr: "bulut+veri tabanı", de: "Cloud + Datenbank", fr: "Cloud + base de données", es: "Nube + base de datos", it: "Cloud + database", ar: "سحابة + قاعدة بيانات", ja: "クラウド＋データベース" },
   ctaChoice_2: { en: "Web, Mobile, Simulation", tr: "web, mobil, Simülasyon", de: "Web, Mobile, Simulation", fr: "Web, mobile, simulation", es: "Web, móvil, simulación", it: "Web, mobile, simulazione", ar: "ويب، جوال، محاكاة", ja: "Web、モバイル、シミュレーション" },
-  hardwareShowcase: { en: "WillowSoft hardware showcase", tr: "WillowSoft donanım ürünleri", de: "WillowSoft Hardware-Produkte", fr: "Produits matériels WillowSoft", es: "Productos de hardware WillowSoft", it: "Prodotti hardware WillowSoft", ar: "منتجات WillowSoft من العتاد", ja: "WillowSoftハードウェア製品" },
+  hardwareShowcase: { en: "Willow Software hardware showcase", tr: "Willow Software donanım ürünleri", de: "Willow Software Hardware-Produkte", fr: "Produits matériels Willow Software", es: "Productos de hardware Willow Software", it: "Prodotti hardware Willow Software", ar: "منتجات Willow Software من العتاد", ja: "Willow Softwareハードウェア製品" },
   willowBeeAlt: { en: "WillowBee LoRaWAN module", tr: "WillowBee LoRaWAN modülü", de: "WillowBee LoRaWAN-Modul", fr: "Module LoRaWAN WillowBee", es: "Módulo LoRaWAN WillowBee", it: "Modulo LoRaWAN WillowBee", ar: "وحدة WillowBee LoRaWAN", ja: "WillowBee LoRaWANモジュール" },
   willowBeeDesc: { en: "Compact LoRaWAN MCU module", tr: "Kompakt LoRaWAN MCU modülü", de: "Kompaktes LoRaWAN-MCU-Modul", fr: "Module MCU LoRaWAN compact", es: "Módulo MCU LoRaWAN compacto", it: "Modulo MCU LoRaWAN compatto", ar: "وحدة MCU LoRaWAN مدمجة", ja: "コンパクトなLoRaWAN MCUモジュール" },
   willowAirAlt: { en: "WillowAir sensor", tr: "WillowAir sensörü", de: "WillowAir-Sensor", fr: "Capteur WillowAir", es: "Sensor WillowAir", it: "Sensore WillowAir", ar: "مستشعر WillowAir", ja: "WillowAirセンサー" },

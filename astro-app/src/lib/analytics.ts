@@ -111,7 +111,7 @@ export function isSameOriginRequest(request: Request): boolean {
     if (requestHosts.has(originHost)) return true;
 
     // Vercel redirects the apex domain to www, while Astro can still expose the
-    // configured apex host inside the server function. Treat only WillowSoft's
+    // configured apex host inside the server function. Treat only Willow Software's
     // canonical apex/www pair as the same site; unrelated domains stay blocked.
     const willowHosts = new Set(["willowsoft.co", "www.willowsoft.co"]);
     return willowHosts.has(originHost) && [...requestHosts].some((host) => willowHosts.has(host));

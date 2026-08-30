@@ -10,7 +10,7 @@ export const prerender = false;
 
 const locale = resolveLocale(Astro.params.locale, Astro.url.pathname);
 const content = await loadContent();
-const seoProps = pageSeo(content, "company", locale, "/company", "Company | WillowSoft", "About WillowSoft.");
+const seoProps = pageSeo(content, "company", locale, "/company", "Company | Willow Software", "About Willow Software.");
 const companyFacts = syncOfficePhonesInFacts(content.companyFacts || {});
 const companySchema = {
   "@context": "https://schema.org",
@@ -130,7 +130,7 @@ const getSvg = (name: string, size = 20) => {
 };
 
 const ui = {
-  heroEyebrow: { en: "About WillowSoft", tr: "WillowSoft Hakkında", de: "Über WillowSoft", fr: "À propos de WillowSoft", es: "Sobre WillowSoft", it: "Su WillowSoft", ar: "عن WillowSoft", ja: "WillowSoftについて" },
+  heroEyebrow: { en: "About Willow Software", tr: "Willow Software Hakkında", de: "Über Willow Software", fr: "À propos de Willow Software", es: "Sobre Willow Software", it: "Su Willow Software", ar: "عن Willow Software", ja: "Willow Softwareについて" },
   heroLine1: { en: "Smart", tr: "Akıllı", de: "Kluge", fr: "Des équipes", es: "Equipos", it: "Team", ar: "فرق", ja: "スマートな" },
   heroAccent: { en: "Teams.", tr: "Ekipler.", de: "Teams.", fr: "intelligentes.", es: "inteligentes.", it: "intelligenti.", ar: "ذكية.", ja: "チーム。" },
   heroLine2: { en: "Resilient Systems.", tr: "Dayanıklı Sistemler.", de: "Robuste Systeme.", fr: "Des systèmes résilients.", es: "Sistemas resilientes.", it: "Sistemi resilienti.", ar: "أنظمة مرنة.", ja: "堅牢なシステム。" },
@@ -211,14 +211,14 @@ const ui = {
     ja: "シリコンからクラウドまで、IoT製品ライフサイクル全体をカバーする6つの専門領域。",
   },
   workWithLead: {
-    en: "Product teams work with WillowSoft across industrial systems, connected devices, sensing and operational software.",
-    tr: "Ürün ekipleri; endüstriyel sistemler, bağlantılı cihazlar, algılama ve operasyon yazılımları için WillowSoft ile çalışır.",
-    de: "Produktteams arbeiten mit WillowSoft an Industriesystemen, vernetzten Geräten, Sensorik und Betriebssoftware.",
-    fr: "Les équipes produit collaborent avec WillowSoft sur les systèmes industriels, les appareils connectés, la détection et les logiciels opérationnels.",
-    es: "Los equipos de producto trabajan con WillowSoft en sistemas industriales, dispositivos conectados, sensórica y software operativo.",
-    it: "I team di prodotto collaborano con WillowSoft su sistemi industriali, dispositivi connessi, sensoristica e software operativo.",
-    ar: "تتعاون فرق المنتجات مع WillowSoft في الأنظمة الصناعية والأجهزة المتصلة والاستشعار وبرمجيات التشغيل.",
-    ja: "製品チームは、産業システム、コネクテッドデバイス、センシング、運用ソフトウェアの領域でWillowSoftと協業しています。",
+    en: "Product teams work with Willow Software across industrial systems, connected devices, sensing and operational software.",
+    tr: "Ürün ekipleri; endüstriyel sistemler, bağlantılı cihazlar, algılama ve operasyon yazılımları için Willow Software ile çalışır.",
+    de: "Produktteams arbeiten mit Willow Software an Industriesystemen, vernetzten Geräten, Sensorik und Betriebssoftware.",
+    fr: "Les équipes produit collaborent avec Willow Software sur les systèmes industriels, les appareils connectés, la détection et les logiciels opérationnels.",
+    es: "Los equipos de producto trabajan con Willow Software en sistemas industriales, dispositivos conectados, sensórica y software operativo.",
+    it: "I team di prodotto collaborano con Willow Software su sistemi industriali, dispositivi connessi, sensoristica e software operativo.",
+    ar: "تتعاون فرق المنتجات مع Willow Software في الأنظمة الصناعية والأجهزة المتصلة والاستشعار وبرمجيات التشغيل.",
+    ja: "製品チームは、産業システム、コネクテッドデバイス、センシング、運用ソフトウェアの領域でWillow Softwareと協業しています。",
   },
   workWithTitleHtml: {
     en: 'Engineering partnerships across <span class="serif-accent">industries and markets</span>.',

@@ -46,7 +46,7 @@ const MIRROR_COPY: Record<string, Record<Locale, string>> = {
   engineeringReview: { en: "Engineering review", tr: "Mühendislik incelemesi", de: "Technische Prüfung", fr: "Revue d'ingénierie", es: "Revisión de ingeniería", it: "Revisione ingegneristica", ar: "مراجعة هندسية", ja: "エンジニアリングレビュー" },
   discoveryPlan: { en: "Discovery plan", tr: "Keşif planı", de: "Analyseplan", fr: "Plan de cadrage", es: "Plan de descubrimiento", it: "Piano di analisi", ar: "خطة الاستكشاف", ja: "要件整理プラン" },
   projectBrief: { en: "Project brief", tr: "Proje özeti", de: "Projektbrief", fr: "Brief du projet", es: "Resumen del proyecto", it: "Brief di progetto", ar: "ملخص المشروع", ja: "プロジェクト概要" },
-  about: { en: "About WillowSoft", tr: "WillowSoft Hakkında", de: "Über WillowSoft", fr: "À propos de WillowSoft", es: "Sobre WillowSoft", it: "Su WillowSoft", ar: "عن WillowSoft", ja: "WillowSoftについて" },
+  about: { en: "About Willow Software", tr: "Willow Software Hakkında", de: "Über Willow Software", fr: "À propos de Willow Software", es: "Sobre Willow Software", it: "Su Willow Software", ar: "عن Willow Software", ja: "Willow Softwareについて" },
   companyHero: { en: "Smart Teams. Resilient Systems.", tr: "Akıllı Ekipler. Dayanıklı Sistemler.", de: "Kluge Teams. Robuste Systeme.", fr: "Des équipes intelligentes. Des systèmes résilients.", es: "Equipos inteligentes. Sistemas resilientes.", it: "Team intelligenti. Sistemi resilienti.", ar: "فرق ذكية. أنظمة مرنة.", ja: "スマートなチーム。堅牢なシステム。" },
 };
 

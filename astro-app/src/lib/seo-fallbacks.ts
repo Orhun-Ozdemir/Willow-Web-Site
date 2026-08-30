@@ -8,7 +8,7 @@ import type { Locale } from "@/lib/cms";
  * overwriting editorial copy.
  */
 
-const BRAND = "WillowSoft";
+const BRAND = "Willow Software";
 
 const strip = (value: unknown): string =>
   String(value ?? "")
@@ -26,7 +26,7 @@ const compactDescription = (value: string, maxLength = 155): string => {
   return `${wordBoundary || initial.trimEnd()}…`;
 };
 
-const hasBrand = (value: string) => /willowsoft/i.test(value);
+const hasBrand = (value: string) => /willow\s*software|willowsoft/i.test(value);
 
 const compactTitle = (primary: string, suffix = ` | ${BRAND}`): string => {
   const cleanPrimary = strip(primary);
@@ -46,25 +46,25 @@ const compactTitle = (primary: string, suffix = ` | ${BRAND}`): string => {
 // Factual product description templates used only when neither a CMS meta
 // description nor a short description exists for the locale.
 const PRODUCT_DESC: Record<Locale, (name: string, category: string) => string> = {
-  en: (n, c) => `${n}${c ? ` — ${c}` : ""} by WillowSoft. Industrial IoT hardware delivered with firmware, backend and dashboard integration.`,
-  tr: (n, c) => `${n}${c ? ` — ${c}` : ""}, WillowSoft tarafından geliştirilir. Firmware, backend ve panel entegrasyonuyla sunulan endüstriyel IoT donanımı.`,
-  de: (n, c) => `${n}${c ? ` — ${c}` : ""} von WillowSoft. Industrielle IoT-Hardware mit Firmware-, Backend- und Dashboard-Integration.`,
-  fr: (n, c) => `${n}${c ? ` — ${c}` : ""} par WillowSoft. Matériel IoT industriel livré avec firmware, backend et tableau de bord.`,
-  es: (n, c) => `${n}${c ? ` — ${c}` : ""} de WillowSoft. Hardware de IoT industrial con firmware, backend e integración de panel.`,
-  it: (n, c) => `${n}${c ? ` — ${c}` : ""} di WillowSoft. Hardware IoT industriale con firmware, backend e integrazione dashboard.`,
-  ar: (n, c) => `${n}${c ? ` — ${c}` : ""} من WillowSoft. عتاد إنترنت الأشياء الصناعي مع دمج البرامج الثابتة والخادم ولوحة التحكم.`,
-  ja: (n, c) => `${n}${c ? `（${c}）` : ""}｜WillowSoft の産業用 IoT ハードウェア。ファームウェア・バックエンド・ダッシュボードまで統合提供します。`,
+  en: (n, c) => `${n}${c ? ` — ${c}` : ""} by Willow Software. Industrial IoT hardware delivered with firmware, backend and dashboard integration.`,
+  tr: (n, c) => `${n}${c ? ` — ${c}` : ""}, Willow Software tarafından geliştirilir. Firmware, backend ve panel entegrasyonuyla sunulan endüstriyel IoT donanımı.`,
+  de: (n, c) => `${n}${c ? ` — ${c}` : ""} von Willow Software. Industrielle IoT-Hardware mit Firmware-, Backend- und Dashboard-Integration.`,
+  fr: (n, c) => `${n}${c ? ` — ${c}` : ""} par Willow Software. Matériel IoT industriel livré avec firmware, backend et tableau de bord.`,
+  es: (n, c) => `${n}${c ? ` — ${c}` : ""} de Willow Software. Hardware de IoT industrial con firmware, backend e integración de panel.`,
+  it: (n, c) => `${n}${c ? ` — ${c}` : ""} di Willow Software. Hardware IoT industriale con firmware, backend e integrazione dashboard.`,
+  ar: (n, c) => `${n}${c ? ` — ${c}` : ""} من Willow Software. عتاد إنترنت الأشياء الصناعي مع دمج البرامج الثابتة والخادم ولوحة التحكم.`,
+  ja: (n, c) => `${n}${c ? `（${c}）` : ""}｜Willow Software の産業用 IoT ハードウェア。ファームウェア・バックエンド・ダッシュボードまで統合提供します。`,
 };
 
 const NEWS_DESC: Record<Locale, (title: string) => string> = {
-  en: (t) => `${t} — news and updates from WillowSoft on embedded hardware and Industrial IoT.`,
-  tr: (t) => `${t} — WillowSoft'tan gömülü donanım ve Endüstriyel IoT haberleri ve güncellemeleri.`,
-  de: (t) => `${t} — Neuigkeiten von WillowSoft zu Embedded-Hardware und Industrial IoT.`,
-  fr: (t) => `${t} — actualités de WillowSoft sur le matériel embarqué et l'IoT industriel.`,
-  es: (t) => `${t} — noticias de WillowSoft sobre hardware embebido e IoT industrial.`,
-  it: (t) => `${t} — notizie di WillowSoft su hardware embedded e IoT industriale.`,
-  ar: (t) => `${t} — أخبار وتحديثات WillowSoft حول العتاد المدمج وإنترنت الأشياء الصناعي.`,
-  ja: (t) => `${t}｜組み込みハードウェアと産業用 IoT に関する WillowSoft のニュース。`,
+  en: (t) => `${t} — news and updates from Willow Software on embedded hardware and Industrial IoT.`,
+  tr: (t) => `${t} — Willow Software'tan gömülü donanım ve Endüstriyel IoT haberleri ve güncellemeleri.`,
+  de: (t) => `${t} — Neuigkeiten von Willow Software zu Embedded-Hardware und Industrial IoT.`,
+  fr: (t) => `${t} — actualités de Willow Software sur le matériel embarqué et l'IoT industriel.`,
+  es: (t) => `${t} — noticias de Willow Software sobre hardware embebido e IoT industrial.`,
+  it: (t) => `${t} — notizie di Willow Software su hardware embedded e IoT industriale.`,
+  ar: (t) => `${t} — أخبار وتحديثات Willow Software حول العتاد المدمج وإنترنت الأشياء الصناعي.`,
+  ja: (t) => `${t}｜組み込みハードウェアと産業用 IoT に関する Willow Software のニュース。`,
 };
 
 export interface SeoText {

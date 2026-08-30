@@ -67,7 +67,7 @@ function envAccount(platform: Exclude<PublishingPlatform, "website">): PublicAcc
   return {
     id: `env:${platform}`,
     platform,
-    displayName: env(`${prefix}_DISPLAY_NAME`) || (platform === "x" ? "WillowSoft on X" : `WillowSoft ${platform}`),
+    displayName: env(`${prefix}_DISPLAY_NAME`) || (platform === "x" ? "Willow Software on X" : `Willow Software ${platform}`),
     username: env(`${prefix}_USERNAME`) || undefined,
     status: "connected",
     source: "environment",

@@ -482,14 +482,14 @@ const structuredSpecGroups = buildSpecificationGroups(product.specifications);
 const extraSpecGroups = structuredSpecGroups.slice(1);
 
 const productAiIntro = pickText({
-  en: `${productBrand} is a WillowSoft ${product.category || "IoT"} product for connected field telemetry.`,
-  tr: `${productBrand}, saha telemetrisi için geliştirilmiş bir WillowSoft IoT ürünüdür.`,
-  de: `${productBrand} ist ein WillowSoft-${product.category || "IoT"}-Produkt für vernetzte Feldtelemetrie.`,
-  fr: `${productBrand} est un produit WillowSoft ${product.category || "IoT"} pour la télémétrie terrain connectée.`,
-  es: `${productBrand} es un producto WillowSoft ${product.category || "IoT"} para telemetría de campo conectada.`,
-  it: `${productBrand} è un prodotto WillowSoft ${product.category || "IoT"} per la telemetria connessa sul campo.`,
-  ar: `${productBrand} هو منتج ${product.category || "IoT"} من WillowSoft للقياس الميداني المتصل.`,
-  ja: `${productBrand} は、接続された現場テレメトリ向けの WillowSoft ${product.category || "IoT"} 製品です。`,
+  en: `${productBrand} is a Willow Software ${product.category || "IoT"} product for connected field telemetry.`,
+  tr: `${productBrand}, saha telemetrisi için geliştirilmiş bir Willow Software IoT ürünüdür.`,
+  de: `${productBrand} ist ein Willow Software-${product.category || "IoT"}-Produkt für vernetzte Feldtelemetrie.`,
+  fr: `${productBrand} est un produit Willow Software ${product.category || "IoT"} pour la télémétrie terrain connectée.`,
+  es: `${productBrand} es un producto Willow Software ${product.category || "IoT"} para telemetría de campo conectada.`,
+  it: `${productBrand} è un prodotto Willow Software ${product.category || "IoT"} per la telemetria connessa sul campo.`,
+  ar: `${productBrand} هو منتج ${product.category || "IoT"} من Willow Software للقياس الميداني المتصل.`,
+  ja: `${productBrand} は、接続された現場テレメトリ向けの Willow Software ${product.category || "IoT"} 製品です。`,
 });
 const productAiAnswer = stripHtml(`${productAiIntro} ${product.shortDescription || ""} ${decision.use || ""}`);
 const productFaqLabels = {
@@ -524,14 +524,14 @@ const productFaqLabels = {
     ja: `${productBrand} はどのような場合に選ぶべきですか？`,
   },
   integrationAnswer: {
-    en: "It can be used as part of a complete WillowSoft hardware, firmware, backend and dashboard stack.",
-    tr: "Eksiksiz bir WillowSoft donanım, firmware, backend ve dashboard yığınının parçası olarak kullanılabilir.",
-    de: "Es kann als Teil eines vollständigen WillowSoft-Stacks aus Hardware, Firmware, Backend und Dashboard genutzt werden.",
-    fr: "Il peut être utilisé dans une pile WillowSoft complète avec matériel, firmware, backend et tableau de bord.",
-    es: "Puede usarse como parte de un stack completo de WillowSoft con hardware, firmware, backend y dashboard.",
-    it: "Può essere usato come parte di uno stack WillowSoft completo con hardware, firmware, backend e dashboard.",
-    ar: "يمكن استخدامه ضمن حزمة WillowSoft متكاملة تشمل العتاد والبرمجيات الثابتة والخلفية ولوحة التحكم.",
-    ja: "WillowSoft のハードウェア、ファームウェア、バックエンド、ダッシュボードを含む統合スタックの一部として利用できます。",
+    en: "It can be used as part of a complete Willow Software hardware, firmware, backend and dashboard stack.",
+    tr: "Eksiksiz bir Willow Software donanım, firmware, backend ve dashboard yığınının parçası olarak kullanılabilir.",
+    de: "Es kann als Teil eines vollständigen Willow Software-Stacks aus Hardware, Firmware, Backend und Dashboard genutzt werden.",
+    fr: "Il peut être utilisé dans une pile Willow Software complète avec matériel, firmware, backend et tableau de bord.",
+    es: "Puede usarse como parte de un stack completo de Willow Software con hardware, firmware, backend y dashboard.",
+    it: "Può essere usato come parte di uno stack Willow Software completo con hardware, firmware, backend e dashboard.",
+    ar: "يمكن استخدامه ضمن حزمة Willow Software متكاملة تشمل العتاد والبرمجيات الثابتة والخلفية ولوحة التحكم.",
+    ja: "Willow Software のハードウェア、ファームウェア、バックエンド、ダッシュボードを含む統合スタックの一部として利用できます。",
   },
 };
 const productFaqItems: AiFaqItem[] = [
@@ -723,7 +723,7 @@ const productCanonical = `${SITE_ORIGIN}/${locale}/products/${canonicalProductSl
 const crumbHome: Record<Locale, string> = { en: "Home", tr: "Ana Sayfa", de: "Startseite", fr: "Accueil", es: "Inicio", it: "Home", ar: "الرئيسية", ja: "ホーム" };
 const crumbProducts: Record<Locale, string> = { en: "Products", tr: "Ürünler", de: "Produkte", fr: "Produits", es: "Productos", it: "Prodotti", ar: "المنتجات", ja: "製品一覧" };
 
-// WillowSoft's catalog describes B2B product models rather than a public online
+// Willow Software's catalog describes B2B product models rather than a public online
 // offer. ProductModel preserves the real entity/specification semantics without
 // claiming eligibility for Google's price/review-based Product rich result. If a
 // genuine public price is later entered in CMS, the node becomes a Product with
@@ -738,7 +738,7 @@ const productNode: Record<string, any> = {
   "sku": product.slug || product.id,
   "image": heroImageAbsoluteUrl ? [heroImageAbsoluteUrl] : [],
   "description": product.shortDescription || "",
-  "brand": { "@type": "Brand", "name": "WillowSoft" },
+  "brand": { "@type": "Brand", "name": "Willow Software" },
   "manufacturer": { "@id": `${SITE_ORIGIN}/#org` },
   "category": product.category || "Product",
   "additionalProperty": specEntries
@@ -783,13 +783,13 @@ const t = {
   capability: { en: "Capability", tr: "Yetenek", de: "Fähigkeit", fr: "Capacité", es: "Capacidad", it: "Funzionalità", ar: "القدرة", ja: "機能" },
   readyText: { en: "Industrial deployment ready.", tr: "Endüstriyel kuruluma hazır.", de: "Bereit für den industriellen Einsatz.", fr: "Prêt pour le déploiement industriel.", es: "Listo para implementación industrial.", it: "Pronto per l'installazione industriale", ar: "جاهز للنشر الصناعي.", ja: "産業用途への即時導入が可能" },
   readyDesc: {
-    en: "Use this product as part of a complete WillowSoft hardware, firmware, backend and dashboard stack.",
-    tr: "Bu ürünü eksiksiz bir WillowSoft donanım, gömülü yazılım, arka plan ve kontrol paneli yığınının parçası olarak kullanın.",
-    de: "Nutzen Sie dieses Produkt als Teil eines vollständigen WillowSoft-Hardware-, Firmware-, Backend- und Dashboard-Stacks.",
-    fr: "Utilisez ce produit dans le cadre d'une pile complète de matériel, de micrologiciel, de backend et de tableau de bord WillowSoft.",
-    es: "Integre este producto en un sistema WillowSoft completo, desde el hardware y el firmware hasta el backend y el panel de control.",
-    it: "Utilizza questo prodotto come parte di uno stack completo WillowSoft di hardware, firmware, backend e dashboard.",
-    ar: "استخدم هذا كجزء من أجهزة وبرامج مدمجة ولوحة تحكم متكاملة من WillowSoft.",
+    en: "Use this product as part of a complete Willow Software hardware, firmware, backend and dashboard stack.",
+    tr: "Bu ürünü eksiksiz bir Willow Software donanım, gömülü yazılım, arka plan ve kontrol paneli yığınının parçası olarak kullanın.",
+    de: "Nutzen Sie dieses Produkt als Teil eines vollständigen Willow Software-Hardware-, Firmware-, Backend- und Dashboard-Stacks.",
+    fr: "Utilisez ce produit dans le cadre d'une pile complète de matériel, de micrologiciel, de backend et de tableau de bord Willow Software.",
+    es: "Integre este producto en un sistema Willow Software completo, desde el hardware y el firmware hasta el backend y el panel de control.",
+    it: "Utilizza questo prodotto come parte di uno stack completo Willow Software di hardware, firmware, backend e dashboard.",
+    ar: "استخدم هذا كجزء من أجهزة وبرامج مدمجة ولوحة تحكم متكاملة من Willow Software.",
     ja: "無線デバイス、デバイスファームウェア、クラウドバックエンド、およびダッシュボードを含む統合システムとして導入できます。"
   },
   gallery: { en: "Gallery", tr: "Galeri", de: "Galerie", fr: "Galerie", es: "Galería", it: "Galleria", ar: "معرض الصور", ja: "製品ギャラリー" },
@@ -816,14 +816,14 @@ const t = {
     ja: "現場での測定データをダッシュボード、アラート、定期レポート、または外部システム連携に活用する際に最適です。"
   },
   fitsLi3: {
-    en: "Related firmware, backend, PostgreSQL, web/admin and mobile layers can be delivered by WillowSoft.",
-    tr: "İlgili gömülü yazılım, arka plan, PostgreSQL, web/yönetim ve mobil katmanlar WillowSoft tarafından teslim edilebilir.",
-    de: "Zugehörige Firmware, Backends, PostgreSQL, Web/Admin- und mobile Schichten können von WillowSoft geliefert werden.",
-    fr: "Les couches de micrologiciel, de backend, de PostgreSQL, de site web/d'administration et de mobile associées peuvent être fournies par WillowSoft.",
-    es: "WillowSoft también puede desarrollar el firmware, el backend, PostgreSQL, el portal web de administración y la aplicación móvil asociados.",
-    it: "I relativi livelli di firmware, backend, PostgreSQL, portale web/amministratore e app mobile possono essere forniti da WillowSoft.",
-    ar: "يمكن لـ WillowSoft تقديم البرامج المدمجة ذات الصلة، والخلفية، وقاعدة بيانات PostgreSQL، وطبقات الويب/الإدارة والجوال.",
-    ja: "関連するファームウェア、バックエンド、PostgreSQL、Web管理画面、モバイルアプリもWillowSoftが一括して提供できます。"
+    en: "Related firmware, backend, PostgreSQL, web/admin and mobile layers can be delivered by Willow Software.",
+    tr: "İlgili gömülü yazılım, arka plan, PostgreSQL, web/yönetim ve mobil katmanlar Willow Software tarafından teslim edilebilir.",
+    de: "Zugehörige Firmware, Backends, PostgreSQL, Web/Admin- und mobile Schichten können von Willow Software geliefert werden.",
+    fr: "Les couches de micrologiciel, de backend, de PostgreSQL, de site web/d'administration et de mobile associées peuvent être fournies par Willow Software.",
+    es: "Willow Software también puede desarrollar el firmware, el backend, PostgreSQL, el portal web de administración y la aplicación móvil asociados.",
+    it: "I relativi livelli di firmware, backend, PostgreSQL, portale web/amministratore e app mobile possono essere forniti da Willow Software.",
+    ar: "يمكن لـ Willow Software تقديم البرامج المدمجة ذات الصلة، والخلفية، وقاعدة بيانات PostgreSQL، وطبقات الويب/الإدارة والجوال.",
+    ja: "関連するファームウェア、バックエンド、PostgreSQL、Web管理画面、モバイルアプリもWillow Softwareが一括して提供できます。"
   },
   buyerChecklist: { en: "Buyer Checklist", tr: "Alıcı Kontrol Listesi", de: "Käufer-Checkliste", fr: "Liste de contrôle de l'acheteur", es: "Lista de verificación del comprador", it: "Checklist per l'acquisto", ar: "قائمة التحقق للمشتري", ja: "導入計画チェックリスト" },
   buyerTitle: { en: "Decisions to make before deployment.", tr: "Kurulumdan önce netleştirmeniz gereken kararlar.", de: "Wichtige Entscheidungen vor der Einführung.", fr: "Les points à valider avant le déploiement.", es: "Decisiones que conviene tomar antes de la implementación.", it: "Le decisioni da prendere prima dell’installazione.", ar: "قرارات ينبغي حسمها قبل التنفيذ.", ja: "導入前に確認しておきたいポイント" },
@@ -835,14 +835,14 @@ const t = {
   sysArch: { en: "System Architecture", tr: "Sistem Mimarisi", de: "Systemarchitektur", fr: "Architecture système", es: "Arquitectura del sistema", it: "Architettura del sistema", ar: "بنية النظام", ja: "システム構成図" },
   sysTitle: { en: "A product page should show the whole operating path.", tr: "Bir ürün sayfası tüm çalışma yolunu göstermelidir.", de: "Eine Produktseite sollte den gesamten Betriebspfad zeigen.", fr: "Une page produit doit montrer tout le parcours opérationnel.", es: "Una página de producto debe mostrar toda la ruta operativa.", it: "Una pagina prodotto dovrebbe mostrare l'intero percorso operativo.", ar: "يجب أن توضح صفحة المنتج مسار التشغيل بالكامل.", ja: "デバイスからクラウドまでの接続図" },
   sysDesc: {
-    en: "WillowSoft products are strongest when they are presented as part of a complete operational system: sensor, connectivity, backend, database, dashboard, mobile and alerting.",
-    tr: "WillowSoft ürünleri, eksiksiz bir operasyonel sistemin parçası olarak sunulduğunda en güçlü yönlerini ortaya koyar: sensör, bağlantı, arka uç, veritabanı, kontrol paneli, mobil ve uyarı.",
-    de: "WillowSoft-Produkte entfalten ihren größten Nutzen als Teil einer vollständigen Betriebslösung: Sensor, Konnektivität, Backend, Datenbank, Dashboard, mobile Anwendung und Alarmierung.",
-    fr: "Les produits WillowSoft sont les plus performants lorsqu'ils sont présentés comme faisant partie d'un système opérationnel complet : capteur, connectivité, backend, base de données, tableau de bord, mobile et alerte.",
-    es: "Los productos WillowSoft aportan más valor como parte de un sistema integral de operación: sensor, conectividad, backend, base de datos, dashboard, aplicación móvil y alertas.",
-    it: "I prodotti WillowSoft esprimono tutto il loro valore all’interno di un sistema completo: sensore, connettività, backend, database, pannello di controllo, app mobile e avvisi.",
-    ar: "تكون منتجات WillowSoft في أقوى حالاتها عندما تُقدم كجزء من نظام تشغيلي متكامل: المستشعر، والاتصال، والخلفية، وقاعدة البيانات، ولوحة التحكم، والجوال، والتنبيهات.",
-    ja: "WillowSoftのデバイスは、センサー、ネットワーク、サーバー、データベース、ダッシュボード、モバイル通知までを網羅した統合システムの一部として導入することで、最大の効果を発揮します。"
+    en: "Willow Software products are strongest when they are presented as part of a complete operational system: sensor, connectivity, backend, database, dashboard, mobile and alerting.",
+    tr: "Willow Software ürünleri, eksiksiz bir operasyonel sistemin parçası olarak sunulduğunda en güçlü yönlerini ortaya koyar: sensör, bağlantı, arka uç, veritabanı, kontrol paneli, mobil ve uyarı.",
+    de: "Willow Software-Produkte entfalten ihren größten Nutzen als Teil einer vollständigen Betriebslösung: Sensor, Konnektivität, Backend, Datenbank, Dashboard, mobile Anwendung und Alarmierung.",
+    fr: "Les produits Willow Software sont les plus performants lorsqu'ils sont présentés comme faisant partie d'un système opérationnel complet : capteur, connectivité, backend, base de données, tableau de bord, mobile et alerte.",
+    es: "Los productos Willow Software aportan más valor como parte de un sistema integral de operación: sensor, conectividad, backend, base de datos, dashboard, aplicación móvil y alertas.",
+    it: "I prodotti Willow Software esprimono tutto il loro valore all’interno di un sistema completo: sensore, connettività, backend, database, pannello di controllo, app mobile e avvisi.",
+    ar: "تكون منتجات Willow Software في أقوى حالاتها عندما تُقدم كجزء من نظام تشغيلي متكامل: المستشعر، والاتصال، والخلفية، وقاعدة البيانات، ولوحة التحكم، والجوال، والتنبيهات.",
+    ja: "Willow Softwareのデバイスは、センサー、ネットワーク、サーバー、データベース、ダッシュボード、モバイル通知までを網羅した統合システムの一部として導入することで、最大の効果を発揮します。"
   },
   needInProject: { en: "Need this in a project?", tr: "Projelerinizde buna mı ihtiyacınız var?", de: "Benötigen Sie dies in einem Projekt?", fr: "Besoin de cela dans un projet ?", es: "¿Necesita esto en un proyecto?", it: "Ti serve in un progetto?", ar: "هل تحتاج هذا في مشروعك؟", ja: "プロジェクトへの導入をご検討中ですか؟" },
   askProductFit: { en: "Ask for product fit, integration path and deployment scope.", tr: "Ürün uyumu, entegrasyon yolu ve kurulum kapsamı hakkında bilgi isteyin.", de: "Fragen Sie nach Produktpassung, Integrationspfad und Bereitstellungsumfang.", fr: "Demandez l'adéquation du produit, le parcours d'intégration et la portée du déploiement.", es: "Pregunte por la idoneidad del producto, la ruta de integración y el alcance de la implementación.", it: "Chiedi informazioni sulla compatibilità del prodotto, il percorso di integrazione e l'ambito dell'installazione.", ar: "اسأل عن مدى ملاءمة المنتج ومسار الربط ونطاق النشر.", ja: "製品の適合性、既存システムとの連携方法、および導入規模についてお問い合わせください。"
@@ -925,14 +925,14 @@ const relatedProducts = curatedRelated.length
         (_, offset) => visibleProductSequence[(currentProductIndex + offset + 1) % visibleProductSequence.length],
       );
 const relatedProductsCopy: Record<Locale, { eyebrow: string; title: string; lead: string }> = {
-  en: { eyebrow: "Related hardware", title: "Products for the same connected system", lead: "Compare complementary WillowSoft devices and build a complete monitoring architecture." },
-  tr: { eyebrow: "İlgili donanımlar", title: "Aynı bağlantılı sistem için ürünler", lead: "Tam bir izleme mimarisi oluşturmak için tamamlayıcı WillowSoft cihazlarını karşılaştırın." },
-  de: { eyebrow: "Passende Hardware", title: "Produkte für dasselbe vernetzte System", lead: "Vergleichen Sie ergänzende WillowSoft-Geräte für eine vollständige Monitoring-Architektur." },
-  fr: { eyebrow: "Matériel associé", title: "Produits pour le même système connecté", lead: "Comparez les appareils WillowSoft complémentaires pour construire une architecture de supervision complète." },
-  es: { eyebrow: "Hardware relacionado", title: "Productos para el mismo sistema conectado", lead: "Compare dispositivos WillowSoft complementarios para crear una arquitectura de monitorización completa." },
-  it: { eyebrow: "Hardware correlato", title: "Prodotti per lo stesso sistema connesso", lead: "Confronta i dispositivi WillowSoft complementari per una completa architettura di monitoraggio." },
-  ar: { eyebrow: "أجهزة ذات صلة", title: "منتجات للنظام المتصل نفسه", lead: "قارن أجهزة WillowSoft المتكاملة لبناء بنية مراقبة كاملة." },
-  ja: { eyebrow: "関連ハードウェア", title: "同じコネクテッドシステムに対応する製品", lead: "補完的なWillowSoftデバイスを比較し、包括的な監視アーキテクチャを構築できます。" },
+  en: { eyebrow: "Related hardware", title: "Products for the same connected system", lead: "Compare complementary Willow Software devices and build a complete monitoring architecture." },
+  tr: { eyebrow: "İlgili donanımlar", title: "Aynı bağlantılı sistem için ürünler", lead: "Tam bir izleme mimarisi oluşturmak için tamamlayıcı Willow Software cihazlarını karşılaştırın." },
+  de: { eyebrow: "Passende Hardware", title: "Produkte für dasselbe vernetzte System", lead: "Vergleichen Sie ergänzende Willow Software-Geräte für eine vollständige Monitoring-Architektur." },
+  fr: { eyebrow: "Matériel associé", title: "Produits pour le même système connecté", lead: "Comparez les appareils Willow Software complémentaires pour construire une architecture de supervision complète." },
+  es: { eyebrow: "Hardware relacionado", title: "Productos para el mismo sistema conectado", lead: "Compare dispositivos Willow Software complementarios para crear una arquitectura de monitorización completa." },
+  it: { eyebrow: "Hardware correlato", title: "Prodotti per lo stesso sistema connesso", lead: "Confronta i dispositivi Willow Software complementari per una completa architettura di monitoraggio." },
+  ar: { eyebrow: "أجهزة ذات صلة", title: "منتجات للنظام المتصل نفسه", lead: "قارن أجهزة Willow Software المتكاملة لبناء بنية مراقبة كاملة." },
+  ja: { eyebrow: "関連ハードウェア", title: "同じコネクテッドシステムに対応する製品", lead: "補完的なWillow Softwareデバイスを比較し、包括的な監視アーキテクチャを構築できます。" },
 };
 const relatedCopy = relatedProductsCopy[locale] || relatedProductsCopy.en;
 ---

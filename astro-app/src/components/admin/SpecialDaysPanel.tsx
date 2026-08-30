@@ -8,14 +8,14 @@ import { useAdmin } from "./AdminContext";
 const MONTHS = ["Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran", "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"];
 const WEEKDAYS = ["Pazar", "Pazartesi", "Salı", "Çarşamba", "Perşembe", "Cuma", "Cumartesi"];
 const CELEBRATION_LABELS: Record<Locale, string> = {
-  en: "WILLOWSOFT CELEBRATES",
-  tr: "WILLOWSOFT KUTLUYOR",
-  de: "WILLOWSOFT GRATULIERT",
-  fr: "WILLOWSOFT CÉLÈBRE",
-  es: "WILLOWSOFT CELEBRA",
-  it: "WILLOWSOFT CELEBRA",
-  ar: "WILLOWSOFT تهنّئكم",
-  ja: "WILLOWSOFTより心を込めて",
+  en: "WILLOW SOFTWARE CELEBRATES",
+  tr: "WILLOW SOFTWARE KUTLUYOR",
+  de: "WILLOW SOFTWARE GRATULIERT",
+  fr: "WILLOW SOFTWARE CÉLÈBRE",
+  es: "WILLOW SOFTWARE CELEBRA",
+  it: "WILLOW SOFTWARE CELEBRA",
+  ar: "WILLOW SOFTWARE تهنّئكم",
+  ja: "WILLOW SOFTWAREより心を込めて",
 };
 const MOTIFS: { value: CelebrationMotif; label: string }[] = [
   { value: "crescent", label: "Ay ve yıldız" }, { value: "modules", label: "Modüler şekiller" },
@@ -165,14 +165,14 @@ export default function SpecialDaysPanel() {
   const addDay = () => {
     const id = `custom-${Date.now()}`;
     const greeting: SpecialDay["greeting"] = {
-      en: { title: "A MEANINGFUL DAY TO CELEBRATE", accent: "Warm Wishes on This Special Day", subline: "We are pleased to share the meaning and joy of this special occasion — WillowSoft" },
-      tr: { title: "BİRLİKTE KUTLANAN ANLAMLI BİR GÜN", accent: "Bu Özel Gün Kutlu Olsun", subline: "Bu anlamlı günün sevincini ve değerini birlikte paylaşmaktan mutluluk duyuyoruz — WillowSoft" },
-      de: { title: "EIN BEDEUTSAMER TAG ZUM GEMEINSAMEN FEIERN", accent: "Herzliche Wünsche zu diesem besonderen Tag", subline: "Wir freuen uns, die Bedeutung und Freude dieses besonderen Anlasses gemeinsam zu teilen — WillowSoft" },
-      fr: { title: "UNE JOURNÉE PORTEUSE DE SENS À CÉLÉBRER ENSEMBLE", accent: "Tous nos vœux en cette journée spéciale", subline: "Nous sommes heureux de partager le sens et la joie de cette occasion particulière — WillowSoft" },
-      es: { title: "UN DÍA SIGNIFICATIVO PARA CELEBRAR JUNTOS", accent: "Nuestros mejores deseos en este día especial", subline: "Nos alegra compartir el significado y la alegría de esta ocasión especial — WillowSoft" },
-      it: { title: "UNA GIORNATA SPECIALE DA CELEBRARE INSIEME", accent: "I nostri migliori auguri per questa giornata", subline: "Siamo lieti di condividere il significato e la gioia di questa occasione speciale — WillowSoft" },
-      ar: { title: "يوم مميز نحتفل به معًا", accent: "أطيب التمنيات في هذه المناسبة الخاصة", subline: "يسعدنا أن نشارككم معاني هذه المناسبة الخاصة وفرحتها — WillowSoft" },
-      ja: { title: "ともに祝う、心に残る一日", accent: "この特別な日に心よりお祝い申し上げます", subline: "この日の大切な意味と喜びを、皆さまと分かち合えることを嬉しく思います — WillowSoft" },
+      en: { title: "A MEANINGFUL DAY TO CELEBRATE", accent: "Warm Wishes on This Special Day", subline: "We are pleased to share the meaning and joy of this special occasion — Willow Software" },
+      tr: { title: "BİRLİKTE KUTLANAN ANLAMLI BİR GÜN", accent: "Bu Özel Gün Kutlu Olsun", subline: "Bu anlamlı günün sevincini ve değerini birlikte paylaşmaktan mutluluk duyuyoruz — Willow Software" },
+      de: { title: "EIN BEDEUTSAMER TAG ZUM GEMEINSAMEN FEIERN", accent: "Herzliche Wünsche zu diesem besonderen Tag", subline: "Wir freuen uns, die Bedeutung und Freude dieses besonderen Anlasses gemeinsam zu teilen — Willow Software" },
+      fr: { title: "UNE JOURNÉE PORTEUSE DE SENS À CÉLÉBRER ENSEMBLE", accent: "Tous nos vœux en cette journée spéciale", subline: "Nous sommes heureux de partager le sens et la joie de cette occasion particulière — Willow Software" },
+      es: { title: "UN DÍA SIGNIFICATIVO PARA CELEBRAR JUNTOS", accent: "Nuestros mejores deseos en este día especial", subline: "Nos alegra compartir el significado y la alegría de esta ocasión especial — Willow Software" },
+      it: { title: "UNA GIORNATA SPECIALE DA CELEBRARE INSIEME", accent: "I nostri migliori auguri per questa giornata", subline: "Siamo lieti di condividere il significato e la gioia di questa occasione speciale — Willow Software" },
+      ar: { title: "يوم مميز نحتفل به معًا", accent: "أطيب التمنيات في هذه المناسبة الخاصة", subline: "يسعدنا أن نشارككم معاني هذه المناسبة الخاصة وفرحتها — Willow Software" },
+      ja: { title: "ともに祝う、心に残る一日", accent: "この特別な日に心よりお祝い申し上げます", subline: "この日の大切な意味と喜びを、皆さまと分かち合えることを嬉しく思います — Willow Software" },
     };
     const next: SpecialDay = { id, enabled: false, countries: ["TR"], date: { type: "fixed", month: 1, day: 1 }, style: "confetti", accentColor: "#132175", secondaryColor: "#23A8D8", flag: "tr", motif: "orbit", greeting };
     commit([...storedDays, next]);

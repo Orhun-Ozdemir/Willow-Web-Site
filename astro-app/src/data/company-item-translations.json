@@ -1,12 +1,12 @@
 {
   "team": {
     "Ömer Oyar": {
-      "de": { "role": "Mitgründer", "bio": "Mitgründer von WillowSoft mit Schwerpunkt auf der Entwicklung vernetzter Produkte, eingebetteten Systemen und der Umsetzung industrieller IoT-Lösungen." },
-      "fr": { "role": "Cofondateur", "bio": "Cofondateur de WillowSoft, spécialisé dans l'ingénierie de produits connectés, les systèmes embarqués et la réalisation de solutions IoT industrielles." },
-      "es": { "role": "Cofundador", "bio": "Cofundador de WillowSoft, centrado en la ingeniería de productos conectados, los sistemas embebidos y la implementación de soluciones IoT industriales." },
-      "it": { "role": "Cofondatore", "bio": "Cofondatore di WillowSoft, specializzato nello sviluppo di prodotti connessi, sistemi embedded e realizzazione di soluzioni IoT industriali." },
-      "ar": { "role": "شريك مؤسس", "bio": "شريك مؤسس في WillowSoft، يركز على هندسة المنتجات المتصلة والأنظمة المدمجة وتنفيذ حلول إنترنت الأشياء الصناعية." },
-      "ja": { "role": "共同創業者", "bio": "WillowSoftの共同創業者。コネクテッド製品の開発、組み込みシステム、産業IoTソリューションの実装を担当。" }
+      "de": { "role": "Mitgründer", "bio": "Mitgründer von Willow Software mit Schwerpunkt auf der Entwicklung vernetzter Produkte, eingebetteten Systemen und der Umsetzung industrieller IoT-Lösungen." },
+      "fr": { "role": "Cofondateur", "bio": "Cofondateur de Willow Software, spécialisé dans l'ingénierie de produits connectés, les systèmes embarqués et la réalisation de solutions IoT industrielles." },
+      "es": { "role": "Cofundador", "bio": "Cofundador de Willow Software, centrado en la ingeniería de productos conectados, los sistemas embebidos y la implementación de soluciones IoT industriales." },
+      "it": { "role": "Cofondatore", "bio": "Cofondatore di Willow Software, specializzato nello sviluppo di prodotti connessi, sistemi embedded e realizzazione di soluzioni IoT industriali." },
+      "ar": { "role": "شريك مؤسس", "bio": "شريك مؤسس في Willow Software، يركز على هندسة المنتجات المتصلة والأنظمة المدمجة وتنفيذ حلول إنترنت الأشياء الصناعية." },
+      "ja": { "role": "共同創業者", "bio": "Willow Softwareの共同創業者。コネクテッド製品の開発、組み込みシステム、産業IoTソリューションの実装を担当。" }
     },
     "Eren Baştürk": {
       "de": { "role": "Mitgründer & Softwareentwickler", "bio": "Mitgründer und Softwareentwickler; verantwortlich für sichere Software für drahtlose Geräte, Backend-Integration und exportfähige IoT-Plattformen." },
@@ -65,27 +65,27 @@
   },
   "industries": {
     "Industrial & Energy": {
-      "de": { "name": "Industrie & Energie", "tag": "IIOT & TELEMETRIE", "body": "Unternehmen wie Honeywell und SLB arbeiten mit WillowSoft an kundenspezifischen Sensorknoten, Modbus-Integrationsschichten und vernetzter Hardware für den Feldeinsatz." },
-      "fr": { "name": "Industrie et énergie", "tag": "IIOT ET TÉLÉMÉTRIE", "body": "Des entreprises telles que Honeywell et SLB collaborent avec WillowSoft sur des nœuds de capteurs sur mesure, des couches d'intégration Modbus et du matériel connecté déployé sur le terrain." },
-      "es": { "name": "Industria y energía", "tag": "IIOT Y TELEMETRÍA", "body": "Empresas como Honeywell y SLB trabajan con WillowSoft en nodos de sensores a medida, capas de integración Modbus y hardware conectado para despliegues en campo." },
-      "it": { "name": "Industria ed energia", "tag": "IIOT E TELEMETRIA", "body": "Aziende come Honeywell e SLB collaborano con WillowSoft su nodi sensore personalizzati, livelli di integrazione Modbus e hardware connesso per installazioni sul campo." },
-      "ar": { "name": "الصناعة والطاقة", "tag": "إنترنت الأشياء الصناعي والقياس عن بُعد", "body": "تتعاون شركات مثل Honeywell وSLB مع WillowSoft في عقد استشعار مخصصة وطبقات تكامل Modbus وأجهزة متصلة للنشر الميداني." },
+      "de": { "name": "Industrie & Energie", "tag": "IIOT & TELEMETRIE", "body": "Unternehmen wie Honeywell und SLB arbeiten mit Willow Software an kundenspezifischen Sensorknoten, Modbus-Integrationsschichten und vernetzter Hardware für den Feldeinsatz." },
+      "fr": { "name": "Industrie et énergie", "tag": "IIOT ET TÉLÉMÉTRIE", "body": "Des entreprises telles que Honeywell et SLB collaborent avec Willow Software sur des nœuds de capteurs sur mesure, des couches d'intégration Modbus et du matériel connecté déployé sur le terrain." },
+      "es": { "name": "Industria y energía", "tag": "IIOT Y TELEMETRÍA", "body": "Empresas como Honeywell y SLB trabajan con Willow Software en nodos de sensores a medida, capas de integración Modbus y hardware conectado para despliegues en campo." },
+      "it": { "name": "Industria ed energia", "tag": "IIOT E TELEMETRIA", "body": "Aziende come Honeywell e SLB collaborano con Willow Software su nodi sensore personalizzati, livelli di integrazione Modbus e hardware connesso per installazioni sul campo." },
+      "ar": { "name": "الصناعة والطاقة", "tag": "إنترنت الأشياء الصناعي والقياس عن بُعد", "body": "تتعاون شركات مثل Honeywell وSLB مع Willow Software في عقد استشعار مخصصة وطبقات تكامل Modbus وأجهزة متصلة للنشر الميداني." },
       "ja": { "name": "産業・エネルギー", "tag": "IIOT・テレメトリー", "body": "HoneywellやSLBなどの企業と、カスタムセンサーノード、Modbus連携レイヤー、現場導入向けコネクテッドハードウェアに取り組んでいます。" }
     },
     "Consumer & FMCG": {
-      "de": { "name": "Konsumgüter & FMCG", "tag": "INTELLIGENTE KONNEKTIVITÄT", "body": "Marken wie Beko und Coca-Cola haben WillowSoft mit Firmware für vernetzte Produkte, Backend-Datenplattformen und mobilen Benutzeroberflächen beauftragt." },
-      "fr": { "name": "Biens de consommation et FMCG", "tag": "CONNECTIVITÉ INTELLIGENTE", "body": "Des marques telles que Beko et Coca-Cola ont confié à WillowSoft le développement de firmware pour produits connectés, de plateformes de données backend et d'interfaces mobiles." },
-      "es": { "name": "Consumo y gran consumo", "tag": "CONECTIVIDAD INTELIGENTE", "body": "Marcas como Beko y Coca-Cola han encargado a WillowSoft firmware para productos conectados, plataformas de datos backend e interfaces móviles." },
-      "it": { "name": "Beni di consumo e FMCG", "tag": "CONNETTIVITÀ INTELLIGENTE", "body": "Marchi come Beko e Coca-Cola hanno affidato a WillowSoft firmware per prodotti connessi, piattaforme dati backend e interfacce mobili." },
-      "ar": { "name": "المنتجات الاستهلاكية والسلع سريعة التداول", "tag": "الاتصال الذكي", "body": "كلفت علامات مثل Beko وCoca-Cola شركة WillowSoft بتطوير Firmware للمنتجات المتصلة ومنصات بيانات خلفية وواجهات للجوال." },
+      "de": { "name": "Konsumgüter & FMCG", "tag": "INTELLIGENTE KONNEKTIVITÄT", "body": "Marken wie Beko und Coca-Cola haben Willow Software mit Firmware für vernetzte Produkte, Backend-Datenplattformen und mobilen Benutzeroberflächen beauftragt." },
+      "fr": { "name": "Biens de consommation et FMCG", "tag": "CONNECTIVITÉ INTELLIGENTE", "body": "Des marques telles que Beko et Coca-Cola ont confié à Willow Software le développement de firmware pour produits connectés, de plateformes de données backend et d'interfaces mobiles." },
+      "es": { "name": "Consumo y gran consumo", "tag": "CONECTIVIDAD INTELIGENTE", "body": "Marcas como Beko y Coca-Cola han encargado a Willow Software firmware para productos conectados, plataformas de datos backend e interfaces móviles." },
+      "it": { "name": "Beni di consumo e FMCG", "tag": "CONNETTIVITÀ INTELLIGENTE", "body": "Marchi come Beko e Coca-Cola hanno affidato a Willow Software firmware per prodotti connessi, piattaforme dati backend e interfacce mobili." },
+      "ar": { "name": "المنتجات الاستهلاكية والسلع سريعة التداول", "tag": "الاتصال الذكي", "body": "كلفت علامات مثل Beko وCoca-Cola شركة Willow Software بتطوير Firmware للمنتجات المتصلة ومنصات بيانات خلفية وواجهات للجوال." },
       "ja": { "name": "消費財・FMCG", "tag": "スマートコネクティビティ", "body": "BekoやCoca-Colaなどのブランド向けに、コネクテッド製品のFirmware、バックエンドデータ基盤、モバイルインターフェースを開発しています。" }
     },
     "Healthcare & Telecoms": {
-      "de": { "name": "Gesundheitswesen & Telekommunikation", "tag": "KRITISCHE INFRASTRUKTUR", "body": "Aero Healthcare und AT&T stellen höchste Anforderungen an die Zuverlässigkeit. WillowSoft entwickelt eingebettete Systeme für regulierte Umgebungen." },
-      "fr": { "name": "Santé et télécommunications", "tag": "INFRASTRUCTURES CRITIQUES", "body": "Aero Healthcare et AT&T exigent les plus hauts niveaux de fiabilité. WillowSoft fournit des systèmes embarqués conçus pour les environnements réglementés." },
-      "es": { "name": "Salud y telecomunicaciones", "tag": "INFRAESTRUCTURAS CRÍTICAS", "body": "Aero Healthcare y AT&T exigen los más altos niveles de fiabilidad. WillowSoft desarrolla sistemas embebidos para entornos regulados." },
-      "it": { "name": "Sanità e telecomunicazioni", "tag": "INFRASTRUTTURE CRITICHE", "body": "Aero Healthcare e AT&T richiedono i più elevati standard di affidabilità. WillowSoft realizza sistemi embedded per ambienti regolamentati." },
-      "ar": { "name": "الرعاية الصحية والاتصالات", "tag": "البنية التحتية الحرجة", "body": "تتطلب Aero Healthcare وAT&T أعلى معايير الموثوقية. تقدم WillowSoft أنظمة مدمجة مصممة للبيئات الخاضعة للتنظيم." },
+      "de": { "name": "Gesundheitswesen & Telekommunikation", "tag": "KRITISCHE INFRASTRUKTUR", "body": "Aero Healthcare und AT&T stellen höchste Anforderungen an die Zuverlässigkeit. Willow Software entwickelt eingebettete Systeme für regulierte Umgebungen." },
+      "fr": { "name": "Santé et télécommunications", "tag": "INFRASTRUCTURES CRITIQUES", "body": "Aero Healthcare et AT&T exigent les plus hauts niveaux de fiabilité. Willow Software fournit des systèmes embarqués conçus pour les environnements réglementés." },
+      "es": { "name": "Salud y telecomunicaciones", "tag": "INFRAESTRUCTURAS CRÍTICAS", "body": "Aero Healthcare y AT&T exigen los más altos niveles de fiabilidad. Willow Software desarrolla sistemas embebidos para entornos regulados." },
+      "it": { "name": "Sanità e telecomunicazioni", "tag": "INFRASTRUTTURE CRITICHE", "body": "Aero Healthcare e AT&T richiedono i più elevati standard di affidabilità. Willow Software realizza sistemi embedded per ambienti regolamentati." },
+      "ar": { "name": "الرعاية الصحية والاتصالات", "tag": "البنية التحتية الحرجة", "body": "تتطلب Aero Healthcare وAT&T أعلى معايير الموثوقية. تقدم Willow Software أنظمة مدمجة مصممة للبيئات الخاضعة للتنظيم." },
       "ja": { "name": "ヘルスケア・通信", "tag": "重要インフラ", "body": "Aero HealthcareやAT&Tが求める高い信頼性基準に対応し、規制対象環境向けの組み込みシステムを提供しています。" }
     }
   },

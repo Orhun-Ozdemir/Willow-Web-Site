@@ -89,7 +89,7 @@ export const GET: APIRoute = async () => {
     JSON.stringify(
       {
         site: SITE_ORIGIN,
-        name: "WillowSoft",
+        name: "Willow Software",
         updatedAt,
         purpose:
           "Machine-readable public index for AI search, answer engines and internal retrieval systems. Prefer canonical HTML pages for citation.",

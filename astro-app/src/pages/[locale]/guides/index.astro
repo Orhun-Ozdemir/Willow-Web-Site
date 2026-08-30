@@ -9,7 +9,7 @@ export const prerender = false;
 const locale = resolveLocale(Astro.params.locale, Astro.url.pathname);
 const copy = GUIDE_INDEX_COPY[locale];
 const canonical = `${SITE_ORIGIN}/${locale}/guides`;
-const title = fitSeoTitle(`${copy.title} | WillowSoft`);
+const title = fitSeoTitle(`${copy.title} | Willow Software`);
 const description = fitSeoDescription(copy.description);
 const schema = {
   "@context": "https://schema.org",

@@ -320,11 +320,11 @@ export default function AdminLogin() {
           <div className="ws-login-logo">
             <img
               src={`${import.meta.env.BASE_URL}assets/willow-mark-transparent.png`}
-              alt="WillowSoft"
+              alt="Willow Software"
             />
           </div>
 
-          <h1 className="ws-login-title">WILLOWSOFT</h1>
+          <h1 className="ws-login-title">WILLOW SOFTWARE</h1>
           <p className="ws-login-subtitle">Admin Panel</p>
         </div>
 
@@ -427,7 +427,7 @@ export default function AdminLogin() {
         </section>
 
         <p className="ws-login-footer">
-          © 2026 WillowSoft. All rights reserved.
+          © 2026 Willow Software. All rights reserved.
         </p>
       </div>
     </main>

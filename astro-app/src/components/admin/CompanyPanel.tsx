@@ -1023,7 +1023,7 @@ export default function CompanyPanel() {
                   <FormField label="Sektör Adı (EN)" value={ind.name || ""} onChange={(v) => updateIndustry(editingIndustryIdx, "name", v)} hint="Örn: Industrial & Energy" />
                   <FormField label="Etiket (EN)" value={ind.tag || ""} onChange={(v) => updateIndustry(editingIndustryIdx, "tag", v)} hint="Büyük harf. Örn: IIoT & TELEMETRY" />
                   <div className="col-span-2">
-                    <FormField label="Açıklama (EN)" type="textarea" rows={3} value={ind.body || ""} onChange={(v) => updateIndustry(editingIndustryIdx, "body", v)} hint="Sektörü ve WillowSoft'un bu alandaki çalışmalarını anlatan kısa paragraf." />
+                    <FormField label="Açıklama (EN)" type="textarea" rows={3} value={ind.body || ""} onChange={(v) => updateIndustry(editingIndustryIdx, "body", v)} hint="Sektörü ve Willow Software'un bu alandaki çalışmalarını anlatan kısa paragraf." />
                   </div>
                   <FormField label="İkon" value={ind.icon || "globe"} onChange={(v) => updateIndustry(editingIndustryIdx, "icon", v)} hint="globe, cpu, server, terminal, phone, gear, database, shield, water, mail, pin" />
                   <FormField label="Sıra Numarası" type="number" value={String(ind.sortOrder || 0)} onChange={(v) => updateIndustry(editingIndustryIdx, "sortOrder", parseInt(v) || 0)} />

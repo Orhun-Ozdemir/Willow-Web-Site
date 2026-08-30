@@ -75,7 +75,7 @@ export async function sendLeadNotification(to: string[], lead: LeadMailData) {
   }
 
   const { transporter, user } = await getTransporter();
-  const from = `"WillowSoft Admin" <${user}>`;
+  const from = `"Willow Software Admin" <${user}>`;
 
   const layersStr = Array.isArray(lead.layers)
     ? lead.layers.filter(Boolean).join(", ")
@@ -117,13 +117,13 @@ export async function sendLeadNotification(to: string[], lead: LeadMailData) {
     <div style="font-family:sans-serif;max-width:600px;margin:0 auto">
       <div style="background:#132175;padding:20px 24px;border-radius:8px 8px 0 0">
         <h2 style="color:#fff;margin:0;font-size:18px">${title}</h2>
-        <p style="color:#a0b4e8;margin:4px 0 0;font-size:13px">WillowSoft web sitesinden yeni bir başvuru geldi</p>
+        <p style="color:#a0b4e8;margin:4px 0 0;font-size:13px">Willow Software web sitesinden yeni bir başvuru geldi</p>
       </div>
       <div style="border:1px solid #e0e5f0;border-top:none;border-radius:0 0 8px 8px;padding:20px 24px">
         <table style="width:100%;border-collapse:collapse;font-size:14px">${rows}</table>
         ${messageBlock}
         <hr style="margin:20px 0;border:none;border-top:1px solid #eee">
-        <p style="font-size:12px;color:#aaa;margin:0">Bu mail WillowSoft admin paneli tarafından otomatik gönderilmiştir.</p>
+        <p style="font-size:12px;color:#aaa;margin:0">Bu mail Willow Software admin paneli tarafından otomatik gönderilmiştir.</p>
       </div>
     </div>
   `;
@@ -155,9 +155,9 @@ export async function sendUncontactedLeadsDigest(to: string[], leads: LeadDigest
   }
 
   const { transporter, user } = await getTransporter();
-  const from = `"WillowSoft Admin" <${user}>`;
+  const from = `"Willow Software Admin" <${user}>`;
   const count = leads.length;
-  const subject = `WillowSoft — ${count} yanıtsız lead (günlük özet)`;
+  const subject = `Willow Software — ${count} yanıtsız lead (günlük özet)`;
 
   const rows = leads
     .map(
@@ -210,7 +210,7 @@ export async function sendUncontactedLeadsDigest(to: string[], leads: LeadDigest
   `;
 
   const text = [
-    `WillowSoft — ${count} yanıtsız lead (günlük özet)`,
+    `Willow Software — ${count} yanıtsız lead (günlük özet)`,
     "",
     ...textLines,
     "",
@@ -279,7 +279,7 @@ export async function sendTelegramNotification(chatIds: string[], lead: LeadMail
   const parts: string[] = [];
 
   parts.push(isStartProject ? `🚀 *YENİ PROJE BAŞLATMA TALEBI*` : `📬 *YENİ İLETİŞİM FORMU*`);
-  parts.push(`🌐 WillowSoft${lead.sourcePage ? ` — \`${lead.sourcePage}\`` : ""}`);
+  parts.push(`🌐 Willow Software${lead.sourcePage ? ` — \`${lead.sourcePage}\`` : ""}`);
   parts.push(divider);
 
   parts.push(`👤 *${lead.name}*`);

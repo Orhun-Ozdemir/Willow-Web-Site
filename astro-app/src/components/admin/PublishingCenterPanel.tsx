@@ -378,7 +378,7 @@ export default function PublishingCenterPanel() {
         </div>}
 
         <div className={`ws-pub-preview is-${activePlatform}`}>
-          <div className="ws-pub-preview-top"><div className="ws-pub-avatar">W</div><div><strong>WillowSoft</strong><span>{activePlatform === "website" ? "willowsoft.co" : activeAccount?.username || PLATFORM_META[activePlatform].label}</span></div></div>
+          <div className="ws-pub-preview-top"><div className="ws-pub-avatar">W</div><div><strong>Willow Software</strong><span>{activePlatform === "website" ? "willowsoft.co" : activeAccount?.username || PLATFORM_META[activePlatform].label}</span></div></div>
           {activePlatform === "website" ? <><h4>{content.title || "Haber başlığınız burada görünecek"}</h4><p>{content.excerpt || "Haber özetiniz burada görünecek."}</p></> : <p className="ws-pub-preview-copy">{text || "Platform paylaşım metniniz burada görünecek."}</p>}
           {cover && activePlatform !== "x" && <div className="ws-pub-preview-media"><img src={cover} alt="" /></div>}
           <div className="ws-pub-preview-meta"><span>{content.date || today()}</span><span>Önizleme</span></div>

@@ -13,7 +13,7 @@ export const prerender = false;
 
 const locale = resolveLocale(Astro.params.locale, Astro.url.pathname);
 const content = await loadContent();
-const seoProps = pageSeo(content, "contact", locale, "/contact", "Contact | WillowSoft", "Contact WillowSoft for IoT hardware, backend, PostgreSQL, and software development projects.");
+const seoProps = pageSeo(content, "contact", locale, "/contact", "Contact | Willow Software", "Contact Willow Software for IoT hardware, backend, PostgreSQL, and software development projects.");
 const contactFallbackFaqs = fallbackFaqsForPage("contact", locale);
 const contactFaqItems = faqItemsForPage(content.faqs || [], "contact", locale, contactFallbackFaqs);
 const aiAnswer = aiAnswerForPage(content, "contact", locale, seoProps.description);

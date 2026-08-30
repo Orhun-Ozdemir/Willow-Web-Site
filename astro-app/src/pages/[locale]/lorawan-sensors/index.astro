@@ -16,7 +16,7 @@ const products = (content.products || []).filter((product: any) => product.visib
 const categories = productCategoriesFromContent(content).filter((category) => category.visible);
 const copy = LORAWAN_LANDING_COPY[locale] || LORAWAN_LANDING_COPY.en;
 const canonical = `${SITE_ORIGIN}/${locale}/lorawan-sensors`;
-const title = fitSeoTitle(`${copy.seoTitle} | WillowSoft`);
+const title = fitSeoTitle(`${copy.seoTitle} | Willow Software`);
 const description = fitSeoDescription(copy.description);
 const itemListId = `${canonical}#products`;
 
@@ -32,7 +32,7 @@ const schema = appendSchemaNodes({
     {
       "@type": "BreadcrumbList",
       itemListElement: [
-        { "@type": "ListItem", position: 1, name: "WillowSoft", item: `${SITE_ORIGIN}/${locale}` },
+        { "@type": "ListItem", position: 1, name: "Willow Software", item: `${SITE_ORIGIN}/${locale}` },
         { "@type": "ListItem", position: 2, name: copy.title, item: canonical },
       ],
     },

@@ -17,7 +17,7 @@ if (!guide) return Astro.rewrite(`/${locale}/not-found`);
 const copy = guide.localized[locale];
 const indexCopy = GUIDE_INDEX_COPY[locale];
 const canonical = `${SITE_ORIGIN}/${locale}/guides/${guide.slug}`;
-const title = fitSeoTitle(`${copy.title} | WillowSoft`);
+const title = fitSeoTitle(`${copy.title} | Willow Software`);
 const description = fitSeoDescription(copy.description);
 const content = await loadContent();
 const categories = productCategoriesFromContent(content);
@@ -51,7 +51,7 @@ const schema = {
     {
       "@type": "BreadcrumbList",
       itemListElement: [
-        { "@type": "ListItem", position: 1, name: "WillowSoft", item: `${SITE_ORIGIN}/${locale}` },
+        { "@type": "ListItem", position: 1, name: "Willow Software", item: `${SITE_ORIGIN}/${locale}` },
         { "@type": "ListItem", position: 2, name: indexCopy.title, item: `${SITE_ORIGIN}/${locale}/guides` },
         { "@type": "ListItem", position: 3, name: copy.title, item: canonical },
       ],

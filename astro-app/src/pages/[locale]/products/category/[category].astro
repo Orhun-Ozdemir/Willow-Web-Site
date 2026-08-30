@@ -26,7 +26,7 @@ const allProducts = (content.products || []).filter((product: any) => product.vi
 const products = allProducts.filter((product: any) => String(product.category || "") === selectedCategory.key);
 const searchName = categorySearchName(selectedCategory.key, locale);
 const canonical = `${SITE_ORIGIN}/${locale}/products/category/${selectedCategory.key}`;
-const title = fitSeoTitle(`${searchName} | WillowSoft`);
+const title = fitSeoTitle(`${searchName} | Willow Software`);
 const description = fitSeoDescription(categorySeoDescription(selectedCategory.key, locale, products.length));
 const itemListId = `${canonical}#products`;
 const schema = appendSchemaNodes({
@@ -41,7 +41,7 @@ const schema = appendSchemaNodes({
     {
       "@type": "BreadcrumbList",
       itemListElement: [
-        { "@type": "ListItem", position: 1, name: "WillowSoft", item: `${SITE_ORIGIN}/${locale}` },
+        { "@type": "ListItem", position: 1, name: "Willow Software", item: `${SITE_ORIGIN}/${locale}` },
         { "@type": "ListItem", position: 2, name: "LoRaWAN", item: `${SITE_ORIGIN}/${locale}/lorawan-sensors` },
         { "@type": "ListItem", position: 3, name: searchName, item: canonical },
       ],

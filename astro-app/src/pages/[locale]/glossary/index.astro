@@ -10,7 +10,7 @@ const locale = resolveLocale(Astro.params.locale, Astro.url.pathname);
 const content = await loadContent();
 const pageContent = content.pageContent?.glossary || {};
 const glossaryList = content.glossary || [];
-const seoProps = pageSeo(content, "glossary", locale, "/glossary", "IoT & LoRaWAN Glossary | WillowSoft", "Technical definitions of LoRaWAN, Modbus RTU, Industrial IoT, embedded systems, MCU, IP67, edge computing and related engineering concepts.");
+const seoProps = pageSeo(content, "glossary", locale, "/glossary", "IoT & LoRaWAN Glossary | Willow Software", "Technical definitions of LoRaWAN, Modbus RTU, Industrial IoT, embedded systems, MCU, IP67, edge computing and related engineering concepts.");
 const t = (key: string, fallback = "") => pageText(pageContent, key, locale, fallback);
 
 const getGlossaryItems = (category: string) => {
@@ -56,14 +56,14 @@ const glossarySchema = {
 
 const getNoteLabel = () => {
   const noteLabels: Record<string, string> = {
-    en: "WillowSoft uses it in:",
-    tr: "WillowSoft kullanım alanları:",
-    de: "WillowSoft setzt es ein in:",
-    fr: "WillowSoft l'utilise dans :",
-    es: "WillowSoft lo usa en:",
-    it: "WillowSoft lo usa in:",
-    ar: "تستخدمه WillowSoft في:",
-    ja: "WillowSoftでの用途：",
+    en: "Willow Software uses it in:",
+    tr: "Willow Software kullanım alanları:",
+    de: "Willow Software setzt es ein in:",
+    fr: "Willow Software l'utilise dans :",
+    es: "Willow Software lo usa en:",
+    it: "Willow Software lo usa in:",
+    ar: "تستخدمه Willow Software في:",
+    ja: "Willow Softwareでの用途：",
   };
   return noteLabels[locale] || noteLabels.en;
 };

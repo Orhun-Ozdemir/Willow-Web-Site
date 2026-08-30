@@ -34,7 +34,7 @@ const SUB_TABS: { key: SubTab; label: string; desc: string; icon: string }[] = [
   { key: "general", label: "Sayfa Metinleri", desc: "Hero, metrikler ve bölüm başlıkları", icon: "📝" },
   { key: "selector", label: "Yol Seçici", desc: "“Görünürlük / müdahale / entegrasyon” kartları", icon: "🧭" },
   { key: "flow", label: "Nasıl Çalışır", desc: "Ölç → İlet → İşle → Görselleştir → Eylem adımları", icon: "⚡" },
-  { key: "why", label: "Neden WillowSoft", desc: "Güçlü yönler / ilkeler kartları", icon: "✦" },
+  { key: "why", label: "Neden Willow Software", desc: "Güçlü yönler / ilkeler kartları", icon: "✦" },
 ];
 
 const SOLUTION_FIELDS = [
@@ -61,8 +61,8 @@ const GENERAL_FIELDS = [
   { key: "howEyebrow", label: "Nasıl Çalışır Üst Etiket" },
   { key: "howTitle", label: "Nasıl Çalışır Başlık" },
   { key: "howLead", label: "Nasıl Çalışır Açıklama", type: "textarea" as const, rows: 3 },
-  { key: "whyEyebrow", label: "Neden WillowSoft Üst Etiket" },
-  { key: "whyTitle", label: "Neden WillowSoft Başlık" },
+  { key: "whyEyebrow", label: "Neden Willow Software Üst Etiket" },
+  { key: "whyTitle", label: "Neden Willow Software Başlık" },
   { key: "finalCtaEyebrow", label: "Son CTA Üst Etiket" },
   { key: "finalCtaTitle", label: "Son CTA Başlık" },
   { key: "finalCtaLead", label: "Son CTA Açıklama", type: "textarea" as const, rows: 3 },
@@ -900,7 +900,7 @@ export default function SolutionsPanel() {
           ) : (
             <div className="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm">
               <div className="p-4 border-b border-gray-200 flex justify-between items-center">
-                <h3 className="font-bold text-sm text-[#131b2e]">Neden WillowSoft Özellikleri</h3>
+                <h3 className="font-bold text-sm text-[#131b2e]">Neden Willow Software Özellikleri</h3>
                 <button onClick={addWhyCard} className="px-3 py-1.5 bg-[#132175] hover:bg-[#0e1a5e] text-white rounded text-xs font-bold">+ Yeni Kart Ekle</button>
               </div>
               <div className="divide-y divide-gray-100">

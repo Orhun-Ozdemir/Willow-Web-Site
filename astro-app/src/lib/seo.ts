@@ -2,14 +2,14 @@ import { locales, type Locale } from "@/lib/cms";
 import { officesForContact } from "@/lib/company-contact";
 
 export const SITE_ORIGIN = "https://www.willowsoft.co";
-export const SITE_NAME = "WillowSoft";
+export const SITE_NAME = "Willow Software";
 export const DEFAULT_OG_IMAGE = `${SITE_ORIGIN}/assets/og/willowsoft-industrial-iot.jpg`;
 
 /** Keeps search-result titles within the common mobile display range. */
 export function fitSeoTitle(value: string, maxLength = 60): string {
   const clean = String(value || "").replace(/\s+/g, " ").trim();
   if (Array.from(clean).length <= maxLength) return clean;
-  const withoutBrand = clean.replace(/\s*(?:\||—|-)\s*WillowSoft\s*$/i, "").trim();
+  const withoutBrand = clean.replace(/\s*(?:\||—|-)\s*Willow Software\s*$/i, "").trim();
   if (withoutBrand && Array.from(withoutBrand).length <= maxLength) return withoutBrand;
   const chars = Array.from(withoutBrand || clean);
   const candidate = chars.slice(0, maxLength - 1).join("");
@@ -70,20 +70,21 @@ export const OG_LOCALE_MAP: Record<Locale, string> = {
 export const ORGANIZATION_SCHEMA = {
   "@type": "Organization",
   "@id": `${SITE_ORIGIN}/#org`,
-  name: "WillowSoft",
-  // "Willow Software" is how this same company is named on its LinkedIn and
-  // Instagram profiles (see sameAs) — listing it here ties the two names to one
-  // entity instead of leaving Google to guess they're unrelated.
-  alternateName: ["WILLOWSOFT", "Willow Software"],
+  name: "Willow Software",
+  // "WillowSoft" was this site's own branding before it was aligned to the
+  // company's real name (also used on LinkedIn, Instagram and Google Business —
+  // see sameAs). Kept as an alternate so people who know the site by its old
+  // styling — or search engines that indexed it — still resolve to this entity.
+  alternateName: ["WillowSoft", "WILLOWSOFT"],
   url: SITE_ORIGIN,
   logo: `${SITE_ORIGIN}/assets/willow-mark-transparent.png`,
   slogan: "Embedded Systems & IoT Connectivity",
   description:
-    "Embedded hardware and Industrial IoT engineering company. WillowSoft designs LoRaWAN devices, firmware, backend APIs, dashboards, mobile apps and VR layers as one connected system.",
+    "Embedded hardware and Industrial IoT engineering company. Willow Software designs LoRaWAN devices, firmware, backend APIs, dashboards, mobile apps and VR layers as one connected system.",
   foundingDate: "2020",
   areaServed: "Worldwide",
   address: { "@type": "PostalAddress", addressCountry: "TR" },
-  // Disambiguates this entity from unrelated companies sharing the "WillowSoft"
+  // Disambiguates this entity from unrelated companies sharing the "Willow Software"
   // name (e.g. an Australian edtech company) in Google's Knowledge Graph.
   sameAs: [
     "https://www.linkedin.com/company/willow-software",
@@ -127,7 +128,7 @@ export const WEBSITE_SCHEMA = {
   "@type": "WebSite",
   "@id": `${SITE_ORIGIN}/#site`,
   url: SITE_ORIGIN,
-  name: "WillowSoft",
+  name: "Willow Software",
   publisher: { "@id": `${SITE_ORIGIN}/#org` },
   inLanguage: [...locales],
 };
