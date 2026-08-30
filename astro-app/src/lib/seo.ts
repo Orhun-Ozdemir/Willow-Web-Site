@@ -88,6 +88,7 @@ export const ORGANIZATION_SCHEMA = {
   sameAs: [
     "https://www.linkedin.com/company/willow-software",
     "https://www.instagram.com/willowsoftware/",
+    "https://share.google/G7n6paq83BfgnALas",
   ],
   contactPoint: {
     "@type": "ContactPoint",
