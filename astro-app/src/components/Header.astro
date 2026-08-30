@@ -27,6 +27,12 @@ const { now: specialDayNow, countryCode: specialDayCountry } = resolvePreviewOve
   visitorCountry,
 );
 const activeSpecialDay = getActiveSpecialDay(specialDayNow, specialDayCountry, configuredSpecialDays(content?.meta?.specialDays));
+if (activeSpecialDay) {
+  // The shared CDN cache pilot (middleware.ts) treats "no-store"/"private" as an
+  // explicit opt-out. This markup varies per visitor country/timezone, so it must
+  // never be served from one visitor's cache slot to another during a celebration.
+  Astro.response.headers.set("Cache-Control", "private, no-store");
+}
 const specialDayGreeting = activeSpecialDay
   ? activeSpecialDay.greeting[locale] || activeSpecialDay.greeting.en
   : null;
