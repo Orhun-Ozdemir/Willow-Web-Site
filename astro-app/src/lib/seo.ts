@@ -71,7 +71,10 @@ export const ORGANIZATION_SCHEMA = {
   "@type": "Organization",
   "@id": `${SITE_ORIGIN}/#org`,
   name: "WillowSoft",
-  alternateName: "WILLOWSOFT",
+  // "Willow Software" is how this same company is named on its LinkedIn and
+  // Instagram profiles (see sameAs) — listing it here ties the two names to one
+  // entity instead of leaving Google to guess they're unrelated.
+  alternateName: ["WILLOWSOFT", "Willow Software"],
   url: SITE_ORIGIN,
   logo: `${SITE_ORIGIN}/assets/willow-mark-transparent.png`,
   slogan: "Embedded Systems & IoT Connectivity",
