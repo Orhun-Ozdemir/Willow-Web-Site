@@ -82,7 +82,10 @@ export const ORGANIZATION_SCHEMA = {
   address: { "@type": "PostalAddress", addressCountry: "TR" },
   // Disambiguates this entity from unrelated companies sharing the "WillowSoft"
   // name (e.g. an Australian edtech company) in Google's Knowledge Graph.
-  sameAs: ["https://www.linkedin.com/company/willow-software"],
+  sameAs: [
+    "https://www.linkedin.com/company/willow-software",
+    "https://www.instagram.com/willowsoftware/",
+  ],
   contactPoint: {
     "@type": "ContactPoint",
     email: "info@willowsoft.co",
