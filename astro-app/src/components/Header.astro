@@ -47,6 +47,8 @@ const navLabels = {
   solutions: { en: "Solutions", tr: "Çözümler", de: "Lösungen", fr: "Solutions", es: "Soluciones", it: "Soluzioni", ar: "الحلول", ja: "ソリューション" },
   services: { en: "Services", tr: "Hizmetler", de: "Leistungen", fr: "Services", es: "Servicios", it: "Servizi", ar: "الخدمات", ja: "サービス" },
   products: { en: "Products", tr: "Ürünler", de: "Produkte", fr: "Produits", es: "Productos", it: "Prodotti", ar: "المنتجات", ja: "製品" },
+  allProducts: { en: "All Products", tr: "Tüm Ürünler", de: "Alle Produkte", fr: "Tous les produits", es: "Todos los productos", it: "Tutti i prodotti", ar: "جميع المنتجات", ja: "すべての製品" },
+  lorawanSensors: { en: "LoRaWAN Sensors", tr: "LoRaWAN Sensörleri", de: "LoRaWAN-Sensoren", fr: "Capteurs LoRaWAN", es: "Sensores LoRaWAN", it: "Sensori LoRaWAN", ar: "مستشعرات LoRaWAN", ja: "LoRaWANセンサー" },
   news: { en: "News", tr: "Haberler", de: "Neuigkeiten", fr: "Actualités", es: "Noticias", it: "Notizie", ar: "الأخبار", ja: "ニュース" },
   allNews: { en: "All News", tr: "Tüm Haberler", de: "Alle Neuigkeiten", fr: "Toutes les actualités", es: "Todas las noticias", it: "Tutte le notizie", ar: "جميع الأخبار", ja: "すべてのニュース" },
   guides: { en: "Technical Guides", tr: "Teknik Rehberler", de: "Technische Leitfäden", fr: "Guides techniques", es: "Guías técnicas", it: "Guide tecniche", ar: "الأدلة الفنية", ja: "技術ガイド" },
@@ -73,10 +75,10 @@ const links = [
   { name: getLabel("home"), href: `/${locale}`, accent: "nav-accent-blue" },
   { name: getLabel("solutions"), href: `/${locale}/solutions`, accent: "nav-accent-green" },
   { name: getLabel("services"), href: `/${locale}/services`, accent: "nav-accent-amber" },
-  { name: getLabel("products"), href: `/${locale}/products`, accent: "nav-accent-cyan" },
   { name: getLabel("company"), href: `/${locale}/company`, accent: "nav-accent-red" },
   { name: getLabel("contact"), href: `/${locale}/contact`, accent: "nav-accent-teal" },
 ];
+const productsActive = currentPath.startsWith(`/${locale}/products`) || currentPath.startsWith(`/${locale}/lorawan-sensors`);
 
 function isActive(href: string) {
   if (href === `/${locale}`) return currentPath === href || currentPath === `/${locale}/`;
@@ -104,7 +106,7 @@ function isActive(href: string) {
     </a>
 
     <div class="nav-links" id="nav-links">
-      {links.slice(0, 4).map((link) => (
+      {links.slice(0, 3).map((link) => (
         <a
           href={link.href}
           class={link.accent}
@@ -113,6 +115,20 @@ function isActive(href: string) {
           {link.name}
         </a>
       ))}
+      <div class:list={["nav-dropdown", { active: productsActive }]} data-nav-dropdown>
+        <button class="nav-dropdown-trigger nav-accent-violet" type="button" aria-expanded="false" aria-haspopup="true">
+          <span>{getLabel("products")}</span>
+          <span class="nav-dropdown-chevron" aria-hidden="true">⌄</span>
+        </button>
+        <div class="nav-dropdown-panel">
+          <a href={`/${locale}/products`} aria-current={currentPath.startsWith(`/${locale}/products`) ? "page" : undefined}>
+            <span>{getLabel("allProducts")}</span><span aria-hidden="true">↗</span>
+          </a>
+          <a href={`/${locale}/lorawan-sensors`} aria-current={currentPath.startsWith(`/${locale}/lorawan-sensors`) ? "page" : undefined}>
+            <span>{getLabel("lorawanSensors")}</span><span aria-hidden="true">↗</span>
+          </a>
+        </div>
+      </div>
       <div class:list={["nav-dropdown", { active: currentPath.startsWith(`/${locale}/news`) || currentPath.startsWith(`/${locale}/guides`) }]} data-nav-dropdown>
         <button class="nav-dropdown-trigger nav-accent-violet" type="button" aria-expanded="false" aria-haspopup="true">
           <span>{getLabel("news")}</span>
@@ -127,7 +143,7 @@ function isActive(href: string) {
           </a>
         </div>
       </div>
-      {links.slice(4).map((link) => (
+      {links.slice(3).map((link) => (
         <a
           href={link.href}
           class={link.accent}
@@ -175,19 +191,23 @@ function isActive(href: string) {
     toggle.setAttribute("aria-expanded", String(!!open));
   });
 
-  const dropdown = document.querySelector("[data-nav-dropdown]");
-  const dropdownTrigger = dropdown?.querySelector(".nav-dropdown-trigger");
-  const setDropdownOpen = (open: boolean) => {
-    dropdown?.classList.toggle("open", open);
-    dropdownTrigger?.setAttribute("aria-expanded", String(open));
+  const dropdowns = Array.from(document.querySelectorAll("[data-nav-dropdown]"));
+  const setDropdownOpen = (dropdown: Element, open: boolean) => {
+    dropdown.classList.toggle("open", open);
+    dropdown.querySelector(".nav-dropdown-trigger")?.setAttribute("aria-expanded", String(open));
   };
-  dropdownTrigger?.addEventListener("click", () => setDropdownOpen(!dropdown?.classList.contains("open")));
-  dropdown?.querySelectorAll("a").forEach((link) => link.addEventListener("click", () => setDropdownOpen(false)));
+  dropdowns.forEach((dropdown) => {
+    const trigger = dropdown.querySelector(".nav-dropdown-trigger");
+    trigger?.addEventListener("click", () => setDropdownOpen(dropdown, !dropdown.classList.contains("open")));
+    dropdown.querySelectorAll("a").forEach((link) => link.addEventListener("click", () => setDropdownOpen(dropdown, false)));
+  });
   document.addEventListener("click", (event) => {
-    if (dropdown && !dropdown.contains(event.target as Node)) setDropdownOpen(false);
+    dropdowns.forEach((dropdown) => {
+      if (!dropdown.contains(event.target as Node)) setDropdownOpen(dropdown, false);
+    });
   });
   document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape") setDropdownOpen(false);
+    if (event.key === "Escape") dropdowns.forEach((dropdown) => setDropdownOpen(dropdown, false));
   });
 
   const select = document.getElementById("locale-select") as HTMLSelectElement | null;
