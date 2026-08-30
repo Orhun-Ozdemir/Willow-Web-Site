@@ -80,6 +80,9 @@ export const ORGANIZATION_SCHEMA = {
   foundingDate: "2020",
   areaServed: "Worldwide",
   address: { "@type": "PostalAddress", addressCountry: "TR" },
+  // Disambiguates this entity from unrelated companies sharing the "WillowSoft"
+  // name (e.g. an Australian edtech company) in Google's Knowledge Graph.
+  sameAs: ["https://www.linkedin.com/company/willow-software"],
   contactPoint: {
     "@type": "ContactPoint",
     email: "info@willowsoft.co",
