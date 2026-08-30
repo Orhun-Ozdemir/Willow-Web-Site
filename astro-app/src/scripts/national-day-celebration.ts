@@ -13,12 +13,9 @@ function init() {
   let hideTimer: number | undefined;
   let fadeTimer: number | undefined;
 
-  function play() {
-    window.clearTimeout(hideTimer);
-    window.clearTimeout(fadeTimer);
-    root!.classList.remove("is-active", "is-leaving");
-    root!.hidden = false;
-    if (isEditorial) root!.classList.add("is-editorial");
+  let onVisible: (() => void) | undefined;
+
+  function activate() {
     requestAnimationFrame(() => root!.classList.add("is-active"));
 
     hideTimer = window.setTimeout(() => {
@@ -29,6 +26,32 @@ function init() {
         root!.classList.remove("is-leaving");
       }, FADE_MS);
     }, SHOW_MS);
+  }
+
+  function play() {
+    window.clearTimeout(hideTimer);
+    window.clearTimeout(fadeTimer);
+    if (onVisible) document.removeEventListener("visibilitychange", onVisible);
+    root!.classList.remove("is-active", "is-leaving");
+    root!.hidden = false;
+    if (isEditorial) root!.classList.add("is-editorial");
+
+    // requestAnimationFrame (and the show/hide timers it gates) never fires while
+    // the tab is backgrounded, so the overlay would sit invisible and then get
+    // silently retired by the timers. Defer activating it until the page is
+    // actually visible, so the visitor always sees the full animation once they
+    // look at the tab.
+    if (document.hidden) {
+      onVisible = () => {
+        if (document.hidden) return;
+        document.removeEventListener("visibilitychange", onVisible!);
+        onVisible = undefined;
+        activate();
+      };
+      document.addEventListener("visibilitychange", onVisible);
+    } else {
+      activate();
+    }
   }
 
   // The badge in the header dispatches this to replay on demand, independent
