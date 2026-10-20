@@ -12,21 +12,31 @@ export const prerender = false;
 
 const locale = resolveLocale(Astro.params.locale, Astro.url.pathname);
 const slug = String(Astro.params.slug || "");
-const content = await loadContent();
+let content = await loadContent();
 const normalizedSlug = normalizeProductSlug(slug);
 const normalizeRouteSlug = (value: unknown) => normalizeProductSlug(value);
-const newsList = [...(content.news || [])].sort((a, b) => {
+const sortNews = (source: any) => [...(source.news || [])].sort((a, b) => {
   const dateA = a.date ? new Date(`${a.date}T00:00:00`).getTime() : 0;
   const dateB = b.date ? new Date(`${b.date}T00:00:00`).getTime() : 0;
   return dateB - dateA;
 });
-const raw = newsList.find((n) => {
+const findNews = (list: any[]) => list.find((n) => {
   const localSlug = normalizeRouteSlug(itemText(n, "slug", locale, n.slug?.en || n.slug || n.id));
   const matchesAnotherLocale = locales.some((l) => (
     normalizeRouteSlug(itemText(n, "slug", l, n.slug?.en || n.slug || n.id)) === normalizedSlug
   ));
   return localSlug === normalizedSlug || matchesAnotherLocale || normalizeRouteSlug(n.id) === normalizedSlug;
 });
+let newsList = sortNews(content);
+let raw = findNews(newsList);
+
+if (!raw) {
+  // This server instance may still hold content cached before the article was saved
+  // in the admin (another instance handled the save), so re-check fresh data once.
+  content = await loadContent({ maxAgeMs: 5000 });
+  newsList = sortNews(content);
+  raw = findNews(newsList);
+}
 
 if (!raw) return Astro.rewrite(`/${locale}/not-found`);
 

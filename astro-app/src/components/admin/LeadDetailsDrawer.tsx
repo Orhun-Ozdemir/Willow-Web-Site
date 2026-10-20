@@ -4,6 +4,7 @@ import React, { useState, useEffect, useMemo } from "react";
 import { useAdmin } from "./AdminContext";
 import AdminDrawer, { DrawerCloseButton } from "./AdminDrawer";
 import { daysWaiting, sourceLabel, statusChipClass } from "./lead-ui";
+import { uploadAdminFile } from "@/lib/admin-upload";
 
 interface Note {
   id: string;
@@ -179,53 +180,40 @@ export default function LeadDetailsDrawer({ leadId, onClose }: LeadDetailsDrawer
 
     setUploading(true);
     try {
-      const formData = new FormData();
-      formData.append("file", file);
-      formData.append("folder", "leads-attachments");
+      const data = await uploadAdminFile(file, "leads-attachments");
+      if (data.url) {
+        const newDoc: Document = {
+          id: typeof window !== "undefined" && window.crypto?.randomUUID ? window.crypto.randomUUID() : Math.random().toString(36).substring(2, 15),
+          name: file.name,
+          url: data.url,
+          type: "file",
+          uploadedBy: session?.name || "Admin",
+          createdAt: new Date().toISOString(),
+        };
 
-      const res = await fetch("/api/upload", {
-        method: "POST",
-        body: formData,
-      });
+        const newActivity: Activity = {
+          id: typeof window !== "undefined" && window.crypto?.randomUUID ? window.crypto.randomUUID() : Math.random().toString(36).substring(2, 15),
+          type: "document_added",
+          description: `Dosya eklendi: ${file.name}`,
+          author: session?.name || "Admin",
+          createdAt: new Date().toISOString(),
+        };
 
-      if (res.ok) {
-        const data = await res.json();
-        if (data.ok && data.url) {
-          const newDoc: Document = {
-            id: typeof window !== "undefined" && window.crypto?.randomUUID ? window.crypto.randomUUID() : Math.random().toString(36).substring(2, 15),
-            name: file.name,
-            url: data.url,
-            type: "file",
-            uploadedBy: session?.name || "Admin",
-            createdAt: new Date().toISOString(),
-          };
+        const updatedNoteData = {
+          ...parsedNoteData,
+          documents: [newDoc, ...parsedNoteData.documents],
+          activities: [newActivity, ...parsedNoteData.activities],
+        };
 
-          const newActivity: Activity = {
-            id: typeof window !== "undefined" && window.crypto?.randomUUID ? window.crypto.randomUUID() : Math.random().toString(36).substring(2, 15),
-            type: "document_added",
-            description: `Dosya eklendi: ${file.name}`,
-            author: session?.name || "Admin",
-            createdAt: new Date().toISOString(),
-          };
-
-          const updatedNoteData = {
-            ...parsedNoteData,
-            documents: [newDoc, ...parsedNoteData.documents],
-            activities: [newActivity, ...parsedNoteData.activities],
-          };
-
-          await updateLead(lead.id, {
-            internalNote: JSON.stringify(updatedNoteData),
-          });
-        } else {
-          alert("Dosya yüklenirken sunucu hatası oluştu.");
-        }
+        await updateLead(lead.id, {
+          internalNote: JSON.stringify(updatedNoteData),
+        });
       } else {
-        alert("Dosya yüklenemedi.");
+        alert("Dosya yüklenirken sunucu hatası oluştu.");
       }
-    } catch (err) {
+    } catch (err: any) {
       console.error(err);
-      alert("Dosya yükleme işlemi başarısız oldu.");
+      alert(err?.message || "Dosya yükleme işlemi başarısız oldu.");
     } finally {
       setUploading(false);
       // Reset input element value so same file can be selected again

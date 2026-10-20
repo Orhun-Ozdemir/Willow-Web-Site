@@ -2,6 +2,7 @@
 
 import { useRef, useState } from "react";
 import { locales } from "@/lib/cms";
+import { uploadAdminFile } from "@/lib/admin-upload";
 import {
   LOCALE_NATIVE_NAMES,
   PRODUCT_DOCUMENT_TYPES,
@@ -17,12 +18,7 @@ interface ProductDocumentsEditorProps {
 }
 
 async function uploadPdf(file: File, productId: string): Promise<string> {
-  const formData = new FormData();
-  formData.append("file", file);
-  formData.append("folder", `datasheets/${productId || "misc"}`);
-  const res = await fetch("/api/upload", { method: "POST", body: formData });
-  const data = await res.json();
-  if (!res.ok || !data.ok) throw new Error(data.error || "PDF yüklenemedi.");
+  const data = await uploadAdminFile(file, `datasheets/${productId || "misc"}`);
   return data.url as string;
 }
 

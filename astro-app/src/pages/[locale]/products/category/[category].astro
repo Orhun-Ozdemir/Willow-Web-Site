@@ -13,9 +13,16 @@ export const prerender = false;
 const locale = resolveLocale(Astro.params.locale, Astro.url.pathname);
 const requestedCategoryKey = String(Astro.params.category || "").trim();
 const categoryKey = requestedCategoryKey.toLowerCase();
-const content = await loadContent();
-const categories = productCategoriesFromContent(content).filter((category) => category.visible);
-const selectedCategory = categories.find((category) => category.key === categoryKey);
+let content = await loadContent();
+let categories = productCategoriesFromContent(content).filter((category) => category.visible);
+let selectedCategory = categories.find((category) => category.key === categoryKey);
+
+if (!selectedCategory) {
+  // A category added in the admin moments ago may be missing from this instance's cache.
+  content = await loadContent({ maxAgeMs: 5000 });
+  categories = productCategoriesFromContent(content).filter((category) => category.visible);
+  selectedCategory = categories.find((category) => category.key === categoryKey);
+}
 
 if (!selectedCategory) return Astro.rewrite(`/${locale}/not-found`);
 if (requestedCategoryKey !== selectedCategory.key) {

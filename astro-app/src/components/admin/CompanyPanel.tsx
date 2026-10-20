@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { type Locale } from "@/lib/cms";
+import { resolveAdminImageSrc } from "@/lib/admin-media";
 import { useAdmin } from "./AdminContext";
 import AdminDrawer from "./AdminDrawer";
 import FormField from "./FormField";
@@ -797,7 +798,7 @@ export default function CompanyPanel() {
                       <div key={m.id} className="p-4 flex items-center justify-between hover:bg-gray-50 transition">
                         <div className="flex items-center gap-3">
                           <img
-                            src={m.image || "/assets/willow-mark-transparent.png"}
+                            src={resolveAdminImageSrc(m.image) || "/assets/willow-mark-transparent.png"}
                             alt=""
                             className="w-10 h-10 rounded-full object-cover bg-gray-100 border border-gray-200"
                             onError={(e: any) => {

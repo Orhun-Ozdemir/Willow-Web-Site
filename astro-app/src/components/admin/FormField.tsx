@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { resolveAsset } from "@/lib/cms";
+import { uploadAdminFile } from "@/lib/admin-upload";
 
 interface FormFieldProps {
   label: string;
@@ -56,21 +57,11 @@ export default function FormField({
       : "uploads";
 
     try {
-      const formData = new FormData();
-      formData.append("file", file);
-      formData.append("folder", folder);
-
-      const res = await fetch("/api/upload", { method: "POST", body: formData });
-      const data = await res.json();
-      if (!res.ok || !data.ok) {
-        setUploadError(data.error || "Dosya yüklenemedi.");
-        return;
-      }
-
+      const data = await uploadAdminFile(file, folder);
       onChange(data.path || data.url);
       onUploadResult?.(data);
-    } catch {
-      setUploadError("Yükleme sırasında ağ hatası oluştu.");
+    } catch (err: any) {
+      setUploadError(err?.message || "Dosya yüklenemedi.");
     } finally {
       setUploading(false);
     }

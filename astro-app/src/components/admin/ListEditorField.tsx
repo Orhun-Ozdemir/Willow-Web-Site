@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { uploadAdminFile } from "@/lib/admin-upload";
 
 interface ListEditorFieldProps {
   label: string;
@@ -22,14 +23,7 @@ function getPreviewUrl(val: string) {
 }
 
 async function uploadFile(file: File): Promise<string> {
-  const formData = new FormData();
-  formData.append("file", file);
-  formData.append("folder", "uploads");
-
-  const res = await fetch("/api/upload", { method: "POST", body: formData });
-  const data = await res.json();
-  if (!res.ok || !data.ok) throw new Error(data.error || "Dosya yüklenemedi.");
-
+  const data = await uploadAdminFile(file, "uploads");
   return data.url as string;
 }
 

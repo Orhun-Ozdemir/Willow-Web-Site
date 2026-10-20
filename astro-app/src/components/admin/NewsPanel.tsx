@@ -2,6 +2,7 @@
 
 import React, { useMemo, useState } from "react";
 import { type Locale } from "@/lib/cms";
+import { resolveAdminImageSrc } from "@/lib/admin-media";
 import { useAdmin } from "./AdminContext";
 import FormField from "./FormField";
 import ListEditorField from "./ListEditorField";
@@ -50,21 +51,9 @@ function slugify(value: string): string {
 }
 
 function getAssetSrc(path?: string): string {
-  if (!path) return "";
-
-  if (
-    path.startsWith("http://") ||
-    path.startsWith("https://") ||
-    path.startsWith("data:")
-  ) {
-    return path;
-  }
-
-  if (path.startsWith("/")) {
-    return path;
-  }
-
-  return `/${path}`;
+  // Uploaded covers are stored bucket-relative ("news/x.webp"); prefixing "/" pointed the
+  // admin preview at a non-existent site path, so resolve them to Supabase storage.
+  return resolveAdminImageSrc(path);
 }
 
 function getTranslationCount(item: NewsItem): number {
@@ -106,7 +95,7 @@ function getNewsStatus(item: NewsItem): "Hazır" | "Eksik" {
 }
 
 export default function NewsPanel() {
-  const { content, setContent } = useAdmin();
+  const { content, savedContent, setContent } = useAdmin();
 
   const [editId, setEditId] = useState<string | null>(null);
   const [openSections, setOpenSections] = useState<Record<string, boolean>>({ basics: true });
@@ -311,6 +300,11 @@ export default function NewsPanel() {
     const previewExcerpt = n.excerpt || htmlToPlainPreview(n.content || "", 140) || "Özet girilmemiş.";
     const previewBody = n.content || `<p>${previewExcerpt}</p>`;
     const isPublicFeatured = n.id === publicFeaturedId;
+    // The live site only knows the saved version; an unsaved article would open a 404.
+    const savedNews = (savedContent?.news || []).find((item: NewsItem) => item.id === n.id);
+    const previewBlockedReason = savedNews
+      ? ""
+      : "Bu haber henüz kaydedilmedi. Önizlemek için önce sağ üstteki “Değişiklikleri Kaydet” butonuna basın.";
 
     const SectionTrigger = ({ sKey, icon, label, hint }: { sKey: string; icon: React.ReactNode; label: string; hint: string }) => (
       <button type="button" className="ws-prod-section-trigger" onClick={() => toggleSection(sKey)}>
@@ -339,17 +333,32 @@ export default function NewsPanel() {
             </button>
             <h3>{n.title || "Haber Düzenle"}</h3>
             <p>Aşağıdaki bölümleri açıp kapayarak düzenleyin.</p>
+            {previewBlockedReason && (
+              <p style={{ marginTop: 6, fontSize: 12.5, color: "#b45309" }}>{previewBlockedReason}</p>
+            )}
           </div>
           <div className="ws-prod-edit-actions">
-            <a
-              href={`/en/news/${n.slug || n.id}`}
-              target="_blank"
-              rel="noopener"
-              className="ws-edit-button"
-              style={{ width: "auto", padding: "8px 16px", textDecoration: "none", display: "inline-flex", alignItems: "center" }}
-            >
-              Sitede önizle ↗
-            </a>
+            {previewBlockedReason ? (
+              <button
+                type="button"
+                disabled
+                title={previewBlockedReason}
+                className="ws-edit-button"
+                style={{ width: "auto", padding: "8px 16px", opacity: 0.5, cursor: "not-allowed" }}
+              >
+                Sitede önizle ↗
+              </button>
+            ) : (
+              <a
+                href={`/en/news/${savedNews.slug || savedNews.id}`}
+                target="_blank"
+                rel="noopener"
+                className="ws-edit-button"
+                style={{ width: "auto", padding: "8px 16px", textDecoration: "none", display: "inline-flex", alignItems: "center" }}
+              >
+                Sitede önizle ↗
+              </a>
+            )}
             {isPublicFeatured && <span className="ws-status ws-status-featured">Public vitrin</span>}
             <span className={`ws-status ${status === "Hazır" ? "ws-status-ready" : "ws-status-missing"}`}>
               {status}
