@@ -1347,7 +1347,7 @@ const relatedCopy = relatedProductsCopy[locale] || relatedProductsCopy.en;
     <!-- FAQ Accordion Section -->
     {localizedFaq && localizedFaq.length > 0 && (
       <section class="ws-faq-section" id="faq">
-        <div class="section-inner" style="display: contents;">
+        <div class="section-inner">
           <div class="ws-faq-left">
             <span class="ws-kicker">{getT("faqKicker")}</span>
             <h2 class="ws-h2">{getT("faqTitle")}</h2>
@@ -2333,13 +2333,17 @@ const relatedCopy = relatedProductsCopy[locale] || relatedProductsCopy.en;
   .ws-faq-section {
     padding: 48px 0;
     border-top: 1px solid rgba(var(--accent-rgb), 0.08);
+  }
+  /* The grid lives on .section-inner (not on the full-width section) so the FAQ keeps the
+     page's centred width and side gutters like every other section. */
+  .ws-faq-section .section-inner {
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(0, 1.8fr);
     gap: 64px;
     align-items: start;
   }
   @media (max-width: 960px) {
-    .ws-faq-section {
+    .ws-faq-section .section-inner {
       grid-template-columns: 1fr;
       gap: 32px;
     }

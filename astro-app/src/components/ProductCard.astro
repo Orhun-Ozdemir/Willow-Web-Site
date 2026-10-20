@@ -80,7 +80,7 @@ const detailsAccessibleName = (detailsAriaLabel[locale] || detailsAriaLabel.en)(
       ))}
     </div>
     <div class="product-actions">
-      <a href={`/${locale}/products/${encodeURIComponent(p.slug || p.id)}`} class="btn btn-ghost btn-small" aria-label={detailsAccessibleName}>
+      <a href={`/${locale}/products/${encodeURIComponent(p.slug || p.id)}`} class="btn btn-ghost btn-small product-card-link" aria-label={detailsAccessibleName}>
         <span>{detailsText}</span>
         {variant === "catalog" && <span class="product-action-arrow" aria-hidden="true">↗</span>}
       </a>

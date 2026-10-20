@@ -3532,6 +3532,34 @@ body[data-page="products"] .product-system-section::before {
   margin-top: 4px;
 }
 
+/* The whole card opens the product: the "View product" link's overlay stretches over the
+   card (.card is position: relative). The figure is its own stacking context (isolation),
+   so it sits above the overlay and lets clicks fall through, except on the category pill. */
+.product-card .product-card-link,
+.product-card .product-card-link:hover {
+  position: static;
+  /* .btn:hover lifts with a transform, which would make the link the containing block of its
+     ::after and shrink the overlay back to the button as soon as the card is hovered. The card
+     itself already lifts on hover. */
+  transform: none;
+}
+
+.product-card .product-card-link::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+}
+
+.product-card figure {
+  z-index: 3;
+  pointer-events: none;
+}
+
+.product-card .product-card-category {
+  pointer-events: auto;
+}
+
 .industries-section {
   background:
     linear-gradient(rgba(19,33,117,.04) 1px, transparent 1px),
