@@ -6,8 +6,18 @@ import tailwindcss from "@tailwindcss/vite";
 import fs from "node:fs";
 import path from "node:path";
 import postcss from "postcss";
+import { loadEnv } from "vite";
 
 const isVercel = Boolean(process.env.VERCEL);
+
+// The Supabase project URL is public (it is in every storage image URL), but Astro only
+// ships PUBLIC_* vars to the browser and production sets plain SUPABASE_URL. Expose it so
+// admin islands can resolve bucket-relative upload paths ("products/x.webp") — without it
+// resolveAsset() returned "" in the browser and uploaded images never showed a preview.
+const fileEnv = loadEnv(process.env.NODE_ENV || "production", process.cwd(), "");
+const publicSupabaseUrl =
+  process.env.PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL ||
+  fileEnv.PUBLIC_SUPABASE_URL || fileEnv.SUPABASE_URL || "";
 const homeCssId = "\0virtual:home-global.css";
 const homeStyleSources = [
   "src/pages/[locale]/index.astro",
@@ -79,6 +89,9 @@ export default defineConfig({
   integrations: [react()],
   vite: {
     plugins: [homeCssPlugin(), tailwindcss()],
+    define: {
+      "import.meta.env.PUBLIC_SUPABASE_URL": JSON.stringify(publicSupabaseUrl),
+    },
   },
   i18n: {
     defaultLocale: "en",
