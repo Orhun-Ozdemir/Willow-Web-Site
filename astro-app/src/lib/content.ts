@@ -16,6 +16,17 @@ export function bustContentCache(): void {
   lastFetchTime = 0;
 }
 
+/**
+ * supabase-js resolves failed writes with `{ error }` instead of throwing. Without this
+ * check a rejected upsert was reported to the admin as "kaydedildi ✓" while nothing
+ * reached the DB (e.g. a new product that then 404s on the site).
+ */
+function throwIfError(result: { error: any }, action: string): void {
+  if (result?.error) {
+    throw new Error(`${action} başarısız: ${result.error.message || result.error}`);
+  }
+}
+
 /** Tags a payload as bundled fallback (not real DB data) so consumers/loggers can tell. */
 function markFallback(content: any) {
   if (content && typeof content === "object") {
@@ -45,8 +56,9 @@ function normalizeContentShape(content: any) {
  * With fallback disabled, a Supabase hiccup surfaces as a thrown error the admin can
  * show ("yüklenemedi"), instead of silently serving editable placeholder data.
  */
-export async function loadContent(opts: { allowFallback?: boolean } = {}): Promise<any> {
+export async function loadContent(opts: { allowFallback?: boolean; maxAgeMs?: number } = {}): Promise<any> {
   const allowFallback = opts.allowFallback !== false;
+  const maxAgeMs = opts.maxAgeMs ?? TTL_MS;
 
   const bundledFallback = () => {
     try {
@@ -65,7 +77,7 @@ export async function loadContent(opts: { allowFallback?: boolean } = {}): Promi
   }
 
   const now = Date.now();
-  if (cachedContent && now - lastFetchTime < TTL_MS) {
+  if (cachedContent && now - lastFetchTime < maxAgeMs) {
     return cachedContent;
   }
 
@@ -230,7 +242,9 @@ export async function saveContent(data: any): Promise<void> {
   // Helper to sync a collection table
   const syncCollection = async (table: string, items: any[]) => {
     // 1. Get current IDs to detect deletions
-    const { data: current } = await supabase.from(table).select("id");
+    const currentResult = await supabase.from(table).select("id");
+    throwIfError(currentResult, `${table} okuma`);
+    const current = currentResult.data;
     const currentIds = new Set((current || []).map(r => r.id));
     
     // 2. Upsert items
@@ -239,18 +253,20 @@ export async function saveContent(data: any): Promise<void> {
       return collectionRow(table, it);
     });
     if (rows.length > 0) {
-      await supabase.from(table).upsert(rows);
+      throwIfError(await supabase.from(table).upsert(rows), `${table} kaydı`);
     }
     
     // 3. Delete removed items
     if (currentIds.size > 0) {
-      await supabase.from(table).delete().in("id", Array.from(currentIds));
+      throwIfError(await supabase.from(table).delete().in("id", Array.from(currentIds)), `${table} silme`);
     }
   };
 
   // Helper to sync a singleton map table
   const syncSingleton = async (table: string, keyName: string, mapData: any) => {
-    const { data: current } = await supabase.from(table).select(keyName);
+    const currentResult = await supabase.from(table).select(keyName);
+    throwIfError(currentResult, `${table} okuma`);
+    const current = currentResult.data;
     const currentKeys = new Set((current || []).map(r => (r as any)[keyName]));
 
     const rows = Object.entries(mapData || {}).map(([k, v]) => {
@@ -259,10 +275,10 @@ export async function saveContent(data: any): Promise<void> {
     });
     
     if (rows.length > 0) {
-      await supabase.from(table).upsert(rows);
+      throwIfError(await supabase.from(table).upsert(rows), `${table} kaydı`);
     }
     if (currentKeys.size > 0) {
-      await supabase.from(table).delete().in(keyName, Array.from(currentKeys));
+      throwIfError(await supabase.from(table).delete().in(keyName, Array.from(currentKeys)), `${table} silme`);
     }
   };
 
@@ -277,8 +293,8 @@ export async function saveContent(data: any): Promise<void> {
     syncSingleton("page_content", "page", data.pageContent),
     syncSingleton("page_seo", "page", data.pageSeo),
     syncSingleton("translations", "locale", data.translations),
-    supabase.from("company_facts").upsert({ id: 1, data: data.companyFacts || {} }),
-    supabase.from("site_meta").upsert({ id: 1, data: data.meta || {} })
+    supabase.from("company_facts").upsert({ id: 1, data: data.companyFacts || {} }).then((r) => throwIfError(r, "company_facts kaydı")),
+    supabase.from("site_meta").upsert({ id: 1, data: data.meta || {} }).then((r) => throwIfError(r, "site_meta kaydı"))
   ]);
 
   // Bust cache
@@ -339,7 +355,9 @@ export async function saveContentSection(section: string, sectionData: any): Pro
   };
 
   const syncCollection = async (table: string, items: any[]) => {
-    const { data: current } = await supabase.from(table).select("id");
+    const currentResult = await supabase.from(table).select("id");
+    throwIfError(currentResult, `${table} okuma`);
+    const current = currentResult.data;
     const currentIds = new Set((current || []).map(r => r.id));
 
     const rows = (items || []).map(it => {
@@ -347,15 +365,17 @@ export async function saveContentSection(section: string, sectionData: any): Pro
       return collectionRow(table, it);
     });
     if (rows.length > 0) {
-      await supabase.from(table).upsert(rows);
+      throwIfError(await supabase.from(table).upsert(rows), `${table} kaydı`);
     }
     if (currentIds.size > 0) {
-      await supabase.from(table).delete().in("id", Array.from(currentIds));
+      throwIfError(await supabase.from(table).delete().in("id", Array.from(currentIds)), `${table} silme`);
     }
   };
 
   const syncSingleton = async (table: string, keyName: string, mapData: any) => {
-    const { data: current } = await supabase.from(table).select(keyName);
+    const currentResult = await supabase.from(table).select(keyName);
+    throwIfError(currentResult, `${table} okuma`);
+    const current = currentResult.data;
     const currentKeys = new Set((current || []).map(r => (r as any)[keyName]));
 
     const rows = Object.entries(mapData || {}).map(([k, v]) => {
@@ -364,10 +384,10 @@ export async function saveContentSection(section: string, sectionData: any): Pro
     });
 
     if (rows.length > 0) {
-      await supabase.from(table).upsert(rows);
+      throwIfError(await supabase.from(table).upsert(rows), `${table} kaydı`);
     }
     if (currentKeys.size > 0) {
-      await supabase.from(table).delete().in(keyName, Array.from(currentKeys));
+      throwIfError(await supabase.from(table).delete().in(keyName, Array.from(currentKeys)), `${table} silme`);
     }
   };
 
@@ -403,10 +423,10 @@ export async function saveContentSection(section: string, sectionData: any): Pro
       await syncSingleton("translations", "locale", sectionData);
       break;
     case "companyFacts":
-      await supabase.from("company_facts").upsert({ id: 1, data: sectionData || {} });
+      throwIfError(await supabase.from("company_facts").upsert({ id: 1, data: sectionData || {} }), "company_facts kaydı");
       break;
     case "meta":
-      await supabase.from("site_meta").upsert({ id: 1, data: sectionData || {} });
+      throwIfError(await supabase.from("site_meta").upsert({ id: 1, data: sectionData || {} }), "site_meta kaydı");
       break;
     default:
       throw new Error(`Unknown section: ${section}`);

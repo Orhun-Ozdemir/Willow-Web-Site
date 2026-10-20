@@ -20,9 +20,17 @@ export const prerender = false;
 
 const locale = resolveLocale(Astro.params.locale, Astro.url.pathname);
 const { slug } = Astro.params as { slug: string };
-const content = await loadContent();
+let content = await loadContent();
 const normalizedSlug = normalizeProductSlug(slug);
-const rawProduct = (content.products || []).find((p: any) => productSlugCandidates(p).includes(normalizedSlug));
+const findProduct = (source: any) => (source.products || []).find((p: any) => productSlugCandidates(p).includes(normalizedSlug));
+let rawProduct = findProduct(content);
+
+if (!rawProduct || rawProduct.visible === false) {
+  // This server instance may still hold content cached before the product was saved
+  // in the admin (another instance handled the save), so re-check fresh data once.
+  content = await loadContent({ maxAgeMs: 5000 });
+  rawProduct = findProduct(content);
+}
 
 if (!rawProduct || rawProduct.visible === false) {
   return Astro.rewrite(`/${locale}/not-found`);

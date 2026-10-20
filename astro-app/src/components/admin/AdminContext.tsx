@@ -7,6 +7,8 @@ import type { AdminRole } from "@/lib/permissions";
 
 interface AdminContextValue {
   content: any;
+  /** Last content state persisted to the server (what the live site serves). */
+  savedContent: any;
   leads: any[];
   session: any;
   loading: boolean;
@@ -307,6 +309,7 @@ export function AdminProvider({ children }: { children: ReactNode }) {
     <AdminContext.Provider
       value={{
         content,
+        savedContent: initialContent,
         leads,
         session,
         loading,

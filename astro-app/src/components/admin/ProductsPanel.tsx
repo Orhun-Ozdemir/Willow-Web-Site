@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { type Locale } from "@/lib/cms";
+import { resolveAsset, type Locale } from "@/lib/cms";
 import { useAdmin } from "./AdminContext";
 import FormField from "./FormField";
 import ListEditorField from "./ListEditorField";
@@ -95,7 +95,7 @@ function ChevronDown() {
 }
 
 export default function ProductsPanel() {
-  const { content, setContent } = useAdmin();
+  const { content, savedContent, setContent } = useAdmin();
   const [editId, setEditId] = useState<string | null>(null);
   const [openSections, setOpenSections] = useState<Record<string, boolean>>({ basics: true });
   const [query, setQuery] = useState("");
@@ -242,6 +242,15 @@ export default function ProductsPanel() {
       updateProduct(p.id, "specifications", next);
     };
 
+    // The live site only knows the saved version, so preview that one (an unsaved
+    // product or an unsaved slug change would otherwise open a 404).
+    const savedProduct = (savedContent?.products || []).find((item: any) => item.id === p.id);
+    const previewBlockedReason = !savedProduct
+      ? "Bu ürün henüz kaydedilmedi. Önizlemek için önce sağ üstteki “Değişiklikleri Kaydet” butonuna basın."
+      : savedProduct.visible === false
+        ? "Ürün taslak olarak kayıtlı, sitede görünmez. “Sitede Göster”i Evet yapıp kaydedin."
+        : "";
+
     return (
       <div className="ws-prod-page">
         {/* Header */}
@@ -256,17 +265,32 @@ export default function ProductsPanel() {
             </button>
             <h3>{p.title || "Ürün Düzenle"}</h3>
             <p>Aşağıdaki bölümleri açıp kapayarak düzenleyin.</p>
+            {previewBlockedReason && (
+              <p style={{ marginTop: 6, fontSize: 12.5, color: "#b45309" }}>{previewBlockedReason}</p>
+            )}
           </div>
           <div className="ws-prod-edit-actions">
-            <a
-              href={`/en/products/${p.slug || p.id}`}
-              target="_blank"
-              rel="noopener"
-              className="ws-edit-button"
-              style={{ width: "auto", padding: "8px 16px", textDecoration: "none", display: "inline-flex", alignItems: "center" }}
-            >
-              Sitede önizle ↗
-            </a>
+            {previewBlockedReason ? (
+              <button
+                type="button"
+                disabled
+                title={previewBlockedReason}
+                className="ws-edit-button"
+                style={{ width: "auto", padding: "8px 16px", opacity: 0.5, cursor: "not-allowed" }}
+              >
+                Sitede önizle ↗
+              </button>
+            ) : (
+              <a
+                href={`/en/products/${savedProduct.slug || savedProduct.id}`}
+                target="_blank"
+                rel="noopener"
+                className="ws-edit-button"
+                style={{ width: "auto", padding: "8px 16px", textDecoration: "none", display: "inline-flex", alignItems: "center" }}
+              >
+                Sitede önizle ↗
+              </a>
+            )}
             <span className={`ws-status ${p.visible !== false ? "ws-status-ready" : "ws-status-missing"}`}>
               {p.visible !== false ? "Yayında" : "Taslak"}
             </span>
@@ -653,7 +677,7 @@ export default function ProductsPanel() {
             const previewUrl = p.image
               ? /^(https?:)?\/\//i.test(p.image) || p.image.startsWith("data:")
                 ? p.image
-                : `${import.meta.env.BASE_URL || "/"}${p.image.replace(/^\/+/, "")}`
+                : resolveAsset(p.image)
               : "";
 
             return (
