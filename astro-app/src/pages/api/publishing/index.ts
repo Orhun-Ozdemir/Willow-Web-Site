@@ -70,19 +70,36 @@ export const POST: APIRoute = async ({ request }) => withAdminAuth(request, "pub
     const { data: campaign, error } = await query;
     if (error || !campaign) throw error || new Error("Yayın kaydedilemedi.");
 
+    // The admin re-saves the draft right before every publish. Resetting channels that
+    // already went out (or are going out) to "pending" made a retry of one failed channel
+    // post the others a second time, so keep their status untouched.
+    const { data: existingTargets, error: existingError } = await sb
+      .from("publication_targets")
+      .select("platform,status")
+      .eq("campaign_id", campaign.id);
+    if (existingError) throw existingError;
+    const lockedPlatforms = new Set(
+      (existingTargets || [])
+        .filter((row: any) => row.status === "published" || row.status === "publishing")
+        .map((row: any) => row.platform),
+    );
+
     for (const target of targets) {
       const accountId = typeof target.accountId === "string" && !target.accountId.startsWith("env:") && target.accountId !== "website"
         ? target.accountId
         : null;
-      const { error: targetError } = await sb.from("publication_targets").upsert({
+      const row: Record<string, any> = {
         campaign_id: campaign.id,
         platform: target.platform,
         account_id: accountId,
         enabled: target.enabled !== false,
         overrides: target.overrides || {},
-        status: "pending",
-        updated_at: now,
-      }, { onConflict: "campaign_id,platform" });
+      };
+      if (!lockedPlatforms.has(target.platform)) {
+        row.status = "pending";
+        row.updated_at = now;
+      }
+      const { error: targetError } = await sb.from("publication_targets").upsert(row, { onConflict: "campaign_id,platform" });
       if (targetError) throw targetError;
     }
 

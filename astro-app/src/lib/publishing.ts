@@ -360,13 +360,54 @@ async function publishX(content: CanonicalPublicationContent, target: any) {
 }
 
 async function recordEvent(campaignId: string, targetId: string | null, eventType: string, message: string, metadata: Record<string, unknown> = {}) {
-  await getServiceClient().from("publication_events").insert({
-    campaign_id: campaignId,
-    target_id: targetId,
-    event_type: eventType,
-    message,
-    metadata,
-  });
+  // Audit trail only: a failed event write must never change the publishing control flow.
+  try {
+    const { error } = await getServiceClient().from("publication_events").insert({
+      campaign_id: campaignId,
+      target_id: targetId,
+      event_type: eventType,
+      message,
+      metadata,
+    });
+    if (error) console.error(`publication_events insert failed (${eventType}):`, error.message);
+  } catch (err: any) {
+    console.error(`publication_events insert threw (${eventType}):`, err?.message || err);
+  }
+}
+
+// Statuses a run may take a channel over from. "publishing" is deliberately absent: another
+// run owns that channel (double click, second admin, cron) or its outcome is unknown, and
+// posting it again is how duplicate social posts happened.
+const CLAIMABLE_TARGET_STATUSES = ["pending", "validating", "uploading_media", "queued", "failed", "retrying"];
+// A channel still "publishing" after this long was interrupted (e.g. a function timeout).
+const STALE_PUBLISHING_MS = 15 * 60 * 1000;
+const IN_PROGRESS_MESSAGE = "Bu kanal için başka bir yayınlama işlemi sürüyor; tekrar gönderilmedi.";
+const OUTCOME_UNKNOWN_MESSAGE =
+  "Önceki yayınlama yarıda kesildi; gönderi platformda çıkmış olabilir. Platformu kontrol edin, çıkmadıysa tekrar yayınlayın.";
+
+/** Retries a bookkeeping write; supabase-js reports failures via `{ error }`, not by throwing. */
+async function writeWithRetry(label: string, write: () => PromiseLike<{ error: any }>): Promise<boolean> {
+  for (let attempt = 1; attempt <= 3; attempt++) {
+    try {
+      const { error } = await write();
+      if (!error) return true;
+      console.error(`${label} failed (attempt ${attempt}):`, error.message || error);
+    } catch (err: any) {
+      console.error(`${label} threw (attempt ${attempt}):`, err?.message || err);
+    }
+    if (attempt < 3) await new Promise((resolve) => setTimeout(resolve, attempt * 500));
+  }
+  return false;
+}
+
+function publishToPlatform(content: CanonicalPublicationContent, target: any) {
+  return target.platform === "website"
+    ? publishWebsite(content)
+    : target.platform === "linkedin"
+      ? publishLinkedIn(content, target)
+      : target.platform === "instagram"
+        ? publishInstagram(content, target)
+        : publishX(content, target);
 }
 
 export async function processCampaign(campaignId: string, onlyPlatforms?: PublishingPlatform[]) {
@@ -392,46 +433,89 @@ export async function processCampaign(campaignId: string, onlyPlatforms?: Publis
 
   const results = await Promise.all((targets || []).map(async (target: any) => {
     if (target.status === "published") return { platform: target.platform, status: "published", skipped: true };
-    const now = new Date().toISOString();
-    await sb.from("publication_targets").update({ status: "publishing", attempts: (target.attempts || 0) + 1, error_code: null, error_message: null, updated_at: now }).eq("id", target.id);
-    try {
-      const result = target.platform === "website"
-        ? await publishWebsite(content)
-        : target.platform === "linkedin"
-          ? await publishLinkedIn(content, target)
-          : target.platform === "instagram"
-            ? await publishInstagram(content, target)
-            : await publishX(content, target);
-      await sb.from("publication_targets").update({
-        status: "published",
-        external_post_id: result.externalPostId,
-        external_url: result.externalUrl,
-        published_at: new Date().toISOString(),
-        retryable: false,
-        updated_at: new Date().toISOString(),
-      }).eq("id", target.id);
-      if (target.platform === "website" && "newsId" in result) {
-        await sb.from("publication_campaigns").update({ news_id: result.newsId }).eq("id", campaignId);
+
+    if (target.status === "publishing") {
+      const startedAt = Date.parse(target.updated_at || "");
+      if (!(Date.now() - startedAt > STALE_PUBLISHING_MS)) {
+        return { platform: target.platform, status: "publishing", skipped: true, error: IN_PROGRESS_MESSAGE };
       }
-      await recordEvent(campaignId, target.id, "target_published", `${target.platform} yayınlandı.`, { externalPostId: result.externalPostId });
-      return { platform: target.platform, status: "published", ...result };
+      // Interrupted mid-publish: the post may already be live, so never re-post it
+      // automatically. Flag it; only a later, explicit publish may try again.
+      await writeWithRetry(`publication_targets ${target.id} → outcome unknown`, () => sb.from("publication_targets").update({
+        status: "failed",
+        error_code: "OUTCOME_UNKNOWN",
+        error_message: OUTCOME_UNKNOWN_MESSAGE,
+        retryable: true,
+        updated_at: new Date().toISOString(),
+      }).eq("id", target.id).eq("status", "publishing").eq("updated_at", target.updated_at));
+      await recordEvent(campaignId, target.id, "target_outcome_unknown", `${target.platform} yayın sonucu belirsiz.`);
+      return { platform: target.platform, status: "failed", error: OUTCOME_UNKNOWN_MESSAGE, retryable: true };
+    }
+
+    // Atomically take the channel: of two concurrent runs only one gets the row back.
+    const claim = await sb.from("publication_targets").update({
+      status: "publishing",
+      attempts: (target.attempts || 0) + 1,
+      error_code: null,
+      error_message: null,
+      updated_at: new Date().toISOString(),
+    }).eq("id", target.id).in("status", CLAIMABLE_TARGET_STATUSES).select("id");
+    if (claim.error) {
+      return { platform: target.platform, status: "failed", error: `Kanal yayına alınamadı: ${claim.error.message}`, retryable: true };
+    }
+    if (!claim.data?.length) {
+      return { platform: target.platform, status: "publishing", skipped: true, error: IN_PROGRESS_MESSAGE };
+    }
+
+    let result: Awaited<ReturnType<typeof publishToPlatform>>;
+    try {
+      result = await publishToPlatform(content, target);
     } catch (error: any) {
       const message = error?.message || "Bilinmeyen yayınlama hatası";
-      await sb.from("publication_targets").update({
+      await writeWithRetry(`publication_targets ${target.id} → failed`, () => sb.from("publication_targets").update({
         status: "failed",
         error_code: "PUBLISH_FAILED",
         error_message: message.slice(0, 1000),
         retryable: true,
         updated_at: new Date().toISOString(),
-      }).eq("id", target.id);
+      }).eq("id", target.id));
       await recordEvent(campaignId, target.id, "target_failed", `${target.platform} yayınlanamadı.`, { error: message.slice(0, 500) });
       return { platform: target.platform, status: "failed", error: message, retryable: true };
     }
+
+    // The post is live from here on. Bookkeeping must never mark it failed (a retry would
+    // post it twice); if the status write keeps failing the channel stays "publishing",
+    // which later runs skip.
+    const marked = await writeWithRetry(`publication_targets ${target.id} → published`, () => sb.from("publication_targets").update({
+      status: "published",
+      external_post_id: result.externalPostId,
+      external_url: result.externalUrl,
+      published_at: new Date().toISOString(),
+      retryable: false,
+      updated_at: new Date().toISOString(),
+    }).eq("id", target.id));
+    if (target.platform === "website" && "newsId" in result) {
+      const newsId = result.newsId;
+      await writeWithRetry(`publication_campaigns ${campaignId} news_id`, () => sb.from("publication_campaigns").update({ news_id: newsId }).eq("id", campaignId));
+    }
+    await recordEvent(campaignId, target.id, "target_published", `${target.platform} yayınlandı.`, { externalPostId: result.externalPostId });
+    return {
+      platform: target.platform,
+      status: "published",
+      ...result,
+      ...(marked ? {} : { warning: "Gönderi yayınlandı ancak durumu kaydedilemedi; kanal otomatik olarak tekrar gönderilmeyecek." }),
+    };
   }));
 
+  // Another run still owns a channel: leave the campaign status to that run.
+  const inProgress = results.some((result) => result.status === "publishing");
   const publishedCount = results.filter((result) => result.status === "published").length;
-  const finalStatus = publishedCount === results.length ? "published" : publishedCount > 0 ? "partially_published" : "failed";
-  await sb.from("publication_campaigns").update({ status: finalStatus, updated_at: new Date().toISOString() }).eq("id", campaignId);
+  const finalStatus = inProgress
+    ? "publishing"
+    : publishedCount === results.length ? "published" : publishedCount > 0 ? "partially_published" : "failed";
+  if (!inProgress) {
+    await writeWithRetry(`publication_campaigns ${campaignId} → ${finalStatus}`, () => sb.from("publication_campaigns").update({ status: finalStatus, updated_at: new Date().toISOString() }).eq("id", campaignId));
+  }
   return { campaignId, status: finalStatus, targets: results };
 }
 

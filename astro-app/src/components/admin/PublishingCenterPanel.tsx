@@ -266,12 +266,22 @@ export default function PublishingCenterPanel() {
       });
       const data = await response.json();
       if (!response.ok) throw new Error(data.error || "Yayınlama tamamlanamadı.");
-      const failed = (data.targets || []).filter((target: any) => target.status === "failed");
+      const targets = data.targets || [];
+      const failed = targets.filter((target: any) => target.status === "failed");
+      // "publishing" = another run (second tab/admin, cron) already owns that channel; it was not re-sent.
+      const inProgress = targets.filter((target: any) => target.status === "publishing");
+      const allPublished = !failed.length && !inProgress.length;
+      const summary = [
+        `${targets.length - failed.length - inProgress.length} kanal yayınlandı`,
+        failed.length ? `${failed.length} kanal yeniden denenmeli` : "",
+        inProgress.length ? `${inProgress.length} kanal başka bir işlemde zaten yayınlanıyor, tekrar gönderilmedi` : "",
+      ].filter(Boolean).join(", ");
+      const failureDetails = failed.map((target: any) => `${target.platform}: ${String(target.error || "").slice(0, 160)}`).join(" · ");
       setMessage({
-        tone: failed.length ? "info" : "success",
-        text: failed.length
-          ? `${data.targets.length - failed.length} kanal yayınlandı, ${failed.length} kanal yeniden denenmeli.`
-          : `${data.targets.length} kanalın tamamında yayınlandı.`,
+        tone: allPublished ? "success" : "info",
+        text: allPublished
+          ? `${targets.length} kanalın tamamında yayınlandı.`
+          : `${summary}.${failureDetails ? ` ${failureDetails}` : ""}`,
       });
       await loadData();
       setMobileStep("review");
