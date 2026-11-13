@@ -266,7 +266,16 @@ function isActive(href: string) {
     background: #f4f5fb;
   }
   .portal-label { display: grid; gap: 3px; font-size: 12px; line-height: 1; text-align: left; }
-  .portal-label span { color: var(--muted); font-size: 9px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
+  .portal-label span {
+    color: #b4232f;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+  }
   @media (max-width: 1180px) {
     .nav-actions { padding: 0; border: 0; background: transparent; }
     .portal-link { gap: 5px; padding-inline: 5px; }
