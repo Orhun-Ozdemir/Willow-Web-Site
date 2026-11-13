@@ -239,7 +239,8 @@ function isActive(href: string) {
 <style>
   .nav { position: relative; }
   .nav-actions { --nav-control-height: 44px; }
-  .language-switcher select { min-height: var(--nav-control-height); }
+  .language-switcher select,
+  .nav-actions > .btn-primary { min-height: var(--nav-control-height); }
   .portal-link {
     display: inline-flex;
     flex: none;
