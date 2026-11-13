@@ -7125,9 +7125,9 @@ html[dir="rtl"] .news-sort select {
   100% { background-position: -200% 0; }
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1180px) {
   .nav {
-    width: min(100% - 24px, 560px);
+    width: calc(100% - 24px);
     height: var(--nav-height-mobile);
     gap: 8px;
     padding: 0 8px 0 12px;
@@ -7226,6 +7226,13 @@ html[dir="rtl"] .news-sort select {
 
   .brand > span > span {
     display: none;
+  }
+
+}
+
+@media (max-width: 900px) {
+  .nav {
+    width: min(100% - 24px, 560px);
   }
 
   .hero-layout,
@@ -10057,7 +10064,7 @@ body[data-page="services"] .signal-canvas {
   display: none;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1180px) {
   .nav-links .mobile-cta {
     display: block !important;
     margin-top: 14px;
@@ -11968,7 +11975,6 @@ body[data-page="products"] .product-card-premium[data-product="willowbee"] figur
 
   .language-switcher select {
     width: 52px !important;
-    min-height: 38px !important;
     font-size: 0.76rem !important;
     background-position: right 6px center !important;
     background-size: 9px !important;

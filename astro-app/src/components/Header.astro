@@ -166,6 +166,18 @@ function isActive(href: string) {
       </label>
 
       <a href={`/${locale}/start-project`} class="btn btn-primary btn-small">{ctaLabels[locale] || ctaLabels.en}</a>
+      <a class="portal-link" href="https://portal.willowsoft.co/login" target="_blank" rel="noopener">
+        <span class="portal-mark" aria-hidden="true">
+          <img src={`${import.meta.env.BASE_URL}assets/willow-mark-64.webp`} alt="" width="20" height="20" />
+        </span>
+        <span class="portal-label" dir="ltr">
+          <strong>WillowSoft</strong>
+          <span>Portal</span>
+        </span>
+        <svg class="portal-external" width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M7 3H4a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V9M9 3h4v4m0-4L7 9" />
+        </svg>
+      </a>
       <button class="menu-toggle" aria-expanded="false" aria-label={getLabel("openMenu")} id="menu-toggle">
         <span class="bar" aria-hidden="true"></span>
       </button>
@@ -226,6 +238,44 @@ function isActive(href: string) {
 
 <style>
   .nav { position: relative; }
+  .nav-actions { --nav-control-height: 44px; }
+  .language-switcher select { min-height: var(--nav-control-height); }
+  .portal-link {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    gap: 7px;
+    min-height: var(--nav-control-height);
+    padding: 4px 8px 4px 5px;
+    border: 1px solid #cdd4e7;
+    border-radius: 10px;
+    background: var(--panel, #fff);
+    color: var(--deep);
+    text-decoration: none;
+  }
+  .portal-link:hover { border-color: var(--deep); }
+  .portal-link:focus-visible { outline: 2px solid var(--deep); outline-offset: 2px; }
+  .portal-mark {
+    display: grid;
+    flex: none;
+    place-items: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    background: #f4f5fb;
+  }
+  .portal-label { display: grid; gap: 3px; font-size: 12px; line-height: 1; text-align: left; }
+  .portal-label span { color: var(--muted); font-size: 9px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
+  @media (max-width: 1180px) {
+    .nav-actions { padding: 0; border: 0; background: transparent; }
+    .portal-link { gap: 5px; padding-inline: 5px; }
+    .portal-mark { width: 24px; height: 24px; }
+    .portal-label { font-size: 11px; }
+  }
+  @media (max-width: 370px) {
+    .portal-external { display: none; }
+    .brand strong { font-size: .7rem; }
+  }
   .nav-dropdown { position: relative; }
   .nav-dropdown-trigger { display: inline-flex; align-items: center; gap: 5px; padding: 6px 0; border: 0; background: transparent; color: inherit; font: inherit; cursor: pointer; }
   .nav-dropdown-trigger::after { position: absolute; right: 0; bottom: 0; left: 0; height: 2px; background: #704dff; transform: scaleX(0); transform-origin: left; transition: transform 180ms ease; content: ""; }
@@ -238,7 +288,7 @@ function isActive(href: string) {
   .nav-dropdown-panel a { display: flex; align-items: center; justify-content: space-between; padding: 11px 12px; border-radius: 9px; color: rgba(19, 27, 46, .78); font-size: .74rem; font-weight: 750; }
   .nav-dropdown-panel a::after { display: none; }
   .nav-dropdown-panel a:hover, .nav-dropdown-panel a[aria-current="page"] { background: #f2f0ff; color: #5538c9; }
-  @media (max-width: 900px) {
+  @media (max-width: 1180px) {
     .nav-dropdown-trigger { width: 100%; justify-content: space-between; padding: 12px; }
     .nav-dropdown-trigger::after { display: none; }
     .nav-dropdown-panel { position: static; display: none; width: auto; padding: 6px 8px; visibility: visible; overflow: hidden; border: 0; border-radius: 10px; background: rgba(19, 33, 117, .035); box-shadow: none; opacity: 1; transform: none; transition: none; backdrop-filter: none; }
