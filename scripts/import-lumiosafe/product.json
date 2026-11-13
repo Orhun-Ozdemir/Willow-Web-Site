@@ -1,0 +1,352 @@
+{
+  "id": "lumiosafe",
+  "slug": "lumiosafe",
+  "title": "LumioSafe",
+  "name": "LumioSafe",
+  "category": "tracking",
+  "type": "LoRaWAN® Voice & Light Alert Beacon",
+  "featured": false,
+  "visible": false,
+  "sortOrder": 130,
+  "sort_order": 130,
+  "image": "products/lumiosafe/lumiosafe-white.webp",
+  "images": [
+    "products/lumiosafe/lumiosafe-white.webp",
+    "products/lumiosafe/lumiosafe-red.webp",
+    "products/lumiosafe/lumiosafe-green.webp",
+    "products/lumiosafe/lumiosafe-blue.webp",
+    "products/lumiosafe/lumiosafe-yellow.webp"
+  ],
+  "shortDescription": "One short downlink, and LumioSafe speaks, glows and sounds. It tells people what happened — “Attention! Vehicle seventeen. Compressor stopped.” — not just that something did.",
+  "description": "LumioSafe is a LoRaWAN® Class C alert beacon that combines a natural human voice, a bright RGB light and an audible signal in one compact, battery-powered housing for ceilings or walls.",
+  "technicalSummary": "<p>LumioSafe is a LoRaWAN® Class C alert beacon for places where a message has to reach people directly. It combines a natural human voice, a bright RGB light and an audible signal in one compact, battery-powered housing that mounts on a ceiling or wall in minutes.</p><p>The voice lives on the device. Your application sends only a few bytes — which alarm, which vehicle or zone, which colour — and LumioSafe composes and speaks the full sentence. Because it stays in Class C, the announcement starts within seconds of the downlink, with no audio streaming, no cabling and no app to install.</p><p>Built to run unattended, it reports its battery, temperature and state in every uplink, announces its own start-up, network join and low battery, and is supervised by an independent hardware watchdog.</p>",
+  "useCases": "<p><strong>Depots, warehouses and plants (industry · cold chain):</strong> refrigerated-vehicle alarms read aloud by vehicle number — fuses, compressor, pressure, box temperature, lost connection — plus shift bells and machine alerts over the noise.</p><p><strong>Schools and campuses:</strong> earthquake, evacuation and shelter-in-place messages with a matching light, drill start and end, and the daily school bell.</p><p><strong>Offices and public buildings:</strong> fire and evacuation announcements, all-clear messages and routine chimes, with battery and state reported to facility teams.</p>",
+  "chips": [
+    "LoRaWAN® Class C",
+    "Voice, light & siren",
+    "Battery powered"
+  ],
+  "applications": [
+    {
+      "label": "Depots, warehouses & plants",
+      "icon": "factory",
+      "description": "Refrigerated-vehicle alarms read aloud by vehicle number, shift bells and machine alerts over the noise."
+    },
+    {
+      "label": "Schools & campuses",
+      "icon": "building",
+      "description": "Earthquake, evacuation and shelter-in-place messages with a matching light, drills and the daily school bell."
+    },
+    {
+      "label": "Offices & public buildings",
+      "icon": "building",
+      "description": "Fire and evacuation announcements, all-clear messages and routine chimes."
+    }
+  ],
+  "specifications": {
+    "protocol": "LoRaWAN® 1.0.3 · OTAA · Class C after join · ADR",
+    "region_support": "EU868 (863–870 MHz); other regions on request",
+    "wireless_module": "RAK3172-T · STM32WLE5CC, 32 MHz TCXO",
+    "network_servers": "Any LoRaWAN 1.0.3 network server (The Things Stack, ChirpStack)",
+    "voice": "49 fragments (Turkish set), numbers 0–9999, decoded on device",
+    "signals": "11 melodies, sweeping siren, custom beep 50 Hz–10 kHz",
+    "amplifier_and_speaker": "Class-D mono · 8 Ω · 4 volume levels for tones and speech",
+    "light": "4× RGB LED behind the grille · 7 colours · 7 effects",
+    "power": "2 battery slots, Li-SOCl₂ 3.6 V (e.g. ER34615, D-cell)",
+    "battery_protection": "Fuse per slot · ideal-diode OR-ing · 3.3 V buck-boost",
+    "battery_monitoring": "Switched, calibrated voltage measurement · % in every uplink",
+    "battery_life": "Depends on uplink interval and announcements",
+    "enclosure": "White plastic, perforated four-petal grille · snap-fit plate for ceiling or wall",
+    "configuration": "Downlink commands on FPort 2: light, melody, speech, volume, indicators, calibration",
+    "supervision": "External hardware watchdog · heartbeat · status uplink",
+    "announcement_latency": "Typically 2–4 s from downlink to speech",
+    "features": [
+      "Class C — always listening, alerts in seconds",
+      "49 natural voice phrases, numbers 0–9999",
+      "7 colours × 7 effects, whole-grille glow",
+      "11 tones plus siren: chimes, bells, evacuation, alarm",
+      "2 fused Li-SOCl₂ battery slots with ideal-diode OR-ing",
+      "Self-supervised: hardware watchdog and status uplinks"
+    ],
+    "reported_parameters": [
+      {
+        "label": "Battery voltage and level"
+      },
+      {
+        "label": "Temperature"
+      },
+      {
+        "label": "Network and device state"
+      }
+    ]
+  },
+  "detailBlocks": [
+    {
+      "id": "overview",
+      "type": "cards",
+      "icon": "check",
+      "kicker": "Overview",
+      "title": "A siren says something is wrong. LumioSafe says what.",
+      "body": "<p>LumioSafe is a LoRaWAN® Class C alert beacon for places where a message has to reach people directly. It combines a natural human voice, a bright RGB light and an audible signal in one compact, battery-powered housing that mounts on a ceiling or wall in minutes.</p><p>The voice lives on the device. Your application sends only a few bytes — which alarm, which vehicle or zone, which colour — and LumioSafe composes and speaks the full sentence. Because it stays in Class C, the announcement starts within seconds of the downlink, with no audio streaming, no cabling and no app to install.</p><p>Built to run unattended, it reports its battery, temperature and state in every uplink, announces its own start-up, network join and low battery, and is supervised by an independent hardware watchdog.</p>",
+      "visible": true
+    },
+    {
+      "id": "voice",
+      "type": "cards",
+      "icon": "activity",
+      "kicker": "Voice",
+      "title": "Says exactly what happened.",
+      "body": "<p>49 natural voice fragments are stored on the device: system messages, alarm types and the building blocks of every number from 0 to 9999. Your server picks the pieces; LumioSafe reads them out as one sentence.</p>",
+      "items": [
+        "Vehicle, zone or room numbers spoken naturally",
+        "Pauses and chimes can be placed inside a sentence",
+        "Your own messages and languages, recorded in the same voice"
+      ],
+      "visible": true
+    },
+    {
+      "id": "light",
+      "type": "cards",
+      "icon": "star",
+      "kicker": "Light",
+      "title": "The whole grille lights up.",
+      "body": "<p>Four RGB LEDs in the centre window light up the whole housing: the window glows brightest and the colour shines through every hole across the face — visible from across a hall, not just from directly below.</p>",
+      "items": [
+        "Solid, slow and fast blink, strobe, heartbeat, two-colour and rainbow",
+        "Timed or permanent; returns to its standing colour after an announcement",
+        "One colour per alarm class, set over the air"
+      ],
+      "visible": true
+    },
+    {
+      "id": "integration",
+      "type": "cards",
+      "icon": "radio",
+      "kicker": "Integration",
+      "title": "One downlink. A complete announcement.",
+      "body": "<p>Light, chime and sentence travel together in a single short message. A webhook or rule on your network server builds it from any sensor event — Willow Software devices or third-party LoRaWAN sensors. Example: 11 bytes on FPort 2 (<code>08 01 03 F2 04 10 F0 00 11 11 23</code>) give a red strobe, a notification chime and “Attention! Vehicle seventeen. Compressor stopped.”</p>",
+      "items": [
+        "Typically 2–4 seconds from downlink to speech",
+        "Documented byte protocol and payload formatter included",
+        "Battery, temperature and state decoded from every uplink"
+      ],
+      "visible": true
+    },
+    {
+      "id": "reliability",
+      "type": "cards",
+      "icon": "shield",
+      "kicker": "Reliability",
+      "title": "Built to work when nobody is watching.",
+      "body": "<p>An alert device is only useful if it is ready. LumioSafe checks itself, reports itself and recovers by itself.</p>",
+      "items": [
+        "Independent hardware watchdog resets the device if firmware ever stalls",
+        "Calibrated battery reading in every uplink; spoken low-battery warning",
+        "Two fused battery slots combined through ideal diodes",
+        "Heartbeat blink and an acknowledge flash for every downlink"
+      ],
+      "visible": true
+    },
+    {
+      "id": "installation",
+      "type": "cards",
+      "icon": "mount",
+      "kicker": "Installation",
+      "title": "Mounts in minutes. No cables.",
+      "body": "<p>Fix the plate, snap the beacon on, and it joins the network by itself — announcing “Connected, system ready” when it is done.</p>",
+      "items": [
+        "Snap-fit plate for ceiling or wall",
+        "Battery powered: no mains, no audio wiring",
+        "OTAA join with spoken status during commissioning"
+      ],
+      "visible": true
+    }
+  ],
+  "aiFAQ": [
+    {
+      "question": "How fast does an announcement start?",
+      "answer": "Typically 2–4 seconds after your server sends the downlink. Most of that is radio airtime; a faster RX2 data rate (e.g. SF9) brings it under two seconds."
+    },
+    {
+      "question": "Which network servers does it work with?",
+      "answer": "Any LoRaWAN 1.0.3 network server, including The Things Stack and ChirpStack. We supply payload formatters for uplink decoding."
+    },
+    {
+      "question": "Can it say our own messages?",
+      "answer": "Yes. The phrase set is defined per project; we produce your messages in the same voice and build them into the firmware."
+    },
+    {
+      "question": "How long do the batteries last?",
+      "answer": "Class C keeps the receiver on so alerts arrive instantly, which dominates power use. Battery life depends on your uplink interval and the number of daily announcements — contact us for an estimate for your site."
+    }
+  ],
+  "localized": {
+    "tr": {
+      "title": "LumioSafe",
+      "type": "LoRaWAN® Sesli ve Işıklı Uyarı Cihazı",
+      "shortDescription": "Tek bir kısa downlink ile LumioSafe konuşur, ışık verir ve ses çıkarır. Bir şey olduğunu değil, ne olduğunu söyler: “Dikkat! On yedi numaralı araç. Kompresör durdu.”",
+      "description": "LumioSafe; doğal insan sesini, parlak RGB ışığı ve sesli sinyali tek bir kompakt, pille çalışan gövdede birleştiren, tavana veya duvara monte edilen bir LoRaWAN® Class C uyarı cihazıdır.",
+      "technicalSummary": "<p>LumioSafe, bir mesajın doğrudan insanlara ulaşması gereken yerler için geliştirilmiş bir LoRaWAN® Class C uyarı cihazıdır. Doğal bir insan sesini, parlak bir RGB ışığı ve sesli sinyali tek bir kompakt, pille çalışan gövdede birleştirir; tavana veya duvara dakikalar içinde monte edilir.</p><p>Ses cihazın içinde saklıdır. Uygulamanız yalnızca birkaç bayt gönderir — hangi alarm, hangi araç ya da bölge, hangi renk — LumioSafe cümlenin tamamını kurup seslendirir. Class C modunda kaldığı için anons, downlink’ten birkaç saniye sonra başlar; ses akışı, kablolama ya da uygulama kurulumu gerekmez.</p><p>Gözetimsiz çalışmak üzere tasarlanmıştır: her uplink’te pil, sıcaklık ve durum bilgisini raporlar; açılışı, ağa katılımı ve düşük pil durumunu kendisi anons eder ve bağımsız bir donanım watchdog’u tarafından denetlenir.</p>",
+      "useCases": "<p><strong>Depolar, antrepolar ve tesisler (endüstri · soğuk zincir):</strong> frigorifik araç alarmları araç numarasıyla sesli okunur — sigorta, kompresör, basınç, kasa sıcaklığı, bağlantı kaybı — ayrıca gürültünün üzerinde vardiya zilleri ve makine uyarıları.</p><p><strong>Okullar ve kampüsler:</strong> uygun ışıkla birlikte deprem, tahliye ve yerinde korunma mesajları, tatbikat başlangıç ve bitişi ile günlük okul zili.</p><p><strong>Ofisler ve kamu binaları:</strong> yangın ve tahliye anonsları, tehlike geçti mesajları ve rutin zil sesleri; pil ve durum bilgisi tesis ekiplerine raporlanır.</p>",
+      "chips": [
+        "LoRaWAN® Class C",
+        "Ses, ışık ve siren",
+        "Pille çalışır"
+      ],
+      "applications": [
+        {
+          "label": "Depolar, antrepolar ve tesisler",
+          "icon": "factory",
+          "description": "Frigorifik araç alarmları araç numarasıyla sesli okunur; vardiya zilleri ve makine uyarıları gürültünün üzerinde duyulur."
+        },
+        {
+          "label": "Okullar ve kampüsler",
+          "icon": "building",
+          "description": "Uygun ışıkla deprem, tahliye ve yerinde korunma mesajları, tatbikatlar ve günlük okul zili."
+        },
+        {
+          "label": "Ofisler ve kamu binaları",
+          "icon": "building",
+          "description": "Yangın ve tahliye anonsları, tehlike geçti mesajları ve rutin zil sesleri."
+        }
+      ],
+      "specifications": {
+        "protocol": "LoRaWAN® 1.0.3 · OTAA · katılım sonrası Class C · ADR",
+        "region_support": "EU868 (863–870 MHz); diğer bölgeler talep üzerine",
+        "kablosuz_modül": "RAK3172-T · STM32WLE5CC, 32 MHz TCXO",
+        "ağ_sunucuları": "Tüm LoRaWAN 1.0.3 ağ sunucuları (The Things Stack, ChirpStack)",
+        "ses": "49 ses parçası (Türkçe set), 0–9999 arası sayılar, cihaz üzerinde çözülür",
+        "sinyaller": "11 melodi, yükselip alçalan siren, 50 Hz–10 kHz özel bip",
+        "amplifikatör_ve_hoparlör": "Class-D mono · 8 Ω · tonlar ve konuşma için 4 ses seviyesi",
+        "ışık": "Izgaranın arkasında 4× RGB LED · 7 renk · 7 efekt",
+        "power": "2 pil yuvası, Li-SOCl₂ 3,6 V (ör. ER34615, D-cell)",
+        "pil_koruması": "Her yuvada sigorta · ideal diyot OR’lama · 3,3 V buck-boost",
+        "pil_izleme": "Anahtarlamalı, kalibre gerilim ölçümü · her uplink’te % değeri",
+        "battery_life": "Uplink aralığına ve anons sayısına bağlıdır",
+        "enclosure": "Beyaz plastik, delikli dört yapraklı ızgara · tavan veya duvar için geçmeli montaj plakası",
+        "yapılandırma": "FPort 2 üzerinden downlink komutları: ışık, melodi, konuşma, ses seviyesi, göstergeler, kalibrasyon",
+        "denetim": "Harici donanım watchdog’u · heartbeat · durum uplink’i",
+        "anons_gecikmesi": "Downlink’ten konuşmaya genellikle 2–4 sn",
+        "features": [
+          "Class C — sürekli dinler, uyarılar saniyeler içinde",
+          "49 doğal ses ifadesi, 0–9999 arası sayılar",
+          "7 renk × 7 efekt, tüm ızgara boyunca parlama",
+          "11 ton ve siren: zil, çan, tahliye, alarm",
+          "Sigortalı 2 Li-SOCl₂ pil yuvası, ideal diyot OR’lama",
+          "Kendini denetler: donanım watchdog’u ve durum uplink’leri"
+        ],
+        "reported_parameters": [
+          {
+            "label": "Pil gerilimi ve seviyesi"
+          },
+          {
+            "label": "Sıcaklık"
+          },
+          {
+            "label": "Ağ ve cihaz durumu"
+          }
+        ]
+      },
+      "detailBlocks": [
+        {
+          "id": "overview",
+          "type": "cards",
+          "icon": "check",
+          "kicker": "Genel bakış",
+          "title": "Siren bir şeylerin yolunda gitmediğini söyler. LumioSafe neyin olduğunu söyler.",
+          "body": "<p>LumioSafe, bir mesajın doğrudan insanlara ulaşması gereken yerler için geliştirilmiş bir LoRaWAN® Class C uyarı cihazıdır. Doğal bir insan sesini, parlak bir RGB ışığı ve sesli sinyali tek bir kompakt, pille çalışan gövdede birleştirir; tavana veya duvara dakikalar içinde monte edilir.</p><p>Ses cihazın içinde saklıdır. Uygulamanız yalnızca birkaç bayt gönderir — hangi alarm, hangi araç ya da bölge, hangi renk — LumioSafe cümlenin tamamını kurup seslendirir. Class C modunda kaldığı için anons, downlink’ten birkaç saniye sonra başlar; ses akışı, kablolama ya da uygulama kurulumu gerekmez.</p><p>Gözetimsiz çalışmak üzere tasarlanmıştır: her uplink’te pil, sıcaklık ve durum bilgisini raporlar; açılışı, ağa katılımı ve düşük pil durumunu kendisi anons eder ve bağımsız bir donanım watchdog’u tarafından denetlenir.</p>",
+          "visible": true
+        },
+        {
+          "id": "voice",
+          "type": "cards",
+          "icon": "activity",
+          "kicker": "Ses",
+          "title": "Tam olarak ne olduğunu söyler.",
+          "body": "<p>Cihazda 49 doğal ses parçası saklanır: sistem mesajları, alarm türleri ve 0’dan 9999’a kadar her sayının yapı taşları. Sunucunuz parçaları seçer; LumioSafe bunları tek bir cümle olarak okur.</p>",
+          "items": [
+            "Araç, bölge veya oda numaraları doğal biçimde seslendirilir",
+            "Cümlenin içine duraklama ve zil sesleri eklenebilir",
+            "Kendi mesajlarınız ve dilleriniz, aynı sesle kaydedilir"
+          ],
+          "visible": true
+        },
+        {
+          "id": "light",
+          "type": "cards",
+          "icon": "star",
+          "kicker": "Işık",
+          "title": "Tüm ızgara ışıl ışıl yanar.",
+          "body": "<p>Ortadaki penceredeki dört RGB LED tüm gövdeyi aydınlatır: pencere en parlak şekilde yanar ve renk ön yüzdeki her delikten dışarı süzülür — yalnızca hemen altından değil, salonun öbür ucundan da görünür.</p>",
+          "items": [
+            "Sabit, yavaş ve hızlı yanıp sönme, strobe, kalp atışı, iki renk ve gökkuşağı",
+            "Süreli veya kalıcı; anons sonrası bekleme rengine döner",
+            "Her alarm sınıfı için bir renk, kablosuz olarak ayarlanır"
+          ],
+          "visible": true
+        },
+        {
+          "id": "integration",
+          "type": "cards",
+          "icon": "radio",
+          "kicker": "Entegrasyon",
+          "title": "Tek downlink. Eksiksiz bir anons.",
+          "body": "<p>Işık, zil sesi ve cümle tek bir kısa mesajda birlikte gider. Ağ sunucunuzdaki bir webhook veya kural, bu mesajı herhangi bir sensör olayından oluşturur — Willow Software cihazları ya da üçüncü taraf LoRaWAN sensörleri. Örnek: FPort 2 üzerinden 11 bayt (<code>08 01 03 F2 04 10 F0 00 11 11 23</code>) kırmızı strobe, bildirim zili ve “Dikkat! On yedi numaralı araç. Kompresör durdu.” anonsunu verir.</p>",
+          "items": [
+            "Downlink’ten konuşmaya genellikle 2–4 saniye",
+            "Belgelenmiş bayt protokolü ve payload formatter dahil",
+            "Her uplink’ten pil, sıcaklık ve durum bilgisi çözülür"
+          ],
+          "visible": true
+        },
+        {
+          "id": "reliability",
+          "type": "cards",
+          "icon": "shield",
+          "kicker": "Güvenilirlik",
+          "title": "Kimse izlemezken de çalışacak şekilde tasarlandı.",
+          "body": "<p>Bir uyarı cihazı ancak hazır olduğunda işe yarar. LumioSafe kendini denetler, kendini raporlar ve kendi kendine toparlanır.</p>",
+          "items": [
+            "Bağımsız donanım watchdog’u, firmware takılırsa cihazı yeniden başlatır",
+            "Her uplink’te kalibre pil ölçümü; sesli düşük pil uyarısı",
+            "İdeal diyotlarla birleştirilen iki sigortalı pil yuvası",
+            "Her downlink için kalp atışı yanıp sönmesi ve onay flaşı"
+          ],
+          "visible": true
+        },
+        {
+          "id": "installation",
+          "type": "cards",
+          "icon": "mount",
+          "kicker": "Kurulum",
+          "title": "Dakikalar içinde monte edilir. Kablo yok.",
+          "body": "<p>Plakayı sabitleyin, cihazı yerine oturtun; ağa kendisi katılır ve hazır olduğunda “Bağlandı, sistem hazır” diye anons eder.</p>",
+          "items": [
+            "Tavan veya duvar için geçmeli montaj plakası",
+            "Pille çalışır: şebeke ya da ses kablosu gerekmez",
+            "Devreye alma sırasında sesli durum bildirimiyle OTAA katılımı"
+          ],
+          "visible": true
+        }
+      ],
+      "aiFAQ": [
+        {
+          "question": "Bir anons ne kadar sürede başlar?",
+          "answer": "Sunucunuz downlink’i gönderdikten genellikle 2–4 saniye sonra. Bu sürenin çoğu radyo yayın süresidir; daha hızlı bir RX2 veri hızı (ör. SF9) süreyi iki saniyenin altına indirir."
+        },
+        {
+          "question": "Hangi ağ sunucularıyla çalışır?",
+          "answer": "The Things Stack ve ChirpStack dahil tüm LoRaWAN 1.0.3 ağ sunucularıyla. Uplink çözümlemesi için payload formatter’ları sağlıyoruz."
+        },
+        {
+          "question": "Kendi mesajlarımızı söyleyebilir mi?",
+          "answer": "Evet. İfade seti her proje için ayrı tanımlanır; mesajlarınızı aynı sesle hazırlayıp firmware’e ekliyoruz."
+        },
+        {
+          "question": "Piller ne kadar dayanır?",
+          "answer": "Class C, uyarıların anında ulaşması için alıcıyı açık tutar ve güç tüketimini en çok bu belirler. Pil ömrü uplink aralığınıza ve günlük anons sayısına bağlıdır — sahanız için tahmin almak üzere bizimle iletişime geçin."
+        }
+      ]
+    }
+  }
+}

@@ -693,20 +693,19 @@ function getWarrantySentence(warranty: string, locale: Locale): string {
   return sentences[locale] || sentences.en;
 }
 
-// Prefer locale-specific AI fields; root fields only for en/tr (legacy CMS), never leak TR into other locales.
+// Prefer locale-specific AI fields; fallback to base fields so international pages never render thin or empty.
 const displayShortAnswer =
   rawProduct.localized?.[locale]?.aiShortAnswer
-  || ((locale === "en" || locale === "tr") && product.aiShortAnswer)
+  || product.aiShortAnswer
   || product.shortDescription;
 
 const localizedFaq =
   (Array.isArray(rawProduct.localized?.[locale]?.aiFAQ) && rawProduct.localized[locale].aiFAQ.length > 0
     ? rawProduct.localized[locale].aiFAQ
     : null)
-  || ((locale === "en" || locale === "tr") && Array.isArray(product.aiFAQ) && product.aiFAQ.length > 0
+  || (Array.isArray(product.aiFAQ) && product.aiFAQ.length > 0
     ? product.aiFAQ
-    : [])
-  || [];
+    : []);
 
 
 const ICONS: Record<string, string> = {
@@ -887,6 +886,18 @@ const t = {
   extraTechBlocks: { en: "Additional technical blocks", tr: "Ek teknik bloklar", de: "Weitere technische Blöcke", fr: "Blocs techniques supplémentaires", es: "Bloques técnicos adicionales", it: "Blocchi tecnici aggiuntivi", ar: "كتل تقنية إضافية", ja: "追加の技術ブロック" },
   customBlocksKicker: { en: "Custom Blocks", tr: "Özel bloklar", de: "Eigene Blöcke", fr: "Blocs personnalisés", es: "Bloques personalizados", it: "Blocchi personalizzati", ar: "كتل مخصّصة", ja: "カスタムブロック" },
   customBlocksTitle: { en: "Product-specific content blocks", tr: "Ürüne özel anlatım blokları", de: "Produktspezifische Inhaltsblöcke", fr: "Blocs de contenu spécifiques au produit", es: "Bloques de contenido específicos del producto", it: "Blocchi di contenuto specifici del prodotto", ar: "كتل محتوى خاصة بالمنتج", ja: "製品固有のコンテンツブロック" },
+  engineeringOverviewKicker: { en: "Engineering & Technical Analysis", tr: "Mühendislik ve Teknik İnceleme", de: "Technische Analyse & Engineering", fr: "Analyse technique et ingénierie", es: "Análisis técnico e ingeniería", it: "Analisi tecnica e ingegneria", ar: "التحليل الهندسي والفني", ja: "技術概要・エンジニアリング" },
+  engineeringOverviewTitle: { en: "Operating Principles & Technical Architecture", tr: "Çalışma Prensibi ve Teknik Mimari", de: "Funktionsprinzip und technische Architektur", fr: "Principe de fonctionnement et architecture technique", es: "Principio de funcionamiento y arquitectura técnica", it: "Principio di funzionamento e architettura tecnica", ar: "مبدأ التشغيل والبنية التقنية", ja: "動作原理と技術アーキテクチャ" },
+  engineeringOverviewLead: {
+    en: "In-depth engineering review, measurement mechanics, installation guidelines, and LoRaWAN data architecture.",
+    tr: "Derinlemesine mühendislik analizi, ölçüm mekaniği, endüstriyel kurulum kılavuzu ve LoRaWAN veri mimarisi.",
+    de: "Detaillierte technische Analyse, Messmechanik, Installationsrichtlinien und LoRaWAN-Datenarchitektur.",
+    fr: "Examen technique approfondi, mécanique de mesure, directives d'installation et architecture de données LoRaWAN.",
+    es: "Análisis técnico en profundidad, mecánica de medición, pautas de instalación y arquitectura de datos LoRaWAN.",
+    it: "Analisi tecnica approfondita, meccanica di misurazione, linee guida per l'installazione e architettura dati LoRaWAN.",
+    ar: "مراجعة هندسية متعمقة، وميكانيكا القياس، وإرشادات التركيب، وبنية بيانات LoRaWAN.",
+    ja: "詳細な技術レビュー、計測原理、設置ガイドライン、LoRaWANデータアーキテクチャ。"
+  },
   whatItDoes: { en: "What it does.", tr: "Neler Yapar", de: "Was es leistet.", fr: "Ce qu'il fait.", es: "Qué hace.", it: "Cosa fa.", ar: "ماذا يفعل.", ja: "できること。" },
   fieldFallbackCopy: {
     en: "A compact, reliable setup for field use and production integration.",
@@ -1263,32 +1274,55 @@ const relatedCopy = relatedProductsCopy[locale] || relatedProductsCopy.en;
       </section>
     )}
 
-    {detailBlocks.length > 0 && (
-      <section class="ws-capabilities-section">
+    <!-- Technical & Engineering Overview Section -->
+    {(product.description || (detailBlocks && detailBlocks.length > 0)) && (
+      <section class="ws-overview-section" id="engineering-overview">
         <div class="section-inner">
           <div class="ws-section-header">
-            <span class="ws-kicker">{getT("customBlocksKicker")}</span>
-            <h2 class="ws-h2">{getT("customBlocksTitle")}</h2>
+            <span class="ws-kicker">{getT("engineeringOverviewKicker")}</span>
+            <h2 class="ws-h2">{getT("engineeringOverviewTitle")}</h2>
+            <p class="ws-section-lead">{getT("engineeringOverviewLead")}</p>
           </div>
-          <div class="ws-capabilities-grid">
-            {detailBlocks.map((block: any) => (
-              <article class="ws-capability-card">
-                <div class="ws-capability-iconbox">
-                  <Fragment set:html={ICONS[block.icon] || ICONS.stack || ICONS.check} />
-                </div>
-                {block.kicker && <p class="ws-kicker" style="margin-bottom: 6px;">{block.kicker}</p>}
-                {block.title && <b class="ws-capability-name">{block.title}</b>}
-                {block.body && <div class="ws-capability-desc" set:html={block.body}></div>}
-                {Array.isArray(block.items) && block.items.length > 0 && (
-                  <ul class="ws-features-bullets" style="margin-top: 12px;">
-                    {block.items.map((item: string) => (
-                      <li>{item}</li>
-                    ))}
-                  </ul>
-                )}
-              </article>
-            ))}
-          </div>
+
+          {product.description && (
+            <div class="ws-overview-card">
+              <div class="ws-overview-body">
+                {product.description.split("\n\n").map((para: string) => {
+                  const clean = para.trim();
+                  if (!clean) return null;
+                  if (clean.startsWith("### ")) {
+                    return <h3 class="ws-overview-h3">{clean.replace(/^###\s+/, "")}</h3>;
+                  }
+                  if (clean.startsWith("## ")) {
+                    return <h3 class="ws-overview-h3">{clean.replace(/^##\s+/, "")}</h3>;
+                  }
+                  return <p class="ws-overview-p">{clean}</p>;
+                })}
+              </div>
+            </div>
+          )}
+
+          {detailBlocks.length > 0 && (
+            <div class="ws-capabilities-grid" style="margin-top: 24px;">
+              {detailBlocks.map((block: any) => (
+                <article class="ws-capability-card">
+                  <div class="ws-capability-iconbox">
+                    <Fragment set:html={ICONS[block.icon] || ICONS.stack || ICONS.check} />
+                  </div>
+                  {block.kicker && <p class="ws-kicker" style="margin-bottom: 6px;">{block.kicker}</p>}
+                  {block.title && <b class="ws-capability-name">{block.title}</b>}
+                  {block.body && <div class="ws-capability-desc" set:html={block.body}></div>}
+                  {Array.isArray(block.items) && block.items.length > 0 && (
+                    <ul class="ws-features-bullets" style="margin-top: 12px;">
+                      {block.items.map((item: string) => (
+                        <li>{item}</li>
+                      ))}
+                    </ul>
+                  )}
+                </article>
+              ))}
+            </div>
+          )}
         </div>
       </section>
     )}
@@ -2163,6 +2197,50 @@ const relatedCopy = relatedProductsCopy[locale] || relatedProductsCopy.en;
     line-height: 1.5;
     color: #33405e;
     font-weight: 600;
+    margin: 0;
+  }
+
+  /* Engineering Overview Section */
+  .ws-overview-section {
+    padding: 42px 0 36px;
+    border-top: 1px solid rgba(var(--accent-rgb), 0.08);
+  }
+  .ws-section-lead {
+    font-size: 1.02rem;
+    line-height: 1.6;
+    color: var(--muted);
+    max-width: 820px;
+    margin: 4px 0 0;
+    font-weight: 600;
+  }
+  .ws-overview-card {
+    padding: clamp(22px, 3vw, 36px);
+    border-radius: 14px;
+    background: var(--panel);
+    border: 1px solid rgba(var(--accent-rgb), 0.10);
+    box-shadow: 0 10px 32px rgba(15, 27, 80, 0.04);
+  }
+  .ws-overview-body {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .ws-overview-h3 {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: var(--ink);
+    margin: 18px 0 4px;
+    letter-spacing: -0.01em;
+  }
+  .ws-overview-h3:first-child {
+    margin-top: 0;
+  }
+  .ws-overview-p {
+    font-size: 0.95rem;
+    line-height: 1.72;
+    color: var(--ink);
+    opacity: 0.92;
     margin: 0;
   }
 

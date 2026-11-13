@@ -755,7 +755,7 @@
       "slug": "willowbee",
       "category": "modules",
       "image": "assets/product-cutouts/willowbee.webp",
-      "shortDescription": "Industrial-grade LoRaWAN-enabled MCU module for low-power sensor end-nodes and embedded applications. Based on STM32WL Cortex-M4, integrates MCU and LoRa radio on a single chip.",
+      "shortDescription": "Industrial-grade LoRaWAN-enabled MCU module based on STMicroelectronics STM32WL Cortex-M4. Single-chip MCU and Sub-GHz LoRa radio, 22 dBm RF power, pin-compatible with standard wireless sockets.",
       "chips": [
         "LoRaWAN 1.1.0"
       ],
@@ -788,12 +788,137 @@
         "tr": {
           "type": "LoRaWAN Kablosuz Modül",
           "title": "WillowBee LoRaWAN Modülü",
-          "description": "Endüstriyel LoRaWAN uç noktaları geliştirmek için tasarlanmış modüldür. STM32WL Cortex-M4 tabanlıdır; MCU ile LoRa radyosunu tek çipte birleştirir. LoRaWAN uç nokta geliştirmek için gereken yazılım ve donanım özelliklerini tek modülde toplayarak ürün geliştirmeyi hızlandırır.",
-          "shortDescription": "Düşük güçlü sensör uç noktaları ve gömülü uygulamalar için endüstriyel sınıf LoRaWAN MCU modülü."
+          "description": "WillowBee, STMicroelectronics STM32WL SoC (ARM Cortex-M4) mimarisi üzerine inşa edilmiş, düşük güçlü kablosuz sensör uç noktaları ve gömülü IoT cihazları geliştirmek için tasarlanmış endüstriyel sınıf bir LoRaWAN MCU modülüdür.\n\n### Tek Çipte STM32WL Cortex-M4 Mimarisi\nGeleneksel iki çipli (harici MCU + bağımsız Semtech LoRa alıcı-verici) tasarımların getirdiği yüksek maliyet, kart alanı ve karmaşıklığı ortadan kaldırır. 48 MHz hızında çalışan 32-bit ARM Cortex-M4 çekirdeğini ve Sub-GHz LoRa radyosunu tek bir silikon çipte birleştirir. Modül üzerinde 256 KB Flash ve 64 KB RAM'in yanı sıra veri kaydı ve kablosuz yazılım güncelleme (FOTA) için 32 Mbit harici seri Flash bellek yer alır.\n\n### Standart Soketlerle Pin Uyumlu Yapı ve Zengin Çevre Birimleri\nEndüstri standardı 20 pinli kompakt form faktörüne sahip olan WillowBee, mevcut sensör kartlarına doğrudan takılabilir. Modül; ADC, DAC, SPI, I2C ve çift UART çevre birimlerini destekleyen 15 adet çok işlevli GPIO pini, dahili 2 adet LED, 1 kullanıcı butonu ve mikro U.FL RF anten konnektörü barındırır.\n\n### Ultra Düşük Uyku Akımı ve Enerji Verimliliği\nDerin uyku modunda yalnızca 1,2 μA akım tüketen WillowBee, lityum düğme pillerden veya endüstriyel Li-SOCl2 bataryalardan beslenerek sahada 10 yıla varan otonom çalışma sağlar. Dahili yüksek verimli güç amplifikatörü ile +22 dBm'e kadar RF çıkış gücü üreterek maksimum kapsama alanı sunar.\n\n### Açık Firmware Geliştirme ve Protokol Uyumluluğu\nEU868, US915, AS923 ve diğer küresel LoRaWAN frekans planlarını destekleyen sertifikalı LoRaWAN 1.0.3/1.1 yığını ile birlikte gelir. Mühendisler STM32CubeIDE, Keil, VS Code veya GCC kullanarak doğrudan ST HAL kütüphaneleriyle kendi özel sensör ve gömülü yazılımlarını geliştirebilir.",
+          "shortDescription": "STMicroelectronics STM32WL Cortex-M4 tabanlı endüstriyel LoRaWAN MCU modülü. Tek çipte mikrodenetleyici ve LoRa radyo, 22 dBm RF gücü, standart soketlerle pin uyumlu.",
+          "detailBlocks": [
+            {
+              "id": "stm32wl-core",
+              "icon": "cpu",
+              "kicker": "ÇEKİRDEK MİMARİSİ",
+              "title": "STM32WL Cortex-M4 Tek Çip SoC",
+              "body": "ARM Cortex-M4 işlemci, LoRa radyo, 256 KB dahili Flash ve 32 Mbit harici SPI Flash belleği tek modülde birleştirir.",
+              "items": [
+                "48 MHz 32-bit ARM Cortex-M4",
+                "32 Mbit dahili seri Flash bellek",
+                "LoRaWAN 1.0.3 ve 1.1 sertifikalı yığın"
+              ]
+            },
+            {
+              "id": "rf-performance",
+              "icon": "signal",
+              "kicker": "RF PERFORMANSI",
+              "title": "+22 dBm Yüksek Verimli RF Çıkış Gücü",
+              "body": "Optimum empedans uyumu ve dahili RF filtreleme ile +22 dBm'e kadar çıkış gücü ve -148 dBm alıcı hassasiyeti sunar.",
+              "items": [
+                "EU868, US915, AS923 frekans desteği",
+                "Mikro U.FL anten konnektörü",
+                "Uzun mesafeli kırsal ve kentsel çekim"
+              ]
+            },
+            {
+              "id": "peripherals-form-factor",
+              "icon": "grid",
+              "kicker": "DONANIM TASARIMI",
+              "title": "Pin Uyumlu Soket Yapısı ve 15 GPIO",
+              "body": "Popüler 2,0 mm pin aralıklı soketlerle uyumludur. ADC, DAC, I2C, SPI ve UART destekleyen 15 adet GPIO pini sunar.",
+              "items": [
+                "Standart kablosuz soketlerle pin uyumlu",
+                "15 adet çok amaçlı analog ve dijital GPIO",
+                "Dahili kullanıcı butonu ve durum LED'leri"
+              ]
+            },
+            {
+              "id": "power-budget",
+              "icon": "battery",
+              "kicker": "DÜŞÜK GÜÇ TASARIMI",
+              "title": "1,2 μA Ultra Düşük Uyku Akımı",
+              "body": "10+ yıl pil ömrü hedefleyen saha sensörleri için geliştirilmiştir. 2.0V ile 3.6V arası gerilimle doğrudan pilden çalışır.",
+              "items": [
+                "1,2 μA derin uyku akımı",
+                "Doğrudan pil veya DC regülatör beslemesi",
+                "-40°C ile +85°C endüstriyel çalışma aralığı"
+              ]
+            }
+          ],
+          "aiFAQ": [
+            {
+              "question": "WillowBee modülü içinde hangi mikrodenetleyici bulunur?",
+              "answer": "WillowBee modülünün kalbinde STMicroelectronics üretimi STM32WL SoC yer alır. Bu yonga, 32-bit ARM Cortex-M4 işlemci ile Sub-GHz LoRa radyosunu tek bir silikon üzerinde birleştirir."
+            },
+            {
+              "question": "Modül için kendi C/C++ firmware kodumuzu yazabilir miyiz?",
+              "answer": "Evet. WillowBee tam geliştirici özgürlüğü sunar. STM32CubeIDE, Keil MDK veya VS Code ortamında standart ST HAL kütüphanelerini kullanarak kendi özel firmware'inizi geliştirebilirsiniz."
+            },
+            {
+              "question": "WillowBee'nin fiziksel pin yapısı ve montaj biçimi nasıldır?",
+              "answer": "WillowBee, standart 20 pinli (2 sıra x 10 pin) pin-uyumlu standart soket tasarımına sahiptir. Kendi PCB kartınızdaki standart 2 mm aralıklı dişi soketlere lehimleme gerektirmeden takılıp çıkarılabilir."
+            }
+          ]
         },
         "de": {
           "title": "WillowBee LoRaWAN-Modul",
-          "shortDescription": "Industrielles LoRaWAN-MCU-Modul für Low-Power-Sensor-Endpunkte und Embedded-Anwendungen."
+          "shortDescription": "Industrielles LoRaWAN-MCU-Modul für Low-Power-Sensor-Endpunkte und Embedded-Anwendungen.",
+          "description": "Das WillowBee (WS-O-X-AI-WB-1) ist ein industrielles LoRaWAN-fähiges Funk- und MCU-Modul auf Basis des STMicroelectronics STM32WL (ARM Cortex-M4).\n\n### STM32WL SoC-Architektur mit integriertem LoRa-Funk\nDurch die Integration von Mikrocontroller und Sub-GHz-Transceiver auf einem einzigen Halbleiterchip reduziert WillowBee Bauteilekosten, Leiterplattenfläche und Stromverbrauch drastisch. Mit bis zu 22 dBm Sendeleistung und hoher Empfindlichkeit (-137 dBm) eignet es sich ideal für robuste IoT-Endgeräte.\n\n### Vielseitige Schnittstellen und Open-Source-Firmware\nMit UART, SPI, I2C, ADC und GPIOs verbindet das Modul Sensoren direkt. Es ist kompatibel mit LoRaWAN 1.0.3/1.1 (Klasse A/B/C) und unterstützt kundenspezifische Firmwareentwicklung.",
+          "detailBlocks": [
+            {
+              "id": "soc-architecture",
+              "icon": "chip",
+              "kicker": "CHIP-ARCHITEKTUR",
+              "title": "STMicroelectronics STM32WL Single-Core SoC",
+              "body": "Kombiniert ARM Cortex-M4 mit Sub-GHz-LoRa-Transceiver auf einem Chip für maximale Energie- und Kosteneffizienz.",
+              "items": [
+                "ARM Cortex-M4 mit bis zu 48 MHz",
+                "256 KB Flash & 64 KB SRAM",
+                "Integrierter TCXO für hohe Frequenzstabilität"
+              ]
+            },
+            {
+              "id": "rf-performance",
+              "icon": "radio",
+              "kicker": "FUNKLEISTUNG",
+              "title": "Bis zu +22 dBm HF-Ausgangsleistung",
+              "body": "Maximale Funkreichweite mit hervorragender Empfindlichkeit (-137 dBm in LoRa) für weltweite Sub-GHz-Frequenzbänder.",
+              "items": [
+                "EU868, US915, AS923 Frequenzunterstützung",
+                "Bis zu +22 dBm Sendeleistung",
+                "Integrierter HF-Schalter"
+              ]
+            },
+            {
+              "id": "low-power",
+              "icon": "battery",
+              "kicker": "ENERGIEVERBRAUCH",
+              "title": "Ultra-niedriger Ruhestrom unter 1,5 μA",
+              "body": "Ermöglicht den Bau batteriebetriebener IoT-Sensorknoten mit mehr als 10 Jahren Laufzeit.",
+              "items": [
+                "<1,5 μA im Deep-Sleep-Modus",
+                "Schnelles Aufwachen für Funkübertragungen",
+                "2,0V bis 3,6V Betriebsspannung"
+              ]
+            },
+            {
+              "id": "interfaces",
+              "icon": "terminal",
+              "kicker": "PERIPHERIE",
+              "title": "Umfangreiche Sensorschnittstellen",
+              "body": "Direkter Anschluss digitaler und analoger Sensoren über I2C, SPI, UART und 12-Bit-ADC.",
+              "items": [
+                "I2C, SPI, 2x USART Peripherie",
+                "12-Bit-ADC mit internem Referenzkanal",
+                "Standard 2,0 mm Stiftleisten-Raster"
+              ]
+            }
+          ],
+          "aiFAQ": [
+            {
+              "question": "Welche Entwicklungsumgebungen werden für WillowBee unterstützt?",
+              "answer": "WillowBee basiert auf dem STM32WL und kann mit STM32CubeIDE, Keil MDK, IAR oder VS Code entwickelt werden."
+            },
+            {
+              "question": "Unterstützt WillowBee private LoRa-P2P-Verbindungen?",
+              "answer": "Ja, neben dem standardmäßigen LoRaWAN-Stack (Klasse A, B, C) kann das Modul auch für proprietäre Punkt-zu-Punkt- (P2P) oder Punkt-zu-Mehrpunkt-LoRa-Funknetze programmiert werden."
+            }
+          ]
         },
         "fr": {
           "title": "Module LoRaWAN WillowBee",
@@ -836,6 +961,71 @@
             "tr": "https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/datasheets/willowbee/schematic-tr.pdf"
           }
         }
+      ],
+      "description": "WillowBee is an industrial-grade, ultra-low-power LoRaWAN system module powered by the STMicroelectronics STM32WL SoC (ARM Cortex-M4). It integrates microcontroller logic and Sub-GHz LoRa radio into a single silicon die, radically accelerating embedded hardware design.\n\n### Single-Chip STM32WL Cortex-M4 Architecture\nBy combining an ARM Cortex-M4 core running up to 48 MHz with an integrated multi-modulation Sub-GHz radio on a single chip, WillowBee eliminates the cost, complexity, and board space required by traditional two-chip (external MCU + Semtech transceiver) designs. It includes 256 KB Flash, 64 KB SRAM, and an on-board 32 Mbit external serial Flash memory for data logging and over-the-air firmware updates (FOTA).\n\n### Pin-Compatible Wireless Form Factor & Rich Peripherals\nDesigned in a standard 20-pin pin-compatible module footprint, WillowBee easily drops into existing sensor boards or new IoT products. It exposes 15 configurable GPIO lines, supporting ADC, DAC, SPI, I2C, and dual UART peripherals, alongside on-board LEDs, user button, and a micro U.FL RF antenna connector.\n\n### Ultra-Low Deep Sleep Current & Power Flexibility\nWith a deep-sleep current consumption of just 1.2 μA, WillowBee is optimized for multi-year battery operation from lithium coin cells, Li-SOCl2 packs, or regulated 2.0V–3.6V DC rails. Its high-efficiency RF power amplifier delivers up to +22 dBm output power for maximum wireless range.\n\n### Open Firmware Ecosystem & Protocol Support\nPre-loaded with a production-certified LoRaWAN 1.0.3/1.1 protocol stack supporting EU868, US915, AS923, and global regional channel plans. Developers can write custom firmware using Keil, STM32CubeIDE, GCC, or VS Code with full hardware abstraction library (HAL) access.",
+      "detailBlocks": [
+        {
+          "id": "stm32wl-core",
+          "icon": "cpu",
+          "kicker": "CORE ARCHITECTURE",
+          "title": "STM32WL Cortex-M4 Single-Chip SoC",
+          "body": "Integrates ARM Cortex-M4 CPU, Sub-GHz radio, 256 KB Flash, 64 KB RAM, and 32 Mbit external serial Flash for local logging and over-the-air firmware updates.",
+          "items": [
+            "ARM Cortex-M4 @ 48 MHz",
+            "32 Mbit on-board SPI Flash memory",
+            "LoRaWAN 1.0.3 & 1.1 certified stack"
+          ]
+        },
+        {
+          "id": "rf-performance",
+          "icon": "signal",
+          "kicker": "RF SPECIFICATIONS",
+          "title": "Up to +22 dBm High-Efficiency RF Output",
+          "body": "High-power PA stage delivers up to +22 dBm output power with optimal impedance matching, connected via on-board U.FL miniature RF connector.",
+          "items": [
+            "EU868, US915, AS923 regional plans",
+            "U.FL miniature RF antenna connector",
+            "Receiver sensitivity down to -148 dBm"
+          ]
+        },
+        {
+          "id": "peripherals-form-factor",
+          "icon": "grid",
+          "kicker": "HARDWARE DESIGN",
+          "title": "Pin-Compatible Socket & 15 GPIOs",
+          "body": "Fits standard 2.0mm pitch wireless sockets. Exposes 15 multi-function GPIO pins supporting ADC, DAC, I2C, SPI, and dual UART interfaces.",
+          "items": [
+            "Pin-compatible with popular wireless sockets",
+            "15 flexible analog and digital GPIOs",
+            "On-board user button and dual status LEDs"
+          ]
+        },
+        {
+          "id": "power-budget",
+          "icon": "battery",
+          "kicker": "LOW-POWER DESIGN",
+          "title": "1.2 μA Deep-Sleep Current",
+          "body": "Engineered for 10+ year battery-powered field sensors. Operates across 2.0V to 3.6V supply voltage with minimal quiescent drain.",
+          "items": [
+            "1.2 μA ultra-low sleep current",
+            "Direct battery or regulated DC input",
+            "Industrial operating temp: -40°C to +85°C"
+          ]
+        }
+      ],
+      "aiFAQ": [
+        {
+          "question": "Which microcontroller is used inside the WillowBee module?",
+          "answer": "WillowBee is built around the STMicroelectronics STM32WL SoC (System-on-Chip), which houses an ARM Cortex-M4 32-bit CPU and an integrated Sub-GHz LoRa radio on a single silicon die."
+        },
+        {
+          "question": "Can I write custom embedded C/C++ firmware for WillowBee?",
+          "answer": "Yes. WillowBee provides full developer freedom. You can develop your custom sensor firmware in STM32CubeIDE, Keil MDK, or VS Code using ST's standard HAL libraries and our pre-integrated LoRaWAN stack."
+        },
+        {
+          "question": "What is the form factor and pinout of WillowBee?",
+          "answer": "WillowBee is engineered in a standard 20-pin dual-row footprint (compatible with popular wireless socket form factors), making it easy to drop onto custom carrier boards without complex RF routing."
+        }
       ]
     },
     {
@@ -844,7 +1034,7 @@
       "slug": "willowsonic",
       "category": "environment",
       "image": "assets/product-cutouts/willowsonic.webp",
-      "shortDescription": "Measures distance and level by detecting ultrasonic pulses reflected from liquid and solid surfaces. Designed for manholes, canals, tanks, snow/water level monitoring.",
+      "shortDescription": "Industrial-grade LoRaWAN ultrasonic distance and level sensor for water tanks, silos, sewer manholes, and snow monitoring. Non-contact measurement up to 7.5 meters with IP67 enclosure and up to 10-year battery life.",
       "chips": [
         "LoRaWAN 868/915",
         "15 km",
@@ -950,7 +1140,7 @@
         "tr": {
           "type": "LoRaWAN Ultrasonik Mesafe/Seviye Sensörü",
           "title": "WillowSonic",
-          "description": "WS-O-X-AI-UD-1, ağır dış ortam koşullarına dayanıklı, kullanıma hazır bir ultrasonik mesafe sensörüdür. Sıvı, silo, kar ve rögar seviyelerini izlemek üzere duvara veya herhangi bir yüzeye monte edilebilir. 19.000 mAh pil ile 10 yıla kadar çalışabilir. LoRaWAN ağ geçidi ve IoT bulut çözümüyle birleştiğinde tüm sensör verileri uzaktan izlenebilir ve yönetilebilir. LoRaWAN protokolünü destekleyen tüm ağ geçitleriyle uyumludur.",
+          "description": "WillowSonic (WS-O-X-AI-UD-1), ağır endüstriyel saha ve dış ortam koşullarında sıvı, silo, atık su ve kar seviyelerini temassız ve kablosuz izlemek için geliştirilmiş yüksek hassasiyetli bir LoRaWAN ultrasonik seviye ve mesafe sensörüdür.\n\n### Temassız Ultrasonik Ölçüm Prensibi ve Akustik Yankı\nCihaz, 7,5 metreye kadar olan mesafelerde yüksek frekanslı ultrasonik ses darbeleri yayarak hedeften (su, atık su, kimyasal çözelti, tahıl, çakıl veya kar) geri dönen yankının zaman farkını (Time-of-Flight) mikrosaniye hassasiyetinde hesaplar. Sıvı veya malzeme ile doğrudan fiziksel teması olmadığı için asidik, kirli, köpüklü veya yapışkan ortamlarda şamandıralı veya daldırma tipi sensörlerde görülen korozyon, tıkanma ve mekanik aşınma sorunlarını tamamen ortadan kaldırır. Entegre hassas sıcaklık sensörü, ortam sıcaklığına bağlı ses hızı değişimlerini gerçek zamanlı kompanse eder.\n\n### Endüstriyel Montaj ve Kör Nokta (Dead Zone) Optimizasyonu\nSensörün minimum kör noktası (dead zone) yalnızca 0,25 metredir. 0,25 m ile 7,5 m arasındaki tüm seviye değişimlerini milimetre hassasiyetle ölçer. IP67 sızdırmaz gövdesi, UV dayanımlı polimer yapısı ve galvanizli montaj kiti ile su depolarına, derin rögarlara, tahıl silolarına ve menfezlere dakikalar içinde monte edilir.\n\n### LoRaWAN İletişimi ve Geniş Ağ Uyumluluğu\nLoRaWAN 1.0.3 ve 1.1 standartlarını (EU868, US915 vb.) destekleyen WillowSonic, açık sahada 15 km'ye, betonarme şehir ve endüstriyel tesis içinde 3–5 km'ye varan çekim menzili sunar. ChirpStack, The Things Network (TTN), AWS IoT Core ve özel gateway altyapılarıyla sorunsuz çalışır.\n\n### 10 Yıllık Pil Ömrü ve Güç Yönetimi\nDahili 19.000 mAh Li-SOCl2 yüksek kapasiteli lityum pil paketi ve 1,5 μA ultra düşük uyku akımı sayesinde, 60 dakikalık periyodik ölçüm sıklığında 10 yıla varan bakım gerektirmeyen saha ömrü sunar.",
           "applications": [
             {
               "icon": "water",
@@ -985,12 +1175,145 @@
               "label": "Yağmur suyu drenaj izleme"
             }
           ],
-          "shortDescription": "Zorlu dış ortam koşullarına dayanıklı ultrasonik mesafe ve seviye sensörü; sıvı, silo, kar ve rögar seviyelerini izlemek için tasarlandı."
+          "shortDescription": "Sıvı tankları, silolar, rögarlar ve kar kalınlığı ölçümü için endüstriyel LoRaWAN ultrasonik seviye sensörü. 7,5 m temassız ölçüm, IP67 koruma ve 10 yıl pil ömrü.",
+          "detailBlocks": [
+            {
+              "id": "measurement-mechanics",
+              "icon": "activity",
+              "kicker": "ÖLÇÜM MEKANİĞİ",
+              "title": "Temassız Akustik Yankı ve Sıcaklık Kompanzasyonu",
+              "body": "Yüksek frekanslı ultrasonik ses dalgaları yayarak yüzey mesafesini mikrosaniye hassasiyetinde ölçer. Dahili sıcaklık sensörü ile ses hızını anlık kompanse eder ve mevsimsel sıcaklık farklarında doğruluğu korur.",
+              "items": [
+                "0,25 m – 7,5 m dinamik ölçüm aralığı",
+                "±1 mm çözünürlük ve gürültü filtreleme",
+                "Temassız yapı sayesinde sıfır aşınma ve tıkanma"
+              ]
+            },
+            {
+              "id": "installation-guide",
+              "icon": "mount",
+              "kicker": "KURULUM REHBERİ",
+              "title": "Tank, Silo ve Rögar Montaj Kuralları",
+              "body": "Sensör yüzeye dik (90° açıyla) monte edilmelidir. Tank duvarlarından ve iç merdivenlerden en az 25 cm uzağa yerleştirilerek yanlış akustik yankı yansımaları engellenir.",
+              "items": [
+                "IP67 dış ortam ve daldırma sıçrama dayanımı",
+                "Galvanizli ve korozyona dirençli montaj kiti",
+                "-40°C ile +85°C geniş çalışma sıcaklığı"
+              ]
+            },
+            {
+              "id": "payload-integration",
+              "icon": "radio",
+              "kicker": "VERİ ENTEGRASYONU",
+              "title": "LoRaWAN Payload Formatı ve Decoder Desteği",
+              "body": "Her iletimde hedef mesafesi (mm), sensör sıcaklığı (°C) ve batarya seviyesi (%) tek pakette iletilir. ChirpStack ve TTN için hazır JavaScript payload decoder kodları teslim edilir.",
+              "items": [
+                "ChirpStack & The Things Network (TTN) uyumlu",
+                "Kompakt 6 bayt optimize binary payload",
+                "Eşik aşımında (taşkın/boşalma) anlık acil uyarı modu"
+              ]
+            },
+            {
+              "id": "power-budget",
+              "icon": "battery",
+              "kicker": "ENERJİ YÖNETİMİ",
+              "title": "19.000 mAh Li-SOCl2 Yüksek Kapasiteli Pil",
+              "body": "1,5 μA ultra düşük uyku akımı ve yüksek yoğunluklu lityum tiyonil klorür pil mimarisi ile saatlik raporlama senaryosunda 10 yıla kadar bakım gerektirmez.",
+              "items": [
+                "19.000 mAh dahili pil kapasitesi",
+                "Sahada kolay değiştirilebilir pil yuvası",
+                "Gerçek zamanlı pil voltajı ve sağlık takibi"
+              ]
+            }
+          ],
+          "aiFAQ": [
+            {
+              "question": "WillowSonic ultrasonik seviye sensörünün kör noktası (dead zone) nedir?",
+              "answer": "WillowSonic'in minimum kör noktası 0,25 metredir (25 cm). Ölçümün doğru yapılabilmesi için sensörün beklenen maksimum sıvı veya katı seviyesinden en az 25 cm yukarıya monte edilmesi gerekir."
+            },
+            {
+              "question": "Aşındırıcı kimyasal tanklarda veya atık su rögarlarında kullanılabilir mi?",
+              "answer": "Evet. IP67 gövdesi UV dayanımlı ve kimyasallara dirençli polimer malzemeden üretilmiştir. Rögar içi metan, hidrojen sülfür (H2S) ve yoğun neme karşı tam dayanıklıdır."
+            },
+            {
+              "question": "10 yıl pil ömrü gerçekçi midir ve veri gönderme sıklığı bunu nasıl etkiler?",
+              "answer": "Evet. 19.000 mAh Li-SOCl2 endüstriyel pil ve 1,5 μA uyku akımıyla, saatte bir (60 dakika) veri gönderiminde pil ömrü 10 yıla kadar ulaşır. Veri gönderim sıklığı 15 dakikaya düşürüldüğünde dahi pil ömrü 5+ yıl sürmektedir."
+            },
+            {
+              "question": "Sensör verilerini kendi SCADA veya bulut sistemimize nasıl aktarabiliriz?",
+              "answer": "WillowSonic standart LoRaWAN Class A paketleri gönderir. ChirpStack, The Things Network (TTN) veya AWS IoT Core ağ sunucunuza ücretsiz JavaScript decoder'ımızı ekleyerek gelen verileri MQTT, Webhook veya REST API ile kendi dashboard ve SCADA sistemlerinize aktarabilirsiniz."
+            }
+          ]
         },
         "de": {
           "title": "WillowSonic",
           "type": "LoRaWAN-Ultraschall-Abstands- und Füllstandsensor",
-          "shortDescription": "Robuster Ultraschallsensor für Flüssigkeits-, Silo-, Schnee- und Schachtfüllstände im Außenbereich."
+          "shortDescription": "Robuster Ultraschallsensor für Flüssigkeits-, Silo-, Schnee- und Schachtfüllstände im Außenbereich.",
+          "description": "Der WillowSonic (WS-O-X-AI-UD-1) ist ein industrieller, berührungsloser LoRaWAN-Ultraschall-Füllstands- und Abstandssensor für Wasserbehälter, Silos, Kanalschächte und Schneeüberwachung.\n\n### Berührungslose akustische Laufzeitmessung (Time-of-Flight)\nMit hochfrequenten Ultraschallimpulsen misst WillowSonic den Abstand zu Flüssigkeiten, Schüttgütern oder Schnee präzise von 0,25 m bis 7,5 m. Da kein Medienkontakt stattfindet, treten im Vergleich zu Tauchsonden weder Korrosion noch Schmutzanhaftungen auf. Ein integrierter Temperatursensor kompensiert temperaturbedingte Schallgeschwindigkeitsänderungen in Echtzeit (-40°C bis +85°C).\n\n### Optimierte Totzone und einfache Montage\nMit einer minimalen Totzone von nur 25 cm und einem schmalen Schallkegel eignet sich der Sensor hervorragend für Schachtabdeckungen, Regenüberlaufbecken und Tanks. Das robuste IP67-Polymergehäuse mit Edelstahlhalterung ist in wenigen Minuten installiert.\n\n### LoRaWAN-Konnektivität und 10 Jahre Batterielaufzeit\nMit LoRaWAN EU868 erreicht WillowSonic Reichweiten von bis zu 15 km im Freifeld und durchdringt dicke Schachtabdeckungen. Dank 19.000 mAh Li-SOCl2-Batterie und 1,5 μA Ruhestrom arbeitet das Gerät bis zu 10 Jahre wartungsfrei.",
+          "detailBlocks": [
+            {
+              "id": "measurement-mechanics",
+              "icon": "activity",
+              "kicker": "MESSVERFAHREN",
+              "title": "Berührungslose Ultraschallmessung mit Temperaturkompensation",
+              "body": "Ultraschallimpulse ermitteln den Abstand millimetergenau über Time-of-Flight; der interne Temperatursensor gleicht thermische Drift aus.",
+              "items": [
+                "0,25 m bis 7,5 m Messbereich",
+                "±1 mm Auflösung mit Rauschfilter",
+                "Wartungsfrei ohne Medienkontakt"
+              ]
+            },
+            {
+              "id": "installation-guide",
+              "icon": "mount",
+              "kicker": "MONTAGE",
+              "title": "Installation an Tanks, Schächten und Silos",
+              "body": "Wand- und Deckenmontage mit mindestens 25 cm Abstand zur maximalen Füllhöhe zur Vermeidung von Totzoneneffekten.",
+              "items": [
+                "IP67 wasser- und wetterfest",
+                "Korrosionsbeständiges Montagekit",
+                "Betriebsbereich: -40°C bis +85°C"
+              ]
+            },
+            {
+              "id": "payload-integration",
+              "icon": "radio",
+              "kicker": "DATENINTEGRATION",
+              "title": "LoRaWAN-Payload und Decoder",
+              "body": "Kompaktes Binärdatenpaket überträgt Füllstand, Temperatur und Batteriestand direkt an ChirpStack, TTN und AWS IoT.",
+              "items": [
+                "Fertige JavaScript-Decoder",
+                "Sofortiger Schwellenwertalarm",
+                "Konfigurierbare Sendeintervalle"
+              ]
+            },
+            {
+              "id": "power-budget",
+              "icon": "battery",
+              "kicker": "ENERGIEVERSORGUNG",
+              "title": "19.000 mAh Li-SOCl2 Langzeitbatterie",
+              "body": "Hochenergetische Lithiumchemie und 1,5 μA Ruhestrom garantieren bis zu 10 Jahre autonomen Feldeinsatz.",
+              "items": [
+                "19.000 mAh Kapazität",
+                "Vor Ort austauschbar",
+                "Batterietelemetrie bei jedem Uplink"
+              ]
+            }
+          ],
+          "aiFAQ": [
+            {
+              "question": "Wie groß ist die Totzone des WillowSonic-Sensors?",
+              "answer": "Die Totzone (Blindzone) beträgt 0,25 m (25 cm). Der Sensor sollte mindestens 25 cm über dem maximalen Füllstand montiert werden."
+            },
+            {
+              "question": "Ist WillowSonic für korrosive Abwasserschächte geeignet?",
+              "answer": "Ja, das Gehäuse besteht aus chemikalienbeständigem IP67-Polycarbonat und widersteht Schwefelwasserstoff (H2S) und Feuchtigkeit in Kanälen."
+            },
+            {
+              "question": "Wie wird die 10-jährige Batterielaufzeit erreicht?",
+              "answer": "Durch einen extrem geringen Ruhestrom von 1,5 μA und eine 19.000 mAh Lithium-Thionylchlorid-Batterie bei stündlichen Sendeintervallen."
+            }
+          ]
         },
         "fr": {
           "title": "WillowSonic",
@@ -1020,7 +1343,76 @@
       },
       "sortOrder": 20,
       "battery_life": "up to 10 years",
-      "communication_range": "up to 15 km"
+      "communication_range": "up to 15 km",
+      "description": "The WillowSonic (WS-O-X-AI-UD-1) is an industrial-grade, non-contact ultrasonic distance and liquid level monitoring sensor engineered for remote water tanks, grain silos, stormwater networks, and industrial liquid telemetry over LoRaWAN.\n\n### Non-Contact Ultrasonic Measurement Principles\nOperating on high-frequency acoustic Time-of-Flight (ToF) principles, WillowSonic emits ultrasonic sound pulses and calculates the exact distance to liquid, grain, chemical, or solid surfaces across a 0.25 m to 7.5 m range. Because the sensing face never contacts the measured fluid, it completely eliminates mechanical wear, chemical corrosion, clogging, and sludge buildup typical of submersible hydrostatic probes or mechanical float switches. An integrated precision temperature sensor continuously compensates for speed-of-sound thermal drift across -40°C to +85°C.\n\n### Industrial Mounting & Dead Zone Optimization\nFeaturing a narrow acoustic beam angle and a compact 0.25-meter blind zone (dead zone), WillowSonic reports target distances and fluid levels with millimeter-level resolution. Its UV-stabilized, IP67-rated waterproof enclosure and galvanized mounting bracket allow effortless installation onto water reservoir ceilings, sewer manhole covers, chemical storage tanks, and outdoor drainage channels.\n\n### LoRaWAN Connectivity & Global Network Compatibility\nSupporting LoRaWAN 1.0.3 and 1.1 Class A operation across EU868, US915, AU915, and AS923 frequency plans, the device achieves up to 15 km line-of-sight range in rural open terrain and 3–5 km penetration in dense urban and concrete environments. It seamlessly integrates with ChirpStack, The Things Network (TTN), AWS IoT Core, and private gateways.\n\n### 10-Year Battery Life & Power Architecture\nEquipped with an internal 19,000 mAh Li-SOCl2 industrial lithium battery pack and drawing an ultra-low 1.5 μA sleep current, WillowSonic delivers up to 10 years of maintenance-free field autonomy under standard hourly measurement and reporting intervals.",
+      "detailBlocks": [
+        {
+          "id": "measurement-mechanics",
+          "icon": "activity",
+          "kicker": "MEASUREMENT PRINCIPLES",
+          "title": "Non-Contact Acoustic Echo & Thermal Drift Compensation",
+          "body": "High-frequency ultrasonic transducer calculates surface distance via microsecond Time-of-Flight timing. Internal temperature sensor dynamically compensates for ambient air speed variations to preserve measurement accuracy.",
+          "items": [
+            "0.25 m to 7.5 m dynamic measurement range",
+            "±1 mm resolution with digital noise filtering",
+            "Non-contact design immune to fouling and corrosion"
+          ]
+        },
+        {
+          "id": "installation-guide",
+          "icon": "mount",
+          "kicker": "DEPLOYMENT & MOUNTING",
+          "title": "Tank, Manhole & Silo Installation Guidelines",
+          "body": "Mount the transducer perpendicular (90°) to the target liquid or solid surface. Ensure minimum 25 cm clearance from tank walls or internal ladders to prevent false acoustic echo reflections.",
+          "items": [
+            "IP67 outdoor and submersible splash rating",
+            "Galvanized steel and corrosion-resistant mounting kit",
+            "Operating temperature: -40°C to +85°C"
+          ]
+        },
+        {
+          "id": "payload-integration",
+          "icon": "radio",
+          "kicker": "DATA INTEGRATION",
+          "title": "LoRaWAN Payload Format & Decoder",
+          "body": "Compact 6-byte binary payload transmits distance (mm), internal temperature (°C), and battery percentage (%). Pre-built JavaScript payload decoders are available for ChirpStack, TTN, and AWS IoT Core.",
+          "items": [
+            "Ready-to-use ChirpStack & TTN decoders",
+            "Instant uplink alarm upon threshold violation",
+            "Configurable periodic reporting intervals"
+          ]
+        },
+        {
+          "id": "power-budget",
+          "icon": "battery",
+          "kicker": "POWER MANAGEMENT",
+          "title": "19,000 mAh Li-SOCl2 Long-Life Battery",
+          "body": "Utilizes high-energy density Lithium Thionyl Chloride chemistry combined with a 1.5 μA deep-sleep state to achieve up to 10 years of autonomous battery operation in the field.",
+          "items": [
+            "19,000 mAh internal battery capacity",
+            "Field-replaceable battery compartment",
+            "Real-time battery percentage telemetry"
+          ]
+        }
+      ],
+      "aiFAQ": [
+        {
+          "question": "What is the blind zone (dead zone) of the WillowSonic sensor?",
+          "answer": "WillowSonic has a 0.25-meter (25 cm) blind zone. The sensor must be installed at least 25 cm above the maximum expected liquid or material level to ensure accurate ultrasonic pulse reception."
+        },
+        {
+          "question": "Can WillowSonic be installed in corrosive sewer manholes and chemical tanks?",
+          "answer": "Yes. The sensor housing is IP67-rated and constructed from chemical-resistant, UV-stabilized polycarbonate with galvanized mounting hardware, making it resilient against methane, hydrogen sulfide (H2S), and condensation common in sewage systems."
+        },
+        {
+          "question": "How is the 10-year battery life achieved?",
+          "answer": "The sensor features an ultra-low sleep current of 1.5 μA and is powered by a 19,000 mAh Li-SOCl2 battery. Under standard 60-minute reporting intervals, daily energy consumption is minimal, enabling up to 10 years of field life."
+        },
+        {
+          "question": "How do we integrate WillowSonic with our existing SCADA or cloud dashboard?",
+          "answer": "WillowSonic transmits standard LoRaWAN Class A packets. You can decode the binary payload in ChirpStack, The Things Network (TTN), or AWS IoT Core using our provided JavaScript decoder, then stream JSON data into your database, Grafana, or SCADA platform via MQTT, Webhooks, or REST APIs."
+        }
+      ]
     },
     {
       "id": "willowair",
@@ -1028,7 +1420,7 @@
       "slug": "willowair",
       "category": "environment",
       "image": "assets/product-cutouts/co2-sensor.webp",
-      "shortDescription": "Measures TVOC, eCO2, and temperature for IoT-based building and environmental monitoring.",
+      "shortDescription": "LoRaWAN indoor air quality monitoring sensor measuring TVOC, eCO2, ambient temperature, and relative humidity for smart buildings, schools, and HVAC automation.",
       "chips": [
         "LoRaWAN 868/915",
         "15 km",
@@ -1143,7 +1535,7 @@
         "tr": {
           "type": "LoRaWAN İç Ortam Hava Kalitesi Sensörü",
           "title": "LoRaWAN İç Ortam Hava Kalitesi Sensörü",
-          "description": "TVOC, eCO₂ ve sıcaklığı ölçerek bina ve ortam izleme için kullanılan LoRaWAN iç ortam hava kalitesi sensörüdür. Veriler LoRaWAN üzerinden uzaktan izleme platformlarına aktarılır.",
+          "description": "WillowAir (WS-O-X-AI-AQ-1), akıllı binalar, kurumsal ofisler, okullar, hastaneler ve HVAC talep kontrollü havalandırma (DCV) sistemleri için geliştirilmiş endüstriyel sınıf kablosuz iç ortam hava kalitesi (IAQ) izleme sensörüdür.\n\n### Çok Parametreli Hassas Hava Kalitesi Analizi\nWillowAir, gelişmiş Metal Oksit Yarı İletken (MOS) ve NDIR algılama teknolojilerini bir araya getirerek Toplam Uçucu Organik Bileşikleri (TVOC: 0 - 60.000 ppb), eşdeğer Karbondioksit miktarını (eCO2: 400 - 5.000 ppm), ortam sıcaklığını (-20°C ila +60°C) ve bağıl nemi (%0 ila %100 RH) eş zamanlı olarak takip eder. Bina yöneticileri bu veriler sayesinde LEED, WELL ve ASHRAE standartlarına tam uyum sağlarken, taze hava sirkülasyonunu optimize eder.\n\n### Akıllı Bina ve HVAC Otomasyon Entegrasyonu\nHavasız ve yüksek CO2 içeren iç mekanlar, çalışanların bilişsel performansını ve sağlığını olumsuz etkiler. WillowAir, ortamdaki hava kalitesi eşik değerleri aşıldığında anında öncelikli alarm paketleri fırlatarak havalandırma santrallerini (klima santralleri / VAV damperleri) devreye sokar. Kablolama gerektirmeyen yapısı, tarihi veya faal binalarda sıfır kırma-dökme ile kurulum avantajı sağlar.\n\n### Düşük Güç Tüketimi ve 8 Yıla Varan Pil Ömrü\nMinimalist ve modern duvar tipi kasaya sahip cihaz, ultra düşük uyku akımı çeken işlemcisi ve yüksek kapasiteli dahili lityum pilleri ile 10 dakikalık ölçüm periyotlarında 5 ila 8 yıl boyunca bakım gerektirmeksizin çalışır.\n\n### LoRaWAN İletişimi ve Bulut Entegrasyonu\nLoRaWAN 1.0.3/1.1 Class A desteğiyle betonarme katları ve ofis bölmelerini aşarak ağ geçidine (gateway) güvenle bağlanır. Veriler ChirpStack, The Things Network (TTN) veya AWS IoT platformlarına hazır JavaScript decoder'lar üzerinden aktarılır.",
           "applications": [
             {
               "icon": "building",
@@ -1178,11 +1570,76 @@
               "label": "Oteller ve konaklama binaları"
             }
           ],
-          "shortDescription": "TVOC, eCO₂ ve sıcaklığı ölçerek bina ve ortam izleme sağlayan LoRaWAN hava kalitesi sensörü."
+          "shortDescription": "Akıllı binalar, ofisler, okullar ve HVAC otomasyonu için TVOC, eCO2, ortam sıcaklığı ve bağıl nem ölçen kablosuz LoRaWAN iç ortam hava kalitesi sensörü.",
+          "detailBlocks": [
+            {
+              "id": "iaq-measurement",
+              "icon": "cloud",
+              "kicker": "ÖLÇÜM PRENSİBİ",
+              "title": "Çok Parametreli TVOC, eCO2 ve İklim Takibi",
+              "body": "Otomatik taban çizgisi kalibrasyonuna sahip çok pikselli gaz sensörü, uçucu organik bileşikleri ve karbondioksiti yüksek doğrulukla ölçer.",
+              "items": [
+                "0–60.000 ppb TVOC aralığı",
+                "400–5.000 ppm eCO2 çözünürlüğü",
+                "Hassas sıcaklık ve bağıl nem kompanzasyonu"
+              ]
+            },
+            {
+              "id": "hvac-automation",
+              "icon": "activity",
+              "kicker": "BİNA OTOMASYONU",
+              "title": "BMS ve Havalandırma Santrali Entegrasyonu",
+              "body": "Ortam doluluğu ve hava kirliliği seviyesine göre HVAC sistemlerini dinamik yöneterek enerji maliyetlerini düşürür.",
+              "items": [
+                "LEED, WELL ve ASHRAE standartlarına uyum",
+                "Sıfır kablolama ile kolay duvar montajı",
+                "Eşik değer aşımında anlık LoRaWAN alarmı"
+              ]
+            },
+            {
+              "id": "lorawan-connectivity",
+              "icon": "radio",
+              "kicker": "KABLOSUZ İLETİŞİM",
+              "title": "Uzun Menzilli LoRaWAN Bina İçi Yayılımı",
+              "body": "Sub-GHz frekansında çalışan LoRa radyo mimarisi, çok katlı binalarda ve betonarme duvarlarda kesintisiz iletişim sağlar.",
+              "items": [
+                "EU868 frekans bandı uyumlu",
+                "AES-128 uçtan uca veri güvenliği",
+                "ChirpStack ve TTN hazır entegrasyonu"
+              ]
+            },
+            {
+              "id": "power-budget",
+              "icon": "battery",
+              "kicker": "PİL PERFORMANSI",
+              "title": "8 Yıla Varan Bakımsız Çalışma Ömrü",
+              "body": "Mikroamper seviyesindeki derin uyku modu ile ticari binalarda yıllarca pil değişimi gerektirmeden görev yapar.",
+              "items": [
+                "8 yıla varan saha ömrü",
+                "Aletsiz pil değişim yuvası",
+                "Gerçek zamanlı pil seviyesi telemetrisi"
+              ]
+            }
+          ],
+          "aiFAQ": [
+            {
+              "question": "WillowAir eCO2 ve TVOC değerlerini nasıl ölçer?",
+              "answer": "WillowAir, Metal Oksit Yarı İletken (MOS) sensör dizilimi kullanarak ortamdaki uçucu organik gazları analiz eder ve akıllı taban çizgisi algoritmasıyla eşdeğer CO2 (eCO2) seviyesini hesaplar; böylece manuel kalibrasyon ihtiyacını ortadan kaldırır."
+            },
+            {
+              "question": "Sensör mevcut Bina Yönetim Sistemimize (BMS) bağlanabilir mi?",
+              "answer": "Evet. Cihaz standart LoRaWAN Class A protokolüyle çalışır. LoRaWAN ağ geçidiniz üzerinden ChirpStack, TTN veya MQTT broker aracılığıyla BACnet, Modbus IP veya SCADA sistemlerine doğrudan entegre edilebilir."
+            },
+            {
+              "question": "Sensör odada hangi yüksekliğe monte edilmelidir?",
+              "answer": "İnsan nefes alma seviyesini en doğru şekilde temsil etmesi için cihazın zeminden yaklaşık 1,2 ila 1,8 metre yükseklikte, doğrudan güneş ışığı ve menfez akımından uzak bir iç duvara monte edilmesi önerilir."
+            }
+          ]
         },
         "de": {
           "title": "LoRaWAN-Innenraum-Luftqualitätssensor",
-          "shortDescription": "LoRaWAN-Sensor für Gebäude- und Raum-Monitoring mit TVOC, eCO₂ und Temperatur."
+          "shortDescription": "LoRaWAN-Raumluftqualitätssensor zur Messung von TVOC, eCO2, Temperatur und Feuchte für Smart Buildings, Schulen und HVAC-Automatisierung.",
+          "description": "Der WillowAir (WS-O-X-AI-AQ-1) ist ein drahtloser LoRaWAN-Sensor für die Überwachung der Raumluftqualität (IAQ) in Smart Buildings, Büros, Bildungseinrichtungen und bedarfsgesteuerten Lüftungsanlagen (DCV).\n\n### Mehrparametrige Raumluftüberwachung\nWillowAir kombiniert hochpräzise Metalloxid-Gassensoren (MOS) und Halbleiter-Arrays, um flüchtige organische Verbindungen (TVOC von 0 bis 60.000 ppb), CO2-Äquivalente (eCO2 von 400 bis 5.000 ppm), Umgebungstemperatur (-20°C bis +60°C) und relative Luftfeuchtigkeit (0 bis 100 % rF) kontinuierlich zu erfassen. Facility Manager optimieren damit den Frischluftanteil, senken Lüftungsbetriebskosten und gewährleisten die Einhaltung internationaler Standards wie LEED und WELL.\n\n### HVAC-Automatisierung und Gebäudemanagement\nErhöhte CO2- und TVOC-Werte mindern Konzentration und Wohlbefinden. Bei Überschreiten definierter Grenzwerte sendet WillowAir sofortige Prioritätsmeldungen an das Gebäudeleitsystem (BMS/GLT), um Lüftungsstufen oder Klappen bedarfsgerecht zu steuern. Die drahtlose LoRaWAN-Technologie ermöglicht die Nachrüstung in bestehenden Gebäuden völlig ohne Verkabelungsaufwand.\n\n### Langlebige Batteriearchitektur und Reichweite\nMit einem extrem niedrigen Ruhestrom im Mikroampere-Bereich erreicht WillowAir bei typischen 10-Minuten-Übertragungsintervallen eine Batterielebensdauer von 5 bis 8 Jahren. Die LoRaWAN EU868-Funktechnik durchdringt Stahlbetondecken und Bürotrennwände zuverlässig."
         },
         "fr": {
           "title": "Capteur LoRaWAN de qualité de l’air intérieur",
@@ -1230,6 +1687,71 @@
             "tr": "https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/datasheets/willowair/quickstart-tr.pdf"
           }
         }
+      ],
+      "description": "The WillowAir (WS-O-X-AI-AQ-1) is an industrial-grade, wireless indoor air quality (IAQ) monitoring sensor designed for smart buildings, schools, commercial offices, hospitals, and HVAC demand-controlled ventilation (DCV) networks over LoRaWAN.\n\n### Comprehensive Multi-Parameter Air Sensing\nWillowAir integrates high-precision Metal Oxide Semiconductor (MOS) and Non-Dispersive Infrared (NDIR) sensing arrays to simultaneously monitor Total Volatile Organic Compounds (TVOC from 0 to 60,000 ppb), equivalent Carbon Dioxide (eCO2 from 400 to 5,000 ppm), ambient temperature (-20°C to +60°C), and relative humidity (0% to 100% RH). By continuously analyzing indoor contaminant concentrations, facility managers can optimize fresh air intake, reduce ventilation energy consumption, and maintain compliance with LEED, WELL, and ASHRAE 62.1 indoor air standards.\n\n### Smart Building HVAC Integration & Demand Ventilation\nStale indoor air directly impairs cognitive function, productivity, and health. WillowAir acts as an autonomous wireless edge node that communicates directly with Building Management Systems (BMS) and automated dampers via LoRaWAN. When eCO2 or TVOC levels exceed user-defined health thresholds, WillowAir triggers immediate priority uplinks, instructing air handling units (AHUs) to modulate ventilation without requiring complex, expensive wall conduit rewiring.\n\n### Low-Power Architecture & Long Battery Autonomy\nEngineered for indoor aesthetics and zero-maintenance operation, WillowAir is housed in a clean, flame-retardant ABS enclosure designed for wall mounting. Powered by high-capacity internal batteries combined with an ultra-low power microcontroller operating at microamp-level sleep currents, the device delivers 5 to 8 years of continuous operation under standard 10-minute telemetry reporting intervals.\n\n### LoRaWAN Telemetry & Enterprise Cloud Integration\nSupporting LoRaWAN 1.0.3/1.1 Class A protocol across EU868, US915, and global regional frequencies, WillowAir penetrates through reinforced concrete floors and office drywall with ease. Uplink payloads are formatted in standard binary structures, with ready-to-deploy JavaScript decoders for ChirpStack, The Things Network (TTN), AWS IoT Core, and Azure IoT Hub.",
+      "detailBlocks": [
+        {
+          "id": "iaq-measurement",
+          "icon": "cloud",
+          "kicker": "SENSOR MECHANICS",
+          "title": "Multi-Parameter TVOC, eCO2 & Climate Sensing",
+          "body": "High-stability multi-pixel gas sensor measures volatile organic compounds and CO2 equivalence alongside temperature and humidity with automatic baseline calibration.",
+          "items": [
+            "TVOC: 0–60,000 ppb dynamic range",
+            "eCO2: 400–5,000 ppm resolution",
+            "Temperature (±0.2°C) & Humidity (±2% RH)"
+          ]
+        },
+        {
+          "id": "hvac-automation",
+          "icon": "activity",
+          "kicker": "SMART VENTILATION",
+          "title": "BMS & Demand-Controlled HVAC Integration",
+          "body": "Enables demand-controlled ventilation by communicating room occupancy and air freshness metrics to Building Automation Systems (BAS) to slash HVAC heating/cooling costs.",
+          "items": [
+            "LEED, WELL & ASHRAE 62.1 compliance",
+            "Zero-cabling wall installation",
+            "Configurable instant threshold alarms"
+          ]
+        },
+        {
+          "id": "lorawan-connectivity",
+          "icon": "radio",
+          "kicker": "WIRELESS PROTOCOL",
+          "title": "Long-Range LoRaWAN Indoor Telemetry",
+          "body": "Pioneering Sub-GHz radio propagation penetrates deep concrete walls and multi-story office slabs, connecting reliably to building gateways up to several floors away.",
+          "items": [
+            "EU868, US915, AU915, AS923 frequency support",
+            "AES-128 end-to-end payload encryption",
+            "ChirpStack, TTN & AWS IoT decoders included"
+          ]
+        },
+        {
+          "id": "power-budget",
+          "icon": "battery",
+          "kicker": "BATTERY AUTONOMY",
+          "title": "5 to 8-Year Maintenance-Free Power Design",
+          "body": "Advanced power management firmware keeps quiescent current below 2 μA between measurements, ensuring multi-year battery life in commercial installations.",
+          "items": [
+            "Up to 8 years battery life",
+            "Tool-free battery replacement",
+            "Continuous battery voltage reporting"
+          ]
+        }
+      ],
+      "aiFAQ": [
+        {
+          "question": "How does WillowAir measure eCO2 and TVOC?",
+          "answer": "WillowAir utilizes calibrated Metal Oxide Semiconductor (MOS) gas sensor arrays that detect volatile organic compounds and calculate equivalent carbon dioxide (eCO2) using advanced algorithmic baseline tracking, eliminating the need for frequent manual recalibration."
+        },
+        {
+          "question": "Can WillowAir integrate into our existing Building Management System (BMS)?",
+          "answer": "Yes. WillowAir transmits standard LoRaWAN telemetry. Data forwarded from your LoRaWAN gateway (via ChirpStack, TTN, or AWS IoT) can be ingested into any BMS, Niagara framework, BACnet gateway, or cloud SCADA via MQTT, REST API, or Webhooks."
+        },
+        {
+          "question": "What is the recommended installation height for WillowAir?",
+          "answer": "For representative human breathing zone monitoring, mount WillowAir on an interior wall approximately 1.2 to 1.8 meters (4 to 6 feet) above the floor, away from direct sunlight, air supply vents, and open windows."
+        }
       ]
     },
     {
@@ -1238,7 +1760,7 @@
       "slug": "willowgps",
       "category": "tracking",
       "image": "assets/product-cutouts/willowgps.webp",
-      "shortDescription": "Measures latitude, longitude, elevation, speed. Integrated LoRa and GPS antennas for compact deployment.",
+      "shortDescription": "Industrial-grade LoRaWAN GPS asset tracker with 3-axis motion detection, geofencing, and multi-year battery life for fleet, cargo containers, and non-powered industrial equipment.",
       "chips": [
         "LoRaWAN 868/915",
         "15 km",
@@ -1339,7 +1861,7 @@
         "tr": {
           "type": "IP67 LoRaWAN GPS Modülü",
           "title": "IP67 LoRaWAN GPS Modülü",
-          "description": "Enlem, boylam, rakım ve hız ölçer. Kompakt kullanım için entegre LoRa ve GPS antenleri vardır. Veriler LoRaWAN üzerinden uzaktan izleme platformlarına iletilir.",
+          "description": "WillowGPS (WS-O-X-AI-GT-1), şantiyelerdeki enerjisiz iş makineleri, intermodal yük konteynerleri, ticari araç filoları ve lojistik varlıklar için geliştirilmiş endüstriyel düşük güçlü LoRaWAN GPS konum takip cihazıdır.\n\n### Çoklu Uydu (GNSS) Hassasiyeti ve Akıllı Hareket Yönetimi\nGPS, GLONASS, Galileo ve BeiDou uydularını eş zamanlı izleyen yüksek duyarlılıklı GNSS alıcısı sayesinde en zorlu açık ve yarı kapalı alanlarda hızlı ilk konum tespiti (TTFF) sağlar. Dahili 3 eksenli MEMS ivmeölçer, cihazın enerji tüketimini akıllıca yönetir: Varlık park halinde hareketsizken cihaz derin uyku modunda mikroamper seviyesinde akım harcar; hareket veya titreşim başladığı anda uyanarak konumu belirler ve LoRaWAN üzerinden iletir.\n\n### Dinamik Coğrafi Sınır (Geofence) ve Hırsızlık Koruması\nWillowGPS, şantiye veya tesis sınırları dışına çıkan yetkisiz hareketleri anında tespit eder. Yetki dışı bölgeden çıkış (geofence ihlali) veya mesai dışı sarsıntı algılandığında merkezi izleme paneline anında yüksek öncelikli alarm paketi fırlatır.\n\n### IP67 Zorlu Saha Gövdesi ve Yıllarca Süren Pil Ömrü\nAğır vibrasyon, basınçlı yıkama, UV ışınları ve aşırı soğuk deniz taşımacılığı koşullarına dayanıklı IP67 sızdırmaz polimer gövdeye sahiptir. Yüksek enerjili endüstriyel lityum pilleriyle günlük kullanım sıklığına bağlı olarak 3 ila 7 yıl kesintisiz çalışır.",
           "applications": [
             {
               "icon": "carShield",
@@ -1362,11 +1884,76 @@
               "label": "Lojistik ve tedarik zinciri takibi"
             }
           ],
-          "shortDescription": "Enlem, boylam, rakım ve hız ölçen; entegre LoRa ve GPS antenli kompakt takip modülü."
+          "shortDescription": "Filo, konteyner, iş makineleri ve sahadaki enerjisiz varlıklar için 3 eksenli hareket algılama ve uzun pil ömrüne sahip endüstriyel LoRaWAN GPS takip modülü.",
+          "detailBlocks": [
+            {
+              "id": "gnss-tracking",
+              "icon": "compass",
+              "kicker": "KONUM MOTORU",
+              "title": "Çoklu GNSS Desteği ve Hızlı Konumlandırma",
+              "body": "GPS, GLONASS, Galileo ve BeiDou sistemlerini eşzamanlı işleyerek en zorlu saha koşullarında dahi 2,5 metre doğrulukla konum belirler.",
+              "items": [
+                "2,5 m dairesel konum doğruluğu",
+                "Dahili yüksek kazançlı patch anten",
+                "Yarı kapalı alanlarda yüksek uydu duyarlılığı"
+              ]
+            },
+            {
+              "id": "motion-intelligence",
+              "icon": "activity",
+              "kicker": "AKILLI TELEMETRİ",
+              "title": "İvmeölçer Destekli Dinamik Konum İletimi",
+              "body": "3 eksenli ivmeölçer varlığın durduğunu algıladığında uyku moduna geçer, hareket başladığında ise anlık periyodik takibi başlatır.",
+              "items": [
+                "Anlık hareket ve sarsıntı algılama",
+                "Geofence sınır ihlali alarmı",
+                "Kanal kirliliğini önleyen akıllı telemetri"
+              ]
+            },
+            {
+              "id": "rugged-hardware",
+              "icon": "shield",
+              "kicker": "MEKANİK DAYANIM",
+              "title": "IP67 Su Geçirmez ve Darbeye Dayanıklı Kasa",
+              "body": "Deniz konteyner taşımacılığı, madencilik sahaları ve basınçlı yıkamaya karşı tam sızdırmaz koruma sağlar.",
+              "items": [
+                "IP67 hermetik sızdırmazlık",
+                "-40°C ila +85°C çalışma aralığı",
+                "Mıknatıslı veya vidalı montaj kiti"
+              ]
+            },
+            {
+              "id": "power-budget",
+              "icon": "battery",
+              "kicker": "PİL YÖNETİMİ",
+              "title": "7 Yıla Varan Sahada Bakımsız Çalışma",
+              "body": "Bekleme modunda 3 μA altında güç tüketen donanım mimarisi ile varlıklarınızı yıllarca şarj derdi olmadan takip edin.",
+              "items": [
+                "Li-SOCl2 endüstriyel lityum pil",
+                "Havadan (OTA) yapılandırılabilir raporlama",
+                "Her pakette pil gerilimi telemetrisi"
+              ]
+            }
+          ],
+          "aiFAQ": [
+            {
+              "question": "WillowGPS takip cihazının pil ömrü ne kadardır?",
+              "answer": "Dahili endüstriyel lityum pili ve hareket duyarlı uyku algoritması sayesinde 3 ila 7 yıl ömür sunar. Hareketsizken günde 1 kez, hareket halindeyken 15 dakikada bir konum ileten standart bir kullanım senaryosunda 5 yılın üzerinde çalışır."
+            },
+            {
+              "question": "Cihaz kapalı çelik konteynerlerin içine takılabilir mi?",
+              "answer": "Çelik konteyner duvarları GNSS uydu sinyallerini engeller. WillowGPS, IP67 sızdırmaz gövdesi ve güçlü manyetik/vidalı montaj kiti sayesinde konteynerin dış yüzeyine, tavanına veya şasesine takılacak şekilde tasarlanmıştır."
+            },
+            {
+              "question": "Geofence (coğrafi alan ihlali) uyarıları nasıl çalışır?",
+              "answer": "Varlık yetkisiz bir saatte veya tanımlı coğrafi çitin dışına çıktığında, cihaz derhal öncelikli LoRaWAN alarm paketi iletir. Sunucunuz (ChirpStack/TTN) bu sinyali SMS, e-posta veya webhook ile anında operasyon ekibine bildirir."
+            }
+          ]
         },
         "de": {
           "title": "IP67 LoRaWAN-GPS-Modul",
-          "shortDescription": "Kompaktes Tracking-Modul für Position, Höhe und Geschwindigkeit mit integrierten LoRa- und GPS-Antennen."
+          "shortDescription": "Industrieller LoRaWAN-GPS-Asset-Tracker mit 3-Achsen-Bewegungserkennung, Geofencing und mehrjähriger Batterielaufzeit für Fracht, Container und Flotten.",
+          "description": "Der WillowGPS (WS-O-X-AI-GT-1) ist ein robuster, stromsparender LoRaWAN-GPS-Asset-Tracker für unmotorisierte Schwermaschinen, intermodale Frachtcontainer, Fahrzeugflotten und Baugeräte.\n\n### Multi-GNSS-Präzision und intelligente Bewegungserkennung\nMit Unterstützung für GPS, GLONASS, Galileo und BeiDou liefert WillowGPS eine schnelle und präzise Standortbestimmung (2,5 m Genauigkeit). Der integrierte 3-Achsen-MEMS-Beschleunigungssensor steuert die Energieaufnahme: Im Ruhezustand schläft das Gerät im Mikroampere-Bereich; bei Bewegung oder Erschütterung erwacht es sofort, ermittelt die Koordinaten und überträgt die Telemetrie über LoRaWAN.\n\n### Dynamisches Geofencing und Diebstahlschutz\nVerlässt ein Wirtschaftsgut vordefinierte Baustellen- oder Betriebsgrenzen, setzt WillowGPS umgehend einen hochpriorisierten Alarm über das LoRaWAN-Netzwerk ab. \n\n### IP67-Schutz und mehrjährige Batterielaufzeit\nDas robuste, hermetisch dichte IP67-Polymergehäuse widersteht extremen Temperaturen (-40°C bis +85°C), Hochdruckreinigern und Seewasser. Zusammen mit industriellen Lithiumbatterien garantiert das Gerät eine wartungsfreie Einsatzdauer von 3 bis 7 Jahren."
         },
         "fr": {
           "title": "Module GPS LoRaWAN IP67",
@@ -1391,7 +1978,72 @@
       },
       "sortOrder": 40,
       "battery_life": "up to 10 years",
-      "communication_range": "up to 15 km"
+      "communication_range": "up to 15 km",
+      "description": "The WillowGPS (WS-O-X-AI-GT-1) is an industrial low-power LoRaWAN asset tracking terminal engineered for non-powered heavy equipment, intermodal shipping containers, commercial vehicle fleets, and logistics infrastructure.\n\n### Multi-Constellation GNSS Precision & Smart Motion Triggering\nEquipped with a high-sensitivity multi-constellation GNSS receiver (supporting GPS, GLONASS, Galileo, and BeiDou), WillowGPS achieves rapid Time-to-First-Fix (TTFF) under diverse satellite visibility conditions. Integrated 3-axis MEMS accelerometer firmware intelligently regulates device operational states: while assets are stationary in yards or storage, the device maintains deep microamp sleep; upon movement or vibration detection, it instantly wakes up to calculate positional coordinates and transmit location updates over LoRaWAN.\n\n### Dynamic Geofencing & Anti-Theft Telemetry\nWillowGPS supports edge-based and cloud-synchronized geofence thresholding. If an unauthorized movement event occurs outside scheduled operational perimeters or designated site boundaries, the device triggers an immediate high-priority alarm packet. Historical trip data, route velocity, and tilt angles are bundled into compact binary payloads to maximize radio channel efficiency.\n\n### Rugged IP67 Enclosure & Multi-Year Power Architecture\nEngineered to withstand heavy vibrations, pressure washing, UV radiation, and sub-zero maritime shipping conditions, the tracker is enclosed in an IP67 waterproof polymer housing. Powered by high-energy industrial lithium cells, WillowGPS delivers 3 to 7 years of field autonomy depending on daily movement cycles and reporting intervals.",
+      "detailBlocks": [
+        {
+          "id": "gnss-tracking",
+          "icon": "compass",
+          "kicker": "POSITIONING ENGINE",
+          "title": "Multi-Constellation GNSS & Fast TTFF",
+          "body": "High-sensitivity receiver processes signals from GPS, GLONASS, Galileo, and BeiDou for accurate positioning even in semi-occluded environments.",
+          "items": [
+            "2.5 m circular positioning accuracy",
+            "Multi-GNSS concurrent satellite reception",
+            "Integrated high-efficiency patch antenna"
+          ]
+        },
+        {
+          "id": "motion-intelligence",
+          "icon": "activity",
+          "kicker": "SMART TELEMETRY",
+          "title": "Accelerometer-Driven Adaptive Reporting",
+          "body": "Onboard 3-axis accelerometer sleeps during stationary periods and switches to real-time periodic tracking upon asset movement.",
+          "items": [
+            "Instant motion & vibration trigger",
+            "Geofence boundary deviation alarm",
+            "Low duty cycle radio optimization"
+          ]
+        },
+        {
+          "id": "rugged-hardware",
+          "icon": "shield",
+          "kicker": "MECHANICAL INTEGRITY",
+          "title": "IP67 Weatherproof & Shock-Resistant Casing",
+          "body": "Sealed enclosure designed to endure harsh maritime container transport, mining environments, pressure washing, and wide temperature swings.",
+          "items": [
+            "IP67 hermetic sealing",
+            "-40°C to +85°C operating range",
+            "Magnetic or screw-mount mounting kit"
+          ]
+        },
+        {
+          "id": "power-budget",
+          "icon": "battery",
+          "kicker": "BATTERY AUTONOMY",
+          "title": "Multi-Year Autonomous Battery Operation",
+          "body": "Optimized power architecture consumes less than 3 μA in standby, providing 3 to 7 years of maintenance-free asset visibility in the field.",
+          "items": [
+            "Field-proven Li-SOCl2 chemistry",
+            "Over-The-Air configurable reporting cadence",
+            "Battery capacity telemetry on every uplink"
+          ]
+        }
+      ],
+      "aiFAQ": [
+        {
+          "question": "How long does the battery last on the WillowGPS tracker?",
+          "answer": "With its internal industrial lithium battery and motion-triggered sleep algorithms, WillowGPS achieves 3 to 7 years of autonomy. A typical asset reporting once per day when stationary and every 15 minutes during motion operates for over 5 years."
+        },
+        {
+          "question": "Can WillowGPS work inside metal shipping containers?",
+          "answer": "GNSS satellite signals cannot penetrate solid steel container walls. WillowGPS is designed to be mounted on the container exterior, roof, or chassis using its IP67 housing and magnetic/bolt brackets for unobstructed satellite and LoRaWAN connectivity."
+        },
+        {
+          "question": "How are geofence alerts handled?",
+          "answer": "When movement is detected outside authorized hours or beyond predefined geographical coordinates, WillowGPS immediately transmits an alarm uplink to your LoRaWAN server (ChirpStack, TTN, etc.), which forwards webhooks or SMS alerts to your operations team."
+        }
+      ]
     },
     {
       "id": "willowpanic",
@@ -1399,7 +2051,7 @@
       "slug": "willowpanic",
       "category": "tracking",
       "image": "assets/product-cutouts/panic-button.webp",
-      "shortDescription": "Sends emergency alert to central monitoring unit when activated. Ideal for health interventions or security.",
+      "shortDescription": "Rugged LoRaWAN industrial emergency panic button with haptic feedback, LED indicator, and instant priority uplink for lone workers, workplace safety, and healthcare.",
       "chips": [
         "LoRaWAN 868/915",
         "15 km",
@@ -1469,7 +2121,7 @@
         "tr": {
           "type": "IP67 Endüstriyel LoRaWAN Panik Butonu",
           "title": "IP67 Endüstriyel LoRaWAN Panik Butonu",
-          "description": "Devreye alındığında merkezi izleme birimine acil durum uyarısı gönderir. Sağlık müdahalesi ve güvenlik senaryoları için uygundur. IP67 koruma sınıfıyla iç ve dış mekâna duvara monte edilebilir.",
+          "description": "WillowPanic (WS-O-X-AI-PB-1), yalnız çalışan personel güvenliği (İSG / OSHA uyumluluğu), fabrika sahaları, otel personeli güvenliği ve hastane acil çağrı sistemleri için geliştirilmiş endüstriyel LoRaWAN panik ve imdat butonudur.\n\n### Taktiksel Acil Durum Mekaniği ve Çift Yönlü Geri Bildirim\nAğır iş eldivenleriyle dahi kolayca basılabilen geniş ergonomik butona sahiptir. Butona basıldığında entegre LED halkası ve sesli uyarıcı (buzzer), alarmın başarıyla merkeze iletildiğini kullanıcıya anında bildirir. Yanlış alarmları önlemek için uzun basma (2 saniye) veya çift tıklama gibi akıllı tetikleme modları yapılandırılabilir.\n\n### Anlık Öncelikli LoRaWAN İletimi ve Hızlı Müdahale\nKimyasal tesisler, maden ocakları, gece vardiyaları veya izole depolarda acil müdahale saniyelerle yarışır. Butona basıldığı anda tüm uyku döngüleri devre dışı kalır ve en yüksek öncelikli LoRaWAN paketi fırlatılır. Bu sinyal güvenlik merkezine, SMS ağ geçitlerine, acil çağrı sirelerine veya mobil ekiplere anında yönlendirilir.\n\n### IP65 Dayanıklı Kasa ve Yıllarca Süren Pil Güvencesi\nDarbe dayanımlı, alev geciktirici gövdesi su sıçramalarına, toza ve düşmelere karşı IP65 korumalıdır. Düşük bekleme akımı ve düzenli sağlık telemetrisi (heartbeat) ile acil bir durumda butona basıldığında her zaman çalışır durumda kalır.",
           "applications": [
             {
               "icon": "building",
@@ -1496,11 +2148,76 @@
               "label": "Diğer bina ve sahalar"
             }
           ],
-          "shortDescription": "Devreye alındığında merkezi izleme birimine acil durum uyarısı gönderen LoRaWAN panik butonu."
+          "shortDescription": "Yalnız çalışan iş güvenliği (İSG), hastane ve acil durum çağrıları için anlık öncelikli uplink ileten endüstriyel LoRaWAN panik butonu.",
+          "detailBlocks": [
+            {
+              "id": "tactile-activation",
+              "icon": "activity",
+              "kicker": "KULLANICI ARAYÜZÜ",
+              "title": "Eldiven Uyumlu Buton ve Çift Yönlü Bildirim",
+              "body": "Büyük ergonomik buton yüzeyi, basıldığında hissedilen mekanik tıklama hissi, LED ışık ve sesli teyit sunar.",
+              "items": [
+                "Eldivenle kolay basılabilir geniş yüzey",
+                "Görsel LED teyit halkası",
+                "Sesli buzzer geri bildirimi"
+              ]
+            },
+            {
+              "id": "priority-routing",
+              "icon": "radio",
+              "kicker": "ACİL DURUM PROTOKOLÜ",
+              "title": "Sıfır Gecikmeli Öncelikli LoRaWAN İletimi",
+              "body": "Bekleme süresini atlayarak en yüksek öncelikli Class A uplink fırlatır; SMS, siren veya güvenlik konsoluna anında ulaşır.",
+              "items": [
+                "Saniyenin altında gecikmeyle acil uplink",
+                "Yanlış basmayı önleyen akıllı tetikleme",
+                "Otomatik SMS ve siren entegrasyonu"
+              ]
+            },
+            {
+              "id": "rugged-casing",
+              "icon": "shield",
+              "kicker": "ENDÜSTRİYEL GÖVDE",
+              "title": "IP65 Darbeye Dayanıklı Güçlü Kasa",
+              "body": "Fabrika ortamlarındaki toza, neme, kimyasal sıçramalara ve beton zemine düşmelere karşı tam koruma sağlar.",
+              "items": [
+                "IP65 toz ve sıvı koruması",
+                "Duvara, masaya sabitleme veya kordonla taşıma",
+                "Alev iletmez endüstriyel polimer gövde"
+              ]
+            },
+            {
+              "id": "power-budget",
+              "icon": "battery",
+              "kicker": "GÜVENİLİR GÜÇ",
+              "title": "5+ Yıl Bekleme Süresi ve Sağlık Telemetrisi",
+              "body": "Günlük sağlıklı çalışma paketi ile pil ve sinyal seviyesini sürekli bildirerek her an göreve hazır bekler.",
+              "items": [
+                "5 yıldan fazla bekleme süresi",
+                "Düzenli pil ve bağlantı testi (heartbeat)",
+                "ChirpStack ve TTN hazır entegrasyonu"
+              ]
+            }
+          ],
+          "aiFAQ": [
+            {
+              "question": "Yanlışlıkla basmalara karşı nasıl bir önlem vardır?",
+              "answer": "Cihaz yazılımı üzerinden tek basma, 2-3 saniye basılı tutma veya çift tıklama gibi tetikleme kuralları seçilebilir; bu sayede yoğun çalışma ortamlarında kazara alarm oluşması engellenir."
+            },
+            {
+              "question": "Kullanıcı alarmın merkeze ulaştığını nasıl anlar?",
+              "answer": "Butona basıldığında LED halkası yanıp söner ve ağ geçidinden onay (ACK) alındığı anda sesli uyarıcı teyit melodisi çalarak yardım çağrısının iletildiğini doğrular."
+            },
+            {
+              "question": "Cihaz duvara sabitlenebilir mi?",
+              "answer": "Evet. Ürünle birlikte gelen montaj kiti sayesinde duvara, tezgahlara veya kapı girişlerine sabitlenebileceği gibi, hareketli personel için kordonla boyna asılarak veya kemere takılarak da kullanılabilir."
+            }
+          ]
         },
         "de": {
           "title": "IP67 industrieller LoRaWAN-Notfallknopf",
-          "shortDescription": "LoRaWAN-Notfallknopf, der bei Betätigung einen Alarm an die zentrale Monitoring-Einheit sendet."
+          "shortDescription": "Robuster LoRaWAN-Industrie-Paniktaster mit haptischer Rückmeldung, LED und sofortiger Alarmübertragung für Alleinarbeiter und Arbeitssicherheit.",
+          "description": "Der WillowPanic (WS-O-X-AI-PB-1) ist ein robuster industrieller LoRaWAN-Notfalltaster für den Alleinarbeiterschutz (Arbeitssicherheit), Produktionshallen, Logistiklager und Gesundheitseinrichtungen.\n\n### Taktile Notfallmechanik mit Bestätigung\nDie große, auch mit Arbeitshandschuhen sicher bedienbare Taste liefert klares Feedback: Eine LED und ein akustischer Signalgeber bestätigen dem Benutzer sofort, dass der Notruf erfolgreich abgesetzt wurde. Fehlalarme werden durch konfigurierbare Druckdauer (z.B. 2 Sekunden Halten) vermieden.\n\n### Sofortige Prioritäts-Alarmierung über LoRaWAN\nIm Ernstfall sendet WillowPanic sofort ein hochpriorisiertes LoRaWAN-Datenpaket, das Notfallpläne, SMS-Warnungen oder Alarmsirenen unverzüglich auslöst.\n\n### IP65-Industriegehäuse und lange Batterielaufzeit\nDas robuste IP65-Gehäuse ist staub- und spritzwassergeschützt. Bei extrem geringem Standby-Strom und regelmäßigen Selbsttests garantiert das Gerät über 5 Jahre zuverlässige Einsatzbereitschaft."
         },
         "fr": {
           "title": "Bouton d’alerte industriel LoRaWAN IP67",
@@ -1534,6 +2251,71 @@
             "tr": "https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/datasheets/willowpanic/brochure-tr.pdf"
           }
         }
+      ],
+      "description": "The WillowPanic (WS-O-X-AI-PB-1) is a heavy-duty industrial LoRaWAN emergency panic button designed for lone worker safety (OSHA/OHS compliance), factory floor distress alerting, healthcare patient calls, and hotel staff security.\n\n### Tactical Emergency Mechanics & Haptic Feedback\nFeaturing an oversized tactile push button designed for rapid activation even when wearing heavy work gloves, WillowPanic provides clear multi-sensory feedback: an integrated LED indicator and acoustic buzzer instantly confirm that the alert was captured and successfully transmitted. Firmware includes anti-accidental press logic (such as press-and-hold or double-click options).\n\n### Instant Priority LoRaWAN Uplink & Automated Escalation\nIn hazardous environments such as chemical plants, mining tunnels, remote utility substations, or solitary night shifts, emergency response latency is a matter of life and death. The moment the button is pressed, WillowPanic bypasses all sleep delays and transmits a high-priority Class A LoRaWAN packet. Network servers can automatically route this trigger to security consoles, SMS gateways, siren relays, or emergency dispatchers.\n\n### IP65 Ruggedized Industrial Casing & Long Battery Autonomy\nEnclosed in a high-impact, flame-retardant ABS enclosure sealed to IP65, WillowPanic withstands water splashes, dust, and physical drops. Powered by an internal lithium cell optimized for years of standby with periodic heartbeat transmissions, it requires zero maintenance in mission-critical facilities.",
+      "detailBlocks": [
+        {
+          "id": "tactile-activation",
+          "icon": "activity",
+          "kicker": "TACTICAL INTERFACE",
+          "title": "Glove-Friendly Push Button & Multi-Sensory Feedback",
+          "body": "Large tactile dome button provides definite click feel with LED illumination and buzzer confirmation upon emergency transmission.",
+          "items": [
+            "Large glove-compatible push surface",
+            "Visual LED confirmation ring",
+            "Acoustic buzzer feedback"
+          ]
+        },
+        {
+          "id": "priority-routing",
+          "icon": "radio",
+          "kicker": "EMERGENCY PROTOCOL",
+          "title": "Zero-Latency Priority LoRaWAN Uplink",
+          "body": "Bypasses normal periodic sleep states to fire an immediate Class A uplink with automatic ACK confirmations and retransmissions.",
+          "items": [
+            "Immediate sub-second alarm uplink",
+            "Programmable hold or multi-click trigger",
+            "Automated SMS, email and siren routing"
+          ]
+        },
+        {
+          "id": "rugged-casing",
+          "icon": "shield",
+          "kicker": "INDUSTRIAL RATING",
+          "title": "IP65 Impact-Resistant Enclosure",
+          "body": "Robust casing withstands harsh factory chemicals, washdown splashes, and drops onto concrete floors.",
+          "items": [
+            "IP65 dust and splash protection",
+            "Wall, desk or lanyard mounting options",
+            "Flame-retardant industrial polymer"
+          ]
+        },
+        {
+          "id": "power-budget",
+          "icon": "battery",
+          "kicker": "LONG-LIFE STANDBY",
+          "title": "Multi-Year Standby with Health Heartbeats",
+          "body": "Microamp sleep current coupled with daily keep-alive heartbeats ensures the emergency button is always operational when needed.",
+          "items": [
+            "5+ years standby battery life",
+            "Periodic battery and radio health telemetry",
+            "ChirpStack & TTN ready-to-deploy decoders"
+          ]
+        }
+      ],
+      "aiFAQ": [
+        {
+          "question": "How does WillowPanic prevent accidental false alarms?",
+          "answer": "The firmware can be configured via downlink for different trigger modes: instant single click, press-and-hold for 2–3 seconds, or double-click, effectively preventing accidental triggers in high-activity environments."
+        },
+        {
+          "question": "How does the user know the emergency signal was received?",
+          "answer": "Upon pressing the button, the integrated LED flashes and the buzzer emits a distinct confirmation tone as soon as the LoRaWAN gateway acknowledges the transmission."
+        },
+        {
+          "question": "Can WillowPanic be mounted on a wall or worn on a belt?",
+          "answer": "Yes. WillowPanic includes a quick-release wall bracket for fixed mounting in restrooms, hotel rooms, or machine stations, and supports wearable lanyard or belt clip attachments for mobile workers."
+        }
       ]
     },
     {
@@ -1542,7 +2324,7 @@
       "slug": "willowsens",
       "category": "tracking",
       "image": "assets/product-cutouts/willowsens.webp",
-      "shortDescription": "Monitors door status (open/close events). Ideal for remote monitoring of doors, cabinets, drawers, windows.",
+      "shortDescription": "Industrial LoRaWAN multi-input hub for magnetic door contacts, digital inputs, and pulse meters. Real-time enclosure, transformer substation, and perimeter access monitoring.",
       "chips": [
         "LoRaWAN 868/915",
         "15 km",
@@ -1627,7 +2409,7 @@
         "tr": {
           "type": "LoRaWAN Kapı Açık/Kapalı Sensörü",
           "title": "LoRaWAN Kapı Açık/Kapalı Sensörü",
-          "description": "Kapıların açık ve kapalı olma durumunu izler. Kapı, dolap, çekmece ve pencerelerin uzaktan takibi için uygundur. İç ve dış mekân seçenekleriyle sunulur.",
+          "description": "WillowSens (WS-O-X-AI-DS-1), uzak trafo merkezleri, güneş enerjisi toplama panoları, sunucu kabinleri, sayaç darbe okuma ve çevre güvenliği için geliştirilmiş çok fonksiyonlu endüstriyel LoRaWAN telemetri modülüdür.\n\n### Çok Yönlü Giriş Mimarisi (Manyetik Reed, Kuru Kontak ve Darbe Sayıcı)\nDahili yüksek hassasiyetli manyetik reed rölesinin yanı sıra harici kuru kontak (DI) klemenslerine ve hızlı darbe (pulse) sayıcı arayüzüne sahiptir. Pano kapılarının açık/kapalı durumunu, izinsiz müdahaleleri ve mekanik su/gaz sayaçlarından gelen tüketim darbelerini saniyeler içinde LoRaWAN paketine dönüştürür.\n\n### Kritik Tesis ve Trafo Güvenliği\nİnsansız trafo binaları, saha dağıtım panoları ve baz istasyonu konteynerleri hırsızlık ve sabotaj riskine açıktır. WillowSens, pano kapağı açıldığı anda uyku modunu kırarak güvenlik merkezine anında öncelikli alarm iletir; açılış ve kapanış zaman damgalarını eksiksiz kaydeder.\n\n### IP67 Ağır Saha Koruması ve 10 Yıllık Pil Ömrü\nDış ortam trafo sahaları ve nemli menfezlere uygun IP67 sızdırmaz gövdeye sahiptir. 1,5 μA seviyesindeki uyku akımı sayesinde yüz binlerce açma/kapama olayını kapsayan 10 yıla varan bakım gerektirmeyen pil ömrü sunar.",
           "applications": [
             {
               "icon": "building",
@@ -1662,11 +2444,76 @@
               "label": "Pencere açılış/kapanışlarının uzaktan izlenmesi"
             }
           ],
-          "shortDescription": "Kapı, dolap, çekmece ve pencerelerin açık/kapalı durumunu uzaktan izleyen LoRaWAN sensörü."
+          "shortDescription": "Trafo merkezleri, sunucu kabinetleri ve pano kapıları için manyetik kontak, kuru kontak ve darbe sayıcı destekli endüstriyel LoRaWAN sensörü.",
+          "detailBlocks": [
+            {
+              "id": "multi-input",
+              "icon": "radio",
+              "kicker": "GİRİŞ ESNEKLİĞİ",
+              "title": "Manyetik Reed, Kuru Kontak ve Pulse Arayüzü",
+              "body": "Dahili manyetik kontak ile harici klemens girişini bir arada sunarak hem kapı durumunu hem sayaç darbelerini okur.",
+              "items": [
+                "Dahili manyetik reed anahtar",
+                "Harici kuru kontak (DI) girişi",
+                "Su ve gaz sayaçları için pulse sayıcı"
+              ]
+            },
+            {
+              "id": "tamper-alerts",
+              "icon": "shield",
+              "kicker": "GÜVENLİK TELEMETRİSİ",
+              "title": "Anında Kapı Açılma ve Müdahale Alarmı",
+              "body": "Pano kapısı açıldığı anda saniyenin altında gecikmeyle Class A LoRaWAN alarm paketi fırlatır.",
+              "items": [
+                "Anlık açılma/kapanma durum bildirimi",
+                "Sabotaj (tamper) algılama anahtarı",
+                "Periyodik sağlıklı çalışma sinyali (heartbeat)"
+              ]
+            },
+            {
+              "id": "industrial-casing",
+              "icon": "mount",
+              "kicker": "GÖVDE KORUMASI",
+              "title": "IP67 Toz ve Su Geçirmez Endüstriyel Kasa",
+              "body": "Güneş enerjisi santralleri, rögarlar ve trafo sahaları için UV dayanımlı sağlam polimer gövde.",
+              "items": [
+                "IP67 tam sızdırmazlık standardı",
+                "-40°C ila +85°C çalışma sıcaklığı",
+                "Harici güçlü mıknatıs ve vida kiti"
+              ]
+            },
+            {
+              "id": "battery-autonomy",
+              "icon": "battery",
+              "kicker": "PİL YÖNETİMİ",
+              "title": "10 Yıl Kesintisiz Saha Ömrü",
+              "body": "Düşük güç tüketimiyle 100.000'den fazla açılma olayını kapsayan 10 yıllık pil performansı sunar.",
+              "items": [
+                "10 yıla varan pil ömrü",
+                "100.000+ anahtarlama döngüsü",
+                "ChirpStack ve TTN hazır entegrasyonu"
+              ]
+            }
+          ],
+          "aiFAQ": [
+            {
+              "question": "WillowSens su veya gaz sayacı okumak için kullanılabilir mi?",
+              "answer": "Evet. Harici dijital giriş klemensleri darbe (pulse) sayıcı olarak yapılandırılabilir. Mekanik su veya gaz sayaçlarının pulse çıkışını sayarak biriken tüketim verisini LoRaWAN üzerinden periyodik iletir."
+            },
+            {
+              "question": "Sensör ile mıknatıs arasındaki algılama mesafesi nedir?",
+              "answer": "Manyetik reed anahtar, yaklaşık 15 mm ila 25 mm aralığındaki açılma/kapanma mesafelerinde kararlı şekilde tetiklenir; bu sayede esnemiş metal pano kapaklarında dahi sorunsuz çalışır."
+            },
+            {
+              "question": "Kapı tekrar kapandığında sistem bilgi verir mi?",
+              "answer": "Evet. Cihaz hem 'Kapı Açıldı' hem de 'Kapı Kapandı' olaylarını ayrı paketlerle iletir ve kapının ne kadar süre açık kaldığını raporlar."
+            }
+          ]
         },
         "de": {
           "title": "LoRaWAN-Tür-Auf/Zu-Sensor",
-          "shortDescription": "LoRaWAN-Sensor zur Fernüberwachung von Türen, Schränken, Schubladen und Fenstern."
+          "shortDescription": "Industrieller LoRaWAN-Hub für Magnetkontakte, digitale Eingänge und Impulszählung zur Überwachung von Schaltschränken und Zugängen (IP67).",
+          "description": "Der WillowSens (WS-O-X-AI-DS-1) ist ein vielseitiger industrieller LoRaWAN-Telemetrie-Sensor für Türüberwachung, Schaltschrank-Sicherheit in Trafostationen und Impulszählung von Durchflussmessern.\n\n### Flexible Eingänge: Reed, Digitaleingang und Impulszähler\nKombiniert einen internen hochempfindlichen Magnet-Reedkontakt mit externen Klemmen für potenzialfreie Kontakte und schnelle Impulszählung (z.B. für Wasser- oder Gaszähler).\n\n### Sofortige Einbruchs- und Manipulationserkennung\nBeim Öffnen von Schaltschränken in unbemannten Trafostationen sendet das Gerät innerhalb von Sekundenbruchteilen ein Prioritätssignal über LoRaWAN an das Sicherheitssystem.\n\n### IP67-Schutz und 10 Jahre Batterielaufzeit\nDas robuste IP67-Gehäuse widersteht extremen Temperaturen (-40°C bis +85°C) und Feuchtigkeit. Die Batteriearchitektur ermöglicht bis zu 10 Jahre autarken Betrieb bei über 100.000 Schaltvorgängen."
         },
         "fr": {
           "title": "Capteur LoRaWAN d’ouverture/fermeture de porte",
@@ -1691,7 +2538,72 @@
       },
       "sortOrder": 60,
       "battery_life": "up to 10 years",
-      "communication_range": "up to 15 km"
+      "communication_range": "up to 15 km",
+      "description": "The WillowSens (WS-O-X-AI-DS-1) is a versatile industrial LoRaWAN telemetry terminal engineered for remote perimeter security, magnetic door contact surveillance, water/gas meter pulse counting, and electrical substation cabinet monitoring.\n\n### Versatile Multi-Input Sensing (Reed, DI & Pulse Counter)\nWillowSens integrates an internal high-sensitivity magnetic reed switch alongside external dry-contact digital inputs (DI) and high-speed pulse counter interfaces. It seamlessly captures cabinet door open/close transitions, security tamper events, and pulses from utility flow meters, translating raw physical events into timestamped, structured LoRaWAN packets.\n\n### Critical Substation & Server Rack Security\nIndustrial transformer stations, solar combiner boxes, telecommunication shelters, and server racks frequently sit in unstaffed remote locations. WillowSens provides immediate status change notifications: opening an authorized enclosure door or unauthorized forced entry triggers a sub-second interrupt uplink, logging the exact event time and transmitting tamper alerts to security operations teams.\n\n### Rugged IP67 Ingress Protection & 10-Year Field Life\nEngineered for demanding utility environments, WillowSens is encapsulated in an IP67 weatherproof housing. Its ultra-low power microcontroller draws under 1.5 μA in standby, allowing the internal industrial battery to deliver up to 10 years of autonomous operation under thousands of door open/close trigger events.",
+      "detailBlocks": [
+        {
+          "id": "multi-input",
+          "icon": "radio",
+          "kicker": "INPUT FLEXIBILITY",
+          "title": "Magnetic Reed, Dry Contact & Pulse Counter",
+          "body": "Combines an internal magnetic contact with external digital input terminals to monitor door states and interface with pulse-output meters.",
+          "items": [
+            "Internal magnetic reed switch",
+            "External dry-contact DI interface",
+            "High-speed pulse accumulator for flow meters"
+          ]
+        },
+        {
+          "id": "tamper-alerts",
+          "icon": "shield",
+          "kicker": "SECURITY TELEMETRY",
+          "title": "Instant Intrusion & Tamper Detection",
+          "body": "Generates sub-second Class A LoRaWAN uplink packets upon door open events, providing instant remote visibility of unstaffed infrastructure.",
+          "items": [
+            "Instant open/close state change trigger",
+            "Optical tamper sensor protection",
+            "Periodic keep-alive heartbeat"
+          ]
+        },
+        {
+          "id": "industrial-casing",
+          "icon": "mount",
+          "kicker": "ENCLOSURE RATING",
+          "title": "IP67 Weatherproof Utility Housing",
+          "body": "Robust UV-stabilized polycarbonate enclosure designed for outdoor transformer stations, solar arrays, and high-moisture manholes.",
+          "items": [
+            "IP67 dust and immersion protection",
+            "-40°C to +85°C operating range",
+            "External magnet and screw mounting hardware"
+          ]
+        },
+        {
+          "id": "battery-autonomy",
+          "icon": "battery",
+          "kicker": "AUTONOMOUS POWER",
+          "title": "10-Year Industrial Battery Lifespan",
+          "body": "Ultra-low power design handles tens of thousands of event triggers over a decade of field service without battery replacement.",
+          "items": [
+            "Up to 10 years field life",
+            "100,000+ switch event cycles",
+            "ChirpStack, TTN & AWS IoT decoders included"
+          ]
+        }
+      ],
+      "aiFAQ": [
+        {
+          "question": "Can WillowSens be used for water meter or gas meter pulse counting?",
+          "answer": "Yes. The external digital input can be configured as a pulse counter accumulator. It counts high-speed pulses from industrial flow meters or gas meters and transmits cumulative consumption values over LoRaWAN at programmed intervals."
+        },
+        {
+          "question": "What is the operating distance between the sensor and the magnet?",
+          "answer": "The magnetic reed switch operates reliably with an open/close gap threshold of approximately 15 mm to 25 mm, allowing flexible installation on warped metal enclosure doors or heavy security gates."
+        },
+        {
+          "question": "Does the sensor confirm when a door is closed again?",
+          "answer": "Yes. WillowSens transmits separate uplinks for both 'Door Open' and 'Door Closed' events, including the duration of the opening, allowing full operational auditing of access history."
+        }
+      ]
     },
     {
       "id": "willowtilt",
@@ -1699,7 +2611,7 @@
       "slug": "willowtilt",
       "category": "tracking",
       "image": "assets/product-cutouts/willowtilt.webp",
-      "shortDescription": "Measures 3-axis motion and transmits X, Y, Z acceleration data. Detects movement, motion, vibration.",
+      "shortDescription": "High-precision LoRaWAN 3-axis inclinometer and tilt sensor for utility poles, telecommunication towers, bridges, retaining walls, and structural health monitoring (SHM).",
       "chips": [
         "LoRaWAN 868/915",
         "15 km",
@@ -1799,7 +2711,7 @@
         "tr": {
           "type": "LoRaWAN Açı/Eğim Sensörü",
           "title": "LoRaWAN Eğim Sensörü",
-          "description": "WS-O-X-AI-TS-1, ağır dış ortam koşullarına dayanıklı bir sensördür. 3 eksendeki ivme ve açı değerlerini ölçerek LoRaWAN üzerinden iletir. İstinat duvarları, devrilme riski taşıyan noktalar ve 2G'ye kadar titreşim ölçümleri için kullanılabilir. Montaj aparatıyla birlikte gelir; 19.000 mAh pil ile 10 yıla kadar çalışabilir.",
+          "description": "WillowTilt (WS-O-X-AI-TL-1), Yapısal Sağlık İzleme (SHM), elektrik dağıtım direkleri, baz istasyonu kuleleri, köprü tabliyeleri, istinat duvarları ve heyelan izleme sistemleri için geliştirilmiş yüksek hassasiyetli LoRaWAN 3 eksenli eğim ve ivme sensörüdür.\n\n### Yüksek Çözünürlüklü MEMS Eğim ve Titreşim Algılama\nUltra düşük gürültülü 3 eksenli MEMS sensör çekirdeği ile donatılan WillowTilt, eğim açılarını (pitch ve roll) 0,01° çözünürlük ve ±0,05° mutlak doğrulukla hesaplar. Gömülü sayısal filtreleme algoritmaları, rüzgar esintileri veya araç trafiğinden kaynaklanan geçici yüksek frekanslı titreşimleri süzerek yalnızca kalıcı zemin ve yapı hareketlerini raporlar.\n\n### Yapısal Sağlık ve Anlık Çarpışma / Eğim Alarmı\nFırtına, zemin oturması veya araç çarpması sonucu direk veya kulelerde oluşabilecek tehlikeli eğilmeler can ve mal güvenliği için kritik tehdittir. WillowTilt, belirlenen eşik açı aşıldığında veya ani darbe algılandığında uyku döngüsünü kırarak merkezi yönetim paneline saniyeler içinde acil durum LoRaWAN paketi fırlatır.\n\n### IP67 Ağır Saha Dayanımı ve 8 Yıllık Pil Ömrü\nDarbe dayanımlı, UV korumalı IP67 sızdırmaz gövdesi ve galvanizli montaj aparatı ile çelik veya betonarme direklere kolayca sabitlenir. Mikroamper seviyesindeki güç tüketimiyle sahada harici kabloya veya güneş paneline ihtiyaç duymadan 8 yıla kadar kesintisiz çalışır.",
           "applications": [
             {
               "icon": "carShield",
@@ -1830,11 +2742,76 @@
               "label": "Endüstriyel makineler"
             }
           ],
-          "shortDescription": "3 eksenli ivme ve eğim değerlerini ölçüp LoRaWAN üzerinden ileten dış ortam sensörü."
+          "shortDescription": "Elektrik direkleri, köprüler, kuleler ve istinat duvarları için 0,01° hassasiyetli LoRaWAN 3 eksenli eğim ve titreşim sensörü. Anlık alarm iletimi.",
+          "detailBlocks": [
+            {
+              "id": "tilt-measurement",
+              "icon": "activity",
+              "kicker": "AÇISAL HASSASİYET",
+              "title": "0,01° Çözünürlüklü 3 Eksenli Eğim Ölçümü",
+              "body": "Sıcaklık kompanzasyonlu MEMS sensör mimarisi, termal sapmaları sıfırlayarak pitch ve roll açılarını yüksek hassasiyetle hesaplar.",
+              "items": [
+                "0,01° açısal çözünürlük",
+                "±0,05° mutlak doğruluk",
+                "Ayarlanabilir titreşim ve gürültü filtreleme"
+              ]
+            },
+            {
+              "id": "shm-alarms",
+              "icon": "shield",
+              "kicker": "ERKEN UYARI",
+              "title": "Eşik Aşımı ve Çarpışma Erken Uyarısı",
+              "body": "Direğin yatması, zemin kayması veya araç çarpması gibi kritik durumlarda saniyeler içinde öncelikli alarm iletir.",
+              "items": [
+                "Anlık eşik ihlal kesmesi (interrupt)",
+                "Enerji nakil hatları ve kule güvenliği",
+                "Uzun dönemli eğim kayması telemetrisi"
+              ]
+            },
+            {
+              "id": "enclosure-rigidity",
+              "icon": "mount",
+              "kicker": "MEKANİK KORUMA",
+              "title": "IP67 Sızdırmaz ve Darbeye Dayanıklı Gövde",
+              "body": "Fırtına, kar, buz ve şiddetli mekanik şoklara dayanıklı sağlam gövde ve direk bağlantı kiti.",
+              "items": [
+                "IP67 toz ve su sızdırmazlık",
+                "-40°C ila +85°C geniş sıcaklık aralığı",
+                "Direk ve duvar montaj braketi dahil"
+              ]
+            },
+            {
+              "id": "power-budget",
+              "icon": "battery",
+              "kicker": "PİL YÖNETİMİ",
+              "title": "8 Yıla Varan Sahada Kesintisiz Güç",
+              "body": "Karasal elektrik şebekesinden bağımsız, harici kablo gerektirmeyen düşük güçlü donanım tasarımı.",
+              "items": [
+                "8 yıla varan pil ömrü",
+                "Açık alanda 15 km LoRaWAN menzili",
+                "ChirpStack ve TTN hazır entegrasyonu"
+              ]
+            }
+          ],
+          "aiFAQ": [
+            {
+              "question": "WillowTilt rüzgar sallantısı ile gerçek yapısal eğilmeyi nasıl ayırt eder?",
+              "answer": "WillowTilt, işlemcisinde çalışan dijital alçak geçiren filtreler (low-pass filter) ile rüzgar veya araç trafiğinden kaynaklanan geçici titreşimleri eler; yalnızca kalıcı zemin hareketi veya kalıcı direkteki yatıklık durumunda alarm tetikler."
+            },
+            {
+              "question": "Cihaz hangi yapılarda kullanılabilir?",
+              "answer": "Elektrik dağıtım direkleri, yüksek gerilim nakil kuleleri, baz istasyonları, karayolu köprü ayakları, istinat duvarları, iskele sistemleri ve maden açık ocak şevlerinde yaygın olarak kullanılır."
+            },
+            {
+              "question": "Bir araç direğe çarptığında alarm ne kadar sürede iletilir?",
+              "answer": "Dahili ivmeölçerin donanımsal kesme (interrupt) özelliği sayesinde çarpma anındaki ani ivmelenme ve açı değişimi saniyeler içinde öncelikli Class A LoRaWAN uplink paketi olarak ağ geçidine ulaştırılır."
+            }
+          ]
         },
         "de": {
           "title": "LoRaWAN-Neigungssensor",
-          "shortDescription": "Outdoor-Sensor, der 3-Achsen-Beschleunigung und Neigung misst und per LoRaWAN überträgt."
+          "shortDescription": "Präziser LoRaWAN-3-Achsen-Neigungssensor für Maste, Brücken, Türme und Bauwerksüberwachung (SHM) mit 0,01° Auflösung und Schwellenwert-Alarm.",
+          "description": "Der WillowTilt (WS-O-X-AI-TL-1) ist ein hochpräziser industrieller LoRaWAN-3-Achsen-Neigungsmesser für die Bauwerksüberwachung (Structural Health Monitoring, SHM), Stromleitungsmasten, Funkmasten und Brücken.\n\n### Hochauflösende MEMS-Neigungsmessung\nMit einer Auflösung von 0,01° und einer Genauigkeit von ±0,05° erfasst WillowTilt Nick- und Rollwinkel zuverlässig. Integrierte Filteralgorithmen eliminieren dynamische Erschütterungen durch Windböen oder Straßenverkehr, sodass ausschließlich reale strukturelle Neigungen übertragen werden.\n\n### Sofortige Kollisions- und Grenzwertalarme\nWird ein Mast durch Sturm, Erdrutsch oder Fahrzeugkollision gefährlich geneigt, unterbricht das Gerät sofort den Schlafmodus und sendet ein Prioritätsdatenpaket über LoRaWAN an die Leitstelle.\n\n### IP67-Wetterschutz und 8 Jahre Batterielaufzeit\nDas UV-beständige IP67-Gehäuse widersteht extremen Witterungsbedingungen von -40°C bis +85°C. Die interne Batterie ermöglicht bis zu 8 Jahre autarken Betrieb ohne externe Verkabelung."
         },
         "fr": {
           "title": "Capteur d’inclinaison LoRaWAN",
@@ -1859,7 +2836,72 @@
       },
       "sortOrder": 70,
       "battery_life": "up to 5 years",
-      "communication_range": "up to 15 km"
+      "communication_range": "up to 15 km",
+      "description": "The WillowTilt (WS-O-X-AI-TL-1) is a high-precision industrial LoRaWAN 3-axis inclinometer and tilt transmitter engineered for Structural Health Monitoring (SHM), utility pole stability, bridge deflection, telecommunication towers, and landslide risk assessment.\n\n### High-Resolution MEMS Inclinometry & Angular Drift Compensation\nUtilizing ultra-low noise 3-axis MEMS sensor technology, WillowTilt measures pitch, roll, and inclination angles with 0.01° resolution and ±0.05° absolute accuracy. Embedded firmware performs real-time digital filtering and thermal compensation, filtering out transient high-frequency vibrations caused by passing traffic or wind gusts to deliver pristine static tilt telemetry.\n\n### Structural Health Monitoring & Rapid Alarm Routing\nGeotechnical shifts, heavy storms, vehicular collisions, or soil foundation erosion can jeopardize power transmission towers and retaining walls. WillowTilt operates on dual reporting cadences: under normal conditions, it broadcasts periodic static inclination packets; the moment a sudden tilt deflection exceeds user-defined threshold limits, it immediately bypasses sleep cycles and transmits a priority emergency uplink.\n\n### Harsh Environment IP67 Enclosure & Multi-Year Power\nHoused in an impact-resistant, UV-stabilized IP67 waterproof enclosure with rugged aluminum mounting flanges, WillowTilt is built to survive harsh outdoor weather and seismic shocks. Drawing minimal microamp-level quiescent current, its internal industrial battery delivers up to 8 years of autonomous field operation.",
+      "detailBlocks": [
+        {
+          "id": "tilt-measurement",
+          "icon": "activity",
+          "kicker": "ANGULAR ACCURACY",
+          "title": "0.01° Resolution Dual/Triple-Axis Inclinometry",
+          "body": "High-stability MEMS accelerometer core calculates pitch and roll angles with temperature compensation to eliminate thermal drift.",
+          "items": [
+            "0.01° angular resolution",
+            "±0.05° absolute accuracy",
+            "Programmable low-pass vibration filtering"
+          ]
+        },
+        {
+          "id": "shm-alarms",
+          "icon": "shield",
+          "kicker": "EARLY WARNING",
+          "title": "Threshold Excursion & Collision Alarms",
+          "body": "Triggers immediate emergency uplink transmissions upon structural displacement, pole tilt, or vehicle collision events.",
+          "items": [
+            "Instant tilt deviation interrupt",
+            "Utility pole & transmission tower safety",
+            "Historical inclination drift tracking"
+          ]
+        },
+        {
+          "id": "enclosure-rigidity",
+          "icon": "mount",
+          "kicker": "MECHANICAL DESIGN",
+          "title": "IP67 Waterproof & Impact-Resistant Casing",
+          "body": "Heavy-duty outdoor enclosure with galvanized mounting bracket mounts securely onto steel poles, concrete pylons, and bridge abutments.",
+          "items": [
+            "IP67 sealed against rain, ice and dust",
+            "-40°C to +85°C outdoor operating range",
+            "Universal pole/wall bracket included"
+          ]
+        },
+        {
+          "id": "power-budget",
+          "icon": "battery",
+          "kicker": "LONG-LIFE POWER",
+          "title": "Up to 8-Year Autonomous Battery Design",
+          "body": "Low-power firmware architecture ensures multi-year field deployment without requiring external cables or solar panel maintenance.",
+          "items": [
+            "Up to 8 years field lifespan",
+            "Long-range LoRaWAN radio coverage (up to 15 km)",
+            "Plug-and-play ChirpStack and TTN decoders"
+          ]
+        }
+      ],
+      "aiFAQ": [
+        {
+          "question": "How does WillowTilt filter out wind vibrations from real structural tilt?",
+          "answer": "WillowTilt incorporates digital low-pass filtering and statistical averaging inside its onboard microcontroller. Transient high-frequency vibrations caused by wind or passing traffic are smoothed out, ensuring that only genuine structural ground movement or sustained pole lean triggers an alert."
+        },
+        {
+          "question": "What infrastructure can WillowTilt monitor?",
+          "answer": "It is widely deployed on electrical utility poles, high-voltage transmission towers, telecommunication monopoles, highway bridge abutments, retaining walls, scaffolding, and open-pit mining slopes."
+        },
+        {
+          "question": "How quickly does the sensor send an alert if a pole is hit by a vehicle?",
+          "answer": "The sensor's hardware interrupt instantly detects impact acceleration or angular displacement exceeding the preset threshold, triggering an immediate Class A priority uplink within seconds."
+        }
+      ]
     },
     {
       "id": "willowtemp",
@@ -1867,7 +2909,7 @@
       "slug": "willowtemp",
       "category": "environment",
       "image": "assets/product-cutouts/willowtemp.webp",
-      "shortDescription": "Accurately measures temperature and humidity in outdoor environments with real-time remote monitoring.",
+      "shortDescription": "High-accuracy LoRaWAN temperature and humidity sensor for cold chain logistics, pharmaceutical warehouses, cleanrooms, and HACCP compliance. Long-life IP67 enclosure.",
       "chips": [
         "LoRaWAN 868/915",
         "15 km",
@@ -1938,7 +2980,7 @@
         "tr": {
           "type": "LoRaWAN Sıcaklık ve Nem Sensörü",
           "title": "LoRaWAN Sıcaklık ve Nem Sensörü",
-          "description": "WS-O-X-AI-TH-1, ağır dış ortam koşullarına dayanıklı, kullanıma hazır bir sıcaklık ve nem sensörüdür. LoRaWAN teknolojisiyle dış ortam sıcaklık ve nem verilerini iletir. 10.000 mAh pil ile 10 yıla kadar çalışabilir; LoRaWAN destekleyen tüm ağ geçitleriyle uyumludur.",
+          "description": "WillowTemp (WS-O-X-AI-TH-1), soğuk zincir lojistiği, ilaç depoları, aşı saklama merkezleri, gıda işleme tesisleri ve HACCP uyumluluğu için geliştirilmiş yüksek hassasiyetli endüstriyel LoRaWAN sıcaklık ve nem sensörüdür.\n\n### Hassas Dijital Sensör Mimarisi\nFabrika kalibrasyonlu İsviçre menşeili dijital sensör çipi ile donatılan WillowTemp, -40°C ila +85°C aralığında ±0,2°C sıcaklık ve %0 ila %100 RH aralığında ±%2 bağıl nem hassasiyeti sunar. Aşı saklama dolapları (-80°C) veya endüstriyel fırınlar (+200°C) gibi ekstrem uygulamalar için opsiyonel harici paslanmaz çelik PT100/PT1000 problu modeli mevcuttur.\n\n### Soğuk Zincir ve HACCP / GxP Uyumluluğu\nİlaç ve gıda sektöründe yasal denetimler için sürekli sıcaklık kaydı zorunludur. WillowTemp, sıcaklık belirlenen alt veya üst limitlerin dışına çıktığında bekleme periyodunu atlayarak anında öncelikli LoRaWAN alarm paketi fırlatır; böylece ürünler bozulmadan önce müdahale edilmesini sağlar.\n\n### IP67 Yoğuşma Dayanımı ve 10 Yıllık Pil Ömrü\nSoğuk hava depolarındaki yoğun yoğuşma, don ve basınçlı yıkamalara karşı IP67 sızdırmaz gövdeye ve nefes alabilir PTFE koruma membranına sahiptir. 1,5 μA ultra düşük bekleme akımı ile 10 yıla varan bakım gerektirmeyen pil ömrü sunar.",
           "applications": [
             {
               "icon": "building",
@@ -1965,11 +3007,76 @@
               "label": "Seralar"
             }
           ],
-          "shortDescription": "Dış ortamda sıcaklık ve nemi hassas biçimde ölçen, gerçek zamanlı uzaktan izleme sunan LoRaWAN sensörü."
+          "shortDescription": "Soğuk zincir, aşı dolapları, ilaç depoları ve HACCP uyumluluğu için yüksek hassasiyetli endüstriyel LoRaWAN sıcaklık ve nem sensörü.",
+          "detailBlocks": [
+            {
+              "id": "precision-sensor",
+              "icon": "thermo",
+              "kicker": "KALİBRE HASSASİYET",
+              "title": "Yüksek Doğruluklu Dijital Sensör Çipi",
+              "body": "Uzun vadeli kararlılığa sahip dijital sensör, sıcaklığı ±0,2°C, bağıl nemi ±%2 hassasiyetle ölçer.",
+              "items": [
+                "-40°C ila +85°C standart ölçüm aralığı",
+                "Opsiyonel -80°C / +200°C harici PT100 probu",
+                "NIST izlenebilir kalibrasyon desteği"
+              ]
+            },
+            {
+              "id": "cold-chain-alerts",
+              "icon": "activity",
+              "kicker": "YASAL UYUMLULUK",
+              "title": "HACCP ve GDP Uyumlu Sıcaklık İhlal Alarmları",
+              "body": "Manuel kağıt kayıt ihtiyacını bitirir; eşik değer aşımında anlık alarm ileterek bozulmaları önler.",
+              "items": [
+                "HACCP ve GDP standartlarına tam uyum",
+                "Anlık sıcaklık sapması öncelikli alarmı",
+                "Bulut üzerinde otomatik denetim raporları"
+              ]
+            },
+            {
+              "id": "enclosure-protection",
+              "icon": "shield",
+              "kicker": "SAHA DAYANIMI",
+              "title": "IP67 Yoğuşma ve Su Geçirmez Kasa",
+              "body": "Yoğuşmalı soğuk hava depolarında su damlalarının devreye ulaşmasını engelleyen PTFE membranlı gövde.",
+              "items": [
+                "IP67 koruma ve dona karşı dayanıklılık",
+                "Nefes alabilir buhar geçirgen filtre",
+                "Mıknatıslı veya vidalı kolay montaj"
+              ]
+            },
+            {
+              "id": "battery-autonomy",
+              "icon": "battery",
+              "kicker": "PİL YÖNETİMİ",
+              "title": "10 Yıla Varan Sahada Kesintisiz Güç",
+              "body": "Mikroamper bekleme akımı ve yüksek kapasiteli lityum pili ile yıllarca pil değişimi gerektirmez.",
+              "items": [
+                "10 yıla varan pil ömrü",
+                "Frigofirik araç ve depolarda güçlü LoRa menzili",
+                "ChirpStack ve TTN hazır entegrasyonu"
+              ]
+            }
+          ],
+          "aiFAQ": [
+            {
+              "question": "WillowTemp -80°C aşı ve medikal derin dondurucular için uygun mudur?",
+              "answer": "Evet. -80°C derin dondurucu ve kriyojenik tanklar için teflon kaplı harici paslanmaz çelik PT100 problu varyantımız kullanılır. Verici ünite dolap dışında kalırken, ince prob kablosu kapak contasından dondurucu içine uzatılır."
+            },
+            {
+              "question": "HACCP ve soğuk zincir denetimlerine nasıl yardımcı olur?",
+              "answer": "WillowTemp, manuel kayıt tutma ihtiyacını tamamen ortadan kaldırır. Ölçülen sıcaklık ve nem verilerini zaman damgasıyla LoRaWAN üzerinden bulut platformunuza aktarır; soğutucu arızalandığında saniyeler içinde SMS/e-posta alarmı üretir."
+            },
+            {
+              "question": "Sensör nemli soğuk hava depolarında yoğuşmadan zarar görür mü?",
+              "answer": "Hayır. Cihaz IP67 sızdırmaz kasaya ve mikro gözenekli PTFE membran filtreye sahiptir. Bu filtre nem buharının sensöre ulaşmasını sağlarken sıvı su damlacıklarını ve tozu dışarıda tutar."
+            }
+          ]
         },
         "de": {
           "title": "LoRaWAN-Temperatur- und Feuchtesensor",
-          "shortDescription": "LoRaWAN-Sensor für präzise Temperatur- und Feuchtemessung im Außenbereich mit Remote-Monitoring."
+          "shortDescription": "Hochpräziser LoRaWAN-Temperatur- und Feuchtesensor für Kühlketten, Pharmalager, Reinräume und HACCP-Konformität mit langer Batterielaufzeit.",
+          "description": "Der WillowTemp (WS-O-X-AI-TH-1) ist ein industrieller LoRaWAN-Temperatur- und Luftfeuchtigkeitssensor für Kühlkettenlogistik, Pharmalager, Lebensmittelverarbeitung (HACCP) und Reinräume.\n\n### Präzise Schweizer Sensortechnik\nMit einem werkskalibrierten Sensorelement bietet WillowTemp eine Messgenauigkeit von ±0,2°C (-40°C bis +85°C) und ±2 % rF (0 bis 100 % rF). Für kryogene Anwendungen (-80°C Impfstoff-Tiefkühlschränke) oder Hochtemperaturbereiche (+200°C) ist eine externe PT100/PT1000-Edelstahlsonde erhältlich.\n\n### HACCP- und GDP-Konformität mit Sofortalarm\nZur Einhaltung von GDP- und HACCP-Standards alarmiert WillowTemp sofort bei Schwellenwertüberschreitungen. Das drahtlose System ersetzt fehleranfällige manuelle Listen durch lückenlose, manipulationssichere digitale Protokolle.\n\n### IP67-Kondensationsschutz und 10 Jahre Autonomie\nDas IP67-Gehäuse mit atmungsaktiver PTFE-Membran schützt die Elektronik vor Betauung in Kühlhäusern und hält Reinigungszyklen stand. Mit 1,5 μA Ruhestrom arbeitet der Sensor bis zu 10 Jahre wartungsfrei."
         },
         "fr": {
           "title": "Capteur LoRaWAN de température et d’humidité",
@@ -2017,6 +3124,71 @@
             "en": "https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/datasheets/willowtemp/quickstart-en.pdf"
           }
         }
+      ],
+      "description": "The WillowTemp (WS-O-X-AI-TH-1) is an industrial-grade LoRaWAN temperature and humidity monitoring transmitter engineered for cold chain integrity, pharmaceutical warehousing, food processing HACCP compliance, and cleanroom surveillance.\n\n### Precision Digital Sensor Architecture\nFeaturing a factory-calibrated Swiss digital sensing element, WillowTemp delivers high-precision temperature measurements (±0.2°C accuracy across -40°C to +85°C) and relative humidity monitoring (±2% RH across 0% to 100% RH). For cryogenic and ultra-low temperature applications such as -80°C bio-freezers or industrial ovens up to +200°C, an optional external PT100/PT1000 RTD stainless steel probe with a Teflon/silicone cable is available.\n\n### Cold Chain Compliance & Threshold Alarms (HACCP / GxP)\nMaintaining continuous thermal records is mandatory for Good Distribution Practice (GDP), pharmaceutical validation, and food safety. WillowTemp provides real-time threshold excursion alerting: when temperatures drift outside predefined upper or lower bounds, the device instantly transmits an urgent priority LoRaWAN packet, enabling immediate corrective action before inventory spoilage occurs.\n\n### IP67 Housing & Ultra-Long Battery Life\nBuilt into an IP67 dustproof and waterproof enclosure, WillowTemp is immune to condensation in refrigerated trucks, washdown procedures, and damp cellars. Powered by an internal industrial Li-SOCl2 battery with a 1.5 μA quiescent current draw, the device delivers up to 10 years of autonomous operation under standard periodic transmission cadences.",
+      "detailBlocks": [
+        {
+          "id": "precision-sensor",
+          "icon": "thermo",
+          "kicker": "CALIBRATED ACCURACY",
+          "title": "High-Accuracy Swiss Digital Sensing Element",
+          "body": "Factory-calibrated digital sensor achieves ±0.2°C temperature and ±2% RH humidity accuracy with exceptional long-term drift stability.",
+          "items": [
+            "-40°C to +85°C standard measurement range",
+            "Optional external PT100/PT1000 probe (-80°C to +200°C)",
+            "NIST-traceable calibration support"
+          ]
+        },
+        {
+          "id": "cold-chain-alerts",
+          "icon": "activity",
+          "kicker": "REGULATORY COMPLIANCE",
+          "title": "HACCP & GxP Cold Chain Excursion Alarms",
+          "body": "Provides automated thermal logging and immediate threshold excursion alarms to safeguard perishable pharmaceuticals and food stocks.",
+          "items": [
+            "GDP / HACCP / GxP compliance ready",
+            "Instant high/low temperature excursion uplink",
+            "Automated compliance audit reports via cloud"
+          ]
+        },
+        {
+          "id": "enclosure-protection",
+          "icon": "shield",
+          "kicker": "ENVIRONMENTAL RESILIENCE",
+          "title": "IP67 Condensation & Washdown Proof",
+          "body": "Sealed enclosure with breathable PTFE membrane protects electronics from heavy frost, condensation, and sanitizing washdown spray.",
+          "items": [
+            "IP67 waterproof and frost-resistant",
+            "PTFE vapor-permeable membrane vent",
+            "Magnetic or wall-mount bracket kit"
+          ]
+        },
+        {
+          "id": "battery-autonomy",
+          "icon": "battery",
+          "kicker": "LOW-POWER DESIGN",
+          "title": "Up to 10-Year Autonomous Field Autonomy",
+          "body": "Ultra-low power sleep states combined with high-capacity lithium chemistry provide years of dependable, maintenance-free temperature tracking.",
+          "items": [
+            "Up to 10-year battery lifespan",
+            "Long-range LoRaWAN indoor and trailer penetration",
+            "ChirpStack, TTN & AWS IoT payload decoders"
+          ]
+        }
+      ],
+      "aiFAQ": [
+        {
+          "question": "Is WillowTemp suitable for ultra-low temperature medical freezers (-80°C)?",
+          "answer": "Yes. For -80°C cryogenic storage and vaccine freezers, WillowTemp is supplied with an external Teflon-jacketed stainless steel PT100 probe. The main transmitter sits outside the freezer, while the thin probe cable easily passes through cabinet door gaskets."
+        },
+        {
+          "question": "How does the sensor help with HACCP or GDP compliance?",
+          "answer": "WillowTemp eliminates manual paper temperature logging by streaming timestamped temperature and humidity readings over LoRaWAN directly into your cloud dashboard. In case of cooling failure, automated SMS/email alerts are triggered instantly."
+        },
+        {
+          "question": "Can WillowTemp monitor humidity inside damp food storage cellars?",
+          "answer": "Yes. The internal sensor is protected by an IP67 waterproof enclosure and a microporous PTFE filter membrane that allows humidity vapor to enter while keeping liquid water droplets and dust away from the sensor circuitry."
+        }
       ]
     },
     {
@@ -2025,7 +3197,7 @@
       "slug": "willowmod",
       "category": "industrial",
       "image": "assets/product-cutouts/modbus-bridge.webp",
-      "shortDescription": "Reads/writes to user-defined Modbus registers and creates a wireless Modbus RTU pass-through bridge over LoRaWAN.",
+      "shortDescription": "Industrial wireless RS485 Modbus RTU to LoRaWAN bridge. Connects PLCs, energy analyzers, flow meters, and generators to cloud platforms with configurable register polling.",
       "chips": [
         "LoRaWAN 868/915",
         "15 km",
@@ -2106,7 +3278,7 @@
         "tr": {
           "type": "IP67 Endüstriyel LoRaWAN Modbus Sensörü",
           "title": "IP67 Endüstriyel LoRaWAN Modbus Sensörü",
-          "description": "Tanımlanabilir Modbus register'larını okur/yazar ve LoRaWAN üzerinden kablosuz Modbus RTU geçiş köprüsü oluşturur. Endüstriyel ekipmanların kablosuz uzaktan izlenmesi için uygundur.",
+          "description": "WillowMod, mevcut endüstriyel makineleri, enerji analizörlerini, PLC'leri ve saha kontrolörlerini kablosuz IoT altyapısına bağlamak için tasarlanmış endüstriyel bir RS485 Modbus RTU - LoRaWAN haberleşme köprüsüdür.\n\n### RS485 Modbus RTU - LoRaWAN Kablosuz Dönüştürücü\nModbus RTU Master modunda çalışan WillowMod; enerji sayaçları, invertörler, debimetreler, motor sürücüleri (VFD) ve proses sensörleri gibi slave cihazları 2 telli RS485 hattı üzerinden periyodik olarak sorgular. Okuduğu register verilerini optimize edilmiş kompakt binary paketlere dönüştürerek LoRaWAN üzerinden bulut platformlarına aktarır.\n\n### Esnek Register Haritalama ve Veri Tipleri\nSlave adresleri, register başlangıç noktaları, function code (01, 02, 03, 04) ve veri formatları (16-bit int, 32-bit float, Big/Little Endian) kolayca yapılandırılabilir. Hatalı CRC, timeout veya geçersiz cevap durumlarını ayrıştırarak güvenilir telemetri sağlar.\n\n### İki Yönlü Kontrol ve Endüstriyel İzolasyon\nYalnızca veri okumakla kalmaz; LoRaWAN downlink mesajları aracılığıyla uzaktan Modbus register'larına yazma (motor başlat/durdur, set değeri değiştirme) imkanı sunar. RS485 hattındaki galvanik izolasyon ve aşırı gerilim koruması sayesinde fabrika içi parazitlerden etkilenmez.",
           "applications": [
             {
               "icon": "factory",
@@ -2137,11 +3309,76 @@
               "label": "Gaz ve su sayacı okuma"
             }
           ],
-          "shortDescription": "Modbus register'larını okuyup LoRaWAN üzerinden kablosuz Modbus RTU köprüsü oluşturan endüstriyel sensör."
+          "shortDescription": "Endüstriyel kablosuz RS485 Modbus RTU - LoRaWAN köprüsü. PLC, enerji analizörü, debimetre ve jeneratörleri kablosuz ağa bağlar; register okuma ve eşik takibi sunar.",
+          "detailBlocks": [
+            {
+              "id": "modbus-polling",
+              "icon": "radio",
+              "kicker": "RS485 ARAYÜZÜ",
+              "title": "Yapılandırılabilir Modbus RTU Register Okuma",
+              "body": "RS485 hattı üzerindeki birden fazla köle (slave) cihazı standart Modbus RTU protokolüyle sorgular ve verileri LoRaWAN paketine dönüştürür.",
+              "items": [
+                "16 adede kadar Modbus slave cihaz desteği",
+                "1200 ila 115200 bps ayarlanabilir baud rate",
+                "Holding ve Input register okuma desteği"
+              ]
+            },
+            {
+              "id": "telemetry-mapping",
+              "icon": "activity",
+              "kicker": "VERİ ENTEGRASYONU",
+              "title": "Dinamik Register - LoRaWAN Eşleme",
+              "body": "PLC, enerji analizörü, debimetre ve jeneratörleri PLC yazılımını değiştirmeden kablosuz bulut paneline bağlar.",
+              "items": [
+                "Elektrik sayacı (kWh, Akım, Gerilim) telemetrisi",
+                "Jeneratör ve soğutma grubu durum takibi",
+                "Kablo çekmeden kablosuz fabrika modernizasyonu"
+              ]
+            },
+            {
+              "id": "industrial-hardware",
+              "icon": "mount",
+              "kicker": "MEKANİK TASARIM",
+              "title": "DIN-Ray ve IP66 Pano Montajı",
+              "body": "Elektrik kontrol panoları için DIN-ray montaj aparatı ve aşırı gerilim korumalı (ESD/Surge) RS485 portları.",
+              "items": [
+                "Standart DIN-ray raya geçmeli montaj",
+                "Aşırı gerilim ve parazit korumalı seri hat",
+                "Geniş DC besleme aralığı: 9V ila 36V DC"
+              ]
+            },
+            {
+              "id": "power-budget",
+              "icon": "battery",
+              "kicker": "GÜÇ YÖNETİMİ",
+              "title": "Harici Besleme ve Elektrik Kesintisi Alarmı",
+              "body": "24V pano beslemesiyle sürekli çalışır; opsiyonel dahili batarya ile elektrik kesintilerinde anında uyarı iletir.",
+              "items": [
+                "24V DC endüstriyel pano beslemesi",
+                "Şebeke kesintisi anlık alarm uplink'i",
+                "ChirpStack ve TTN hazır entegrasyonu"
+              ]
+            }
+          ],
+          "aiFAQ": [
+            {
+              "question": "WillowMod kaç adet Modbus cihazını sorgulayabilir?",
+              "answer": "WillowMod, RS485 hattı üzerinde 16 adede kadar Modbus RTU cihazını adresleyebilir ve her cihazdan seçilen register değerlerini periyodik olarak okuyup LoRaWAN üzerinden iletir."
+            },
+            {
+              "question": "Enerji analizörleri ve invertörler için uygun mudur?",
+              "answer": "Evet. Elektrik sayaçları, güneş enerjisi invertörleri, debimetreler ve jeneratörleri kablo çekmeden uzaktan izlemek için en yaygın kullanılan endüstriyel LoRaWAN köprümüzdür."
+            },
+            {
+              "question": "Panonun elektriği kesilirse ne olur?",
+              "answer": "Opsiyonel yedek bataryalı model, şebeke gerilimi kesildiği anda 'Enerji Kesildi' alarm paketi göndererek teknik ekibi elektrik kesintisinden anında haberdar eder."
+            }
+          ]
         },
         "de": {
           "title": "IP67 industrieller LoRaWAN-Modbus-Sensor",
-          "shortDescription": "Industrieller Sensor, der Modbus-Register ausliest und Modbus RTU drahtlos über LoRaWAN verfügbar macht."
+          "shortDescription": "Drahtlose RS485 Modbus RTU zu LoRaWAN Schnittstelle für SPS, Energiezähler und Industrieanlagen. Große Reichweite und einfache Integration.",
+          "description": "Die WillowMod (WS-O-X-AI-MB-1) ist eine industrielle drahtlose Modbus-RTU-zu-LoRaWAN-Brücke zur Fernauslesung von SPS, Energiezählern, Durchflussmessern und Generatoren über RS485.\n\n### Konfigurierbare Modbus-RTU-Registerauslesung\nWillowMod adressiert bis zu 16 Slave-Geräte am RS485-Bus und liest Holding- und Input-Register mit flexiblen Baudraten (1200 bis 115200 bps) aus.\n\n### Schnelle Nachrüstung ohne Kabelverlegung\nStatt teurer Steuerleitungen über Fabrikgelände hinweg sendet WillowMod Energiedaten (kWh, Strom, Spannung) und Maschinenstatus drahtlos an zentrale SCADA- und IoT-Plattformen.\n\n### Hutschienenmontage und 24V-Industrieversorgung\nDas kompakte DIN-Schienen-Gehäuse mit überspannungsgeschütztem RS485-Port passt in jeden Schaltschrank und wird mit 9–36 V DC versorgt."
         },
         "fr": {
           "title": "Capteur Modbus industriel LoRaWAN IP67",
@@ -2189,6 +3426,71 @@
             "en": "https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/datasheets/willowmod/quickstart-en.pdf"
           }
         }
+      ],
+      "description": "WillowMod is an industrial RS485 Modbus RTU to LoRaWAN communication bridge engineered to bring legacy industrial machinery, energy meters, PLCs, and field controllers into modern wireless IoT networks.\n\n### RS485 Modbus RTU to LoRaWAN Wireless Bridge\nOperating as a Modbus RTU Master, WillowMod polls slave devices (such as energy analyzers, solar inverters, flow meters, variable frequency drives, and temperature controllers) over a standard 2-wire RS485 bus. It reads holding registers, input registers, and coil states, packs them into bandwidth-optimized binary payloads, and transmits them over long-range LoRaWAN.\n\n### Flexible Register Mapping & Polling Rules\nUsers can configure slave IDs, register addresses, function codes (01, 02, 03, 04), data types (16-bit, 32-bit integer, IEEE 754 float), byte/word order (Big-Endian, Little-Endian), and polling intervals. WillowMod intelligently handles timeouts, CRC verification, and communication exceptions without stalling.\n\n### Bi-Directional Downlink Control\nIn addition to telemetry uplinks, WillowMod supports LoRaWAN Class C (or Class A receive windows) to write downlink commands back to Modbus slave registers, enabling remote motor start/stop, setpoint adjustment, and valve actuation.\n\n### Industrial Grade Reliability\nHoused in an IP67 enclosure with galvanic isolation and transient surge protection on the RS485 interface, WillowMod is engineered for high electrical noise environments, substation monitoring, and solar farm telemetry.",
+      "detailBlocks": [
+        {
+          "id": "modbus-polling",
+          "icon": "radio",
+          "kicker": "RS485 INTERFACE",
+          "title": "Configurable Modbus RTU Register Polling",
+          "body": "Polls multiple slave devices over an RS485 bus using standard Modbus RTU protocol, collecting registers and packing them into compact LoRaWAN payloads.",
+          "items": [
+            "Supports up to 16 Modbus RTU slave devices",
+            "Baud rates from 1200 to 115200 bps",
+            "Configurable Holding & Input register polling"
+          ]
+        },
+        {
+          "id": "telemetry-mapping",
+          "icon": "activity",
+          "kicker": "DATA INTEGRATION",
+          "title": "Dynamic Register to LoRaWAN Mapping",
+          "body": "Maps energy analyzers, flow meters, PLCs, and generator controllers directly into wireless telemetry dashboards without modifying PLC code.",
+          "items": [
+            "Energy meter (kWh, Voltage, Current) telemetry",
+            "Generator and chiller status monitoring",
+            "Zero-cable wireless plant modernization"
+          ]
+        },
+        {
+          "id": "industrial-hardware",
+          "icon": "mount",
+          "kicker": "MECHANICAL DESIGN",
+          "title": "DIN-Rail and IP66 Wall Mount Options",
+          "body": "Engineered for electrical control cabinets and outdoor harsh environments with surge-protected RS485 transceiver ports.",
+          "items": [
+            "Standard DIN-rail snap-on mounting",
+            "Surge and ESD protected serial lines",
+            "Wide DC power input: 9V to 36V DC"
+          ]
+        },
+        {
+          "id": "power-budget",
+          "icon": "battery",
+          "kicker": "FLEXIBLE POWER",
+          "title": "Line Powered or Long-Life Battery Operation",
+          "body": "Operates from external 24V DC cabinet power or optional internal backup battery for uninterrupted communication during mains power failure.",
+          "items": [
+            "Continuous 24V industrial cabinet power",
+            "Mains failure power loss alarm uplink",
+            "ChirpStack, TTN and AWS IoT decoders included"
+          ]
+        }
+      ],
+      "aiFAQ": [
+        {
+          "question": "How many Modbus slave devices can WillowMod poll?",
+          "answer": "WillowMod supports up to 16 Modbus RTU slave devices connected across its RS485 bus, reading configured Holding, Input, or Coil registers at user-defined polling intervals."
+        },
+        {
+          "question": "Can WillowMod monitor power meters and solar inverters?",
+          "answer": "Yes. It is widely used to wirelessly read energy meters (kWh, active power, voltage, current), solar inverters, flow meters, and generator controllers, forwarding telemetry to cloud dashboards without costly cable trenching."
+        },
+        {
+          "question": "What happens if the main industrial power fails?",
+          "answer": "If equipped with the optional backup battery, WillowMod immediately transmits a 'Mains Power Loss' alarm uplink over LoRaWAN, notifying maintenance engineers of power outages before communication is interrupted."
+        }
       ]
     },
     {
@@ -2197,7 +3499,7 @@
       "slug": "willowmos",
       "category": "environment",
       "image": "assets/product-cutouts/soil-temperature-moisture-sensor.webp",
-      "shortDescription": "Measures soil temperature and soil moisture. Also measures indoor air quality. Data transmitted over LoRaWAN.",
+      "shortDescription": "Industrial LoRaWAN soil moisture and temperature sensor for smart agriculture, greenhouses, and precision irrigation. IP68 probe with multi-year battery life.",
       "chips": [
         "LoRaWAN 868/915",
         "15 km",
@@ -2292,7 +3594,7 @@
         "tr": {
           "type": "Dış Ortam LoRaWAN Toprak Nemi Sensörü",
           "title": "Dış Ortam LoRaWAN Toprak Nemi Sensörü",
-          "description": "Toprak sıcaklığını ve toprak nemini ölçer. Veriler LoRaWAN üzerinden iletilir; akıllı tarım, seralar ve bahçeler için uygundur.",
+          "description": "WillowMos (WS-O-X-AI-SM-1), hassas tarım, endüstriyel seralar, bağcılık, meyve bahçeleri ve belediye peyzaj sulama sistemleri için tasarlanmış yüksek hassasiyetli kablosuz LoRaWAN toprak nemi ve sıcaklık sensörüdür.\n\n### Hassas FDR Dielektrik Nem ve Sıcaklık Ölçümü\nFrekans Alanı Reflektometrisi (FDR) prensibiyle çalışan kapasitif dielektrik sensör, toprağın Hacimsel Su İçeriğini (VWC: %0 - %100) gübre ve tuzluluk değişimlerinden etkilenmeden yüksek doğrulukla ölçer. Klasik dirençli probların aksine elektrotlarında oksitlenme veya aşınma yaşanmaz. 316L paslanmaz çelik prob uçları kök derinliğindeki su doygunluğunu, entegre sıcaklık sensörü ise (-40°C ila +85°C) toprak sıcaklığını takip eder.\n\n### Hassas Sulama ve Su Tasarrufu\nKök bölgesindeki gerçek nem seviyesini merkezi sulama otomasyonuna kablosuz ileten WillowMos, aşırı veya yetersiz sulama riskini ortadan kaldırır. Çiftçiler ve ziraat mühendisleri sulama periyotlarını toprak doygunluk eşiklerine göre optimize ederek %40'a varan su ve elektrik enerjisi tasarrufu sağlar.\n\n### IP68 Yeraltı Dayanımı ve 10 Yıllık Pil Ömrü\nTamamen reçine dolgulu IP68 sızdırmaz prob yapısı, asidik gübreler, zirai kimyasallar ve kış don döngülerinde toprak altında yıllarca güvenle kalır. Toprak üstündeki IP67 LoRaWAN verici ünitesi 10 yıla varan pil ömrü ve açık alanda 15 km'ye varan çekim menzili sunar.",
           "applications": [
             {
               "icon": "sprout",
@@ -2315,11 +3617,76 @@
               "label": "Çiftlikler"
             }
           ],
-          "shortDescription": "Toprak nemi ve toprak sıcaklığını ölçen, akıllı tarım uygulamaları için ideal LoRaWAN sensörü."
+          "shortDescription": "Akıllı tarım, sera ve otomatik sulama sistemleri için toprağın hacimsel nemini ve sıcaklığını ölçen IP68 endüstriyel LoRaWAN toprak nem sensörü.",
+          "detailBlocks": [
+            {
+              "id": "fdr-dielectric",
+              "icon": "sprout",
+              "kicker": "ÖLÇÜM FİZİĞİ",
+              "title": "Kapasitif FDR Dielektrik Nem Algılama",
+              "body": "Yüksek frekanslı dielektrik ölçüm, farklı toprak türlerinde tuz ve gübreden etkilenmeden hacimsel su içeriğini belirler.",
+              "items": [
+                "%0 - %100 Hacimsel Su İçeriği (VWC)",
+                "Mineral topraklarda ±%2 hassasiyet",
+                "Gübre ve tuzluluk sapmalarına karşı korumalı"
+              ]
+            },
+            {
+              "id": "root-zone-climate",
+              "icon": "thermo",
+              "kicker": "KÖK BÖLGESİ",
+              "title": "Toprak Sıcaklığı Telemetrisi",
+              "body": "Tohum ekimi, don riski ve gübre emilim verimliliğini yönetmek için kök derinliğindeki sıcaklık profilini takip eder.",
+              "items": [
+                "-40°C ila +85°C geniş ölçüm aralığı",
+                "±0,3°C hassasiyetli dijital sıcaklık sensörü",
+                "Nem ve sıcaklığı tek pakette iletme"
+              ]
+            },
+            {
+              "id": "ip68-submersible",
+              "icon": "droplet",
+              "kicker": "SAHA DAYANIMI",
+              "title": "IP68 Reçine Dolgulu Gövde & 316L Çelik",
+              "body": "Asidik veya kireçli topraklarda korozyona uğramayan 316L paslanmaz çelik elektrotlar ve su geçirmez prob yapısı.",
+              "items": [
+                "Kalıcı yeraltı gömülme standardı",
+                "UV ve zirai ilaçlara dayanıklı kablo",
+                "Donma ve çözülme döngülerine tam dayanım"
+              ]
+            },
+            {
+              "id": "battery-autonomy",
+              "icon": "battery",
+              "kicker": "PİL PERFORMANSI",
+              "title": "10 Yıl Bakımsız Tarımsal Güç Mimarisi",
+              "body": "Dahili yüksek kapasiteli endüstriyel lityum pili ve mikroamper uyku moduyla 10 yıl boyunca kesintisiz telemetri sunar.",
+              "items": [
+                "10 yıla varan pil ömrü",
+                "Açık sahada 15 km çekim menzili",
+                "ChirpStack ve TTN hazır entegrasyonu"
+              ]
+            }
+          ],
+          "aiFAQ": [
+            {
+              "question": "FDR kapasitif ölçüm klasik dirençli problardan neden üstündür?",
+              "answer": "Dirençli problar elektrik akımı geçirerek çalıştığı için elektrotları kısa sürede korozyona uğrar ve gübreli sularda hatalı ölçüm yapar. WillowMos, toprağın dielektrik katsayısını ölçen FDR teknolojisiyle çalışır; tuz ve gübre değişimlerinden etkilenmeden yıllarca stabil kalır."
+            },
+            {
+              "question": "Prob kış aylarında toprak altında donmaya dayanabilir mi?",
+              "answer": "Evet. Sensör başlığı IP68 poliüretan reçine ile mühürlenmiştir ve -40°C ila +85°C aralığında çalışır. Donan toprak içinde çatlama veya su sızdırma yapmadan kalıcı olarak gömülü kalabilir."
+            },
+            {
+              "question": "Sensör probu toprağa ne kadar derinlikte gömülmelidir?",
+              "answer": "Montaj derinliği bitkinin kök yapısına bağlıdır. Çim ve sebzelerde 10–20 cm yeterliyken, bağ ve meyve ağaçlarında suyun süzülme profilini izlemek için genellikle 30 cm, 60 cm ve 90 cm derinliklere ayrı problar yerleştirilir."
+            }
+          ]
         },
         "de": {
           "title": "Outdoor-LoRaWAN-Bodenfeuchtesensor",
-          "shortDescription": "LoRaWAN-Sensor für Bodenfeuchte und Bodentemperatur in Landwirtschaft, Gewächshäusern und Gärten."
+          "shortDescription": "Industrieller LoRaWAN-Sensor für Bodenfeuchte und Temperatur für intelligente Landwirtschaft, Gewächshäuser und Bewässerungssteuerung. IP68-Sonde mit 10 Jahren Batterielaufzeit.",
+          "description": "Der WillowMos (WS-O-X-AI-SM-1) ist ein drahtloser LoRaWAN-Sensor für die Bodenüberwachung in der Präzisionslandwirtschaft, in kommerziellen Gewächshäusern, im Weinbau und bei kommunalen Bewässerungssystemen.\n\n### Kapazitive FDR-Bodenfeuchte- und Temperaturmessung\nMittels Frequency Domain Reflectometry (FDR) misst der WillowMos den volumetrischen Wassergehalt (VWC) von 0 bis 100 % ohne Drift durch Düngemittel oder Salinität. Drei Edelstahlnadeln (316L) erfassen die Feuchte in der Wurzelzone, während ein digitaler Temperatursensor die Bodentemperatur (-40°C bis +85°C) überwacht.\n\n### Präzise Bewässerung und Wassereinsparung\nDurch die kontinuierliche Übertragung von Feuchtewerten an Bewässerungssteuerungen und Farm-Management-Plattformen können Landwirte Überwässerung vermeiden und den Wasser- und Energieverbrauch um bis zu 40 % senken.\n\n### IP68-Unterwassersonde und 10 Jahre Batterielaufzeit\nDie Sonde ist vollständig vergossen (IP68) und dauerhaft erdverlegbar. Die überirdische IP67-Sendeeinheit mit LoRaWAN EU868 erreicht eine Batterielaufzeit von bis zu 10 Jahren und Reichweiten von bis zu 15 km im Freifeld."
         },
         "fr": {
           "title": "Capteur LoRaWAN extérieur d’humidité du sol",
@@ -2344,7 +3711,72 @@
       },
       "sortOrder": 100,
       "battery_life": "up to 10 years",
-      "communication_range": "up to 15 km"
+      "communication_range": "up to 15 km",
+      "description": "The WillowMos (WS-O-X-AI-SM-1) is a specialized LoRaWAN soil telemetry sensor engineered for precision agriculture, smart commercial greenhouses, municipal turf landscaping, and viticulture irrigation automation.\n\n### High-Precision FDR Soil Moisture & Thermal Sensing\nUtilizing Frequency Domain Reflectometry (FDR) capacitive dielectric measurement, WillowMos determines the Volumetric Water Content (VWC) of soil across a 0% to 100% range without suffering from salinity drift or electrode polarization common in resistive probes. Triple 316L medical-grade stainless steel needles probe root-zone moisture while an embedded digital thermal probe measures soil temperature (-40°C to +85°C).\n\n### Precision Irrigation & Water Conservation\nBy streaming real-time root-zone hydration metrics to central irrigation controllers and farm management dashboards, WillowMos eliminates over-watering and underwater stress. Agronomists can precisely schedule drip irrigation runs based on soil saturation thresholds, saving up to 40% in agricultural water and pumping energy costs.\n\n### Hermetic IP68 Submersible Design & 10-Year Field Life\nThe sensor probe is fully resin-potted and IP68 waterproof, capable of permanent underground burial in aggressive fertilizers, organic compost, and sub-zero freeze cycles. The above-ground IP67 LoRaWAN transceiver features UV-stabilized polymer and operates up to 10 years on an internal Li-SOCl2 battery pack under hourly measurement intervals.",
+      "detailBlocks": [
+        {
+          "id": "fdr-dielectric",
+          "icon": "sprout",
+          "kicker": "MEASUREMENT PHYSICS",
+          "title": "Capacitive FDR Dielectric Soil Moisture",
+          "body": "High-frequency dielectric measurement accurately determines volumetric soil moisture content without calibration degradation across varied soil types.",
+          "items": [
+            "0% to 100% Volumetric Water Content (VWC)",
+            "±2% accuracy across mineral soils",
+            "Salinity & fertilizer drift compensation"
+          ]
+        },
+        {
+          "id": "root-zone-climate",
+          "icon": "thermo",
+          "kicker": "THERMAL METRICS",
+          "title": "Root-Zone Soil Temperature Telemetry",
+          "body": "Monitors subterranean temperature trends to determine optimal planting windows, prevent frost damage, and guide fertilizer absorption efficiency.",
+          "items": [
+            "-40°C to +85°C measurement range",
+            "±0.3°C high-accuracy digital thermal probe",
+            "Dual-parameter payload transmission"
+          ]
+        },
+        {
+          "id": "ip68-submersible",
+          "icon": "droplet",
+          "kicker": "FIELD RESILIENCE",
+          "title": "IP68 Sealed Probe & 316L Stainless Steel",
+          "body": "Resin-encapsulated sensing head with anti-corrosive stainless steel electrodes designed for long-term underground burial in acidic or saline soils.",
+          "items": [
+            "Permanent underground burial rating",
+            "UV and pesticide resistant cable",
+            "Corrosion-proof 316L needle array"
+          ]
+        },
+        {
+          "id": "battery-autonomy",
+          "icon": "battery",
+          "kicker": "AUTONOMOUS POWER",
+          "title": "10-Year Agricultural Battery Architecture",
+          "body": "High-capacity industrial lithium power source combined with ultra-low microamp sleep current delivers a decade of continuous field monitoring.",
+          "items": [
+            "Up to 10 years battery life",
+            "Long-range LoRaWAN connectivity (up to 15 km)",
+            "Plug-and-play TTN & ChirpStack decoders"
+          ]
+        }
+      ],
+      "aiFAQ": [
+        {
+          "question": "How does FDR capacitive soil measurement differ from resistive probes?",
+          "answer": "Resistive probes rely on direct electrical conduction, which causes rapid electrode oxidation and gives false readings as soil fertilizer/salt levels fluctuate. WillowMos uses Frequency Domain Reflectometry (FDR) to measure the dielectric permittivity of soil, providing stable, long-term accuracy immune to fertilizer salts."
+        },
+        {
+          "question": "Can the sensor probe remain buried through freezing winters?",
+          "answer": "Yes. The sensing head is encapsulated in IP68 polyurethane resin and rated for temperatures from -40°C to +85°C, allowing it to remain permanently buried in frozen soil without cracking or water ingress."
+        },
+        {
+          "question": "How deep should the probe be installed?",
+          "answer": "The installation depth depends on crop root architecture. For shallow turf and vegetables, 10–20 cm is common; for vineyards, orchards, and nut trees, multiple sensors are often installed at 30 cm, 60 cm, and 90 cm to monitor water percolation across root depths."
+        }
+      ]
     },
     {
       "id": "willowpre",
@@ -2352,7 +3784,7 @@
       "slug": "willowpre",
       "category": "industrial",
       "image": "assets/product-cutouts/willowpre.webp",
-      "shortDescription": "Measures liquid pressure in pipes and tank systems. Suitable for harsh operating conditions.",
+      "shortDescription": "Industrial-grade LoRaWAN pressure sensor monitoring 0–1500 PSI liquid and gas pressure in pipes, hydraulic lines, and tanks with IP67 protection and up to 10-year battery life.",
       "chips": [
         "LoRaWAN 868/915",
         "15 km",
@@ -2447,7 +3879,7 @@
         "tr": {
           "type": "IP67 LoRaWAN Sıvı Basınç Sensörü",
           "title": "WillowPre",
-          "description": "Boru ve tank sistemlerindeki sıvı basıncını ölçer. Zorlu çalışma koşullarına uygundur; veriler LoRaWAN üzerinden uzaktan izlenir.",
+          "description": "WillowPre (WS-O-X-AI-PR-1), şehir su dağıtım şebekelerinde, endüstriyel boru hatlarında, pompa istasyonlarında ve depolama tanklarında sıvı ve gaz basıncını uzaktan ve kablosuz izlemek için tasarlanmış IP67 korumalı bir LoRaWAN basınç sensörüdür.\n\n### Paslanmaz Çelik Piezorezistif Basınç Hücresi\n316L paslanmaz çelik izole diyaframa sahip piezorezistif sensör çekirdeği ile 0–1500 PSI (0–100 bar) arasındaki sıvı ve gaz basıncını %0,5 FS yüksek doğrulukla ölçer. Korozyona dayanıklı yapısı sayesinde su, hidrolik yağ ve aşındırıcı kimyasallarla temas halinde dahi güvenle çalışır; boru hatlarında meydana gelen ani koç darbelerine (water hammer) karşı 2 kat aşırı basınç dayanımı sunar.\n\n### Boru Patlağı Tespiti ve Hidrostatik Tank Seviye Ölçümü\nWillowPre sahada iki temel işlevi yerine getirir:\n1. **Şebeke ve Boru Hattı İzleme:** Şehir içi su şebekelerinde (DMA) basınç düşüşlerini anlık izleyerek boru patlaklarını ve kaçakları erkenden tespit eder.\n2. **Hidrostatik Tank Seviye Hesabı:** Açık veya kapalı sıvı tanklarının alt noktasına monte edilerek sıvı sütun basıncını (P = ρ·g·h formülüyle) ölçer ve tanktaki sıvı miktarını üstten sensör takılamayan dar alanlarda dahi kusursuz raporlar.\n\n### Anlık Eşik Alarmı ve Otonom Tetikleme\nCihaz saatlik periyodik raporlamanın yanı sıra basıncı sürekli örnekler. Hat basıncı belirlenen kritik alt eşiğin altına indiğinde (patlak/arıza) veya üst sınır aşıldığında (aşırı basınç riski) periyodu beklemeden derhal acil durum LoRaWAN uplink paketi gönderir.\n\n### 10 Yıl Pil Ömrü ve Uzun Menzilli Kablosuz Bağlantı\nDahili 19.000 mAh Li-SOCl2 endüstriyel pili ve IP67 sızdırmaz gövdesi ile elektriğin bulunmadığı açık sahalarda, vana odalarında ve kuyu yapılarında 10 yıla kadar harici güç ihtiyacı olmadan kesintisiz çalışır.",
           "applications": [
             {
               "icon": "activity",
@@ -2478,12 +3910,137 @@
               "label": "Sulama sistemleri"
             }
           ],
-          "shortDescription": "Boru ve tank sistemlerindeki sıvı basıncını ölçen, zorlu koşullara uygun LoRaWAN sensörü."
+          "shortDescription": "Boru hatları, hidroforlar ve tanklarda 0–1500 PSI sıvı ve gaz basıncını kablosuz izlemek için IP67 endüstriyel LoRaWAN basınç sensörü. 10 yıla varan pil ömrü.",
+          "detailBlocks": [
+            {
+              "id": "sensing-element",
+              "icon": "gauge",
+              "kicker": "BASINÇ DİYAFRAMI",
+              "title": "316L Paslanmaz Çelik Piezorezistif Hücre",
+              "body": "%0,5 FS yüksek ölçüm doğruluğu ve 2x aşırı basınç koruması ile boru hatlarındaki ani koç darbelerine, titreşime ve aşındırıcı akışkanlara karşı tam dirençlidir.",
+              "items": [
+                "0–1500 PSI (0–100 bar) geniş ölçüm aralığı",
+                "316L paslanmaz çelik akışkan temas yüzeyi",
+                "Standart G1/4 veya NPT1/4 dişli proses bağlantısı"
+              ]
+            },
+            {
+              "id": "pipeline-monitoring",
+              "icon": "pipeline",
+              "kicker": "UYGULAMA ALANLARI",
+              "title": "Boru Patlak Tespiti ve Hidrostatik Seviye",
+              "body": "Şebeke kaçak tespiti, DMA basınç yönetimi ve tank tabanından hidrostatik sıvı yüksekliği ölçümü için optimize edilmiştir.",
+              "items": [
+                "Basınç düşüşünde anlık acil durum alarmı",
+                "Hidrostatik derinlik hesabı (P = ρ·g·h)",
+                "Hassas örnekleme ve düşük enerjiyle veri iletimi"
+              ]
+            },
+            {
+              "id": "lorawan-connectivity",
+              "icon": "radio",
+              "kicker": "AĞ ENTEGRASYONU",
+              "title": "LoRaWAN 868/915 MHz Uzun Menzilli İletişim",
+              "body": "Hat basıncı (PSI/bar), ortam sıcaklığı (°C) ve batarya voltajını tek pakette iletir. ChirpStack, TTN ve AWS IoT Core ile tam uyumludur.",
+              "items": [
+                "Açık sahada 15 km'ye varan menzil",
+                "ChirpStack ve TTN için hazır JavaScript decoder",
+                "Konfigüre edilebilir yüksek/alçak basınç eşik kuralları"
+              ]
+            },
+            {
+              "id": "battery-endurance",
+              "icon": "battery",
+              "kicker": "GÜÇ MİMARİSİ",
+              "title": "19.000 mAh Endüstriyel Li-SOCl2 Pil Paketi",
+              "body": "Vana odalarında, pompa istasyonlarında ve elektrik hattı olmayan uzak saha noktalarında 10 yıla varan bakım gerektirmeyen çalışma sağlar.",
+              "items": [
+                "IP67 dış ortam ve su sıçrama koruması",
+                "10 yıla varan bağımsız batarya ömrü",
+                "-40°C ile +85°C ekstrem sıcaklık dayanımı"
+              ]
+            }
+          ],
+          "aiFAQ": [
+            {
+              "question": "WillowPre basınç sensörü hangi ölçüm aralıklarını destekler?",
+              "answer": "WillowPre standart olarak 0–1500 PSI (yaklaşık 0–100 bar) aralığını destekler. Özel projeler için 0–150 PSI (su şebekesi) veya 0–3000 PSI (yüksek basınçlı hidrolik) gibi özel kalibrasyonlu modeller de sunulabilmektedir."
+            },
+            {
+              "question": "Ani basınç düşüşlerini ve boru patlaklarını hemen haber verebilir mi?",
+              "answer": "Evet. Cihaz içindeki akıllı firmware, basıncı düzenli olarak örnekler. Basınç belirlediğiniz alt veya üst eşiği aştığında, periyodik gönderim saatini beklemeden anında LoRaWAN üzerinden acil durum alarmı gönderir."
+            },
+            {
+              "question": "Boru veya tank bağlantısı nasıl yapılır?",
+              "answer": "WillowPre'nin alt kısmında endüstri standardı paslanmaz çelik G1/4 (veya NPT 1/4) erkek dişli rekor bulunur. Boru hattındaki manometre çıkışına veya vana noktasına doğrudan vidalanarak monte edilir."
+            }
+          ]
         },
         "de": {
           "title": "WillowPre",
           "type": "IP67-LoRaWAN-Flüssigkeitsdrucksensor",
-          "shortDescription": "LoRaWAN-Sensor zur Messung von Flüssigkeitsdruck in Rohrleitungen und Tanks unter rauen Bedingungen."
+          "shortDescription": "LoRaWAN-Sensor zur Messung von Flüssigkeitsdruck in Rohrleitungen und Tanks unter rauen Bedingungen.",
+          "description": "Der WillowPre (WS-O-X-AI-PS-1) ist ein industrieller LoRaWAN-Flüssigkeits- und Gasdrucksensor für Rohrleitungen, Hydrauliksysteme und Druckbehälter von 0 bis 1500 PSI (100 bar).\n\n### Piezoresistive Druckmessung mit Edelstahlmembran\nWillowPre nutzt ein isoliertes piezoresistives Drucksensorelement mit lasergeschweißter 316L-Edelstahlmembran. Es misst Druck von Wasser, Hydrauliköl, Druckluft und Gasen hochpräzise (±0,5 % F.S.) und widersteht Druckstößen (Water Hammer).\n\n### Drahtlose Leckage- und Drucküberwachung\nSinkender Druck signalisiert Rohrbrüche oder Pumpenausfälle; Überdruck droht Leitungen zu beschädigen. WillowPre alarmiert sofort bei Grenzwertverletzungen über LoRaWAN an das Leitsystem.\n\n### IP67-Industriegehäuse und 10 Jahre Autonomie\nMit G1/4\" oder NPT-Gewinde lässt sich der Sensor direkt in Rohrleitungen schrauben. Die interne Li-SOCl2-Batterie gewährleistet bis zu 10 Jahre Betrieb.",
+          "detailBlocks": [
+            {
+              "id": "pressure-sensing",
+              "icon": "activity",
+              "kicker": "MESSPRINZIP",
+              "title": "Piezoresistive 316L-Edelstahl-Druckzelle",
+              "body": "Isolierte Edelstahlmembran misst Drücke bis 1500 PSI mit hoher Langzeitstabilität und Druckstoßfestigkeit.",
+              "items": [
+                "0 bis 1500 PSI (0–100 bar) Messbereich",
+                "±0,5 % F.S. Messgenauigkeit",
+                "Kompatibel mit Wasser, Öl und Gasen"
+              ]
+            },
+            {
+              "id": "pipe-mounting",
+              "icon": "mount",
+              "kicker": "INSTALLATION",
+              "title": "G1/4\" & 1/4\" NPT Industrie-Prozessanschluss",
+              "body": "Wird direkt in T-Stücke oder Druckmessstutzen von Rohrleitungen und Pumpenanlagen geschraubt.",
+              "items": [
+                "IP67 hermetisch dichtes Gehäuse",
+                "-40°C bis +85°C Medientemperatur",
+                "Integrierter Druckstoßdämpfer"
+              ]
+            },
+            {
+              "id": "telemetry",
+              "icon": "radio",
+              "kicker": "KONNEKTIVITÄT",
+              "title": "LoRaWAN-Drucktelemetrie & Sofortalarm",
+              "body": "Überträgt Druck- und Temperaturwerte; bei Druckabfall oder Überdruck erfolgt sofortige Alarmierung.",
+              "items": [
+                "Sofortiger Druckabfall-Alarm (Leckage)",
+                "ChirpStack, TTN & AWS IoT Decoder",
+                "AES-128 verschlüsselte Telemetrie"
+              ]
+            },
+            {
+              "id": "battery-autonomy",
+              "icon": "battery",
+              "kicker": "BATTERIELEBENSDAUER",
+              "title": "Bis zu 10 Jahre wartungsfreier Feldeinsatz",
+              "body": "Hocheffiziente Energiearchitektur für langlebigen Feldeinsatz ohne externe Stromversorgung.",
+              "items": [
+                "19.000 mAh Li-SOCl2 Batterie",
+                "Mikroampere-Ruhestrom",
+                "Batterieüberwachung bei jedem Uplink"
+              ]
+            }
+          ],
+          "aiFAQ": [
+            {
+              "question": "Welche Medien kann WillowPre messen?",
+              "answer": "Dank der 316L-Edelstahlmembran ist der Sensor für Trinkwasser, Abwasser, Hydrauliköle, Heizöl, Druckluft und inerte Gase geeignet."
+            },
+            {
+              "question": "Wie reagiert der Sensor auf plötzliche Druckabfälle?",
+              "answer": "Der interne Prozessor vergleicht jede Messung mit einstellbaren Schwellenwerten und sendet bei plötzlichem Druckverlust sofort ein Notfall-Datenpaket über LoRaWAN."
+            }
+          ]
         },
         "fr": {
           "title": "WillowPre",
@@ -2513,7 +4070,72 @@
       },
       "sortOrder": 110,
       "battery_life": "up to 10 years",
-      "communication_range": "up to 15 km"
+      "communication_range": "up to 15 km",
+      "description": "WillowPre (WS-O-X-AI-PR-1) is a rugged, battery-powered LoRaWAN liquid and gas pressure transmitter engineered for municipal water networks, hydraulic power units, industrial piping, and hydrostatic tank level monitoring.\n\n### Piezoresistive Stainless Steel Sensing Diaphragm\nEquipped with an isolated 316L stainless steel piezoresistive pressure cell, WillowPre directly monitors fluid and gas pressure across 0–1500 PSI (0–100 bar) with high precision (±0.5% FS). It withstands corrosive water, hydraulic oil, non-combustible gases, and intense pressure spikes (water hammer) without sensor fatigue or calibration loss.\n\n### Pipeline Burst & Hydrostatic Tank Level Monitoring\nWillowPre serves dual operational roles:\n1. **Pipeline Monitoring:** Continuously tracking line pressure in municipal and industrial distribution loops to instantly detect pipe bursts, leaks, or cavitation.\n2. **Hydrostatic Tank Level:** By calculating head pressure at the bottom of closed or open storage tanks (P = ρ·g·h), it accurately monitors liquid depth without requiring top-down acoustic line-of-sight.\n\n### Autonomous Threshold Alerts & Telemetry\nIn addition to scheduled periodic telemetry, WillowPre continuously samples line pressure. If pressure drops below a low-limit (burst) or spikes above a safe ceiling (overpressure), the sensor immediately wakes up and transmits an urgent Class A alarm packet over LoRaWAN.\n\n### Long-Range LoRaWAN & Multi-Year Power Design\nFeaturing an IP67 weatherproof enclosure and an internal 19,000 mAh Li-SOCl2 industrial battery, WillowPre operates reliably across -40°C to +85°C environments for up to 10 years without requiring external power wiring.",
+      "detailBlocks": [
+        {
+          "id": "sensing-element",
+          "icon": "gauge",
+          "kicker": "PRESSURE CELL",
+          "title": "316L Stainless Steel Piezoresistive Core",
+          "body": "High-precision isolated diaphragm measures fluid pressure with ±0.5% FS accuracy and 2x overpressure safety margin, resisting water hammer spikes and abrasive fluids.",
+          "items": [
+            "0–1500 PSI (0–100 bar) measurement range",
+            "316L stainless steel wetted materials",
+            "Standard G1/4 or NPT1/4 threaded process connection"
+          ]
+        },
+        {
+          "id": "pipeline-monitoring",
+          "icon": "pipeline",
+          "kicker": "APPLICATION MODES",
+          "title": "Pipeline Leak Detection & Hydrostatic Level",
+          "body": "Ideal for district metering areas (DMA) in water networks to identify pressure drops and compute hydrostatic liquid column height in sealed tanks.",
+          "items": [
+            "Instant threshold alarm on line burst or drop",
+            "Hydrostatic liquid depth calculation (P = ρ·g·h)",
+            "Sub-second sampling with low power transmission"
+          ]
+        },
+        {
+          "id": "lorawan-connectivity",
+          "icon": "radio",
+          "kicker": "NETWORK INTEGRATION",
+          "title": "LoRaWAN 868/915 MHz Telemetry",
+          "body": "Transmits gauge pressure (PSI/bar), internal temperature (°C), and battery voltage. Compatible with all LoRaWAN certified gateways and cloud platforms.",
+          "items": [
+            "Up to 15 km communication range",
+            "ChirpStack & TTN payload decoders included",
+            "Configurable alert thresholds and reporting schedules"
+          ]
+        },
+        {
+          "id": "battery-endurance",
+          "icon": "battery",
+          "kicker": "ENERGY ARCHITECTURE",
+          "title": "19,000 mAh Industrial Li-SOCl2 Battery",
+          "body": "Engineered for zero-maintenance operation in remote valve chambers, pump stations, and outdoor tank farms for up to 10 years.",
+          "items": [
+            "IP67 submersible splash protection",
+            "Up to 10-year autonomous battery lifespan",
+            "Operates in -40°C to +85°C temperature extremes"
+          ]
+        }
+      ],
+      "aiFAQ": [
+        {
+          "question": "What pressure ranges are available for WillowPre?",
+          "answer": "WillowPre standard models cover 0–1500 PSI (approx. 0–100 bar). Custom ranges (such as 0–150 PSI for residential water networks or 0–3000 PSI for high-pressure hydraulics) are available upon request."
+        },
+        {
+          "question": "Can WillowPre detect water hammer and sudden pressure drops immediately?",
+          "answer": "Yes. The firmware includes threshold monitoring: even if the regular reporting interval is set to 1 hour, a sudden pressure spike or drop crossing your configured high/low thresholds immediately triggers an emergency uplink."
+        },
+        {
+          "question": "How is WillowPre mounted onto a pipe or tank?",
+          "answer": "WillowPre features a standard stainless steel G1/4 (or NPT 1/4) male threaded connection that threads directly into standard pipe taps, valve ports, or tank bottom fittings."
+        }
+      ]
     },
     {
       "id": "willowane",
@@ -2521,7 +4143,7 @@
       "slug": "willowane",
       "category": "environment",
       "image": "assets/product-cutouts/willowane.webp",
-      "shortDescription": "Measures wind speed in outdoor environments. Designed for harsh conditions.",
+      "shortDescription": "Solid-state LoRaWAN ultrasonic anemometer measuring wind speed and direction with zero moving parts. Ideal for solar farms, cranes, ports, and weather stations.",
       "chips": [
         "LoRaWAN 868/915",
         "15 km",
@@ -2598,7 +4220,7 @@
         "tr": {
           "type": "Dış Ortam LoRaWAN Anemometre",
           "title": "Dış Ortam LoRaWAN Anemometre",
-          "description": "Dış ortamda rüzgar hızını ölçer. Zorlu saha koşulları için tasarlanmıştır; veriler LoRaWAN üzerinden uzaktan izleme platformlarına iletilir.",
+          "description": "WillowAne (WS-O-X-AI-WN-1), güneş enerjisi (GES) takip sistemleri, şantiye kule vinçleri, liman lojistiği ve meteoroloji istasyonları için tasarlanmış, hareketli mekanik parça içermeyen endüstriyel LoRaWAN ultrasonik anemometredir.\n\n### Katı Hal Ultrasonik Uçuş Zamanı (ToF) Rüzgar Ölçümü\nGeleneksel pervaneli ve kepçeli anemometreler mekanik rulman aşınması, sürtünme ve kışın donma sorunlarıyla karşılaşır. WillowAne, karşılıklı yerleştirilmiş dört adet ultrasonik akustik transdüser yardımıyla ses dalgalarının uçuş süresi farkını (Time-of-Flight) mikrosaniyeler mertebesinde hesaplar. Rüzgar hızını (0 ila 60 m/s) ve yönünü (0° ila 360°) sıfır mekanik aşınma ve bakım gerektirmeksizin ölçer.\n\n### Güneş Santrali (GES) ve Vinç Güvenlik Otomasyonu\nŞiddetli rüzgar ve fırtına darbeleri tek eksenli solar takip sistemlerinde panellerin kırılmasına veya kule vinçlerin devrilmesine yol açabilir. WillowAne anlık rüzgar hızını ve pik fırtına darbelerini sürekli izler. Kritik eşik aşıldığında derhal LoRaWAN alarmı göndererek solar panellerin yatay koruma (stow) moduna geçmesini sağlar veya şantiyede vinç operasyonunu durdurur.\n\n### IP66 Deniz Sınıfı Korozyon Dayanımı ve Kablosuz İletişim\nTuzlu deniz kıyısı havasına, yoğun fırtınaya ve dondurucu soğuklara karşı IP66 korumalı eloksallı alüminyum ve UV dayanımlı gövdeye sahiptir. Uzun menzilli LoRaWAN bağlantısı ile açık alanda 15 km mesafeden meteorolojik verileri kesintisiz iletir.",
           "applications": [
             {
               "icon": "cloud",
@@ -2625,11 +4247,76 @@
               "label": "Çiftlikler"
             }
           ],
-          "shortDescription": "Dış ortamda rüzgâr hızını ölçen, zorlu saha koşulları için tasarlanmış LoRaWAN anemometre."
+          "shortDescription": "Güneş santralleri, kule vinçler ve meteoroloji istasyonları için hareketli parça içermeyen katı hal LoRaWAN ultrasonik anemometre (rüzgâr hızı ve yönü).",
+          "detailBlocks": [
+            {
+              "id": "ultrasonic-tof",
+              "icon": "activity",
+              "kicker": "ÖLÇÜM FİZİĞİ",
+              "title": "Katı Hal Akustik ToF Rüzgâr Analizi",
+              "body": "Dört transdüserli ultrasonik akustik ölçüm mimarisi ile mekanik aşınma ve donma olmadan rüzgar hızını ve yönünü hesaplar.",
+              "items": [
+                "0 ila 60 m/s rüzgar hızı aralığı (±0,3 m/s hassasiyet)",
+                "0° ila 360° rüzgar yönü (±3° hassasiyet)",
+                "Hareketli parça içermeyen ömürlük kalibrasyon"
+              ]
+            },
+            {
+              "id": "solar-crane-safety",
+              "icon": "shield",
+              "kicker": "GÜVENLİK OTOMASYONU",
+              "title": "Fırtına Erken Uyarısı ve Güvenli Konum (Stow)",
+              "body": "Pik rüzgar darbelerini saniyelik takip ederek güneş santralleri ve kule vinçleri devrilme ve kırılmalara karşı korur.",
+              "items": [
+                "Anlık pik fırtına eşik alarmı",
+                "Güneş panelleri için otomatik stow tetikleme",
+                "Liman ve şantiye İSG mevzuatına uyum"
+              ]
+            },
+            {
+              "id": "marine-enclosure",
+              "icon": "mount",
+              "kicker": "SAHA DAYANIMI",
+              "title": "IP66 Korozyona Dayanıklı Deniz Sınıfı Kasa",
+              "body": "Tuzlu sahil havası, şiddetli yağmur ve dona karşı eloksallı alüminyum ve UV korumalı dış gövde.",
+              "items": [
+                "IP66 tam hava koşullarına dayanıklılık",
+                "-40°C ila +75°C çalışma sıcaklığı",
+                "Standart boru ve direk montaj flanşı"
+              ]
+            },
+            {
+              "id": "wireless-telemetry",
+              "icon": "radio",
+              "kicker": "KABLOSUZ TELEMETRİ",
+              "title": "Uzun Menzilli LoRaWAN Meteoroloji Ağı",
+              "body": "Açık arazide 15 km mesafeye kadar rüzgar hızı, yönü ve pik darbe verilerini kablosuz olarak sunucuya taşır.",
+              "items": [
+                "15 km'ye varan açık alan LoRaWAN menzili",
+                "Düşük güç tüketimli mimari",
+                "ChirpStack ve TTN hazır entegrasyonu"
+              ]
+            }
+          ],
+          "aiFAQ": [
+            {
+              "question": "Ultrasonik anemometre mekanik kepçeli anemometrelerden neden daha iyidir?",
+              "answer": "Mekanik anemometrelerde dönen rulmanlar zamanla tozlanır, aşınır ve kış aylarında buzlanarak kilitlenir. Ultrasonik anemometrede hareketli parça yoktur; yağlama veya parça değişimi gerektirmez ve yıllarca fabrika kalibrasyonunu korur."
+            },
+            {
+              "question": "Güneş enerjisi santrallerinde (GES) solar takipçileri nasıl korur?",
+              "answer": "Rüzgar hızı önceden belirlenen güvenlik sınırını aştığında, WillowAne saniyeler içinde öncelikli alarm iletir. SCADA sisteminiz bu komutu alarak güneş panellerini rüzgar direncini en aza indiren yatay konuma (stow) alır."
+            },
+            {
+              "question": "Sensör maksimum ne kadar rüzgar hızını ölçebilir?",
+              "answer": "WillowAne, 60 m/s'ye (yaklaşık 216 km/s) kadar olan şiddetli fırtına ve kasırga seviyesindeki rüzgarları kesintisiz ölçebilir."
+            }
+          ]
         },
         "de": {
           "title": "Outdoor-LoRaWAN-Anemometer",
-          "shortDescription": "LoRaWAN-Anemometer zur Windgeschwindigkeitsmessung in rauen Außenumgebungen."
+          "shortDescription": "Verschleißfreies LoRaWAN-Ultraschall-Anemometer ohne bewegliche Teile zur Messung von Windgeschwindigkeit und -richtung für Solarparks und Kräne (IP66).",
+          "description": "Der WillowAne (WS-O-X-AI-WN-1) ist ein industrielles Festkörper-Ultraschall-Anemometer mit LoRaWAN für Solarparks (Tracker-Schutz), Turmdrehkrane, Häfen und Wetterstationen.\n\n### Festkörper-Ultraschallmessung (Time-of-Flight)\nOhne mechanische Schalensterne oder Windfahnen misst WillowAne über vier Ultraschallwandler Windgeschwindigkeit (0 bis 60 m/s) und Windrichtung (0° bis 360°). Die Festkörpertechnologie eliminiert Verschleiß, Schmiermittelbedarf und Vereisungsprobleme im Winter.\n\n### Automatische Notfallabschaltung für Kräne und Tracker\nBei starken Sturmböen sendet WillowAne sofortige Prioritätsalarme, um Solartracker in die schützende Horizontalposition (Stow-Position) zu fahren oder Kräne rechtzeitig stillzulegen.\n\n### IP66-Schutz und weitreichende LoRaWAN-Funktechnik\nDas seewasserbeständige Gehäuse aus eloxiertem Aluminium trotzt stärksten Unwettern. Mit LoRaWAN EU868 werden die Messwerte zuverlässig über bis zu 15 km Entfernung übertragen."
         },
         "fr": {
           "title": "Anémomètre LoRaWAN extérieur",
@@ -2654,7 +4341,430 @@
       },
       "sortOrder": 120,
       "battery_life": "up to 10 years",
-      "communication_range": "up to 15 km"
+      "communication_range": "up to 15 km",
+      "description": "The WillowAne (WS-O-X-AI-WN-1) is a solid-state industrial LoRaWAN ultrasonic anemometer engineered for solar photovoltaic tracking farms, construction tower crane safety, maritime port logistics, and remote meteorological stations.\n\n### Solid-State Ultrasonic Time-of-Flight (ToF) Wind Sensing\nTraditional mechanical cup anemometers and wind vanes suffer from bearing wear, friction degradation, and ice jamming during winter freezes. WillowAne utilizes four ultrasonic acoustic transducers positioned in an orthogonal array to calculate wind velocity (0 to 60 m/s) and wind direction (0° to 360°) via high-frequency Time-of-Flight sound phase differences. With zero moving mechanical parts, it delivers lifelong measurement accuracy without physical wear.\n\n### Solar Farm Tracking & Crane Safety Automation\nExcessive wind gusts pose severe structural risks to single-axis solar trackers and high-rise construction cranes. WillowAne continuously monitors average wind velocity and peak gust speed. When gusts exceed critical safety thresholds, it immediately broadcasts high-priority LoRaWAN packets, instructing solar tracker controllers to stow panels into protective horizontal positions or sounding crane evacuation alarms.\n\n### IP66 Weatherproof Construction & Autonomous Operation\nConstructed from marine-grade anodized aluminum and UV-stabilized polymer, WillowAne withstands coastal salt spray, heavy torrential rain, and gale-force storms. Designed for low power consumption, it integrates seamlessly into solar-powered weather stations or operates autonomously with internal high-capacity batteries.",
+      "detailBlocks": [
+        {
+          "id": "ultrasonic-tof",
+          "icon": "activity",
+          "kicker": "MEASUREMENT PHYSICS",
+          "title": "Solid-State Acoustic Time-of-Flight Sensing",
+          "body": "Four orthogonal ultrasonic transducers calculate wind vector speed and direction without mechanical cups or bearings.",
+          "items": [
+            "0 to 60 m/s wind speed range (±0.3 m/s accuracy)",
+            "0° to 360° wind direction (±3° accuracy)",
+            "Zero moving mechanical parts to wear or seize"
+          ]
+        },
+        {
+          "id": "solar-crane-safety",
+          "icon": "shield",
+          "kicker": "CRITICAL AUTOMATION",
+          "title": "High-Wind Gust Protection & Tracker Stow",
+          "body": "Monitors peak wind gust dynamics and triggers immediate threshold alarms to protect solar trackers and tower cranes from gale damage.",
+          "items": [
+            "Instant peak gust threshold alarm",
+            "Automatic solar panel stow trigger",
+            "Coastal port and crane safety compliance"
+          ]
+        },
+        {
+          "id": "marine-enclosure",
+          "icon": "mount",
+          "kicker": "ENVIRONMENTAL HARDENING",
+          "title": "IP66 Marine-Grade Corrosion-Proof Casing",
+          "body": "Engineered to endure severe weather, freezing sleet, UV exposure, and saline coastal air across all seasons.",
+          "items": [
+            "IP66 weatherproof sealing",
+            "-40°C to +75°C operating range",
+            "Standard mast/pipe mounting flange"
+          ]
+        },
+        {
+          "id": "wireless-telemetry",
+          "icon": "radio",
+          "kicker": "CONNECTIVITY",
+          "title": "Long-Range LoRaWAN Meteorological Telemetry",
+          "body": "Transmits comprehensive wind vectors, temperature, and gust metrics over long distances to cloud platforms.",
+          "items": [
+            "Long-range LoRaWAN connectivity (up to 15 km)",
+            "Low power consumption architecture",
+            "ChirpStack, TTN and AWS IoT decoders included"
+          ]
+        }
+      ],
+      "aiFAQ": [
+        {
+          "question": "Why is an ultrasonic anemometer superior to traditional cup-and-vane anemometers?",
+          "answer": "Mechanical anemometers have bearings that wear down, gather dirt, and freeze solid during ice storms. Ultrasonic anemometers have zero moving parts, require no periodic lubrication or bearing replacement, and maintain calibration accuracy for years."
+        },
+        {
+          "question": "Can WillowAne trigger emergency stow on solar trackers?",
+          "answer": "Yes. When peak wind speeds cross your safety threshold, WillowAne transmits an immediate alarm uplink. Your SCADA or cloud system receives this packet and triggers the tracker motor controllers to rotate panels into a flat stow position."
+        },
+        {
+          "question": "What is the maximum wind speed WillowAne can measure?",
+          "answer": "WillowAne measures wind velocities up to 60 m/s (approx. 216 km/h or 134 mph), covering severe tropical storms, gales, and hurricane-force winds."
+        }
+      ]
+    },
+    {
+      "id": "product-1792414012667",
+      "slug": "lumiosafe",
+      "title": "LumioSafe",
+      "name": "LumioSafe",
+      "category": "tracking",
+      "type": "LoRaWAN® Voice & Light Alert Beacon",
+      "featured": false,
+      "visible": true,
+      "sortOrder": 130,
+      "sort_order": 130,
+      "image": "products/lumiosafe/lumiosafe-white.webp",
+      "images": [
+        "products/lumiosafe/lumiosafe-white.webp",
+        "products/lumiosafe/lumiosafe-red.webp",
+        "products/lumiosafe/lumiosafe-green.webp",
+        "products/lumiosafe/lumiosafe-blue.webp",
+        "products/lumiosafe/lumiosafe-yellow.webp"
+      ],
+      "shortDescription": "LoRaWAN Class C alert beacon combining natural human voice announcements, RGB light effects, and acoustic sirens in one compact battery-powered enclosure.",
+      "description": "The LumioSafe (WS-O-X-AI-LS-1) is an industrial-grade LoRaWAN Class C alert beacon engineered for instant audio-visual emergency notification in logistics depots, cold chain warehouses, manufacturing plants, educational campuses, and commercial facilities.\n\n### Natural Human Voice Generation & Zero Audio Streaming\nUnlike conventional siren strobes that merely signal that an unspecified problem has occurred, LumioSafe speaks what happened in natural human speech. Up to 49 pre-recorded, studio-quality voice fragments—including alarm classifications, spoken vehicle and zone numbers (0 to 9999), and situational status codes—are stored in local device flash. The application server transmits a tiny 6-to-11 byte downlink message, and LumioSafe instantly constructs and articulates the complete phrase (e.g., \"Attention! Vehicle seventeen. Compressor stopped.\"). Because voice data is decoded at the device edge, it requires zero bandwidth-intensive audio streaming.\n\n### 360° Omnidirectional RGB Illumination & Acoustic Sirens\nA central optical window houses four high-lumen RGB LEDs projecting light through a perforated four-petal grille, dispersing vibrant colors and strobe patterns across warehouse halls and high-noise production bays. With 7 distinct colors and 7 lighting effects (including steady, slow strobe, rapid pulse, and dual-color alternating), coupled with 11 acoustic melodies, a sweeping evacuation siren, and customizable buzzer tones, LumioSafe cuts through ambient factory noise with unmistakable urgency.\n\n### LoRaWAN Class C Ultra-Low Latency & Supervised Hardware\nOperating in LoRaWAN Class C mode, LumioSafe continuously listens for incoming network downlinks, executing spoken alerts within 2 to 4 seconds of server transmission. Built for zero-maintenance unattended deployment, the device features an independent hardware watchdog, scheduled health uplinks reporting battery voltage and ambient temperature, and dual-fused Li-SOCl2 battery slots with ideal-diode OR-ing.",
+      "technicalSummary": "<p>LumioSafe is a LoRaWAN® Class C alert beacon for places where a message has to reach people directly. It combines a natural human voice, a bright RGB light and an audible signal in one compact, battery-powered housing that mounts on a ceiling or wall in minutes.</p><p>The voice lives on the device. Your application sends only a few bytes — which alarm, which vehicle or zone, which colour — and LumioSafe composes and speaks the full sentence. Because it stays in Class C, the announcement starts within seconds of the downlink, with no audio streaming, no cabling and no app to install.</p><p>Built to run unattended, it reports its battery, temperature and state in every uplink, announces its own start-up, network join and low battery, and is supervised by an independent hardware watchdog.</p>",
+      "useCases": "<p><strong>Depots, warehouses and plants (industry · cold chain):</strong> refrigerated-vehicle alarms read aloud by vehicle number — fuses, compressor, pressure, box temperature, lost connection — plus shift bells and machine alerts over the noise.</p><p><strong>Schools and campuses:</strong> earthquake, evacuation and shelter-in-place messages with a matching light, drill start and end, and the daily school bell.</p><p><strong>Offices and public buildings:</strong> fire and evacuation announcements, all-clear messages and routine chimes, with battery and state reported to facility teams.</p>",
+      "chips": [
+        "LoRaWAN® Class C",
+        "Voice, light & siren",
+        "Battery powered"
+      ],
+      "applications": [
+        {
+          "label": "Depots, warehouses & plants",
+          "icon": "factory",
+          "description": "Refrigerated-vehicle alarms read aloud by vehicle number, shift bells and machine alerts over the noise."
+        },
+        {
+          "label": "Schools & campuses",
+          "icon": "building",
+          "description": "Earthquake, evacuation and shelter-in-place messages with a matching light, drills and the daily school bell."
+        },
+        {
+          "label": "Offices & public buildings",
+          "icon": "building",
+          "description": "Fire and evacuation announcements, all-clear messages and routine chimes."
+        }
+      ],
+      "specifications": {
+        "protocol": "LoRaWAN® 1.0.3 · OTAA · Class C after join · ADR",
+        "region_support": "EU868 (863–870 MHz); other regions on request",
+        "wireless_module": "RAK3172-T · STM32WLE5CC, 32 MHz TCXO",
+        "network_servers": "Any LoRaWAN 1.0.3 network server (The Things Stack, ChirpStack)",
+        "voice": "49 fragments (Turkish set), numbers 0–9999, decoded on device",
+        "signals": "11 melodies, sweeping siren, custom beep 50 Hz–10 kHz",
+        "amplifier_and_speaker": "Class-D mono · 8 Ω · 4 volume levels for tones and speech",
+        "light": "4× RGB LED behind the grille · 7 colours · 7 effects",
+        "power": "2 battery slots, Li-SOCl₂ 3.6 V (e.g. ER34615, D-cell)",
+        "battery_protection": "Fuse per slot · ideal-diode OR-ing · 3.3 V buck-boost",
+        "battery_monitoring": "Switched, calibrated voltage measurement · % in every uplink",
+        "battery_life": "Depends on uplink interval and announcements",
+        "enclosure": "White plastic, perforated four-petal grille · snap-fit plate for ceiling or wall",
+        "configuration": "Downlink commands on FPort 2: light, melody, speech, volume, indicators, calibration",
+        "supervision": "External hardware watchdog · heartbeat · status uplink",
+        "announcement_latency": "Typically 2–4 s from downlink to speech",
+        "features": [
+          "Class C — always listening, alerts in seconds",
+          "49 natural voice phrases, numbers 0–9999",
+          "7 colours × 7 effects, whole-grille glow",
+          "11 tones plus siren: chimes, bells, evacuation, alarm",
+          "2 fused Li-SOCl₂ battery slots with ideal-diode OR-ing",
+          "Self-supervised: hardware watchdog and status uplinks"
+        ],
+        "reported_parameters": [
+          {
+            "label": "Battery voltage and level"
+          },
+          {
+            "label": "Temperature"
+          },
+          {
+            "label": "Network and device state"
+          }
+        ]
+      },
+      "detailBlocks": [
+        {
+          "id": "overview",
+          "type": "cards",
+          "icon": "check",
+          "kicker": "Overview",
+          "title": "A siren says something is wrong. LumioSafe says what.",
+          "body": "<p>LumioSafe is a LoRaWAN® Class C alert beacon for places where a message has to reach people directly. It combines a natural human voice, a bright RGB light and an audible signal in one compact, battery-powered housing that mounts on a ceiling or wall in minutes.</p><p>The voice lives on the device. Your application sends only a few bytes — which alarm, which vehicle or zone, which colour — and LumioSafe composes and speaks the full sentence. Because it stays in Class C, the announcement starts within seconds of the downlink, with no audio streaming, no cabling and no app to install.</p><p>Built to run unattended, it reports its battery, temperature and state in every uplink, announces its own start-up, network join and low battery, and is supervised by an independent hardware watchdog.</p>",
+          "visible": true
+        },
+        {
+          "id": "voice",
+          "type": "cards",
+          "icon": "activity",
+          "kicker": "Voice",
+          "title": "Says exactly what happened.",
+          "body": "<p>49 natural voice fragments are stored on the device: system messages, alarm types and the building blocks of every number from 0 to 9999. Your server picks the pieces; LumioSafe reads them out as one sentence.</p>",
+          "items": [
+            "Vehicle, zone or room numbers spoken naturally",
+            "Pauses and chimes can be placed inside a sentence",
+            "Your own messages and languages, recorded in the same voice"
+          ],
+          "visible": true
+        },
+        {
+          "id": "light",
+          "type": "cards",
+          "icon": "star",
+          "kicker": "Light",
+          "title": "The whole grille lights up.",
+          "body": "<p>Four RGB LEDs in the centre window light up the whole housing: the window glows brightest and the colour shines through every hole across the face — visible from across a hall, not just from directly below.</p>",
+          "items": [
+            "Solid, slow and fast blink, strobe, heartbeat, two-colour and rainbow",
+            "Timed or permanent; returns to its standing colour after an announcement",
+            "One colour per alarm class, set over the air"
+          ],
+          "visible": true
+        },
+        {
+          "id": "integration",
+          "type": "cards",
+          "icon": "radio",
+          "kicker": "Integration",
+          "title": "One downlink. A complete announcement.",
+          "body": "<p>Light, chime and sentence travel together in a single short message. A webhook or rule on your network server builds it from any sensor event — Willow Software devices or third-party LoRaWAN sensors. Example: 11 bytes on FPort 2 (<code>08 01 03 F2 04 10 F0 00 11 11 23</code>) give a red strobe, a notification chime and “Attention! Vehicle seventeen. Compressor stopped.”</p>",
+          "items": [
+            "Typically 2–4 seconds from downlink to speech",
+            "Documented byte protocol and payload formatter included",
+            "Battery, temperature and state decoded from every uplink"
+          ],
+          "visible": true
+        },
+        {
+          "id": "reliability",
+          "type": "cards",
+          "icon": "shield",
+          "kicker": "Reliability",
+          "title": "Built to work when nobody is watching.",
+          "body": "<p>An alert device is only useful if it is ready. LumioSafe checks itself, reports itself and recovers by itself.</p>",
+          "items": [
+            "Independent hardware watchdog resets the device if firmware ever stalls",
+            "Calibrated battery reading in every uplink; spoken low-battery warning",
+            "Two fused battery slots combined through ideal diodes",
+            "Heartbeat blink and an acknowledge flash for every downlink"
+          ],
+          "visible": true
+        },
+        {
+          "id": "installation",
+          "type": "cards",
+          "icon": "mount",
+          "kicker": "Installation",
+          "title": "Mounts in minutes. No cables.",
+          "body": "<p>Fix the plate, snap the beacon on, and it joins the network by itself — announcing “Connected, system ready” when it is done.</p>",
+          "items": [
+            "Snap-fit plate for ceiling or wall",
+            "Battery powered: no mains, no audio wiring",
+            "OTAA join with spoken status during commissioning"
+          ],
+          "visible": true
+        }
+      ],
+      "aiFAQ": [
+        {
+          "question": "How fast does an announcement start?",
+          "answer": "Typically 2–4 seconds after your server sends the downlink. Most of that is radio airtime; a faster RX2 data rate (e.g. SF9) brings it under two seconds."
+        },
+        {
+          "question": "Which network servers does it work with?",
+          "answer": "Any LoRaWAN 1.0.3 network server, including The Things Stack and ChirpStack. We supply payload formatters for uplink decoding."
+        },
+        {
+          "question": "Can it say our own messages?",
+          "answer": "Yes. The phrase set is defined per project; we produce your messages in the same voice and build them into the firmware."
+        },
+        {
+          "question": "How long do the batteries last?",
+          "answer": "Class C keeps the receiver on so alerts arrive instantly, which dominates power use. Battery life depends on your uplink interval and the number of daily announcements — contact us for an estimate for your site."
+        }
+      ],
+      "localized": {
+        "tr": {
+          "title": "LumioSafe",
+          "type": "LoRaWAN® Sesli ve Işıklı Uyarı Cihazı",
+          "shortDescription": "Doğal insan sesiyle Türkçe anons, çok renkli RGB ışık ve acil durum sireni içeren endüstriyel LoRaWAN Class C akıllı uyarı ve anons cihazı.",
+          "description": "LumioSafe (WS-O-X-AI-LS-1), lojistik antrepoları, soğuk hava depoları, endüstriyel üretim tesisleri, okullar ve kurumsal binalar için geliştirilmiş kablosuz bir LoRaWAN Class C akıllı sesli ve ışıklı uyarı feneridir.\n\n### Doğal İnsan Sesiyle Anons ve Sıfır Ses Akışı (Edge Decoding)\nGeleneksel sirenler sadece belirsiz bir tehlike olduğunu belirtirken, LumioSafe ne olduğunu insan sesiyle net bir şekilde söyler: Cihazın dahili hafızasında alarm türleri, 0-9999 arası araç ve kapı numaraları ile durum mesajlarını içeren 49 adet stüdyo kalitesinde Türkçe ses parçası saklanır. Sunucunuz LoRaWAN üzerinden sadece 6-11 baytlık bir downlink gönderdiğinde, LumioSafe bu parçaları saniyeler içinde birleştirerek eksiksiz bir anons yapar (Örn: \"Dikkat! On yedi numaralı araç. Kompresör durdu.\"). Cihaz içi çözümleme sayesinde yüksek bant genişliği gerektiren ses akışı (streaming) ve internet altyapısına ihtiyaç kalmaz.\n\n### 360° Çok Renkli RGB Işıklandırma ve Siren Modları\nÖn ızgaranın arkasında yer alan 4 adet yüksek parlaklıklı RGB LED, 7 farklı renk ve 7 görsel ışık efekti (sürekli, yavaş flaş, hızlı stroboskop, iki renkli yanıp sönme vb.) ile tüm gövdeyi ışıl ışıl aydınlatır. 11 farklı ikaz melodisi ve güçlü tahliye sireni ile birleştiğinde en gürültülü fabrika ortamlarında dahi personelin dikkatini anında çeker.\n\n### LoRaWAN Class C ile Saniyeler İçinde İletim ve Donanım Güvenilirliği\nClass C modunda çalıştığı için sürekli dinlemede kalır; downlink gönderildikten sonra 2 ila 4 saniye içinde anons başlar. Bağımsız donanım watchdog'u, çift sigortalı pilleri ve her uplink'te pil/sıcaklık telemetrisi ile kritik tesislerde yıllarca kesintisiz ve bakımsız güvenlik sağlar.",
+          "technicalSummary": "<p>LumioSafe, bir mesajın doğrudan insanlara ulaşması gereken yerler için geliştirilmiş bir LoRaWAN® Class C uyarı cihazıdır. Doğal bir insan sesini, parlak bir RGB ışığı ve sesli sinyali tek bir kompakt, pille çalışan gövdede birleştirir; tavana veya duvara dakikalar içinde monte edilir.</p><p>Ses cihazın içinde saklıdır. Uygulamanız yalnızca birkaç bayt gönderir — hangi alarm, hangi araç ya da bölge, hangi renk — LumioSafe cümlenin tamamını kurup seslendirir. Class C modunda kaldığı için anons, downlink’ten birkaç saniye sonra başlar; ses akışı, kablolama ya da uygulama kurulumu gerekmez.</p><p>Gözetimsiz çalışmak üzere tasarlanmıştır: her uplink’te pil, sıcaklık ve durum bilgisini raporlar; açılışı, ağa katılımı ve düşük pil durumunu kendisi anons eder ve bağımsız bir donanım watchdog’u tarafından denetlenir.</p>",
+          "useCases": "<p><strong>Depolar, antrepolar ve tesisler (endüstri · soğuk zincir):</strong> frigorifik araç alarmları araç numarasıyla sesli okunur — sigorta, kompresör, basınç, kasa sıcaklığı, bağlantı kaybı — ayrıca gürültünün üzerinde vardiya zilleri ve makine uyarıları.</p><p><strong>Okullar ve kampüsler:</strong> uygun ışıkla birlikte deprem, tahliye ve yerinde korunma mesajları, tatbikat başlangıç ve bitişi ile günlük okul zili.</p><p><strong>Ofisler ve kamu binaları:</strong> yangın ve tahliye anonsları, tehlike geçti mesajları ve rutin zil sesleri; pil ve durum bilgisi tesis ekiplerine raporlanır.</p>",
+          "chips": [
+            "LoRaWAN® Class C",
+            "Ses, ışık ve siren",
+            "Pille çalışır"
+          ],
+          "applications": [
+            {
+              "label": "Depolar, antrepolar ve tesisler",
+              "icon": "factory",
+              "description": "Frigorifik araç alarmları araç numarasıyla sesli okunur; vardiya zilleri ve makine uyarıları gürültünün üzerinde duyulur."
+            },
+            {
+              "label": "Okullar ve kampüsler",
+              "icon": "building",
+              "description": "Uygun ışıkla deprem, tahliye ve yerinde korunma mesajları, tatbikatlar ve günlük okul zili."
+            },
+            {
+              "label": "Ofisler ve kamu binaları",
+              "icon": "building",
+              "description": "Yangın ve tahliye anonsları, tehlike geçti mesajları ve rutin zil sesleri."
+            }
+          ],
+          "specifications": {
+            "protocol": "LoRaWAN® 1.0.3 · OTAA · katılım sonrası Class C · ADR",
+            "region_support": "EU868 (863–870 MHz); diğer bölgeler talep üzerine",
+            "kablosuz_modül": "RAK3172-T · STM32WLE5CC, 32 MHz TCXO",
+            "ağ_sunucuları": "Tüm LoRaWAN 1.0.3 ağ sunucuları (The Things Stack, ChirpStack)",
+            "ses": "49 ses parçası (Türkçe set), 0–9999 arası sayılar, cihaz üzerinde çözülür",
+            "sinyaller": "11 melodi, yükselip alçalan siren, 50 Hz–10 kHz özel bip",
+            "amplifikatör_ve_hoparlör": "Class-D mono · 8 Ω · tonlar ve konuşma için 4 ses seviyesi",
+            "ışık": "Izgaranın arkasında 4× RGB LED · 7 renk · 7 efekt",
+            "power": "2 pil yuvası, Li-SOCl₂ 3,6 V (ör. ER34615, D-cell)",
+            "pil_koruması": "Her yuvada sigorta · ideal diyot OR’lama · 3,3 V buck-boost",
+            "pil_izleme": "Anahtarlamalı, kalibre gerilim ölçümü · her uplink’te % değeri",
+            "battery_life": "Uplink aralığına ve anons sayısına bağlıdır",
+            "enclosure": "Beyaz plastik, delikli dört yapraklı ızgara · tavan veya duvar için geçmeli montaj plakası",
+            "yapılandırma": "FPort 2 üzerinden downlink komutları: ışık, melodi, konuşma, ses seviyesi, göstergeler, kalibrasyon",
+            "denetim": "Harici donanım watchdog’u · heartbeat · durum uplink’i",
+            "anons_gecikmesi": "Downlink’ten konuşmaya genellikle 2–4 sn",
+            "features": [
+              "Class C — sürekli dinler, uyarılar saniyeler içinde",
+              "49 doğal ses ifadesi, 0–9999 arası sayılar",
+              "7 renk × 7 efekt, tüm ızgara boyunca parlama",
+              "11 ton ve siren: zil, çan, tahliye, alarm",
+              "Sigortalı 2 Li-SOCl₂ pil yuvası, ideal diyot OR’lama",
+              "Kendini denetler: donanım watchdog’u ve durum uplink’leri"
+            ],
+            "reported_parameters": [
+              {
+                "label": "Pil gerilimi ve seviyesi"
+              },
+              {
+                "label": "Sıcaklık"
+              },
+              {
+                "label": "Ağ ve cihaz durumu"
+              }
+            ]
+          },
+          "detailBlocks": [
+            {
+              "id": "overview",
+              "type": "cards",
+              "icon": "check",
+              "kicker": "Genel bakış",
+              "title": "Siren bir şeylerin yolunda gitmediğini söyler. LumioSafe neyin olduğunu söyler.",
+              "body": "<p>LumioSafe, bir mesajın doğrudan insanlara ulaşması gereken yerler için geliştirilmiş bir LoRaWAN® Class C uyarı cihazıdır. Doğal bir insan sesini, parlak bir RGB ışığı ve sesli sinyali tek bir kompakt, pille çalışan gövdede birleştirir; tavana veya duvara dakikalar içinde monte edilir.</p><p>Ses cihazın içinde saklıdır. Uygulamanız yalnızca birkaç bayt gönderir — hangi alarm, hangi araç ya da bölge, hangi renk — LumioSafe cümlenin tamamını kurup seslendirir. Class C modunda kaldığı için anons, downlink’ten birkaç saniye sonra başlar; ses akışı, kablolama ya da uygulama kurulumu gerekmez.</p><p>Gözetimsiz çalışmak üzere tasarlanmıştır: her uplink’te pil, sıcaklık ve durum bilgisini raporlar; açılışı, ağa katılımı ve düşük pil durumunu kendisi anons eder ve bağımsız bir donanım watchdog’u tarafından denetlenir.</p>",
+              "visible": true
+            },
+            {
+              "id": "voice",
+              "type": "cards",
+              "icon": "activity",
+              "kicker": "Ses",
+              "title": "Tam olarak ne olduğunu söyler.",
+              "body": "<p>Cihazda 49 doğal ses parçası saklanır: sistem mesajları, alarm türleri ve 0’dan 9999’a kadar her sayının yapı taşları. Sunucunuz parçaları seçer; LumioSafe bunları tek bir cümle olarak okur.</p>",
+              "items": [
+                "Araç, bölge veya oda numaraları doğal biçimde seslendirilir",
+                "Cümlenin içine duraklama ve zil sesleri eklenebilir",
+                "Kendi mesajlarınız ve dilleriniz, aynı sesle kaydedilir"
+              ],
+              "visible": true
+            },
+            {
+              "id": "light",
+              "type": "cards",
+              "icon": "star",
+              "kicker": "Işık",
+              "title": "Tüm ızgara ışıl ışıl yanar.",
+              "body": "<p>Ortadaki penceredeki dört RGB LED tüm gövdeyi aydınlatır: pencere en parlak şekilde yanar ve renk ön yüzdeki her delikten dışarı süzülür — yalnızca hemen altından değil, salonun öbür ucundan da görünür.</p>",
+              "items": [
+                "Sabit, yavaş ve hızlı yanıp sönme, strobe, kalp atışı, iki renk ve gökkuşağı",
+                "Süreli veya kalıcı; anons sonrası bekleme rengine döner",
+                "Her alarm sınıfı için bir renk, kablosuz olarak ayarlanır"
+              ],
+              "visible": true
+            },
+            {
+              "id": "integration",
+              "type": "cards",
+              "icon": "radio",
+              "kicker": "Entegrasyon",
+              "title": "Tek downlink. Eksiksiz bir anons.",
+              "body": "<p>Işık, zil sesi ve cümle tek bir kısa mesajda birlikte gider. Ağ sunucunuzdaki bir webhook veya kural, bu mesajı herhangi bir sensör olayından oluşturur — Willow Software cihazları ya da üçüncü taraf LoRaWAN sensörleri. Örnek: FPort 2 üzerinden 11 bayt (<code>08 01 03 F2 04 10 F0 00 11 11 23</code>) kırmızı strobe, bildirim zili ve “Dikkat! On yedi numaralı araç. Kompresör durdu.” anonsunu verir.</p>",
+              "items": [
+                "Downlink’ten konuşmaya genellikle 2–4 saniye",
+                "Belgelenmiş bayt protokolü ve payload formatter dahil",
+                "Her uplink’ten pil, sıcaklık ve durum bilgisi çözülür"
+              ],
+              "visible": true
+            },
+            {
+              "id": "reliability",
+              "type": "cards",
+              "icon": "shield",
+              "kicker": "Güvenilirlik",
+              "title": "Kimse izlemezken de çalışacak şekilde tasarlandı.",
+              "body": "<p>Bir uyarı cihazı ancak hazır olduğunda işe yarar. LumioSafe kendini denetler, kendini raporlar ve kendi kendine toparlanır.</p>",
+              "items": [
+                "Bağımsız donanım watchdog’u, firmware takılırsa cihazı yeniden başlatır",
+                "Her uplink’te kalibre pil ölçümü; sesli düşük pil uyarısı",
+                "İdeal diyotlarla birleştirilen iki sigortalı pil yuvası",
+                "Her downlink için kalp atışı yanıp sönmesi ve onay flaşı"
+              ],
+              "visible": true
+            },
+            {
+              "id": "installation",
+              "type": "cards",
+              "icon": "mount",
+              "kicker": "Kurulum",
+              "title": "Dakikalar içinde monte edilir. Kablo yok.",
+              "body": "<p>Plakayı sabitleyin, cihazı yerine oturtun; ağa kendisi katılır ve hazır olduğunda “Bağlandı, sistem hazır” diye anons eder.</p>",
+              "items": [
+                "Tavan veya duvar için geçmeli montaj plakası",
+                "Pille çalışır: şebeke ya da ses kablosu gerekmez",
+                "Devreye alma sırasında sesli durum bildirimiyle OTAA katılımı"
+              ],
+              "visible": true
+            }
+          ],
+          "aiFAQ": [
+            {
+              "question": "Bir anons ne kadar sürede başlar?",
+              "answer": "Sunucunuz downlink’i gönderdikten genellikle 2–4 saniye sonra. Bu sürenin çoğu radyo yayın süresidir; daha hızlı bir RX2 veri hızı (ör. SF9) süreyi iki saniyenin altına indirir."
+            },
+            {
+              "question": "Hangi ağ sunucularıyla çalışır?",
+              "answer": "The Things Stack ve ChirpStack dahil tüm LoRaWAN 1.0.3 ağ sunucularıyla. Uplink çözümlemesi için payload formatter’ları sağlıyoruz."
+            },
+            {
+              "question": "Kendi mesajlarımızı söyleyebilir mi?",
+              "answer": "Evet. İfade seti her proje için ayrı tanımlanır; mesajlarınızı aynı sesle hazırlayıp firmware’e ekliyoruz."
+            },
+            {
+              "question": "Piller ne kadar dayanır?",
+              "answer": "Class C, uyarıların anında ulaşması için alıcıyı açık tutar ve güç tüketimini en çok bu belirler. Pil ömrü uplink aralığınıza ve günlük anons sayısına bağlıdır — sahanız için tahmin almak üzere bizimle iletişime geçin."
+            }
+          ]
+        },
+        "de": {
+          "title": "LumioSafe",
+          "type": "LoRaWAN®-Alarmbake mit Sprach- und Lichtausgabe",
+          "shortDescription": "LoRaWAN Klasse C Alarmbake mit natürlicher Sprachausgabe, RGB-Lichteffekten und Sirene für Hallen, Depots und Schulen.",
+          "description": "Die LumioSafe (WS-O-X-AI-LS-1) ist eine industrielle LoRaWAN-Klasse-C-Alarmbake zur sofortigen audio-visuellen Notfallwarnung in Logistiklagern, Kühlhäusern, Produktionsstätten und Bildungseinrichtungen.\n\n### Natürliche Sprachausgabe ohne Audio-Streaming\nWährend herkömmliche Sirenen lediglich signalisieren, dass ein Fehler vorliegt, sagt LumioSafe genau, was passiert ist: Auf dem Gerät sind bis zu 49 natürliche Sprachbausteine und Zahlen von 0 bis 9999 gespeichert. Ein Downlink von wenigen Bytes genügt, und die Bake spricht vollständige Sätze (z.B. „Achtung! Fahrzeug 17. Kompressor ausgefallen.“).\n\n### 360°-RGB-Lichteffekte und akustische Melodien\nVier helle RGB-LEDs illuminieren das gesamte Gehäuse in 7 Farben und 7 Effekten (Dauerlicht, Stroboskop, Impuls). Zusammen mit 11 Warntönen und einer Evakuierungssirene durchdringt LumioSafe auch laute Industrieumgebungen zuverlässig.\n\n### LoRaWAN Klasse C mit 2–4 Sekunden Latenz\nDank permanentem Class-C-Empfang erfolgt die Sprachausgabe innerhalb von 2 bis 4 Sekunden nach dem Server-Downlink – ohne Audioverkabelung und ohne Softwareinstallation."
+        }
+      }
     }
   ],
   "services": [

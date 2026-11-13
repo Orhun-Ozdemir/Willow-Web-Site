@@ -1,0 +1,50 @@
+{
+  "id": "product-1792414012667",
+  "slug": "product-1792414012667",
+  "sort_order": 130,
+  "data": {
+    "id": "product-1792414012667",
+    "name": "Lumiosafe",
+    "slug": "product-1792414012667",
+    "type": "",
+    "chips": [],
+    "image": "news/01-kapak-lumiosafe-seffaf-1792445523461.webp",
+    "title": "Lumiosafe",
+    "images": [
+      "https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/uploads/whatsapp-image-2026-10-20-at-20-38-27-1792519480769.webp",
+      "https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/uploads/whatsapp-image-2026-10-20-at-20-38-26-1792519498594.webp",
+      "https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/uploads/whatsapp-image-2026-10-20-at-20-38-26-1-1792519514575.webp"
+    ],
+    "visible": true,
+    "category": "tracking",
+    "featured": false,
+    "datasheet": "",
+    "detailUrl": "",
+    "documents": [],
+    "sortOrder": 130,
+    "updatedAt": "2026-10-20T17:48:26.557102+00:00",
+    "sort_order": 130,
+    "batteryLife": null,
+    "description": "tesr",
+    "applications": [],
+    "battery_life": null,
+    "detailBlocks": [
+      {
+        "id": "block-1792445468928-0",
+        "body": "",
+        "icon": "stack",
+        "type": "note",
+        "items": [],
+        "title": "",
+        "kicker": "",
+        "visible": true
+      }
+    ],
+    "datasheet_url": "",
+    "specifications": {},
+    "shortDescription": "tesr",
+    "communicationRange": null,
+    "communication_range": null
+  },
+  "localized": {}
+}
