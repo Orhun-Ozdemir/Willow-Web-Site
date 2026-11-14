@@ -1,11 +1,10 @@
 ---
 import PageLayout from "@/layouts/PageLayout.astro";
-import AIAnswerBlock from "@/components/AIAnswerBlock.astro";
 import ProductCard from "@/components/ProductCard.astro";
 import { loadContent } from "@/lib/content";
 import { localizedValue, localizeItem, locales, resolveAsset, resolveLocale, type Locale } from "@/lib/cms";
 import { buildAlternates, DEFAULT_OG_IMAGE, ORGANIZATION_SCHEMA, WEBSITE_SCHEMA, SITE_ORIGIN } from "@/lib/seo";
-import { aiMetaForPage, appendSchemaNodes, faqSchemaNode, stripHtml, type AiFaqItem } from "@/lib/ai-search";
+import { appendSchemaNodes, faqSchemaNode } from "@/lib/ai-search";
 import { getProductExtras } from "@/lib/product-extras";
 import { glossaryLinksForProduct, glossaryLinkLabels } from "@/lib/glossary-links";
 import { applicationIconForText, buildSpecificationGroups, canonicalizeProduct, iconKeyForText, LOCALE_NATIVE_NAMES, normalizeAssetPath, normalizeProductIconItems, normalizeProductSlug, normalizeStringList, productDocumentTypeLabel, productSlugCandidates, PRODUCT_ICON_SVG } from "@/lib/product-model";
@@ -15,7 +14,7 @@ import { localizeCatalogValue } from "@/lib/lorawan-landing";
 import { localizedProductApplications, localizedProductFeatures, localizedReportedParameters } from "@/lib/product-spec-copy";
 import { productCutoutDimensions, productCutoutSrcSet } from "@/lib/image-metadata";
 import { technicalGuide } from "@/lib/technical-guides";
-import { productSelectionCopy } from "@/lib/product-selection-copy";
+import { productSelectionCopy, productSelectionQuestions } from "@/lib/product-selection-copy";
 
 export const prerender = false;
 
@@ -123,61 +122,6 @@ const primaryDoc =
 const primaryDocUrl = primaryDoc ? (primaryDoc.langs.find((l) => l.isActive)?.url || primaryDoc.langs[0]?.url || "") : "";
 // Legacy single datasheet, used only as a fallback when no documents are set.
 const legacyDatasheetUrl = product.datasheet_url || product.datasheet || "";
-
-// Category text mappings
-const categoryFitByCategory: Record<string, Record<string, string>> = {
-  modules: {
-    en: "Use this module as the embedded core of low-power connected devices where firmware, RF performance and long-term maintainability matter.",
-    tr: "Firmware, RF performansı ve uzun vadeli sürdürülebilirliğin kritik olduğu düşük güçlü bağlı cihazların gömülü çekirdeği olarak kullanın.",
-    de: "Nutzen Sie dieses Modul als Embedded-Kern für energieeffiziente vernetzte Geräte, bei denen Firmware, RF-Leistung und langfristige Wartbarkeit entscheidend sind.",
-    fr: "Utilisez ce module comme cœur embarqué de dispositifs connectés basse consommation, là où firmware, performance RF et maintenabilité comptent.",
-    es: "Use este módulo como núcleo embebido de dispositivos conectados de bajo consumo donde importan firmware, rendimiento RF y mantenibilidad.",
-    it: "Usa questo modulo come nucleo embedded di dispositivi connessi a basso consumo dove contano firmware, prestazioni RF e manutenibilità.",
-    ar: "استخدم هذه الوحدة كنواة مدمجة لأجهزة متصلة منخفضة الطاقة حيث تهم البرامج الثابتة وأداء RF والصيانة طويلة الأمد.",
-    ja: "ファームウェア、RF性能、長期保守性が重要な低消費電力接続デバイスの組み込みコアとして利用できます。",
-  },
-  environment: {
-    en: "Use this sensor family for environmental telemetry, alerts and remote monitoring in industrial, utility and field conditions.",
-    tr: "Endüstriyel, kamu hizmeti ve saha koşullarında çevresel telemetri, uyarı ve uzaktan izleme için bu sensör ailesini tercih edin.",
-    de: "Nutzen Sie diese Sensorfamilie für Umwelttelemetrie, Alarme und Fernüberwachung in Industrie-, Versorgungs- und Feldbedingungen.",
-    fr: "Utilisez cette famille de capteurs pour la télémétrie environnementale, les alertes et la surveillance à distance en conditions industrielles et terrain.",
-    es: "Use esta familia de sensores para telemetría ambiental, alertas y monitorización remota en entornos industriales y de campo.",
-    it: "Usa questa famiglia di sensori per telemetria ambientale, allarmi e monitoraggio remoto in condizioni industriali e sul campo.",
-    ar: "استخدم هذه العائلة من المستشعرات للقياس البيئي والتنبيهات والمراقبة عن بُعد في البيئات الصناعية والميدانية.",
-    ja: "産業・インフラ・現場環境での環境テレメトリ、アラート、リモート監視にこのセンサー群を利用できます。",
-  },
-  tracking: {
-    en: "Use this device family to detect movement, access, safety events and asset state changes across distributed sites.",
-    tr: "Dağınık tesislerde hareket, erişim, güvenlik olayları ve varlık durumu değişikliklerini tespit etmek için bu cihaz ailesini kullanın.",
-    de: "Nutzen Sie diese Gerätefamilie zur Erkennung von Bewegung, Zugang, Sicherheitsereignissen und Asset-Statusänderungen an verteilten Standorten.",
-    fr: "Utilisez cette famille d'appareils pour détecter mouvement, accès, événements de sécurité et changements d'état d'actifs sur des sites distribués.",
-    es: "Use esta familia de dispositivos para detectar movimiento, acceso, eventos de seguridad y cambios de estado de activos en sitios distribuidos.",
-    it: "Usa questa famiglia di dispositivi per rilevare movimento, accesso, eventi di sicurezza e cambi di stato degli asset su siti distribuiti.",
-    ar: "استخدم هذه العائلة من الأجهزة لاكتشاف الحركة والوصول وأحداث السلامة وتغيّرات حالة الأصول عبر مواقع موزّعة.",
-    ja: "分散拠点での動き、アクセス、安全イベント、資産状態の変化を検知するためにこのデバイス群を利用できます。",
-  },
-  industrial: {
-    en: "Use this product to connect industrial equipment, Modbus devices and telemetry workflows into a unified platform.",
-    tr: "Endüstriyel ekipmanları, Modbus cihazlarını ve telemetri süreçlerini tek bir platformda birleştirmek için bu ürünü kullanın.",
-    de: "Nutzen Sie dieses Produkt, um Industrieanlagen, Modbus-Geräte und Telemetrie-Workflows in einer einheitlichen Plattform zu verbinden.",
-    fr: "Utilisez ce produit pour connecter équipements industriels, appareils Modbus et flux de télémétrie dans une plateforme unifiée.",
-    es: "Use este producto para conectar equipos industriales, dispositivos Modbus y flujos de telemetría en una plataforma unificada.",
-    it: "Usa questo prodotto per collegare apparecchiature industriali, dispositivi Modbus e flussi di telemetria in un'unica piattaforma.",
-    ar: "استخدم هذا المنتج لربط المعدات الصناعية وأجهزة Modbus وتدفقات القياس عن بُعد في منصة موحّدة.",
-    ja: "産業機器、Modbusデバイス、テレメトリワークフローを統合プラットフォームにつなぐために利用できます。",
-  },
-};
-const defaultFitText = {
-  en: "Use this product as part of a reliable connected product ecosystem.",
-  tr: "Güvenilir bir IoT sisteminin parçası olarak konumlandırın.",
-  de: "Nutzen Sie dieses Produkt als Teil eines zuverlässigen vernetzten Produktsystems.",
-  fr: "Positionnez ce produit comme une brique d'un écosystème connecté fiable.",
-  es: "Use este producto como parte de un ecosistema conectado fiable.",
-  it: "Usa questo prodotto come parte di un ecosistema connesso affidabile.",
-  ar: "استخدم هذا المنتج كجزء من منظومة منتجات متصلة وموثوقة.",
-  ja: "この製品を信頼性の高い接続システムの一部として活用できます。",
-};
-const fitText = pickText(categoryFitByCategory[product.category] || defaultFitText);
 
 const snapshotByCategory: Record<string, Record<string, string>> = {
   modules: {
@@ -487,65 +431,6 @@ const reportedParameters = localizedReportedParameters(rawProduct.id, locale, ra
 const structuredSpecGroups = buildSpecificationGroups(product.specifications);
 const extraSpecGroups = structuredSpecGroups.slice(1);
 
-const productAiIntro = pickText({
-  en: `${productBrand} is a Willow Software ${product.category || "IoT"} product for connected field telemetry.`,
-  tr: `${productBrand}, saha telemetrisi için geliştirilmiş bir Willow Software IoT ürünüdür.`,
-  de: `${productBrand} ist ein Willow Software-${product.category || "IoT"}-Produkt für vernetzte Feldtelemetrie.`,
-  fr: `${productBrand} est un produit Willow Software ${product.category || "IoT"} pour la télémétrie terrain connectée.`,
-  es: `${productBrand} es un producto Willow Software ${product.category || "IoT"} para telemetría de campo conectada.`,
-  it: `${productBrand} è un prodotto Willow Software ${product.category || "IoT"} per la telemetria connessa sul campo.`,
-  ar: `${productBrand} هو منتج ${product.category || "IoT"} من Willow Software للقياس الميداني المتصل.`,
-  ja: `${productBrand} は、接続された現場テレメトリ向けの Willow Software ${product.category || "IoT"} 製品です。`,
-});
-const productAiAnswer = stripHtml(`${productAiIntro} ${product.shortDescription || ""} ${decision.use || ""}`);
-const productFaqLabels = {
-  useQuestion: {
-    en: `What is ${productBrand} used for?`,
-    tr: `${productBrand} ne için kullanılır?`,
-    de: `Wofür wird ${productBrand} verwendet?`,
-    fr: `À quoi sert ${productBrand} ?`,
-    es: `¿Para qué se utiliza ${productBrand}?`,
-    it: `A cosa serve ${productBrand}?`,
-    ar: `ما استخدام ${productBrand}؟`,
-    ja: `${productBrand} は何に使いますか？`,
-  },
-  integrationQuestion: {
-    en: `Can ${productBrand} be integrated with software platforms?`,
-    tr: `${productBrand} yazılım platformlarıyla entegre edilebilir mi?`,
-    de: `Kann ${productBrand} in Softwareplattformen integriert werden?`,
-    fr: `${productBrand} peut-il être intégré à des plateformes logicielles ?`,
-    es: `¿Puede ${productBrand} integrarse con plataformas de software?`,
-    it: `È possibile integrare ${productBrand} con piattaforme software?`,
-    ar: `هل يمكن دمج ${productBrand} مع منصات برمجية؟`,
-    ja: `${productBrand} はソフトウェア基盤と連携できますか？`,
-  },
-  selectionQuestion: {
-    en: `When should a buyer choose ${productBrand}?`,
-    tr: `Bir alıcı ${productBrand} ürününü ne zaman seçmeli?`,
-    de: `Wann sollte ein Käufer ${productBrand} wählen?`,
-    fr: `Quand choisir ${productBrand} ?`,
-    es: `¿Cuándo debería elegirse ${productBrand}?`,
-    it: `Quando scegliere ${productBrand}?`,
-    ar: `متى يجب اختيار ${productBrand}؟`,
-    ja: `${productBrand} はどのような場合に選ぶべきですか？`,
-  },
-  integrationAnswer: {
-    en: "It can be used as part of a complete Willow Software hardware, firmware, backend and dashboard stack.",
-    tr: "Eksiksiz bir Willow Software donanım, firmware, backend ve dashboard yığınının parçası olarak kullanılabilir.",
-    de: "Es kann als Teil eines vollständigen Willow Software-Stacks aus Hardware, Firmware, Backend und Dashboard genutzt werden.",
-    fr: "Il peut être utilisé dans une pile Willow Software complète avec matériel, firmware, backend et tableau de bord.",
-    es: "Puede usarse como parte de un stack completo de Willow Software con hardware, firmware, backend y dashboard.",
-    it: "Può essere usato come parte di uno stack Willow Software completo con hardware, firmware, backend e dashboard.",
-    ar: "يمكن استخدامه ضمن حزمة Willow Software متكاملة تشمل العتاد والبرمجيات الثابتة والخلفية ولوحة التحكم.",
-    ja: "Willow Software のハードウェア、ファームウェア、バックエンド、ダッシュボードを含む統合スタックの一部として利用できます。",
-  },
-};
-const productFaqItems: AiFaqItem[] = [
-  { question: pickText(productFaqLabels.useQuestion), answer: stripHtml(decision.use) },
-  { question: pickText(productFaqLabels.integrationQuestion), answer: stripHtml(pickText(productFaqLabels.integrationAnswer)) },
-  { question: pickText(productFaqLabels.selectionQuestion), answer: stripHtml(fitText) },
-].filter((item) => item.question && item.answer);
-
 const WS_SPEC_LABELS: Record<string, Record<string, string>> = {
   mcu: { en: "MCU", tr: "MCU", de: "MCU", fr: "MCU", es: "MCU", it: "MCU", ar: "وحدة MCU", ja: "MCU" },
   protocol: { en: "Protocol", tr: "Protokol", de: "Protokoll", fr: "Protocole", es: "Protocolo", it: "Protocollo", ar: "البروتوكول", ja: "プロトコル" },
@@ -734,13 +619,24 @@ const displayShortAnswer =
   || product.aiShortAnswer
   || product.shortDescription;
 
-const localizedFaq =
+const editorialFaq =
   (Array.isArray(rawProduct.localized?.[locale]?.aiFAQ) && rawProduct.localized[locale].aiFAQ.length > 0
     ? rawProduct.localized[locale].aiFAQ
     : null)
   || (Array.isArray(product.aiFAQ) && product.aiFAQ.length > 0
     ? product.aiFAQ
     : []);
+
+const selectionQuestion = selectionLocale ? productSelectionQuestions[canonicalProductSlug]?.[selectionLocale] : undefined;
+const localizedFaq = [
+  ...(selectionQuestion ? [{ question: selectionQuestion[0], answer: selectionQuestion[1] }] : []),
+  ...editorialFaq,
+].filter((item) => typeof item?.question === "string" && item.question.trim()
+  && typeof item?.answer === "string" && item.answer.trim());
+const selectionSource = selectionQuestion && canonicalProductSlug === "willowmod"
+  ? "https://www.bipom.com/documents/willow/WS-O-8-AE-MB-1%20User%20Manual.pdf"
+  : selectionQuestion && canonicalProductSlug === "willowtemp" ? primaryDocUrl : "";
+const selectionSourceLabel = locale === "tr" ? "Teknik kaynak" : locale === "de" ? "Technische Quelle" : "Technical source";
 
 
 const ICONS: Record<string, string> = {
@@ -817,7 +713,7 @@ const graphSchema = appendSchemaNodes({
     },
     productNode,
   ]
-}, [faqSchemaNode(productCanonical, productFaqItems)]);
+}, [faqSchemaNode(productCanonical, localizedFaq)]);
 
 // Localized UI Labels
 const t = {
@@ -1446,7 +1342,7 @@ const relatedCopy = relatedProductsCopy[locale] || relatedProductsCopy.en;
             </a>
           </div>
           <div class="ws-faq-right-list">
-            {localizedFaq.map((f: any) => (
+            {localizedFaq.map((f, index) => (
               <details class="ws-faq-details">
                 <summary class="ws-faq-summary">
                   <span class="ws-faq-question">{f.question}</span>
@@ -1455,7 +1351,10 @@ const relatedCopy = relatedProductsCopy[locale] || relatedProductsCopy.en;
                   </span>
                 </summary>
                 <div class="ws-faq-answer-wrapper">
-                  <p class="ws-faq-answer">{f.answer}</p>
+                  <p class="ws-faq-answer">
+                    {f.answer}
+                    {index === 0 && selectionSource && <> <a href={selectionSource}>{selectionSourceLabel} (PDF)</a></>}
+                  </p>
                 </div>
               </details>
             ))}

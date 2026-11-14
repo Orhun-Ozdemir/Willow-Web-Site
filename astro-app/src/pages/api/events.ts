@@ -179,6 +179,16 @@ function summarizeEvents(events: any[], range: string) {
   const averageEngagementMs = engagementSessions.length
     ? Math.round(engagementSessions.reduce((sum, event) => sum + event.durationMs, 0) / engagementSessions.length)
     : 0;
+  const aiProductViews = pageViews.filter((event) => {
+    if (!/^\/(?:en|tr|de|fr|es|it|ar|ja)\/products\/[^/]+\/?$/.test(event.path)) return false;
+    if (String(event.utm_source || "").toLowerCase() === "chatgpt.com") return true;
+    try {
+      const host = new URL(event.referrer).hostname.replace(/^www\./, "");
+      return ["chatgpt.com", "chat.openai.com", "perplexity.ai", "copilot.microsoft.com"].includes(host);
+    } catch {
+      return false;
+    }
+  });
   const conversionEvents = events.filter((event) => /_form_submit$/.test(event.event_type));
   const conversionSessions = new Set(conversionEvents.map((event) => event.session_id).filter(Boolean)).size;
 
@@ -230,6 +240,7 @@ function summarizeEvents(events: any[], range: string) {
     topDevices: countBy(pageViews, (event) => event.device_type || "unknown", 6),
     topBrowsers: countBy(pageViews, (event) => event.browser || "unknown", 8),
     topEvents: countBy(events, (event) => event.event_type, 12),
+    aiProductLandingPages: countBy(aiProductViews, (event) => event.path, 15),
     topProducts: countBy(events.filter((event) => event.event_type === "product_view"), (event) => event.metadata?.productSlug || event.path, 10),
     pagePerformance: [...pagePerformanceMap.entries()]
       .map(([path, row]) => ({

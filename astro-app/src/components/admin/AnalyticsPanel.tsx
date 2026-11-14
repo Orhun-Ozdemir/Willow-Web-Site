@@ -25,6 +25,7 @@ type AnalyticsSummary = {
   topBrowsers: RankedItem[];
   topEvents: RankedItem[];
   topProducts: RankedItem[];
+  aiProductLandingPages: RankedItem[];
   pagePerformance: PagePerformanceItem[];
   daily: DailyItem[];
 };
@@ -362,6 +363,7 @@ export default function AnalyticsPanel() {
               <Ranking title="En çok ziyaret edilen sayfalar" subtitle="Page view hacmine göre" items={summary.topPages} accent="indigo" />
               <Ranking title="Trafik kaynakları" subtitle="Yönlendiren domain dağılımı" items={summary.topReferrers} accent="violet" />
               <Ranking title="Ürün ilgisi" subtitle="Ürün detay görüntülemeleri" items={summary.topProducts} accent="emerald" />
+              <Ranking title="Yapay zekâdan gelen ürün ziyaretleri" subtitle="ChatGPT, Perplexity ve Copilot kaynaklı ürün sayfası görüntülemeleri" items={summary.aiProductLandingPages || []} accent="violet" />
               <Ranking title="Event dağılımı" subtitle="Ölçülen kullanıcı davranışları" items={summary.topEvents} labelMap={eventName} accent="emerald" />
             </>}
           </section>
