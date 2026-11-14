@@ -976,6 +976,7 @@ const relatedCopy = relatedProductsCopy[locale] || relatedProductsCopy.en;
                     type="button"
                     data-product-thumb
                     data-src={imgUrl}
+                    data-srcset={productCutoutSrcSet(imgUrl)}
                     aria-label={`${productBrand} image ${index + 1}`}
                     aria-pressed={index === 0 ? "true" : "false"}
                   >
@@ -1366,7 +1367,7 @@ const relatedCopy = relatedProductsCopy[locale] || relatedProductsCopy.en;
     )}
 
     <!-- Applications Section -->
-    {canonicalProductSlug !== "lumiosafe" && applicationCards.length > 0 && (
+    {applicationCards.length > 0 && (
       <section class="ws-applications-section">
         <div class="section-inner">
           <article class="ws-applications-card">
@@ -1481,6 +1482,9 @@ const relatedCopy = relatedProductsCopy[locale] || relatedProductsCopy.en;
         thumb.addEventListener("click", () => {
           const nextSrc = thumb.dataset.src;
           if (!nextSrc || mainImage.src.endsWith(nextSrc)) return;
+          const nextSrcSet = thumb.dataset.srcset;
+          if (nextSrcSet) mainImage.srcset = nextSrcSet;
+          else mainImage.removeAttribute("srcset");
           mainImage.src = nextSrc;
           thumbs.forEach((item) => {
             const active = item === thumb;

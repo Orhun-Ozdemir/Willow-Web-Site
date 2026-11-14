@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { localizeItem, locales, resolveAsset, type Locale } from "@/lib/cms";
-import { canonicalizeProduct, productGalleryImages, lumioApplicationImages, illustratedProductDetails, normalizeProductDetailBlocks, resolveProductDetailLayout } from "@/lib/product-model";
+import { canonicalizeProduct, LOCALE_NATIVE_NAMES, productGalleryImages, lumioApplicationImages, illustratedProductDetails, normalizeProductDetailBlocks, resolveProductDetailLayout } from "@/lib/product-model";
 import DetailBlocksEditor from "./DetailBlocksEditor";
 import FormField from "./FormField";
 
@@ -14,14 +14,15 @@ export default function ProductLayoutEditor({ product, onChange }: {
   const [mobile, setMobile] = useState(false);
   const layout = resolveProductDetailLayout(product);
   const localized = localizeItem(canonicalizeProduct(product), locale);
-  const editableBlocks = locale === "en" ? product.detailBlocks : product.localized?.[locale]?.detailBlocks ?? product.detailBlocks;
+  const hasLocalizedBlocks = Array.isArray(product.localized?.[locale]?.detailBlocks);
+  const editableBlocks = hasLocalizedBlocks ? product.localized[locale].detailBlocks : product.detailBlocks;
   const blocks = normalizeProductDetailBlocks(editableBlocks);
   const changeBlocks = (value: typeof blocks) => {
-    if (locale === "en") onChange("detailBlocks", value);
+    if (locale === "en" && !hasLocalizedBlocks) onChange("detailBlocks", value);
     else onChange("localized", { ...product.localized, [locale]: { ...product.localized?.[locale], detailBlocks: value } });
   };
   const gallery = [
-    ...productGalleryImages(product),
+    ...productGalleryImages(localized),
     ...(localized.slug === "lumiosafe" ? lumioApplicationImages : []),
   ];
   const presentation = product.detailBlockPresentation || {};
@@ -62,7 +63,7 @@ export default function ProductLayoutEditor({ product, onChange }: {
           <h3 className="font-semibold text-[#132175]">İçerik bölümleri önizlemesi</h3>
           <div className="flex flex-wrap gap-2">
             <select aria-label="Önizleme dili" className="rounded border border-slate-300 bg-white px-2 py-1" value={locale} onChange={(e) => setLocale(e.target.value as Locale)}>
-              {locales.map((language) => <option key={language} value={language}>{language.toUpperCase()}</option>)}
+              {locales.map((language) => <option key={language} value={language}>{LOCALE_NATIVE_NAMES[language]}</option>)}
             </select>
             <button type="button" aria-pressed={mobile} className="rounded border border-slate-300 bg-white px-2 py-1" onClick={() => setMobile(!mobile)}>{mobile ? "Mobil görünüm" : "Masaüstü görünümü"}</button>
           </div>
@@ -79,7 +80,7 @@ export default function ProductLayoutEditor({ product, onChange }: {
                   <p className="break-words text-sm text-slate-700">{block.body.replace(/<[^>]*>/g, " ")}</p>
                   {block.items.length > 0 && <ul className="list-inside list-disc text-sm">{block.items.map((item, i) => <li key={i}>{item}</li>)}</ul>}
                 </div>
-                <img src={resolveAsset(image)} alt="" className="mx-auto max-h-40 w-full object-contain" />
+                <img src={resolveAsset(image)} alt="" className="mx-auto max-h-40 w-full object-contain" loading="lazy" />
               </article>
             );
           })}
