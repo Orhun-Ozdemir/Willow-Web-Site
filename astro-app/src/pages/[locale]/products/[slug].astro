@@ -15,6 +15,7 @@ import { localizeCatalogValue } from "@/lib/lorawan-landing";
 import { localizedProductApplications, localizedProductFeatures, localizedReportedParameters } from "@/lib/product-spec-copy";
 import { productCutoutDimensions, productCutoutSrcSet } from "@/lib/image-metadata";
 import { technicalGuide } from "@/lib/technical-guides";
+import { productSelectionCopy } from "@/lib/product-selection-copy";
 
 export const prerender = false;
 
@@ -49,13 +50,15 @@ const seo = rawProduct.seo?.[locale] || {};
 const productBrand = typeof rawProduct.title === "string"
   ? rawProduct.title.trim()
   : localizedValue(rawProduct.title, locale) || String(rawProduct.id || product.title || "");
+const selectionLocale = locale === "en" || locale === "tr" || locale === "de" ? locale : undefined;
+const selectionLead = selectionLocale ? productSelectionCopy[canonicalProductSlug]?.[selectionLocale] : undefined;
 const productSeoText = productSeoFallback(locale, {
   productId: rawProduct.id,
   name: productBrand,
   categoryLabel,
   shortDescription: product.shortDescription || "",
   seoTitle: seo.seoTitle,
-  metaDescription: seo.metaDescription,
+  metaDescription: selectionLead || seo.metaDescription,
 });
 const searchDescriptor = productSearchDescriptor(rawProduct.id, locale);
 const productHeading = searchDescriptor ? `${productBrand} — ${searchDescriptor}` : productBrand;
@@ -474,11 +477,6 @@ const dynamicLabels = {
   specifications: { en: "Specifications", tr: "Teknik Özellikler", de: "Spezifikationen", fr: "Spécifications", es: "Especificaciones", it: "Specifiche", ar: "المواصفات", ja: "仕様" },
 };
 const dynamicLabel = (key: keyof typeof dynamicLabels) => pickText(dynamicLabels[key]);
-const dynamicFacts = [
-  { label: dynamicLabel("productType"), value: searchDescriptor || product.type },
-  { label: dynamicLabel("batteryLife"), value: localizeCatalogValue(product.batteryLife || product.battery_life, locale) },
-  { label: dynamicLabel("communicationRange"), value: localizeCatalogValue(product.communicationRange || product.communication_range, locale) }
-].filter((fact) => fact.value);
 const rawProductApplications = normalizeProductIconItems(product.applications, applicationIconForText);
 const productApplications = localizedProductApplications(rawProduct.id, locale, rawProductApplications)
   .map((item) => ({ ...item, icon: applicationIconForText(item.label) }));
@@ -644,6 +642,23 @@ const brochureSpecs: Record<string, Record<string, string>> = {
 };
 const additionalSpecs = locale === "en" || locale === "tr" || locale === "de" ? brochureSpecs[String(rawProduct.id).toLowerCase()] : undefined;
 const specEntries = Object.entries({ ...additionalSpecs, ...specObject }).filter(([k]) => k !== "features" && k !== "reported_parameters" && k !== "reportedParameters");
+const selectionSpecKeys: Record<string, string[]> = {
+  willowbee: ["mcu", "protocol", "rf_output_power"],
+  willowsonic: ["measurement_range", "enclosure", "protocol"],
+  willowtemp: ["temperature_measurement_range", "humidity_measurement_range", "temperature_accuracy"],
+  willowmod: ["max_modbus_registers", "enclosure", "protocol"],
+  willowpre: ["pressure_range", "enclosure", "protocol"],
+  lumiosafe: ["protocol", "region_support", "announcement_latency"],
+};
+const specsByKey = Object.fromEntries(specEntries);
+const primaryFacts = (selectionSpecKeys[canonicalProductSlug] || ["enclosure", "protocol", "battery_life"])
+  .map((key) => ({ label: wsSpecLabel(key, locale), value: localizeCatalogValue(specsByKey[key], locale) }))
+  .filter((fact) => fact.value && fact.value !== "—");
+const dynamicFacts = selectionLead && primaryFacts.length ? primaryFacts : [
+  { label: dynamicLabel("productType"), value: searchDescriptor || product.type },
+  { label: dynamicLabel("batteryLife"), value: localizeCatalogValue(product.batteryLife || product.battery_life, locale) },
+  { label: dynamicLabel("communicationRange"), value: localizeCatalogValue(product.communicationRange || product.communication_range, locale) },
+].filter((fact) => fact.value);
 const keyFeatures = localizedProductFeatures(rawProduct.id, locale, normalizeStringList((specObject as any)?.features));
 
 const extras = getProductExtras(rawProduct.id || rawProduct.slug || slug);
@@ -1077,8 +1092,26 @@ const relatedCopy = relatedProductsCopy[locale] || relatedProductsCopy.en;
             )}
           </div>
           <h1 class="ws-h1">{productHeading}</h1>
-          <p class="ws-lead">{displayShortAnswer}</p>
-          {useCase && <p>{useCase}</p>}
+          <p class="ws-lead">{selectionLead || displayShortAnswer}</p>
+          {dynamicFacts.length > 0 && (
+            <div class="ws-fact-row">
+              {dynamicFacts.map((fact: any) => (
+                <div class="ws-fact-pill">
+                  <span class="ws-fact-label">{fact.label}</span>
+                  <strong class="ws-fact-value">{fact.value}</strong>
+                </div>
+              ))}
+            </div>
+          )}
+          <div class="ws-hero-ctas">
+            <a class="ws-btn ws-btn-primary" href={quoteUrl} data-analytics-event="product_quote_click">{quoteLabel}</a>
+            {(hasDocuments ? primaryDocUrl : legacyDatasheetUrl) && (
+              <a class="ws-btn ws-btn-secondary" href={hasDocuments ? primaryDocUrl : legacyDatasheetUrl} target="_blank" rel="noopener noreferrer" download>
+                <Fragment set:html={ICONS.download} />
+                <span>{getT("downloadDatasheet")}</span>
+              </a>
+            )}
+          </div>
           {relatedGlossaryTerms.length > 0 && (
             <div class="ws-glossary-links" aria-label={glossaryHeading}>
               <span class="ws-glossary-links-label">{glossaryHeading}</span>
@@ -1104,25 +1137,6 @@ const relatedCopy = relatedProductsCopy[locale] || relatedProductsCopy.en;
               ))}
             </div>
           )}
-          {dynamicFacts.length > 0 && (
-            <div class="ws-fact-row">
-              {dynamicFacts.map((fact: any) => (
-                <div class="ws-fact-pill">
-                  <span class="ws-fact-label">{fact.label}</span>
-                  <strong class="ws-fact-value">{fact.value}</strong>
-                </div>
-              ))}
-            </div>
-          )}
-          <div class="ws-hero-ctas">
-            <a class="ws-btn ws-btn-primary" href={quoteUrl} data-analytics-event="product_quote_click">{quoteLabel}</a>
-            {(hasDocuments ? primaryDocUrl : legacyDatasheetUrl) && (
-              <a class="ws-btn ws-btn-secondary" href={hasDocuments ? primaryDocUrl : legacyDatasheetUrl} target="_blank" rel="noopener noreferrer" download>
-                <Fragment set:html={ICONS.download} />
-                <span>{getT("downloadDatasheet")}</span>
-              </a>
-            )}
-          </div>
           {product.specifications?.warranty && (
             <p class="ws-warranty-text">
               {getWarrantySentence(product.specifications.warranty, locale)}
@@ -1157,6 +1171,7 @@ const relatedCopy = relatedProductsCopy[locale] || relatedProductsCopy.en;
     <section class="ws-specs-section">
       <div class="ws-specs-grid section-inner">
         <div class="ws-specs-left">
+          {useCase && <p class="ws-lead">{useCase}</p>}
           <div class="ws-specs-card">
             <div class="ws-specs-header">
               <h3 class="ws-specs-h3">{getT("specifications")}</h3>
