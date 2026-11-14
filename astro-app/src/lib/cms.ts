@@ -243,6 +243,7 @@ const STATIC_PUBLIC_PREFIXES = [
   "assets/client-logos/",
   "assets/news/",
   "assets/product-cutouts/",
+  "assets/lumiosafe/",
   "pdf-assets/",
 ];
 

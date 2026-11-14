@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { localizeItem, locales, resolveAsset, type Locale } from "@/lib/cms";
-import { canonicalizeProduct, illustratedProductDetails, normalizeProductDetailBlocks, resolveProductDetailLayout } from "@/lib/product-model";
+import { canonicalizeProduct, productGalleryImages, lumioApplicationImages, illustratedProductDetails, normalizeProductDetailBlocks, resolveProductDetailLayout } from "@/lib/product-model";
 import DetailBlocksEditor from "./DetailBlocksEditor";
 import FormField from "./FormField";
 
@@ -20,7 +20,10 @@ export default function ProductLayoutEditor({ product, onChange }: {
     if (locale === "en") onChange("detailBlocks", value);
     else onChange("localized", { ...product.localized, [locale]: { ...product.localized?.[locale], detailBlocks: value } });
   };
-  const gallery = [...new Set<string>([product.image, ...(Array.isArray(product.images) ? product.images : [])].filter((value): value is string => typeof value === "string" && Boolean(value)))];
+  const gallery = [
+    ...productGalleryImages(product),
+    ...(localized.slug === "lumiosafe" ? lumioApplicationImages : []),
+  ];
   const presentation = product.detailBlockPresentation || {};
   const illustrated = illustratedProductDetails({ ...localized, detailLayout: layout, detailBlockPresentation: presentation }, blocks);
   const update = (id: string, key: "image" | "side", value: string) =>

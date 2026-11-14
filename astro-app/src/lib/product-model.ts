@@ -486,6 +486,16 @@ export function productIconOptions() {
   }));
 }
 
+const lumioAdditionalGallery = ["white-light", "cyan", "magenta"].map((name) => `assets/lumiosafe/${name}.webp`);
+
+export const lumioApplicationImages = ["warehouse", "school", "office"].map((name) => `assets/lumiosafe/${name}.webp`);
+
+export function productGalleryImages(product: any): string[] {
+  const extras = product.slug === "lumiosafe" || product.id === "product-1792414012667" ? lumioAdditionalGallery : [];
+  return [...new Set([normalizeAssetPath(product.image), ...normalizeAssetList(product.images), ...extras])]
+    .filter((image): image is string => typeof image === "string" && Boolean(image));
+}
+
 const lumioDetailImages: Record<string, string> = {
   voice: "products/lumiosafe/lumiosafe-red.webp",
   light: "products/lumiosafe/lumiosafe-green.webp",
@@ -502,7 +512,7 @@ export function resolveProductDetailLayout(product: { detailLayout?: unknown; sl
 /** The editor and public page use the same image order and block selection. */
 export function illustratedProductDetails(product: any, blocks: ReturnType<typeof normalizeProductDetailBlocks>) {
   if (resolveProductDetailLayout(product) !== "alternating") return [];
-  const gallery = [...new Set([normalizeAssetPath(product.image), ...normalizeAssetList(product.images)].filter(Boolean))];
+  const gallery = productGalleryImages(product);
   const isLumioSafe = product.slug === "lumiosafe" || product.id === "product-1792414012667";
   return blocks.filter((block) => block.visible !== false && (!isLumioSafe || block.id !== "overview" || product.detailBlockPresentation?.[block.id]?.image))
     .map((block, index) => ({

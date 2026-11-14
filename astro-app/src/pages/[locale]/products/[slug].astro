@@ -7,7 +7,7 @@ import { buildAlternates, DEFAULT_OG_IMAGE, ORGANIZATION_SCHEMA, WEBSITE_SCHEMA,
 import { appendSchemaNodes, faqSchemaNode } from "@/lib/ai-search";
 import { getProductExtras } from "@/lib/product-extras";
 import { glossaryLinksForProduct, glossaryLinkLabels } from "@/lib/glossary-links";
-import { illustratedProductDetails, normalizeProductDetailBlocks, applicationIconForText, buildSpecificationGroups, canonicalizeProduct, iconKeyForText, LOCALE_NATIVE_NAMES, normalizeAssetPath, normalizeProductIconItems, normalizeProductSlug, normalizeStringList, productDocumentTypeLabel, productSlugCandidates, PRODUCT_ICON_SVG } from "@/lib/product-model";
+import { illustratedProductDetails, productGalleryImages, lumioApplicationImages, normalizeProductDetailBlocks, applicationIconForText, buildSpecificationGroups, canonicalizeProduct, iconKeyForText, LOCALE_NATIVE_NAMES, normalizeAssetPath, normalizeProductIconItems, normalizeProductSlug, normalizeStringList, productDocumentTypeLabel, productSlugCandidates, PRODUCT_ICON_SVG } from "@/lib/product-model";
 import { productCategoriesFromContent, productCategoryLabel } from "@/lib/product-categories";
 import { productSearchDescriptor, productSeoFallback } from "@/lib/seo-fallbacks";
 import { localizeCatalogValue } from "@/lib/lorawan-landing";
@@ -62,16 +62,7 @@ const searchDescriptor = productSearchDescriptor(rawProduct.id, locale);
 const productHeading = searchDescriptor ? `${productBrand} — ${searchDescriptor}` : productBrand;
 const titleLower = `${rawProduct.id || ""} ${rawProduct.title || ""} ${product.title || ""} ${product.type || ""} ${searchDescriptor || ""}`.toLowerCase();
 const pickText = (value: any) => localizedValue(value, locale);
-const heroImages = Array.from(
-  new Set(
-    [
-      product.image,
-      ...(Array.isArray(product.images) ? product.images : []),
-    ]
-      .map(normalizeAssetPath)
-      .filter(Boolean),
-  ),
-);
+const heroImages = productGalleryImages(product);
 const heroImage = heroImages[0] || product.image;
 const productAssetUrl = (path: any, fallback = "assets/hero-industrial-iot.jpg") => {
   const normalized = normalizeAssetPath(path) || normalizeAssetPath(fallback);
@@ -1349,8 +1340,33 @@ const relatedCopy = relatedProductsCopy[locale] || relatedProductsCopy.en;
     </section>
   )}
 
+    {canonicalProductSlug === "lumiosafe" && (
+      <section class="ws-applications-section" aria-labelledby="lumiosafe-scenes-title">
+        <div class="section-inner">
+          <h2 class="ws-h2" id="lumiosafe-scenes-title">{getT("applications")}</h2>
+          <div class="ws-lumio-scenes">
+            {lumioApplicationImages.map((image, i) => (
+              <figure>
+                <img src={productAssetUrl(image)} width="1500" height="940" alt="" loading="lazy" decoding="async" />
+                <figcaption>{({
+                  en: ["Warehouse", "School corridor", "Office"],
+                  tr: ["Depo", "Okul koridoru", "Ofis"],
+                  de: ["Lager", "Schulflur", "Büro"],
+                  fr: ["Entrepôt", "Couloir d’école", "Bureau"],
+                  es: ["Almacén", "Pasillo escolar", "Oficina"],
+                  it: ["Magazzino", "Corridoio scolastico", "Ufficio"],
+                  ar: ["مستودع", "ممر مدرسة", "مكتب"],
+                  ja: ["倉庫", "学校の廊下", "オフィス"],
+                }[locale])[i]}</figcaption>
+              </figure>
+            ))}
+          </div>
+        </div>
+      </section>
+    )}
+
     <!-- Applications Section -->
-    {applicationCards.length > 0 && (
+    {canonicalProductSlug !== "lumiosafe" && applicationCards.length > 0 && (
       <section class="ws-applications-section">
         <div class="section-inner">
           <article class="ws-applications-card">
@@ -2352,6 +2368,15 @@ const relatedCopy = relatedProductsCopy[locale] || relatedProductsCopy.en;
   }
 
   /* Applications Section */
+  .ws-lumio-scenes {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+    gap: 16px;
+    margin-top: 20px;
+  }
+  .ws-lumio-scenes figure { margin: 0; }
+  .ws-lumio-scenes img { display: block; width: 100%; height: auto; border-radius: 14px; }
+  .ws-lumio-scenes figcaption { padding-block: 8px; color: var(--ink); font-weight: 700; }
   .ws-applications-section {
     padding: 32px 0 36px;
     border-top: 1px solid rgba(var(--accent-rgb), 0.08);
