@@ -1345,10 +1345,20 @@ const relatedCopy = relatedProductsCopy[locale] || relatedProductsCopy.en;
       <section class="ws-applications-section" aria-labelledby="lumiosafe-scenes-title">
         <div class="section-inner">
           <h2 class="ws-h2" id="lumiosafe-scenes-title">{getT("applications")}</h2>
+          <p class="ws-lead">{{
+            en: "Illustrative installations",
+            tr: "Temsili kurulum görselleri",
+            de: "Beispielhafte Installationen",
+            fr: "Illustrations d’installation",
+            es: "Instalaciones ilustrativas",
+            it: "Installazioni illustrative",
+            ar: "صور توضيحية للتركيب",
+            ja: "設置イメージ",
+          }[locale]}</p>
           <div class="ws-lumio-scenes">
             {lumioApplicationImages.map((image, i) => (
               <figure>
-                <img src={productAssetUrl(image)} width="1500" height="940" alt="" loading="lazy" decoding="async" />
+                <img src={productAssetUrl(image)} width="1536" height="1024" alt="" loading="lazy" decoding="async" />
                 <figcaption>{({
                   en: ["Warehouse", "School corridor", "Office"],
                   tr: ["Depo", "Okul koridoru", "Ofis"],
