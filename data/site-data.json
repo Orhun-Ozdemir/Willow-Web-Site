@@ -5435,6 +5435,33 @@
   ],
   "news": [
     {
+      "id": "lorawan-water-meter-monitoring-2026",
+      "slug": "lorawan-water-meter-monitoring-2026",
+      "date": "2026-10-05",
+      "category": "Project update",
+      "featured": true,
+      "sortOrder": 1,
+      "title": "Willow Software brings existing water meters online with LoRaWAN",
+      "excerpt": "A facility can now track water consumption minute by minute through a dashboard, using its existing flowmeters.",
+      "body": "<p>The facility’s existing flowmeters are still in place. What changed is how the team reads them. After Willow Software completed the installation, water consumption readings began reaching a dashboard over LoRaWAN, giving the team a minute-by-minute view without routine manual meter rounds.</p>\n<p>A Willow Pulse Module is visible alongside the flowmeter in the installation photo. The dashboard brings meter readings together so the team can compare consumption across lines and spot unusual use as it happens.</p>\n<p>For projects that need a similar pulse-counting input, see <a href=\"/en/products/willowsens\">WillowSens with pulse counting support</a>. The input type and pulse-to-volume ratio should be checked against the meter before installation.</p>",
+      "content": "<p>The facility’s existing flowmeters are still in place. What changed is how the team reads them. After Willow Software completed the installation, water consumption readings began reaching a dashboard over LoRaWAN, giving the team a minute-by-minute view without routine manual meter rounds.</p>\n<p>A Willow Pulse Module is visible alongside the flowmeter in the installation photo. The dashboard brings meter readings together so the team can compare consumption across lines and spot unusual use as it happens.</p>\n<p>For projects that need a similar pulse-counting input, see <a href=\"/en/products/willowsens\">WillowSens with pulse counting support</a>. The input type and pulse-to-volume ratio should be checked against the meter before installation.</p>",
+      "image": "https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/news/lorawan-water-meter-monitoring-2026/willow-pulse-module-installation.jpg",
+      "images": [
+        "https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/news/lorawan-water-meter-monitoring-2026/willow-pulse-module-installation.jpg",
+        "https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/news/lorawan-water-meter-monitoring-2026/water-meter-dashboard.jpg",
+        "https://chemyzlmjqvnoxeqxfku.supabase.co/storage/v1/object/public/assets/news/lorawan-water-meter-monitoring-2026/water-consumption-trends.jpg"
+      ],
+      "sourceUrl": "https://www.linkedin.com/feed/update/urn:li:activity:7512901001826471937/",
+      "localized": {
+        "tr": {
+          "title": "Mevcut su sayaçları LoRaWAN ile uzaktan izleniyor",
+          "excerpt": "Willow Software’in kurulumu tamamladığı tesiste su tüketimi, mevcut debimetreler değiştirilmeden panelden dakika dakika izlenebiliyor.",
+          "body": "<p>Tesisteki debimetreler yerinde kaldı. Değişen şey, ekibin sayaçları okuma biçimi oldu. Willow Software’in kurulumu tamamlamasının ardından tüketim verileri LoRaWAN üzerinden izleme paneline aktarılmaya başladı. Ekip artık rutin sayaç okumaları için sahayı dolaşmadan su tüketimini dakika dakika takip edebiliyor.</p>\n<p>Saha fotoğrafında debimetrenin yanında bir Willow Pulse Module görülüyor. Panel, farklı hatlardaki tüketimi tek yerde topluyor. Böylece işletme ekibi hangi hattın ne kadar su kullandığını karşılaştırabiliyor ve olağan dışı tüketimi kısa sürede fark edebiliyor.</p>\n<p>Benzer bir sayaç entegrasyonu planlayan ekipler, <a href=\"/tr/products/willowsens\">darbe sayımı destekleyen WillowSens</a> ürününü de inceleyebilir. Cihaz seçmeden önce sayacın çıkış tipi ve her darbenin kaç litreye karşılık geldiği kontrol edilmeli.</p>",
+          "content": "<p>Tesisteki debimetreler yerinde kaldı. Değişen şey, ekibin sayaçları okuma biçimi oldu. Willow Software’in kurulumu tamamlamasının ardından tüketim verileri LoRaWAN üzerinden izleme paneline aktarılmaya başladı. Ekip artık rutin sayaç okumaları için sahayı dolaşmadan su tüketimini dakika dakika takip edebiliyor.</p>\n<p>Saha fotoğrafında debimetrenin yanında bir Willow Pulse Module görülüyor. Panel, farklı hatlardaki tüketimi tek yerde topluyor. Böylece işletme ekibi hangi hattın ne kadar su kullandığını karşılaştırabiliyor ve olağan dışı tüketimi kısa sürede fark edebiliyor.</p>\n<p>Benzer bir sayaç entegrasyonu planlayan ekipler, <a href=\"/tr/products/willowsens\">darbe sayımı destekleyen WillowSens</a> ürününü de inceleyebilir. Cihaz seçmeden önce sayacın çıkış tipi ve her darbenin kaç litreye karşılık geldiği kontrol edilmeli.</p>"
+        }
+      }
+    },
+    {
       "id": "metro-station-solutions-2026",
       "title": "Willow Software Ships New Electronics and Software Solutions for Metro Stations",
       "slug": "metro-station-solutions-2026",
