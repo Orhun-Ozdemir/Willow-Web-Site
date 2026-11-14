@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import FormField from "./FormField";
-import ListEditorField from "./ListEditorField";
 import { type ProductDetailBlock } from "@/lib/product-model";
 import IconPicker from "./IconPicker";
 
@@ -123,13 +122,20 @@ export default function DetailBlocksEditor({ value, onChange, helper }: DetailBl
               </div>
               {block.type !== "rich" ? (
                 <div className="col-span-2">
-                  <ListEditorField
-                    label="Items"
-                    value={block.items || []}
-                    onChange={(items) => setBlock(idx, { items })}
-                    helper="Bir satıra bir öğe gir."
-                    placeholder="Acceleration on X, Y, Z axes"
-                  />
+                  <label className="block text-xs font-semibold text-slate-700">
+                    Maddeler
+                    <textarea
+                      value={(block.items || []).join("\n")}
+                      onChange={(event) => setBlock(idx, { items: event.currentTarget.value.split(/\r?\n/) })}
+                      onBlur={(event) => {
+                        const items = event.currentTarget.value.split(/\r?\n/).map((item) => item.trim()).filter(Boolean);
+                        if (JSON.stringify(items) !== JSON.stringify(block.items || [])) setBlock(idx, { items });
+                      }}
+                      rows={4}
+                      className="mt-1 w-full rounded border border-gray-200 bg-white p-2 text-sm"
+                      placeholder="Her satıra bir madde yaz"
+                    />
+                  </label>
                 </div>
               ) : null}
               <FormField
