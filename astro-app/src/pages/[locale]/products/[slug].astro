@@ -91,7 +91,18 @@ const heroImageItems = heroImages.map((imgUrl) => productAssetUrl(imgUrl));
 // Keep only documents that actually have at least one file. For each, order the
 // available languages with the active locale first so the visitor sees their own
 // language at the top of the picker.
-const productDocuments = (Array.isArray(product.documents) ? product.documents : [])
+const sonicManufacturerDocs = {
+  brochure: "https://www.bipom.com/documents/willow/WS-O-8-AE-UD-1%20Brochure.pdf",
+  manual: "https://www.bipom.com/documents/willow/WS-O-8-AE-UD-1%20User%20Manual.pdf",
+};
+const configuredDocuments = Array.isArray(product.documents) ? product.documents : [];
+const documentRecords = canonicalProductSlug === "willowsonic"
+  ? [...configuredDocuments, ...Object.entries(sonicManufacturerDocs)
+      .filter(([type]) => !configuredDocuments.some((doc: any) => doc?.type === type && locales.some((language) => doc.files?.[language])))
+      .map(([type, url]) => ({ type, files: { en: url } }))]
+  : configuredDocuments;
+
+const productDocuments = documentRecords
   .map((doc: any) => {
     const availableLangs = locales.filter((l) => doc?.files?.[l]);
     if (availableLangs.length === 0) return null;
@@ -468,6 +479,7 @@ const WS_SPEC_LABELS: Record<string, Record<string, string>> = {
 };
 
 const catalogSpecificationLabels: Record<string, { en: string; tr: string; de: string }> = {
+  distance_resolution: { en: "Distance resolution", tr: "Mesafe çözünürlüğü", de: "Abstandsauflösung" },
   temperature_measurement_range: { en: "Temperature measurement range", tr: "Sıcaklık ölçüm aralığı", de: "Temperaturmessbereich" },
   humidity_measurement_range: { en: "Relative humidity range", tr: "Bağıl nem ölçüm aralığı", de: "Messbereich der relativen Luftfeuchte" },
   temperature_accuracy: { en: "Temperature accuracy", tr: "Sıcaklık ölçüm doğruluğu", de: "Temperaturmessgenauigkeit" },
@@ -526,7 +538,10 @@ const brochureSpecs: Record<string, Record<string, string>> = {
   willowmod: { max_modbus_registers: "20" },
 };
 const additionalSpecs = locale === "en" || locale === "tr" || locale === "de" ? brochureSpecs[String(rawProduct.id).toLowerCase()] : undefined;
-const specEntries = Object.entries({ ...additionalSpecs, ...specObject }).filter(([k]) => k !== "features" && k !== "reported_parameters" && k !== "reportedParameters");
+const sonicSpecs = canonicalProductSlug === "willowsonic"
+  ? { measurement_range: "28–750 cm", distance_resolution: "1 mm" }
+  : {};
+const specEntries = Object.entries({ ...additionalSpecs, ...specObject, ...sonicSpecs }).filter(([k]) => k !== "features" && k !== "reported_parameters" && k !== "reportedParameters");
 const selectionSpecKeys: Record<string, string[]> = {
   willowbee: ["mcu", "protocol", "rf_output_power"],
   willowsonic: ["measurement_range", "enclosure", "protocol"],
@@ -630,10 +645,11 @@ const editorialFaq =
 const selectionQuestion = selectionLocale ? productSelectionQuestions[canonicalProductSlug]?.[selectionLocale] : undefined;
 const localizedFaq = [
   ...(selectionQuestion ? [{ question: selectionQuestion[0], answer: selectionQuestion[1] }] : []),
-  ...editorialFaq,
+  ...editorialFaq.filter((item: any) => canonicalProductSlug !== "willowsonic" || !/(?:0[.,]25|\b25\s*cm)/i.test(item?.answer || "")),
 ].filter((item) => typeof item?.question === "string" && item.question.trim()
   && typeof item?.answer === "string" && item.answer.trim());
-const selectionSource = selectionQuestion && canonicalProductSlug === "willowmod"
+const selectionSource = selectionQuestion && canonicalProductSlug === "willowsonic" ? sonicManufacturerDocs.manual
+  : selectionQuestion && canonicalProductSlug === "willowmod"
   ? "https://www.bipom.com/documents/willow/WS-O-8-AE-MB-1%20User%20Manual.pdf"
   : selectionQuestion && canonicalProductSlug === "willowtemp" ? primaryDocUrl : "";
 const selectionSourceLabel = locale === "tr" ? "Teknik kaynak" : locale === "de" ? "Technische Quelle" : "Technical source";
@@ -1238,7 +1254,7 @@ const relatedCopy = relatedProductsCopy[locale] || relatedProductsCopy.en;
           {product.description && (
             <div class="ws-overview-card">
               <div class="ws-overview-body">
-                {product.description.split("\n\n").map((para: string) => {
+                {(canonicalProductSlug === "willowsonic" ? product.description.replace(/0([.,])25/g, (_, separator) => `0${separator}28`).replace(/\b25\s*cm\b/gi, "28 cm") : product.description).split("\n\n").map((para: string) => {
                   const clean = para.trim();
                   if (!clean) return null;
                   if (clean.startsWith("### ")) {

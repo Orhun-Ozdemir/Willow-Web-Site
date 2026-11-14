@@ -5,9 +5,9 @@ export const productSelectionCopy: Record<string, { en: string; tr: string; de: 
     de: "STM32WL-MCU-Modul zur Entwicklung batteriebetriebener LoRaWAN-Sensorknoten.",
   },
   willowsonic: {
-    en: "Measure water tank and silo fill levels without touching the material. This IP67 ultrasonic LoRaWAN sensor measures distances up to 7.5 m.",
-    tr: "Su tankı ve silo doluluk seviyesini malzemeye temas etmeden ölçün. IP67 korumalı ultrasonik LoRaWAN sensörü 7,5 m’ye kadar mesafe ölçer.",
-    de: "Füllstände in Wassertanks und Silos berührungslos messen. Der LoRaWAN-Ultraschallsensor mit IP67 misst Entfernungen bis zu 7,5 m.",
+    en: "Measure water tank and silo fill levels without touching the material. This IP67 ultrasonic LoRaWAN sensor measures distances from 28 cm to 7.5 m.",
+    tr: "Su tankı ve silo doluluk seviyesini malzemeye temas etmeden ölçün. IP67 korumalı ultrasonik LoRaWAN sensörü 28 cm ile 7,5 m arasında mesafe ölçer.",
+    de: "Füllstände in Wassertanks und Silos berührungslos messen. Der LoRaWAN-Ultraschallsensor mit IP67 misst Entfernungen von 28 cm bis 7,5 m.",
   },
   willowair: {
     en: "Monitor indoor air quality in offices and buildings with a LoRaWAN sensor for TVOC, equivalent CO₂ (eCO₂) and temperature.",
@@ -75,9 +75,9 @@ export const productSelectionQuestions: Record<string, Record<SelectionLanguage,
     de: ["Eignet sich WillowBee für einen batteriebetriebenen LoRaWAN-Sensor?", "Ja. Das STM32WL-MCU-Modul integriert LoRaWAN in eigene Sensorknoten. Prüfen Sie vor dem Platinenentwurf Versorgungsspannung, GPIO-Bedarf, Antennenlayout und Frequenzplan der gewählten Variante."],
   },
   willowsonic: {
-    en: ["Will WillowSonic work in a 7 m water tank?", "The WS-O-X-AI-UD-1 brochure specifies up to 7.5 m of target distance. Compare the empty-tank distance from the actual mounting point and confirm the minimum clearance at maximum fill. The brochure does not specify a minimum distance. Test under representative conditions if foam or obstructions are present."],
-    tr: ["WillowSonic 7 metrelik bir su tankında çalışır mı?", "WS-O-X-AI-UD-1 broşüründe hedef mesafesi 7,5 m’ye kadar belirtilir. Tank boşken gerçek montaj noktasından yüzeye olan mesafeyi hesaplayın. Tank doluyken gereken minimum açıklığı doğrulayın. Broşürde bu minimum değer belirtilmiyor. Köpük veya engel varsa saha testi yapın."],
-    de: ["Eignet sich WillowSonic für einen 7 m tiefen Wassertank?", "Die Broschüre WS-O-X-AI-UD-1 nennt bis zu 7,5 m Zielabstand. Prüfen Sie den Abstand ab dem tatsächlichen Montagepunkt bei leerem Tank und den Mindestabstand bei maximaler Füllung. Die Broschüre nennt keinen Mindestabstand. Bei Schaum oder Hindernissen empfiehlt sich ein Test vor Ort."],
+    en: ["Will WillowSonic work in a 7 m water tank?", "BiPOM specifies a target distance of 28–750 cm for its outdoor ultrasonic sensor. At the actual mounting point, measure the distance to the surface when the tank is empty and at maximum fill. Both distances must fall within that range. Allow extra clearance and validate readings on site if foam or obstacles are present."],
+    tr: ["WillowSonic 7 metrelik bir su tankında çalışır mı?", "BiPOM, dış ortam ultrasonik sensörü için 28–750 cm hedef mesafesi belirtiyor. Gerçek montaj noktasından tank boşken ve en dolu durumdayken yüzeye olan mesafeyi ölçün. İki mesafe de bu aralıkta kalmalı. Köpük veya engel varsa ek açıklık bırakın ve ölçümü sahada doğrulayın."],
+    de: ["Eignet sich WillowSonic für einen 7 m tiefen Wassertank?", "BiPOM gibt für den Outdoor-Ultraschallsensor einen Zielabstand von 28–750 cm an. Messen Sie am tatsächlichen Montagepunkt den Abstand zur Oberfläche bei leerem Tank und bei maximaler Füllung. Beide Abstände müssen im Messbereich liegen. Planen Sie bei Schaum oder Hindernissen zusätzlichen Abstand ein und prüfen Sie die Messung vor Ort."],
   },
   willowair: {
     en: ["Does WillowAir measure CO₂ directly?", "WillowAir reports eCO₂, an equivalent CO₂ value, along with TVOC and temperature. If your specification requires direct CO₂ measurement, choose a sensor that explicitly supports it."],
