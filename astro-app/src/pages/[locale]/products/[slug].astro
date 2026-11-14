@@ -407,7 +407,15 @@ if (titleLower.includes("soil")) {
   });
 }
 
-const detailBlocks = Array.isArray(product.detailBlocks) ? product.detailBlocks.filter((block: any) => block && block.visible !== false) : [];
+const hasLegacySonicDistance = (value: unknown) => /(?:0[.,]25\s*(?:m|Meter)|\b25\s*cm\b)/i.test(String(value || ""));
+const updateSonicRange = (value: string) => value.replace(/0([.,])25(?=\s*m)/gi, (_, separator) => `0${separator}28`);
+const detailBlocks = (Array.isArray(product.detailBlocks) ? product.detailBlocks : [])
+  .filter((block: any) => block && block.visible !== false)
+  .map((block: any) => canonicalProductSlug === "willowsonic" ? {
+    ...block,
+    body: hasLegacySonicDistance(block.body) ? "" : block.body,
+    items: Array.isArray(block.items) ? block.items.map(updateSonicRange) : block.items,
+  } : block);
 
 // Technical sections
 const techBlockLabels = {
@@ -645,7 +653,7 @@ const editorialFaq =
 const selectionQuestion = selectionLocale ? productSelectionQuestions[canonicalProductSlug]?.[selectionLocale] : undefined;
 const localizedFaq = [
   ...(selectionQuestion ? [{ question: selectionQuestion[0], answer: selectionQuestion[1] }] : []),
-  ...editorialFaq.filter((item: any) => canonicalProductSlug !== "willowsonic" || !/(?:0[.,]25|\b25\s*cm)/i.test(item?.answer || "")),
+  ...editorialFaq.filter((item: any) => canonicalProductSlug !== "willowsonic" || !hasLegacySonicDistance(item?.answer)),
 ].filter((item) => typeof item?.question === "string" && item.question.trim()
   && typeof item?.answer === "string" && item.answer.trim());
 const selectionSource = selectionQuestion && canonicalProductSlug === "willowsonic" ? sonicManufacturerDocs.manual
@@ -1254,7 +1262,7 @@ const relatedCopy = relatedProductsCopy[locale] || relatedProductsCopy.en;
           {product.description && (
             <div class="ws-overview-card">
               <div class="ws-overview-body">
-                {(canonicalProductSlug === "willowsonic" ? product.description.replace(/0([.,])25/g, (_, separator) => `0${separator}28`).replace(/\b25\s*cm\b/gi, "28 cm") : product.description).split("\n\n").map((para: string) => {
+                {(canonicalProductSlug === "willowsonic" ? updateSonicRange(product.description).replace(/\b25\s*cm\b/gi, "28 cm") : product.description).split("\n\n").map((para: string) => {
                   const clean = para.trim();
                   if (!clean) return null;
                   if (clean.startsWith("### ")) {
