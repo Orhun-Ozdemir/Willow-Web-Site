@@ -488,7 +488,11 @@ export function productIconOptions() {
 
 const lumioAdditionalGallery = ["white-light", "cyan", "magenta"].map((name) => `assets/lumiosafe/${name}.webp`);
 
-export const lumioApplicationImages = ["warehouse", "school", "office"].map((name) => `assets/lumiosafe/${name}.webp`);
+export const lumioApplicationImages = [
+  "assets/lumiosafe/warehouse-tr-installation.webp",
+  "assets/lumiosafe/school-tr-installation.webp",
+  "assets/lumiosafe/office-tr-installation.webp",
+];
 
 export function productGalleryImages(product: any): string[] {
   const extras = product.slug === "lumiosafe" || product.id === "product-1792414012667" ? lumioAdditionalGallery : [];
