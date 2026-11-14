@@ -6,7 +6,7 @@ import { useAdmin } from "./AdminContext";
 import FormField from "./FormField";
 import ListEditorField from "./ListEditorField";
 import JsonEditorField from "./JsonEditorField";
-import DetailBlocksEditor from "./DetailBlocksEditor";
+import ProductLayoutEditor from "./ProductLayoutEditor";
 import IconListEditor from "./IconListEditor";
 import ProductDocumentsEditor from "./ProductDocumentsEditor";
 import TranslationEditor from "./TranslationEditor";
@@ -67,7 +67,7 @@ const SECTIONS = [
   {
     key: "blocks",
     label: "İçerik Blokları",
-    hint: "Detay sayfası açıklama blokları",
+    hint: "Sayfa düzeni, canlı önizleme ve içerik blokları",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
         <rect x="3" y="3" width="7" height="7" /><rect x="14" y="3" width="7" height="7" /><rect x="14" y="14" width="7" height="7" /><rect x="3" y="14" width="7" height="7" />
@@ -555,11 +555,7 @@ export default function ProductsPanel() {
             </button>
             {openSections.blocks && (
               <div className="ws-prod-section-body">
-                <DetailBlocksEditor
-                  value={Array.isArray(p.detailBlocks) ? p.detailBlocks : []}
-                  onChange={(val) => updateProduct(p.id, "detailBlocks", val)}
-                  helper="Ek açıklama blokları, ikonlu card'lar ve liste blokları için kullan."
-                />
+                <ProductLayoutEditor key={p.id} product={p} onChange={(key, value) => updateProduct(p.id, key, value)} />
               </div>
             )}
           </div>

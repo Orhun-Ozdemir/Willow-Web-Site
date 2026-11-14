@@ -485,3 +485,30 @@ export function productIconOptions() {
     svg: PRODUCT_ICON_SVG[value],
   }));
 }
+
+const lumioDetailImages: Record<string, string> = {
+  voice: "products/lumiosafe/lumiosafe-red.webp",
+  light: "products/lumiosafe/lumiosafe-green.webp",
+  integration: "products/lumiosafe/lumiosafe-blue.webp",
+  reliability: "products/lumiosafe/lumiosafe-white.webp",
+  installation: "products/lumiosafe/lumiosafe-yellow.webp",
+};
+
+export function resolveProductDetailLayout(product: { detailLayout?: unknown; slug?: string; id?: string }) {
+  if (product.detailLayout === "standard" || product.detailLayout === "alternating") return product.detailLayout;
+  return product.slug === "lumiosafe" || product.id === "product-1792414012667" ? "alternating" : "standard";
+}
+
+/** The editor and public page use the same image order and block selection. */
+export function illustratedProductDetails(product: any, blocks: ReturnType<typeof normalizeProductDetailBlocks>) {
+  if (resolveProductDetailLayout(product) !== "alternating") return [];
+  const gallery = [...new Set([normalizeAssetPath(product.image), ...normalizeAssetList(product.images)].filter(Boolean))];
+  const isLumioSafe = product.slug === "lumiosafe" || product.id === "product-1792414012667";
+  return blocks.filter((block) => block.visible !== false && (!isLumioSafe || block.id !== "overview" || product.detailBlockPresentation?.[block.id]?.image))
+    .map((block, index) => ({
+      block,
+      side: product.detailBlockPresentation?.[block.id]?.side === "left" ? "left" : product.detailBlockPresentation?.[block.id]?.side === "right" ? "right" : undefined,
+      image: normalizeAssetPath(product.detailBlockPresentation?.[block.id]?.image) || (isLumioSafe && lumioDetailImages[block.id]) || (gallery.length ? gallery[index % gallery.length] : ""),
+    }))
+    .filter(({ image }) => Boolean(image));
+}

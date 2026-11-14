@@ -7,7 +7,7 @@ import { buildAlternates, DEFAULT_OG_IMAGE, ORGANIZATION_SCHEMA, WEBSITE_SCHEMA,
 import { appendSchemaNodes, faqSchemaNode } from "@/lib/ai-search";
 import { getProductExtras } from "@/lib/product-extras";
 import { glossaryLinksForProduct, glossaryLinkLabels } from "@/lib/glossary-links";
-import { applicationIconForText, buildSpecificationGroups, canonicalizeProduct, iconKeyForText, LOCALE_NATIVE_NAMES, normalizeAssetPath, normalizeProductIconItems, normalizeProductSlug, normalizeStringList, productDocumentTypeLabel, productSlugCandidates, PRODUCT_ICON_SVG } from "@/lib/product-model";
+import { illustratedProductDetails, normalizeProductDetailBlocks, applicationIconForText, buildSpecificationGroups, canonicalizeProduct, iconKeyForText, LOCALE_NATIVE_NAMES, normalizeAssetPath, normalizeProductIconItems, normalizeProductSlug, normalizeStringList, productDocumentTypeLabel, productSlugCandidates, PRODUCT_ICON_SVG } from "@/lib/product-model";
 import { productCategoriesFromContent, productCategoryLabel } from "@/lib/product-categories";
 import { productSearchDescriptor, productSeoFallback } from "@/lib/seo-fallbacks";
 import { localizeCatalogValue } from "@/lib/lorawan-landing";
@@ -408,25 +408,15 @@ if (titleLower.includes("soil")) {
 
 const hasLegacySonicDistance = (value: unknown) => /(?:0[.,]25\s*(?:m|Meter)|\b25\s*cm\b)/i.test(String(value || ""));
 const updateSonicRange = (value: string) => value.replace(/0([.,])25(?=\s*m)/gi, (_, separator) => `0${separator}28`);
-const alternateDetailLayouts: Record<string, Record<string, string>> = {
-  lumiosafe: {
-    voice: "products/lumiosafe/lumiosafe-red.webp",
-    light: "products/lumiosafe/lumiosafe-green.webp",
-    integration: "products/lumiosafe/lumiosafe-blue.webp",
-    reliability: "products/lumiosafe/lumiosafe-white.webp",
-    installation: "products/lumiosafe/lumiosafe-yellow.webp",
-  },
-};
-const detailLayoutImages = alternateDetailLayouts[canonicalProductSlug];
-const detailBlocks = (Array.isArray(product.detailBlocks) ? product.detailBlocks : [])
-  .filter((block: any) => block && block.visible !== false)
+const detailBlocks = normalizeProductDetailBlocks(product.detailBlocks)
   .map((block: any) => canonicalProductSlug === "willowsonic" ? {
     ...block,
     body: hasLegacySonicDistance(block.body) ? "" : block.body,
     items: Array.isArray(block.items) ? block.items.map(updateSonicRange) : block.items,
   } : block);
 
-const illustratedDetailBlocks = detailBlocks.filter((block: any) => detailLayoutImages?.[block.id]);
+const illustratedDetailBlocks = illustratedProductDetails({ ...product, detailLayout: rawProduct.detailLayout, detailBlockPresentation: rawProduct.detailBlockPresentation }, detailBlocks);
+const standardDetailBlocks = detailBlocks.filter((block) => !illustratedDetailBlocks.some((entry) => entry.block === block));
 
 // Technical sections
 const techBlockLabels = {
@@ -1079,8 +1069,8 @@ const relatedCopy = relatedProductsCopy[locale] || relatedProductsCopy.en;
     {illustratedDetailBlocks.length > 0 && (
       <section class="ws-illustrated-details" aria-label={getT("engineeringOverviewTitle")}>
         <div class="section-inner">
-          {illustratedDetailBlocks.map((block: any, index: number) => (
-            <article class:list={["ws-illustrated-row", { "ws-illustrated-row-reverse": index % 2 === 1 }]}>
+          {illustratedDetailBlocks.map(({ block, image, side }, index) => (
+            <article class:list={["ws-illustrated-row", { "ws-illustrated-row-reverse": side ? (side === "left") !== (locale === "ar") : index % 2 === 1 }]}>
               <div class="ws-illustrated-copy">
                 {block.kicker && <p class="ws-kicker">{block.kicker}</p>}
                 {block.title && <h2 class="ws-h2">{block.title}</h2>}
@@ -1092,7 +1082,7 @@ const relatedCopy = relatedProductsCopy[locale] || relatedProductsCopy.en;
                 )}
               </div>
               <div class="ws-illustrated-media">
-                <img src={productAssetUrl(detailLayoutImages[block.id])} alt="" width="640" height="640" loading="lazy" decoding="async" />
+                <img src={productAssetUrl(image)} alt="" width="640" height="640" loading="lazy" decoding="async" />
               </div>
             </article>
           ))}
@@ -1284,7 +1274,7 @@ const relatedCopy = relatedProductsCopy[locale] || relatedProductsCopy.en;
     )}
 
     <!-- Technical & Engineering Overview Section -->
-    {(product.description || (detailBlocks && detailBlocks.length > 0)) && (
+    {(product.description || standardDetailBlocks.length > 0) && (
       <section class="ws-overview-section" id="engineering-overview">
         <div class="section-inner">
           <div class="ws-section-header">
@@ -1311,9 +1301,9 @@ const relatedCopy = relatedProductsCopy[locale] || relatedProductsCopy.en;
             </div>
           )}
 
-          {detailBlocks.length > 0 && (
+          {standardDetailBlocks.length > 0 && (
             <div class="ws-capabilities-grid" style="margin-top: 24px;">
-              {detailBlocks.filter((block: any) => !detailLayoutImages?.[block.id]).map((block: any) => (
+              {standardDetailBlocks.map((block: any) => (
                 <article class="ws-capability-card">
                   <div class="ws-capability-iconbox">
                     <Fragment set:html={ICONS[block.icon] || ICONS.stack || ICONS.check} />
