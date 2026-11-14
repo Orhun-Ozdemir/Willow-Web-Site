@@ -584,7 +584,17 @@ const WS_SPEC_LABELS: Record<string, Record<string, string>> = {
   reported_parameters: { en: "Reported parameters", tr: "Raporlanan parametreler", de: "Berichtete Parameter", fr: "Paramètres rapportés", es: "Parámetros reportados", it: "Parametri riportati", ar: "المعلمات المبلغ عنها", ja: "レポートパラメータ" },
 };
 
+const catalogSpecificationLabels: Record<string, { en: string; tr: string }> = {
+  temperature_measurement_range: { en: "Temperature measurement range", tr: "Sıcaklık ölçüm aralığı" },
+  humidity_measurement_range: { en: "Relative humidity range", tr: "Bağıl nem ölçüm aralığı" },
+  temperature_accuracy: { en: "Temperature accuracy", tr: "Sıcaklık ölçüm doğruluğu" },
+  max_modbus_registers: { en: "Maximum Modbus registers read", tr: "Okunabilen azami Modbus register sayısı" },
+};
+
 function wsSpecLabel(key: string, locale: Locale) {
+  const catalogLabel = catalogSpecificationLabels[key];
+  if (catalogLabel) return locale === "tr" ? catalogLabel.tr : catalogLabel.en;
+
   if (WS_SPEC_LABELS[key]) {
     return WS_SPEC_LABELS[key][locale] || WS_SPEC_LABELS[key]["en"];
   }
@@ -623,7 +633,17 @@ function getProductHighlights(p: any, locale: Locale) {
 }
 
 const highlights = getProductHighlights(product, locale);
-const specEntries = Object.entries(specObject).filter(([k]) => k !== "features" && k !== "reported_parameters" && k !== "reportedParameters");
+// Values from the current brochures linked in the WillowTemp and WillowMod document lists.
+const brochureSpecs: Record<string, Record<string, string>> = {
+  willowtemp: {
+    temperature_measurement_range: "−20 °C – +80 °C",
+    humidity_measurement_range: locale === "tr" ? "%0–100 RH" : "0–100% RH",
+    temperature_accuracy: "±0.2 °C",
+  },
+  willowmod: { max_modbus_registers: "20" },
+};
+const additionalSpecs = locale === "en" || locale === "tr" ? brochureSpecs[String(rawProduct.id).toLowerCase()] : undefined;
+const specEntries = Object.entries({ ...additionalSpecs, ...specObject }).filter(([k]) => k !== "features" && k !== "reported_parameters" && k !== "reportedParameters");
 const keyFeatures = localizedProductFeatures(rawProduct.id, locale, normalizeStringList((specObject as any)?.features));
 
 const extras = getProductExtras(rawProduct.id || rawProduct.slug || slug);

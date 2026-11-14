@@ -44,12 +44,12 @@ const comparisonProducts = selectedCategory ? [] : allProducts
     const firstValue = (...keys: string[]) => keys
       .map((key) => specifications[key] ?? raw[key] ?? localized[key])
       .find((value) => value !== undefined && value !== null && String(value).trim());
+    const searchDescriptor = productSearchDescriptor(raw.id, locale);
     const category = visibleCategories.find((item) => item.key === String(raw.category || ""));
     return {
       raw,
-      localized,
       brand: typeof raw.title === "string" ? raw.title : localized.title,
-      type: raw.localized?.[locale]?.type || productSearchDescriptor(raw.id, locale) || localized.type || "—",
+      type: searchDescriptor || raw.localized?.[locale]?.type || localized.type || "—",
       enclosure: localizeCatalogValue(firstValue("enclosure"), locale),
       measurementRange: localizeCatalogValue(firstValue("measurement_range", "measurementRange", "pressure_range", "pressureRange", "sensing_radius", "sensingRadius"), locale),
       radio: localizeCatalogValue(firstValue("protocol", "wireless_protocol", "wirelessProtocol"), locale),
@@ -206,7 +206,7 @@ const comparisonProducts = selectedCategory ? [] : allProducts
                       <span>{item.category}</span>
                     </a>
                   </th>
-                  <td>{item.type}</td>
+                  <td><a href={`/${locale}/products/${item.raw.slug || item.raw.id}`}>{item.type}</a></td>
                   <td>{item.enclosure || "—"}</td>
                   <td>{item.measurementRange || "—"}</td>
                   <td>{item.radio || "—"}</td>
@@ -312,6 +312,7 @@ const comparisonProducts = selectedCategory ? [] : allProducts
   .lorawan-table-wrap tbody a strong, .lorawan-table-wrap tbody a span { display: block; }
   .lorawan-table-wrap tbody a strong { color: var(--blue); font-size: .86rem; }
   .lorawan-table-wrap tbody a span { margin-top: 4px; color: rgba(19,27,46,.53); font-size: .68rem; font-weight: 600; }
+  .lorawan-table-wrap tbody td a { text-decoration: underline; text-underline-offset: 2px; }
   .lorawan-comparison-note { margin: 14px 2px 0; color: rgba(19,27,46,.58); font-size: .72rem; line-height: 1.55; }
   .lorawan-catalog-link { padding: 0 0 70px; }
   .lorawan-catalog-layout { display: flex; gap: 28px; align-items: center; justify-content: space-between; padding: 26px 30px; border: 1px solid rgba(19,33,117,.11); border-radius: 18px; background: linear-gradient(135deg, #f7f9fd, #eef3fb); }

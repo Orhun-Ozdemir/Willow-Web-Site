@@ -1,13 +1,6 @@
 import type { Locale } from "@/lib/cms";
 
-/**
- * Code-only SEO fallbacks derived from existing localized content. These NEVER
- * write to the CMS/DB: any real value stored in `pageSeo`/`product.seo` keeps
- * priority; these only fill the gap when a locale has no meta yet. No automatic
- * truncation is applied — the goal is search-intent-aligned defaults, not
- * overwriting editorial copy.
- */
-
+/** Localized SEO defaults derived from site and catalog content. */
 const BRAND = "Willow Software";
 
 const strip = (value: unknown): string =>
@@ -436,13 +429,19 @@ export function productSeoFallback(
     || category;
   // Non-branded first title pattern: [Search Descriptor] — [Product Name] | Willow Software
   const searchIntentTitle = descriptor ? `${descriptor} — ${name}` : name;
-  const generatedTitle = compactTitle(override?.title || searchIntentTitle);
+  const cmsTitle = strip(opts.seoTitle);
+  const preferredTitle = cmsTitle || override?.title || searchIntentTitle;
+  // Keep the model name when a longer catalog title would be cut short.
+  const compactedTitle = compactTitle(preferredTitle);
+  const title = (locale === "tr" || locale === "en") && compactedTitle.endsWith("…")
+    ? searchIntentTitle
+    : compactedTitle;
 
   const template = (PRODUCT_DESC[locale] || PRODUCT_DESC.en)(name, category);
   const generatedDescription = override?.description || shortDesc || template;
 
   return {
-    title: opts.seoTitle ? compactTitle(opts.seoTitle) : generatedTitle,
+    title,
     description: compactDescription(strip(opts.metaDescription) || generatedDescription),
   };
 }
@@ -467,20 +466,20 @@ export function newsSeoFallback(
 }
 
 const PRODUCT_TITLE_DESCRIPTORS: Record<string, Partial<Record<Locale, string>>> = {
-  willowbee: { en: "LoRaWAN MCU Module", tr: "LoRaWAN MCU Modülü", de: "LoRaWAN-MCU-Modul", fr: "Module MCU LoRaWAN", es: "Módulo MCU LoRaWAN", it: "Modulo MCU LoRaWAN", ar: "وحدة MCU LoRaWAN", ja: "LoRaWAN MCUモジュール" },
+  willowbee: { en: "STM32WL LoRaWAN MCU Module", tr: "STM32WL LoRaWAN MCU Modülü", de: "LoRaWAN-MCU-Modul", fr: "Module MCU LoRaWAN", es: "Módulo MCU LoRaWAN", it: "Modulo MCU LoRaWAN", ar: "وحدة MCU LoRaWAN", ja: "LoRaWAN MCUモジュール" },
   willowsonic: { en: "LoRaWAN Ultrasonic Level Sensor", tr: "LoRaWAN Ultrasonik Seviye Sensörü", de: "LoRaWAN-Ultraschall-Füllstandssensor", fr: "Capteur de niveau ultrasonique LoRaWAN", es: "Sensor ultrasónico de nivel LoRaWAN", it: "Sensore di livello LoRaWAN a ultrasuoni", ar: "مستشعر مستوى LoRaWAN بالموجات فوق الصوتية", ja: "LoRaWAN超音波レベルセンサー" },
   willowair: { en: "LoRaWAN Air Quality Sensor", tr: "LoRaWAN Hava Kalitesi Sensörü", de: "LoRaWAN-Luftqualitätssensor", fr: "Capteur d’air LoRaWAN", es: "Sensor de aire LoRaWAN", it: "Sensore aria LoRaWAN", ar: "مستشعر جودة الهواء LoRaWAN", ja: "LoRaWAN空気品質センサー" },
   willowgps: { en: "LoRaWAN GPS Tracker", tr: "LoRaWAN GPS Takip Modülü", de: "LoRaWAN-GPS-Tracker", fr: "Traceur GPS LoRaWAN", es: "Rastreador GPS LoRaWAN", it: "Tracker GPS LoRaWAN", ar: "متعقب GPS LoRaWAN", ja: "LoRaWAN GPSトラッカー" },
   willowpanic: { en: "LoRaWAN Panic Button", tr: "LoRaWAN Panik Butonu", de: "LoRaWAN-Paniktaster", fr: "Bouton d’alerte LoRaWAN", es: "Botón de pánico LoRaWAN", it: "Pulsante di emergenza LoRaWAN", ar: "زر طوارئ LoRaWAN", ja: "LoRaWANパニックボタン" },
   willowsens: { en: "LoRaWAN Door Sensor", tr: "LoRaWAN Kapı Sensörü", de: "LoRaWAN-Türsensor", fr: "Capteur de porte LoRaWAN", es: "Sensor de puerta LoRaWAN", it: "Sensore porta LoRaWAN", ar: "مستشعر باب LoRaWAN", ja: "LoRaWANドアセンサー" },
-  willowtilt: { en: "LoRaWAN Tilt Sensor", tr: "LoRaWAN Eğim Sensörü", de: "LoRaWAN-Neigungssensor", fr: "Capteur d’inclinaison LoRaWAN", es: "Sensor de inclinación LoRaWAN", it: "Sensore di inclinazione LoRaWAN", ar: "مستشعر ميل LoRaWAN", ja: "LoRaWAN傾斜センサー" },
-  willowtemp: { en: "LoRaWAN Temperature Sensor", tr: "LoRaWAN Sıcaklık Sensörü", de: "LoRaWAN-Temperatursensor", fr: "Capteur de température LoRaWAN", es: "Sensor de temperatura LoRaWAN", it: "Sensore di temperatura LoRaWAN", ar: "مستشعر حرارة LoRaWAN", ja: "LoRaWAN温度センサー" },
-  willowmod: { en: "LoRaWAN Modbus Bridge", tr: "LoRaWAN Modbus Köprüsü", de: "LoRaWAN-Modbus-Bridge", fr: "Passerelle Modbus LoRaWAN", es: "Puente Modbus LoRaWAN", it: "Bridge Modbus LoRaWAN", ar: "جسر Modbus LoRaWAN", ja: "LoRaWAN Modbusブリッジ" },
-  willowmos: { en: "LoRaWAN Soil Moisture Sensor", tr: "LoRaWAN Toprak Nem Sensörü", de: "LoRaWAN-Bodenfeuchtesensor", fr: "Capteur d’humidité du sol LoRaWAN", es: "Sensor de humedad del suelo LoRaWAN", it: "Sensore umidità terreno LoRaWAN", ar: "مستشعر رطوبة التربة LoRaWAN", ja: "LoRaWAN土壌水分センサー" },
+  willowtilt: { en: "LoRaWAN Tilt & Acceleration Sensor", tr: "LoRaWAN Eğim ve İvme Sensörü", de: "LoRaWAN-Neigungssensor", fr: "Capteur d’inclinaison LoRaWAN", es: "Sensor de inclinación LoRaWAN", it: "Sensore di inclinazione LoRaWAN", ar: "مستشعر ميل LoRaWAN", ja: "LoRaWAN傾斜センサー" },
+  willowtemp: { en: "LoRaWAN Temperature & Humidity Sensor", tr: "LoRaWAN Sıcaklık ve Nem Sensörü", de: "LoRaWAN-Temperatursensor", fr: "Capteur de température LoRaWAN", es: "Sensor de temperatura LoRaWAN", it: "Sensore di temperatura LoRaWAN", ar: "مستشعر حرارة LoRaWAN", ja: "LoRaWAN温度センサー" },
+  willowmod: { en: "RS485 Modbus RTU to LoRaWAN Bridge", tr: "RS485 Modbus RTU LoRaWAN Köprüsü", de: "LoRaWAN-Modbus-Bridge", fr: "Passerelle Modbus LoRaWAN", es: "Puente Modbus LoRaWAN", it: "Bridge Modbus LoRaWAN", ar: "جسر Modbus LoRaWAN", ja: "LoRaWAN Modbusブリッジ" },
+  willowmos: { en: "LoRaWAN Soil Moisture & Temperature Sensor", tr: "LoRaWAN Toprak Nemi ve Sıcaklık Sensörü", de: "LoRaWAN-Bodenfeuchtesensor", fr: "Capteur d’humidité du sol LoRaWAN", es: "Sensor de humedad del suelo LoRaWAN", it: "Sensore umidità terreno LoRaWAN", ar: "مستشعر رطوبة التربة LoRaWAN", ja: "LoRaWAN土壌水分センサー" },
   willowpre: { en: "IP67 LoRaWAN Pressure Sensor", tr: "IP67 LoRaWAN Basınç Sensörü", de: "IP67-LoRaWAN-Drucksensor", fr: "Capteur de pression LoRaWAN IP67", es: "Sensor de presión LoRaWAN IP67", it: "Sensore di pressione LoRaWAN IP67", ar: "مستشعر ضغط LoRaWAN بتصنيف IP67", ja: "IP67対応LoRaWAN圧力センサー" },
   willowane: { en: "LoRaWAN Anemometer", tr: "LoRaWAN Anemometre", de: "LoRaWAN-Anemometer", fr: "Anémomètre LoRaWAN", es: "Anemómetro LoRaWAN", it: "Anemometro LoRaWAN", ar: "مقياس رياح LoRaWAN", ja: "LoRaWAN風速計" },
-  lumiosafe: { en: "LoRaWAN Voice & Light Alert Beacon", tr: "LoRaWAN Sesli ve Işıklı Uyarı Feneri", de: "LoRaWAN-Alarmbake mit Sprache und Licht", fr: "Balise d’alerte vocale et lumineuse LoRaWAN", es: "Baliza de alerta por voz y luz LoRaWAN", it: "Faro di allarme vocale e luminoso LoRaWAN", ar: "منارة تنبيه صوتية وضوئية LoRaWAN", ja: "LoRaWAN音声・光アラートビーコン" },
-  "product-1792414012667": { en: "LoRaWAN Voice & Light Alert Beacon", tr: "LoRaWAN Sesli ve Işıklı Uyarı Feneri", de: "LoRaWAN-Alarmbake mit Sprache und Licht", fr: "Balise d’alerte vocale et lumineuse LoRaWAN", es: "Baliza de alerta por voz y luz LoRaWAN", it: "Faro di allarme vocale e luminoso LoRaWAN", ar: "منارة تنبيه صوتية وضوئية LoRaWAN", ja: "LoRaWAN音声・光アラートビーコン" },
+  lumiosafe: { en: "LoRaWAN Voice & Light Alert Beacon", tr: "LoRaWAN Sesli ve Işıklı Uyarı Cihazı", de: "LoRaWAN-Alarmbake mit Sprache und Licht", fr: "Balise d’alerte vocale et lumineuse LoRaWAN", es: "Baliza de alerta por voz y luz LoRaWAN", it: "Faro di allarme vocale e luminoso LoRaWAN", ar: "منارة تنبيه صوتية وضوئية LoRaWAN", ja: "LoRaWAN音声・光アラートビーコン" },
+  "product-1792414012667": { en: "LoRaWAN Voice & Light Alert Beacon", tr: "LoRaWAN Sesli ve Işıklı Uyarı Cihazı", de: "LoRaWAN-Alarmbake mit Sprache und Licht", fr: "Balise d’alerte vocale et lumineuse LoRaWAN", es: "Baliza de alerta por voz y luz LoRaWAN", it: "Faro di allarme vocale e luminoso LoRaWAN", ar: "منارة تنبيه صوتية وضوئية LoRaWAN", ja: "LoRaWAN音声・光アラートビーコン" },
 };
 
 /** Search-intent descriptor for product headings, image alternatives and links. */
