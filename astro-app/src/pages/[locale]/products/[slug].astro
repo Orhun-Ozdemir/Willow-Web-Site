@@ -408,6 +408,16 @@ if (titleLower.includes("soil")) {
 
 const hasLegacySonicDistance = (value: unknown) => /(?:0[.,]25\s*(?:m|Meter)|\b25\s*cm\b)/i.test(String(value || ""));
 const updateSonicRange = (value: string) => value.replace(/0([.,])25(?=\s*m)/gi, (_, separator) => `0${separator}28`);
+const alternateDetailLayouts: Record<string, Record<string, string>> = {
+  lumiosafe: {
+    voice: "products/lumiosafe/lumiosafe-red.webp",
+    light: "products/lumiosafe/lumiosafe-green.webp",
+    integration: "products/lumiosafe/lumiosafe-blue.webp",
+    reliability: "products/lumiosafe/lumiosafe-white.webp",
+    installation: "products/lumiosafe/lumiosafe-yellow.webp",
+  },
+};
+const detailLayoutImages = alternateDetailLayouts[canonicalProductSlug];
 const detailBlocks = (Array.isArray(product.detailBlocks) ? product.detailBlocks : [])
   .filter((block: any) => block && block.visible !== false)
   .map((block: any) => canonicalProductSlug === "willowsonic" ? {
@@ -415,6 +425,8 @@ const detailBlocks = (Array.isArray(product.detailBlocks) ? product.detailBlocks
     body: hasLegacySonicDistance(block.body) ? "" : block.body,
     items: Array.isArray(block.items) ? block.items.map(updateSonicRange) : block.items,
   } : block);
+
+const illustratedDetailBlocks = detailBlocks.filter((block: any) => detailLayoutImages?.[block.id]);
 
 // Technical sections
 const techBlockLabels = {
@@ -1064,6 +1076,30 @@ const relatedCopy = relatedProductsCopy[locale] || relatedProductsCopy.en;
       </div>
     </section>
 
+    {illustratedDetailBlocks.length > 0 && (
+      <section class="ws-illustrated-details" aria-label={getT("engineeringOverviewTitle")}>
+        <div class="section-inner">
+          {illustratedDetailBlocks.map((block: any, index: number) => (
+            <article class:list={["ws-illustrated-row", { "ws-illustrated-row-reverse": index % 2 === 1 }]}>
+              <div class="ws-illustrated-copy">
+                {block.kicker && <p class="ws-kicker">{block.kicker}</p>}
+                {block.title && <h2 class="ws-h2">{block.title}</h2>}
+                {block.body && <div class="ws-capability-desc" set:html={block.body} />}
+                {Array.isArray(block.items) && block.items.length > 0 && (
+                  <ul class="ws-features-bullets">
+                    {block.items.map((item: string) => <li>{item}</li>)}
+                  </ul>
+                )}
+              </div>
+              <div class="ws-illustrated-media">
+                <img src={productAssetUrl(detailLayoutImages[block.id])} alt="" width="640" height="640" loading="lazy" decoding="async" />
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+    )}
+
     <!-- Stats Band Section -->
     {highlights.length > 0 && (
       <section class="ws-stats-section">
@@ -1277,7 +1313,7 @@ const relatedCopy = relatedProductsCopy[locale] || relatedProductsCopy.en;
 
           {detailBlocks.length > 0 && (
             <div class="ws-capabilities-grid" style="margin-top: 24px;">
-              {detailBlocks.map((block: any) => (
+              {detailBlocks.filter((block: any) => !detailLayoutImages?.[block.id]).map((block: any) => (
                 <article class="ws-capability-card">
                   <div class="ws-capability-iconbox">
                     <Fragment set:html={ICONS[block.icon] || ICONS.stack || ICONS.check} />
@@ -2174,6 +2210,52 @@ const relatedCopy = relatedProductsCopy[locale] || relatedProductsCopy.en;
     color: #33405e;
     font-weight: 600;
     margin: 0;
+  }
+
+  .ws-illustrated-details {
+    padding-block: clamp(24px, 5vw, 64px);
+  }
+  .ws-illustrated-row {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: center;
+    gap: clamp(24px, 6vw, 96px);
+    padding-block: clamp(24px, 5vw, 64px);
+  }
+  .ws-illustrated-row + .ws-illustrated-row {
+    border-top: 1px solid rgba(var(--accent-rgb), 0.14);
+  }
+  .ws-illustrated-copy {
+    display: grid;
+    gap: 12px;
+  }
+  .ws-illustrated-copy :is(h2, p, ul) { margin: 0; }
+  .ws-illustrated-media {
+    display: grid;
+    place-items: center;
+    padding: clamp(16px, 4vw, 40px);
+    border-radius: 14px;
+    background: var(--panel);
+  }
+  .ws-illustrated-media img {
+    display: block;
+    width: min(100%, 360px);
+    height: auto;
+    aspect-ratio: 1;
+    object-fit: contain;
+  }
+  @media (min-width: 761px) {
+    .ws-illustrated-row-reverse .ws-illustrated-copy {
+      grid-column: 2;
+      grid-row: 1;
+    }
+    .ws-illustrated-row-reverse .ws-illustrated-media {
+      grid-column: 1;
+      grid-row: 1;
+    }
+  }
+  @media (max-width: 760px) {
+    .ws-illustrated-row { grid-template-columns: minmax(0, 1fr); }
   }
 
   /* Engineering Overview Section */
