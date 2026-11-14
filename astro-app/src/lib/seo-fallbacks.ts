@@ -433,7 +433,7 @@ export function productSeoFallback(
   const preferredTitle = cmsTitle || override?.title || searchIntentTitle;
   // Keep the model name when a longer catalog title would be cut short.
   const compactedTitle = compactTitle(preferredTitle);
-  const title = (locale === "tr" || locale === "en" || locale === "de") && compactedTitle.endsWith("…")
+  const title = compactedTitle.endsWith("…")
     ? searchIntentTitle
     : compactedTitle;
 

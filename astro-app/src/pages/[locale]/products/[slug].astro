@@ -14,7 +14,7 @@ import { localizeCatalogValue } from "@/lib/lorawan-landing";
 import { localizedProductApplications, localizedProductFeatures, localizedReportedParameters } from "@/lib/product-spec-copy";
 import { productCutoutDimensions, productCutoutSrcSet } from "@/lib/image-metadata";
 import { technicalGuide } from "@/lib/technical-guides";
-import { productSelectionCopy, productSelectionQuestions } from "@/lib/product-selection-copy";
+import { localizedProductSelection } from "@/lib/product-selection-copy";
 
 export const prerender = false;
 
@@ -49,8 +49,7 @@ const seo = rawProduct.seo?.[locale] || {};
 const productBrand = typeof rawProduct.title === "string"
   ? rawProduct.title.trim()
   : localizedValue(rawProduct.title, locale) || String(rawProduct.id || product.title || "");
-const selectionLocale = locale === "en" || locale === "tr" || locale === "de" ? locale : undefined;
-const selectionLead = selectionLocale ? productSelectionCopy[canonicalProductSlug]?.[selectionLocale] : undefined;
+const { lead: selectionLead, question: selectionQuestion } = localizedProductSelection(canonicalProductSlug, locale);
 const productSeoText = productSeoFallback(locale, {
   productId: rawProduct.id,
   name: productBrand,
@@ -486,17 +485,17 @@ const WS_SPEC_LABELS: Record<string, Record<string, string>> = {
   reported_parameters: { en: "Reported parameters", tr: "Raporlanan parametreler", de: "Berichtete Parameter", fr: "Paramètres rapportés", es: "Parámetros reportados", it: "Parametri riportati", ar: "المعلمات المبلغ عنها", ja: "レポートパラメータ" },
 };
 
-const catalogSpecificationLabels: Record<string, { en: string; tr: string; de: string }> = {
-  distance_resolution: { en: "Distance resolution", tr: "Mesafe çözünürlüğü", de: "Abstandsauflösung" },
-  temperature_measurement_range: { en: "Temperature measurement range", tr: "Sıcaklık ölçüm aralığı", de: "Temperaturmessbereich" },
-  humidity_measurement_range: { en: "Relative humidity range", tr: "Bağıl nem ölçüm aralığı", de: "Messbereich der relativen Luftfeuchte" },
-  temperature_accuracy: { en: "Temperature accuracy", tr: "Sıcaklık ölçüm doğruluğu", de: "Temperaturmessgenauigkeit" },
-  max_modbus_registers: { en: "Maximum Modbus registers read", tr: "Okunabilen azami Modbus register sayısı", de: "Maximal lesbare Modbus-Register" },
+const catalogSpecificationLabels: Record<string, Record<Locale, string>> = {
+  distance_resolution: { en: "Distance resolution", tr: "Mesafe çözünürlüğü", de: "Abstandsauflösung", fr: "Résolution de distance", es: "Resolución de distancia", it: "Risoluzione della distanza", ar: "دقة تمييز المسافة", ja: "距離分解能" },
+  temperature_measurement_range: { en: "Temperature measurement range", tr: "Sıcaklık ölçüm aralığı", de: "Temperaturmessbereich", fr: "Plage de température", es: "Rango de temperatura", it: "Intervallo di temperatura", ar: "نطاق قياس درجة الحرارة", ja: "温度測定範囲" },
+  humidity_measurement_range: { en: "Relative humidity range", tr: "Bağıl nem ölçüm aralığı", de: "Messbereich der relativen Luftfeuchte", fr: "Plage d’humidité relative", es: "Rango de humedad relativa", it: "Intervallo di umidità relativa", ar: "نطاق الرطوبة النسبية", ja: "相対湿度測定範囲" },
+  temperature_accuracy: { en: "Temperature accuracy", tr: "Sıcaklık ölçüm doğruluğu", de: "Temperaturmessgenauigkeit", fr: "Précision de température", es: "Precisión de temperatura", it: "Accuratezza della temperatura", ar: "دقة قياس درجة الحرارة", ja: "温度精度" },
+  max_modbus_registers: { en: "Maximum Modbus registers read", tr: "Okunabilen azami Modbus register sayısı", de: "Maximal lesbare Modbus-Register", fr: "Registres Modbus lisibles au maximum", es: "Máximo de registros Modbus legibles", it: "Numero massimo di registri Modbus leggibili", ar: "الحد الأقصى للسجلات المقروءة", ja: "最大読み取りレジスター数" },
 };
 
 function wsSpecLabel(key: string, locale: Locale) {
   const catalogLabel = catalogSpecificationLabels[key];
-  if (catalogLabel) return catalogLabel[locale as keyof typeof catalogLabel] || catalogLabel.en;
+  if (catalogLabel) return catalogLabel[locale];
 
   if (WS_SPEC_LABELS[key]) {
     return WS_SPEC_LABELS[key][locale] || WS_SPEC_LABELS[key]["en"];
@@ -545,7 +544,7 @@ const brochureSpecs: Record<string, Record<string, string>> = {
   },
   willowmod: { max_modbus_registers: "20" },
 };
-const additionalSpecs = locale === "en" || locale === "tr" || locale === "de" ? brochureSpecs[String(rawProduct.id).toLowerCase()] : undefined;
+const additionalSpecs = brochureSpecs[canonicalProductSlug];
 const sonicSpecs = canonicalProductSlug === "willowsonic"
   ? { measurement_range: "28–750 cm", distance_resolution: "1 mm" }
   : {};
@@ -650,7 +649,6 @@ const editorialFaq =
     ? product.aiFAQ
     : []);
 
-const selectionQuestion = selectionLocale ? productSelectionQuestions[canonicalProductSlug]?.[selectionLocale] : undefined;
 const localizedFaq = [
   ...(selectionQuestion ? [{ question: selectionQuestion[0], answer: selectionQuestion[1] }] : []),
   ...editorialFaq.filter((item: any) => canonicalProductSlug !== "willowsonic" || !hasLegacySonicDistance(item?.answer)),
@@ -660,7 +658,7 @@ const selectionSource = selectionQuestion && canonicalProductSlug === "willowson
   : selectionQuestion && canonicalProductSlug === "willowmod"
   ? "https://www.bipom.com/documents/willow/WS-O-8-AE-MB-1%20User%20Manual.pdf"
   : selectionQuestion && canonicalProductSlug === "willowtemp" ? primaryDocUrl : "";
-const selectionSourceLabel = locale === "tr" ? "Teknik kaynak" : locale === "de" ? "Technische Quelle" : "Technical source";
+const selectionSourceLabel = { en: "Technical source", tr: "Teknik kaynak", de: "Technische Quelle", fr: "Source technique", es: "Fuente técnica", it: "Fonte tecnica", ar: "المصدر الفني", ja: "技術資料" }[locale];
 
 
 const ICONS: Record<string, string> = {
