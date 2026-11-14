@@ -18,6 +18,7 @@ export const ALLOWED_ANALYTICS_EVENTS = new Set([
   "language_switch",
   "product_card_click",
   "product_view",
+  "product_quote_click",
   "document_download",
   "outbound_click",
   "email_click",

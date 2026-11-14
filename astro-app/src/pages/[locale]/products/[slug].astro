@@ -584,16 +584,16 @@ const WS_SPEC_LABELS: Record<string, Record<string, string>> = {
   reported_parameters: { en: "Reported parameters", tr: "Raporlanan parametreler", de: "Berichtete Parameter", fr: "Paramètres rapportés", es: "Parámetros reportados", it: "Parametri riportati", ar: "المعلمات المبلغ عنها", ja: "レポートパラメータ" },
 };
 
-const catalogSpecificationLabels: Record<string, { en: string; tr: string }> = {
-  temperature_measurement_range: { en: "Temperature measurement range", tr: "Sıcaklık ölçüm aralığı" },
-  humidity_measurement_range: { en: "Relative humidity range", tr: "Bağıl nem ölçüm aralığı" },
-  temperature_accuracy: { en: "Temperature accuracy", tr: "Sıcaklık ölçüm doğruluğu" },
-  max_modbus_registers: { en: "Maximum Modbus registers read", tr: "Okunabilen azami Modbus register sayısı" },
+const catalogSpecificationLabels: Record<string, { en: string; tr: string; de: string }> = {
+  temperature_measurement_range: { en: "Temperature measurement range", tr: "Sıcaklık ölçüm aralığı", de: "Temperaturmessbereich" },
+  humidity_measurement_range: { en: "Relative humidity range", tr: "Bağıl nem ölçüm aralığı", de: "Messbereich der relativen Luftfeuchte" },
+  temperature_accuracy: { en: "Temperature accuracy", tr: "Sıcaklık ölçüm doğruluğu", de: "Temperaturmessgenauigkeit" },
+  max_modbus_registers: { en: "Maximum Modbus registers read", tr: "Okunabilen azami Modbus register sayısı", de: "Maximal lesbare Modbus-Register" },
 };
 
 function wsSpecLabel(key: string, locale: Locale) {
   const catalogLabel = catalogSpecificationLabels[key];
-  if (catalogLabel) return locale === "tr" ? catalogLabel.tr : catalogLabel.en;
+  if (catalogLabel) return catalogLabel[locale as keyof typeof catalogLabel] || catalogLabel.en;
 
   if (WS_SPEC_LABELS[key]) {
     return WS_SPEC_LABELS[key][locale] || WS_SPEC_LABELS[key]["en"];
@@ -642,7 +642,7 @@ const brochureSpecs: Record<string, Record<string, string>> = {
   },
   willowmod: { max_modbus_registers: "20" },
 };
-const additionalSpecs = locale === "en" || locale === "tr" ? brochureSpecs[String(rawProduct.id).toLowerCase()] : undefined;
+const additionalSpecs = locale === "en" || locale === "tr" || locale === "de" ? brochureSpecs[String(rawProduct.id).toLowerCase()] : undefined;
 const specEntries = Object.entries({ ...additionalSpecs, ...specObject }).filter(([k]) => k !== "features" && k !== "reported_parameters" && k !== "reportedParameters");
 const keyFeatures = localizedProductFeatures(rawProduct.id, locale, normalizeStringList((specObject as any)?.features));
 
@@ -937,11 +937,30 @@ const getT = (key: keyof typeof t) => {
 
 const relatedGlossaryTerms = glossaryLinksForProduct(normalizedSlug, content.glossary || [], locale);
 const glossaryHeading = glossaryLinkLabels.heading[locale] || glossaryLinkLabels.heading.en;
-const relatedGuideSlug = String(rawProduct.id).toLowerCase() === "willowpre"
-  ? "how-to-choose-a-lorawan-sensor"
-  : String(rawProduct.category) === "industrial"
-    ? "modbus-to-lorawan-integration"
-    : "how-to-choose-a-lorawan-sensor";
+const guideByProduct: Record<string, string> = {
+  willowsonic: "tank-level-monitoring-ultrasonic-vs-radar-vs-hydrostatic",
+  willowmod: "modbus-to-lorawan-integration",
+};
+const relatedGuideSlug = guideByProduct[canonicalProductSlug] || "how-to-choose-a-lorawan-sensor";
+const quoteUrl = `/${locale}/contact?product=${encodeURIComponent(canonicalProductSlug)}&type=quote`;
+const quoteLabel = {
+  en: `Request a quote for ${productBrand}`,
+  tr: `${productBrand} için teklif isteyin`,
+  de: `Angebot für ${productBrand} anfordern`,
+}[locale as "en" | "tr" | "de"] || getT("requestQuote");
+const useCaseCopy = {
+  willowmod: {
+    en: "Example: connect an energy meter over RS485. Configure WillowMod to read the registers listed in the meter manual, forward readings over LoRaWAN, and decode them with the meter’s documented byte order and scale. Verify a known reading and a disconnected meter before commissioning.",
+    tr: "Örnek olarak bir enerji sayacını RS485 üzerinden bağlayın. WillowMod’u sayaç kılavuzundaki register’ları okuyup LoRaWAN üzerinden iletecek şekilde ayarlayın. Verileri kılavuzdaki byte order ve ölçekle çözümleyin. Devreye almadan önce bilinen bir ölçümü ve sayaç bağlantısı kesildiğinde oluşan durumu doğrulayın.",
+    de: "Beispiel: Schließen Sie einen Energiezähler über RS485 an. Konfigurieren Sie WillowMod für die Register aus dem Zählerhandbuch und übertragen Sie die Werte über LoRaWAN. Verwenden Sie beim Dekodieren die dokumentierte Byte-Reihenfolge und Skalierung. Prüfen Sie vor der Inbetriebnahme einen bekannten Messwert und das Verhalten bei unterbrochener Verbindung.",
+  },
+  willowsonic: {
+    en: "For non-contact tank or silo monitoring, mount WillowSonic above the surface and keep its measurement path clear. Check the mounting distance against the published measurement range, and allow for the sensor’s blind zone at the highest fill level. Validate readings under actual site conditions, especially if foam or obstacles are present.",
+    tr: "Tank veya siloda temassız ölçüm için WillowSonic’i yüzeyin üzerine, ölçüm hattı açık kalacak şekilde monte edin. Montaj mesafesini yayımlanan ölçüm aralığıyla karşılaştırın ve en yüksek doluluk seviyesinde sensörün kör bölgesini hesaba katın. Köpük veya engel varsa ölçümü gerçek saha koşullarında doğrulayın.",
+    de: "Für die berührungslose Füllstandsmessung in Tanks oder Silos montieren Sie WillowSonic oberhalb der Oberfläche mit freiem Messweg. Gleichen Sie den Montageabstand mit dem angegebenen Messbereich ab und berücksichtigen Sie die Blindzone bei maximalem Füllstand. Prüfen Sie die Messwerte vor Ort, insbesondere bei Schaum oder Hindernissen.",
+  },
+} as const;
+const useCase = useCaseCopy[canonicalProductSlug as keyof typeof useCaseCopy]?.[locale as "en" | "tr" | "de"];
 const relatedGuide = technicalGuide(relatedGuideSlug);
 const relatedGuideLabel: Record<Locale, string> = { en: "Technical guide", tr: "Teknik rehber", de: "Technischer Leitfaden", fr: "Guide technique", es: "Guía técnica", it: "Guida tecnica", ar: "دليل فني", ja: "技術ガイド" };
 const visibleProductSequence = (content.products || [])
@@ -1059,6 +1078,7 @@ const relatedCopy = relatedProductsCopy[locale] || relatedProductsCopy.en;
           </div>
           <h1 class="ws-h1">{productHeading}</h1>
           <p class="ws-lead">{displayShortAnswer}</p>
+          {useCase && <p>{useCase}</p>}
           {relatedGlossaryTerms.length > 0 && (
             <div class="ws-glossary-links" aria-label={glossaryHeading}>
               <span class="ws-glossary-links-label">{glossaryHeading}</span>
@@ -1095,7 +1115,7 @@ const relatedCopy = relatedProductsCopy[locale] || relatedProductsCopy.en;
             </div>
           )}
           <div class="ws-hero-ctas">
-            <a class="ws-btn ws-btn-primary" href={`/${locale}/contact?product=${encodeURIComponent(slug)}`}>{getT("requestQuote")}</a>
+            <a class="ws-btn ws-btn-primary" href={quoteUrl} data-analytics-event="product_quote_click">{quoteLabel}</a>
             {(hasDocuments ? primaryDocUrl : legacyDatasheetUrl) && (
               <a class="ws-btn ws-btn-secondary" href={hasDocuments ? primaryDocUrl : legacyDatasheetUrl} target="_blank" rel="noopener noreferrer" download>
                 <Fragment set:html={ICONS.download} />

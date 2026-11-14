@@ -254,6 +254,12 @@ const settingsText = settingsCopy[locale] || settingsCopy.en;
       });
     }
 
+    function currentProduct() {
+      var pathProduct = location.pathname.match(/\/products\/(?!category\/)([a-z0-9-]+)\/?$/i)?.[1];
+      var queryProduct = new URLSearchParams(location.search).get("product");
+      return pathProduct || (queryProduct && /^[a-z0-9-]{1,80}$/.test(queryProduct) ? queryProduct : undefined);
+    }
+
     function elementLabel(element) {
       return String(element.getAttribute("aria-label") || element.textContent || "").replace(/\s+/g, " ").trim().slice(0, 120);
     }
@@ -279,6 +285,7 @@ const settingsText = settingsCopy[locale] || settingsCopy.en;
         label: elementLabel(target),
         section: target.closest("section")?.id || target.closest("section")?.getAttribute("data-section") || "",
         href: rawHref.slice(0, 300),
+        productSlug: currentProduct(),
       } });
     }, { passive: true });
 
@@ -295,7 +302,7 @@ const settingsText = settingsCopy[locale] || settingsCopy.en;
       if (!form || form.dataset.analyticsStarted === "1") return;
       form.dataset.analyticsStarted = "1";
       var isProject = form.id === "start-project-form";
-      track(isProject ? "start_project_form_start" : "contact_form_start", { metadata: { formId: form.id || "form" } });
+      track(isProject ? "start_project_form_start" : "contact_form_start", { metadata: { formId: form.id || "form", productSlug: currentProduct() } });
     });
 
     window.addEventListener("scroll", function () {

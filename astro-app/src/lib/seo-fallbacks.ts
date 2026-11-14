@@ -433,7 +433,7 @@ export function productSeoFallback(
   const preferredTitle = cmsTitle || override?.title || searchIntentTitle;
   // Keep the model name when a longer catalog title would be cut short.
   const compactedTitle = compactTitle(preferredTitle);
-  const title = (locale === "tr" || locale === "en") && compactedTitle.endsWith("…")
+  const title = (locale === "tr" || locale === "en" || locale === "de") && compactedTitle.endsWith("…")
     ? searchIntentTitle
     : compactedTitle;
 
@@ -473,8 +473,8 @@ const PRODUCT_TITLE_DESCRIPTORS: Record<string, Partial<Record<Locale, string>>>
   willowpanic: { en: "LoRaWAN Panic Button", tr: "LoRaWAN Panik Butonu", de: "LoRaWAN-Paniktaster", fr: "Bouton d’alerte LoRaWAN", es: "Botón de pánico LoRaWAN", it: "Pulsante di emergenza LoRaWAN", ar: "زر طوارئ LoRaWAN", ja: "LoRaWANパニックボタン" },
   willowsens: { en: "LoRaWAN Door Sensor", tr: "LoRaWAN Kapı Sensörü", de: "LoRaWAN-Türsensor", fr: "Capteur de porte LoRaWAN", es: "Sensor de puerta LoRaWAN", it: "Sensore porta LoRaWAN", ar: "مستشعر باب LoRaWAN", ja: "LoRaWANドアセンサー" },
   willowtilt: { en: "LoRaWAN Tilt & Acceleration Sensor", tr: "LoRaWAN Eğim ve İvme Sensörü", de: "LoRaWAN-Neigungssensor", fr: "Capteur d’inclinaison LoRaWAN", es: "Sensor de inclinación LoRaWAN", it: "Sensore di inclinazione LoRaWAN", ar: "مستشعر ميل LoRaWAN", ja: "LoRaWAN傾斜センサー" },
-  willowtemp: { en: "LoRaWAN Temperature & Humidity Sensor", tr: "LoRaWAN Sıcaklık ve Nem Sensörü", de: "LoRaWAN-Temperatursensor", fr: "Capteur de température LoRaWAN", es: "Sensor de temperatura LoRaWAN", it: "Sensore di temperatura LoRaWAN", ar: "مستشعر حرارة LoRaWAN", ja: "LoRaWAN温度センサー" },
-  willowmod: { en: "RS485 Modbus RTU to LoRaWAN Bridge", tr: "RS485 Modbus RTU LoRaWAN Köprüsü", de: "LoRaWAN-Modbus-Bridge", fr: "Passerelle Modbus LoRaWAN", es: "Puente Modbus LoRaWAN", it: "Bridge Modbus LoRaWAN", ar: "جسر Modbus LoRaWAN", ja: "LoRaWAN Modbusブリッジ" },
+  willowtemp: { en: "LoRaWAN Temperature & Humidity Sensor", tr: "LoRaWAN Sıcaklık ve Nem Sensörü", de: "LoRaWAN-Temperatur- und Feuchtesensor", fr: "Capteur de température LoRaWAN", es: "Sensor de temperatura LoRaWAN", it: "Sensore di temperatura LoRaWAN", ar: "مستشعر حرارة LoRaWAN", ja: "LoRaWAN温度センサー" },
+  willowmod: { en: "RS485 Modbus RTU to LoRaWAN Bridge", tr: "RS485 Modbus RTU LoRaWAN Köprüsü", de: "RS485-Modbus-RTU-zu-LoRaWAN-Bridge", fr: "Passerelle Modbus LoRaWAN", es: "Puente Modbus LoRaWAN", it: "Bridge Modbus LoRaWAN", ar: "جسر Modbus LoRaWAN", ja: "LoRaWAN Modbusブリッジ" },
   willowmos: { en: "LoRaWAN Soil Moisture & Temperature Sensor", tr: "LoRaWAN Toprak Nemi ve Sıcaklık Sensörü", de: "LoRaWAN-Bodenfeuchtesensor", fr: "Capteur d’humidité du sol LoRaWAN", es: "Sensor de humedad del suelo LoRaWAN", it: "Sensore umidità terreno LoRaWAN", ar: "مستشعر رطوبة التربة LoRaWAN", ja: "LoRaWAN土壌水分センサー" },
   willowpre: { en: "IP67 LoRaWAN Pressure Sensor", tr: "IP67 LoRaWAN Basınç Sensörü", de: "IP67-LoRaWAN-Drucksensor", fr: "Capteur de pression LoRaWAN IP67", es: "Sensor de presión LoRaWAN IP67", it: "Sensore di pressione LoRaWAN IP67", ar: "مستشعر ضغط LoRaWAN بتصنيف IP67", ja: "IP67対応LoRaWAN圧力センサー" },
   willowane: { en: "LoRaWAN Anemometer", tr: "LoRaWAN Anemometre", de: "LoRaWAN-Anemometer", fr: "Anémomètre LoRaWAN", es: "Anemómetro LoRaWAN", it: "Anemometro LoRaWAN", ar: "مقياس رياح LoRaWAN", ja: "LoRaWAN風速計" },
