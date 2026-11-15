@@ -181,6 +181,7 @@ const labels = {
   context: { en: "Organization", tr: "Kuruluş", de: "Organisation", fr: "Organisation", es: "Organización", it: "Organizzazione", ar: "الجهة", ja: "組織" },
   contextValue: { en: "Willow Software", tr: "Willow Software", de: "Willow Software", fr: "Willow Software", es: "Willow Software", it: "Willow Software", ar: "Willow Software", ja: "Willow Software" },
   source: { en: "Source", tr: "Kaynak", de: "Quelle", fr: "Source", es: "Fuente", it: "Fonte", ar: "المصدر", ja: "出典" },
+  originalSource: { en: "Read the original announcement", tr: "Orijinal duyuruyu okuyun", de: "Originalmeldung lesen", fr: "Lire le communiqué original", es: "Leer el anuncio original", it: "Leggi il comunicato originale", ar: "اقرأ الإعلان الأصلي", ja: "元の発表を読む" },
   originalPost: { en: "View original LinkedIn post", tr: "Orijinal LinkedIn gönderisini görüntüle", de: "Originalbeitrag auf LinkedIn ansehen", fr: "Voir la publication LinkedIn d’origine", es: "Ver la publicación original en LinkedIn", it: "Vedi il post LinkedIn originale", ar: "عرض منشور LinkedIn الأصلي", ja: "LinkedInの元投稿を見る" },
   galleryEyebrow: { en: "Media gallery", tr: "Görsel galeri", de: "Mediengalerie", fr: "Galerie média", es: "Galería multimedia", it: "Galleria media", ar: "معرض الصور", ja: "メディアギャラリー" },
   galleryTitle: { en: "More images from this update.", tr: "Bu haberden diğer görseller.", de: "Weitere Bilder zu diesem Update.", fr: "Autres images de cette actualité.", es: "Más imágenes de esta actualización.", it: "Altre immagini da questo aggiornamento.", ar: "صور إضافية من هذا التحديث.", ja: "この更新のその他の画像。" },
@@ -285,7 +286,7 @@ const getLabel = (key: keyof typeof labels) => labels[key][locale] || labels[key
               {sourceUrl && (
                 <div>
                   <dt>{getLabel("source")}</dt>
-                  <dd><a href={sourceUrl} target="_blank" rel="noopener noreferrer">{getLabel("originalPost")}</a></dd>
+                  <dd><a href={sourceUrl} target="_blank" rel="noopener noreferrer">{getLabel(/^https?:\/\/(?:[a-z]+\.)?linkedin\.com\//i.test(sourceUrl) ? "originalPost" : "originalSource")}</a></dd>
                 </div>
               )}
             </dl>
