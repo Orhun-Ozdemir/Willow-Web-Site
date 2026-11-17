@@ -73,16 +73,16 @@ export interface SeoText {
 const PRODUCT_SEO_OVERRIDES: Record<string, Partial<Record<Locale, SeoText>>> = {
   willowsonic: {
     en: {
-      title: "LoRaWAN Ultrasonic Level Sensor (IP67) - WillowSonic",
-      description: "Industrial LoRaWAN ultrasonic level sensor for water tanks, silos, manholes and snow. 7.5m range, IP67 enclosure, up to 10-year battery life.",
+      title: "Ultrasonic LoRaWAN Level Sensor (IP67, 7.5m) — WillowSonic",
+      description: "Industrial ultrasonic LoRaWAN level sensor for water tanks, silos and sewers. 7.5m non-contact range, IP67. Direct alternative to Teneo & Ellenex.",
     },
     tr: {
-      title: "LoRaWAN Ultrasonik Seviye Sensörü (IP67) - WillowSonic",
+      title: "LoRaWAN Ultrasonik Seviye Sensörü (IP67) — WillowSonic",
       description: "Sıvı tankı, silo, rögar ve kar seviyesi ölçümü için endüstriyel LoRaWAN ultrasonik seviye sensörü. 7,5 m menzil, IP67 gövde, 10 yıl pil ömrü.",
     },
     de: {
-      title: "LoRaWAN-Ultraschall-Füllstandssensor (IP67) - WillowSonic",
-      description: "WillowSonic misst Flüssigkeits-, Silo-, Schnee- und Schachtfüllstände bis 7,5 m. Mit IP67, LoRaWAN 868/915 MHz und bis zu 10 Jahren Batterielaufzeit.",
+      title: "LoRaWAN Füllstandssensor & Tankfüllstand (IP67) — WillowSonic",
+      description: "Industrieller LoRaWAN Füllstandssensor für zuverlässige Messung von Tankfüllstand, Silo, Schacht und Flüssigkeiten. Ultraschall bis 7,5m, IP67.",
     },
     fr: {
       title: "Capteur de niveau ultrasonique LoRaWAN (IP67) - WillowSonic",
@@ -119,8 +119,8 @@ const PRODUCT_SEO_OVERRIDES: Record<string, Partial<Record<Locale, SeoText>>> = 
       description: "WillowPre misst 0–1500 PSI Flüssigkeitsdruck in Rohrleitungen und Tanks. Mit IP67, LoRaWAN 868/915 MHz und bis zu 10 Jahren Batterielaufzeit.",
     },
     fr: {
-      title: "Capteur de pression LoRaWAN (0–1500 PSI) - WillowPre",
-      description: "WillowPre mesure la pression des liquides de 0 à 1 500 PSI dans les conduites et réservoirs, avec IP67 et jusqu’à 10 ans d’autonomie.",
+      title: "Sonde LoRaWAN de pression et niveau (0–1500 PSI) — WillowPre",
+      description: "Sonde LoRaWAN industrielle pour mesure de pression et niveau de liquide dans canalisations et cuves (0–1500 PSI). Inox 316L, IP67.",
     },
     es: {
       title: "Sensor de presión LoRaWAN (0–1500 PSI) - WillowPre",
@@ -149,8 +149,8 @@ const PRODUCT_SEO_OVERRIDES: Record<string, Partial<Record<Locale, SeoText>>> = 
       description: "Düşük güçlü sensör uç noktaları için STM32WL tabanlı endüstriyel LoRaWAN modülü. Tek çipte MCU ve LoRa radyo, 22 dBm RF, ultra düşük uyku akımı.",
     },
     de: {
-      title: "STM32WL LoRaWAN-MCU-Modul - WillowBee",
-      description: "Industrielles LoRaWAN-MCU-Modul auf STM32WL-Basis für stromsparende Sensor-Knoten mit integriertem LoRa-Funk und 22 dBm RF.",
+      title: "Industrielles LoRaWAN Modul (STM32WL, 22 dBm) — WillowBee",
+      description: "Industrielles LoRaWAN Modul auf STM32WL-Basis für stromsparende Sensorknoten mit integriertem LoRa-Funk und 22 dBm RF.",
     },
     fr: {
       title: "Module MCU LoRaWAN STM32WL - WillowBee",
@@ -183,8 +183,8 @@ const PRODUCT_SEO_OVERRIDES: Record<string, Partial<Record<Locale, SeoText>>> = 
       description: "PLC, sayaç ve enerji analizörlerini kablosuz izlemek için RS485 Modbus RTU LoRaWAN köprüsü. Uzun menzil, tak-çalıştır register haritası.",
     },
     de: {
-      title: "LoRaWAN-Modbus-Bridge (RS485 RTU) - WillowMod",
-      description: "Drahtlose RS485 Modbus RTU zu LoRaWAN Schnittstelle für SPS, Energiezähler und Industrieanlagen. Große Reichweite und einfache Integration.",
+      title: "Industrielles LoRaWAN Modul & Modbus Bridge (RS485) — WillowMod",
+      description: "Industrielles LoRaWAN Modul zur RS485 Modbus RTU Überwachung von SPS, Energiezählern und Industrieanlagen. Große Reichweite.",
     },
     fr: {
       title: "Passerelle Modbus LoRaWAN (RS485 RTU) - WillowMod",
@@ -205,8 +205,8 @@ const PRODUCT_SEO_OVERRIDES: Record<string, Partial<Record<Locale, SeoText>>> = 
       description: "İç ortam hava kalitesi, TVOC, eCO2, sıcaklık ve bağıl nem ölçümü için kablosuz LoRaWAN sensörü. Akıllı bina ve HVAC izleme.",
     },
     de: {
-      title: "LoRaWAN-Raumluftqualitätssensor (TVOC, eCO2, Temp) - WillowAir",
-      description: "Überwachung der Innenraumluftqualität mit TVOC, eCO2, Temperatur und Feuchte über LoRaWAN für Smart Buildings und HVAC-Steuerung.",
+      title: "Luftqualitätssensor LoRaWAN (CO2, TVOC, Temp) — WillowAir",
+      description: "Industrieller Luftqualitätssensor LoRaWAN für Innenraum, Büro und Schule. Misst TVOC, eCO2, Temperatur und Feuchte für Gebäudeautomation.",
     },
     fr: {
       title: "Capteur de qualité de l'air intérieur LoRaWAN - WillowAir",
@@ -231,8 +231,8 @@ const PRODUCT_SEO_OVERRIDES: Record<string, Partial<Record<Locale, SeoText>>> = 
       description: "Industrieller LoRaWAN-Sensor für Bodenfeuchte und Temperatur für intelligente Landwirtschaft und Bewässerung. IP68-Sonde, 10 Jahre Batterielaufzeit.",
     },
     fr: {
-      title: "Capteur d'humidité du sol et température LoRaWAN (IP68) - WillowMos",
-      description: "Capteur industriel d'humidité et température du sol LoRaWAN pour l'agriculture intelligente et l'irrigation de précision. Sonde IP68.",
+      title: "Sonde LoRaWAN d'humidité du sol et température (IP68) — WillowMos",
+      description: "Sonde LoRaWAN industrielle pour mesure d'humidité volumique du sol et température en agriculture de précision. Sonde IP68 étanche.",
     },
     es: {
       title: "Sensor de humedad y temperatura del suelo LoRaWAN (IP68) - WillowMos",
@@ -241,16 +241,16 @@ const PRODUCT_SEO_OVERRIDES: Record<string, Partial<Record<Locale, SeoText>>> = 
   },
   willowgps: {
     en: {
-      title: "LoRaWAN GPS Asset Tracker (Fleet & Cargo) - WillowGPS",
-      description: "Low-power LoRaWAN GPS tracker for assets, cargo, containers and fleet tracking. Integrated antennas, motion detection, multi-year battery.",
+      title: "LoRaWAN GPS Tracker (Asset & Fleet Tracking, IP67) — WillowGPS",
+      description: "Industrial LoRaWAN GPS tracker for cargo, containers and fleet tracking. Integrated antennas, smart motion detection, multi-year battery.",
     },
     tr: {
-      title: "LoRaWAN GPS Takip Modülü (Varlık ve Filo) - WillowGPS",
+      title: "LoRaWAN GPS Takip Modülü (Varlık ve Filo) — WillowGPS",
       description: "Konteyner, filo ve saha varlıkları için düşük güçlü LoRaWAN GPS takip cihazı. Entegre anten, hareket algılama ve uzun pil ömrü.",
     },
     de: {
-      title: "LoRaWAN-GPS-Asset-Tracker (Flotten & Fracht) - WillowGPS",
-      description: "Energieeffizienter LoRaWAN-GPS-Tracker für Fracht, Container und Flottenüberwachung mit Bewegungserkennung und langer Batterielaufzeit.",
+      title: "LoRaWAN GPS Tracker & Ortung (IP67 Gehäuse) — WillowGPS",
+      description: "Robuster LoRaWAN GPS Tracker für Ortung von Containern, Fracht und Flotten. IP67 Gehäuse, Bewegungserkennung, bis zu 7 Jahre Batterielaufzeit.",
     },
     fr: {
       title: "Traceur GPS LoRaWAN pour actifs et flotte - WillowGPS",
@@ -307,23 +307,23 @@ const PRODUCT_SEO_OVERRIDES: Record<string, Partial<Record<Locale, SeoText>>> = 
   },
   willowsens: {
     en: {
-      title: "LoRaWAN Multi-Input Sensor & Door Contact Hub (IP67) - WillowSens",
+      title: "LoRaWAN Multi-Input Sensor & Door Contact Hub (IP67) — WillowSens",
       description: "Industrial LoRaWAN multi-input hub for magnetic door contacts, digital inputs, and pulse meters. Real-time enclosure and access monitoring.",
     },
     tr: {
-      title: "LoRaWAN Çok Amaçlı Giriş & Kapı Kontak Sensörü (IP67) - WillowSens",
+      title: "LoRaWAN Çok Amaçlı Giriş & Kapı Kontak Sensörü (IP67) — WillowSens",
       description: "Trafo merkezleri, sunucu kabinetleri ve pano kapıları için manyetik kontak, kuru kontak ve darbe sayıcı destekli endüstriyel LoRaWAN sensörü.",
     },
     de: {
-      title: "LoRaWAN-Multieingangs- und Türkontaktsensor (IP67) - WillowSens",
-      description: "Industrieller LoRaWAN-Hub für Magnetkontakte, digitale Eingänge und Impulszählung zur Überwachung von Schaltschränken und Zugängen.",
+      title: "Überwachung LoRaWAN Modul & Türkontakt (IP67) — WillowSens",
+      description: "Industrielles LoRaWAN Modul zur Überwachung von Schaltschränken, Türen und Zugängen. Magnetkontakt, digitale Eingänge und Impulszählung, IP67.",
     },
     fr: {
-      title: "Capteur multi-entrées et contact de porte LoRaWAN (IP67) - WillowSens",
+      title: "Capteur multi-entrées et contact de porte LoRaWAN (IP67) — WillowSens",
       description: "Hub LoRaWAN industriel pour contacts magnétiques, entrées numériques et comptage d'impulsions pour la surveillance d'accès.",
     },
     es: {
-      title: "Sensor multientrada y contacto de puerta LoRaWAN (IP67) - WillowSens",
+      title: "Sensor multientrada y contacto de puerta LoRaWAN (IP67) — WillowSens",
       description: "Concentrador LoRaWAN industrial para contactos magnéticos de puerta, entradas digitales y conteo de pulsos en armarios e instalaciones.",
     },
   },
@@ -466,15 +466,15 @@ export function newsSeoFallback(
 }
 
 const PRODUCT_TITLE_DESCRIPTORS: Record<string, Partial<Record<Locale, string>>> = {
-  willowbee: { en: "STM32WL LoRaWAN MCU Module", tr: "STM32WL LoRaWAN MCU Modülü", de: "LoRaWAN-MCU-Modul", fr: "Module MCU LoRaWAN", es: "Módulo MCU LoRaWAN", it: "Modulo MCU LoRaWAN", ar: "وحدة MCU LoRaWAN", ja: "LoRaWAN MCUモジュール" },
-  willowsonic: { en: "LoRaWAN Ultrasonic Level Sensor", tr: "LoRaWAN Ultrasonik Seviye Sensörü", de: "LoRaWAN-Ultraschall-Füllstandssensor", fr: "Capteur de niveau ultrasonique LoRaWAN", es: "Sensor ultrasónico de nivel LoRaWAN", it: "Sensore di livello LoRaWAN a ultrasuoni", ar: "مستشعر مستوى LoRaWAN بالموجات فوق الصوتية", ja: "LoRaWAN超音波レベルセンサー" },
+  willowbee: { en: "STM32WL LoRaWAN MCU Module", tr: "STM32WL LoRaWAN MCU Modülü", de: "Industrielles LoRaWAN-Modul", fr: "Module MCU LoRaWAN", es: "Módulo MCU LoRaWAN", it: "Modulo MCU LoRaWAN", ar: "وحدة MCU LoRaWAN", ja: "LoRaWAN MCUモジュール" },
+  willowsonic: { en: "Ultrasonic LoRaWAN Level Sensor", tr: "LoRaWAN Ultrasonik Seviye Sensörü", de: "LoRaWAN-Füllstandssensor", fr: "Capteur de niveau ultrasonique LoRaWAN", es: "Sensor ultrasónico de nivel LoRaWAN", it: "Sensore di livello LoRaWAN a ultrasuoni", ar: "مستشعر مستوى LoRaWAN بالموجات فوق الصوتية", ja: "LoRaWAN超音波レベルセンサー" },
   willowair: { en: "LoRaWAN Air Quality Sensor", tr: "LoRaWAN Hava Kalitesi Sensörü", de: "LoRaWAN-Luftqualitätssensor", fr: "Capteur d’air LoRaWAN", es: "Sensor de aire LoRaWAN", it: "Sensore aria LoRaWAN", ar: "مستشعر جودة الهواء LoRaWAN", ja: "LoRaWAN空気品質センサー" },
   willowgps: { en: "LoRaWAN GPS Tracker", tr: "LoRaWAN GPS Takip Modülü", de: "LoRaWAN-GPS-Tracker", fr: "Traceur GPS LoRaWAN", es: "Rastreador GPS LoRaWAN", it: "Tracker GPS LoRaWAN", ar: "متعقب GPS LoRaWAN", ja: "LoRaWAN GPSトラッカー" },
   willowpanic: { en: "LoRaWAN Panic Button", tr: "LoRaWAN Panik Butonu", de: "LoRaWAN-Paniktaster", fr: "Bouton d’alerte LoRaWAN", es: "Botón de pánico LoRaWAN", it: "Pulsante di emergenza LoRaWAN", ar: "زر طوارئ LoRaWAN", ja: "LoRaWANパニックボタン" },
-  willowsens: { en: "LoRaWAN Door Contact Sensor", tr: "LoRaWAN Kapı Kontak Sensörü", de: "LoRaWAN-Türkontaktsensor", fr: "Capteur de porte LoRaWAN", es: "Sensor de puerta LoRaWAN", it: "Sensore porta LoRaWAN", ar: "مستشعر باب LoRaWAN", ja: "LoRaWANドアセンサー" },
+  willowsens: { en: "LoRaWAN Door Contact Sensor", tr: "LoRaWAN Kapı Kontak Sensörü", de: "LoRaWAN-Überwachungsmodul", fr: "Capteur de porte LoRaWAN", es: "Sensor de puerta LoRaWAN", it: "Sensore porta LoRaWAN", ar: "مستشعر باب LoRaWAN", ja: "LoRaWANドアセンサー" },
   willowtilt: { en: "LoRaWAN Tilt & Acceleration Sensor", tr: "LoRaWAN Eğim ve İvme Sensörü", de: "LoRaWAN-Neigungssensor", fr: "Capteur d’inclinaison LoRaWAN", es: "Sensor de inclinación LoRaWAN", it: "Sensore di inclinazione LoRaWAN", ar: "مستشعر ميل LoRaWAN", ja: "LoRaWAN傾斜センサー" },
   willowtemp: { en: "LoRaWAN Temperature & Humidity Sensor", tr: "LoRaWAN Sıcaklık ve Nem Sensörü", de: "LoRaWAN-Temperatur- und Feuchtesensor", fr: "Capteur de température LoRaWAN", es: "Sensor de temperatura LoRaWAN", it: "Sensore di temperatura LoRaWAN", ar: "مستشعر حرارة LoRaWAN", ja: "LoRaWAN温度センサー" },
-  willowmod: { en: "RS485 Modbus RTU to LoRaWAN Bridge", tr: "RS485 Modbus RTU LoRaWAN Köprüsü", de: "RS485-Modbus-RTU-zu-LoRaWAN-Bridge", fr: "Passerelle Modbus LoRaWAN", es: "Puente Modbus LoRaWAN", it: "Bridge Modbus LoRaWAN", ar: "جسر Modbus LoRaWAN", ja: "LoRaWAN Modbusブリッジ" },
+  willowmod: { en: "RS485 Modbus RTU to LoRaWAN Bridge", tr: "RS485 Modbus RTU LoRaWAN Köprüsü", de: "Industrielles LoRaWAN-Modul & Modbus", fr: "Passerelle Modbus LoRaWAN", es: "Puente Modbus LoRaWAN", it: "Bridge Modbus LoRaWAN", ar: "جسر Modbus LoRaWAN", ja: "LoRaWAN Modbusブリッジ" },
   willowmos: { en: "LoRaWAN Soil Moisture & Temperature Sensor", tr: "LoRaWAN Toprak Nemi ve Sıcaklık Sensörü", de: "LoRaWAN-Bodenfeuchtesensor", fr: "Capteur d’humidité du sol LoRaWAN", es: "Sensor de humedad del suelo LoRaWAN", it: "Sensore umidità terreno LoRaWAN", ar: "مستشعر رطوبة التربة LoRaWAN", ja: "LoRaWAN土壌水分センサー" },
   willowpre: { en: "IP67 LoRaWAN Pressure Sensor", tr: "IP67 LoRaWAN Basınç Sensörü", de: "IP67-LoRaWAN-Drucksensor", fr: "Capteur de pression LoRaWAN IP67", es: "Sensor de presión LoRaWAN IP67", it: "Sensore di pressione LoRaWAN IP67", ar: "مستشعر ضغط LoRaWAN بتصنيف IP67", ja: "IP67対応LoRaWAN圧力センサー" },
   willowane: { en: "LoRaWAN Ultrasonic Anemometer", tr: "LoRaWAN Ultrasonik Anemometre", de: "LoRaWAN-Ultraschallanemometer", fr: "Anémomètre LoRaWAN", es: "Anemómetro LoRaWAN", it: "Anemometro LoRaWAN", ar: "مقياس رياح LoRaWAN", ja: "LoRaWAN風速計" },
